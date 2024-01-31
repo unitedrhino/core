@@ -1,0 +1,46 @@
+package info
+
+import (
+	"context"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/core/shared/utils"
+
+	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/i-Things/core/service/apisvr/internal/types"
+
+	"github.com/zeromicro/go-zero/core/logx"
+)
+
+type UpdateLogic struct {
+	logx.Logger
+	ctx    context.Context
+	svcCtx *svc.ServiceContext
+}
+
+func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogic {
+	return &UpdateLogic{
+		Logger: logx.WithContext(ctx),
+		ctx:    ctx,
+		svcCtx: svcCtx,
+	}
+}
+
+func (l *UpdateLogic) Update(req *types.RoleInfo) error {
+	resp, err := l.svcCtx.RoleRpc.RoleInfoUpdate(l.ctx, &sys.RoleInfo{
+		Id:     req.ID,
+		Name:   req.Name,
+		Desc:   req.Desc,
+		Status: req.Status,
+	})
+	if err != nil {
+		err := errors.Fmt(err)
+		l.Errorf("%s.rpc.RoleUpdate req=%v err=%v", utils.FuncName(), req, err)
+		return err
+	}
+	if resp == nil {
+		l.Errorf("%s.rpc.RoleUpdate return nil req=%v", utils.FuncName(), req)
+		return errors.System.AddDetail("RoleUpdate rpc return nil")
+	}
+	return nil
+}

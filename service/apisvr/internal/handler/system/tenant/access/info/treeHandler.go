@@ -1,0 +1,25 @@
+package info
+
+import (
+	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/tenant/access/info"
+	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/i-Things/core/service/apisvr/internal/types"
+	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/core/shared/result"
+	"github.com/zeromicro/go-zero/rest/httpx"
+	"net/http"
+)
+
+func TreeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req types.TenantAccessInfoIndexReq
+		if err := httpx.Parse(r, &req); err != nil {
+			result.Http(w, r, nil, errors.Parameter.WithMsg("入参不正确:"+err.Error()))
+			return
+		}
+
+		l := info.NewTreeLogic(r.Context(), svcCtx)
+		resp, err := l.Tree(&req)
+		result.Http(w, r, resp, err)
+	}
+}

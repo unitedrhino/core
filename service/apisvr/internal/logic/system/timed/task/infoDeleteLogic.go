@@ -1,0 +1,32 @@
+package task
+
+import (
+	"context"
+	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/i-Things/core/shared/utils"
+
+	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/i-Things/core/service/apisvr/internal/types"
+
+	"github.com/zeromicro/go-zero/core/logx"
+)
+
+type InfoDeleteLogic struct {
+	logx.Logger
+	ctx    context.Context
+	svcCtx *svc.ServiceContext
+}
+
+func NewInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InfoDeleteLogic {
+	return &InfoDeleteLogic{
+		Logger: logx.WithContext(ctx),
+		ctx:    ctx,
+		svcCtx: svcCtx,
+	}
+}
+
+func (l *InfoDeleteLogic) InfoDelete(req *types.CodeReq) error {
+	l.Infof("req:%v", utils.Fmt(req))
+	_, err := l.svcCtx.TimedJob.TaskInfoDelete(l.ctx, &timedjob.CodeReq{Code: req.Code})
+	return err
+}

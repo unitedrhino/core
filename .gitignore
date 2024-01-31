@@ -1,0 +1,65 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+/deploy/data/*
+/docker/run-debug/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/src/apisvr/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+go.sum
+
+##
+/cmd/*
+src/apisvr/apisvr*
+src/dcsvr/dcsvr*
+src/ddsvr/ddsvr*
+src/dmsvr/dmsvr*
+src/vidsvr/vidsvr*
+src/vidsvr/vidsvr
+src/vidsip/vidsip*
+src/vidsvr/vidsvr/etc/api.yaml
+src/vidsvr/vidsvr/api.go
+src/apisvr/go_build*
+src/usersvr/usersvr*
+/src/disvr/disvr.exe
+/src/syssvr/syssvr.exe
+/src/vidsvr/vidsvr.exe
+/src/apisvr/dist/
+
+*.exe
+### MacOS ###
+.DS_Store
+/src/apisvr/logs/
+/pack/*
+
+.history
+/src/timedqueuesvr/job/job
+/src/timedqueuesvr/scheduler/scheduler
+/src/timedjobsvr/job
