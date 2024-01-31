@@ -8,5 +8,5 @@ info(
     version: "type version here"
 )
 
-import "system/module/info.api"
-import "system/module/menu.api"
+import "module/info.api"
+import "module/menu.api"

@@ -6,10 +6,9 @@ info(
     version: "v1"
 )
 
-import "common.api"  //公共结构体定义
 
 @server(
-    group : system/data/project
+    group: system/data/project
     prefix: /api/v1/system/data/project
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -26,7 +25,7 @@ service api {
 }
 
 @server(
-    group : system/data/area
+    group: system/data/area
     prefix: /api/v1/system/data/area
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -46,7 +45,7 @@ service api {
 }
 
 @server(
-    group : system/data/area/user/apply
+    group: system/data/area/user/apply
     prefix: /api/v1/system/data/area/user/apply
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -64,23 +63,23 @@ service api {
 
 //用户级权限控制
 type (
-    DataProject struct {
+    DataProject  {
         ProjectID   int64 `json:"projectID,string"`     //权限数据ID
         AuthType  int64 `json:"authType"`// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
     }
-    DataProjectMultiUpdateReq struct {
+    DataProjectMultiUpdateReq  {
         TargetID   int64 `json:"targetID,string"`    //用户ID
         TargetType string `json:"targetType"`
         Projects []*DataProject `json:"projects"` //权限数据IDs（必填）
     }
 
-    DataProjectIndexReq struct {
+    DataProjectIndexReq  {
         Page *PageInfo `json:"page,optional"`        //进行数据分页（不传默认2000相当于全部）
         UserID   int64   `json:"userID,string,optional"`    //用户ID（必填，雪花ID）
         TargetID   int64 `json:"targetID,string,optional"`    //用户ID
         TargetType string `json:"targetType,optional"`
     }
-    DataProjectIndexResp struct {
+    DataProjectIndexResp  {
         Total int64           `json:"total"` //总数
         List  []*DataProject `json:"list"`    //用户数据权限列表
     }
@@ -91,18 +90,18 @@ type (
         TargetType string `json:"targetType"`
         AreaIDs []int64         `json:"areaIDs,string"`
     }
-    DataAreaMultiUpdateReq struct {
+    DataAreaMultiUpdateReq  {
         TargetID   int64 `json:"targetID,string"`    //用户ID
         TargetType string `json:"targetType"`
         ProjectID int64           `json:"projectID,string"` //项目id
         Areas     []*DataArea `json:"areas"`          //权限数据IDs
     }
-    DataArea struct {
+    DataArea  {
         AreaID int64 `json:"areaID,string"` //项目id
         AuthType  int64 `json:"authType"`// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
     }
 
-    DataAreaIndexReq struct {
+    DataAreaIndexReq  {
         Page *PageInfo `json:"page,optional"`        //进行数据分页（不传默认2000相当于全部）
         UserID   int64              `json:"userID,string,optional"`    //用户ID（必填，雪花ID）
         TargetID   int64 `json:"targetID,string,optional"`    //用户ID
@@ -110,11 +109,11 @@ type (
         ProjectID int64           `json:"projectID,string,optional"` //项目id
     }
 
-    DataAreaDetail struct {
+    DataAreaDetail  {
         *AreaInfo
         AuthType  int64 `json:"authType"`// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
     }
-    DataAreaIndexResp struct {
+    DataAreaIndexResp  {
         Total int64           `json:"total"` //总数
         List  []*DataAreaDetail `json:"list"`    //用户数据权限列表
     }

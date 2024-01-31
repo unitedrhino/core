@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"gitee.com/i-Things/core/shared/oss/common"
+	"gitee.com/i-Things/share/oss/common"
 )
 
 const (

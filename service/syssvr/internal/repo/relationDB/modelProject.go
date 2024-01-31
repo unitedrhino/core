@@ -1,8 +1,8 @@
 package relationDB
 
 import (
-	"gitee.com/i-Things/core/shared/def"
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 )
 
 // SysProjectInfo 项目信息表,在智能家居中一个项目是一个家庭,一个区域是一个房间

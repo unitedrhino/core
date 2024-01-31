@@ -3,7 +3,7 @@ package projectmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 )
 
 func checkProject(ctx context.Context, productID int64) (*relationDB.SysProjectInfo, error) {

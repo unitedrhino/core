@@ -3,9 +3,9 @@ package usermanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/ctxs"
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/stores"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"

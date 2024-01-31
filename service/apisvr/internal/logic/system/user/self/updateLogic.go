@@ -3,9 +3,9 @@ package self
 import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/user"
-	"gitee.com/i-Things/core/shared/ctxs"
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"

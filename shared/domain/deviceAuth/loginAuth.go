@@ -4,8 +4,8 @@ package deviceAuth
 import (
 	"encoding/base64"
 	"fmt"
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
 	"strings"
 	"time"

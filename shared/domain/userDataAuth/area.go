@@ -1,6 +1,6 @@
 package userDataAuth
 
-import "gitee.com/i-Things/core/shared/def"
+import "gitee.com/i-Things/share/def"
 
 type Area struct {
 	AreaID   int64

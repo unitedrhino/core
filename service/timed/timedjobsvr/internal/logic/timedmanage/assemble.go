@@ -3,7 +3,7 @@ package timedmanagelogic
 import (
 	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
-	"gitee.com/i-Things/core/shared/def"
+	"gitee.com/i-Things/share/def"
 )
 
 func ToTaskGroupPo(in *timedjob.TaskGroup) *relationDB.TimedTaskGroup {

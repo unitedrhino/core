@@ -3,15 +3,15 @@ package clients
 import (
 	"crypto/tls"
 	"fmt"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 	"math/rand"
 	"net/url"
 	"os"
 	"sync"
 	"time"
 
-	"gitee.com/i-Things/core/shared/conf"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/utils"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/hashicorp/go-uuid"
 	"github.com/zeromicro/go-zero/core/logx"

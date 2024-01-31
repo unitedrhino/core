@@ -10,7 +10,7 @@ info(
 
 
 type (
-    TenantInfo struct {
+    TenantInfo  {
         ID int64 `json:"id,optional"`                                      // 接口编号
         Code string `json:"code"`                               // 应用编号
         Name string `json:"name,optional"`                                 // 接口名称
@@ -21,7 +21,7 @@ type (
         LogoUrl string `json:"logoUrl,optional"`
     }
 
-    AppInfo struct {
+    AppInfo  {
         ID int64 `json:"id,optional"`                                      // 接口编号
         Code string `json:"code"`                               // 应用编号
         Type string `json:"type"` //应用类型 web:web页面  app:应用  mini:小程序
@@ -30,7 +30,7 @@ type (
         BaseUrl string `json:"baseUrl,optional"`                               // 应用编号
         LogoUrl string `json:"logoUrl,optional"`
     }
-    MenuInfo struct {
+    MenuInfo  {
         ID int64 `json:"id,optional"`                                  // 编号
         ModuleCode string `json:"moduleCode"`                               // 模块编号
         Name string `json:"name,optional"`                             // 菜单名称
@@ -46,7 +46,7 @@ type (
         CreateTime int64 `json:"createTime,optional"`           // 创建时间
         Children []*MenuInfo `json:"children,optional"` //子节点
     }
-    ModuleInfo struct {
+    ModuleInfo  {
         ID int64 `json:"id,optional"`                                  // 编号
         Code string `json:"code"`                               // 应用编号
         Name string `json:"name,optional"`                             // 菜单名称
@@ -61,7 +61,7 @@ type (
         Body *string  `json:"body,optional"` //前端自定义字段
     }
 
-    ProjectInfo struct {
+    ProjectInfo  {
         CreatedTime int64 `json:"createdTime,optional,string"` //创建时间（只读）
         ProjectID int64 `json:"projectID,string,optional"`     //项目id（只读）
         ProjectName string `json:"projectName,optional"`       //项目名称（读写）
@@ -74,7 +74,7 @@ type (
     }
 
 
-    ApiInfo struct {
+    ApiInfo  {
         ID int64 `json:"id,optional"`                                      // 接口编号
         AccessCode string `json:"accessCode"`                               // 模块编号
         Route string `json:"route,optional"`                               // 接口路由
@@ -84,12 +84,12 @@ type (
         IsAuthTenant int64 `json:"isAuthTenant,optional,range=[1:2]"`        // 是否可以授权给普通租户
         Desc string `json:"desc,optional"`                       // 备注
     }
-    AccessGroupInfo struct {
+    AccessGroupInfo  {
         ID string `json:"id,optional"`                               // id
         name  string `json:"name,optional"`                               // 接口分组
         Children []*AccessInfo `json:"children"`            // 列表数据
     }
-    AccessInfo struct {
+    AccessInfo  {
         ID int64 `json:"id,optional"`                                      // 接口编号
         Code string `json:"code"`                               // 模块编号
         Group string `json:"group,optional"`                  // 分组

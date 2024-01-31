@@ -4,7 +4,7 @@ package main
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/sysdirect"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/utils"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package utils
 import (
 	"crypto/tls"
 	"fmt"
-	"gitee.com/i-Things/core/shared/conf"
+	"gitee.com/i-Things/share/conf"
 	"github.com/jordan-wright/email"
 	"net/smtp"
 )

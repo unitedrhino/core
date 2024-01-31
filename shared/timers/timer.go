@@ -3,8 +3,8 @@ package timers
 import (
 	"context"
 	"fmt"
-	"gitee.com/i-Things/core/shared/ctxs"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/utils"
 	"github.com/go-co-op/gocron"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"

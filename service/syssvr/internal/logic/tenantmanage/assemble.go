@@ -3,7 +3,7 @@ package tenantmanagelogic
 import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/utils"
 )
 
 func ToTenantInfoRpc(in *relationDB.SysTenantInfo) *sys.TenantInfo {

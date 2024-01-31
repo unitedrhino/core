@@ -5,10 +5,9 @@ info(
     email: "robotyang123@163.com"
     version: "v1"
 )
-import "common.api"  //公共结构体定义
 
 @server(
-    group : system/project/info
+    group: system/project/info
     prefix: /api/v1/system/project/info
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -33,17 +32,17 @@ service api {
 type (
 
 
-    ProjectWithID struct {
+    ProjectWithID  {
         ProjectID int64 `json:"projectID,string"` //项目id 只读
     }
 
-    ProjectInfoIndexReq struct {
+    ProjectInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`            //进行数据分页（不传默认2000相当于全部）
         ProjectName string `json:"projectName,optional"` //过滤项目名称
         ProjectIDs []int64 `json:"projectIDs,optional"`  //过滤项目id列表
     }
 
-    ProjectInfoIndexResp struct {
+    ProjectInfoIndexResp  {
         Total int64 `json:"total,optional"`  //拥有的总数
         List []*ProjectInfo `json:"list"`    //项目列表
     }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

@@ -2,7 +2,7 @@ package stores
 
 import (
 	"database/sql"
-	"gitee.com/i-Things/core/shared/ctxs"
+	"gitee.com/i-Things/share/ctxs"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"

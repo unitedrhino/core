@@ -1,6 +1,6 @@
 package schema
 
-import "gitee.com/i-Things/core/shared/errors"
+import "gitee.com/i-Things/share/errors"
 
 func CheckModify(oldT *Model, newT *Model) error {
 	for _, p := range newT.Property {

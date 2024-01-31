@@ -2,7 +2,7 @@ package relationDB
 
 import (
 	"database/sql"
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/stores"
 	"time"
 )
 

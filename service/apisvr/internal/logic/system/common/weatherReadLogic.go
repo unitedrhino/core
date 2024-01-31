@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 	"github.com/parnurzeal/gorequest"
 	"time"
 

@@ -3,10 +3,10 @@ info(
     author: "lbs"
     email: "174805676@qq.com"
 )
-import "common.api"  //公共结构体定义
+//import "common.api"  //公共结构体定义
 
 @server (
-    group : system/common
+    group: system/common
     prefix: /api/v1/system/common
     middleware: SetupWare, CheckTokenWare,CheckApiWare, TeardownWare
 )
@@ -29,36 +29,36 @@ service api {
 }
 
 type (
-    Map struct {
+    Map  {
         Mode string `json:"mode，options=baidu"`              //坐标系 默认百度坐标系
         AccessKey    string `json:"accessKey"` //设备地图key
     }
-    Oss struct {
+    Oss  {
         Host string `json:"host"` //oss访问前缀
     }
-    ConfigResp struct {
+    ConfigResp  {
         Map Map `json:"map"`  //设备地图相关配置
         Oss Oss `json:"oss"`//oss相关配置
     }
-    UploadUrlCreateReq struct {
+    UploadUrlCreateReq  {
         Business string `json:"business"` //业务(如产品管理 productManage)
         Scene string `json:"scene"` //场景(业务定义 如产品图片 productImg)
         FilePath string `json:"filePath"` //文件路径(带文件名)
         Rename bool `json:"rename,optional"` //true 文件重命名，false 不重命名(默认)
     }
 
-    UploadUrlCreateResp struct {
+    UploadUrlCreateResp  {
         FilePath string `json:"filePath"` //文件路径(带文件名)
         UploadUri string `json:"uploadUri"` //附件直传地址
     }
-    UploadFileReq struct{
+    UploadFileReq {
         FilePath string `json:"filePath"` //文件路径(带文件名)
         Business string `form:"business"` //业务(如产品管理 productManage)
         Scence string `form:"scence"` //场景(业务定义 如产品图片 productImg)
         Rename bool `form:"rename,optional"` //1文件重命名，0不重命名
         File []byte `form:"file"` //文件内容,二进制文件传输
     }
-    UploadFileResp struct {
+    UploadFileResp  {
         FilePath string `json:"filePath"` //文件路径(带文件名)
         FileUri string `json:"fileUri"` //文件uri 相对路径
     }

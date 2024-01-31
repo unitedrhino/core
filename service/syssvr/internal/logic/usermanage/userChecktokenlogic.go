@@ -5,8 +5,8 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/users"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/users"
+	"gitee.com/i-Things/share/utils"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"

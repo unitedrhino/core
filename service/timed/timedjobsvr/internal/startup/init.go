@@ -6,9 +6,9 @@ import (
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/repo/event/subscribe"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/timer"
-	"gitee.com/i-Things/core/shared/clients"
-	"gitee.com/i-Things/core/shared/ctxs"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/clients"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 )

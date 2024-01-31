@@ -3,7 +3,6 @@ info(
 	author: "lbs"
 	email: "174805676@qq.com"
 )
-import "common.api"  //公共结构体定义
 
 @server(
     group: system/module/menu
@@ -29,14 +28,14 @@ service api {
 }
 type (
 
-    MenuInfoIndexReq struct {
+    MenuInfoIndexReq  {
         moduleCode string `json:"moduleCode,optional"`                               // 应用编号
         Name string `json:"name,optional"` // 按菜单名称筛选
         Path string `json:"path,optional"` // 按菜单路径筛选
         IsRetTree bool `json:"isRetTree,optional"` // 是否返回树形结构
     }
 
-    MenuInfoIndexResp struct {
+    MenuInfoIndexResp  {
         List []*MenuInfo `json:"list"` //菜单列表
     }
 

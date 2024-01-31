@@ -1,7 +1,7 @@
 package websocket
 
 import (
-	e "gitee.com/i-Things/core/shared/errors"
+	e "gitee.com/i-Things/share/errors"
 	"net/http"
 )
 

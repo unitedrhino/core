@@ -5,9 +5,9 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/middleware"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/shared/ctxs"
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/result"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/result"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 )

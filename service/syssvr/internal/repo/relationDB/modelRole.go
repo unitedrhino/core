@@ -1,6 +1,6 @@
 package relationDB
 
-import "gitee.com/i-Things/core/shared/stores"
+import "gitee.com/i-Things/share/stores"
 
 // 角色管理表
 type SysRoleInfo struct {

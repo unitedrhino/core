@@ -3,7 +3,7 @@ package modulemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 )
 
 func CheckModule(ctx context.Context, moduleCode string) error {

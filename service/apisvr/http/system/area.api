@@ -5,10 +5,9 @@ info(
     email: "robotyang123@163.com"
     version: "v1"
 )
-import "common.api"  //公共结构体定义
 
 @server(
-    group : system/area/info
+    group: system/area/info
     prefix: /api/v1/system/area/info
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -31,7 +30,7 @@ service api {
 }
 
 type (
-    AreaInfo struct {
+    AreaInfo  {
         CreatedTime int64 `json:"createdTime,optional,string"`   //创建时间（只读）
         ProjectID int64 `json:"projectID,string,optional"`       //项目id（只读）
         AreaID int64 `json:"areaID,string,optional"`             //项目区域id（只读）
@@ -46,18 +45,18 @@ type (
         Children []*AreaInfo `json:"children,optional"`          //下级项目区域列表（只读）
     }
 
-    AreaWithID struct {
+    AreaWithID  {
         AreaID int64 `json:"areaID,string"` //项目区域id 只读
     }
 
-    AreaInfoReadReq struct {
+    AreaInfoReadReq  {
         AreaID int64 `json:"areaID,string"` //项目区域id
         ProjectID int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
         IsRetTree bool `json:"isRetTree,optional"`
 //        WithDeviceInfoCount bool `json:"withDeviceInfoCount,optional"`//同时返回设备统计信息
     }
 
-    AreaInfoIndexReq struct {
+    AreaInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`            //进行数据分页（不传默认2000相当于全部）
         ProjectID int64 `json:"projectID,string,optional"` //项目id
         AreaIDs []int64 `json:"areaIDs,optional"`          //项目区域ids
@@ -66,7 +65,7 @@ type (
 //        WithDeviceInfoCount bool `json:"withDeviceInfoCount,optional"`//同时返回设备统计信息
     }
 
-    AreaInfoIndexResp struct {
+    AreaInfoIndexResp  {
         Total int64 `json:"total,optional"`  //拥有的总数
         List []*AreaInfo `json:"list"`    //项目区域列表
     }

@@ -3,7 +3,6 @@ info(
 	author: "lbs"
 	email: "174805676@qq.com"
 )
-import "common.api"  //公共结构体定义
 
 @server(
     group: system/module/info
@@ -33,7 +32,7 @@ service api {
 }
 type (
 
-    ModuleInfoIndexReq struct {
+    ModuleInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Codes []string `json:"codes,optional"`
         AppCode string `json:"appCode,optional"` //应用绑定的code列表
@@ -41,7 +40,7 @@ type (
         Name string `json:"name,optional"` // 按菜单名称筛选
     }
 
-    ModuleInfoIndexResp struct {
+    ModuleInfoIndexResp  {
         Total int64 `json:"total"` //总数
         List []*ModuleInfo `json:"list"` //菜单列表
     }

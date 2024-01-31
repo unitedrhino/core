@@ -3,7 +3,6 @@ info(
 	author: "lbs"
 	email: "174805676@qq.com"
 )
-import "common.api"  //公共结构体定义
 
 @server(
     group: system/role/info
@@ -123,13 +122,13 @@ type (
 
 
 
-    RoleInfoIndexReq struct {
+    RoleInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`//分页信息,只获取一个则不填
         Name string `json:"name,optional "`           //按名称查找角色
         Status int64 `json:"status,optional "`        //按状态查找角色
     }
 
-    RoleInfo struct {
+    RoleInfo  {
         ID int64 `json:"id,optional"`                                // 编号
         Name string `json:"name,optional"`                           // 角色名称
         Desc string `json:"desc,optional"`                       // 备注
@@ -137,12 +136,12 @@ type (
         Status int64 `json:"status,optional"`                        // 角色状态
     }
 
-    RoleInfoIndexResp struct {
+    RoleInfoIndexResp  {
         List []*RoleInfo `json:"list"`  //角色列表数据
         Total int64 `json:"total"`           //角色列表总数
     }
 
-    RoleMenuMultiUpdateReq struct {
+    RoleMenuMultiUpdateReq  {
         ID int64 `json:"id"`   //角色编号
         AppCode string `json:"appCode"`                               // 应用编号
         ModuleCode string `json:"moduleCode"`
@@ -159,7 +158,7 @@ type (
 )
 
 type (
-    RoleModuleMultiUpdateReq struct {
+    RoleModuleMultiUpdateReq  {
         ID int64 `json:"id"`   //角色编号
         AppCode string `json:"appCode"`                               // 应用编号
         ModuleCodes []string `json:"moduleCodes"`

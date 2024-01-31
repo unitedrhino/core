@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"gitee.com/i-Things/core/service/timed/internal/domain"
 	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 )
 
 func FillTaskInfoDo(do *domain.TaskInfo, po *relationDB.TimedTaskInfo) error {

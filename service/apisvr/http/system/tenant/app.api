@@ -5,10 +5,9 @@ info(
 	email: "174805676@qq.com"
 	version: "v0.1.0"
 )
-import "common.api"  //公共结构体定义
 
 @server (
-    group : system/tenant/app
+    group: system/tenant/app
     prefix: /api/v1/system/tenant/app
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -28,7 +27,7 @@ service api {
 }
 
 @server (
-    group : system/tenant/app/module
+    group: system/tenant/app/module
     prefix: /api/v1/system/tenant/app/module
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -52,7 +51,7 @@ service api {
 }
 
 @server (
-    group : system/tenant/app/menu
+    group: system/tenant/app/menu
     prefix: /api/v1/system/tenant/app/menu
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )

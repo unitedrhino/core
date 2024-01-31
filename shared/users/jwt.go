@@ -1,7 +1,7 @@
 package users
 
 import (
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 	"github.com/dgrijalva/jwt-go"
 )
 

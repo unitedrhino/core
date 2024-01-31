@@ -3,8 +3,8 @@ package svc
 import (
 	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/timed/timedschedulersvr/internal/config"
-	"gitee.com/i-Things/core/shared/clients"
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/clients"
+	"gitee.com/i-Things/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"os"

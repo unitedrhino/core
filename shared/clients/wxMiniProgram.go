@@ -2,7 +2,7 @@ package clients
 
 import (
 	"context"
-	"gitee.com/i-Things/core/shared/conf"
+	"gitee.com/i-Things/share/conf"
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	"github.com/silenceper/wechat/v2/miniprogram"

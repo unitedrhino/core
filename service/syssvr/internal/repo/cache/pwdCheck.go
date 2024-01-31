@@ -2,8 +2,8 @@ package cache
 
 import (
 	"context"
-	"gitee.com/i-Things/core/shared/conf"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/errors"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 )

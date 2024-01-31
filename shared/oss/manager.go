@@ -1,7 +1,7 @@
 package oss
 
 import (
-	"gitee.com/i-Things/core/shared/conf"
+	"gitee.com/i-Things/share/conf"
 )
 
 func newOssManager(setting conf.OssConf) (sm Handle, err error) {

@@ -8,8 +8,8 @@ import (
 	"net/url"
 	"time"
 
-	"gitee.com/i-Things/core/shared/conf"
-	"gitee.com/i-Things/core/shared/oss/common"
+	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/oss/common"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )

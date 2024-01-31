@@ -2,9 +2,9 @@ package relationDB
 
 import (
 	"database/sql"
-	"gitee.com/i-Things/core/shared/conf"
-	"gitee.com/i-Things/core/shared/def"
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm/clause"
 )
 

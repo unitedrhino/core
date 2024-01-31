@@ -2,7 +2,7 @@ package logic
 
 import (
 	"gitee.com/i-Things/core/service/viewsvr/internal/types"
-	"gitee.com/i-Things/core/shared/def"
+	"gitee.com/i-Things/share/def"
 )
 
 func ToPageInfo(info *types.PageInfo) *def.PageInfo {

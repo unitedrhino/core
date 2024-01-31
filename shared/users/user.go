@@ -1,6 +1,6 @@
 package users
 
-import "gitee.com/i-Things/core/shared/utils"
+import "gitee.com/i-Things/share/utils"
 
 // phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码
 const (

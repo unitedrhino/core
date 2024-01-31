@@ -3,7 +3,7 @@ package proxy
 import (
 	"fmt"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/shared/conf"
+	"gitee.com/i-Things/share/conf"
 	"io"
 	"net/http"
 	"net/http/httputil"

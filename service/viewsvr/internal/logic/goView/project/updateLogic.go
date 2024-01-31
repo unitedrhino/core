@@ -4,9 +4,9 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/viewsvr/internal/domain"
 	"gitee.com/i-Things/core/service/viewsvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/oss"
-	"gitee.com/i-Things/core/shared/oss/common"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
+	"gitee.com/i-Things/share/oss/common"
 
 	"gitee.com/i-Things/core/service/viewsvr/internal/svc"
 	"gitee.com/i-Things/core/service/viewsvr/internal/types"

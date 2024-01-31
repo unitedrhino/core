@@ -1,6 +1,6 @@
 package relationDB
 
-import "gitee.com/i-Things/core/shared/stores"
+import "gitee.com/i-Things/share/stores"
 
 // 功能权限范围
 type SysAccessInfo struct {

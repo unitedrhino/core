@@ -4,9 +4,9 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/config"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/clients"
-	"gitee.com/i-Things/core/shared/conf"
-	"gitee.com/i-Things/core/shared/ctxs"
+	"gitee.com/i-Things/share/clients"
+	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/ctxs"
 	"sync"
 )
 

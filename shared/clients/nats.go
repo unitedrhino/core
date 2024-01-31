@@ -1,9 +1,9 @@
 package clients
 
 import (
-	"gitee.com/i-Things/core/shared/conf"
-	"gitee.com/i-Things/core/shared/events"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/events"
+	"gitee.com/i-Things/share/utils"
 	"github.com/nats-io/nats.go"
 	"github.com/zeromicro/go-zero/core/logx"
 	"sync"

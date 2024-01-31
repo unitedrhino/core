@@ -3,7 +3,7 @@ package datamanagelogic
 import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/domain/userDataAuth"
+	"gitee.com/i-Things/share/domain/userDataAuth"
 )
 
 func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {

@@ -5,10 +5,9 @@ info(
 	email: "174805676@qq.com"
 	version: "v0.1.0"
 )
-import "common.api"  //公共结构体定义
 
 @server (
-	group : system/access/api
+	group: system/access/api
 	prefix: /api/v1/system/access/api
 	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -32,7 +31,7 @@ service api {
 }
 
 @server (
-    group : system/access/info
+    group: system/access/info
     prefix: /api/v1/system/access/info
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -61,7 +60,7 @@ service api {
 
 type (
 
-    ApiInfoIndexReq struct {
+    ApiInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Route string `json:"route,optional"`                   // 接口路由
         Method string `json:"method,optional"`      // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
@@ -71,12 +70,12 @@ type (
     }
 
 
-    ApiInfoIndexResp struct {
+    ApiInfoIndexResp  {
         List []*ApiInfo `json:"list"`            // 接口列表数据
         Total int64 `json:"total"`                    // 接口列表总记录数
     }
 
-    AccessIndexReq struct {
+    AccessIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Group string `json:"group,optional"`                   // 接口路由
         Name string `json:"name,optional"`                     // 接口名称
@@ -86,11 +85,11 @@ type (
     }
 
 
-    AccessIndexResp struct {
+    AccessIndexResp  {
         List []*AccessInfo `json:"list"`            // 接口列表数据
         Total int64 `json:"total"`                    // 接口列表总记录数
     }
-    AccessTreeResp struct {
+    AccessTreeResp  {
         List []*AccessGroupInfo `json:"list"`            // 接口列表数据
     }
 )

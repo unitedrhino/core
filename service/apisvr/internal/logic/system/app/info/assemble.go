@@ -3,7 +3,7 @@ package info
 import (
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/utils"
 )
 
 func ToAppInfoRpc(in *types.AppInfo) *sys.AppInfo {

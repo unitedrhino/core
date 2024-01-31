@@ -1,7 +1,7 @@
 package application
 
 import (
-	"gitee.com/i-Things/core/shared/devices"
+	"gitee.com/i-Things/share/devices"
 )
 
 // 连接和断连消息信息

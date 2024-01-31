@@ -1,7 +1,7 @@
 package relationDB
 
 import (
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/stores"
 )
 
 // 租户信息表

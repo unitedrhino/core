@@ -3,7 +3,7 @@ package errors_test
 import (
 	"encoding/json"
 	"fmt"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 	"strings"
 	"testing"
 )

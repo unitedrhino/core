@@ -5,7 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/shared/ctxs"
+	"gitee.com/i-Things/share/ctxs"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

@@ -3,7 +3,7 @@ package sqlFunc
 import (
 	timedmanagelogic "gitee.com/i-Things/core/service/timed/timedjobsvr/internal/logic/timedmanage"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/errors"
 	"github.com/dop251/goja"
 	"github.com/gogf/gf/v2/util/gconv"
 )

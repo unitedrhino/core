@@ -2,7 +2,7 @@ package area
 
 import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/def"
+	"gitee.com/i-Things/share/def"
 )
 
 var (

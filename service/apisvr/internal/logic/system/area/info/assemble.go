@@ -4,7 +4,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/utils"
 )
 
 func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {

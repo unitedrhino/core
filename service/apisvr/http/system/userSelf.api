@@ -7,7 +7,7 @@ info(
 )
 
 @server (
-	group : system/user/self
+	group: system/user/self
 	prefix: /api/v1/system/user/self
 	middleware: SetupWare, CheckTokenWare, DataAuthWare, TeardownWare
 )
@@ -41,7 +41,7 @@ service api {
 }
 
 @server (
-	group : system/user/self
+	group: system/user/self
 	prefix: /api/v1/system/user/self
 )
 service api {
@@ -85,7 +85,7 @@ type (
 		CodeID  string `json:"codeID,optional"`	//验证码编号 微信登录填state
 		Password  string `json:"password,optional"`	//密码
 	}
-	UserCaptchaReq struct {
+	UserCaptchaReq  {
 		Account string `json:"account,optional"`               //短信验证时填写手机号,邮箱验证时填写邮箱
 		Type    string `json:"type,options=phone|image|email"` //验证方式:短信验证,图片验证码
 		Use     string `json:"use,options=login|register|changePwd|forgetPwd"`     //用途

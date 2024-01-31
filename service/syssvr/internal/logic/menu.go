@@ -3,7 +3,7 @@ package logic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/def"
+	"gitee.com/i-Things/share/def"
 	"github.com/samber/lo"
 	"github.com/zeromicro/go-zero/core/logx"
 )

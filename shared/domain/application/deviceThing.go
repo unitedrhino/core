@@ -2,8 +2,8 @@ package application
 
 import (
 	"encoding/json"
-	"gitee.com/i-Things/core/shared/devices"
-	"gitee.com/i-Things/core/shared/domain/schema"
+	"gitee.com/i-Things/share/devices"
+	"gitee.com/i-Things/share/domain/schema"
 	"github.com/spf13/cast"
 )
 

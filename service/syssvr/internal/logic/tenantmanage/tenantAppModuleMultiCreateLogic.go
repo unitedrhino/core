@@ -2,8 +2,8 @@ package tenantmanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/shared/ctxs"
-	"gitee.com/i-Things/core/shared/stores"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"

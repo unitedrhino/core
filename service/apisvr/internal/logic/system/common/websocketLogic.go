@@ -3,8 +3,8 @@ package common
 import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/shared/utils"
-	ws "gitee.com/i-Things/core/shared/websocket"
+	"gitee.com/i-Things/share/utils"
+	ws "gitee.com/i-Things/share/websocket"
 	"github.com/gorilla/websocket"
 	"net/http"
 

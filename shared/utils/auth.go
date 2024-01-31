@@ -1,6 +1,6 @@
 package utils
 
-import "gitee.com/i-Things/core/shared/conf"
+import "gitee.com/i-Things/share/conf"
 
 // Auth 在名单内返回true
 func Auth(a conf.AuthConf, userName, password, ipaddr string) bool {

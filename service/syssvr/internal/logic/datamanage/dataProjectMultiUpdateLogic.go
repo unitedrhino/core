@@ -3,8 +3,8 @@ package datamanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/shared/caches"
-	"gitee.com/i-Things/core/shared/errors"
+	"gitee.com/i-Things/share/caches"
+	"gitee.com/i-Things/share/errors"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"

@@ -3,8 +3,8 @@ package result
 import (
 	"bytes"
 	"encoding/json"
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/utils"
 	"io/ioutil"
 	"net/http"
 

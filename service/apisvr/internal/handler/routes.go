@@ -44,146 +44,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPost,
 					Path:    "/create",
-					Handler: systemuserinfo.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemuserinfo.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemuserinfo.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemuserinfo.ReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemuserinfo.DeleteHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/user/info"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemroleinfo.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemroleinfo.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemroleinfo.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemroleinfo.DeleteHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/role/info"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemroleapp.MultiUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemroleapp.IndexHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/role/app"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemroleaccess.MultiUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemroleaccess.IndexHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/role/access"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemrolemenu.MulitUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemrolemenu.IndexHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/role/menu"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemrolemodule.MulitUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemrolemodule.IndexHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/role/module"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
 					Handler: systemaccessapi.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemaccessapi.DeleteHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -194,11 +60,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemaccessapi.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemaccessapi.DeleteHandler(serverCtx),
 				},
 			}...,
 		),
@@ -216,6 +77,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemaccessinfo.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemaccessinfo.IndexHandler(serverCtx),
 				},
@@ -229,11 +95,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/update",
 					Handler: systemaccessinfo.UpdateHandler(serverCtx),
 				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemaccessinfo.DeleteHandler(serverCtx),
-				},
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/access/info"),
@@ -245,17 +106,32 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemdataproject.ProjectMultiUpdateHandler(serverCtx),
+					Path:    "/create",
+					Handler: systemappinfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemappinfo.DeleteHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/index",
-					Handler: systemdataproject.ProjectIndexHandler(serverCtx),
+					Handler: systemappinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemappinfo.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemappinfo.UpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/api/v1/system/data/project"),
+		rest.WithPrefix("/api/v1/system/app/info"),
 	)
 
 	server.AddRoutes(
@@ -264,8 +140,95 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemappmodule.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/multi-update",
-					Handler: systemdataarea.MultiUpdateHandler(serverCtx),
+					Handler: systemappmodule.MultiUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/app/module"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemareainfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemareainfo.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemareainfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemareainfo.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemareainfo.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/area/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/config",
+					Handler: systemcommon.ConfigHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/upload-file",
+					Handler: systemcommon.UploadFileHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/upload-url/create",
+					Handler: systemcommon.UploadUrlCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/weather/read",
+					Handler: systemcommon.WeatherReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/ws",
+					Handler: systemcommon.WebsocketHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/common"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdataarea.IndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -274,8 +237,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemdataarea.IndexHandler(serverCtx),
+					Path:    "/multi-update",
+					Handler: systemdataarea.MultiUpdateHandler(serverCtx),
 				},
 			}...,
 		),
@@ -308,16 +271,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPost,
 					Path:    "/index",
-					Handler: systemuserrole.RoleIndexHandler(serverCtx),
+					Handler: systemdataproject.ProjectIndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
-					Handler: systemuserrole.RoleMultiUpdateHandler(serverCtx),
+					Handler: systemdataproject.ProjectMultiUpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/api/v1/system/user/role"),
+		rest.WithPrefix("/api/v1/system/data/project"),
 	)
 
 	server.AddRoutes(
@@ -350,13 +313,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemmoduleinfo.IndexHandler(serverCtx),
+					Path:    "/delete",
+					Handler: systemmoduleinfo.DeleteHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemmoduleinfo.UpdateHandler(serverCtx),
+					Path:    "/index",
+					Handler: systemmoduleinfo.IndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -365,8 +328,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemmoduleinfo.DeleteHandler(serverCtx),
+					Path:    "/update",
+					Handler: systemmoduleinfo.UpdateHandler(serverCtx),
 				},
 			}...,
 		),
@@ -384,6 +347,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemmodulemenu.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemmodulemenu.IndexHandler(serverCtx),
 				},
@@ -391,11 +359,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemmodulemenu.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemmodulemenu.DeleteHandler(serverCtx),
 				},
 			}...,
 		),
@@ -409,99 +372,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPost,
 					Path:    "/create",
-					Handler: systemappinfo.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemappinfo.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemappinfo.ReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemappinfo.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemappinfo.DeleteHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/app/info"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemappmodule.MultiUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemappmodule.IndexHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/app/module"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/config",
-					Handler: systemcommon.ConfigHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/upload-url/create",
-					Handler: systemcommon.UploadUrlCreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/upload-file",
-					Handler: systemcommon.UploadFileHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/weather/read",
-					Handler: systemcommon.WeatherReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodGet,
-					Path:    "/ws",
-					Handler: systemcommon.WebsocketHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/common"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
 					Handler: systemprojectinfo.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemprojectinfo.UpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -510,13 +381,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemprojectinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemprojectinfo.ReadHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemprojectinfo.IndexHandler(serverCtx),
+					Path:    "/update",
+					Handler: systemprojectinfo.UpdateHandler(serverCtx),
 				},
 			}...,
 		),
@@ -529,32 +405,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemareainfo.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemareainfo.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemareainfo.DeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemareainfo.ReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
 					Path:    "/index",
-					Handler: systemareainfo.IndexHandler(serverCtx),
+					Handler: systemroleaccess.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/multi-update",
+					Handler: systemroleaccess.MultiUpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/api/v1/system/area/info"),
+		rest.WithPrefix("/api/v1/system/role/access"),
 	)
 
 	server.AddRoutes(
@@ -563,9 +424,225 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/send",
-					Handler: systemtimedtask.SendHandler(serverCtx),
+					Path:    "/index",
+					Handler: systemroleapp.IndexHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/multi-update",
+					Handler: systemroleapp.MultiUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/role/app"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemroleinfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemroleinfo.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemroleinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemroleinfo.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/role/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemrolemenu.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/multi-update",
+					Handler: systemrolemenu.MulitUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/role/menu"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemrolemodule.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/multi-update",
+					Handler: systemrolemodule.MulitUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/role/module"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/multi-update",
+					Handler: systemtenantaccessinfo.MultiUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/tree",
+					Handler: systemtenantaccessinfo.TreeHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/access/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemtenantapp.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemtenantapp.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantapp.IndexHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/app"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemtenantappmenu.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemtenantappmenu.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantappmenu.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemtenantappmenu.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/app/menu"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemtenantappmodule.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemtenantappmodule.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantappmodule.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/multi-create",
+					Handler: systemtenantappmodule.MultiCreateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/app/module"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemtenantinfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemtenantinfo.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemtenantinfo.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemtenantinfo.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
 				{
 					Method:  http.MethodPost,
 					Path:    "/cancel",
@@ -573,13 +650,33 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/info/create",
-					Handler: systemtimedtask.InfoCreateHandler(serverCtx),
+					Path:    "/group/create",
+					Handler: systemtimedtask.GroupCreateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/info/update",
-					Handler: systemtimedtask.InfoUpdateHandler(serverCtx),
+					Path:    "/group/delete",
+					Handler: systemtimedtask.GroupDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/index",
+					Handler: systemtimedtask.GroupIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/read",
+					Handler: systemtimedtask.GroupReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/update",
+					Handler: systemtimedtask.GroupUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/info/create",
+					Handler: systemtimedtask.InfoCreateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -598,28 +695,13 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/group/create",
-					Handler: systemtimedtask.GroupCreateHandler(serverCtx),
+					Path:    "/info/update",
+					Handler: systemtimedtask.InfoUpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/group/update",
-					Handler: systemtimedtask.GroupUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/delete",
-					Handler: systemtimedtask.GroupDeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/index",
-					Handler: systemtimedtask.GroupIndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/read",
-					Handler: systemtimedtask.GroupReadHandler(serverCtx),
+					Path:    "/send",
+					Handler: systemtimedtask.SendHandler(serverCtx),
 				},
 			}...,
 		),
@@ -633,31 +715,31 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPost,
 					Path:    "/create",
-					Handler: systemtenantinfo.CreateHandler(serverCtx),
+					Handler: systemuserinfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemuserinfo.DeleteHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/index",
-					Handler: systemtenantinfo.IndexHandler(serverCtx),
+					Handler: systemuserinfo.IndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/read",
-					Handler: systemtenantinfo.ReadHandler(serverCtx),
+					Handler: systemuserinfo.ReadHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/update",
-					Handler: systemtenantinfo.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemtenantinfo.DeleteHandler(serverCtx),
+					Handler: systemuserinfo.UpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/api/v1/system/tenant/info"),
+		rest.WithPrefix("/api/v1/system/user/info"),
 	)
 
 	server.AddRoutes(
@@ -666,99 +748,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/tree",
-					Handler: systemtenantaccessinfo.TreeHandler(serverCtx),
+					Path:    "/index",
+					Handler: systemuserrole.RoleIndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
-					Handler: systemtenantaccessinfo.MultiUpdateHandler(serverCtx),
+					Handler: systemuserrole.RoleMultiUpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/api/v1/system/tenant/access/info"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemtenantapp.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemtenantapp.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemtenantapp.DeleteHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/tenant/app"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemtenantappmodule.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemtenantappmodule.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-create",
-					Handler: systemtenantappmodule.MultiCreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemtenantappmodule.DeleteHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/tenant/app/module"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.SetupWare, serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemtenantappmenu.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemtenantappmenu.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemtenantappmenu.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemtenantappmenu.DeleteHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/tenant/app/menu"),
+		rest.WithPrefix("/api/v1/system/user/role"),
 	)
 
 	server.AddRoutes(
@@ -767,13 +767,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/access/tree",
+					Handler: systemuserself.AccessTreeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/app/index",
 					Handler: systemuserself.AppIndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/module/index",
-					Handler: systemuserself.ModuleIndexHandler(serverCtx),
+					Path:    "/area/apply/create",
+					Handler: systemuserself.AreaApplyCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/change-pwd",
+					Handler: systemuserself.ChangePwdHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -782,8 +792,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/access/tree",
-					Handler: systemuserself.AccessTreeHandler(serverCtx),
+					Path:    "/module/index",
+					Handler: systemuserself.ModuleIndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
@@ -794,16 +804,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemuserself.UpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/change-pwd",
-					Handler: systemuserself.ChangePwdHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/area/apply/create",
-					Handler: systemuserself.AreaApplyCreateHandler(serverCtx),
 				},
 			}...,
 		),
@@ -819,6 +819,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/forget-pwd",
+				Handler: systemuserself.ForgetPwdHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/login",
 				Handler: systemuserself.LoginHandler(serverCtx),
 			},
@@ -826,11 +831,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/register",
 				Handler: systemuserself.RegisterHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/forget-pwd",
-				Handler: systemuserself.ForgetPwdHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api/v1/system/user/self"),

@@ -5,10 +5,9 @@ info(
 	email: "174805676@qq.com"
 	version: "v0.1.0"
 )
-import "common.api"  //公共结构体定义
 
 @server (
-	group : system/app/info
+	group: system/app/info
 	prefix: /api/v1/system/app/info
 	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -63,19 +62,19 @@ type (
         ModuleCodes []string `json:"moduleCodes"`  //App列表数据
     }
 
-    AppInfoIndexReq struct {
+    AppInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Name string `json:"name,optional"`                     // 应用名称
         Code string `json:"code,optional"`                     // 应用编号
     }
 
 
-    AppInfoIndexResp struct {
+    AppInfoIndexResp  {
         List []*AppInfo `json:"list"`            // 接口列表数据
         Total int64 `json:"total"`                    // 接口列表总记录数
     }
 
-    AppDeleteReq struct {
+    AppDeleteReq  {
         ID int64 `json:"id"`                          // 接口编号
     }
 )

@@ -1,8 +1,8 @@
 package sqlFunc
 
 import (
-	"gitee.com/i-Things/core/shared/errors"
-	"gitee.com/i-Things/core/shared/utils"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/utils"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/dop251/goja"
 )

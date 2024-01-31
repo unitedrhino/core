@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"gitee.com/i-Things/core/shared/conf"
+	"gitee.com/i-Things/share/conf"
 	"github.com/dtm-labs/client/dtmgrpc"
 	"github.com/glebarez/sqlite"
 	"github.com/zeromicro/go-zero/core/logx"

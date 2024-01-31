@@ -5,7 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/module/info"
 	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/shared/ctxs"
+	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"

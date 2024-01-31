@@ -3,7 +3,7 @@ package common
 import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/common"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/shared/result"
+	"gitee.com/i-Things/share/result"
 	"github.com/gorilla/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"

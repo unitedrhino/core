@@ -5,10 +5,9 @@ info(
 	email: "174805676@qq.com"
 	version: "v0.1.0"
 )
-import "common.api"  //公共结构体定义
 
 @server (
-	group : system/tenant/info
+	group: system/tenant/info
 	prefix: /api/v1/system/tenant/info
 	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -36,7 +35,7 @@ service api {
 }
 
 @server (
-    group : system/tenant/access/info
+    group: system/tenant/access/info
     prefix: /api/v1/system/tenant/access/info
     middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
 )
@@ -76,13 +75,13 @@ type (
         Code string `json:"code"`
     }
 
-    TenantInfoIndexReq struct {
+    TenantInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Name string `json:"name,optional"`                     // 应用名称
         Code string `json:"code,optional"`                     // 应用编号
     }
 
-    TenantInfoIndexResp struct {
+    TenantInfoIndexResp  {
         List []*TenantInfo `json:"list"`            // 租户列表数据
         Total int64 `json:"total"`                    // 租户列表总记录数
     }
