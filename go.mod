@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.21.4
 
 replace (
-	gitee.com/i-Things/share => ../share
+	//gitee.com/i-Things/share => ../share
 	github.com/Masterminds/squirrel => github.com/i-Things/squirrel v1.20.2
 	github.com/taosdata/driver-go/v3 => github.com/i-Things/driver-go/v3 v3.10.5
 )
