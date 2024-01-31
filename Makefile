@@ -7,25 +7,22 @@ buildone:build.clean mod cp.etc build.api  build.view
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
 
+packone:  buildone  build.front
 
 moduleupdate:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 	@git submodule update --init --recursive
-    #@git submodule foreach git checkout test
+	@git submodule foreach git checkout master
 	@git submodule foreach git pull
 
 build.front:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@cd module/front/core
-	@git pull
-	@npm run pro
-	@cp -rf ./dist/* ../../../core/cmd/dist/app/core
-	@cd -
-	@cd module/front/systemManage
-	@git pull
-	@call npm run pro
-	@cp -rf ./dist/* ../../../core/cmd/dist/app/system-manage
-	@cd -
+	@mkdir -p ./cmd/dist/app/core
+	@cd module/front/core  && npm install && npm run pro && cp -rf ./dist/* ../../../cmd/dist/app/core
+#	@git switch 'origin/dev/dyb/v1.0.4'
+	@mkdir -p ./cmd/dist/app/system-manage
+	@cd module/front/systemManage  && npm install && npm run pro && cp -rf ./dist/* ../../../cmd/dist/app/system-manage
+#	@git switch 'origin/dyb/v1.0.5'
 
 killall:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>killing all<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -40,16 +37,13 @@ build.clean:
 
 mod:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>downloading $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go mod download
 	@go mod tidy
 
 
 cp.etc:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>copying etc<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 	@mkdir -p ./cmd/etc/
-	@mkdir -p ./cmd/dist/
 	@cp -rf ./service/apisvr/etc/* ./cmd/etc/
-	@cp -rf ./service/apisvr/dist/* ./cmd/dist/
 	@cp -rf ./service/viewsvr/etc/* ./cmd/etc/
 
 
