@@ -1,0 +1,6 @@
+[submodule "module/front/systemManage"]
+	path = module/front/systemManage
+	url = git@codeup.aliyun.com:642f7dca8b47795dae985084/iThings/iThings-sub-system-admin-vue-code.git
+[submodule "module/front/core"]
+	path = module/front/core
+	url = git@codeup.aliyun.com:642f7dca8b47795dae985084/iThings/iThings-main-admin-vue-code.git
