@@ -7,7 +7,7 @@ buildone:build.clean mod cp.etc build.api  build.view
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
 
-packone:  buildone  build.front
+packone:  buildone moduleupdate build.front
 
 moduleupdate:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
