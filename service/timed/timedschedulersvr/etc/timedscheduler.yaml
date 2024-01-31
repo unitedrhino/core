@@ -1,6 +1,9 @@
 Name: timedscheduler.rpc
 ListenOn: 0.0.0.0:9284
-
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: timedscheduler.rpc
 Event:
   Mode: natsJs
 CacheRedis:

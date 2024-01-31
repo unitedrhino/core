@@ -29,45 +29,28 @@ Proxy:
       Dest: http://127.0.0.1:7789
     - Router: /api/v1/app/
       Dest: http://127.0.0.1:8000
+    - Router: /api/v1/things/
+      Dest: http://127.0.0.1:7788
     - Router: /api/v1/oss/
       DeletePrefix: true
       Dest: http://127.0.0.1:9000
 SysRpc:
   Enable: true
   Mode: direct
-DgRpc:
-  Enable: true
-  Mode: direct
+  RunProxy: true
   Conf:
     Timeout: 1000000
-DmRpc:
-  Enable: true
-  Mode: direct
-  Conf:
-    Timeout: 1000000
+
 TimedJobRpc:
   Enable: true
   Mode: direct
+  RunProxy: true
   Conf:
     Timeout: 1000000
 TimedSchedulerRpc:
   Enable: true
   Mode: direct
-  Conf:
-    Timeout: 1000000
-UdRpc:
-  Enable: true
-  Mode: direct
-  Conf:
-    Timeout: 1000000
-VidRpc:
-  Enable: false
-  Mode: direct
-  Conf:
-    Timeout: 1000000
-VidSip:
-  Enable: false
-  Mode: direct
+  RunProxy: true
   Conf:
     Timeout: 1000000
 

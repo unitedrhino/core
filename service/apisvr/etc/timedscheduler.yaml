@@ -3,6 +3,10 @@ ListenOn: 0.0.0.0:9284
 Log:
   Encoding: plain
   #Mode: file
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: timedscheduler.rpc
 Event:
   Mode: natsJs
 CacheRedis:

@@ -2,10 +2,10 @@ Name: timedjob.rpc
 ListenOn: 0.0.0.0:3256
 Event:
   Mode: natsJs
-#Etcd:
-#  Hosts:
-#  - 127.0.0.1:2379
-#  Key: job.rpc
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: timedjob.rpc
 CacheRedis:
   - Host: 127.0.0.1:6379
     Pass:
