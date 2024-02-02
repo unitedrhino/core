@@ -1,51 +1,43 @@
 package cache
 
 import (
-	"github.com/zeromicro/go-zero/core/stores/kv"
+	"context"
+	"gitee.com/i-Things/core/service/syssvr/domain/slot"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"github.com/dgraph-io/ristretto"
+	"time"
 )
 
 type Slot struct {
-	store kv.Store
+	cache *ristretto.Cache
 }
 
-func NewSlot(store kv.Store) *Slot {
+const (
+	expireTime = time.Minute * 10
+)
+
+func NewSlot() *Slot {
+	cache, _ := ristretto.NewCache(&ristretto.Config{
+		NumCounters: 1e7,     // number of keys to track frequency of (10M).
+		MaxCost:     1 << 30, // maximum cost of cache (1GB).
+		BufferItems: 64,      // number of keys per Get buffer.
+	})
+
 	return &Slot{
-		store: store,
+		cache: cache,
 	}
 }
 
-//func (c *Slot) GenKey(code string) string {
-//	return "slot:" + code
-//}
-//func (c *Slot) Update(ctx context.Context, code string) error {
-//	key := c.GenKey(code)
-//	list, err := relationDB.NewSlotInfoRepo(ctx).FindByFilter(ctx, relationDB.SlotInfoFilter{Code: code}, nil)
-//	if err != nil {
-//		return err
-//	}
-//	slots := relationDB.ToSlotsDo(list)
-//	val, err := c.store.GetCtx(ctx, key)
-//	if err != nil || val == "" {
-//		return ""
-//	}
-//	//如果验证码存在，则删除验证码
-//	c.store.DelCtx(ctx, key)
-//	body := map[string]string{}
-//	json.Unmarshal([]byte(val), &body)
-//	if body["code"] == code {
-//		if body["account"] == "" {
-//			return " "
-//		}
-//		return body["account"]
-//	}
-//	return ""
-//}
-//
-//func (c *Slot) Get(ctx context.Context, code string) error {
-//	body := map[string]interface{}{
-//		"code":    code,
-//		"account": account,
-//	}
-//	bodytStr, _ := json.Marshal(body)
-//	return c.store.SetexCtx(ctx, c.GenKey(Type, Use, codeID), string(bodytStr), int(expire))
-//}
+func (c *Slot) Get(ctx context.Context, code string) slot.Infos {
+	v, ok := c.cache.Get(code)
+	if ok {
+		return v.(slot.Infos)
+	}
+	list, err := relationDB.NewSlotInfoRepo(ctx).FindByFilter(ctx, relationDB.SlotInfoFilter{Code: code}, nil)
+	if err != nil {
+		return nil
+	}
+	slots := relationDB.ToSlotsDo(list)
+	c.cache.SetWithTTL(code, slots, 1, expireTime)
+	return slots
+}

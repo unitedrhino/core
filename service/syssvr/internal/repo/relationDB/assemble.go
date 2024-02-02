@@ -18,7 +18,7 @@ func ToSlotDo(in *SysSlotInfo) *slot.Info {
 		AuthType: in.AuthType,
 	}
 }
-func ToSlotsDo(in []*SysSlotInfo) (ret []*slot.Info) {
+func ToSlotsDo(in []*SysSlotInfo) (ret slot.Infos) {
 	for _, v := range in {
 		ret = append(ret, ToSlotDo(v))
 	}

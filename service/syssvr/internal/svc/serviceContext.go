@@ -21,6 +21,7 @@ type ServiceContext struct {
 	AreaID    *utils.SnowFlake
 	UserID    *utils.SnowFlake
 	Casbin    *casbin.Enforcer
+	Slot      *cache.Slot
 	OssClient *oss.Client
 	Store     kv.Store
 	PwdCheck  *cache.PwdCheck
@@ -57,6 +58,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Captcha:   cache.NewCaptcha(store),
 		PwdCheck:  cache.NewPwdCheck(store),
+		Slot:      cache.NewSlot(),
 		Cm:        NewClients(c),
 		Config:    c,
 		ProjectID: ProjectID,

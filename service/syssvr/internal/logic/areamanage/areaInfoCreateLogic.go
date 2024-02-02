@@ -36,6 +36,11 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		in.ParentAreaID == def.NotClassified { //未分类不能有下属的区域
 		return nil, errors.Parameter
 	}
+	list := l.svcCtx.Slot.Get(l.ctx, "areaInfoCreate")
+	err := list.Request(l.ctx, in)
+	if err != nil {
+		return nil, err
+	}
 	if in.ProjectID == 0 {
 		in.ProjectID = ctxs.GetUserCtx(l.ctx).ProjectID
 	}
@@ -53,7 +58,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		Desc:         utils.ToEmptyString(in.Desc),
 	}
 	conn := stores.GetTenantConn(l.ctx)
-	err := conn.Transaction(func(tx *gorm.DB) error {
+	err = conn.Transaction(func(tx *gorm.DB) error {
 		projPo, err := checkProject(l.ctx, tx, in.ProjectID)
 		if err != nil {
 			return errors.Fmt(err).WithMsg("检查项目出错")

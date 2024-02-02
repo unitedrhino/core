@@ -141,6 +141,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 	return &ctxs.UserCtx{
 		IsOpen:     false,
 		TenantCode: resp.TenantCode,
+		Token:      strToken,
 		ProjectID:  projectID,
 		AppCode:    appCode,
 		UserID:     resp.UserID,

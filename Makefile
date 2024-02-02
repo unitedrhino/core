@@ -7,7 +7,13 @@ buildone:build.clean mod cp.etc build.api  build.view
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
 
-packone:  buildone moduleupdate build.front
+packone:  buildone moduleupdate build.front toremote
+
+
+toremote:
+	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+	@rsync -r -v ./cmd/* root@120.79.205.165:/root/git/iThings/core
+
 
 moduleupdate:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"

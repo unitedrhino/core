@@ -33,8 +33,13 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Response,
 	if in.AreaID == 0 {
 		return nil, errors.Parameter
 	}
+	list := l.svcCtx.Slot.Get(l.ctx, "areaInfoDelete")
+	err := list.Request(l.ctx, in)
+	if err != nil {
+		return nil, err
+	}
 	conn := stores.GetTenantConn(l.ctx)
-	err := conn.Transaction(func(tx *gorm.DB) error {
+	err = conn.Transaction(func(tx *gorm.DB) error {
 
 		areaPo, err := checkArea(l.ctx, tx, in.AreaID)
 		if err != nil {
