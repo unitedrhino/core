@@ -28,15 +28,11 @@ type ModuleInfoFilter struct {
 	Codes     []string
 	Code      string
 	Name      string
-	WithApis  bool
 	WithMenus bool
 }
 
 func (p ModuleInfoRepo) fmtFilter(ctx context.Context, f ModuleInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	if f.WithApis {
-		db = db.Preload("Apis")
-	}
 	if f.WithMenus {
 		db = db.Preload("Menus")
 	}
