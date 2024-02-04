@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -29,6 +30,10 @@ func NewProjectInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 // 更新项目
 func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Response, error) {
+	ctxs.GetUserCtx(l.ctx).AllProject = true
+	defer func() {
+		ctxs.GetUserCtx(l.ctx).AllProject = false
+	}()
 	if in.ProjectID == 0 {
 		return nil, errors.Parameter
 	}

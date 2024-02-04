@@ -10,7 +10,7 @@ info(
 @server(
     group: system/data/project
     prefix: /api/v1/system/data/project
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
@@ -27,7 +27,7 @@ service api {
 @server(
     group: system/data/area
     prefix: /api/v1/system/data/area
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
@@ -47,7 +47,7 @@ service api {
 @server(
     group: system/data/area/user/apply
     prefix: /api/v1/system/data/area/user/apply
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {

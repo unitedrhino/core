@@ -7,7 +7,7 @@ info(
 @server(
     group: system/role/info
     prefix: /api/v1/system/role/info
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "添加角色"
@@ -31,7 +31,7 @@ service api {
 @server(
     group: system/role/app
     prefix: /api/v1/system/role/app
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "更新APP权限"
@@ -47,7 +47,7 @@ service api {
 @server(
     group: system/role/access
     prefix: /api/v1/system/role/access
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "更新操作权限"
@@ -64,7 +64,7 @@ service api {
 @server(
     group: system/role/menu
     prefix: /api/v1/system/role/menu
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "更新角色对应菜单列表"
@@ -79,7 +79,7 @@ service api {
 @server(
     group: system/role/module
     prefix: /api/v1/system/role/module
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "更新角色对应模块列表"

@@ -9,7 +9,7 @@ info(
 @server (
 	group: system/access/api
 	prefix: /api/v1/system/access/api
-	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
@@ -33,7 +33,7 @@ service api {
 @server (
     group: system/access/info
     prefix: /api/v1/system/access/info
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {

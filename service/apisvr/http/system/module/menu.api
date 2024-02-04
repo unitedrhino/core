@@ -7,7 +7,7 @@ info(
 @server(
     group: system/module/menu
     prefix: /api/v1/system/module/menu
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "添加菜单"

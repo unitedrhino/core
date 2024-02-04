@@ -9,7 +9,7 @@ info(
 @server (
 	group: system/log
 	prefix: /api/v1/system/log
-	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {

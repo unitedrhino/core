@@ -3,6 +3,7 @@ package projectmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
@@ -36,7 +37,10 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 	if in.ProjectID == 0 {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("项目ID参数必填")
 	}
-
+	ctxs.GetUserCtx(l.ctx).AllProject = true
+	defer func() {
+		ctxs.GetUserCtx(l.ctx).AllProject = false
+	}()
 	po, err := checkProject(l.ctx, in.ProjectID)
 	if err != nil {
 		return nil, errors.Fmt(err).WithMsg("检查项目出错")

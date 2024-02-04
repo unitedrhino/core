@@ -7,7 +7,7 @@ info(
 @server(
     group: system/module/info
     prefix: /api/v1/system/module/info
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "添加模块"

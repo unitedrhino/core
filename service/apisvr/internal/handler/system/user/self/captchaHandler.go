@@ -19,7 +19,6 @@ func CaptchaHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			result.Http(w, r, nil, errors.Parameter.WithMsg("入参不正确:"+err.Error()))
 			return
 		}
-		r = ctxs.NotLoginedInit(r)
 		userCtx, err := middleware.NewCheckTokenWareMiddleware(svcCtx.Config, svcCtx.UserRpc, svcCtx.RoleRpc).UserAuth(w, r)
 		if err == nil { //登录态也需要支持
 			//注入 用户信息 到 ctx

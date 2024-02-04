@@ -9,7 +9,7 @@ info(
 @server (
 	group: system/user/self
 	prefix: /api/v1/system/user/self
-	middleware: SetupWare, CheckTokenWare, DataAuthWare, TeardownWare
+	middleware:  CheckTokenWare, DataAuthWare,InitCtxsWare, TeardownWare
 )
 service api {
 	@doc "获取用户应用列表"
@@ -46,6 +46,7 @@ service api {
 @server (
 	group: system/user/self
 	prefix: /api/v1/system/user/self
+	middleware:  InitCtxsWare
 )
 service api {
 	@doc "获取验证码"

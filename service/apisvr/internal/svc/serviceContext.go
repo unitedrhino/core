@@ -21,6 +21,7 @@ import (
 	"gitee.com/i-Things/core/service/timed/timedschedulersvr/timedschedulerdirect"
 	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/verify"
 	ws "gitee.com/i-Things/share/websocket"
@@ -60,11 +61,11 @@ type ServiceContext struct {
 	SvrClient
 	Ws             *ws.Server
 	Config         config.Config
-	SetupWare      rest.Middleware
 	CheckTokenWare rest.Middleware
 	DataAuthWare   rest.Middleware
 	TeardownWare   rest.Middleware
 	CheckApiWare   rest.Middleware
+	InitCtxsWare   rest.Middleware
 	Captcha        *verify.Captcha
 	OssClient      *oss.Client
 }
@@ -142,11 +143,11 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
 		Config:         c,
-		SetupWare:      middleware.NewSetupWareMiddleware(c, lo).Handle,
 		CheckTokenWare: middleware.NewCheckTokenWareMiddleware(c, ur, ro).Handle,
 		DataAuthWare:   middleware.NewDataAuthWareMiddleware(c).Handle,
 		TeardownWare:   middleware.NewTeardownWareMiddleware(c, lo).Handle,
 		CheckApiWare:   middleware.NewCheckApiWareMiddleware().Handle,
+		InitCtxsWare:   ctxs.InitMiddleware,
 		Captcha:        captcha,
 		OssClient:      ossClient,
 		Ws:             ws.MustNewServer(c.RestConf),

@@ -9,7 +9,7 @@ info(
 @server (
 	group: system/tenant/info
 	prefix: /api/v1/system/tenant/info
-	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
@@ -37,7 +37,7 @@ service api {
 @server (
     group: system/tenant/access/info
     prefix: /api/v1/system/tenant/access/info
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {

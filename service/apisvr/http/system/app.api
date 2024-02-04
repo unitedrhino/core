@@ -9,7 +9,7 @@ info(
 @server (
 	group: system/app/info
 	prefix: /api/v1/system/app/info
-	middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
@@ -37,7 +37,7 @@ service api {
 @server(
     group: system/app/module
     prefix: /api/v1/system/app/module
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "更新APP权限"

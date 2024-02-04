@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
@@ -33,7 +34,10 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 	if in.ProjectName == "" {
 		return nil, errors.Parameter
 	}
-
+	ctxs.GetUserCtx(l.ctx).AllProject = true
+	defer func() {
+		ctxs.GetUserCtx(l.ctx).AllProject = false
+	}()
 	po := &relationDB.SysProjectInfo{
 		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.ProjectName,

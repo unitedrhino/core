@@ -9,7 +9,7 @@ info(
 @server(
     group: system/project/info
     prefix: /api/v1/system/project/info
-    middleware: SetupWare, CheckTokenWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
     @doc "新增项目"
