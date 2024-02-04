@@ -30,6 +30,9 @@ service api {
 	@doc "更新用户基本数据"
 	@handler update
 	post /update (UserInfo) returns ()
+	@doc "注销用户"
+	@handler cancel
+	post /cancel () returns ()
 	@doc "更新用户密码"
 	@handler changePwd
 	post /change-pwd (UserChangePwdReq) returns ()

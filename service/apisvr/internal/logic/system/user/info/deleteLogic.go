@@ -2,13 +2,11 @@ package info
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
-	"github.com/spf13/cast"
-
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,7 +27,7 @@ func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteLogi
 
 func (l *DeleteLogic) Delete(req *types.UserInfoDeleteReq) error {
 	_, err := l.svcCtx.UserRpc.UserInfoDelete(l.ctx, &sys.UserInfoDeleteReq{
-		UserID: cast.ToInt64(req.UserID)})
+		UserID: req.UserID})
 	if err != nil {
 		er := errors.Fmt(err)
 		l.Errorf("%s.rpc.InfoDelete req=%v err=%+v", utils.FuncName(), req, er)

@@ -783,6 +783,11 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/cancel",
+					Handler: systemuserself.CancelHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/change-pwd",
 					Handler: systemuserself.ChangePwdHandler(serverCtx),
 				},
