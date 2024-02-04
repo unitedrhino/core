@@ -61,7 +61,7 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Respo
 	if err != nil {
 		return nil, err
 	}
-	oldUi.Password = utils.MakePwd(oldUi.Password, oldUi.UserID, false)
+	oldUi.Password = utils.MakePwd(in.Password, oldUi.UserID, false)
 	err = relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, oldUi)
 	if err != nil {
 		return nil, err

@@ -14,6 +14,7 @@ require (
 	gitee.com/i-Things/share v0.1.1
 	github.com/Masterminds/squirrel v1.20.1
 	github.com/casbin/casbin/v2 v2.68.0
+	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079
 	github.com/gogf/gf/v2 v2.3.3
@@ -47,7 +48,6 @@ require (
 	github.com/coreos/go-semver v0.3.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dgraph-io/ristretto v0.1.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/dlclark/regexp2 v1.7.0 // indirect
 	github.com/dtm-labs/client v1.18.7 // indirect
