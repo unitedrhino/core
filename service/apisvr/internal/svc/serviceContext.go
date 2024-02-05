@@ -8,6 +8,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/client/areamanage"
 	"gitee.com/i-Things/core/service/syssvr/client/common"
 	"gitee.com/i-Things/core/service/syssvr/client/datamanage"
+	"gitee.com/i-Things/core/service/syssvr/client/dictmanage"
 	"gitee.com/i-Things/core/service/syssvr/client/log"
 	module "gitee.com/i-Things/core/service/syssvr/client/modulemanage"
 	"gitee.com/i-Things/core/service/syssvr/client/projectmanage"
@@ -48,6 +49,7 @@ type SvrClient struct {
 	LogRpc    log.Log
 	ProjectM  projectmanage.ProjectManage
 	AreaM     areamanage.AreaManage
+	DictM     dictmanage.DictManage
 
 	Common common.Common
 
@@ -80,6 +82,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		timedJob      timedmanage.TimedManage
 		tenantM       tenant.TenantManage
 		DataM         datamanage.DataManage
+		DictM         dictmanage.DictManage
 		accessM       accessmanage.AccessManage
 	)
 	var ur user.UserManage
@@ -103,6 +106,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			tenantM = tenant.NewTenantManage(zrpc.MustNewClient(c.SysRpc.Conf))
 			DataM = datamanage.NewDataManage(zrpc.MustNewClient(c.SysRpc.Conf))
 			accessM = accessmanage.NewAccessManage(zrpc.MustNewClient(c.SysRpc.Conf))
+			DictM = dictmanage.NewDictManage(zrpc.MustNewClient(c.SysRpc.Conf))
 		} else {
 			projectM = sysdirect.NewProjectManage(c.SysRpc.RunProxy)
 			areaM = sysdirect.NewAreaManage(c.SysRpc.RunProxy)
@@ -115,6 +119,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			tenantM = sysdirect.NewTenantManage(c.SysRpc.RunProxy)
 			DataM = sysdirect.NewData(c.SysRpc.RunProxy)
 			accessM = sysdirect.NewAccess(c.SysRpc.RunProxy)
+			DictM = sysdirect.NewDict(c.SysRpc.RunProxy)
 		}
 	}
 
@@ -165,6 +170,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			ProjectM:       projectM,
 			AreaM:          areaM,
 			DataM:          DataM,
+			DictM:          DictM,
 			Common:         sysCommon,
 		},
 		//OSS:        ossClient,

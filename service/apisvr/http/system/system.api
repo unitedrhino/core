@@ -53,7 +53,7 @@ type (
         Type int64 `json:"type,optional"`                     // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
         SubType int64 `json:"subType,optional"`                     // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
         Path string `json:"path,optional"`                    // 系统的path
-        desc *string `json:"desc,optional"`          // 页面
+        Desc *string `json:"desc,optional"`          // 页面
         Icon string `json:"icon,optional"`                    // 菜单图标
         Url string `json:"url,optional"`            // 路由重定向
         Order int64 `json:"order,optional"`                            // 左侧table排序序号

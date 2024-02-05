@@ -19,6 +19,8 @@ func Migrate(c conf.Database) error {
 		needInitColumn = true
 	}
 	err := db.AutoMigrate(
+		&SysDictInfo{},
+		&SysDictDetail{},
 		&SysSlotInfo{},
 		&SysUserInfo{},
 		&SysRoleInfo{},

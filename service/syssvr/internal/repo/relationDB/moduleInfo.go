@@ -29,12 +29,16 @@ type ModuleInfoFilter struct {
 	Code      string
 	Name      string
 	WithMenus bool
+	Type      int64
 }
 
 func (p ModuleInfoRepo) fmtFilter(ctx context.Context, f ModuleInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.WithMenus {
 		db = db.Preload("Menus")
+	}
+	if f.Type != 0 {
+		db = db.Where("type=?", f.Type)
 	}
 	if f.ID != 0 {
 		db = db.Where("id=?", f.ID)

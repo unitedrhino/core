@@ -13,6 +13,9 @@ import (
 	clientData "gitee.com/i-Things/core/service/syssvr/client/datamanage"
 	serverData "gitee.com/i-Things/core/service/syssvr/internal/server/datamanage"
 
+	clientDict "gitee.com/i-Things/core/service/syssvr/client/dictmanage"
+	serverDict "gitee.com/i-Things/core/service/syssvr/internal/server/dictmanage"
+
 	clientModule "gitee.com/i-Things/core/service/syssvr/client/modulemanage"
 	serverModule "gitee.com/i-Things/core/service/syssvr/internal/server/modulemanage"
 
@@ -64,6 +67,14 @@ func NewData(runSvr bool) clientData.DataManage {
 		RunServer(svcCtx)
 	}
 	return clientData.NewDirectDataManage(svcCtx, serverData.NewDataManageServer(svcCtx))
+}
+
+func NewDict(runSvr bool) clientDict.DictManage {
+	svcCtx := GetSvcCtx()
+	if runSvr {
+		RunServer(svcCtx)
+	}
+	return clientDict.NewDirectDictManage(svcCtx, serverDict.NewDictManageServer(svcCtx))
 }
 
 func NewModule(runSvr bool) clientModule.ModuleManage {

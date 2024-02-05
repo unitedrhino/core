@@ -2483,6 +2483,392 @@ var ModuleManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
+	DictManage_DictInfoCreate_FullMethodName   = "/sys.DictManage/dictInfoCreate"
+	DictManage_DictInfoIndex_FullMethodName    = "/sys.DictManage/dictInfoIndex"
+	DictManage_DictInfoUpdate_FullMethodName   = "/sys.DictManage/dictInfoUpdate"
+	DictManage_DictInfoDelete_FullMethodName   = "/sys.DictManage/dictInfoDelete"
+	DictManage_DictInfoRead_FullMethodName     = "/sys.DictManage/dictInfoRead"
+	DictManage_DictDetailCreate_FullMethodName = "/sys.DictManage/dictDetailCreate"
+	DictManage_DictDetailIndex_FullMethodName  = "/sys.DictManage/dictDetailIndex"
+	DictManage_DictDetailUpdate_FullMethodName = "/sys.DictManage/dictDetailUpdate"
+	DictManage_DictDetailDelete_FullMethodName = "/sys.DictManage/dictDetailDelete"
+)
+
+// DictManageClient is the client API for DictManage service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type DictManageClient interface {
+	DictInfoCreate(ctx context.Context, in *DictInfo, opts ...grpc.CallOption) (*WithID, error)
+	DictInfoIndex(ctx context.Context, in *DictInfoIndexReq, opts ...grpc.CallOption) (*DictInfoIndexResp, error)
+	DictInfoUpdate(ctx context.Context, in *DictInfo, opts ...grpc.CallOption) (*Response, error)
+	DictInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Response, error)
+	DictInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*DictInfo, error)
+	DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error)
+	DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
+	DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Response, error)
+	DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Response, error)
+}
+
+type dictManageClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewDictManageClient(cc grpc.ClientConnInterface) DictManageClient {
+	return &dictManageClient{cc}
+}
+
+func (c *dictManageClient) DictInfoCreate(ctx context.Context, in *DictInfo, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, DictManage_DictInfoCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictInfoIndex(ctx context.Context, in *DictInfoIndexReq, opts ...grpc.CallOption) (*DictInfoIndexResp, error) {
+	out := new(DictInfoIndexResp)
+	err := c.cc.Invoke(ctx, DictManage_DictInfoIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictInfoUpdate(ctx context.Context, in *DictInfo, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, DictManage_DictInfoUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, DictManage_DictInfoDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*DictInfo, error) {
+	out := new(DictInfo)
+	err := c.cc.Invoke(ctx, DictManage_DictInfoRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, DictManage_DictDetailCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error) {
+	out := new(DictDetailIndexResp)
+	err := c.cc.Invoke(ctx, DictManage_DictDetailIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, DictManage_DictDetailUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, DictManage_DictDetailDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DictManageServer is the server API for DictManage service.
+// All implementations must embed UnimplementedDictManageServer
+// for forward compatibility
+type DictManageServer interface {
+	DictInfoCreate(context.Context, *DictInfo) (*WithID, error)
+	DictInfoIndex(context.Context, *DictInfoIndexReq) (*DictInfoIndexResp, error)
+	DictInfoUpdate(context.Context, *DictInfo) (*Response, error)
+	DictInfoDelete(context.Context, *WithID) (*Response, error)
+	DictInfoRead(context.Context, *WithID) (*DictInfo, error)
+	DictDetailCreate(context.Context, *DictDetail) (*WithID, error)
+	DictDetailIndex(context.Context, *DictDetailIndexReq) (*DictDetailIndexResp, error)
+	DictDetailUpdate(context.Context, *DictDetail) (*Response, error)
+	DictDetailDelete(context.Context, *WithID) (*Response, error)
+	mustEmbedUnimplementedDictManageServer()
+}
+
+// UnimplementedDictManageServer must be embedded to have forward compatible implementations.
+type UnimplementedDictManageServer struct {
+}
+
+func (UnimplementedDictManageServer) DictInfoCreate(context.Context, *DictInfo) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictInfoCreate not implemented")
+}
+func (UnimplementedDictManageServer) DictInfoIndex(context.Context, *DictInfoIndexReq) (*DictInfoIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictInfoIndex not implemented")
+}
+func (UnimplementedDictManageServer) DictInfoUpdate(context.Context, *DictInfo) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictInfoUpdate not implemented")
+}
+func (UnimplementedDictManageServer) DictInfoDelete(context.Context, *WithID) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictInfoDelete not implemented")
+}
+func (UnimplementedDictManageServer) DictInfoRead(context.Context, *WithID) (*DictInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictInfoRead not implemented")
+}
+func (UnimplementedDictManageServer) DictDetailCreate(context.Context, *DictDetail) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictDetailCreate not implemented")
+}
+func (UnimplementedDictManageServer) DictDetailIndex(context.Context, *DictDetailIndexReq) (*DictDetailIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictDetailIndex not implemented")
+}
+func (UnimplementedDictManageServer) DictDetailUpdate(context.Context, *DictDetail) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictDetailUpdate not implemented")
+}
+func (UnimplementedDictManageServer) DictDetailDelete(context.Context, *WithID) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictDetailDelete not implemented")
+}
+func (UnimplementedDictManageServer) mustEmbedUnimplementedDictManageServer() {}
+
+// UnsafeDictManageServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DictManageServer will
+// result in compilation errors.
+type UnsafeDictManageServer interface {
+	mustEmbedUnimplementedDictManageServer()
+}
+
+func RegisterDictManageServer(s grpc.ServiceRegistrar, srv DictManageServer) {
+	s.RegisterService(&DictManage_ServiceDesc, srv)
+}
+
+func _DictManage_DictInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictInfoCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictInfoCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictInfoCreate(ctx, req.(*DictInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictInfoIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictInfoIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictInfoIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictInfoIndex(ctx, req.(*DictInfoIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictInfoUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictInfoUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictInfoUpdate(ctx, req.(*DictInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictInfoDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictInfoDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictInfoDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictInfoRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictInfoRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictInfoRead(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictDetailCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictDetail)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictDetailCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictDetailCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictDetailCreate(ctx, req.(*DictDetail))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictDetailIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictDetailIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictDetailIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictDetailIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictDetailIndex(ctx, req.(*DictDetailIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictDetailUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictDetail)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictDetailUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictDetailUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictDetailUpdate(ctx, req.(*DictDetail))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictDetailDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictDetailDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictDetailDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictDetailDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// DictManage_ServiceDesc is the grpc.ServiceDesc for DictManage service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var DictManage_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sys.DictManage",
+	HandlerType: (*DictManageServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "dictInfoCreate",
+			Handler:    _DictManage_DictInfoCreate_Handler,
+		},
+		{
+			MethodName: "dictInfoIndex",
+			Handler:    _DictManage_DictInfoIndex_Handler,
+		},
+		{
+			MethodName: "dictInfoUpdate",
+			Handler:    _DictManage_DictInfoUpdate_Handler,
+		},
+		{
+			MethodName: "dictInfoDelete",
+			Handler:    _DictManage_DictInfoDelete_Handler,
+		},
+		{
+			MethodName: "dictInfoRead",
+			Handler:    _DictManage_DictInfoRead_Handler,
+		},
+		{
+			MethodName: "dictDetailCreate",
+			Handler:    _DictManage_DictDetailCreate_Handler,
+		},
+		{
+			MethodName: "dictDetailIndex",
+			Handler:    _DictManage_DictDetailIndex_Handler,
+		},
+		{
+			MethodName: "dictDetailUpdate",
+			Handler:    _DictManage_DictDetailUpdate_Handler,
+		},
+		{
+			MethodName: "dictDetailDelete",
+			Handler:    _DictManage_DictDetailDelete_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/sys.proto",
+}
+
+const (
 	Common_Config_FullMethodName = "/sys.Common/config"
 )
 

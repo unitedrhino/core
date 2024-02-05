@@ -1,0 +1,51 @@
+info(
+    desc: "字典信息"
+	author: "yl"
+	email: "603785348@qq.com"
+)
+
+@server(
+    group: system/dict/detail
+    prefix: /api/v1/system/dict/detail
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+service api {
+    @doc "添加字典信息"
+    @handler create
+    post /create (DictDetail) returns (WithID)
+
+    @doc "获取字典信息列表"
+    @handler index
+    post /index (DictDetailIndexReq) returns (DictDetailIndexResp)
+
+    @doc "更新字典信息"
+    @handler update
+    post /update (DictDetail) returns ()
+
+    @doc "删除字典信息"
+    @handler delete
+    post /delete (WithID) returns ()
+}
+type (
+
+    DictDetailIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        DictID int64 `json:"dictID,optional"`
+    }
+
+    DictDetailIndexResp  {
+        Total int64 `json:"total"` //总数
+        List []*DictDetail `json:"list"` //菜单列表
+    }
+    DictDetail{
+        ID int64 `json:"id,optional"`                                  // 编号
+        DictID int64                   `json:"dictID,optional"` // 关联标记
+        Label  string                  `json:"label,optional"`    // 展示值
+        Value  int64                   `json:"value,optional"`   // 字典值
+        Extend string                  `json:"extend,optional"`  // 扩展值
+        Sort   int64                   `json:"sort,optional"`     // 排序标记
+        Desc   *string `json:"desc,optional"`      // 模块描述
+        Status int64                   `json:"status,optional"` // 状态  1:启用,2:禁用
+        Body   *string `json:"body,optional"`      // 自定义数据
+    }
+)

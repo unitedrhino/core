@@ -218,6 +218,51 @@ type DeviceCore struct {
 	DeviceName string `json:"deviceName"` //设备名称
 }
 
+type DictDetail struct {
+	ID     int64   `json:"id,optional"`     // 编号
+	DictID int64   `json:"dictID,optional"` // 关联标记
+	Label  string  `json:"label,optional"`  // 展示值
+	Value  int64   `json:"value,optional"`  // 字典值
+	Extend string  `json:"extend,optional"` // 扩展值
+	Sort   int64   `json:"sort,optional"`   // 排序标记
+	Desc   *string `json:"desc,optional"`   // 模块描述
+	Status int64   `json:"status,optional"` // 状态  1:启用,2:禁用
+	Body   *string `json:"body,optional"`   // 自定义数据
+}
+
+type DictDetailIndexReq struct {
+	Page   *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	DictID int64     `json:"dictID,optional"`
+}
+
+type DictDetailIndexResp struct {
+	Total int64         `json:"total"` //总数
+	List  []*DictDetail `json:"list"`  //菜单列表
+}
+
+type DictInfo struct {
+	ID      int64         `json:"id,optional"`     // 编号
+	Name    string        `json:"name,optional"`   // 名称
+	Type    string        `json:"type,optional"`   //
+	Status  int64         `json:"status,optional"` //
+	Desc    *string       `json:"desc,optional"`   //
+	Body    *string       `json:"body,optional"`   //前端自定义字段
+	Details []*DictDetail `json:"details,optional"`
+}
+
+type DictInfoIndexReq struct {
+	Page        *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Status      int64     `json:"status,optional"`
+	Name        string    `json:"name,optional"` // 按菜单名称筛选
+	Type        string    `json:"type,optional"`
+	WithDetails bool      `json:"withDetails,optional"`
+}
+
+type DictInfoIndexResp struct {
+	Total int64       `json:"total"` //总数
+	List  []*DictInfo `json:"list"`  //菜单列表
+}
+
 type JwtToken struct {
 	AccessToken  string `json:"accessToken,omitempty"`         //用户token
 	AccessExpire int64  `json:"accessExpire,string,omitempty"` //token过期时间
@@ -278,6 +323,7 @@ type ModuleInfoIndexReq struct {
 	AppCode string    `json:"appCode,optional"` //应用绑定的code列表
 	Code    string    `json:"code,optional"`    // 应用编号模糊查询
 	Name    string    `json:"name,optional"`    // 按菜单名称筛选
+	Type    int64     `json:"type,optional"`
 }
 
 type ModuleInfoIndexResp struct {

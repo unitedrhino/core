@@ -43,6 +43,12 @@ type (
 	DataProjectIndexResp       = sys.DataProjectIndexResp
 	DataProjectMultiUpdateReq  = sys.DataProjectMultiUpdateReq
 	DateRange                  = sys.DateRange
+	DictDetail                 = sys.DictDetail
+	DictDetailIndexReq         = sys.DictDetailIndexReq
+	DictDetailIndexResp        = sys.DictDetailIndexResp
+	DictInfo                   = sys.DictInfo
+	DictInfoIndexReq           = sys.DictInfoIndexReq
+	DictInfoIndexResp          = sys.DictInfoIndexResp
 	JwtToken                   = sys.JwtToken
 	LoginLogCreateReq          = sys.LoginLogCreateReq
 	LoginLogIndexReq           = sys.LoginLogIndexReq

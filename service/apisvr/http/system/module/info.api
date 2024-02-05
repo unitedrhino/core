@@ -38,6 +38,7 @@ type (
         AppCode string `json:"appCode,optional"` //应用绑定的code列表
         code string `json:"code,optional"`                               // 应用编号模糊查询
         Name string `json:"name,optional"` // 按菜单名称筛选
+        Type int64 `json:"type,optional"`
     }
 
     ModuleInfoIndexResp  {

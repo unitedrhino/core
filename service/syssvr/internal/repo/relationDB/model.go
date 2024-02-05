@@ -11,6 +11,38 @@ type SysExample struct {
 	ID int64 `gorm:"column:id;type:bigint;primary_key;AUTO_INCREMENT"` // id编号
 }
 
+type SysDictInfo struct {
+	ID      int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // id编号
+	Name    string           `gorm:"column:name;comment:字典名（中）"`                       // 字典名（中）
+	Type    string           `gorm:"column:type;comment:字典名（英）"`                       // 字典名（英）
+	Status  int64            `gorm:"column:status;type:SMALLINT;default:1"`            // 状态  1:启用,2:禁用
+	Desc    string           `gorm:"column:desc;comment:描述"`                           // 描述
+	Body    string           `gorm:"column:body;type:VARCHAR(1024)"`                   // 自定义数据
+	Details []*SysDictDetail `gorm:"foreignKey:DictID;references:ID"`
+	stores.SoftTime
+}
+
+func (SysDictInfo) TableName() string {
+	return "sys_dict_info"
+}
+
+type SysDictDetail struct {
+	ID     int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // id编号
+	DictID int64  `gorm:"column:dict_id;comment:关联标记"`                      // 关联标记
+	Label  string `gorm:"column:label;comment:展示值"`                         // 展示值
+	Value  int64  `gorm:"column:value;comment:字典值"`                         // 字典值
+	Extend string `gorm:"column:extend;comment:扩展值"`                        // 扩展值
+	Status int64  `gorm:"column:status;type:SMALLINT;default:1"`            // 状态  1:启用,2:禁用
+	Sort   int64  `gorm:"column:sort;comment:排序标记"`                         // 排序标记
+	Desc   string `gorm:"column:desc;comment:描述"`                           // 描述
+	Body   string `gorm:"column:body;type:VARCHAR(1024)"`                   // 自定义数据
+	stores.SoftTime
+}
+
+func (SysDictDetail) TableName() string {
+	return "sys_dict_detail"
+}
+
 type SysSlotInfo struct {
 	ID       int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
 	Code     string            `gorm:"column:code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"`            // 鉴权的编码

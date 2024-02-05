@@ -1,0 +1,56 @@
+info(
+    desc: "字典信息"
+	author: "yl"
+	email: "603785348@qq.com"
+)
+
+@server(
+    group: system/dict/info
+    prefix: /api/v1/system/dict/info
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+service api {
+    @doc "添加字典信息"
+    @handler create
+    post /create (DictInfo) returns (WithID)
+
+    @doc "获取字典信息列表"
+    @handler index
+    post /index (DictInfoIndexReq) returns (DictInfoIndexResp)
+
+    @doc "更新字典信息"
+    @handler update
+    post /update (DictInfo) returns ()
+
+    @doc "获取字典信息详情"
+    @handler read
+    post /read (WithID) returns (DictInfo)
+
+    @doc "删除字典信息"
+    @handler delete
+    post /delete (WithID) returns ()
+}
+type (
+
+    DictInfoIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        Status int64 `json:"status,optional"`
+        Name string `json:"name,optional"` // 按菜单名称筛选
+        Type string `json:"type,optional"`
+        WithDetails bool `json:"withDetails,optional"`
+    }
+
+    DictInfoIndexResp  {
+        Total int64 `json:"total"` //总数
+        List []*DictInfo `json:"list"` //菜单列表
+    }
+    DictInfo{
+        ID int64 `json:"id,optional"`                                  // 编号
+        Name string `json:"name,optional"`                             // 菜单名称
+        Type string `json:"type,optional"`                     // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+        Status int64 `json:"status,optional"`                     // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+        Desc *string `json:"desc,optional"`          // 页面
+        Body *string  `json:"body,optional"` //前端自定义字段
+        Details []*DictDetail `json:"details,optional"`
+    }
+)

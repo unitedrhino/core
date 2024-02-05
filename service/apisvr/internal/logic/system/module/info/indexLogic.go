@@ -32,6 +32,7 @@ func (l *IndexLogic) Index(req *types.ModuleInfoIndexReq) (resp *types.ModuleInf
 		Code:    req.Code,
 		Codes:   req.Codes,
 		AppCode: req.AppCode,
+		Type:    req.Type,
 	})
 	if err != nil {
 		return nil, err

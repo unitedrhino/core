@@ -13,6 +13,8 @@ import (
 	systemdataarea "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/area"
 	systemdataareauserapply "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/area/user/apply"
 	systemdataproject "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/project"
+	systemdictdetail "gitee.com/i-Things/core/service/apisvr/internal/handler/system/dict/detail"
+	systemdictinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/dict/info"
 	systemlog "gitee.com/i-Things/core/service/apisvr/internal/handler/system/log"
 	systemmoduleinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/info"
 	systemmodulemenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/menu"
@@ -281,6 +283,69 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/data/project"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemdictdetail.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemdictdetail.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdictdetail.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemdictdetail.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/dict/detail"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemdictinfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemdictinfo.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdictinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemdictinfo.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemdictinfo.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/dict/info"),
 	)
 
 	server.AddRoutes(
