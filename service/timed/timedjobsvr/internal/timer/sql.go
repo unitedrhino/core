@@ -65,7 +65,7 @@ func (t Timed) SqlNormalExec(ctx context.Context, task *domain.TaskInfo) error {
 func (t Timed) SqlJsExec(ctx context.Context, task *domain.TaskInfo) error {
 	var (
 		code = errors.OK.Code
-		msg  = errors.OK.Msg
+		msg  = errors.OK.GetMsg()
 	)
 	vm := goja.New()
 	sf := sqlFunc.NewSqlFunc(ctx, t.SvcCtx, task, vm)

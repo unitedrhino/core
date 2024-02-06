@@ -74,7 +74,7 @@ func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 			}
 			//校验项目权限
 			if code := m.check(ctx, dataType, reqIDs); code != http.StatusOK {
-				err := errors.Permissions.AddMsg(def.AuthDataTypeFieldTextMap[dataType] + "不足")
+				err := errors.Permissions.AddMsgf("%v不足", def.AuthDataTypeFieldTextMap[dataType])
 				http.Error(w, err.Error(), code)
 				return
 			}
@@ -88,7 +88,7 @@ func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 			}
 			//校验区域权限
 			if code := m.check(ctx, dataType, reqIDs); code != http.StatusOK {
-				err := errors.Permissions.AddMsg(def.AuthDataTypeFieldTextMap[dataType] + "不足")
+				err := errors.Permissions.AddMsgf("%v不足", def.AuthDataTypeFieldTextMap[dataType])
 				http.Error(w, err.Error(), code)
 				return
 			}
