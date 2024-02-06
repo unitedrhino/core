@@ -1,8 +1,8 @@
 package self
 
 import (
+	"gitee.com/i-Things/core/service/apisvr/export"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/user/self"
-	"gitee.com/i-Things/core/service/apisvr/internal/middleware"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/share/ctxs"
@@ -19,7 +19,7 @@ func CaptchaHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			result.Http(w, r, nil, errors.Parameter.WithMsg("入参不正确:"+err.Error()))
 			return
 		}
-		userCtx, err := middleware.NewCheckTokenWareMiddleware(svcCtx.Config, svcCtx.UserRpc, svcCtx.RoleRpc).UserAuth(w, r)
+		userCtx, err := export.NewCheckTokenWareMiddleware(svcCtx.UserRpc, svcCtx.RoleRpc).UserAuth(w, r)
 		if err == nil { //登录态也需要支持
 			//注入 用户信息 到 ctx
 			ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)

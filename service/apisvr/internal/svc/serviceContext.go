@@ -1,6 +1,7 @@
 package svc
 
 import (
+	"gitee.com/i-Things/core/service/apisvr/export"
 	"gitee.com/i-Things/core/service/apisvr/internal/config"
 	"gitee.com/i-Things/core/service/apisvr/internal/middleware"
 	"gitee.com/i-Things/core/service/syssvr/client/accessmanage"
@@ -148,7 +149,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
 		Config:         c,
-		CheckTokenWare: middleware.NewCheckTokenWareMiddleware(c, ur, ro).Handle,
+		CheckTokenWare: export.NewCheckTokenWareMiddleware(ur, ro).Handle,
 		DataAuthWare:   middleware.NewDataAuthWareMiddleware(c).Handle,
 		TeardownWare:   middleware.NewTeardownWareMiddleware(c, lo).Handle,
 		CheckApiWare:   middleware.NewCheckApiWareMiddleware().Handle,
