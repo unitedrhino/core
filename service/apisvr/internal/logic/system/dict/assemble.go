@@ -68,6 +68,7 @@ func ToInfoTypes(in *sys.DictInfo) *types.DictInfo {
 		ID:       in.Id,
 		Name:     in.Name,
 		Type:     in.Type,
+		ParentID: in.ParentID,
 		Desc:     utils.ToNullString(in.Desc),
 		Body:     utils.ToNullString(in.Body),
 		Details:  ToDetailsTypes(in.Details),

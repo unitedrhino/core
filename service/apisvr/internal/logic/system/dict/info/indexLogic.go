@@ -33,6 +33,7 @@ func (l *IndexLogic) Index(req *types.DictInfoIndexReq) (resp *types.DictInfoInd
 		Type:        req.Type,
 		Status:      req.Status,
 		WithDetails: req.WithDetails,
+		ParentID:    req.ParentID,
 	})
 	if err != nil {
 		return nil, err

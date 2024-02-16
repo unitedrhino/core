@@ -30,6 +30,7 @@ func (l *DictInfoIndexLogic) DictInfoIndex(in *sys.DictInfoIndexReq) (*sys.DictI
 		Type:        in.Type,
 		Status:      in.Status,
 		WithDetails: in.WithDetails,
+		ParentID:    in.ParentID,
 	}
 	total, err := relationDB.NewDictInfoRepo(l.ctx).CountByFilter(l.ctx, f)
 	if err != nil {

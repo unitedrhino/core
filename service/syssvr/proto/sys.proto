@@ -865,6 +865,7 @@ message DictInfoIndexReq{
   string type = 3;
   int64 status = 4;
   bool withDetails = 5;
+  int64 parentID=6;
 }
 
 message DictInfoIndexResp{

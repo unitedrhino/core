@@ -31,12 +31,16 @@ type DictInfoFilter struct {
 	WithDetails  bool
 	WithChildren bool
 	DictIDPath   string
+	ParentID     int64
 }
 
 func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.DictIDPath != "" {
 		db = db.Where("dict_id_path like ?", f.DictIDPath+"%")
+	}
+	if f.ParentID != 0 {
+		db = db.Where("parent_id = ?", f.ParentID)
 	}
 	if f.ID != 0 {
 		db = db.Where("id = ?", f.ID)
