@@ -25,7 +25,8 @@ func NewReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ReadLogic {
 	}
 }
 
-func (l *ReadLogic) Read(req *types.WithID) (resp *types.DictInfo, err error) {
-	ret, err := l.svcCtx.DictM.DictInfoRead(l.ctx, &sys.WithID{Id: req.ID})
+func (l *ReadLogic) Read(req *types.DictInfoReadReq) (resp *types.DictInfo, err error) {
+	ret, err := l.svcCtx.DictM.DictInfoRead(l.ctx,
+		&sys.DictInfoReadReq{Id: req.ID, WithDetails: req.WithDetails, WithChildren: req.WithChildren})
 	return dict.ToInfoTypes(ret), err
 }

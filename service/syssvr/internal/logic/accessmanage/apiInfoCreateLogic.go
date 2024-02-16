@@ -29,7 +29,7 @@ func (l *ApiInfoCreateLogic) ApiInfoCreate(in *sys.ApiInfo) (*sys.WithID, error)
 	_, err := relationDB.NewAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.AccessFilter{Codes: []string{in.AccessCode}})
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {
-			return nil, errors.Parameter.AddMsg("接口区域不存在")
+			return nil, errors.Parameter.AddMsg("操作权限不存在")
 		}
 	}
 	po := ToApiInfoPo(in)

@@ -6,22 +6,45 @@ import (
 	"gitee.com/i-Things/share/utils"
 )
 
-func ToDictInfoPb(in *relationDB.SysDictInfo) *sys.DictInfo {
+func ToDictInfoPb(in *relationDB.SysDictInfo, children []*relationDB.SysDictInfo) *sys.DictInfo {
 	if in == nil {
 		return nil
 	}
-	return &sys.DictInfo{
-		Id:      in.ID,
-		Name:    in.Name,
-		Type:    in.Type,
-		Desc:    utils.ToRpcNullString(in.Desc),
-		Status:  in.Status,
-		Body:    utils.ToRpcNullString(in.Body),
-		Details: ToDictDetailsPb(in.Details),
+	ret := &sys.DictInfo{
+		Id:       in.ID,
+		Name:     in.Name,
+		Type:     in.Type,
+		Desc:     utils.ToRpcNullString(in.Desc),
+		ParentID: in.ParentID,
+		Children: ToDictInfosPb(in.Children),
+		Body:     utils.ToRpcNullString(in.Body),
+		Details:  ToDictDetailsPb(in.Details),
 	}
-
+	if children != nil {
+		var idMap = map[int64][]*sys.DictInfo{}
+		for _, v := range children {
+			idMap[v.ParentID] = append(idMap[v.ParentID], ToDictInfoPb(v, nil))
+		}
+		fillDictInfoChildren(ret, idMap)
+	}
+	return ret
 }
 
+func fillDictInfoChildren(node *sys.DictInfo, nodeMap map[int64][]*sys.DictInfo) {
+	// 找到当前节点的子节点数组
+	children := nodeMap[node.Id]
+	for _, child := range children {
+		fillDictInfoChildren(child, nodeMap)
+	}
+	node.Children = children
+}
+
+func ToDictInfosPb(in []*relationDB.SysDictInfo) (list []*sys.DictInfo) {
+	for _, v := range in {
+		list = append(list, ToDictInfoPb(v, nil))
+	}
+	return
+}
 func ToDictDetailsPb(in []*relationDB.SysDictDetail) []*sys.DictDetail {
 	var list []*sys.DictDetail
 	for _, v := range in {

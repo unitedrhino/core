@@ -241,13 +241,13 @@ type DictDetailIndexResp struct {
 }
 
 type DictInfo struct {
-	ID      int64         `json:"id,optional"`     // 编号
-	Name    string        `json:"name,optional"`   // 菜单名称
-	Type    string        `json:"type,optional"`   // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Status  int64         `json:"status,optional"` // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Desc    *string       `json:"desc,optional"`   // 页面
-	Body    *string       `json:"body,optional"`   //前端自定义字段
-	Details []*DictDetail `json:"details,optional"`
+	ID       int64         `json:"id,optional"`   // 编号
+	Name     string        `json:"name,optional"` // 菜单名称
+	Type     string        `json:"type,optional"` // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	Desc     *string       `json:"desc,optional"` // 页面
+	Body     *string       `json:"body,optional"` //前端自定义字段
+	Details  []*DictDetail `json:"details,optional"`
+	Children []*DictInfo   `json:"children,optional"`
 }
 
 type DictInfoIndexReq struct {
@@ -261,6 +261,12 @@ type DictInfoIndexReq struct {
 type DictInfoIndexResp struct {
 	Total int64       `json:"total"` //总数
 	List  []*DictInfo `json:"list"`  //菜单列表
+}
+
+type DictInfoReadReq struct {
+	ID           int64 `json:"id"` // 编号
+	WithDetails  bool  `json:"withDetails,optional"`
+	WithChildren bool  `json:"withChildren,optional"`
 }
 
 type JwtToken struct {

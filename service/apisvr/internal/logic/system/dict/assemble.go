@@ -28,12 +28,11 @@ func ToInfoPb(in *types.DictInfo) *sys.DictInfo {
 		return nil
 	}
 	return &sys.DictInfo{
-		Id:     in.ID,
-		Name:   in.Name,
-		Type:   in.Type,
-		Desc:   utils.ToRpcNullString(in.Desc),
-		Status: in.Status,
-		Body:   utils.ToRpcNullString(in.Body),
+		Id:   in.ID,
+		Name: in.Name,
+		Type: in.Type,
+		Desc: utils.ToRpcNullString(in.Desc),
+		Body: utils.ToRpcNullString(in.Body),
 	}
 }
 
@@ -66,13 +65,13 @@ func ToInfoTypes(in *sys.DictInfo) *types.DictInfo {
 		return nil
 	}
 	return &types.DictInfo{
-		ID:      in.Id,
-		Name:    in.Name,
-		Type:    in.Type,
-		Desc:    utils.ToNullString(in.Desc),
-		Status:  in.Status,
-		Body:    utils.ToNullString(in.Body),
-		Details: ToDetailsTypes(in.Details),
+		ID:       in.Id,
+		Name:     in.Name,
+		Type:     in.Type,
+		Desc:     utils.ToNullString(in.Desc),
+		Body:     utils.ToNullString(in.Body),
+		Details:  ToDetailsTypes(in.Details),
+		Children: ToInfosTypes(in.Children),
 	}
 }
 func ToInfosTypes(in []*sys.DictInfo) (ret []*types.DictInfo) {

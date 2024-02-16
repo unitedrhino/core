@@ -32,7 +32,6 @@ func (l *DictInfoUpdateLogic) DictInfoUpdate(in *sys.DictInfo) (*sys.Response, e
 	}
 	old.Name = in.Name
 	old.Type = in.Type
-	old.Status = in.Status
 	old.Desc = in.Desc.GetValue()
 	old.Body = in.Body.GetValue()
 	err = repo.Update(l.ctx, old)

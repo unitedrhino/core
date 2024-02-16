@@ -49,6 +49,7 @@ type (
 	DictInfo                   = sys.DictInfo
 	DictInfoIndexReq           = sys.DictInfoIndexReq
 	DictInfoIndexResp          = sys.DictInfoIndexResp
+	DictInfoReadReq            = sys.DictInfoReadReq
 	JwtToken                   = sys.JwtToken
 	LoginLogCreateReq          = sys.LoginLogCreateReq
 	LoginLogIndexReq           = sys.LoginLogIndexReq
@@ -144,7 +145,7 @@ type (
 		DictInfoIndex(ctx context.Context, in *DictInfoIndexReq, opts ...grpc.CallOption) (*DictInfoIndexResp, error)
 		DictInfoUpdate(ctx context.Context, in *DictInfo, opts ...grpc.CallOption) (*Response, error)
 		DictInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Response, error)
-		DictInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*DictInfo, error)
+		DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error)
 		DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error)
 		DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
 		DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Response, error)
@@ -210,12 +211,12 @@ func (d *directDictManage) DictInfoDelete(ctx context.Context, in *WithID, opts 
 	return d.svr.DictInfoDelete(ctx, in)
 }
 
-func (m *defaultDictManage) DictInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*DictInfo, error) {
+func (m *defaultDictManage) DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error) {
 	client := sys.NewDictManageClient(m.cli.Conn())
 	return client.DictInfoRead(ctx, in, opts...)
 }
 
-func (d *directDictManage) DictInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*DictInfo, error) {
+func (d *directDictManage) DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error) {
 	return d.svr.DictInfoRead(ctx, in)
 }
 

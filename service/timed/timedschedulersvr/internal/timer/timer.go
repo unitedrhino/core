@@ -59,7 +59,7 @@ func Run(svcCtx *svc.ServiceContext) {
 }
 
 func TaskCheck(svcCtx *svc.ServiceContext) {
-	logx.Info("TaskCheck run")
+	logx.Debug("TaskCheck run")
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Second)
 	defer cancel()
 	//dgsvr 订阅到了设备端数据，此时调用StartSpan方法，将订阅到的主题推送给jaeger

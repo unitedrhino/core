@@ -102,7 +102,7 @@ service DictManage{
   rpc dictInfoIndex(DictInfoIndexReq) returns(DictInfoIndexResp); //获取角色列表
   rpc dictInfoUpdate(DictInfo) returns(Response); //更新角色
   rpc dictInfoDelete(WithID) returns(Response); //删除角色
-  rpc dictInfoRead(WithID) returns(DictInfo);   //获取详情接口
+  rpc dictInfoRead(DictInfoReadReq) returns(DictInfo);   //获取详情接口
 
   rpc dictDetailCreate(DictDetail) returns(WithID); //添加角色
   rpc dictDetailIndex(DictDetailIndexReq) returns(DictDetailIndexResp); //获取角色列表
@@ -844,12 +844,19 @@ message UserAreaApplyDealReq{
 
 message DictInfo{
   int64 id = 1;
-  string name= 2;          // 字典名（中）
-  string type = 3;          // 字典名（英）
-  google.protobuf.StringValue desc = 4;        // 模块描述
-  int64 status = 5; // 状态  1:启用,2:禁用
+  int64 parentID=2;
+  string name= 3;          // 字典名（中）
+  string type = 4;          // 字典名（英）
+  google.protobuf.StringValue desc = 5;        // 模块描述
   google.protobuf.StringValue body = 6; // 自定义数据
-  repeated DictDetail Details = 7;
+  repeated DictInfo Children =7;
+  repeated DictDetail Details = 8;
+}
+
+message DictInfoReadReq{
+  int64 id = 1;
+  bool withChildren =2;
+  bool withDetails = 3;
 }
 
 message DictInfoIndexReq{

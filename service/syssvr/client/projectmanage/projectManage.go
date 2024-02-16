@@ -49,6 +49,7 @@ type (
 	DictInfo                   = sys.DictInfo
 	DictInfoIndexReq           = sys.DictInfoIndexReq
 	DictInfoIndexResp          = sys.DictInfoIndexResp
+	DictInfoReadReq            = sys.DictInfoReadReq
 	JwtToken                   = sys.JwtToken
 	LoginLogCreateReq          = sys.LoginLogCreateReq
 	LoginLogIndexReq           = sys.LoginLogIndexReq

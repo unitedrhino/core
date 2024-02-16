@@ -12,13 +12,16 @@ type SysExample struct {
 }
 
 type SysDictInfo struct {
-	ID      int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // id编号
-	Name    string           `gorm:"column:name;comment:字典名（中）"`                       // 字典名（中）
-	Type    string           `gorm:"column:type;comment:字典名（英）"`                       // 字典名（英）
-	Status  int64            `gorm:"column:status;type:SMALLINT;default:1"`            // 状态  1:启用,2:禁用
-	Desc    string           `gorm:"column:desc;comment:描述"`                           // 描述
-	Body    string           `gorm:"column:body;type:VARCHAR(1024)"`                   // 自定义数据
-	Details []*SysDictDetail `gorm:"foreignKey:DictID;references:ID"`
+	ID         int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // id编号
+	Name       string           `gorm:"column:name;comment:字典名"`                          // 字典名（中）
+	Type       string           `gorm:"column:type;comment:分类"`
+	ParentID   int64            `gorm:"column:parent_id;type:BIGINT"`                   // id编号
+	Desc       string           `gorm:"column:desc;comment:描述"`                         // 描述
+	Body       string           `gorm:"column:body;type:VARCHAR(1024)"`                 // 自定义数据
+	DictIDPath string           `gorm:"column:dict_id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前区域的路径
+	Details    []*SysDictDetail `gorm:"foreignKey:DictID;references:ID"`
+	Children   []*SysDictInfo   `gorm:"foreignKey:ParentID;references:ID"`
+	Parent     *SysDictInfo     `gorm:"foreignKey:ID;references:ParentID"`
 	stores.SoftTime
 }
 

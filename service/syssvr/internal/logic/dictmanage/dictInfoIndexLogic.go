@@ -38,7 +38,7 @@ func (l *DictInfoIndexLogic) DictInfoIndex(in *sys.DictInfoIndexReq) (*sys.DictI
 	pos, err := relationDB.NewDictInfoRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	var list []*sys.DictInfo
 	for _, v := range pos {
-		list = append(list, ToDictInfoPb(v))
+		list = append(list, ToDictInfoPb(v, nil))
 	}
 	return &sys.DictInfoIndexResp{Total: total, List: list}, nil
 }

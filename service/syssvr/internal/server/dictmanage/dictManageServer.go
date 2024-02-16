@@ -42,7 +42,7 @@ func (s *DictManageServer) DictInfoDelete(ctx context.Context, in *sys.WithID) (
 	return l.DictInfoDelete(in)
 }
 
-func (s *DictManageServer) DictInfoRead(ctx context.Context, in *sys.WithID) (*sys.DictInfo, error) {
+func (s *DictManageServer) DictInfoRead(ctx context.Context, in *sys.DictInfoReadReq) (*sys.DictInfo, error) {
 	l := dictmanagelogic.NewDictInfoReadLogic(ctx, s.svcCtx)
 	return l.DictInfoRead(in)
 }
