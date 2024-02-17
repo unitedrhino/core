@@ -3,11 +3,17 @@
 
 build:build.clean mod cp.etc build.api  build.view  build.sys  build.timedjob build.timedscheduler
 
-buildone:build.clean mod cp.etc build.api  build.view
+buildback: build.clean mod cp.etc build.api  build.view
+
+
+buildone: buildback moduleupdate build.front
+
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
 
-packone:  buildone moduleupdate build.front toremote
+packone:  buildone  toremote
+
+packback:  buildback  toremote
 
 
 toremote:
