@@ -11,7 +11,7 @@ replace (
 )
 
 require (
-	gitee.com/i-Things/share v0.1.1
+	gitee.com/i-Things/share v0.1.3
 	github.com/Masterminds/squirrel v1.20.1
 	github.com/casbin/casbin/v2 v2.68.0
 	github.com/dgraph-io/ristretto v0.1.0
@@ -35,7 +35,7 @@ require (
 require (
 	gitee.com/asktop_golib/util v0.1.6 // indirect
 	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758 // indirect
-	github.com/BurntSushi/toml v1.2.0 // indirect
+	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -122,6 +122,7 @@ require (
 	github.com/nats-io/jwt/v2 v2.4.1 // indirect
 	github.com/nats-io/nkeys v0.4.4 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
+	github.com/nicksnyder/go-i18n/v2 v2.4.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
@@ -175,7 +176,7 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.10.0 // indirect
 	golang.org/x/term v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230123190316-2c411cf9d197 // indirect
