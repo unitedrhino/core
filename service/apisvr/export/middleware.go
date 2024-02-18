@@ -110,7 +110,5 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		RoleID:     roleID,
 		IsAdmin:    resp.IsAdmin == def.True,
 		IsAllData:  resp.IsAllData == def.True,
-		IP:         strIP,
-		Os:         r.Header.Get("User-Agent"),
 	}, nil
 }

@@ -52,7 +52,7 @@ type (
     AreaInfoReadReq  {
         AreaID int64 `json:"areaID,string"` //项目区域id
         ProjectID int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
-        IsRetTree bool `json:"isRetTree,optional"`
+        WithChildren bool `json:"withChildren,optional"`
 //        WithDeviceInfoCount bool `json:"withDeviceInfoCount,optional"`//同时返回设备统计信息
     }
 

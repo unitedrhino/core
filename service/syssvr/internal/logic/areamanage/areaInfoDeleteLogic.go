@@ -55,6 +55,9 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Response,
 				return err
 			}
 			parent.LowerLevelCount--
+			if parent.LowerLevelCount == 0 {
+				parent.IsLeaf = def.True
+			}
 			subSubAreaIDs(l.ctx, tx, parent, in.AreaID)
 			err = AiDB.Update(l.ctx, parent)
 			if err != nil {

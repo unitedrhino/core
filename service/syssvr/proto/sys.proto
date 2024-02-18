@@ -390,6 +390,7 @@ message AreaInfo {
   repeated string areaNamePath =10;
   int64 lowerLevelCount =11;//下级区域的数量
   repeated int64 childrenAreaIDs =12;//所属的子区域id列表
+  int64 isLeaf =13;//是否是叶子节点
 }
 
 
@@ -401,7 +402,7 @@ message AreaWithID {
 message AreaInfoReadReq {
   int64 projectID = 1; //项目ids
   int64 areaID = 2; //项目区域id
-  bool isRetTree = 3;//是否返回子节点
+  bool withChildren = 3;//是否返回子节点
 }
 
 message AreaInfoIndexReq {
@@ -410,6 +411,7 @@ message AreaInfoIndexReq {
   int64 parentAreaID = 4;
   repeated int64 areaIDs = 5; //区域ids
   bool  isRetTopLevel = 6;//如果该参数为true则返回除了root节点的有权限的最高层的区域列表
+  int64 isLeaf =7;//是否是叶子节点
 }
 
 message AreaInfoIndexResp {

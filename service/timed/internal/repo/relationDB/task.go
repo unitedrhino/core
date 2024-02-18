@@ -22,6 +22,7 @@ type TaskRepo struct {
 
 func NewTaskInfoRepo(in any) *TaskRepo {
 	db := stores.GetCommonConn(in)
+	db.Logger = db.Logger.LogMode(logger.Error)
 	return &TaskRepo{db: db}
 }
 
@@ -71,7 +72,6 @@ func (p TaskRepo) FindByFilter(ctx context.Context, f TaskFilter, page *def.Page
 	var results []*TimedTaskInfo
 	db := p.fmtFilter(ctx, f).Model(&TimedTaskInfo{})
 	db = page.ToGorm(db)
-	db.Logger = db.Logger.LogMode(logger.Error)
 	err := db.Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)

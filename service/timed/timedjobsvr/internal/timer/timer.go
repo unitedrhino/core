@@ -43,7 +43,7 @@ func (t Timed) ProcessTask(ctx context.Context, Task *asynq.Task) error {
 			if err != nil {
 				return err
 			}
-			logx.WithContext(ctx).Infof("timedJob ProcessTask task:%v", utils.Fmt(taskInfo))
+			logx.WithContext(ctx).Debug("timedJob ProcessTask task:%v", utils.Fmt(taskInfo))
 
 			switch task.Group.Type {
 			case domain.TaskGroupTypeQueue:

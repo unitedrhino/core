@@ -126,9 +126,9 @@ type AreaInfoIndexResp struct {
 }
 
 type AreaInfoReadReq struct {
-	AreaID    int64 `json:"areaID,string"`             //项目区域id
-	ProjectID int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
-	IsRetTree bool  `json:"isRetTree,optional"`
+	AreaID       int64 `json:"areaID,string"`             //项目区域id
+	ProjectID    int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
+	WithChildren bool  `json:"withChildren,optional"`
 }
 
 type AreaWithID struct {

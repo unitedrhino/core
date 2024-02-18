@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"gorm.io/gorm/logger"
 )
 
 /*
@@ -20,7 +21,9 @@ type TaskLogRepo struct {
 }
 
 func NewJobLogRepo(in any) *TaskLogRepo {
-	return &TaskLogRepo{db: stores.GetCommonConn(in)}
+	db := stores.GetCommonConn(in)
+	db.Logger = db.Logger.LogMode(logger.Error)
+	return &TaskLogRepo{db: db}
 }
 
 type TaskLogFilter struct {

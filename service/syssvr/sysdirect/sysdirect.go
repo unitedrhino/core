@@ -15,8 +15,7 @@ import (
 	usermanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/interceptors"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
@@ -69,7 +68,7 @@ func Run(svcCtx *svc.ServiceContext) {
 		}
 	})
 	defer s.Stop()
-	s.AddUnaryInterceptors(errors.ErrorInterceptor, ctxs.GrpcInterceptor)
+	s.AddUnaryInterceptors(interceptors.Ctxs, interceptors.Error)
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

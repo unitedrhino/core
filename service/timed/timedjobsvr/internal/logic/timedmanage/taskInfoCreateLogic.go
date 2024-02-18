@@ -25,7 +25,8 @@ func NewTaskInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ta
 }
 
 func (l *TaskInfoCreateLogic) TaskInfoCreate(in *timedjob.TaskInfo) (*timedjob.Response, error) {
-	err := relationDB.NewTaskInfoRepo(l.ctx).Insert(l.ctx, ToTaskInfoPo(in))
+	po := ToTaskInfoPo(in)
+	err := relationDB.NewTaskInfoRepo(l.ctx).Insert(l.ctx, po)
 	if err != nil {
 		return nil, err
 	}

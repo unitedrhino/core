@@ -62,7 +62,7 @@ func (l *AreaInfoReadLogic) AreaInfoRead(in *sys.AreaInfoReadReq) (*sys.AreaInfo
 			return nil, err
 		}
 	}
-	if !in.IsRetTree {
+	if !in.WithChildren {
 		return transPoToPb(po), nil
 	}
 	poArr, err := l.AiDB.FindByFilter(l.ctx, relationDB.AreaInfoFilter{ProjectID: in.ProjectID, AreaIDPath: po.AreaIDPath}, nil)

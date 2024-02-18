@@ -56,6 +56,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		AreaName:     in.AreaName,
 		Position:     logic.ToStorePoint(in.Position),
 		Desc:         utils.ToEmptyString(in.Desc),
+		IsLeaf:       def.True,
 	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
@@ -78,6 +79,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 			if err != nil {
 				return err
 			}
+			pa.IsLeaf = def.False
 			err = aiRepo.Update(l.ctx, pa)
 			if err != nil {
 				return err
