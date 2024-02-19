@@ -8,6 +8,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/result"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"io"
@@ -44,7 +45,7 @@ func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 		//读出Body 暂存
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			result.HttpErr(w, r, http.StatusInternalServerError, err)
 			return
 		}
 		//写回Body 给 httpx.Parse 读
@@ -55,7 +56,7 @@ func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 		//zeromicro/go-zero@v1.5.0/core/mapping/unmarshaler.go:84 要求接收者是结构体
 		err = httpx.Parse(r, &param)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			result.HttpErr(w, r, http.StatusInternalServerError, err)
 			return
 		}
 
@@ -75,7 +76,7 @@ func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 			//校验项目权限
 			if code := m.check(ctx, dataType, reqIDs); code != http.StatusOK {
 				err := errors.Permissions.AddMsgf("%v不足", def.AuthDataTypeFieldTextMap[dataType])
-				http.Error(w, err.Error(), code)
+				result.HttpErr(w, r, code, err)
 				return
 			}
 		}
@@ -89,7 +90,7 @@ func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc 
 			//校验区域权限
 			if code := m.check(ctx, dataType, reqIDs); code != http.StatusOK {
 				err := errors.Permissions.AddMsgf("%v不足", def.AuthDataTypeFieldTextMap[dataType])
-				http.Error(w, err.Error(), code)
+				result.HttpErr(w, r, code, err)
 				return
 			}
 		}

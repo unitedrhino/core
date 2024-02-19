@@ -1,6 +1,7 @@
 package relationDB
 
 import (
+	"context"
 	"gitee.com/i-Things/core/service/timed/internal/domain"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/def"
@@ -16,7 +17,7 @@ func Migrate(c conf.Database) (err error) {
 		return
 	}
 	once.Do(func() {
-		db := stores.GetCommonConn(nil)
+		db := stores.GetCommonConn(context.TODO())
 		var needInitColumn bool
 		if !db.Migrator().HasTable(&TimedTaskGroup{}) {
 			//需要初始化表
@@ -37,7 +38,7 @@ func Migrate(c conf.Database) (err error) {
 	return
 }
 func migrateTableColumn() error {
-	db := stores.GetCommonConn(nil).Clauses(clause.OnConflict{DoNothing: true})
+	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
 	if err := db.CreateInBatches(&MigrateTimedTask, 100).Error; err != nil {
 		return err
 	}

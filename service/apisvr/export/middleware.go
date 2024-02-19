@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/result"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -35,7 +36,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		userCtx, err = m.UserAuth(w, r)
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
-			http.Error(w, "用户请求失败："+err.Error(), http.StatusUnauthorized)
+			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("用户请求失败"))
 			return
 		}
 		//注入 用户信息 到 ctx
@@ -93,7 +94,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 	}
 	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s roleID：%v checkResp:%v",
 		utils.FuncName(), strIP, strToken, strRoleID, utils.Fmt(resp))
-	if roleID != 0 { //如果传了角色
+	if roleID != 0 && resp.IsAdmin != def.True { //如果传了角色
 		if !utils.SliceIn(roleID, resp.RoleIDs...) {
 			err := errors.Parameter.AddMsgf("所选角色无权限")
 			return nil, err

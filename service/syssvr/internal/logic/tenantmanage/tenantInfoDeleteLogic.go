@@ -3,6 +3,7 @@ package tenantmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
@@ -41,9 +42,14 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Respo
 		f.Codes = []string{in.Code}
 	}
 	conn := stores.GetTenantConn(l.ctx)
-	err := conn.Transaction(func(tx *gorm.DB) error {
+	var (
+		ti  *relationDB.SysTenantInfo
+		err error
+	)
+
+	err = conn.Transaction(func(tx *gorm.DB) error {
 		tir := relationDB.NewTenantInfoRepo(tx)
-		ti, err := tir.FindOneByFilter(l.ctx, f)
+		ti, err = tir.FindOneByFilter(l.ctx, f)
 		if err != nil {
 			return err
 		}
@@ -89,6 +95,12 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Respo
 		}
 		return nil
 	})
-
+	if err != nil {
+		return nil, err
+	}
+	err = caches.DelTenant(l.ctx, ti.Code)
+	if err != nil {
+		l.Error(err)
+	}
 	return &sys.Response{}, err
 }

@@ -13,6 +13,7 @@ import (
 	rolemanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/rolemanage"
 	tenantmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/tenantmanage"
 	usermanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
+	"gitee.com/i-Things/core/service/syssvr/internal/startup"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/interceptors"
@@ -38,6 +39,7 @@ func GetSvcCtx() *svc.ServiceContext {
 	svcOnce.Do(func() {
 		conf.MustLoad("etc/sys.yaml", &c)
 		ctxSvc = svc.NewServiceContext(c)
+		startup.Init(ctxSvc)
 		logx.Infof("enabled syssvr")
 	})
 	return ctxSvc

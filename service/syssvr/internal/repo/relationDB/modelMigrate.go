@@ -1,6 +1,7 @@
 package relationDB
 
 import (
+	"context"
 	"database/sql"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/def"
@@ -12,7 +13,7 @@ func Migrate(c conf.Database) error {
 	if c.IsInitTable == false {
 		return nil
 	}
-	db := stores.GetCommonConn(nil)
+	db := stores.GetCommonConn(context.TODO())
 	var needInitColumn bool
 	if !db.Migrator().HasTable(&SysUserInfo{}) {
 		//需要初始化表
@@ -78,7 +79,7 @@ func Migrate(c conf.Database) error {
 	return err
 }
 func migrateTableColumn() error {
-	db := stores.GetCommonConn(nil).Clauses(clause.OnConflict{DoNothing: true})
+	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
 	if err := db.CreateInBatches(&MigrateUserInfo, 100).Error; err != nil {
 		return err
 	}
