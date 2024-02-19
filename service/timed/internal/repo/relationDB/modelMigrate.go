@@ -132,7 +132,7 @@ var (
 			SubType:  domain.SqlTypeJs,
 			Priority: 7,
 			Env:      map[string]string{"code": "66666"},
-			Config:   `{"database":{"select":{"dsn":"root:password@tcp(127.0.0.1:3306)/iThings?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai","dbType":"mysql"}}}`,
+			Config:   `{"database":{"select":{"dsn":"root:password@tcp(127.0.0.1:3306)/iThings?charset=utf8mb4&collation=utf8mb4_bin&parseTime=true&loc=Asia%2FShanghai","dbType":"mysql"}}}`,
 		},
 	}
 )
