@@ -16,7 +16,7 @@ type SysProjectInfo struct {
 	Position stores.Point `gorm:"column:position;type:point;NOT NULL"`    // 项目地址
 	Desc     string       `gorm:"column:desc;type:varchar(100);NOT NULL"` // 项目备注
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:pn"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:pn"`
 }
 
 func (m *SysProjectInfo) TableName() string {
@@ -38,7 +38,7 @@ type SysAreaInfo struct {
 	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`           //是否是叶子节点
 	ChildrenAreaIDs []int64           `gorm:"column:children_area_ids;type:json;serializer:json"`      //所有的子区域的id列表
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;index"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 	Children    []*SysAreaInfo     `gorm:"foreignKey:ParentAreaID;references:AreaID"`
 	Parent      *SysAreaInfo       `gorm:"foreignKey:AreaID;references:ParentAreaID"`
 }
@@ -57,7 +57,7 @@ type SysDataArea struct {
 	AreaID     int64             `gorm:"column:area_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"`    // 区域ID(雪花ID)
 	AuthType   def.AuthType      `gorm:"column:auth_type;type:bigint;NOT NULL"`                    // 授权类型 1 管理员(可以调整本区域及旗下区域的设备区域规划)  2 读写授权(可以对区域下的设备进行操作,但是不能新增或删除)
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 func (m *SysDataArea) TableName() string {
@@ -73,7 +73,7 @@ type SysUserAreaApply struct {
 	AreaID     stores.AreaID     `gorm:"column:area_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"`          // 区域ID(雪花ID)
 	AuthType   def.AuthType      `gorm:"column:auth_type;type:bigint;NOT NULL"`                          // 授权类型 1 管理员(可以调整本区域及旗下区域的设备区域规划)  2 读授权(可以对区域下的设备进行操作,但是不能修改区域) 2 读写授权(可以对区域下的设备进行操作,同时可以对区域进行修改,但是不能新增或删除)
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 func (m *SysUserAreaApply) TableName() string {
@@ -88,7 +88,7 @@ type SysDataProject struct {
 	TargetID   int64          `gorm:"column:target_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"` // 授权对象的id,角色id,用户id
 	AuthType   def.AuthType   `gorm:"column:auth_type;type:bigint;NOT NULL"`                   // 授权类型 1 管理员(可以修改本项目的状态,同时拥有所有区域权限)  2 读授权(可以对项目下的区域进行操作,但是不能修改项目) 2 读写授权(可以对项目下的区域进行操作,同时可以对项目进行修改)
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;index"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 }
 
 func (m *SysDataProject) TableName() string {

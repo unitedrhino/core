@@ -60,9 +60,22 @@ func (l *TenantAppDeleteLogic) TenantAppDelete(in *sys.TenantAppWithIDOrCode) (*
 			return err
 		}
 		err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(l.ctx, relationDB.TenantAppMenuFilter{
-			TenantCode: in.Code,
-			AppCode:    in.AppCode,
-		})
+			TenantCode: in.Code, AppCode: in.AppCode})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewRoleAppRepo(tx).DeleteByFilter(l.ctx,
+			relationDB.RoleAppFilter{TenantCode: in.Code, AppCode: in.AppCode})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewRoleMenuRepo(tx).DeleteByFilter(l.ctx,
+			relationDB.RoleMenuFilter{TenantCode: in.Code, AppCode: in.AppCode})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewRoleModuleRepo(tx).DeleteByFilter(l.ctx,
+			relationDB.RoleModuleFilter{TenantCode: in.Code, AppCode: in.AppCode})
 		if err != nil {
 			return err
 		}

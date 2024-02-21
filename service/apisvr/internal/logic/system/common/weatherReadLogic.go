@@ -42,7 +42,7 @@ func (l *WeatherReadLogic) WeatherRead(req *types.WeatherReadReq) (resp *types.W
 
 	_, _, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
 		req.Position.Longitude, req.Position.Latitude, key)).EndStruct(&weather)
-	if err != nil {
+	if errs != nil {
 		return nil, errors.System.AddDetail(errs)
 	}
 	_, _, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",

@@ -12,7 +12,7 @@ type SysRoleInfo struct {
 	Status int64         `gorm:"column:status;type:SMALLINT;default:1"` // 状态  1:启用,2:禁用
 	Apps   []*SysRoleApp `gorm:"foreignKey:RoleID;references:ID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;:tc_ac"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;:tc_ac"`
 }
 
 func (m *SysRoleInfo) TableName() string {
@@ -26,7 +26,7 @@ type SysRoleApp struct {
 	RoleID     int64             `gorm:"column:role_id;uniqueIndex:tc_ac;NOT NULL;type:BIGINT"`          // 角色ID
 	AppCode    string            `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:tc_ac"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }
 
 func (m *SysRoleApp) TableName() string {
@@ -41,7 +41,7 @@ type SysRoleModule struct {
 	AppCode    string            `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码
 	ModuleCode string            `gorm:"column:module_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 模块编码
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:tc_ac"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }
 
 func (m *SysRoleModule) TableName() string {
@@ -57,7 +57,7 @@ type SysRoleMenu struct {
 	ModuleCode string            `gorm:"column:module_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 模块编码
 	MenuID     int64             `gorm:"column:menu_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`          // 菜单ID
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 func (m *SysRoleMenu) TableName() string {
@@ -71,7 +71,7 @@ type SysRoleAccess struct {
 	RoleID     int64             `gorm:"column:role_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`          // 角色ID
 	AccessCode string            `gorm:"column:access_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 范围编码
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 	Api         *SysAccessInfo     `gorm:"foreignKey:AccessCode;references:Code"`
 }
 

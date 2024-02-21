@@ -75,7 +75,7 @@ type SysAppInfo struct {
 	BaseUrl string `gorm:"column:base_url;type:VARCHAR(100);NOT NULL"`              //应用首页
 	LogoUrl string `gorm:"column:logo_url;type:VARCHAR(100);NOT NULL"`              //应用logo地址
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:code;uniqueIndex:name"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code;uniqueIndex:name"`
 }
 
 func (m *SysAppInfo) TableName() string {
@@ -88,7 +88,7 @@ type SysAppModule struct {
 	AppCode    string `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
 	ModuleCode string `gorm:"column:module_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 模块编码
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:tc_ac"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 	Module      *SysModuleInfo     `gorm:"foreignKey:Code;references:ModuleCode"`
 	App         *SysAppInfo        `gorm:"foreignKey:Code;references:AppCode"`
 }
@@ -113,7 +113,7 @@ type SysModuleInfo struct {
 	Desc       string           `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                 // 备注
 	Menus      []*SysModuleMenu `gorm:"foreignKey:ModuleCode;references:Code"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:code"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code"`
 }
 
 func (m *SysModuleInfo) TableName() string {
@@ -136,7 +136,7 @@ type SysModuleMenu struct {
 	HideInMenu int64            `gorm:"column:hide_in_menu;type:BIGINT;default:2;NOT NULL"` // 是否隐藏菜单 1-是 2-否
 	Children   []*SysModuleMenu `gorm:"foreignKey:ID;references:ParentID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;index"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 }
 
 func (m *SysModuleMenu) TableName() string {
@@ -169,7 +169,7 @@ type SysUserInfo struct {
 	Roles          []*SysUserRole `gorm:"foreignKey:UserID;references:UserID"`
 	Tenant         *SysTenantInfo `gorm:"foreignKey:Code;references:TenantCode"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:tc_un;uniqueIndex:tc_doi;uniqueIndex:tc_email;uniqueIndex:tc_phone;uniqueIndex:tc_wui;uniqueIndex:tc_woi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_un;uniqueIndex:tc_doi;uniqueIndex:tc_email;uniqueIndex:tc_phone;uniqueIndex:tc_wui;uniqueIndex:tc_woi"`
 }
 
 func (m *SysUserInfo) TableName() string {
@@ -183,7 +183,7 @@ type SysUserRole struct {
 	UserID     int64             `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 用户ID
 	RoleID     int64             `gorm:"column:role_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 角色ID
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 func (m *SysUserRole) TableName() string {
