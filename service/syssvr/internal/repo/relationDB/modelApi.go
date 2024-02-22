@@ -11,7 +11,7 @@ type SysAccessInfo struct {
 	IsNeedAuth int64  `gorm:"column:is_need_auth;type:BIGINT;default:1;NOT NULL"`           // 是否需要认证（1是 2否）
 	Desc       string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                       // 备注
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:app_route"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:app_route"`
 	Apis        []*SysApiInfo      `gorm:"foreignKey:AccessCode;references:Code"`
 }
 
@@ -30,7 +30,7 @@ type SysApiInfo struct {
 	Desc         string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                    // 备注
 	IsAuthTenant int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 是否可以授权给普通租户
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:route"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:route"`
 }
 
 func (m *SysApiInfo) TableName() string {
@@ -43,7 +43,7 @@ type SysTenantAccess struct {
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tenant_scope;type:VARCHAR(50);NOT NULL;"`   // 租户编码
 	AccessCode string            `gorm:"column:api_scope_code;uniqueIndex:tenant_scope;type:VARCHAR(50);NOT NULL"` // 范围编码
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:tenant_scope"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tenant_scope"`
 }
 
 func (m *SysTenantAccess) TableName() string {

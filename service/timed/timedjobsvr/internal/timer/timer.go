@@ -8,6 +8,7 @@ import (
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -28,7 +29,7 @@ func (t Timed) ProcessTask(ctx context.Context, Task *asynq.Task) error {
 		err := func() error {
 			var taskInfo domain.TaskInfo
 			json.Unmarshal(Task.Payload(), &taskInfo)
-			tr := relationDB.NewTaskInfoRepo(ctx)
+			tr := stores.WithNoDebug(ctx, relationDB.NewTaskInfoRepo)
 			task, err := tr.FindOneByFilter(ctx, relationDB.TaskFilter{
 				IDs:       []int64{taskInfo.ID},
 				WithGroup: true,

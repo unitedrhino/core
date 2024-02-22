@@ -26,10 +26,14 @@ func NewRoleAppRepo(in any) *RoleAppRepo {
 type RoleAppFilter struct {
 	RoleID     int64
 	TenantCode string
+	AppCode    string
 }
 
 func (p RoleAppRepo) fmtFilter(ctx context.Context, f RoleAppFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	if f.AppCode != "" {
+		db = db.Where("app_code =?", f.AppCode)
+	}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)
 	}

@@ -17,7 +17,7 @@ type ViewProjectInfo struct {
 	CreatedUserID int64  `gorm:"column:created_user_id;type:bigint;NOT NULL"` //创建者id
 	Status        int64  `gorm:"column:status;type:SMALLINT;default:1"`       //项目状态 1: 已发布 2: 未发布
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;index"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 	Detail      *ViewProjectDetail `gorm:"foreignKey:ProjectID;references:ID"`
 }
 
@@ -26,5 +26,5 @@ type ViewProjectDetail struct {
 	Content   string `gorm:"column:content;type:text"`                         //项目参数
 	ProjectID int64  `gorm:"column:project_id;type:bigint;NOT NULL"`           //所属项目ID(雪花ID)
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;index"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 }

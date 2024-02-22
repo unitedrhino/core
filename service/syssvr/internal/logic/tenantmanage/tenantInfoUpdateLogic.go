@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/utils"
@@ -62,6 +63,9 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 		old.Desc = utils.ToEmptyString(in.Desc)
 	}
 	err = repo.Update(l.ctx, old)
-
+	err = caches.SetTenant(l.ctx, logic.ToTenantInfoCache(old))
+	if err != nil {
+		l.Error(err)
+	}
 	return &sys.Response{}, err
 }

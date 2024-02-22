@@ -3,8 +3,10 @@ package tenantmanagelogic
 import (
 	"context"
 	"database/sql"
+	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
@@ -107,6 +109,10 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	})
 	if err != nil {
 		return nil, err
+	}
+	err = caches.SetTenant(l.ctx, logic.ToTenantInfoCache(po))
+	if err != nil {
+		l.Error(err)
 	}
 	return &sys.WithID{Id: po.ID}, err
 }

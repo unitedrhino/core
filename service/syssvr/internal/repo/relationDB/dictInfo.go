@@ -30,14 +30,14 @@ type DictInfoFilter struct {
 	Status       int64
 	WithDetails  bool
 	WithChildren bool
-	DictIDPath   string
+	IDPath       string
 	ParentID     int64
 }
 
 func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	if f.DictIDPath != "" {
-		db = db.Where("dict_id_path like ?", f.DictIDPath+"%")
+	if f.IDPath != "" {
+		db = db.Where("id_path like ?", f.IDPath+"%")
 	}
 	if f.ParentID != 0 {
 		db = db.Where("parent_id = ?", f.ParentID)

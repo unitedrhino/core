@@ -15,7 +15,7 @@ type SysTenantInfo struct {
 	LogoUrl     string `gorm:"column:logo_url;type:VARCHAR(100);NOT NULL"`              //应用logo地址
 	Desc        string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:code;uniqueIndex:name"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code;uniqueIndex:name"`
 }
 
 func (m *SysTenantInfo) TableName() string {
@@ -28,7 +28,7 @@ type SysTenantApp struct {
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
 	AppCode    string            `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:tc_ac"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }
 
 func (m *SysTenantApp) TableName() string {
@@ -66,7 +66,7 @@ type SysTenantConfig struct {
 	WxMini         *SysTenantThird   `gorm:"embedded;embeddedPrefix:wxmini_"`              //微信小程序接入
 	RegisterRoleID int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"` //注册分配的角色id
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 type SysTenantEmail struct {

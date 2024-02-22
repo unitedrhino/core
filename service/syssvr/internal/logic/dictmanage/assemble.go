@@ -19,6 +19,7 @@ func ToDictInfoPb(in *relationDB.SysDictInfo, children []*relationDB.SysDictInfo
 		Children: ToDictInfosPb(in.Children),
 		Body:     utils.ToRpcNullString(in.Body),
 		Details:  ToDictDetailsPb(in.Details),
+		IdPath:   utils.GetIDPath(in.IDPath),
 	}
 	if children != nil {
 		var idMap = map[int64][]*sys.DictInfo{}

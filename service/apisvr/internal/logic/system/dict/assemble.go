@@ -72,6 +72,7 @@ func ToInfoTypes(in *sys.DictInfo) *types.DictInfo {
 		Desc:     utils.ToNullString(in.Desc),
 		Body:     utils.ToNullString(in.Body),
 		Details:  ToDetailsTypes(in.Details),
+		IDPath:   in.IdPath,
 		Children: ToInfosTypes(in.Children),
 	}
 }

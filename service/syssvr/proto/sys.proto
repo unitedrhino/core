@@ -851,8 +851,9 @@ message DictInfo{
   string type = 4;          // 字典名（英）
   google.protobuf.StringValue desc = 5;        // 模块描述
   google.protobuf.StringValue body = 6; // 自定义数据
-  repeated DictInfo Children =7;
-  repeated DictDetail Details = 8;
+  repeated int64 idPath =7;
+  repeated DictInfo Children =8;
+  repeated DictDetail Details = 9;
 }
 
 message DictInfoReadReq{

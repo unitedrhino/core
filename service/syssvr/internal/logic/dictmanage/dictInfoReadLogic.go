@@ -47,7 +47,7 @@ func (l *DictInfoReadLogic) DictInfoRead(in *sys.DictInfoReadReq) (*sys.DictInfo
 		return ToDictInfoPb(po, nil), nil
 	}
 	children, err := relationDB.NewDictInfoRepo(l.ctx).FindByFilter(l.ctx,
-		relationDB.DictInfoFilter{DictIDPath: po.DictIDPath, WithDetails: in.WithDetails}, nil)
+		relationDB.DictInfoFilter{IDPath: po.IDPath, WithDetails: in.WithDetails}, nil)
 	if err != nil {
 		return nil, err
 	}

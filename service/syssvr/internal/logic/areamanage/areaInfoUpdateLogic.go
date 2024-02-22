@@ -53,7 +53,7 @@ func (l *AreaInfoUpdateLogic) AreaInfoUpdate(in *sys.AreaInfo) (*sys.Response, e
 		}
 
 		if in.AreaName != "" && in.AreaName != areaPo.AreaName { //如果修改了区域名称
-			names := GetNamePath(areaPo.AreaNamePath)
+			names := utils.GetNamePath(areaPo.AreaNamePath)
 			names[len(names)-1] = in.AreaName
 			newAreaNamePath := strings.Join(names, "-") + "-"
 			aiDB := relationDB.NewAreaInfoRepo(tx)

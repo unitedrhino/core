@@ -7,6 +7,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/result"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -33,7 +34,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		if isOpen { //如果是开放请求
 			if err != nil {
 				logx.WithContext(r.Context()).Errorf("%s.OpenAuth error=%s", utils.FuncName(), err)
-				http.Error(w, "开放请求失败："+err.Error(), http.StatusUnauthorized)
+				result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("开放请求失败"))
 				return
 			}
 			//注入 用户信息 到 ctx
@@ -44,7 +45,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			userCtx, err = m.UserAuth(w, r)
 			if err != nil {
 				logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
-				http.Error(w, "用户请求失败："+err.Error(), http.StatusUnauthorized)
+				result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("用户请求失败"))
 				return
 			}
 			//注入 用户信息 到 ctx

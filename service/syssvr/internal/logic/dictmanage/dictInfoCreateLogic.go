@@ -41,13 +41,13 @@ func (l *DictInfoCreateLogic) DictInfoCreate(in *sys.DictInfo) (*sys.WithID, err
 	if err != nil {
 		return nil, err
 	}
-	po.DictIDPath = cast.ToString(po.ID) + "-"
+	po.IDPath = cast.ToString(po.ID) + "-"
 	if po.ParentID != 0 && po.ParentID != def.RootNode {
 		parent, err := relationDB.NewDictInfoRepo(l.ctx).FindOne(l.ctx, in.ParentID)
 		if err != nil {
 			return nil, err
 		}
-		po.DictIDPath = parent.DictIDPath + po.DictIDPath
+		po.IDPath = parent.IDPath + po.IDPath
 	}
 	err = relationDB.NewDictInfoRepo(l.ctx).Update(l.ctx, po)
 	if err != nil {
