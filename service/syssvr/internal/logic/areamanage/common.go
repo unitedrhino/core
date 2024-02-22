@@ -6,9 +6,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
-	"github.com/spf13/cast"
 	"gorm.io/gorm"
-	"strings"
 )
 
 func checkProject(ctx context.Context, tx *gorm.DB, projectID int64) (*relationDB.SysProjectInfo, error) {
@@ -49,7 +47,7 @@ func checkParentArea(ctx context.Context, tx *gorm.DB, parentAreaID int64) (*rel
 
 func addSubAreaIDs(ctx context.Context, tx *gorm.DB, po *relationDB.SysAreaInfo, subAreaID int64) error {
 	po.ChildrenAreaIDs = append(po.ChildrenAreaIDs, subAreaID)
-	ids := GetIDPath(po.AreaIDPath)
+	ids := utils.GetIDPath(po.AreaIDPath)
 	if len(ids) > 1 {
 		ids = ids[:len(ids)-1]
 		areas, err := relationDB.NewAreaInfoRepo(tx).FindByFilter(ctx, relationDB.AreaInfoFilter{AreaIDs: ids}, nil)
@@ -69,7 +67,7 @@ func addSubAreaIDs(ctx context.Context, tx *gorm.DB, po *relationDB.SysAreaInfo,
 
 func subSubAreaIDs(ctx context.Context, tx *gorm.DB, po *relationDB.SysAreaInfo, subAreaID int64) error {
 	po.ChildrenAreaIDs = utils.SliceDelete(po.ChildrenAreaIDs, subAreaID)
-	ids := GetIDPath(po.AreaIDPath)
+	ids := utils.GetIDPath(po.AreaIDPath)
 	if len(ids) > 1 {
 		ids = ids[:len(ids)-1]
 		areas, err := relationDB.NewAreaInfoRepo(tx).FindByFilter(ctx, relationDB.AreaInfoFilter{AreaIDs: ids}, nil)
@@ -85,23 +83,4 @@ func subSubAreaIDs(ctx context.Context, tx *gorm.DB, po *relationDB.SysAreaInfo,
 		}
 	}
 	return nil
-}
-
-func GetIDPath(areaIDPath string) (ret []int64) {
-	ids := strings.Split(areaIDPath, "-")
-	for _, v := range ids {
-		if v != "" {
-			ret = append(ret, cast.ToInt64(v))
-		}
-	}
-	return ret
-}
-func GetNamePath(areaNamePath string) (ret []string) {
-	ids := strings.Split(areaNamePath, "-")
-	for _, v := range ids {
-		if v != "" {
-			ret = append(ret, v)
-		}
-	}
-	return ret
 }
