@@ -11,7 +11,7 @@ replace (
 )
 
 require (
-	gitee.com/i-Things/share v0.1.4
+	gitee.com/i-Things/share v0.1.5
 	github.com/Masterminds/squirrel v1.20.1
 	github.com/casbin/casbin/v2 v2.68.0
 	github.com/dgraph-io/ristretto v0.1.0
