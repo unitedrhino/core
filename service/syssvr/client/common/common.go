@@ -129,6 +129,7 @@ type (
 	UserInfoIndexReq           = sys.UserInfoIndexReq
 	UserInfoIndexResp          = sys.UserInfoIndexResp
 	UserInfoReadReq            = sys.UserInfoReadReq
+	UserInfoUpdateReq          = sys.UserInfoUpdateReq
 	UserLoginReq               = sys.UserLoginReq
 	UserLoginResp              = sys.UserLoginResp
 	UserRegisterReq            = sys.UserRegisterReq

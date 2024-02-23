@@ -41,7 +41,7 @@ const (
 type UserManageClient interface {
 	UserInfoCreate(ctx context.Context, in *UserInfoCreateReq, opts ...grpc.CallOption) (*UserCreateResp, error)
 	UserInfoIndex(ctx context.Context, in *UserInfoIndexReq, opts ...grpc.CallOption) (*UserInfoIndexResp, error)
-	UserInfoUpdate(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Response, error)
+	UserInfoUpdate(ctx context.Context, in *UserInfoUpdateReq, opts ...grpc.CallOption) (*Response, error)
 	UserInfoRead(ctx context.Context, in *UserInfoReadReq, opts ...grpc.CallOption) (*UserInfo, error)
 	UserInfoDelete(ctx context.Context, in *UserInfoDeleteReq, opts ...grpc.CallOption) (*Response, error)
 	UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
@@ -81,7 +81,7 @@ func (c *userManageClient) UserInfoIndex(ctx context.Context, in *UserInfoIndexR
 	return out, nil
 }
 
-func (c *userManageClient) UserInfoUpdate(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Response, error) {
+func (c *userManageClient) UserInfoUpdate(ctx context.Context, in *UserInfoUpdateReq, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, UserManage_UserInfoUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -195,7 +195,7 @@ func (c *userManageClient) UserAreaApplyCreate(ctx context.Context, in *UserArea
 type UserManageServer interface {
 	UserInfoCreate(context.Context, *UserInfoCreateReq) (*UserCreateResp, error)
 	UserInfoIndex(context.Context, *UserInfoIndexReq) (*UserInfoIndexResp, error)
-	UserInfoUpdate(context.Context, *UserInfo) (*Response, error)
+	UserInfoUpdate(context.Context, *UserInfoUpdateReq) (*Response, error)
 	UserInfoRead(context.Context, *UserInfoReadReq) (*UserInfo, error)
 	UserInfoDelete(context.Context, *UserInfoDeleteReq) (*Response, error)
 	UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error)
@@ -220,7 +220,7 @@ func (UnimplementedUserManageServer) UserInfoCreate(context.Context, *UserInfoCr
 func (UnimplementedUserManageServer) UserInfoIndex(context.Context, *UserInfoIndexReq) (*UserInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserInfoIndex not implemented")
 }
-func (UnimplementedUserManageServer) UserInfoUpdate(context.Context, *UserInfo) (*Response, error) {
+func (UnimplementedUserManageServer) UserInfoUpdate(context.Context, *UserInfoUpdateReq) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserInfoUpdate not implemented")
 }
 func (UnimplementedUserManageServer) UserInfoRead(context.Context, *UserInfoReadReq) (*UserInfo, error) {
@@ -306,7 +306,7 @@ func _UserManage_UserInfoIndex_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _UserManage_UserInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserInfo)
+	in := new(UserInfoUpdateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -318,7 +318,7 @@ func _UserManage_UserInfoUpdate_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: UserManage_UserInfoUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserManageServer).UserInfoUpdate(ctx, req.(*UserInfo))
+		return srv.(UserManageServer).UserInfoUpdate(ctx, req.(*UserInfoUpdateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }

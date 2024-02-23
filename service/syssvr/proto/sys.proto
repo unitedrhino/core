@@ -7,7 +7,7 @@ package sys;
 service UserManage {
   rpc userInfoCreate(UserInfoCreateReq) returns(UserCreateResp);//创建用户信息
   rpc userInfoIndex(UserInfoIndexReq) returns(UserInfoIndexResp);
-  rpc userInfoUpdate(UserInfo) returns(Response);//更新用户基本数据
+  rpc userInfoUpdate(userInfoUpdateReq) returns(Response);//更新用户基本数据
   rpc userInfoRead(UserInfoReadReq) returns(UserInfo);//获取用户信息
   rpc userInfoDelete(UserInfoDeleteReq) returns(Response);//刪除用戶
   rpc userLogin(UserLoginReq) returns(UserLoginResp);
@@ -581,8 +581,8 @@ message UserInfo{
   int64  userID = 1;
   string userName =2;
   string password =3;
-  string email = 4;
-  string phone =5;
+  google.protobuf.StringValue email = 4;
+  google.protobuf.StringValue phone =5;
   string wechatUnionID = 6;
   string lastIP =7;
   string regIP =8;
@@ -664,7 +664,10 @@ message UserInfoIndexResp{
   int64 total = 2;
 }
 
-
+message userInfoUpdateReq{
+  UserInfo info =1;
+  bool WithRoot =2;//root可以修改所有字段
+}
 
 message UserInfoReadReq{
   int64 userID=1;

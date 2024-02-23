@@ -32,7 +32,7 @@ func (s *UserManageServer) UserInfoIndex(ctx context.Context, in *sys.UserInfoIn
 	return l.UserInfoIndex(in)
 }
 
-func (s *UserManageServer) UserInfoUpdate(ctx context.Context, in *sys.UserInfo) (*sys.Response, error) {
+func (s *UserManageServer) UserInfoUpdate(ctx context.Context, in *sys.UserInfoUpdateReq) (*sys.Response, error) {
 	l := usermanagelogic.NewUserInfoUpdateLogic(ctx, s.svcCtx)
 	return l.UserInfoUpdate(in)
 }

@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 	"github.com/golang/protobuf/ptypes/wrappers"
 )
 
@@ -22,8 +23,8 @@ func UserInfoToApi(ui *sys.UserInfo, roles []*sys.RoleInfo, tenant *sys.TenantIn
 	return &types.UserInfo{
 		UserID:      ui.UserID,
 		UserName:    ui.UserName,
-		Email:       ui.Email,
-		Phone:       ui.Phone,
+		Email:       utils.ToNullString(ui.Email),
+		Phone:       utils.ToNullString(ui.Phone),
 		LastIP:      ui.LastIP,
 		RegIP:       ui.RegIP,
 		Role:        ui.Role,
@@ -47,8 +48,8 @@ func UserInfoToRpc(ui *types.UserInfo) *sys.UserInfo {
 	return &sys.UserInfo{
 		UserID:          ui.UserID,
 		UserName:        ui.UserName,
-		Email:           ui.Email,
-		Phone:           ui.Phone,
+		Email:           utils.ToRpcNullString(ui.Email),
+		Phone:           utils.ToRpcNullString(ui.Phone),
 		LastIP:          ui.LastIP,
 		RegIP:           ui.RegIP,
 		Role:            ui.Role,

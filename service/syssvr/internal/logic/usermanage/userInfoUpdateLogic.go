@@ -32,52 +32,61 @@ func NewUserInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 	}
 }
 
-func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfo) (*sys.Response, error) {
-	ui, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{in.UserID}, WithRoles: true})
+func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Response, error) {
+	info := in.Info
+	ui, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{info.UserID}, WithRoles: true})
 	if err != nil {
-		l.Errorf("%s.FindOne UserID=%d err=%v", utils.FuncName(), in.UserID, err)
+		l.Errorf("%s.FindOne UserID=%d err=%v", utils.FuncName(), info.UserID, err)
 		return nil, err
 	}
-	if in.UserName != "" {
-		ui.UserName = sql.NullString{String: in.UserName, Valid: true}
+	if in.WithRoot {
+		if info.Phone != nil {
+			ui.Phone = utils.AnyToNullString(info.Phone)
+		}
+		if info.Email != nil {
+			ui.Email = utils.AnyToNullString(info.Email)
+		}
 	}
-	if in.NickName != "" {
-		ui.NickName = in.NickName
+	if info.UserName != "" {
+		ui.UserName = sql.NullString{String: info.UserName, Valid: true}
+	}
+	if info.NickName != "" {
+		ui.NickName = info.NickName
 	}
 
 	//性別有效才賦值，否則使用旧值
 	if ui.Sex == def.Unknown {
 		ui.Sex = def.Male
 	} else {
-		ui.Sex = in.Sex
+		ui.Sex = info.Sex
 	}
 
 	//设置数据超管
-	if in.IsAllData == 1 || in.IsAllData == 2 {
-		ui.IsAllData = in.IsAllData
+	if info.IsAllData == 1 || info.IsAllData == 2 {
+		ui.IsAllData = info.IsAllData
 	}
-	if in.Role != 0 && in.Role != ui.Role {
-		ui.Role = in.Role
+	if info.Role != 0 && info.Role != ui.Role {
+		ui.Role = info.Role
 	}
-	if in.IsUpdateHeadImg && in.HeadImg != "" {
+	if info.IsUpdateHeadImg && info.HeadImg != "" {
 		if ui.HeadImg != "" {
 			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, ui.HeadImg, common.OptionKv{})
 			if err != nil {
 				l.Errorf("Delete file err path:%v,err:%v", ui.HeadImg, err)
 			}
 		}
-		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessUserManage, oss.SceneUserInfo, fmt.Sprintf("%d/%s", ui.UserID, oss.GetFileNameWithPath(in.HeadImg)))
-		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(in.HeadImg, nwePath)
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessUserManage, oss.SceneUserInfo, fmt.Sprintf("%d/%s", ui.UserID, oss.GetFileNameWithPath(info.HeadImg)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(info.HeadImg, nwePath)
 		if err != nil {
 			return nil, errors.System.AddDetail(err)
 		}
 		ui.HeadImg = path
 	}
 
-	if in.Role != 0 { //默认角色只能修改为授权的角色
+	if info.Role != 0 { //默认角色只能修改为授权的角色
 		for _, r := range ui.Roles {
-			if r.RoleID == in.Role {
-				ui.Role = in.Role
+			if r.RoleID == info.Role {
+				ui.Role = info.Role
 			}
 		}
 	}

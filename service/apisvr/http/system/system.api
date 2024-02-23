@@ -86,6 +86,7 @@ type (
     }
     AccessGroupInfo  {
         ID string `json:"id,optional"`                               // id
+        Code string `json:"code,optional"`                               // 应用编号
         name  string `json:"name,optional"`                               // 接口分组
         Children []*AccessInfo `json:"children"`            // 列表数据
     }

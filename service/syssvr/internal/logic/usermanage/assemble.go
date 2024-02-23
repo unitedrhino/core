@@ -21,8 +21,8 @@ func UserInfoToPb(ctx context.Context, ui *relationDB.SysUserInfo, svcCtx *svc.S
 	return &sys.UserInfo{
 		UserID:        ui.UserID,
 		UserName:      ui.UserName.String,
-		Email:         ui.Email.String,
-		Phone:         ui.Phone.String,
+		Email:         utils.ToRpcNullString(ui.Email.String),
+		Phone:         utils.ToRpcNullString(ui.Phone.String),
 		WechatUnionID: ui.WechatUnionID.String,
 		LastIP:        ui.LastIP,
 		RegIP:         ui.RegIP,

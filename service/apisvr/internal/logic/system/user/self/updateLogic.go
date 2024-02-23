@@ -3,6 +3,7 @@ package self
 import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/user"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
@@ -30,7 +31,7 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 func (l *UpdateLogic) Update(req *types.UserInfo) error {
 	var uc = ctxs.GetUserCtx(l.ctx)
 	req.UserID = uc.UserID
-	_, err := l.svcCtx.UserRpc.UserInfoUpdate(l.ctx, user.UserInfoToRpc(req))
+	_, err := l.svcCtx.UserRpc.UserInfoUpdate(l.ctx, &sys.UserInfoUpdateReq{Info: user.UserInfoToRpc(req)})
 	if err != nil {
 		er := errors.Fmt(err)
 		l.Errorf("%s.rpc.user.upadte failure err=%+v", utils.FuncName(), er)

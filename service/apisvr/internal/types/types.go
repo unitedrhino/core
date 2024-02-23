@@ -3,6 +3,7 @@ package types
 
 type AccessGroupInfo struct {
 	ID       string        `json:"id,optional"`   // id
+	Code     string        `json:"code,optional"` // 应用编号
 	Name     string        `json:"name,optional"` // 接口分组
 	Children []*AccessInfo `json:"children"`      // 列表数据
 }
@@ -807,8 +808,8 @@ type UserInfo struct {
 	UserID          int64       `json:"userID,string,optional"`             // 用户id
 	UserName        string      `json:"userName,optional"`                  // 用户名(唯一)
 	Password        string      `json:"password,optional,omitempty"`        // 登录密码
-	Email           string      `json:"email,optional"`                     // 邮箱
-	Phone           string      `json:"phone,optional"`                     // 手机号
+	Email           *string     `json:"email,optional"`                     // 邮箱
+	Phone           *string     `json:"phone,optional"`                     // 手机号
 	LastIP          string      `json:"lastIP,optional"`                    // 最后登录ip
 	RegIP           string      `json:"regIP,optional"`                     // 注册ip
 	NickName        string      `json:"nickName,optional"`                  // 用户的昵称

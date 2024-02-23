@@ -37,13 +37,13 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	if info.Email != "" {
-		if !utils.IsEmail(info.Email) {
+	if info.Email.String() != "" {
+		if !utils.IsEmail(info.Email.String()) {
 			return 0, errors.Parameter.AddMsgf("邮箱格式错误")
 		}
 	}
-	if info.Phone != "" {
-		if !utils.IsPhone(info.Phone) {
+	if info.Phone.String() != "" {
+		if !utils.IsPhone(info.Phone.String()) {
 			return 0, errors.Parameter.AddMsgf("手机号格式错误")
 		}
 	}
@@ -64,11 +64,11 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		var account = []string{info.UserName}
-		if info.Phone != "" {
-			account = append(account, info.Phone)
+		if info.Phone.String() != "" {
+			account = append(account, info.Phone.String())
 		}
-		if info.Email != "" {
-			account = append(account, info.Email)
+		if info.Email.String() != "" {
+			account = append(account, info.Email.String())
 		}
 		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: account})
 		if err == nil { //已注册
@@ -91,11 +91,11 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 			Role:      info.Role,
 			IsAllData: info.IsAllData,
 		}
-		if info.Email != "" {
-			ui.Email = sql.NullString{String: info.Email, Valid: true}
+		if info.Email.String() != "" {
+			ui.Email = sql.NullString{String: info.Email.String(), Valid: true}
 		}
-		if info.Phone != "" {
-			ui.Phone = sql.NullString{String: info.Phone, Valid: true}
+		if info.Phone.String() != "" {
+			ui.Phone = sql.NullString{String: info.Phone.String(), Valid: true}
 		}
 		err = uidb.Insert(l.ctx, &ui)
 		if err != nil { //并发情况下有可能重复所以需要再次判断一次

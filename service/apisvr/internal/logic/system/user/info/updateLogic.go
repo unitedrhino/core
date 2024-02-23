@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/user"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
 
@@ -26,7 +27,10 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(req *types.UserInfo) error {
-	_, err := l.svcCtx.UserRpc.UserInfoUpdate(l.ctx, user.UserInfoToRpc(req))
+	_, err := l.svcCtx.UserRpc.UserInfoUpdate(l.ctx, &sys.UserInfoUpdateReq{
+		Info:     user.UserInfoToRpc(req),
+		WithRoot: true,
+	})
 	if err != nil {
 		er := errors.Fmt(err)
 		l.Errorf("%s.rpc.user.upadte failure err=%+v", utils.FuncName(), er)

@@ -50,8 +50,10 @@ func ToAccessGroupInfoTypes(in []*sys.AccessInfo) (ret []*types.AccessGroupInfo)
 	var groupID int64
 	for k, v := range retMap {
 		groupID++
+		code := fmt.Sprintf("group%d", groupID)
 		retList = append(retList, &types.AccessGroupInfo{
-			ID:       fmt.Sprintf("group%d", groupID),
+			ID:       code,
+			Code:     code,
 			Name:     k,
 			Children: v,
 		})

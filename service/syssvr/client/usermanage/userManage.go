@@ -129,6 +129,7 @@ type (
 	UserInfoIndexReq           = sys.UserInfoIndexReq
 	UserInfoIndexResp          = sys.UserInfoIndexResp
 	UserInfoReadReq            = sys.UserInfoReadReq
+	UserInfoUpdateReq          = sys.UserInfoUpdateReq
 	UserLoginReq               = sys.UserLoginReq
 	UserLoginResp              = sys.UserLoginResp
 	UserRegisterReq            = sys.UserRegisterReq
@@ -143,7 +144,7 @@ type (
 	UserManage interface {
 		UserInfoCreate(ctx context.Context, in *UserInfoCreateReq, opts ...grpc.CallOption) (*UserCreateResp, error)
 		UserInfoIndex(ctx context.Context, in *UserInfoIndexReq, opts ...grpc.CallOption) (*UserInfoIndexResp, error)
-		UserInfoUpdate(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Response, error)
+		UserInfoUpdate(ctx context.Context, in *UserInfoUpdateReq, opts ...grpc.CallOption) (*Response, error)
 		UserInfoRead(ctx context.Context, in *UserInfoReadReq, opts ...grpc.CallOption) (*UserInfo, error)
 		UserInfoDelete(ctx context.Context, in *UserInfoDeleteReq, opts ...grpc.CallOption) (*Response, error)
 		UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
@@ -198,12 +199,12 @@ func (d *directUserManage) UserInfoIndex(ctx context.Context, in *UserInfoIndexR
 	return d.svr.UserInfoIndex(ctx, in)
 }
 
-func (m *defaultUserManage) UserInfoUpdate(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Response, error) {
+func (m *defaultUserManage) UserInfoUpdate(ctx context.Context, in *UserInfoUpdateReq, opts ...grpc.CallOption) (*Response, error) {
 	client := sys.NewUserManageClient(m.cli.Conn())
 	return client.UserInfoUpdate(ctx, in, opts...)
 }
 
-func (d *directUserManage) UserInfoUpdate(ctx context.Context, in *UserInfo, opts ...grpc.CallOption) (*Response, error) {
+func (d *directUserManage) UserInfoUpdate(ctx context.Context, in *UserInfoUpdateReq, opts ...grpc.CallOption) (*Response, error) {
 	return d.svr.UserInfoUpdate(ctx, in)
 }
 
