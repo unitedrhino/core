@@ -58,7 +58,7 @@ func (i Infos) Request(ctx context.Context, in any) error {
 			if err != nil {
 				return err
 			}
-			greq.Post(url).Type(gorequest.TypeJSON).Send(out.String())
+			greq.Post(url).Type("json").Send(out.String())
 		}
 		switch v.AuthType {
 		case AuthTypeCore:
