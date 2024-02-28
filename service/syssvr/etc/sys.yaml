@@ -13,6 +13,11 @@ CacheRedis:
   - Host: 127.0.0.1:6379
     Pass:
     Type: node
+Event:
+  Mode: natsJs
+  Nats:
+    Url: nats://127.0.0.1:4222
+    Consumer: dmsvr
 UserToken:
   AccessSecret: ad879037-c7a4-4063-9236-6bfc35d54b7d
   AccessExpire: 360000000 #有效期为一小时

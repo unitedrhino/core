@@ -14,8 +14,8 @@ type Config struct {
 		AccessSecret string
 		AccessExpire int64
 	}
-	OssConf conf.OssConf `json:",optional"`
-
+	OssConf  conf.OssConf `json:",optional"`
+	Event    conf.EventConf
 	Register struct {
 		NeedDetail   bool   `json:",default=true"` //注册的时候是否需要填写用户信息,账号密码
 		SecondSecret string //第二步需要的token秘钥

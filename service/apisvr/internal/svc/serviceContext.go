@@ -27,19 +27,12 @@ import (
 	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/verify"
 	ws "gitee.com/i-Things/share/websocket"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
 	"time"
 )
-
-func init() {
-	jwt.TimeFunc = func() time.Time {
-		return time.Now()
-	}
-}
 
 type SvrClient struct {
 	TenantRpc tenant.TenantManage

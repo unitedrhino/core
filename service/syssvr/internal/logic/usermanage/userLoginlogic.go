@@ -57,7 +57,7 @@ func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) er
 }
 
 func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCtlInfo) (*sys.UserLoginResp, error) {
-	now := time.Now().Unix()
+	now := time.Now()
 	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
 	var rolses []int64
 	var isAdmin int64 = def.False
@@ -95,8 +95,8 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCt
 		Info: UserInfoToPb(l.ctx, ui, l.svcCtx),
 		Token: &sys.JwtToken{
 			AccessToken:  jwtToken,
-			AccessExpire: now + accessExpire,
-			RefreshAfter: now + accessExpire/2,
+			AccessExpire: now.Unix() + accessExpire,
+			RefreshAfter: now.Unix() + accessExpire/2,
 		},
 	}
 	l.Infof("%s getRet=%+v", utils.FuncName(), resp)

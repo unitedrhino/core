@@ -2,9 +2,11 @@ package relationDB
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/core/service/timed/internal/domain"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/events/topics"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm/clause"
 	"sync"
@@ -85,7 +87,7 @@ var (
 			Type:      domain.TaskTypeDelay, //定义一个延时任务
 			Name:      "流服务数据初始化(自动添加docker到数据库)",
 			Code:      "VidInfoInitDatabase",
-			Params:    `{"topic":"server.vid.info.init.database","payload":""}`,
+			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.VidInfoInitDatabase),
 			CronExpr:  "",
 			Status:    def.StatusWaitRun,
 			Priority:  3,
@@ -95,7 +97,7 @@ var (
 			Type:      domain.TaskTypeTiming,
 			Name:      "timedJob服务缓存及日志清理",
 			Code:      "timedJobClean",
-			Params:    `{"topic":"server.timedjob.clean","payload":""}`,
+			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.TimedJobClean),
 			CronExpr:  "1 1 * * ?",
 			Status:    def.StatusWaitRun,
 			Priority:  3,
@@ -105,7 +107,7 @@ var (
 			Type:      domain.TaskTypeTiming,
 			Name:      "流服务状态更新",
 			Code:      "VidInfoCheckStatus",
-			Params:    `{"topic":"server.vid.info.check.status","payload":""}`,
+			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.VidInfoCheckStatus),
 			CronExpr:  "@every 30s",
 			Status:    def.StatusWaitRun,
 			Priority:  1, //低优先级任务

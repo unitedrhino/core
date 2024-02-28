@@ -60,8 +60,11 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 	//if pb.CompanyName != nil {
 	//	po.CompanyName = pb.CompanyName.GetValue()
 	//}
-	if pb.AdminUserID != 0 {
-		po.AdminUserID = pb.AdminUserID
+	if pb.AdminUserID != 0 && pb.AdminUserID != po.AdminUserID {
+		uc := ctxs.GetUserCtx(l.ctx)
+		if uc.UserID == po.AdminUserID { //只有项目的管理员才有权限更换
+			po.AdminUserID = pb.AdminUserID
+		}
 	}
 	if pb.Position != nil {
 		po.Position = logic.ToStorePoint(pb.Position)
