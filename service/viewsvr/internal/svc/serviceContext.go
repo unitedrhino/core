@@ -23,7 +23,7 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	stores.InitConn(c.Database)
-	relationDB.Migrate(c.Database)
+	logx.Must(relationDB.Migrate(c.Database))
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
 		logx.Errorf("NewOss err err:%v", err)
