@@ -17,6 +17,11 @@ func ToTaskInfoDo(po *TimedTaskInfo) *domain.TaskInfo {
 		var param domain.ParamQueue
 		json.Unmarshal([]byte(po.Params), &param)
 		do.Queue = &param
+	case domain.TaskGroupTypeScript:
+		var sql domain.ParamScript
+		json.Unmarshal([]byte(po.Params), &sql)
+		do.Script = &domain.Script{Param: sql}
+		json.Unmarshal([]byte(po.Group.Config), &do.Script.Config)
 	case domain.TaskGroupTypeSql:
 		var sql domain.ParamSql
 		json.Unmarshal([]byte(po.Params), &sql)

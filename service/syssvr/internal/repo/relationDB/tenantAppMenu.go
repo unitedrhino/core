@@ -23,12 +23,16 @@ type TenantAppMenuFilter struct {
 	AppCode    string
 	Path       string
 	MenuIDs    []int64
+	TempLateID int64
 }
 
 func (p TenantAppMenuRepo) fmtFilter(ctx context.Context, f TenantAppMenuFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)
+	}
+	if f.TempLateID != 0 {
+		db = db.Where("template_id=?", f.TempLateID)
 	}
 	if f.AppCode != "" {
 		db = db.Where("app_code =?", f.AppCode)
@@ -81,6 +85,13 @@ func (p TenantAppMenuRepo) CountByFilter(ctx context.Context, f TenantAppMenuFil
 
 func (p TenantAppMenuRepo) Update(ctx context.Context, data *SysTenantAppMenu) error {
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
+	return stores.ErrFmt(err)
+}
+
+// 只更新非零值的字段
+func (p TenantAppMenuRepo) UpdateByFilter(ctx context.Context, data *SysTenantAppMenu, f TenantAppMenuFilter) error {
+	db := p.fmtFilter(ctx, f).Model(&SysTenantAppMenu{})
+	err := db.Updates(data).Error
 	return stores.ErrFmt(err)
 }
 

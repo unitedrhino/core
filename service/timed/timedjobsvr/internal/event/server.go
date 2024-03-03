@@ -2,7 +2,10 @@ package event
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 	"strings"
 	"time"
@@ -20,6 +23,12 @@ func NewEventServer(ctx context.Context, svcCtx *svc.ServiceContext) *Server {
 
 func (s *Server) DataClean() error {
 	s.Info("start data clean")
+	ctxs.GoNewCtx(s.ctx, func(ctx context.Context) {
+		err := relationDB.NewJobLogRepo(ctx).DeleteByFilter(ctx, relationDB.TaskLogFilter{CreatedTime: stores.CmpLt(time.Now().Add(time.Hour * 24 * 3))}) //只保留三天的日志
+		if err != nil {
+			logx.WithContext(ctx).Error(err)
+		}
+	})
 	keys, err := s.svcCtx.Redis.KeysCtx(s.ctx, "timed:sql:*:hash:*")
 	if err != nil {
 		return err

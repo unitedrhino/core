@@ -3,6 +3,7 @@ package modulemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -25,6 +26,9 @@ func NewModuleInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *ModuleInfoDeleteLogic) ModuleInfoDelete(in *sys.WithIDCode) (*sys.Response, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	f := relationDB.ModuleInfoFilter{ID: in.Id}
 	if in.Code != "" {
 		f.Codes = []string{in.Code}

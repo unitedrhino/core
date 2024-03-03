@@ -173,7 +173,6 @@ func init() {
 			MenuID:     i,
 		})
 	}
-
 }
 
 const (

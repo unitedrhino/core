@@ -25,12 +25,20 @@ func NewJobLogRepo(in context.Context) *TaskLogRepo {
 }
 
 type TaskLogFilter struct {
-	//todo 添加过滤字段
+	GroupCode   string
+	TaskCode    string
+	CreatedTime *stores.Cmp
 }
 
 func (p TaskLogRepo) fmtFilter(ctx context.Context, f TaskLogFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	//todo 添加条件
+	if f.GroupCode != "" {
+		db = db.Where("group_code=?", f.GroupCode)
+	}
+	db = f.CreatedTime.Where(db, "created_time")
+	if f.TaskCode != "" {
+		db = db.Where("task_code=?", f.TaskCode)
+	}
 	return db
 }
 

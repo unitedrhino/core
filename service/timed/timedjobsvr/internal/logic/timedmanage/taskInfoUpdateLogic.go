@@ -45,6 +45,9 @@ func (l *TaskInfoUpdateLogic) TaskInfoUpdate(in *timedjob.TaskInfo) (*timedjob.R
 	if in.Status != 0 {
 		oldPo.Status = in.Status
 	}
+	if in.Topics != nil {
+		oldPo.Topics = in.Topics
+	}
 	if in.Priority != 0 {
 		oldPo.Priority = in.Priority
 	}

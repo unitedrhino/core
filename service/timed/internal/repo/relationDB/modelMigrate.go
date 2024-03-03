@@ -138,4 +138,5 @@ var (
 			Config:   `{"database":{"select":{"dsn":"root:password@tcp(127.0.0.1:3306)/iThings?charset=utf8mb4&collation=utf8mb4_bin&parseTime=true&loc=Asia%2FShanghai","dbType":"mysql"}}}`,
 		},
 	}
+	//var a = "{\"execContent\": \"function SqlJob(){let values=Select('Select * from model_common_hublog limit 10');LogInfo('select get value :',values);return {code:200,msg:'ok'};}\"}"
 )

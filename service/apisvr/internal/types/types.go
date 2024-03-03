@@ -523,6 +523,12 @@ type Tag struct {
 	Value string `json:"value"`
 }
 
+type TaskLogScript struct {
+	Level       string `json:"level"`       //日志级别: info warn error
+	Content     string `json:"content"`     //日志内容
+	CreatedTime int64  `json:"createdTime"` //日志创建时间
+}
+
 type TenantAccessInfoIndexReq struct {
 	Code string `json:"code"` // 租户编号
 }
@@ -647,8 +653,8 @@ type TimeRange struct {
 type TimedTaskGroup struct {
 	Code     string            `json:"code"`              //任务组编码
 	Name     string            `json:"name,optional"`     // 组名
-	Type     string            `json:"type,optional"`     //组类型:queue(消息队列消息发送)  sql(执行sql) email(邮件发送) http(http请求)
-	SubType  string            `json:"subType,optional"`  //组子类型 natsJs nats         normal js
+	Type     string            `json:"type,optional"`     //组类型:queue(消息队列消息发送)  sql(执行sql) script(脚本执行) email(邮件发送) http(http请求)
+	SubType  string            `json:"subType,optional"`  //组子类型 natsJs nats                        js
 	Priority int64             `json:"priority,optional"` //组优先级: 6:critical 最高优先级  3: default 普通优先级 1:low 低优先级
 	Env      map[string]string `json:"env,optional"`      //环境变量
 	Config   string            `json:"config,optional"`
@@ -664,14 +670,15 @@ type TimedTaskGroupIndexResp struct {
 }
 
 type TimedTaskInfo struct {
-	GroupCode string `json:"groupCode"`         //组编码
-	Type      int64  `json:"type,optional"`     //任务类型 1 定时任务 2 延时任务
-	Name      string `json:"name,optional"`     // 任务名称
-	Code      string `json:"code"`              //任务编码
-	Params    string `json:"params,optional"`   // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
-	CronExpr  string `json:"cronExpr,optional"` // cron执行表达式
-	Status    int64  `json:"status,optional"`   // 状态
-	Priority  int64  `json:"priority,optional"` //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
+	GroupCode string   `json:"groupCode"`         //组编码
+	Type      int64    `json:"type,optional"`     //任务类型 1 定时任务 2 延时任务 3 消息队列触发
+	Name      string   `json:"name,optional"`     // 任务名称
+	Code      string   `json:"code"`              //任务编码
+	Params    string   `json:"params,optional"`   // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
+	CronExpr  string   `json:"cronExpr,optional"` // cron执行表达式
+	Status    int64    `json:"status,optional"`   // 状态
+	Topics    []string `json:"topics,optional"`   //触发topic列表
+	Priority  int64    `json:"priority,optional"` //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
 }
 
 type TimedTaskInfoIndexReq struct {
@@ -681,6 +688,38 @@ type TimedTaskInfoIndexReq struct {
 type TimedTaskInfoIndexResp struct {
 	List  []*TimedTaskInfo `json:"list"`
 	Total int64            `json:"total"`
+}
+
+type TimedTaskLog struct {
+	ID          int64               `json:"id"`
+	GroupCode   string              `json:"groupCode"`  //组编码
+	TaskCode    string              `json:"taskCode"`   //任务编码
+	Params      string              `json:"params"`     // 任务参数
+	ResultCode  int64               `json:"resultCode"` //结果code
+	ResultMsg   string              `json:"resultMsg"`  //结果消息
+	CreatedTime int64               `json:"createdTime"`
+	Sql         *TimedTaskLogSql    `json:"sql,omitempty"`
+	Script      *TimedTaskLogScript `json:"script,omitempty"`
+}
+
+type TimedTaskLogIndexReq struct {
+	Page      *PageInfo `json:"page"`              //分页信息,只获取一个则不填
+	GroupCode string    `json:"groupCode"`         //组编码
+	TaskCode  string    `json:"taskCode,optional"` //组编码
+}
+
+type TimedTaskLogIndexResp struct {
+	List  []*TimedTaskLog `json:"list"`
+	Total int64           `json:"total"`
+}
+
+type TimedTaskLogScript struct {
+	ExecLog []*TaskLogScript `json:"execLog"` //执行日志
+}
+
+type TimedTaskLogSql struct {
+	SelectNum int64 `json:"selectNum"` //查询的数量
+	ExecNum   int64 `json:"execNum"`   //执行的数量
 }
 
 type TimedTaskOption struct {
@@ -697,17 +736,22 @@ type TimedTaskParamQueue struct {
 	Payload string `json:"payload"`
 }
 
-type TimedTaskParamSql struct {
+type TimedTaskParamScript struct {
 	Param       map[string]string `json:"param"`
-	ExecContent string            `json:"execContent"` //如果是normal,填写执行的sql,如果是脚本,填写脚本内容,如果不填,则会使用数据库中第一次初始化的参数
+	ExecContent string            `json:"execContent"` //填写脚本内容,如果不填,则会使用数据库中第一次初始化的参数
+}
+
+type TimedTaskParamSql struct {
+	Sql string `json:"sql"`
 }
 
 type TimedTaskSendReq struct {
-	GroupCode  string               `json:"groupCode"`           //组需要提前创建好
-	Code       string               `json:"code"`                //任务code
-	Option     *TimedTaskOption     `json:"option,optional"`     //选项
-	ParamQueue *TimedTaskParamQueue `json:"paramQueue,optional"` //消息队列发送类型配置,如果不传则使用数据库定义的
-	ParamSql   *TimedTaskParamSql   `json:"paramSql,optional"`   //数据库执行类型配置,如果不传则使用数据库定义的
+	GroupCode   string                `json:"groupCode"`           //组需要提前创建好
+	Code        string                `json:"code"`                //任务code
+	Option      *TimedTaskOption      `json:"option,optional"`     //选项
+	ParamQueue  *TimedTaskParamQueue  `json:"paramQueue,optional"` //消息队列发送类型配置,如果不传则使用数据库定义的
+	ParamSql    *TimedTaskParamSql    `json:"paramSql,optional"`   //数据库执行类型配置,如果不传则使用数据库定义的
+	ParamScript *TimedTaskParamScript `json:"paramScript,optional"`
 }
 
 type TimedTaskWithTaskID struct {

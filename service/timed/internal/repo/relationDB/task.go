@@ -29,6 +29,7 @@ type TaskFilter struct {
 	Types     []int64
 	Status    []int64
 	Codes     []string
+	GroupCode string
 	WithGroup bool
 }
 
@@ -36,6 +37,9 @@ func (p TaskRepo) fmtFilter(ctx context.Context, f TaskFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if len(f.Status) != 0 {
 		db = db.Where("status in ?", f.Status)
+	}
+	if f.GroupCode != "" {
+		db = db.Where("group_code = ?", f.GroupCode)
 	}
 	if len(f.Types) != 0 {
 		db = db.Where("type in ?", f.Types)

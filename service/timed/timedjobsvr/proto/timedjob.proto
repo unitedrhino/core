@@ -58,8 +58,32 @@ message TaskLogIndexResp{
   repeated TaskLog list = 1;
   int64  total = 2;//总数(只有分页的时候会返回)
 }
+
 message TaskLog{
-  //todo
+  int64 id =1;
+  string groupCode =2; //组编码
+  string taskCode =3; //任务编码
+  string params =4; // 任务参数
+  int64 resultCode =5; //结果code
+  string resultMsg =6; //结果消息
+  int64 createdTime =7;
+  TaskLogSql sql =8;
+  TaskLogScript script =9; //脚本日志
+}
+
+message TaskLogSql{
+  int64 selectNum =2;//查询的数量
+  int64 execNum =3;//执行的数量
+}
+
+message TaskLogScript{
+  repeated TaskExecLog execLog =9; //执行日志
+}
+
+message TaskExecLog{
+  string  level =1;//日志级别: info warn error
+  string content =2;//日志内容
+  int64 createdTime=3;//日志创建时间
 }
 
 message TaskGroupIndexReq{
@@ -80,9 +104,10 @@ message TaskInfoIndexResp{
 
 message TaskInfo {
   string groupCode = 2;//组编码
-  int64 type = 3;//任务类型 1 定时任务 2 延时任务
+  int64 type = 3;//任务类型 1 定时任务 2 延时任务 3 消息队列触发
   string name = 4;// 任务名称
   string code = 5;//任务编码
+  repeated string topics =1;//触发topic列表
   string params = 6;// 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
   string cronExpr = 7;// cron执行表达式
   int64 status = 8;// 状态
@@ -92,8 +117,8 @@ message TaskInfo {
 message TaskGroup {
   string code =1;//任务组编码
   string name =2;// 组名
-  string type =3;//组类型:queue(消息队列消息发送)  sql(执行sql) email(邮件发送) http(http请求)
-  string subType =4;//组子类型 natsJs nats         normal js
+  string type =3;//组类型:queue(消息队列消息发送)  sql(执行sql) script(脚本执行) email(邮件发送) http(http请求)
+  string subType =4;//组子类型 natsJs nats                    js
   int64 priority =5;//组优先级: 6:critical 最高优先级  3: default 普通优先级 1:low 低优先级
   map<string,string> env =6;//环境变量
   /*
@@ -109,10 +134,14 @@ message TaskSendReq{
   TaskSendOption option = 3;//选项
   TaskParamQueue paramQueue = 4;//消息队列发送类型配置,如果不传则使用数据库定义的
   TaskParamSql paramSql = 5;//数据库执行类型配置,如果不传则使用数据库定义的
+  TaskParamScript paramScript = 7;//数据库执行类型配置,如果不传则使用数据库定义的
+}
+message TaskParamSql{
+  string sql =1;//填写脚本内容,如果不填,则会使用数据库中第一次初始化的参数
 }
 
-message TaskParamSql{
-  string execContent =1;//如果是normal,填写执行的sql,如果是脚本,填写脚本内容,如果不填,则会使用数据库中第一次初始化的参数
+message TaskParamScript{
+  string execContent =1;//填写脚本内容,如果不填,则会使用数据库中第一次初始化的参数
   map<string,string> param =2;//脚本参数,会通过函数入参传进去
 }
 

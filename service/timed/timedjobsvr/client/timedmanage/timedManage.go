@@ -18,6 +18,7 @@ type (
 	PageInfo           = timedjob.PageInfo
 	PageInfo_OrderBy   = timedjob.PageInfo_OrderBy
 	Response           = timedjob.Response
+	TaskExecLog        = timedjob.TaskExecLog
 	TaskGroup          = timedjob.TaskGroup
 	TaskGroupIndexReq  = timedjob.TaskGroupIndexReq
 	TaskGroupIndexResp = timedjob.TaskGroupIndexResp
@@ -27,7 +28,10 @@ type (
 	TaskLog            = timedjob.TaskLog
 	TaskLogIndexReq    = timedjob.TaskLogIndexReq
 	TaskLogIndexResp   = timedjob.TaskLogIndexResp
+	TaskLogScript      = timedjob.TaskLogScript
+	TaskLogSql         = timedjob.TaskLogSql
 	TaskParamQueue     = timedjob.TaskParamQueue
+	TaskParamScript    = timedjob.TaskParamScript
 	TaskParamSql       = timedjob.TaskParamSql
 	TaskSendOption     = timedjob.TaskSendOption
 	TaskSendReq        = timedjob.TaskSendReq

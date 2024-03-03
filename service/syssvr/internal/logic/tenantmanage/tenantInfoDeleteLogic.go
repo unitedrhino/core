@@ -5,6 +5,8 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 
@@ -52,6 +54,9 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Respo
 		ti, err = tir.FindOneByFilter(l.ctx, f)
 		if err != nil {
 			return err
+		}
+		if ti.Code == def.TenantCodeDefault {
+			return errors.Parameter.AddMsg("默认租户不允许删除")
 		}
 		err = relationDB.NewTenantAppRepo(tx).DeleteByFilter(l.ctx, relationDB.TenantAppFilter{TenantCode: ti.Code})
 		if err != nil {

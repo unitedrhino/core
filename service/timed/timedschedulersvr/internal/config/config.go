@@ -10,5 +10,6 @@ type Config struct {
 	Database conf.Database
 	Event    conf.EventConf
 	zrpc.RpcServerConf
-	CacheRedis cache.ClusterConf
+	TimedJobRpc conf.RpcClientConf `json:",optional"`
+	CacheRedis  cache.ClusterConf
 }

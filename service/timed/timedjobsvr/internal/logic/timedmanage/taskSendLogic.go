@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"gitee.com/i-Things/core/service/timed/internal/domain"
 	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/logic"
+	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/logic/processTask"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"github.com/hibiken/asynq"
@@ -60,7 +62,13 @@ func (l *TaskSendLogic) TaskSend(in *timedjob.TaskSendReq) (*timedjob.TaskWithTa
 			if in.ParamSql == nil {
 				return nil, errors.Parameter.AddMsg("任务组为sql执行类型,请填写sql执行参数")
 			}
-			p, _ := json.Marshal(domain.ParamSql{ExecContent: in.ParamSql.ExecContent, Param: in.ParamSql.Param})
+			p, _ := json.Marshal(domain.ParamSql{Sql: in.ParamSql.Sql})
+			param = string(p)
+		case domain.TaskGroupTypeScript:
+			if in.ParamScript == nil {
+				return nil, errors.Parameter.AddMsg("任务组为script执行类型,请填写script执行参数")
+			}
+			p, _ := json.Marshal(domain.ParamScript{ExecContent: in.ParamScript.ExecContent, Param: in.ParamScript.Param})
 			param = string(p)
 		}
 		property := int64(3)
@@ -89,12 +97,21 @@ func (l *TaskSendLogic) TaskSend(in *timedjob.TaskSendReq) (*timedjob.TaskWithTa
 			}
 		case domain.TaskGroupTypeSql:
 			if in.ParamSql != nil {
-				ps := domain.ParamSql{ExecContent: oldDo.Sql.Param.ExecContent, Param: oldDo.Sql.Param.Param}
-				if in.ParamSql.ExecContent != "" {
-					ps.ExecContent = in.ParamSql.ExecContent
+				ps := domain.ParamSql{Sql: oldDo.Sql.Param.Sql}
+				if in.ParamSql.Sql != "" {
+					ps.Sql = in.ParamSql.Sql
 				}
-				if in.ParamSql.Param != nil {
-					ps.Param = in.ParamSql.Param
+				p, _ := json.Marshal(ps)
+				task.Params = string(p)
+			}
+		case domain.TaskGroupTypeScript:
+			if in.ParamScript != nil {
+				ps := domain.ParamScript{ExecContent: oldDo.Script.Param.ExecContent, Param: oldDo.Script.Param.Param}
+				if in.ParamScript.ExecContent != "" {
+					ps.ExecContent = in.ParamScript.ExecContent
+				}
+				if in.ParamScript.Param != nil {
+					ps.Param = in.ParamScript.Param
 				}
 				p, _ := json.Marshal(ps)
 				task.Params = string(p)
@@ -104,6 +121,16 @@ func (l *TaskSendLogic) TaskSend(in *timedjob.TaskSendReq) (*timedjob.TaskWithTa
 	taskInfo := domain.TaskInfo{
 		ID:     task.ID,
 		Params: task.Params,
+	}
+	if in.Option == nil { //立即执行
+		err := logic.FillTaskInfoDo(&taskInfo, task)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		return &timedjob.TaskWithTaskID{}, processTask.NewProcessTask(l.ctx, l.svcCtx, func(ctx context.Context, req *timedjob.TaskSendReq) error {
+			_, err := NewTaskSendLogic(ctx, l.svcCtx).TaskSend(req)
+			return err
+		}).Process(l.ctx, taskInfo)
 	}
 	payload, _ := json.Marshal(taskInfo)
 	aTask := asynq.NewTask(getTaskCode(task), payload, asynq.Queue(domain.ToPriority(task.Priority)))
@@ -130,6 +157,7 @@ func (l *TaskSendLogic) TaskSend(in *timedjob.TaskSendReq) (*timedjob.TaskWithTa
 	}
 	return &timedjob.TaskWithTaskID{TaskID: t.ID}, nil
 }
+
 func getTaskCode(j *relationDB.TimedTaskInfo) string {
 	return fmt.Sprintf("delay:%v:%s", j.GroupCode, j.Code)
 }

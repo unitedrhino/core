@@ -2,6 +2,7 @@ package timedmanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
 
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
@@ -24,7 +25,22 @@ func NewTaskLogIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Task
 }
 
 func (l *TaskLogIndexLogic) TaskLogIndex(in *timedjob.TaskLogIndexReq) (*timedjob.TaskLogIndexResp, error) {
-	// todo: add your logic here and delete this line
-
-	return &timedjob.TaskLogIndexResp{}, nil
+	db := relationDB.NewJobLogRepo(l.ctx)
+	f := relationDB.TaskLogFilter{
+		GroupCode: in.GroupCode,
+		TaskCode:  in.TaskCode,
+	}
+	total, err := db.CountByFilter(l.ctx, f)
+	if err != nil {
+		return nil, err
+	}
+	pos, err := db.FindByFilter(l.ctx, f, ToPageInfo(in.Page))
+	if err != nil {
+		return nil, err
+	}
+	var list []*timedjob.TaskLog
+	for _, v := range pos {
+		list = append(list, ToTaskLog(v))
+	}
+	return &timedjob.TaskLogIndexResp{Total: total, List: list}, nil
 }

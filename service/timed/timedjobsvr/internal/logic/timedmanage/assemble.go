@@ -59,6 +59,7 @@ func ToTaskInfoPb(in *relationDB.TimedTaskInfo) *timedjob.TaskInfo {
 		Name:      in.Name,
 		Code:      in.Code,
 		Params:    in.Params,
+		Topics:    in.Topics,
 		CronExpr:  in.CronExpr,
 		Status:    in.Status,
 		Priority:  in.Priority,
@@ -77,6 +78,7 @@ func ToTaskInfoPo(in *timedjob.TaskInfo) *relationDB.TimedTaskInfo {
 		Params:    in.Params,
 		CronExpr:  in.CronExpr,
 		Status:    in.Status,
+		Topics:    in.Topics,
 		Priority:  in.Priority,
 	}
 }
@@ -117,5 +119,37 @@ func ToPageInfoWithDefault(info *timedjob.PageInfo, defau *def.PageInfo) *def.Pa
 			page.Orders = defau.Orders
 		}
 		return page
+	}
+}
+func ToTaskLog(po *relationDB.TimedTaskLog) *timedjob.TaskLog {
+	var sql *timedjob.TaskLogSql
+	if po.TimedTaskLogSql != nil {
+		sql = &timedjob.TaskLogSql{
+			SelectNum: po.SelectNum,
+			ExecNum:   po.ExecNum,
+		}
+	}
+	var script *timedjob.TaskLogScript
+	if po.TimedTaskLogScript != nil {
+		var execLog = []*timedjob.TaskExecLog{}
+		for _, v := range po.ExecLog {
+			execLog = append(execLog, &timedjob.TaskExecLog{
+				Level:       v.Level,
+				Content:     v.Content,
+				CreatedTime: v.CreatedTime,
+			})
+		}
+		script = &timedjob.TaskLogScript{ExecLog: execLog}
+	}
+	return &timedjob.TaskLog{
+		Id:          po.ID,
+		GroupCode:   po.GroupCode,
+		TaskCode:    po.TaskCode,
+		Params:      po.Params,
+		ResultCode:  po.ResultCode,
+		ResultMsg:   po.ResultMsg,
+		CreatedTime: po.CreatedTime.Unix(),
+		Sql:         sql,
+		Script:      script,
 	}
 }

@@ -15,6 +15,7 @@ import (
 	systemdataproject "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/project"
 	systemdictdetail "gitee.com/i-Things/core/service/apisvr/internal/handler/system/dict/detail"
 	systemdictinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/dict/info"
+	systemjobtask "gitee.com/i-Things/core/service/apisvr/internal/handler/system/job/task"
 	systemlog "gitee.com/i-Things/core/service/apisvr/internal/handler/system/log"
 	systemmoduleinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/info"
 	systemmodulemenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/menu"
@@ -29,7 +30,6 @@ import (
 	systemtenantappmenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/menu"
 	systemtenantappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/module"
 	systemtenantinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/info"
-	systemtimedtask "gitee.com/i-Things/core/service/apisvr/internal/handler/system/timed/task"
 	systemuserinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/info"
 	systemuserrole "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/role"
 	systemuserself "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/self"
@@ -346,6 +346,80 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/dict/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/cancel",
+					Handler: systemjobtask.CancelHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/create",
+					Handler: systemjobtask.GroupCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/delete",
+					Handler: systemjobtask.GroupDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/index",
+					Handler: systemjobtask.GroupIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/read",
+					Handler: systemjobtask.GroupReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/group/update",
+					Handler: systemjobtask.GroupUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/info/create",
+					Handler: systemjobtask.InfoCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/info/delete",
+					Handler: systemjobtask.InfoDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/info/index",
+					Handler: systemjobtask.InfoIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/info/read",
+					Handler: systemjobtask.InfoReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/info/update",
+					Handler: systemjobtask.InfoUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/log/index",
+					Handler: systemjobtask.LogIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/send",
+					Handler: systemjobtask.SendHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/job/task"),
 	)
 
 	server.AddRoutes(
@@ -702,75 +776,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/tenant/info"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/cancel",
-					Handler: systemtimedtask.CancelHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/create",
-					Handler: systemtimedtask.GroupCreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/delete",
-					Handler: systemtimedtask.GroupDeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/index",
-					Handler: systemtimedtask.GroupIndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/read",
-					Handler: systemtimedtask.GroupReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/group/update",
-					Handler: systemtimedtask.GroupUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/info/create",
-					Handler: systemtimedtask.InfoCreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/info/delete",
-					Handler: systemtimedtask.InfoDeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/info/index",
-					Handler: systemtimedtask.InfoIndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/info/read",
-					Handler: systemtimedtask.InfoReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/info/update",
-					Handler: systemtimedtask.InfoUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/send",
-					Handler: systemtimedtask.SendHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/timed/task"),
 	)
 
 	server.AddRoutes(

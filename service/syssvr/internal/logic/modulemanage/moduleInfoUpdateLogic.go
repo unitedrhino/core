@@ -3,6 +3,7 @@ package modulemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -25,12 +26,16 @@ func NewModuleInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *ModuleInfoUpdateLogic) ModuleInfoUpdate(in *sys.ModuleInfo) (*sys.Response, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	old, err := relationDB.NewModuleInfoRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
 	}
 	old.Name = in.Name
 	old.Path = in.Path
+	old.Order = in.Order
 	old.Url = in.Url
 	old.Icon = in.Icon
 	old.Body = in.Body.Value

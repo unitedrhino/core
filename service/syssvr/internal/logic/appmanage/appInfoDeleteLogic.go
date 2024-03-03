@@ -3,6 +3,8 @@ package appmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -29,6 +31,13 @@ func (l *AppInfoDeleteLogic) AppInfoDelete(in *sys.WithIDCode) (*sys.Response, e
 	if in.Code != "" {
 		f.Codes = []string{in.Code}
 	}
-	err := relationDB.NewAppInfoRepo(l.ctx).DeleteByFilter(l.ctx, f)
+	info, err := relationDB.NewAppInfoRepo(l.ctx).FindOneByFilter(l.ctx, f)
+	if err != nil {
+		return nil, err
+	}
+	if info.Code == def.AppCore {
+		return nil, errors.Parameter.AddMsg("core应用不允许删除")
+	}
+	err = relationDB.NewAppInfoRepo(l.ctx).DeleteByFilter(l.ctx, f)
 	return &sys.Response{}, err
 }

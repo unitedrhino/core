@@ -1,12 +1,14 @@
 package domain
 
 const (
-	TaskGroupTypeQueue = "queue"
-	TaskGroupTypeSql   = "sql"
+	TaskGroupTypeQueue  = "queue"
+	TaskGroupTypeSql    = "sql"
+	TaskGroupTypeScript = "script"
 )
 const (
 	TaskTypeTiming = 1 //定时任务
 	TaskTypeDelay  = 2 //延时任务
+	TaskTypeQueue  = 3 //消息触发任务
 )
 
 const (
@@ -22,6 +24,7 @@ const (
 const (
 	SqlEnvDsn    = "dsn"
 	SqlEnvDBType = "dbType"
+	SqlEnvDriver = "driver"
 )
 
 const (
@@ -42,22 +45,29 @@ type TaskInfo struct {
 	GroupSubType string `json:"-"`                //组子类型 natsJs nats         normal js
 	GroupCode    string `json:"groupCode"`        //组编码
 	//需要使用的环境变量 sql类型中 dsn:如果填写,默认使用该dsn来连接,dbType:mysql|pgsql 默认是mysql
-	Env   map[string]string `json:"env"`
-	Queue *ParamQueue       `json:"queue"` //队列消息
-	Sql   *Sql              `json:"sql"`   //sql执行类型
+	Env    map[string]string `json:"env"`
+	Queue  *ParamQueue       `json:"queue"`  //队列消息
+	Sql    *Sql              `json:"sql"`    //sql执行类型
+	Script *Script           `json:"script"` //脚本执行类型
 }
 
 type ParamQueue struct {
 	Topic   string `json:"topic"`
 	Payload string `json:"payload"`
 }
+
 type ParamSql struct {
+	Sql string `json:"sql"`
+}
+
+type ParamScript struct {
 	Param       map[string]string `json:"param"` //脚本参数,会通过函数入参传进去
 	ExecContent string            `json:"execContent"`
 }
 type SqlDBConfig struct {
 	DSN    string `json:"dsn"`    //数据库连接串
 	DBType string `json:"dbType"` //数据库类型(默认mysql)
+	Driver string `json:"driver"` //连接的驱动
 }
 
 type ConfigSql struct {
@@ -66,6 +76,11 @@ type ConfigSql struct {
 
 type Sql struct {
 	Param  ParamSql
+	Config ConfigSql
+}
+
+type Script struct {
+	Param  ParamScript
 	Config ConfigSql
 }
 
