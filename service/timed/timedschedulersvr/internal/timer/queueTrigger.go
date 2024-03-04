@@ -9,6 +9,7 @@ import (
 	"gitee.com/i-Things/core/service/timed/timedschedulersvr/internal/svc"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/nats-io/nats.go"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -35,8 +36,8 @@ func QueueTaskCheck(svcCtx *svc.ServiceContext) {
 	ctx, span := ctxs.StartSpan(ctx, "timedSchedulersvr.queue.taskCheck", "")
 	defer span.End()
 	err := func() error {
-		//jobDB := stores.WithNoDebug(ctx, relationDB.NewTaskInfoRepo)
-		jobDB := relationDB.NewTaskInfoRepo(ctx)
+		jobDB := stores.WithNoDebug(ctx, relationDB.NewTaskInfoRepo)
+		//jobDB := relationDB.NewTaskInfoRepo(ctx)
 		js, err := jobDB.FindByFilter(ctx, relationDB.TaskFilter{WithGroup: true,
 			Status: []int64{def.StatusWaitStop, def.StatusWaitDelete, def.StatusWaitRun},
 			Types:  []int64{domain.TaskTypeQueue}},

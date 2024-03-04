@@ -24,7 +24,7 @@ func NewTaskGroupReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Tas
 	}
 }
 
-func (l *TaskGroupReadLogic) TaskGroupRead(in *timedjob.CodeReq) (*timedjob.TaskGroup, error) {
+func (l *TaskGroupReadLogic) TaskGroupRead(in *timedjob.WithCode) (*timedjob.TaskGroup, error) {
 	po, err := relationDB.NewTaskGroupRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TaskGroupFilter{Codes: []string{in.Code}})
 	if err != nil {
 		return nil, err

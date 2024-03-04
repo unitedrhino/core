@@ -32,7 +32,7 @@ func (s *TimedManageServer) TaskGroupUpdate(ctx context.Context, in *timedjob.Ta
 	return l.TaskGroupUpdate(in)
 }
 
-func (s *TimedManageServer) TaskGroupDelete(ctx context.Context, in *timedjob.CodeReq) (*timedjob.Response, error) {
+func (s *TimedManageServer) TaskGroupDelete(ctx context.Context, in *timedjob.WithCode) (*timedjob.Response, error) {
 	l := timedmanagelogic.NewTaskGroupDeleteLogic(ctx, s.svcCtx)
 	return l.TaskGroupDelete(in)
 }
@@ -42,7 +42,7 @@ func (s *TimedManageServer) TaskGroupIndex(ctx context.Context, in *timedjob.Tas
 	return l.TaskGroupIndex(in)
 }
 
-func (s *TimedManageServer) TaskGroupRead(ctx context.Context, in *timedjob.CodeReq) (*timedjob.TaskGroup, error) {
+func (s *TimedManageServer) TaskGroupRead(ctx context.Context, in *timedjob.WithCode) (*timedjob.TaskGroup, error) {
 	l := timedmanagelogic.NewTaskGroupReadLogic(ctx, s.svcCtx)
 	return l.TaskGroupRead(in)
 }
@@ -57,7 +57,7 @@ func (s *TimedManageServer) TaskInfoUpdate(ctx context.Context, in *timedjob.Tas
 	return l.TaskInfoUpdate(in)
 }
 
-func (s *TimedManageServer) TaskInfoDelete(ctx context.Context, in *timedjob.CodeReq) (*timedjob.Response, error) {
+func (s *TimedManageServer) TaskInfoDelete(ctx context.Context, in *timedjob.WithCode) (*timedjob.Response, error) {
 	l := timedmanagelogic.NewTaskInfoDeleteLogic(ctx, s.svcCtx)
 	return l.TaskInfoDelete(in)
 }
@@ -67,7 +67,7 @@ func (s *TimedManageServer) TaskInfoIndex(ctx context.Context, in *timedjob.Task
 	return l.TaskInfoIndex(in)
 }
 
-func (s *TimedManageServer) TaskInfoRead(ctx context.Context, in *timedjob.CodeReq) (*timedjob.TaskInfo, error) {
+func (s *TimedManageServer) TaskInfoRead(ctx context.Context, in *timedjob.WithCode) (*timedjob.TaskInfo, error) {
 	l := timedmanagelogic.NewTaskInfoReadLogic(ctx, s.svcCtx)
 	return l.TaskInfoRead(in)
 }

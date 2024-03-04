@@ -24,7 +24,7 @@ func NewTaskGroupDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 	}
 }
 
-func (l *TaskGroupDeleteLogic) TaskGroupDelete(in *timedjob.CodeReq) (*timedjob.Response, error) {
+func (l *TaskGroupDeleteLogic) TaskGroupDelete(in *timedjob.WithCode) (*timedjob.Response, error) {
 	err := relationDB.NewTaskGroupRepo(l.ctx).DeleteByFilter(l.ctx,
 		relationDB.TaskGroupFilter{Codes: []string{in.Code}})
 	if err != nil {

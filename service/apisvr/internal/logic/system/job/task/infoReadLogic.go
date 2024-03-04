@@ -25,8 +25,8 @@ func NewInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InfoRead
 	}
 }
 
-func (l *InfoReadLogic) InfoRead(req *types.CodeReq) (resp *types.TimedTaskInfo, err error) {
+func (l *InfoReadLogic) InfoRead(req *types.WithCode) (resp *types.TimedTaskInfo, err error) {
 	l.Infof("req:%v", utils.Fmt(req))
-	ret, err := l.svcCtx.TimedJob.TaskInfoRead(l.ctx, &timedjob.CodeReq{Code: req.Code})
+	ret, err := l.svcCtx.TimedJob.TaskInfoRead(l.ctx, &timedjob.WithCode{Code: req.Code})
 	return ToTaskInfoTypes(ret), err
 }

@@ -2,10 +2,10 @@
 package types
 
 type AccessGroupInfo struct {
-	ID       string        `json:"id,optional"`   // id
-	Code     string        `json:"code,optional"` // 应用编号
-	Name     string        `json:"name,optional"` // 接口分组
-	Children []*AccessInfo `json:"children"`      // 列表数据
+	ID       string        `json:"id,optional"`        // id
+	Code     string        `json:"code,optional"`      // 应用编号
+	Name     string        `json:"name,optional"`      // 接口分组
+	Children []*AccessInfo `json:"children,omitempty"` // 列表数据
 }
 
 type AccessIndexReq struct {
@@ -29,7 +29,7 @@ type AccessInfo struct {
 	Name       string     `json:"name,optional"`                   // 接口名称
 	IsNeedAuth int64      `json:"isNeedAuth,optional,range=[1:2]"` // 是否需要认证（ 1需要 2不需要）
 	Desc       string     `json:"desc,optional"`                   // 备注
-	Apis       []*ApiInfo `json:"apis,optional"`                   //接口信息
+	Apis       []*ApiInfo `json:"apis,optional,omitempty"`         //接口信息
 }
 
 type AccessTreeResp struct {
@@ -134,10 +134,6 @@ type AreaInfoReadReq struct {
 
 type AreaWithID struct {
 	AreaID int64 `json:"areaID,string"` //项目区域id 只读
-}
-
-type CodeReq struct {
-	Code string `json:"code"`
 }
 
 type CommonResp struct {
@@ -285,20 +281,20 @@ type Map struct {
 }
 
 type MenuInfo struct {
-	ID         int64       `json:"id,optional"`         // 编号
-	ModuleCode string      `json:"moduleCode"`          // 模块编号
-	Name       string      `json:"name,optional"`       // 菜单名称
-	ParentID   int64       `json:"parentID,optional"`   // 父菜单ID，一级菜单为1
-	Type       int64       `json:"type,optional"`       // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Path       string      `json:"path,optional"`       // 系统的path
-	Component  string      `json:"component,optional"`  // 页面
-	Icon       string      `json:"icon,optional"`       // 菜单图标
-	Redirect   string      `json:"redirect,optional"`   // 路由重定向
-	Order      int64       `json:"order,optional"`      // 左侧table排序序号
-	HideInMenu int64       `json:"hideInMenu,optional"` // 菜单是否隐藏 1：是 2：否
-	Body       *string     `json:"body,optional"`       //前端自定义字段
-	CreateTime int64       `json:"createTime,optional"` // 创建时间
-	Children   []*MenuInfo `json:"children,optional"`   //子节点
+	ID         int64       `json:"id,optional"`                 // 编号
+	ModuleCode string      `json:"moduleCode"`                  // 模块编号
+	Name       string      `json:"name,optional"`               // 菜单名称
+	ParentID   int64       `json:"parentID,optional"`           // 父菜单ID，一级菜单为1
+	Type       int64       `json:"type,optional"`               // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	Path       string      `json:"path,optional"`               // 系统的path
+	Component  string      `json:"component,optional"`          // 页面
+	Icon       string      `json:"icon,optional"`               // 菜单图标
+	Redirect   string      `json:"redirect,optional"`           // 路由重定向
+	Order      int64       `json:"order,optional"`              // 左侧table排序序号
+	HideInMenu int64       `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
+	Body       *string     `json:"body,optional"`               //前端自定义字段
+	CreateTime int64       `json:"createTime,optional"`         // 创建时间
+	Children   []*MenuInfo `json:"children,optional,omitempty"` //子节点
 }
 
 type MenuInfoIndexReq struct {
@@ -529,18 +525,14 @@ type TaskLogScript struct {
 	CreatedTime int64  `json:"createdTime"` //日志创建时间
 }
 
-type TenantAccessInfoIndexReq struct {
-	Code string `json:"code"` // 租户编号
+type TenantAccessInfo struct {
+	Code        string   `json:"code"`        // 租户编号
+	AccessCodes []string `json:"accessCodes"` // 模块编号
 }
 
 type TenantAccessInfoTreeResp struct {
 	List  []*AccessGroupInfo `json:"list"`
 	Total int64              `json:"total"`
-}
-
-type TenantAccessInfoUpdateReq struct {
-	Code        string   `json:"code"`        // 租户编号
-	AccessCodes []string `json:"accessCodes"` // 模块编号
 }
 
 type TenantAppCreateReq struct {
@@ -990,6 +982,10 @@ type WithAppCodeID struct {
 	AppCode string `json:"appCode"`
 	ID      int64  `json:"id"`
 	Code    string `json:"code"`
+}
+
+type WithCode struct {
+	Code string `json:"code,optional"`
 }
 
 type WithID struct {

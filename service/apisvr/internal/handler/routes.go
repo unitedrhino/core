@@ -649,6 +649,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantaccessinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemtenantaccessinfo.MultiUpdateHandler(serverCtx),
 				},

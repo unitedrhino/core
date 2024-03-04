@@ -15,10 +15,16 @@ packone:  buildone  toremote
 
 packback:  buildback  toremote
 
+packbackzhou:  buildback  toremotezhou
+
 
 toremote:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 	@rsync -r -v ./cmd/* root@120.79.205.165:/root/git/iThings/core
+
+toremotezhou:
+	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+	@rsync -r -v ./cmd/* root@139.159.188.223:/root/ithings/core
 
 
 moduleupdate:

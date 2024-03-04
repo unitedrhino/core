@@ -65,5 +65,4 @@ cd timed/timedschedulersvr && goctl rpc protoc  proto/timedscheduler.proto --go_
 
 ```shell
 #protoc  proto/* --go_out=. --go-grpc_out=.
-cd timed/timedjobsvr && goctl rpc protoc  proto/timedjob.proto --go_out=./ --go-grpc_out=./ --zrpc_out=./ --style=goZero -m && cd ../..
-```
+..```

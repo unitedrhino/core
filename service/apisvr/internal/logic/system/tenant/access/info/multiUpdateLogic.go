@@ -24,7 +24,7 @@ func NewMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Multi
 	}
 }
 
-func (l *MultiUpdateLogic) MultiUpdate(req *types.TenantAccessInfoUpdateReq) error {
+func (l *MultiUpdateLogic) MultiUpdate(req *types.TenantAccessInfo) error {
 	_, err := l.svcCtx.TenantRpc.TenantAccessMultiUpdate(l.ctx, &sys.TenantAccessMultiUpdateReq{
 		Code:        req.Code,
 		AccessCodes: req.AccessCodes,

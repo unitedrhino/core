@@ -40,14 +40,14 @@ const (
 type TimedManageClient interface {
 	TaskGroupCreate(ctx context.Context, in *TaskGroup, opts ...grpc.CallOption) (*Response, error)
 	TaskGroupUpdate(ctx context.Context, in *TaskGroup, opts ...grpc.CallOption) (*Response, error)
-	TaskGroupDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error)
+	TaskGroupDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error)
 	TaskGroupIndex(ctx context.Context, in *TaskGroupIndexReq, opts ...grpc.CallOption) (*TaskGroupIndexResp, error)
-	TaskGroupRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskGroup, error)
+	TaskGroupRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskGroup, error)
 	TaskInfoCreate(ctx context.Context, in *TaskInfo, opts ...grpc.CallOption) (*Response, error)
 	TaskInfoUpdate(ctx context.Context, in *TaskInfo, opts ...grpc.CallOption) (*Response, error)
-	TaskInfoDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error)
+	TaskInfoDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error)
 	TaskInfoIndex(ctx context.Context, in *TaskInfoIndexReq, opts ...grpc.CallOption) (*TaskInfoIndexResp, error)
-	TaskInfoRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskInfo, error)
+	TaskInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskInfo, error)
 	TaskLogIndex(ctx context.Context, in *TaskLogIndexReq, opts ...grpc.CallOption) (*TaskLogIndexResp, error)
 	// 发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param
 	TaskSend(ctx context.Context, in *TaskSendReq, opts ...grpc.CallOption) (*TaskWithTaskID, error)
@@ -80,7 +80,7 @@ func (c *timedManageClient) TaskGroupUpdate(ctx context.Context, in *TaskGroup, 
 	return out, nil
 }
 
-func (c *timedManageClient) TaskGroupDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error) {
+func (c *timedManageClient) TaskGroupDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, TimedManage_TaskGroupDelete_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -98,7 +98,7 @@ func (c *timedManageClient) TaskGroupIndex(ctx context.Context, in *TaskGroupInd
 	return out, nil
 }
 
-func (c *timedManageClient) TaskGroupRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskGroup, error) {
+func (c *timedManageClient) TaskGroupRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskGroup, error) {
 	out := new(TaskGroup)
 	err := c.cc.Invoke(ctx, TimedManage_TaskGroupRead_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -125,7 +125,7 @@ func (c *timedManageClient) TaskInfoUpdate(ctx context.Context, in *TaskInfo, op
 	return out, nil
 }
 
-func (c *timedManageClient) TaskInfoDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error) {
+func (c *timedManageClient) TaskInfoDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
 	err := c.cc.Invoke(ctx, TimedManage_TaskInfoDelete_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -143,7 +143,7 @@ func (c *timedManageClient) TaskInfoIndex(ctx context.Context, in *TaskInfoIndex
 	return out, nil
 }
 
-func (c *timedManageClient) TaskInfoRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskInfo, error) {
+func (c *timedManageClient) TaskInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskInfo, error) {
 	out := new(TaskInfo)
 	err := c.cc.Invoke(ctx, TimedManage_TaskInfoRead_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -185,14 +185,14 @@ func (c *timedManageClient) TaskCancel(ctx context.Context, in *TaskWithTaskID, 
 type TimedManageServer interface {
 	TaskGroupCreate(context.Context, *TaskGroup) (*Response, error)
 	TaskGroupUpdate(context.Context, *TaskGroup) (*Response, error)
-	TaskGroupDelete(context.Context, *CodeReq) (*Response, error)
+	TaskGroupDelete(context.Context, *WithCode) (*Response, error)
 	TaskGroupIndex(context.Context, *TaskGroupIndexReq) (*TaskGroupIndexResp, error)
-	TaskGroupRead(context.Context, *CodeReq) (*TaskGroup, error)
+	TaskGroupRead(context.Context, *WithCode) (*TaskGroup, error)
 	TaskInfoCreate(context.Context, *TaskInfo) (*Response, error)
 	TaskInfoUpdate(context.Context, *TaskInfo) (*Response, error)
-	TaskInfoDelete(context.Context, *CodeReq) (*Response, error)
+	TaskInfoDelete(context.Context, *WithCode) (*Response, error)
 	TaskInfoIndex(context.Context, *TaskInfoIndexReq) (*TaskInfoIndexResp, error)
-	TaskInfoRead(context.Context, *CodeReq) (*TaskInfo, error)
+	TaskInfoRead(context.Context, *WithCode) (*TaskInfo, error)
 	TaskLogIndex(context.Context, *TaskLogIndexReq) (*TaskLogIndexResp, error)
 	// 发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param
 	TaskSend(context.Context, *TaskSendReq) (*TaskWithTaskID, error)
@@ -210,13 +210,13 @@ func (UnimplementedTimedManageServer) TaskGroupCreate(context.Context, *TaskGrou
 func (UnimplementedTimedManageServer) TaskGroupUpdate(context.Context, *TaskGroup) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskGroupUpdate not implemented")
 }
-func (UnimplementedTimedManageServer) TaskGroupDelete(context.Context, *CodeReq) (*Response, error) {
+func (UnimplementedTimedManageServer) TaskGroupDelete(context.Context, *WithCode) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskGroupDelete not implemented")
 }
 func (UnimplementedTimedManageServer) TaskGroupIndex(context.Context, *TaskGroupIndexReq) (*TaskGroupIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskGroupIndex not implemented")
 }
-func (UnimplementedTimedManageServer) TaskGroupRead(context.Context, *CodeReq) (*TaskGroup, error) {
+func (UnimplementedTimedManageServer) TaskGroupRead(context.Context, *WithCode) (*TaskGroup, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskGroupRead not implemented")
 }
 func (UnimplementedTimedManageServer) TaskInfoCreate(context.Context, *TaskInfo) (*Response, error) {
@@ -225,13 +225,13 @@ func (UnimplementedTimedManageServer) TaskInfoCreate(context.Context, *TaskInfo)
 func (UnimplementedTimedManageServer) TaskInfoUpdate(context.Context, *TaskInfo) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskInfoUpdate not implemented")
 }
-func (UnimplementedTimedManageServer) TaskInfoDelete(context.Context, *CodeReq) (*Response, error) {
+func (UnimplementedTimedManageServer) TaskInfoDelete(context.Context, *WithCode) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskInfoDelete not implemented")
 }
 func (UnimplementedTimedManageServer) TaskInfoIndex(context.Context, *TaskInfoIndexReq) (*TaskInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskInfoIndex not implemented")
 }
-func (UnimplementedTimedManageServer) TaskInfoRead(context.Context, *CodeReq) (*TaskInfo, error) {
+func (UnimplementedTimedManageServer) TaskInfoRead(context.Context, *WithCode) (*TaskInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaskInfoRead not implemented")
 }
 func (UnimplementedTimedManageServer) TaskLogIndex(context.Context, *TaskLogIndexReq) (*TaskLogIndexResp, error) {
@@ -293,7 +293,7 @@ func _TimedManage_TaskGroupUpdate_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _TimedManage_TaskGroupDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CodeReq)
+	in := new(WithCode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -305,7 +305,7 @@ func _TimedManage_TaskGroupDelete_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: TimedManage_TaskGroupDelete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TimedManageServer).TaskGroupDelete(ctx, req.(*CodeReq))
+		return srv.(TimedManageServer).TaskGroupDelete(ctx, req.(*WithCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -329,7 +329,7 @@ func _TimedManage_TaskGroupIndex_Handler(srv interface{}, ctx context.Context, d
 }
 
 func _TimedManage_TaskGroupRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CodeReq)
+	in := new(WithCode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -341,7 +341,7 @@ func _TimedManage_TaskGroupRead_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: TimedManage_TaskGroupRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TimedManageServer).TaskGroupRead(ctx, req.(*CodeReq))
+		return srv.(TimedManageServer).TaskGroupRead(ctx, req.(*WithCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -383,7 +383,7 @@ func _TimedManage_TaskInfoUpdate_Handler(srv interface{}, ctx context.Context, d
 }
 
 func _TimedManage_TaskInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CodeReq)
+	in := new(WithCode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -395,7 +395,7 @@ func _TimedManage_TaskInfoDelete_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: TimedManage_TaskInfoDelete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TimedManageServer).TaskInfoDelete(ctx, req.(*CodeReq))
+		return srv.(TimedManageServer).TaskInfoDelete(ctx, req.(*WithCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -419,7 +419,7 @@ func _TimedManage_TaskInfoIndex_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _TimedManage_TaskInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CodeReq)
+	in := new(WithCode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -431,7 +431,7 @@ func _TimedManage_TaskInfoRead_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: TimedManage_TaskInfoRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TimedManageServer).TaskInfoRead(ctx, req.(*CodeReq))
+		return srv.(TimedManageServer).TaskInfoRead(ctx, req.(*WithCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }

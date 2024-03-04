@@ -43,20 +43,20 @@ service api {
 service api {
     @doc "获取租户操作权限树"
     @handler tree
-    post /tree (TenantAccessInfoIndexReq) returns (TenantAccessInfoTreeResp)
+    post /tree (WithCode) returns (TenantAccessInfoTreeResp)
+    @doc "获取租户操作权限树"
+    @handler index
+    post /index (WithCode) returns (TenantAccessInfo)
     @doc "批量更新租户操作权限"
     @handler multiUpdate
-    post /multi-update (TenantAccessInfoUpdateReq) returns ()
+    post /multi-update (TenantAccessInfo) returns ()
 }
 
 
 type(
-    TenantAccessInfoUpdateReq{
+    TenantAccessInfo{
         Code string `json:"code"`                     // 租户编号
         AccessCodes []string `json:"accessCodes"`                               // 模块编号
-    }
-    TenantAccessInfoIndexReq{
-        Code string `json:"code"`                     // 租户编号
     }
     TenantAccessInfoTreeResp{
         List []*AccessGroupInfo `json:"list"`

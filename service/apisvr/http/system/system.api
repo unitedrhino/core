@@ -44,7 +44,7 @@ type (
         HideInMenu int64 `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
         Body *string  `json:"body,optional"` //前端自定义字段
         CreateTime int64 `json:"createTime,optional"`           // 创建时间
-        Children []*MenuInfo `json:"children,optional"` //子节点
+        Children []*MenuInfo `json:"children,optional,omitempty"` //子节点
     }
     ModuleInfo  {
         ID int64 `json:"id,optional"`                                  // 编号
@@ -88,7 +88,7 @@ type (
         ID string `json:"id,optional"`                               // id
         Code string `json:"code,optional"`                               // 应用编号
         name  string `json:"name,optional"`                               // 接口分组
-        Children []*AccessInfo `json:"children"`            // 列表数据
+        Children []*AccessInfo `json:"children,omitempty"`            // 列表数据
     }
     AccessInfo  {
         ID int64 `json:"id,optional"`                                      // 接口编号
@@ -97,6 +97,6 @@ type (
         Name string `json:"name,optional"`                                 // 接口名称
         IsNeedAuth int64 `json:"isNeedAuth,optional,range=[1:2]"`        // 是否需要认证（ 1需要 2不需要）
         Desc string `json:"desc,optional"`                       // 备注
-        Apis []*ApiInfo `json:"apis,optional"` //接口信息
+        Apis []*ApiInfo `json:"apis,optional,omitempty"` //接口信息
     }
 )

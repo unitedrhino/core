@@ -24,11 +24,11 @@ service api {
     @handler infoUpdate
     post /info/update (TimedTaskInfo) returns ()
     @handler infoDelete
-    post /info/delete (CodeReq) returns ()
+    post /info/delete (WithCode) returns ()
     @handler infoIndex
     post /info/index (TimedTaskInfoIndexReq) returns (TimedTaskInfoIndexResp)
     @handler infoRead
-    post /info/read (CodeReq) returns (TimedTaskInfo)
+    post /info/read (WithCode) returns (TimedTaskInfo)
 
     @handler logIndex
     post /log/index (TimedTaskLogIndexReq) returns (TimedTaskLogIndexResp)
@@ -38,11 +38,11 @@ service api {
     @handler groupUpdate
     post /group/update (TimedTaskGroup) returns ()
     @handler groupDelete
-    post /group/delete (CodeReq) returns ()
+    post /group/delete (WithCode) returns ()
     @handler groupIndex
     post /group/index (TimedTaskGroupIndexReq) returns (TimedTaskGroupIndexResp)
     @handler groupRead
-    post /group/read (CodeReq) returns (TimedTaskGroup)
+    post /group/read (WithCode) returns (TimedTaskGroup)
 }
 
 type (

@@ -14,7 +14,6 @@ import (
 )
 
 type (
-	CodeReq            = timedjob.CodeReq
 	PageInfo           = timedjob.PageInfo
 	PageInfo_OrderBy   = timedjob.PageInfo_OrderBy
 	Response           = timedjob.Response
@@ -36,18 +35,19 @@ type (
 	TaskSendOption     = timedjob.TaskSendOption
 	TaskSendReq        = timedjob.TaskSendReq
 	TaskWithTaskID     = timedjob.TaskWithTaskID
+	WithCode           = timedjob.WithCode
 
 	TimedManage interface {
 		TaskGroupCreate(ctx context.Context, in *TaskGroup, opts ...grpc.CallOption) (*Response, error)
 		TaskGroupUpdate(ctx context.Context, in *TaskGroup, opts ...grpc.CallOption) (*Response, error)
-		TaskGroupDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error)
+		TaskGroupDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error)
 		TaskGroupIndex(ctx context.Context, in *TaskGroupIndexReq, opts ...grpc.CallOption) (*TaskGroupIndexResp, error)
-		TaskGroupRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskGroup, error)
+		TaskGroupRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskGroup, error)
 		TaskInfoCreate(ctx context.Context, in *TaskInfo, opts ...grpc.CallOption) (*Response, error)
 		TaskInfoUpdate(ctx context.Context, in *TaskInfo, opts ...grpc.CallOption) (*Response, error)
-		TaskInfoDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error)
+		TaskInfoDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error)
 		TaskInfoIndex(ctx context.Context, in *TaskInfoIndexReq, opts ...grpc.CallOption) (*TaskInfoIndexResp, error)
-		TaskInfoRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskInfo, error)
+		TaskInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskInfo, error)
 		TaskLogIndex(ctx context.Context, in *TaskLogIndexReq, opts ...grpc.CallOption) (*TaskLogIndexResp, error)
 		// 发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param
 		TaskSend(ctx context.Context, in *TaskSendReq, opts ...grpc.CallOption) (*TaskWithTaskID, error)
@@ -95,12 +95,12 @@ func (d *directTimedManage) TaskGroupUpdate(ctx context.Context, in *TaskGroup, 
 	return d.svr.TaskGroupUpdate(ctx, in)
 }
 
-func (m *defaultTimedManage) TaskGroupDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error) {
+func (m *defaultTimedManage) TaskGroupDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error) {
 	client := timedjob.NewTimedManageClient(m.cli.Conn())
 	return client.TaskGroupDelete(ctx, in, opts...)
 }
 
-func (d *directTimedManage) TaskGroupDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error) {
+func (d *directTimedManage) TaskGroupDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error) {
 	return d.svr.TaskGroupDelete(ctx, in)
 }
 
@@ -113,12 +113,12 @@ func (d *directTimedManage) TaskGroupIndex(ctx context.Context, in *TaskGroupInd
 	return d.svr.TaskGroupIndex(ctx, in)
 }
 
-func (m *defaultTimedManage) TaskGroupRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskGroup, error) {
+func (m *defaultTimedManage) TaskGroupRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskGroup, error) {
 	client := timedjob.NewTimedManageClient(m.cli.Conn())
 	return client.TaskGroupRead(ctx, in, opts...)
 }
 
-func (d *directTimedManage) TaskGroupRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskGroup, error) {
+func (d *directTimedManage) TaskGroupRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskGroup, error) {
 	return d.svr.TaskGroupRead(ctx, in)
 }
 
@@ -140,12 +140,12 @@ func (d *directTimedManage) TaskInfoUpdate(ctx context.Context, in *TaskInfo, op
 	return d.svr.TaskInfoUpdate(ctx, in)
 }
 
-func (m *defaultTimedManage) TaskInfoDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error) {
+func (m *defaultTimedManage) TaskInfoDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error) {
 	client := timedjob.NewTimedManageClient(m.cli.Conn())
 	return client.TaskInfoDelete(ctx, in, opts...)
 }
 
-func (d *directTimedManage) TaskInfoDelete(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*Response, error) {
+func (d *directTimedManage) TaskInfoDelete(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*Response, error) {
 	return d.svr.TaskInfoDelete(ctx, in)
 }
 
@@ -158,12 +158,12 @@ func (d *directTimedManage) TaskInfoIndex(ctx context.Context, in *TaskInfoIndex
 	return d.svr.TaskInfoIndex(ctx, in)
 }
 
-func (m *defaultTimedManage) TaskInfoRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskInfo, error) {
+func (m *defaultTimedManage) TaskInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskInfo, error) {
 	client := timedjob.NewTimedManageClient(m.cli.Conn())
 	return client.TaskInfoRead(ctx, in, opts...)
 }
 
-func (d *directTimedManage) TaskInfoRead(ctx context.Context, in *CodeReq, opts ...grpc.CallOption) (*TaskInfo, error) {
+func (d *directTimedManage) TaskInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TaskInfo, error) {
 	return d.svr.TaskInfoRead(ctx, in)
 }
 

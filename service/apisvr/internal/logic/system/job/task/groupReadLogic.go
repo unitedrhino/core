@@ -25,8 +25,8 @@ func NewGroupReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GroupRe
 	}
 }
 
-func (l *GroupReadLogic) GroupRead(req *types.CodeReq) (resp *types.TimedTaskGroup, err error) {
+func (l *GroupReadLogic) GroupRead(req *types.WithCode) (resp *types.TimedTaskGroup, err error) {
 	l.Infof("req:%v", utils.Fmt(req))
-	ret, err := l.svcCtx.TimedJob.TaskGroupRead(l.ctx, &timedjob.CodeReq{Code: req.Code})
+	ret, err := l.svcCtx.TimedJob.TaskGroupRead(l.ctx, &timedjob.WithCode{Code: req.Code})
 	return ToGroupTypes(ret), err
 }

@@ -25,8 +25,8 @@ func NewGroupDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Group
 	}
 }
 
-func (l *GroupDeleteLogic) GroupDelete(req *types.CodeReq) error {
+func (l *GroupDeleteLogic) GroupDelete(req *types.WithCode) error {
 	l.Infof("req:%v", utils.Fmt(req))
-	_, err := l.svcCtx.TimedJob.TaskGroupDelete(l.ctx, &timedjob.CodeReq{Code: req.Code})
+	_, err := l.svcCtx.TimedJob.TaskGroupDelete(l.ctx, &timedjob.WithCode{Code: req.Code})
 	return err
 }

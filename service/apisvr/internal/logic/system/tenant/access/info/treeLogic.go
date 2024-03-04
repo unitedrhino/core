@@ -25,7 +25,7 @@ func NewTreeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TreeLogic {
 	}
 }
 
-func (l *TreeLogic) Tree(req *types.TenantAccessInfoIndexReq) (resp *types.TenantAccessInfoTreeResp, err error) {
+func (l *TreeLogic) Tree(req *types.WithCode) (resp *types.TenantAccessInfoTreeResp, err error) {
 	rst, err := l.svcCtx.TenantRpc.TenantAccessIndex(l.ctx, &sys.TenantAccessIndexReq{Code: req.Code})
 	if err != nil {
 		return nil, err
