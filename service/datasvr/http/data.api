@@ -1,0 +1,30 @@
+syntax = "v1"
+
+@server (
+	group:      data/staticstics/info
+	prefix:     /api/v1/data/staticstics/info
+	middleware: CheckTokenWare,InitCtxsWare
+)
+service data {
+	@doc "获取统计数据"
+	@handler read
+	post /read (StaticsticsInfoReadReq) returns (StaticsticsInfoReadResp)
+}
+
+type (
+	// StaticsticsInfoIndexReq {
+	//  Reqs []*StaticsticsInfo `json:"reqs"`
+	// }
+	StaticsticsInfoReadResp {
+		List []map[string]interface{} `json:"list"`
+	}
+	StaticsticsInfoReadReq {
+		Code      string                 `json:"code"`
+		Filter    map[string]interface{} `json:"filter,optional"`
+		ArgFunc   string                 `json:"argFunc,optional"` //聚合函数
+		GroupBy   string                 `json:"groupBy,optional"`
+		ArgColumn string                 `json:"argColumn,optional"` //聚合的列,逗号分隔
+		Columns   string                 `json:"columns,optional"`
+	}
+)
+

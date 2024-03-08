@@ -31,9 +31,13 @@ Proxy:
       Dest: http://127.0.0.1:8000
     - Router: /api/v1/things/
       Dest: http://127.0.0.1:7788
+    - Router: /api/v1/data/
+      Dest: http://127.0.0.1:9218
     - Router: /api/v1/oss/
       DeletePrefix: true
       Dest: http://127.0.0.1:9000
+
+
 SysRpc:
   Enable: true
   Mode: direct

@@ -65,4 +65,13 @@ cd timed/timedschedulersvr && goctl rpc protoc  proto/timedscheduler.proto --go_
 
 ```shell
 #protoc  proto/* --go_out=. --go-grpc_out=.
-..```
+```
+
+
+# 数据分析模块-datasvr
+
+# api网关接口代理模块-apisvr
+
+```shell
+cd datasvr && goctl api go -api http/data.api  -dir ./  --style=goZero -ws && cd ..
+```
