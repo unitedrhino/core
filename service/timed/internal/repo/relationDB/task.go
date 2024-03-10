@@ -70,6 +70,7 @@ func (p TaskRepo) FindOneByFilter(ctx context.Context, f TaskFilter) (*TimedTask
 	}
 	return &result, nil
 }
+
 func (p TaskRepo) FindByFilter(ctx context.Context, f TaskFilter, page *def.PageInfo) ([]*TimedTaskInfo, error) {
 	var results []*TimedTaskInfo
 	db := p.fmtFilter(ctx, f).Model(&TimedTaskInfo{})
@@ -108,6 +109,7 @@ func (p TaskRepo) Delete(ctx context.Context, id int64) error {
 	err := p.db.WithContext(ctx).Where("id = ?", id).Delete(&TimedTaskInfo{}).Error
 	return stores.ErrFmt(err)
 }
+
 func (p TaskRepo) FindOne(ctx context.Context, id int64) (*TimedTaskInfo, error) {
 	var result TimedTaskInfo
 	err := p.db.WithContext(ctx).Where("id = ?", id).First(&result).Error
