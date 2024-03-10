@@ -24,9 +24,9 @@ func NewTaskInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ta
 	}
 }
 
-func (l *TaskInfoDeleteLogic) TaskInfoDelete(in *timedjob.WithCode) (*timedjob.Response, error) {
+func (l *TaskInfoDeleteLogic) TaskInfoDelete(in *timedjob.WithGroupCode) (*timedjob.Response, error) {
 	err := relationDB.NewTaskInfoRepo(l.ctx).DeleteByFilter(l.ctx,
-		relationDB.TaskFilter{Codes: []string{in.Code}})
+		relationDB.TaskFilter{Codes: []string{in.Code}, GroupCode: in.GroupCode})
 	if err != nil {
 		return nil, err
 	}

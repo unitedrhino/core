@@ -28,7 +28,7 @@ func NewInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InfoInd
 
 func (l *InfoIndexLogic) InfoIndex(req *types.TimedTaskInfoIndexReq) (resp *types.TimedTaskInfoIndexResp, err error) {
 	l.Infof("req:%v", utils.Fmt(req))
-	ret, err := l.svcCtx.TimedJob.TaskInfoIndex(l.ctx, &timedjob.TaskInfoIndexReq{Page: logic.ToTimedJobPageRpc(req.Page)})
+	ret, err := l.svcCtx.TimedJob.TaskInfoIndex(l.ctx, &timedjob.TaskInfoIndexReq{Page: logic.ToTimedJobPageRpc(req.Page), GroupCode: req.GroupCode})
 	if err != nil {
 		return nil, err
 	}

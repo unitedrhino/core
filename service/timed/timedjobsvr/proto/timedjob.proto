@@ -23,6 +23,11 @@ message WithCode{
   string code = 1;
 }
 
+message WithGroupCode{
+  string code = 1;
+  string groupCode =2;
+}
+
 service TimedManage {
 
   rpc TaskGroupCreate(TaskGroup)returns(Response);
@@ -33,9 +38,9 @@ service TimedManage {
 
   rpc TaskInfoCreate(TaskInfo)returns(Response);
   rpc TaskInfoUpdate(TaskInfo)returns(Response);
-  rpc TaskInfoDelete(WithCode)returns(Response);
+  rpc TaskInfoDelete(WithGroupCode)returns(Response);
   rpc TaskInfoIndex(TaskInfoIndexReq)returns(TaskInfoIndexResp);
-  rpc TaskInfoRead(WithCode)returns(TaskInfo);
+  rpc TaskInfoRead(WithGroupCode)returns(TaskInfo);
   rpc TaskLogIndex(TaskLogIndexReq)returns(TaskLogIndexResp);
 
   //发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param
@@ -96,6 +101,7 @@ message TaskGroupIndexResp{
 }
 message TaskInfoIndexReq{
   PageInfo page = 1;//分页信息 只获取一个则不填
+  string groupCode = 2;//组编码
 }
 message TaskInfoIndexResp{
   repeated TaskInfo list = 1;

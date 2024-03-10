@@ -25,8 +25,8 @@ func NewInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *InfoDe
 	}
 }
 
-func (l *InfoDeleteLogic) InfoDelete(req *types.WithCode) error {
+func (l *InfoDeleteLogic) InfoDelete(req *types.WithGroupCode) error {
 	l.Infof("req:%v", utils.Fmt(req))
-	_, err := l.svcCtx.TimedJob.TaskInfoDelete(l.ctx, &timedjob.WithCode{Code: req.Code})
+	_, err := l.svcCtx.TimedJob.TaskInfoDelete(l.ctx, &timedjob.WithGroupCode{Code: req.Code, GroupCode: req.GroupCode})
 	return err
 }

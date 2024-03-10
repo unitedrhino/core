@@ -25,7 +25,7 @@ func NewTaskInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Tas
 }
 
 func (l *TaskInfoIndexLogic) TaskInfoIndex(in *timedjob.TaskInfoIndexReq) (*timedjob.TaskInfoIndexResp, error) {
-	f := relationDB.TaskFilter{}
+	f := relationDB.TaskFilter{GroupCode: in.GroupCode}
 	repo := relationDB.NewTaskInfoRepo(l.ctx)
 	list, err := repo.FindByFilter(l.ctx, f, ToPageInfo(in.Page))
 	if err != nil {

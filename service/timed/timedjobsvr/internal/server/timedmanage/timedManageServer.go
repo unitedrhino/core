@@ -57,7 +57,7 @@ func (s *TimedManageServer) TaskInfoUpdate(ctx context.Context, in *timedjob.Tas
 	return l.TaskInfoUpdate(in)
 }
 
-func (s *TimedManageServer) TaskInfoDelete(ctx context.Context, in *timedjob.WithCode) (*timedjob.Response, error) {
+func (s *TimedManageServer) TaskInfoDelete(ctx context.Context, in *timedjob.WithGroupCode) (*timedjob.Response, error) {
 	l := timedmanagelogic.NewTaskInfoDeleteLogic(ctx, s.svcCtx)
 	return l.TaskInfoDelete(in)
 }
@@ -67,7 +67,7 @@ func (s *TimedManageServer) TaskInfoIndex(ctx context.Context, in *timedjob.Task
 	return l.TaskInfoIndex(in)
 }
 
-func (s *TimedManageServer) TaskInfoRead(ctx context.Context, in *timedjob.WithCode) (*timedjob.TaskInfo, error) {
+func (s *TimedManageServer) TaskInfoRead(ctx context.Context, in *timedjob.WithGroupCode) (*timedjob.TaskInfo, error) {
 	l := timedmanagelogic.NewTaskInfoReadLogic(ctx, s.svcCtx)
 	return l.TaskInfoRead(in)
 }

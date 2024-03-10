@@ -21,6 +21,10 @@ type(
         ID int64 `json:"id,optional"`         // id
         Code string `json:"code,optional"`
     }
+    WithGroupCode{
+        GroupCode string `json:"groupCode,optional"`         // id
+        Code string `json:"code,optional"`
+    }
     Tag  {
         Key string `json:"key"`
         Value string `json:"value"`

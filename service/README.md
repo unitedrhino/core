@@ -50,13 +50,13 @@ cd syssvr && goctl rpc protoc  proto/sys.proto --go_out=./ --go-grpc_out=./ --zr
 ```
 
 
-# 定时生产者引擎模块-timedschedulersvr
+# 定时任务执行者引擎模块-timedjobsvr
 
 - rpc文件编译
 
 ```shell
 #protoc  proto/* --go_out=. --go-grpc_out=.
-cd timed/timedschedulersvr && goctl rpc protoc  proto/timedscheduler.proto --go_out=./ --go-grpc_out=./ --zrpc_out=./ --style=goZero -m && cd ../..
+cd timed/timedjobsvr && goctl rpc protoc  proto/timedjob.proto --go_out=./ --go-grpc_out=./ --zrpc_out=./ --style=goZero -m && cd ../..
 ```
 
 # 定时消费者者引擎模块-timedjobsvr

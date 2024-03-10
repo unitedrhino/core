@@ -674,7 +674,8 @@ type TimedTaskInfo struct {
 }
 
 type TimedTaskInfoIndexReq struct {
-	Page *PageInfo `json:"page,optional"` //分页信息,只获取一个则不填
+	Page      *PageInfo `json:"page,optional"` //分页信息,只获取一个则不填
+	GroupCode string    `json:"groupCode"`     //组编码
 }
 
 type TimedTaskInfoIndexResp struct {
@@ -986,6 +987,11 @@ type WithAppCodeID struct {
 
 type WithCode struct {
 	Code string `json:"code,optional"`
+}
+
+type WithGroupCode struct {
+	GroupCode string `json:"groupCode,optional"` // id
+	Code      string `json:"code,optional"`
 }
 
 type WithID struct {

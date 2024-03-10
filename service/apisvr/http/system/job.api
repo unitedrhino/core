@@ -24,11 +24,11 @@ service api {
     @handler infoUpdate
     post /info/update (TimedTaskInfo) returns ()
     @handler infoDelete
-    post /info/delete (WithCode) returns ()
+    post /info/delete (WithGroupCode) returns ()
     @handler infoIndex
     post /info/index (TimedTaskInfoIndexReq) returns (TimedTaskInfoIndexResp)
     @handler infoRead
-    post /info/read (WithCode) returns (TimedTaskInfo)
+    post /info/read (WithGroupCode) returns (TimedTaskInfo)
 
     @handler logIndex
     post /log/index (TimedTaskLogIndexReq) returns (TimedTaskLogIndexResp)
@@ -77,6 +77,7 @@ type (
     }
     TimedTaskInfoIndexReq{
         Page *PageInfo `json:"page,optional"` //分页信息,只获取一个则不填
+        GroupCode string `json:"groupCode"` //组编码
     }
     TimedTaskInfoIndexResp{
         List []*TimedTaskInfo `json:"list"`

@@ -24,8 +24,8 @@ func NewTaskInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Task
 	}
 }
 
-func (l *TaskInfoReadLogic) TaskInfoRead(in *timedjob.WithCode) (*timedjob.TaskInfo, error) {
-	po, err := relationDB.NewTaskInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TaskFilter{Codes: []string{in.Code}})
+func (l *TaskInfoReadLogic) TaskInfoRead(in *timedjob.WithGroupCode) (*timedjob.TaskInfo, error) {
+	po, err := relationDB.NewTaskInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TaskFilter{Codes: []string{in.Code}, GroupCode: in.GroupCode})
 	if err != nil {
 		return nil, err
 	}
