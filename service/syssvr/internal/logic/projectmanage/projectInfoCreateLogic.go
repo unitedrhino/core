@@ -11,6 +11,7 @@ import (
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/gorm"
 )
 
 type ProjectInfoCreateLogic struct {
@@ -38,6 +39,7 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 	defer func() {
 		ctxs.GetUserCtx(l.ctx).AllProject = false
 	}()
+
 	po := &relationDB.SysProjectInfo{
 		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.ProjectName,
@@ -48,12 +50,36 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		Position: logic.ToStorePoint(in.Position),
 		Desc:     utils.ToEmptyString(in.Desc),
 	}
-
-	err := l.PiDB.Insert(l.ctx, po)
+	conn := stores.GetTenantConn(l.ctx)
+	err := conn.Transaction(func(tx *gorm.DB) error {
+		tiDb := relationDB.NewTenantInfoRepo(tx)
+		ti, err := tiDb.FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
+		if err != nil {
+			return err
+		}
+		piDb := relationDB.NewProjectInfoRepo(tx)
+		total, err := piDb.CountByFilter(l.ctx, relationDB.ProjectInfoFilter{})
+		if err != nil {
+			return err
+		}
+		if total >= ti.ProjectLimit {
+			return errors.OutRange.WithMsgf("最多创建%v个项目", ti.ProjectLimit)
+		}
+		err = piDb.Insert(l.ctx, po)
+		if err != nil {
+			l.Errorf("%s.Insert err=%+v", utils.FuncName(), err)
+			return err
+		}
+		ti.ProjectLimit++
+		err = tiDb.Update(l.ctx, ti)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 	if err != nil {
-		l.Errorf("%s.Insert err=%+v", utils.FuncName(), err)
+		l.Errorf("%s err=%+v", utils.FuncName(), err)
 		return nil, err
 	}
-
 	return &sys.ProjectWithID{ProjectID: int64(po.ProjectID)}, nil
 }

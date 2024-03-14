@@ -98,14 +98,19 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Respo
 		if err != nil {
 			return err
 		}
+		err = caches.DelTenant(l.ctx, ti.Code)
+		if err != nil {
+			l.Error(err)
+		}
+		err = l.svcCtx.TenantCache.SetData(l.ctx, ti.Code, nil)
+		if err != nil {
+			l.Error(err)
+		}
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	err = caches.DelTenant(l.ctx, ti.Code)
-	if err != nil {
-		l.Error(err)
-	}
+
 	return &sys.Response{}, err
 }

@@ -201,6 +201,8 @@ message TenantInfo{
   string baseUrl = 5;      // 基础URL
   string logoUrl = 6;     // 应用logo地址
   google.protobuf.StringValue desc = 7;
+  int64 defaultProjectID = 9;
+  int64 projectLimit = 10;
 }
 message TenantInfoIndexReq{
   PageInfo page = 1;//分页信息

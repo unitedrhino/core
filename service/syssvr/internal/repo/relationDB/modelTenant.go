@@ -6,14 +6,16 @@ import (
 
 // 租户信息表
 type SysTenantInfo struct {
-	ID          int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
-	Code        string `gorm:"column:code;uniqueIndex:code;type:VARCHAR(100);NOT NULL"` // 租户编码
-	Name        string `gorm:"column:name;uniqueIndex:name;type:VARCHAR(100);NOT NULL"` // 租户名称
-	AdminUserID int64  `gorm:"column:admin_user_id;type:BIGINT;NOT NULL"`               // 超级管理员id
-	AdminRoleID int64  `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`               // 超级管理员id
-	BaseUrl     string `gorm:"column:base_url;type:VARCHAR(100);NOT NULL"`              //应用首页
-	LogoUrl     string `gorm:"column:logo_url;type:VARCHAR(100);NOT NULL"`              //应用logo地址
-	Desc        string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
+	ID               int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
+	Code             string `gorm:"column:code;uniqueIndex:code;type:VARCHAR(100);NOT NULL"` // 租户编码
+	Name             string `gorm:"column:name;uniqueIndex:name;type:VARCHAR(100);NOT NULL"` // 租户名称
+	AdminUserID      int64  `gorm:"column:admin_user_id;type:BIGINT;NOT NULL"`               // 超级管理员id
+	AdminRoleID      int64  `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`               // 超级管理员id
+	BaseUrl          string `gorm:"column:base_url;type:VARCHAR(100);NOT NULL"`              //租户首页
+	LogoUrl          string `gorm:"column:logo_url;type:VARCHAR(100);NOT NULL"`              //租户logo地址
+	Desc             string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
+	ProjectLimit     int64  `gorm:"column:project_limit;type:BIGINT;default:1"`              //项目数量限制: 1: 单项目 2: 多项目
+	DefaultProjectID int64  `gorm:"column:default_project_id;type:BIGINT;NOT NULL"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code;uniqueIndex:name"`
 }

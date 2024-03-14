@@ -75,7 +75,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		IsAllData:  def.True,
 	}
 
-	po := ToTenantInfoPo(in.Info)
+	po := logic.ToTenantInfoPo(in.Info)
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		ris := []*relationDB.SysRoleInfo{{TenantCode: stores.TenantCode(in.Info.Code), Name: "超级管理员"}, {TenantCode: stores.TenantCode(in.Info.Code), Name: "普通用户"}}
 		err = relationDB.NewRoleInfoRepo(tx).MultiInsert(l.ctx, ris)
@@ -111,6 +111,10 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		return nil, err
 	}
 	err = caches.SetTenant(l.ctx, logic.ToTenantInfoCache(po))
+	if err != nil {
+		l.Error(err)
+	}
+	err = l.svcCtx.TenantCache.SetData(l.ctx, po.Code, logic.ToTenantInfoCache(po))
 	if err != nil {
 		l.Error(err)
 	}

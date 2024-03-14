@@ -5,7 +5,9 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/config"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/caches"
 	cas "gitee.com/i-Things/share/casbin"
+	"gitee.com/i-Things/share/domain/tenant"
 	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/stores"
@@ -17,18 +19,19 @@ import (
 )
 
 type ServiceContext struct {
-	Config    config.Config
-	ProjectID *utils.SnowFlake
-	AreaID    *utils.SnowFlake
-	UserID    *utils.SnowFlake
-	Casbin    *casbin.Enforcer
-	Slot      *cache.Slot
-	OssClient *oss.Client
-	Store     kv.Store
-	PwdCheck  *cache.PwdCheck
-	Captcha   *cache.Captcha
-	Cm        *ClientsManage
-	ServerMsg *eventBus.FastEvent
+	Config      config.Config
+	ProjectID   *utils.SnowFlake
+	AreaID      *utils.SnowFlake
+	UserID      *utils.SnowFlake
+	Casbin      *casbin.Enforcer
+	Slot        *cache.Slot
+	OssClient   *oss.Client
+	Store       kv.Store
+	PwdCheck    *cache.PwdCheck
+	Captcha     *cache.Captcha
+	Cm          *ClientsManage
+	ServerMsg   *eventBus.FastEvent
+	TenantCache *caches.Cache[tenant.Info]
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

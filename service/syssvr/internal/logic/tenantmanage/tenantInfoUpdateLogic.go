@@ -67,5 +67,9 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 	if err != nil {
 		l.Error(err)
 	}
+	err = l.svcCtx.TenantCache.SetData(l.ctx, old.Code, logic.ToTenantInfoCache(old))
+	if err != nil {
+		l.Error(err)
+	}
 	return &sys.Response{}, err
 }

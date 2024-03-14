@@ -48,6 +48,14 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("检查项目不存在")
 	}
 
+	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
+	if err != nil {
+		return nil, err
+	}
+	if ti.DefaultProjectID == in.ProjectID {
+		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("默认项目禁止删除")
+	}
+
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 		err = relationDB.NewProjectInfoRepo(tx).Delete(l.ctx, in.ProjectID)

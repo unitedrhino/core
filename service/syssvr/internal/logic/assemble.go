@@ -4,7 +4,6 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/domain/tenant"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 )
@@ -73,44 +72,5 @@ func MenuInfoToPb(ui *relationDB.SysModuleMenu) *sys.MenuInfo {
 		CreateTime: ui.CreatedTime.Unix(),
 		Order:      ui.Order,
 		HideInMenu: ui.HideInMenu,
-	}
-}
-
-func ToTenantInfoCaches(in []*relationDB.SysTenantInfo) (ret []*tenant.Info) {
-	for _, v := range in {
-		ret = append(ret, ToTenantInfoCache(v))
-	}
-	return ret
-}
-
-func ToTenantInfoCache(in *relationDB.SysTenantInfo) *tenant.Info {
-	if in == nil {
-		return nil
-	}
-	return &tenant.Info{
-		ID:          in.ID,
-		Code:        in.Code,
-		Name:        in.Name,
-		AdminUserID: in.AdminUserID,
-		AdminRoleID: in.AdminRoleID,
-		BaseUrl:     in.BaseUrl,
-		LogoUrl:     in.LogoUrl,
-		Desc:        in.Desc,
-		CreatedTime: in.CreatedTime.Unix(),
-	}
-}
-func CacheToTenantInfoRpc(in *tenant.Info) *sys.TenantInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.TenantInfo{
-		Id:          in.ID,
-		Code:        in.Code,
-		Name:        in.Name,
-		AdminUserID: in.AdminUserID,
-		AdminRoleID: in.AdminRoleID,
-		BaseUrl:     in.BaseUrl,
-		LogoUrl:     in.LogoUrl,
-		Desc:        utils.ToRpcNullString(in.Desc),
 	}
 }

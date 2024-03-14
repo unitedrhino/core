@@ -45,5 +45,5 @@ func (l *TenantInfoReadLogic) TenantInfoRead(in *sys.WithIDCode) (*sys.TenantInf
 	}
 	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, f)
 
-	return ToTenantInfoRpc(ti), err
+	return logic.ToTenantInfoRpc(ti), err
 }
