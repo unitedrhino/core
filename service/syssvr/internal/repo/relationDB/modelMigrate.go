@@ -117,6 +117,9 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateTenantInfo, 100).Error; err != nil {
 		return err
 	}
+	if err := db.CreateInBatches(&MigrateProjectInfo, 100).Error; err != nil {
+		return err
+	}
 	if err := db.CreateInBatches(&MigrateTenantApp, 100).Error; err != nil {
 		return err
 	}
@@ -193,13 +196,13 @@ func init() {
 }
 
 const (
-	adminUserID = 1740358057038188544
+	adminUserID      = 1740358057038188544
+	defaultProjectID = 1786838173980422144
 )
 
 // 子应用管理员可以配置自己子应用的角色
 var (
-	MigrateProjectInfo = []SysProjectInfo{}
-	MigrateModuleInfo  = []SysModuleInfo{
+	MigrateModuleInfo = []SysModuleInfo{
 		{Name: "系统管理", Code: def.ModuleSystemManage},
 		{Name: "租户管理", Code: def.ModuleTenantManage},
 		{Name: "物联网", Code: def.ModuleThings},
@@ -240,9 +243,10 @@ var (
 			IsSSL:    def.True},
 		},
 	}
-	MigrateTenantInfo = []SysTenantInfo{{Code: def.TenantCodeDefault, Name: "默认租户", AdminUserID: adminUserID}}
-	MigrateTenantApp  = []SysTenantApp{{TenantCode: def.TenantCodeDefault, AppCode: def.AppCore}}
-	MigrateUserInfo   = []SysUserInfo{
+	MigrateProjectInfo = []SysProjectInfo{{TenantCode: def.TenantCodeDefault, AdminUserID: adminUserID, ProjectID: defaultProjectID, ProjectName: "默认项目"}}
+	MigrateTenantInfo  = []SysTenantInfo{{Code: def.TenantCodeDefault, Name: "默认租户", AdminUserID: adminUserID, DefaultProjectID: defaultProjectID}}
+	MigrateTenantApp   = []SysTenantApp{{TenantCode: def.TenantCodeDefault, AppCode: def.AppCore}}
+	MigrateUserInfo    = []SysUserInfo{
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, UserName: sql.NullString{String: "administrator", Valid: true}, Password: "4f0fded4a38abe7a3ea32f898bb82298", Role: 1, NickName: "iThings管理员", IsAllData: def.True},
 	}
 	MigrateUserRole = []SysUserRole{

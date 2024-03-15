@@ -225,6 +225,20 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/ntp/read",
+					Handler: systemcommon.NtpReadHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/common"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{

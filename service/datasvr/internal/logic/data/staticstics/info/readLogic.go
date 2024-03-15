@@ -47,8 +47,8 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		if req.GroupBy != "" {
 			req.GroupBy = utils.CamelCaseToUdnderscore(req.GroupBy)
 		}
-		if req.ArgColumn != "" {
-			req.ArgColumn = utils.CamelCaseToUdnderscore(req.ArgColumn)
+		if req.Columns != "" {
+			req.Columns = utils.CamelCaseToUdnderscore(req.Columns)
 		}
 	}
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
@@ -66,9 +66,12 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	switch si.Type {
 	case "table":
 		conn = conn.Table(si.Table)
+	case "sql":
+		si.Table = "tb"
+		conn = conn.Table(fmt.Sprintf("(%s)as tb", si.Sql))
 	}
-	if si.Order != "" {
-		conn = conn.Order(si.Order)
+	if si.OrderBy != "" {
+		conn = conn.Order(si.OrderBy)
 	}
 	//填充过滤条件
 	for k, v := range req.Filter {
@@ -93,26 +96,45 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		}
 
 	}
-	if req.ArgFunc != "" {
-		column := req.Columns
-		if column == "" {
-			column = fmt.Sprintf("%s.*", si.Table)
-		} else {
-			columns := strings.Split(column, ",")
-			for i, v := range columns {
-				columns[i] = fmt.Sprintf("%s.%s", si.Table, v)
-			}
-			column = strings.Join(columns, ",")
-		}
-
-		if req.GroupBy != "" {
-			conn = conn.Select(fmt.Sprintf("%s(%s) as %s,%s",
-				req.ArgFunc, utils.CamelCaseToUdnderscore(req.ArgColumn), req.ArgFunc, column))
-		} else {
-			conn = conn.Select(fmt.Sprintf("%s(%s) as %s,%s",
-				req.ArgFunc, utils.CamelCaseToUdnderscore(req.ArgColumn), req.ArgFunc, column))
-		}
+	var (
+		columns []string
+	)
+	if req.Columns != "" {
+		columns = strings.Split(req.Columns, ",")
 	}
+	if len(req.Aggregations) > 0 {
+
+		//column := req.Columns
+		//if column == "" {
+		//	column = fmt.Sprintf("%s.*", si.Table)
+		//} else {
+		//	columns := strings.Split(column, ",")
+		//	for i, v := range columns {
+		//		columns[i] = fmt.Sprintf("%s.%s", si.Table, v)
+		//	}
+		//	column = strings.Join(columns, ",")
+		//}
+		for _, agg := range req.Aggregations {
+			if val := si.ArgColumns[agg.Column]; val != "" {
+				column := fmt.Sprintf("%s(%s) as %s", agg.Func, val, agg.Column)
+				columns = append(columns, column)
+			} else if agg.Column == "total" {
+				column := fmt.Sprintf("%s(1) as %s", agg.Func, agg.Column)
+				columns = append(columns, column)
+			} else {
+				column := fmt.Sprintf("%s(%s) as %s", agg.Func, agg.Column, agg.Column)
+				columns = append(columns, column)
+			}
+		}
+		//if req.GroupBy != "" {
+		//	conn = conn.Select(fmt.Sprintf("%s(%s) as %s,%s",
+		//		req.ArgFunc, utils.CamelCaseToUdnderscore(req.ArgColumn), req.ArgFunc, column))
+		//} else {
+		//	conn = conn.Select(fmt.Sprintf("%s(%s) as %s,%s",
+		//		req.ArgFunc, utils.CamelCaseToUdnderscore(req.ArgColumn), req.ArgFunc, column))
+		//}
+	}
+	conn = conn.Select(strings.Join(columns, ","))
 	if req.GroupBy != "" {
 		conn = conn.Group(utils.CamelCaseToUdnderscore(req.GroupBy))
 	}

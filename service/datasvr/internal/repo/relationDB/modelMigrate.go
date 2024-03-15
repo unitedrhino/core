@@ -54,7 +54,7 @@ var (
 			Omits:           "created_time,updated_time",
 			IsToHump:        1,
 			Sql:             "",
-			Order:           "",
+			OrderBy:         "",
 			Filter: map[string]FilterKeywords{
 				"startDate": { //开始时间
 					Sql:    "?>=date",

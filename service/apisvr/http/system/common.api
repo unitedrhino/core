@@ -28,7 +28,26 @@ service api {
     get /ws () returns ()
 }
 
+@server (
+    group: system/common
+    prefix: /api/v1/system/common
+    middleware:  InitCtxsWare
+)
+service api {
+    @doc "ntp"
+    @handler ntpRead
+    post /ntp/read(NtpReadReq) returns (NtpReadResp)
+}
+
 type (
+    NtpReadReq{
+        DeviceSendTime int64  `json:"deviceSendTime,string"`
+    }
+    NtpReadResp{
+        DeviceSendTime int64 `json:"deviceSendTime,string"`
+        ServerSendTime int64 `json:"serverSendTime,string"`
+        ServerRecvTime int64 `json:"serverRecvTime,string"`
+    }
     Map  {
         Mode string `json:"mode，options=baidu"`              //坐标系 默认百度坐标系
         AccessKey    string `json:"accessKey"` //设备地图key

@@ -337,6 +337,16 @@ type ModuleInfoIndexResp struct {
 	List  []*ModuleInfo `json:"list"`  //菜单列表
 }
 
+type NtpReadReq struct {
+	DeviceSendTime int64 `json:"deviceSendTime,string"`
+}
+
+type NtpReadResp struct {
+	DeviceSendTime int64 `json:"deviceSendTime,string"`
+	ServerSendTime int64 `json:"serverSendTime,string"`
+	ServerRecvTime int64 `json:"serverRecvTime,string"`
+}
+
 type Oss struct {
 	Host string `json:"host"` //oss访问前缀
 }
