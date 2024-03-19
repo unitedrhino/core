@@ -14,11 +14,12 @@ import (
 )
 
 type ServiceContext struct {
-	Config      config.Config
-	Store       kv.Store
-	Redis       *redis.Redis
-	PubJob      *pubJob.PubJob
-	AsynqClient *asynq.Client
+	Config         config.Config
+	Store          kv.Store
+	Redis          *redis.Redis
+	PubJob         *pubJob.PubJob
+	AsynqClient    *asynq.Client
+	AsynqInspector *asynq.Inspector
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -34,10 +35,11 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		os.Exit(-1)
 	}
 	return &ServiceContext{
-		Config:      c,
-		PubJob:      pj,
-		Redis:       redis.MustNewRedis(c.CacheRedis[0].RedisConf),
-		AsynqClient: clients.NewAsynqClient(c.CacheRedis),
-		Store:       kv.NewStore(c.CacheRedis),
+		Config:         c,
+		PubJob:         pj,
+		Redis:          redis.MustNewRedis(c.CacheRedis[0].RedisConf),
+		AsynqClient:    clients.NewAsynqClient(c.CacheRedis),
+		AsynqInspector: clients.NewAsynqInspector(c.CacheRedis),
+		Store:          kv.NewStore(c.CacheRedis),
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/ctxs"
 	"io"
 	"net/http"
 	"net/http/httputil"
@@ -15,6 +16,9 @@ func Handler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	dir := http.Dir(svcCtx.Config.Proxy.FileProxy.FrontDir)
 	fileServer := http.FileServer(dir)
 	return func(w http.ResponseWriter, r *http.Request) {
+		header := w.Header()
+		header.Set("Access-Control-Allow-Headers", ctxs.HttpAllowHeader)
+		header.Set("Access-Control-Allow-Origin", "*")
 		upath := r.URL.Path
 		for _, v := range svcCtx.Config.Proxy.StaticProxy {
 			if strings.HasPrefix(upath, v.Router) {
