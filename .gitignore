@@ -33,7 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
-go.sum
 
 ##
 /cmd/*
