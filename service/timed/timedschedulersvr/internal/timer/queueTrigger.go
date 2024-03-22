@@ -23,7 +23,8 @@ type QueueTrigger struct {
 }
 
 var (
-	QueueMap = map[string]*QueueTrigger{}
+	QueueMutex sync.Mutex
+	QueueMap   = map[string]*QueueTrigger{}
 )
 
 // 定时任务检查
@@ -76,6 +77,8 @@ func QueueTaskCheck(svcCtx *svc.ServiceContext) {
 }
 
 func QueueTaskClose(ctx context.Context, taskCode string) {
+	QueueMutex.Lock()
+	defer QueueMutex.Unlock()
 	t := QueueMap[taskCode]
 	if t != nil {
 		for _, sub := range t.Subs {
@@ -107,8 +110,11 @@ func QueueTaskStatusRunCheck(ctx context.Context, svcCtx *svc.ServiceContext, wa
 		}
 		val.Subs = append(val.Subs, sub)
 	}
-
-	QueueMap[taskCode] = &val
+	func() {
+		QueueMutex.Lock()
+		defer QueueMutex.Unlock()
+		QueueMap[taskCode] = &val
+	}()
 	jobDB := relationDB.NewTaskInfoRepo(ctx)
 	task.Status = def.StatusRunning
 	err = jobDB.Update(ctx, task)
