@@ -13,7 +13,7 @@ type SysProjectInfo struct {
 	ProjectName string            `gorm:"column:project_name;uniqueIndex:pn;type:varchar(100);NOT NULL"` // 项目名称
 	//Region      string            `gorm:"column:region;type:varchar(100);NOT NULL"`      // 项目省市区县
 	//Address     string            `gorm:"column:address;type:varchar(512);NOT NULL"`     // 项目详细地址
-	Position stores.Point `gorm:"column:position;type:point;NOT NULL"`    // 项目地址
+	Position stores.Point `gorm:"column:position;NOT NULL"`               // 项目地址
 	Desc     string       `gorm:"column:desc;type:varchar(100);NOT NULL"` // 项目备注
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:pn"`
@@ -32,7 +32,7 @@ type SysAreaInfo struct {
 	AreaIDPath      string            `gorm:"column:area_id_path;type:varchar(100);NOT NULL"`          // 1-2-3-的格式记录顶级区域到当前区域的路径
 	AreaNamePath    string            `gorm:"column:area_name_path;type:varchar(100);NOT NULL"`        // 1-2-3-的格式记录顶级区域到当前区域的路径
 	AreaName        string            `gorm:"column:area_name;type:varchar(100);NOT NULL"`             // 区域名称
-	Position        stores.Point      `gorm:"column:position;type:point;NOT NULL"`                     // 区域定位(默认百度坐标系BD09)
+	Position        stores.Point      `gorm:"column:position;NOT NULL"`                                // 区域定位(默认火星坐标系)
 	Desc            string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                  // 区域备注
 	LowerLevelCount int64             `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计
 	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`           //是否是叶子节点

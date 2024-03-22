@@ -45,5 +45,8 @@ func (l *MenuIndexLogic) MenuIndex(req *types.UserResourceWithModuleReq) (resp *
 	}
 
 	ret, err := l.svcCtx.TenantRpc.TenantAppMenuIndex(l.ctx, &sys.TenantAppMenuIndexReq{Code: uc.TenantCode, AppCode: uc.AppCode, ModuleCode: req.ModuleCode, MenuIDs: menuIDs, IsRetTree: true})
+	if err != nil {
+		return nil, err
+	}
 	return &types.TenantAppMenuIndexResp{List: system.ToTenantAppMenusApi(ret.List)}, nil
 }

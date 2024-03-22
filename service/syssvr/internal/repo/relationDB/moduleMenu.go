@@ -56,7 +56,7 @@ func (p MenuInfoRepo) FindOneByFilter(ctx context.Context, f MenuInfoFilter) (*S
 func (p MenuInfoRepo) FindByFilter(ctx context.Context, f MenuInfoFilter, page *def.PageInfo) ([]*SysModuleMenu, error) {
 	var results []*SysModuleMenu
 	db := p.fmtFilter(ctx, f).Model(&SysModuleMenu{})
-	db = page.ToGorm(db).Order("order")
+	db = page.ToGorm(db).Order(stores.Col("order"))
 	err := db.Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
