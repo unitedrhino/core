@@ -72,7 +72,7 @@ func (p ModuleInfoRepo) FindOneByFilter(ctx context.Context, f ModuleInfoFilter)
 func (p ModuleInfoRepo) FindByFilter(ctx context.Context, f ModuleInfoFilter, page *def.PageInfo) ([]*SysModuleInfo, error) {
 	var results []*SysModuleInfo
 	db := p.fmtFilter(ctx, f).Model(&SysModuleInfo{})
-	db = page.ToGorm(db)
+	db = page.ToGorm(db).Order("order")
 	err := db.Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)

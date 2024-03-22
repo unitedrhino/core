@@ -49,6 +49,7 @@ func (p UserRoleRepo) FindOneByFilter(ctx context.Context, f UserRoleFilter) (*S
 	}
 	return &result, nil
 }
+
 func (p UserRoleRepo) FindByFilter(ctx context.Context, f UserRoleFilter, page *def.PageInfo) ([]*SysUserRole, error) {
 	var results []*SysUserRole
 	db := p.fmtFilter(ctx, f).Model(&SysUserRole{})

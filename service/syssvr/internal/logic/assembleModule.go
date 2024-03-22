@@ -147,6 +147,7 @@ func ToMenuInfoPb(in *relationDB.SysModuleMenu) *sys.MenuInfo {
 		Redirect:   in.Redirect,
 		Body:       utils.ToRpcNullString(in.Body),
 		HideInMenu: in.HideInMenu,
+		CreateTime: in.CreatedTime.Unix(),
 	}
 }
 

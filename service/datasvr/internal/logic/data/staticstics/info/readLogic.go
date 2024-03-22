@@ -79,9 +79,9 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		if !ok {
 			switch v.(type) {
 			case string:
-				conn = conn.Where("%s like ?", utils.CamelCaseToUdnderscore(k), "%"+v.(string)+"%")
+				conn = conn.Where(fmt.Sprintf("%s like ?", utils.CamelCaseToUdnderscore(k)), "%"+v.(string)+"%")
 			default:
-				conn = conn.Where("%s = ?", utils.CamelCaseToUdnderscore(k), v)
+				conn = conn.Where(fmt.Sprintf("%s = ?", utils.CamelCaseToUdnderscore(k)), v)
 			}
 			//return nil, errors.Parameter.WithMsgf("过滤的key未定义:%s", k)
 		} else {

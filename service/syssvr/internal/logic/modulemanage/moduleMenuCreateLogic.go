@@ -5,6 +5,8 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
+	"gorm.io/gorm"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -45,7 +47,39 @@ func (l *ModuleMenuCreateLogic) ModuleMenuCreate(in *sys.MenuInfo) (*sys.WithID,
 	if in.HideInMenu == 0 {
 		in.HideInMenu = 1
 	}
+	ams, err := relationDB.NewTenantAppModuleRepo(l.ctx).FindByFilter(l.ctx, relationDB.TenantAppModuleFilter{
+		ModuleCodes: []string{in.ModuleCode},
+	}, nil)
+	if err != nil {
+		return nil, err
+	}
 	po := logic.ToMenuInfoPo(in)
-	relationDB.NewMenuInfoRepo(l.ctx).Insert(l.ctx, po)
+	conn := stores.GetTenantConn(l.ctx)
+	err = conn.Transaction(func(tx *gorm.DB) error {
+		err := relationDB.NewMenuInfoRepo(l.ctx).Insert(l.ctx, po)
+		if err != nil {
+			return err
+		}
+		//导入租户的菜单中
+		var data []*relationDB.SysTenantAppMenu
+		var template = *po
+		template.ID = 0
+		for _, am := range ams {
+			data = append(data, &relationDB.SysTenantAppMenu{
+				TempLateID:    po.ID,
+				TenantCode:    am.TenantCode,
+				AppCode:       am.AppCode,
+				SysModuleMenu: template,
+			})
+		}
+		err = relationDB.NewTenantAppMenuRepo(l.ctx).MultiInsert(l.ctx, data)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
 	return &sys.WithID{Id: po.ID}, nil
 }
