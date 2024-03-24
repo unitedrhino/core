@@ -45,12 +45,6 @@ func (t Timed) ProcessTask(ctx context.Context, Task *asynq.Task) error {
 			if task.Type == domain.TaskTypeTiming && task.Status != def.StatusRunning { //如果没有处于运行中,任务不能执行
 				return nil
 			}
-			if task.Type == domain.TaskTypeDelay {
-				err := t.SvcCtx.AsynqInspector.DeleteTask(domain.ToPriority(task.Priority), Task.ResultWriter().TaskID())
-				if err != nil {
-					logx.WithContext(ctx).Error(err)
-				}
-			}
 			err = logic.FillTaskInfoDo(&taskInfo, task)
 			if err != nil {
 				return err

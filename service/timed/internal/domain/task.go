@@ -34,7 +34,7 @@ const (
 )
 
 var (
-	Prioritys = []string{PriorityCritical, PriorityDefault, PriorityLow}
+	Priorities = []string{PriorityDefault, PriorityCritical, PriorityLow}
 )
 
 type TaskInfo struct {

@@ -24,6 +24,15 @@ func (m *SysTenantInfo) TableName() string {
 	return "sys_tenant_info"
 }
 
+//// 租户自定义表
+//type TenantOem struct {
+//	BaseUrl       string `gorm:"column:base_url;type:VARCHAR(100);"` //租户首页
+//	BackgroundImg string `gorm:"column:logo_url;type:VARCHAR(100);"`
+//	LogoImg       string `gorm:"column:logo_url;type:VARCHAR(100);"` //租户logo地址
+//	Title         string `gorm:"column:logo_url;type:VARCHAR(100);"`
+//	TitleEn       string `gorm:"column:logo_url;type:VARCHAR(100);"`
+//}
+
 // 租户下的应用列表
 type SysTenantApp struct {
 	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号

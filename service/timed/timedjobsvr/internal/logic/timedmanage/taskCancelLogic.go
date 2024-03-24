@@ -29,22 +29,17 @@ var (
 )
 
 func init() {
-	for _, priority := range domain.Prioritys {
+	for _, priority := range domain.Priorities {
 		retryKeys = append(retryKeys, fmt.Sprintf("asynq:{%s}:retry", priority))
 	}
 }
 
 func (l *TaskCancelLogic) TaskCancel(in *timedjob.TaskWithTaskID) (*timedjob.Response, error) {
-	var hashKeys []string
-	for _, priority := range domain.Prioritys {
-		hashKeys = append(hashKeys, fmt.Sprintf("asynq:{%s}:t:%s", priority, in.TaskID))
+	for _, priority := range domain.Priorities {
+		err := l.svcCtx.AsynqInspector.DeleteTask(priority, in.TaskID)
+		if err == nil {
+			break
+		}
 	}
-	_, err := l.svcCtx.Store.Del(hashKeys...)
-	if err != nil {
-		return nil, err
-	}
-	for _, v := range retryKeys {
-		l.svcCtx.Store.ZremCtx(l.ctx, v, in.TaskID)
-	}
-	return &timedjob.Response{}, err
+	return &timedjob.Response{}, nil
 }
