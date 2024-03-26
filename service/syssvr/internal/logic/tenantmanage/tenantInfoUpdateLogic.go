@@ -2,11 +2,15 @@ package tenantmanagelogic
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
+	"gitee.com/i-Things/share/oss/common"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -53,11 +57,41 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 		}
 		old.AdminUserID = in.AdminUserID
 	}
-	if in.BaseUrl != "" {
-		old.BaseUrl = in.BaseUrl
+	if in.BackgroundImg != "" && in.IsUpdateBackgroundImg {
+		if old.BackgroundImg != "" {
+			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, old.BackgroundImg, common.OptionKv{})
+			if err != nil {
+				l.Errorf("Delete file err path:%v,err:%v", old.BackgroundImg, err)
+			}
+		}
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneBackgroundImg,
+			fmt.Sprintf("%s/%s", old.Code, oss.GetFileNameWithPath(in.BackgroundImg)))
+		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(in.BackgroundImg, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		old.BackgroundImg = path
 	}
-	if in.LogoUrl != "" {
-		old.LogoUrl = in.LogoUrl
+	if in.LogoImg != "" {
+		if old.LogoImg != "" {
+			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, old.LogoImg, common.OptionKv{})
+			if err != nil {
+				l.Errorf("Delete file err path:%v,err:%v", old.LogoImg, err)
+			}
+		}
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneLogoImg,
+			fmt.Sprintf("%s/%s", old.Code, oss.GetFileNameWithPath(in.LogoImg)))
+		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(in.LogoImg, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		old.LogoImg = path
+	}
+	if in.Title != "" {
+		old.Title = in.Title
+	}
+	if in.TitleEn != "" {
+		old.TitleEn = in.TitleEn
 	}
 	if in.Desc != nil {
 		old.Desc = utils.ToEmptyString(in.Desc)

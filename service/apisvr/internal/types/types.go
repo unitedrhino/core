@@ -591,15 +591,36 @@ type TenantAppWithIDOrCode struct {
 	AppCode string `json:"appCode,optional"` // 应用编号
 }
 
+type TenantCore struct {
+	ID            int64   `json:"id,optional"`      // 接口编号
+	Code          string  `json:"code"`             // 应用编号
+	Name          string  `json:"name,optional"`    // 接口名称
+	Desc          *string `json:"desc,optional"`    // 备注
+	BaseUrl       string  `json:"baseUrl,optional"` // 应用编号
+	LogoUrl       string  `json:"logoUrl,optional"`
+	BackgroundImg string  `json:"backgroundImg,optional"`
+	LogoImg       string  `json:"logoImg,optional"`
+	Title         string  `json:"title,optional"`
+	TitleEn       string  `json:"titleEn,optional"`
+}
+
 type TenantInfo struct {
-	ID          int64   `json:"id,optional"`   // 接口编号
-	Code        string  `json:"code"`          // 应用编号
-	Name        string  `json:"name,optional"` // 接口名称
-	AdminUserID int64   `json:"adminUserID,optional,string"`
-	AdminRoleID int64   `json:"adminRoleID,optional"`
-	Desc        *string `json:"desc,optional"`    // 备注
-	BaseUrl     string  `json:"baseUrl,optional"` // 应用编号
-	LogoUrl     string  `json:"logoUrl,optional"`
+	ID                    int64     `json:"id,optional"`   // 接口编号
+	Code                  string    `json:"code"`          // 应用编号
+	Name                  string    `json:"name,optional"` // 接口名称
+	AdminUserID           int64     `json:"adminUserID,optional,string"`
+	AdminRoleID           int64     `json:"adminRoleID,optional"`
+	Desc                  *string   `json:"desc,optional"`    // 备注
+	BaseUrl               string    `json:"baseUrl,optional"` // 应用编号
+	LogoUrl               string    `json:"logoUrl,optional"`
+	DefaultProjectID      int64     `json:"defaultProjectID,optional"`
+	BackgroundImg         string    `json:"backgroundImg,optional"`
+	IsUpdateBackgroundImg bool      `json:"isUpdateBackgroundImg,optional"`
+	LogoImg               string    `json:"logoImg,optional"`
+	IsUpdateLogoImg       bool      `json:"isUpdateLogoImg,optional"`
+	Title                 string    `json:"title,optional"`
+	TitleEn               string    `json:"titleEn,optional"`
+	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
 }
 
 type TenantInfoCreateReq struct {
@@ -612,9 +633,10 @@ type TenantInfoCreateResp struct {
 }
 
 type TenantInfoIndexReq struct {
-	Page *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	Name string    `json:"name,optional"` // 应用名称
-	Code string    `json:"code,optional"` // 应用编号
+	Page          *PageInfo `json:"page,optional"`          // 分页信息,只获取一个则不填
+	Name          string    `json:"name,optional"`          // 应用名称
+	Code          string    `json:"code,optional"`          // 应用编号
+	WithAdminUser bool      `json:"withAdminUser,optional"` //同时获取管理员核心信息
 }
 
 type TenantInfoIndexResp struct {
@@ -837,6 +859,18 @@ type UserChangePwdReq struct {
 	Code     string `json:"code"`                     //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID   string `json:"codeID,optional"`          //验证码编号 微信登录填state
 	Password string `json:"password,optional"`        //密码
+}
+
+type UserCore struct {
+	UserID      int64  `json:"userID,string,optional"`      // 用户id
+	UserName    string `json:"userName,optional"`           // 用户名(唯一)
+	Email       string `json:"email,optional"`              // 邮箱
+	Phone       string `json:"phone,optional"`              // 手机号
+	LastIP      string `json:"lastIP,optional"`             // 最后登录ip
+	RegIP       string `json:"regIP,optional"`              // 注册ip
+	NickName    string `json:"nickName,optional"`           // 用户的昵称
+	HeadImg     string `json:"headImg,optional"`            // 用户头像
+	CreatedTime int64  `json:"createdTime,string,optional"` // 创建时间
 }
 
 type UserCreateResp struct {

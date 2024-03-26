@@ -5,6 +5,9 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
+	"gorm.io/gorm"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -40,6 +43,19 @@ func (l *ModuleInfoCreateLogic) ModuleInfoCreate(in *sys.ModuleInfo) (*sys.WithI
 		in.HideInMenu = 1
 	}
 	po := logic.ToModuleInfoPo(in)
-	relationDB.NewModuleInfoRepo(l.ctx).Insert(l.ctx, po)
-	return &sys.WithID{Id: po.ID}, nil
+	po.ID = 0
+	err := stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		err := relationDB.NewModuleInfoRepo(tx).Insert(l.ctx, po)
+		if err != nil {
+			return err
+		}
+		//自动添加到全部模块中
+		err = relationDB.NewAppModuleRepo(tx).Insert(l.ctx, &relationDB.SysAppModule{
+			AppCode:    def.AppAll,
+			ModuleCode: in.Code,
+		})
+		return err
+	})
+
+	return &sys.WithID{Id: po.ID}, err
 }

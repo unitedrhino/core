@@ -10,12 +10,16 @@ type SysTenantInfo struct {
 	Code             string `gorm:"column:code;uniqueIndex:code;type:VARCHAR(100);NOT NULL"` // 租户编码
 	Name             string `gorm:"column:name;uniqueIndex:name;type:VARCHAR(100);NOT NULL"` // 租户名称
 	AdminUserID      int64  `gorm:"column:admin_user_id;type:BIGINT;NOT NULL"`               // 超级管理员id
-	AdminRoleID      int64  `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`               // 超级管理员id
-	BaseUrl          string `gorm:"column:base_url;type:VARCHAR(100);NOT NULL"`              //租户首页
-	LogoUrl          string `gorm:"column:logo_url;type:VARCHAR(100);NOT NULL"`              //租户logo地址
+	AdminRoleID      int64  `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`               // 超级角色
 	Desc             string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
-	ProjectLimit     int64  `gorm:"column:project_limit;type:BIGINT;default:1"`              //项目数量限制: 1: 单项目 2: 多项目
 	DefaultProjectID int64  `gorm:"column:default_project_id;type:BIGINT;NOT NULL"`
+
+	//BaseUrl       string `gorm:"column:base_url;type:VARCHAR(100);"` //租户首页
+	BackgroundImg string `gorm:"column:background_img;type:VARCHAR(512);"`
+	LogoImg       string `gorm:"column:logo_img;type:VARCHAR(512);"` //租户logo地址
+	Title         string `gorm:"column:title;type:VARCHAR(100);"`
+	TitleEn       string `gorm:"column:title_en;type:VARCHAR(100);"`
+	Status        int64  `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code;uniqueIndex:name"`
 }
@@ -26,11 +30,7 @@ func (m *SysTenantInfo) TableName() string {
 
 //// 租户自定义表
 //type TenantOem struct {
-//	BaseUrl       string `gorm:"column:base_url;type:VARCHAR(100);"` //租户首页
-//	BackgroundImg string `gorm:"column:logo_url;type:VARCHAR(100);"`
-//	LogoImg       string `gorm:"column:logo_url;type:VARCHAR(100);"` //租户logo地址
-//	Title         string `gorm:"column:logo_url;type:VARCHAR(100);"`
-//	TitleEn       string `gorm:"column:logo_url;type:VARCHAR(100);"`
+
 //}
 
 // 租户下的应用列表

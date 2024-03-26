@@ -17,7 +17,10 @@ service api {
     @doc "获取文件上传地址"
     @handler uploadUrlCreate
     post /upload-url/create (UploadUrlCreateReq) returns (UploadUrlCreateResp)
-    @doc "文件直传"
+    @doc(
+        summary: "文件直传"
+        inject_formdata_param: "file"
+    )
     @handler uploadFile
     post /upload-file() returns (UploadFileResp)
     @doc "获取天气情况"
@@ -70,13 +73,7 @@ type (
         FilePath string `json:"filePath"` //文件路径(带文件名)
         UploadUri string `json:"uploadUri"` //附件直传地址
     }
-    UploadFileReq {
-        FilePath string `json:"filePath"` //文件路径(带文件名)
-        Business string `form:"business"` //业务(如产品管理 productManage)
-        Scence string `form:"scence"` //场景(业务定义 如产品图片 productImg)
-        Rename bool `form:"rename,optional"` //1文件重命名，0不重命名
-        File []byte `form:"file"` //文件内容,二进制文件传输
-    }
+
     UploadFileResp  {
         FilePath string `json:"filePath"` //文件路径(带文件名)
         FileUri string `json:"fileUri"` //文件uri 相对路径

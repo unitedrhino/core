@@ -261,6 +261,7 @@ var (
 	}
 	MigrateAppInfo = []SysAppInfo{
 		{Code: def.AppCore, Name: "中台"},
+		{Code: def.AppAll, Name: "全部"},
 	}
 
 	MigrateModuleMenu = []SysModuleMenu{

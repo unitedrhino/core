@@ -30,6 +30,7 @@ import (
 	systemtenantapp "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app"
 	systemtenantappmenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/menu"
 	systemtenantappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/module"
+	systemtenantcore "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/core"
 	systemtenantinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/info"
 	systemuserinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/info"
 	systemuserrole "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/role"
@@ -762,6 +763,20 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/tenant/app/module"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemtenantcore.ReadHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/tenant/core"),
 	)
 
 	server.AddRoutes(

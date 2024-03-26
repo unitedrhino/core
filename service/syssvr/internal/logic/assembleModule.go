@@ -8,43 +8,11 @@ import (
 )
 
 func ToModuleInfoPo(in *sys.ModuleInfo) *relationDB.SysModuleInfo {
-	if in == nil {
-		return nil
-	}
-	return &relationDB.SysModuleInfo{
-		ID:         in.Id,
-		Code:       in.Code,
-		Type:       in.Type,
-		SubType:    in.SubType,
-		Order:      in.Order,
-		Name:       in.Name,
-		Path:       in.Path,
-		Url:        in.Url,
-		Icon:       in.Icon,
-		Body:       in.Body.GetValue(),
-		HideInMenu: in.HideInMenu,
-		Desc:       in.Desc.GetValue(),
-	}
+	return utils.Copy[relationDB.SysModuleInfo](in)
 }
 
 func ToModuleInfoPb(in *relationDB.SysModuleInfo) *sys.ModuleInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.ModuleInfo{
-		Id:         in.ID,
-		Code:       in.Code,
-		Type:       in.Type,
-		SubType:    in.SubType,
-		Order:      in.Order,
-		Name:       in.Name,
-		Path:       in.Path,
-		Url:        in.Url,
-		Icon:       in.Icon,
-		Body:       utils.ToRpcNullString(in.Body),
-		HideInMenu: in.HideInMenu,
-		Desc:       utils.ToRpcNullString(in.Desc),
-	}
+	return utils.Copy[sys.ModuleInfo](in)
 }
 
 func ToModuleInfosPb(in []*relationDB.SysModuleInfo) (ret []*sys.ModuleInfo) {

@@ -75,7 +75,7 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Re
 				l.Errorf("Delete file err path:%v,err:%v", ui.HeadImg, err)
 			}
 		}
-		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessUserManage, oss.SceneUserInfo, fmt.Sprintf("%d/%s", ui.UserID, oss.GetFileNameWithPath(info.HeadImg)))
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessUserManage, oss.SceneHeadIng, fmt.Sprintf("%d/%s", ui.UserID, oss.GetFileNameWithPath(info.HeadImg)))
 		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(info.HeadImg, nwePath)
 		if err != nil {
 			return nil, errors.System.AddDetail(err)

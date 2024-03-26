@@ -111,6 +111,7 @@ type SysModuleInfo struct {
 	Body       string           `gorm:"column:body;type:VARCHAR(1024)"`                         // 菜单自定义数据
 	HideInMenu int64            `gorm:"column:hide_in_menu;type:BIGINT;default:2;NOT NULL"`     // 是否隐藏菜单 1-是 2-否
 	Desc       string           `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                 // 备注
+	Tag        int64            `gorm:"column:tag;type:BIGINT;default:1;NOT NULL"`              //标签: 1:通用 2:选配
 	Menus      []*SysModuleMenu `gorm:"foreignKey:ModuleCode;references:Code"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code"`

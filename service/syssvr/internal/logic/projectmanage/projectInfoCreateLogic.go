@@ -58,19 +58,19 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 			return err
 		}
 		piDb := relationDB.NewProjectInfoRepo(tx)
-		total, err := piDb.CountByFilter(l.ctx, relationDB.ProjectInfoFilter{})
-		if err != nil {
-			return err
-		}
-		if total >= ti.ProjectLimit {
-			return errors.OutRange.WithMsgf("最多创建%v个项目", ti.ProjectLimit)
-		}
+		//total, err := piDb.CountByFilter(l.ctx, relationDB.ProjectInfoFilter{})
+		//if err != nil {
+		//	return err
+		//}
+		//if total >= ti.ProjectLimit {
+		//	return errors.OutRange.WithMsgf("最多创建%v个项目", ti.ProjectLimit)
+		//}
 		err = piDb.Insert(l.ctx, po)
 		if err != nil {
 			l.Errorf("%s.Insert err=%+v", utils.FuncName(), err)
 			return err
 		}
-		ti.ProjectLimit++
+		//ti.ProjectLimit++
 		err = tiDb.Update(l.ctx, ti)
 		if err != nil {
 			return err

@@ -197,12 +197,15 @@ message TenantInfo{
   string name = 2;
   string code = 3;
   int64 adminUserID = 4;
-  int64 adminRoleID = 8;
-  string baseUrl = 5;      // 基础URL
-  string logoUrl = 6;     // 应用logo地址
-  google.protobuf.StringValue desc = 7;
-  int64 defaultProjectID = 9;
-  int64 projectLimit = 10;
+  int64 adminRoleID = 5;
+  google.protobuf.StringValue desc = 6;
+  int64 defaultProjectID = 7;
+  string backgroundImg =9;
+  bool isUpdateBackgroundImg = 10;
+  string logoImg =11;
+  bool isUpdateLogoImg =12;
+  string title =13;
+  string titleEn =14;
 }
 message TenantInfoIndexReq{
   PageInfo page = 1;//分页信息
@@ -599,7 +602,6 @@ message UserInfo{
   int64  isAllData =18;
   string headImg =19;
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
-
 }
 
 
@@ -919,6 +921,7 @@ message ModuleInfo{
   int64 order = 9;
   int64 hideInMenu = 10;
   google.protobuf.StringValue body = 11;
+  int64 tag = 13;//标签: 1:通用 2:选配
 }
 
 message ModuleInfoIndexReq{

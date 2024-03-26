@@ -21,7 +21,7 @@ service api {
     @handler index
     post /index (TenantInfoIndexReq) returns (TenantInfoIndexResp)
 
-    @doc "更新租户"
+    @doc "获取租户详情"
     @handler read
     post /read (WithIDOrCode) returns (TenantInfo)
 
@@ -33,6 +33,18 @@ service api {
     @handler delete
     post /delete (WithIDOrCode) returns ()
 }
+
+@server (
+    group: system/tenant/core
+    prefix: /api/v1/system/tenant/core
+    middleware:  InitCtxsWare
+)
+service api {
+    @doc "获取租户信息"
+    @handler read
+    post /read (WithIDOrCode) returns (TenantCore)
+}
+
 
 @server (
     group: system/tenant/access/info
@@ -79,6 +91,7 @@ type (
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Name string `json:"name,optional"`                     // 应用名称
         Code string `json:"code,optional"`                     // 应用编号
+        WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
     }
 
     TenantInfoIndexResp  {

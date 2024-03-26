@@ -39,8 +39,24 @@ func (l *IndexLogic) Index(req *types.TenantInfoIndexReq) (resp *types.TenantInf
 	if err != nil {
 		return nil, err
 	}
+	var userMap = map[int64]*sys.UserInfo{}
+	if req.WithAdminUser && len(ret.List) > 0 {
+		var userIDs []int64
+		for _, v := range ret.List {
+			userIDs = append(userIDs, v.AdminUserID)
+		}
+		users, err := l.svcCtx.UserRpc.UserInfoIndex(ctxs.WithRoot(l.ctx), &sys.UserInfoIndexReq{
+			UserIDs: userIDs,
+		})
+		if err != nil {
+			return nil, err
+		}
+		for _, v := range users.List {
+			userMap[v.UserID] = v
+		}
+	}
 	return &types.TenantInfoIndexResp{
 		Total: ret.Total,
-		List:  system.ToTenantInfosTypes(ret.List),
+		List:  system.ToTenantInfosTypes(ret.List, userMap),
 	}, nil
 }

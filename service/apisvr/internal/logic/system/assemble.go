@@ -79,41 +79,23 @@ func ToSysWithIDCode(in *types.WithIDOrCode) *sys.WithIDCode {
 }
 
 func ToTenantInfoRpc(in *types.TenantInfo) *sys.TenantInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.TenantInfo{
-		Id:          in.ID,
-		Name:        in.Name,
-		Code:        in.Code,
-		AdminUserID: in.AdminUserID,
-		AdminRoleID: in.AdminRoleID,
-		Desc:        utils.ToRpcNullString(in.Desc),
-		BaseUrl:     in.BaseUrl,
-		LogoUrl:     in.LogoUrl,
-	}
+	return utils.Copy[sys.TenantInfo](in)
 }
 
 func ToTenantInfoTypes(in *sys.TenantInfo) *types.TenantInfo {
-	if in == nil {
-		return nil
-	}
-	return &types.TenantInfo{
-		ID:          in.Id,
-		Name:        in.Name,
-		Code:        in.Code,
-		AdminUserID: in.AdminUserID,
-		AdminRoleID: in.AdminRoleID,
-		Desc:        utils.ToNullString(in.Desc),
-		BaseUrl:     in.BaseUrl,
-		LogoUrl:     in.LogoUrl,
-	}
+	return utils.Copy[types.TenantInfo](in)
 }
 
-func ToTenantInfosTypes(in []*sys.TenantInfo) []*types.TenantInfo {
+func ToTenantCoreTypes(in *sys.TenantInfo) *types.TenantCore {
+	return utils.Copy[types.TenantCore](in)
+}
+
+func ToTenantInfosTypes(in []*sys.TenantInfo, userMap map[int64]*sys.UserInfo) []*types.TenantInfo {
 	var ret []*types.TenantInfo
 	for _, v := range in {
-		ret = append(ret, ToTenantInfoTypes(v))
+		ti := ToTenantInfoTypes(v)
+		ti.AdminUserInfo = utils.Copy[types.UserCore](userMap[v.AdminUserID])
+		ret = append(ret, ti)
 	}
 	return ret
 }

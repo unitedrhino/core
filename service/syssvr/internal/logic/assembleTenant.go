@@ -8,21 +8,7 @@ import (
 )
 
 func ToTenantInfoRpc(in *relationDB.SysTenantInfo) *sys.TenantInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.TenantInfo{
-		Id:               in.ID,
-		Code:             in.Code,
-		Name:             in.Name,
-		AdminUserID:      in.AdminUserID,
-		AdminRoleID:      in.AdminRoleID,
-		BaseUrl:          in.BaseUrl,
-		LogoUrl:          in.LogoUrl,
-		Desc:             utils.ToRpcNullString(in.Desc),
-		DefaultProjectID: in.DefaultProjectID,
-		ProjectLimit:     in.ProjectLimit,
-	}
+	return utils.Copy[sys.TenantInfo](in)
 }
 func ToTenantInfosRpc(in []*relationDB.SysTenantInfo) (ret []*sys.TenantInfo) {
 	for _, v := range in {
@@ -32,21 +18,7 @@ func ToTenantInfosRpc(in []*relationDB.SysTenantInfo) (ret []*sys.TenantInfo) {
 }
 
 func ToTenantInfoPo(in *sys.TenantInfo) *relationDB.SysTenantInfo {
-	if in == nil {
-		return nil
-	}
-	return &relationDB.SysTenantInfo{
-		ID:               in.Id,
-		Code:             in.Code,
-		Name:             in.Name,
-		AdminUserID:      in.AdminUserID,
-		AdminRoleID:      in.AdminRoleID,
-		BaseUrl:          in.BaseUrl,
-		LogoUrl:          in.LogoUrl,
-		Desc:             utils.ToEmptyString(in.Desc),
-		DefaultProjectID: in.DefaultProjectID,
-		ProjectLimit:     in.ProjectLimit,
-	}
+	return utils.Copy[relationDB.SysTenantInfo](in)
 }
 
 func ToTenantInfoCaches(in []*relationDB.SysTenantInfo) (ret []*tenant.Info) {
@@ -57,55 +29,12 @@ func ToTenantInfoCaches(in []*relationDB.SysTenantInfo) (ret []*tenant.Info) {
 }
 
 func ToTenantInfoCache(in *relationDB.SysTenantInfo) *tenant.Info {
-	if in == nil {
-		return nil
-	}
-	return &tenant.Info{
-		ID:               in.ID,
-		Code:             in.Code,
-		Name:             in.Name,
-		AdminUserID:      in.AdminUserID,
-		AdminRoleID:      in.AdminRoleID,
-		BaseUrl:          in.BaseUrl,
-		LogoUrl:          in.LogoUrl,
-		Desc:             in.Desc,
-		CreatedTime:      in.CreatedTime.Unix(),
-		DefaultProjectID: in.DefaultProjectID,
-		ProjectLimit:     in.ProjectLimit,
-	}
+	return utils.Copy[tenant.Info](in)
 }
 func CacheToTenantInfoRpc(in *tenant.Info) *sys.TenantInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.TenantInfo{
-		Id:               in.ID,
-		Code:             in.Code,
-		Name:             in.Name,
-		AdminUserID:      in.AdminUserID,
-		AdminRoleID:      in.AdminRoleID,
-		BaseUrl:          in.BaseUrl,
-		LogoUrl:          in.LogoUrl,
-		DefaultProjectID: in.DefaultProjectID,
-		ProjectLimit:     in.ProjectLimit,
-		Desc:             utils.ToRpcNullString(in.Desc),
-	}
+	return utils.Copy[sys.TenantInfo](in)
 }
 
 func RpcToTenantInfoCache(in *sys.TenantInfo) *tenant.Info {
-	if in == nil {
-		return nil
-	}
-	return &tenant.Info{
-		ID:               in.Id,
-		Code:             in.Code,
-		Name:             in.Name,
-		AdminUserID:      in.AdminUserID,
-		AdminRoleID:      in.AdminRoleID,
-		BaseUrl:          in.BaseUrl,
-		LogoUrl:          in.LogoUrl,
-		DefaultProjectID: in.DefaultProjectID,
-		ProjectLimit:     in.ProjectLimit,
-		Desc:             utils.ToEmptyString(in.Desc),
-	}
+	return utils.Copy[tenant.Info](in)
 }
