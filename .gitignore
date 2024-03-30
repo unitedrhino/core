@@ -62,3 +62,4 @@ service/usersvr/usersvr*
 /service/timedqueuesvr/job/job
 /service/timedqueuesvr/scheduler/scheduler
 /service/timedjobsvr/job
+/go.sum
