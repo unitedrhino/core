@@ -11,6 +11,9 @@ type SysExample struct {
 	ID int64 `gorm:"column:id;type:bigint;primary_key;AUTO_INCREMENT"` // id编号
 }
 
+type SysConfig struct {
+}
+
 type SysDictInfo struct {
 	ID       int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // id编号
 	Name     string           `gorm:"column:name;comment:字典名"`                          // 字典名（中）
