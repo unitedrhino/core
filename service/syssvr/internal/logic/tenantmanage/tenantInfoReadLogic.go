@@ -4,7 +4,6 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -37,13 +36,13 @@ func (l *TenantInfoReadLogic) TenantInfoRead(in *sys.WithIDCode) (*sys.TenantInf
 	}
 	f := relationDB.TenantInfoFilter{ID: in.Id}
 	if in.Code != "" {
-		t, err := caches.GetTenant(l.ctx, in.Code)
-		if err == nil {
-			return logic.CacheToTenantInfoRpc(t), nil
-		}
+		//t, err := caches.GetTenant(l.ctx, in.Code)
+		//if err == nil {
+		//	return logic.CacheToTenantInfoRpc(l.ctx, l.svcCtx, t), nil
+		//}
 		f.Codes = []string{in.Code}
 	}
 	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, f)
 
-	return logic.ToTenantInfoRpc(ti), err
+	return logic.ToTenantInfoRpc(l.ctx, l.svcCtx, ti), err
 }

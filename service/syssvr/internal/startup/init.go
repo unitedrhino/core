@@ -22,6 +22,7 @@ func Init(svcCtx *svc.ServiceContext) {
 		err = caches.InitTenant(ctx, logic.ToTenantInfoCaches(list)...)
 		logx.Must(err)
 	})
+	InitCache(svcCtx)
 }
 
 func InitCache(svcCtx *svc.ServiceContext) {

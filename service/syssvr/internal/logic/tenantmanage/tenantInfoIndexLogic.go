@@ -47,5 +47,5 @@ func (l *TenantInfoIndexLogic) TenantInfoIndex(in *sys.TenantInfoIndexReq) (*sys
 	if err != nil {
 		return nil, err
 	}
-	return &sys.TenantInfoIndexResp{List: logic.ToTenantInfosRpc(list), Total: total}, nil
+	return &sys.TenantInfoIndexResp{List: logic.ToTenantInfosRpc(l.ctx, l.svcCtx, list), Total: total}, nil
 }

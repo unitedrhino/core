@@ -17,24 +17,19 @@ type (
         AdminUserID int64   `json:"adminUserID,optional,string"`
         AdminRoleID int64   `json:"adminRoleID,optional"`
         Desc *string `json:"desc,optional"`                       // 备注
-        BaseUrl string `json:"baseUrl,optional"`                               // 应用编号
-        LogoUrl string `json:"logoUrl,optional"`
         DefaultProjectID      int64 `json:"defaultProjectID,optional"`
         BackgroundImg         string `json:"backgroundImg,optional"`
-        IsUpdateBackgroundImg bool `json:"isUpdateBackgroundImg,optional"`
+        IsUpdateBackgroundImg bool `json:"isUpdateBackgroundImg,optional,omitempty"`
         LogoImg               string `json:"logoImg,optional"`
-        IsUpdateLogoImg       bool `json:"isUpdateLogoImg,optional"`
+        IsUpdateLogoImg       bool `json:"isUpdateLogoImg,optional,omitempty"`
         Title                 string `json:"title,optional"`
         TitleEn               string `json:"titleEn,optional"`
         AdminUserInfo *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
     }
     TenantCore  {
-        ID int64 `json:"id,optional"`                                      // 接口编号
         Code string `json:"code"`                               // 应用编号
         Name string `json:"name,optional"`                                 // 接口名称
         Desc *string `json:"desc,optional"`                       // 备注
-        BaseUrl string `json:"baseUrl,optional"`                               // 应用编号
-        LogoUrl string `json:"logoUrl,optional"`
         BackgroundImg         string `json:"backgroundImg,optional"`
         LogoImg               string `json:"logoImg,optional"`
         Title                 string `json:"title,optional"`

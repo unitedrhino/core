@@ -592,12 +592,9 @@ type TenantAppWithIDOrCode struct {
 }
 
 type TenantCore struct {
-	ID            int64   `json:"id,optional"`      // 接口编号
-	Code          string  `json:"code"`             // 应用编号
-	Name          string  `json:"name,optional"`    // 接口名称
-	Desc          *string `json:"desc,optional"`    // 备注
-	BaseUrl       string  `json:"baseUrl,optional"` // 应用编号
-	LogoUrl       string  `json:"logoUrl,optional"`
+	Code          string  `json:"code"`          // 应用编号
+	Name          string  `json:"name,optional"` // 接口名称
+	Desc          *string `json:"desc,optional"` // 备注
 	BackgroundImg string  `json:"backgroundImg,optional"`
 	LogoImg       string  `json:"logoImg,optional"`
 	Title         string  `json:"title,optional"`
@@ -610,14 +607,12 @@ type TenantInfo struct {
 	Name                  string    `json:"name,optional"` // 接口名称
 	AdminUserID           int64     `json:"adminUserID,optional,string"`
 	AdminRoleID           int64     `json:"adminRoleID,optional"`
-	Desc                  *string   `json:"desc,optional"`    // 备注
-	BaseUrl               string    `json:"baseUrl,optional"` // 应用编号
-	LogoUrl               string    `json:"logoUrl,optional"`
+	Desc                  *string   `json:"desc,optional"` // 备注
 	DefaultProjectID      int64     `json:"defaultProjectID,optional"`
 	BackgroundImg         string    `json:"backgroundImg,optional"`
-	IsUpdateBackgroundImg bool      `json:"isUpdateBackgroundImg,optional"`
+	IsUpdateBackgroundImg bool      `json:"isUpdateBackgroundImg,optional,omitempty"`
 	LogoImg               string    `json:"logoImg,optional"`
-	IsUpdateLogoImg       bool      `json:"isUpdateLogoImg,optional"`
+	IsUpdateLogoImg       bool      `json:"isUpdateLogoImg,optional,omitempty"`
 	Title                 string    `json:"title,optional"`
 	TitleEn               string    `json:"titleEn,optional"`
 	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
@@ -781,14 +776,6 @@ type TimedTaskSendReq struct {
 
 type TimedTaskWithTaskID struct {
 	TaskID string `json:"taskID"` //运行的taskID
-}
-
-type UploadFileReq struct {
-	FilePath string `json:"filePath"`        //文件路径(带文件名)
-	Business string `form:"business"`        //业务(如产品管理 productManage)
-	Scence   string `form:"scence"`          //场景(业务定义 如产品图片 productImg)
-	Rename   bool   `form:"rename,optional"` //1文件重命名，0不重命名
-	File     []byte `form:"file"`            //文件内容,二进制文件传输
 }
 
 type UploadFileResp struct {

@@ -59,7 +59,7 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 	}
 	if in.BackgroundImg != "" && in.IsUpdateBackgroundImg {
 		if old.BackgroundImg != "" {
-			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, old.BackgroundImg, common.OptionKv{})
+			err := l.svcCtx.OssClient.PublicBucket().Delete(l.ctx, old.BackgroundImg, common.OptionKv{})
 			if err != nil {
 				l.Errorf("Delete file err path:%v,err:%v", old.BackgroundImg, err)
 			}
@@ -72,7 +72,7 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 		}
 		old.BackgroundImg = path
 	}
-	if in.LogoImg != "" {
+	if in.LogoImg != "" && in.IsUpdateLogoImg {
 		if old.LogoImg != "" {
 			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, old.LogoImg, common.OptionKv{})
 			if err != nil {
@@ -81,7 +81,7 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 		}
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneLogoImg,
 			fmt.Sprintf("%s/%s", old.Code, oss.GetFileNameWithPath(in.LogoImg)))
-		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(in.LogoImg, nwePath)
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(in.LogoImg, nwePath)
 		if err != nil {
 			return nil, errors.System.AddDetail(err)
 		}

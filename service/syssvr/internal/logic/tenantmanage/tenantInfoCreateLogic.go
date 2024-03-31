@@ -3,12 +3,15 @@ package tenantmanagelogic
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"gorm.io/gorm"
@@ -33,7 +36,7 @@ func NewTenantInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-// 新增区域
+// 新增租户
 func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*sys.WithID, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
@@ -75,7 +78,34 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		IsAllData:  def.True,
 	}
 
+	projectPo := relationDB.SysProjectInfo{
+		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
+		ProjectName: in.Info.Name,
+		//CompanyName: utils.ToEmptyString(in.CompanyName),
+		AdminUserID: userID,
+		//Region:      utils.ToEmptyString(in.Region),
+		//Address:     utils.ToEmptyString(in.Address),
+	}
+
 	po := logic.ToTenantInfoPo(in.Info)
+	if po.BackgroundImg != "" && in.Info.IsUpdateBackgroundImg {
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneBackgroundImg,
+			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.BackgroundImg)))
+		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(po.BackgroundImg, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		po.BackgroundImg = path
+	}
+	if po.LogoImg != "" && in.Info.IsUpdateLogoImg {
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneLogoImg,
+			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.LogoImg)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(po.LogoImg, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		po.LogoImg = path
+	}
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		ris := []*relationDB.SysRoleInfo{{TenantCode: stores.TenantCode(in.Info.Code), Name: "超级管理员"}, {TenantCode: stores.TenantCode(in.Info.Code), Name: "普通用户"}}
 		err = relationDB.NewRoleInfoRepo(tx).MultiInsert(l.ctx, ris)
@@ -95,6 +125,11 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		if err != nil {
 			return err
 		}
+		err = relationDB.NewProjectInfoRepo(tx).Insert(l.ctx, &projectPo)
+		if err != nil {
+			return err
+		}
+		po.DefaultProjectID = int64(projectPo.ProjectID)
 		po.AdminUserID = ui.UserID
 		po.AdminRoleID = ris[0].ID
 		err = relationDB.NewTenantInfoRepo(l.ctx).Insert(l.ctx, po)

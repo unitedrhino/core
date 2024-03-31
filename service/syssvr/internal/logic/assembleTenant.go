@@ -1,18 +1,36 @@
 package logic
 
 import (
+	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/domain/tenant"
+	"gitee.com/i-Things/share/oss/common"
 	"gitee.com/i-Things/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
-func ToTenantInfoRpc(in *relationDB.SysTenantInfo) *sys.TenantInfo {
+func ToTenantInfoRpc(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysTenantInfo) *sys.TenantInfo {
+	if in.BackgroundImg != "" {
+		var err error
+		in.BackgroundImg, err = svcCtx.OssClient.PublicBucket().SignedGetUrl(ctx, in.BackgroundImg, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
+	if in.LogoImg != "" {
+		var err error
+		in.LogoImg, err = svcCtx.OssClient.PublicBucket().SignedGetUrl(ctx, in.LogoImg, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
 	return utils.Copy[sys.TenantInfo](in)
 }
-func ToTenantInfosRpc(in []*relationDB.SysTenantInfo) (ret []*sys.TenantInfo) {
+func ToTenantInfosRpc(ctx context.Context, svcCtx *svc.ServiceContext, in []*relationDB.SysTenantInfo) (ret []*sys.TenantInfo) {
 	for _, v := range in {
-		ret = append(ret, ToTenantInfoRpc(v))
+		ret = append(ret, ToTenantInfoRpc(ctx, svcCtx, v))
 	}
 	return
 }
@@ -31,7 +49,21 @@ func ToTenantInfoCaches(in []*relationDB.SysTenantInfo) (ret []*tenant.Info) {
 func ToTenantInfoCache(in *relationDB.SysTenantInfo) *tenant.Info {
 	return utils.Copy[tenant.Info](in)
 }
-func CacheToTenantInfoRpc(in *tenant.Info) *sys.TenantInfo {
+func CacheToTenantInfoRpc(ctx context.Context, svcCtx *svc.ServiceContext, in *tenant.Info) *sys.TenantInfo {
+	if in.BackgroundImg != "" {
+		var err error
+		in.BackgroundImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, in.BackgroundImg, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
+	if in.LogoImg != "" {
+		var err error
+		in.LogoImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, in.LogoImg, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
 	return utils.Copy[sys.TenantInfo](in)
 }
 
