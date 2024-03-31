@@ -49,23 +49,24 @@ func ToTenantInfoCaches(in []*relationDB.SysTenantInfo) (ret []*tenant.Info) {
 func ToTenantInfoCache(in *relationDB.SysTenantInfo) *tenant.Info {
 	return utils.Copy[tenant.Info](in)
 }
-func CacheToTenantInfoRpc(ctx context.Context, svcCtx *svc.ServiceContext, in *tenant.Info) *sys.TenantInfo {
-	if in.BackgroundImg != "" {
-		var err error
-		in.BackgroundImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, in.BackgroundImg, 24*60*60, common.OptionKv{})
-		if err != nil {
-			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
-		}
-	}
-	if in.LogoImg != "" {
-		var err error
-		in.LogoImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, in.LogoImg, 24*60*60, common.OptionKv{})
-		if err != nil {
-			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
-		}
-	}
-	return utils.Copy[sys.TenantInfo](in)
-}
+
+//func CacheToTenantInfoRpc(ctx context.Context, svcCtx *svc.ServiceContext, in *tenant.Info) *sys.TenantInfo {
+//	if in.BackgroundImg != "" {
+//		var err error
+//		in.BackgroundImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, in.BackgroundImg, 24*60*60, common.OptionKv{})
+//		if err != nil {
+//			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+//		}
+//	}
+//	if in.LogoImg != "" {
+//		var err error
+//		in.LogoImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, in.LogoImg, 24*60*60, common.OptionKv{})
+//		if err != nil {
+//			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+//		}
+//	}
+//	return utils.Copy[sys.TenantInfo](in)
+//}
 
 func RpcToTenantInfoCache(in *sys.TenantInfo) *tenant.Info {
 	return utils.Copy[tenant.Info](in)
