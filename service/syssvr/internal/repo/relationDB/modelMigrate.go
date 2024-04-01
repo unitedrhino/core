@@ -57,18 +57,18 @@ func Migrate(c conf.Database) error {
 	if err != nil {
 		return err
 	}
-	{
-		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-		if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
-			return err
-		}
-		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
-			return err
-		}
-		if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
-			return err
-		}
-	}
+	//{
+	//	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
+	//	if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+	//		return err
+	//	}
+	//	if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+	//		return err
+	//	}
+	//	if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
+	//		return err
+	//	}
+	//}
 
 	if needInitColumn {
 		return migrateTableColumn()
