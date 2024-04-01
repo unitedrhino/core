@@ -1,6 +1,7 @@
 package sysdirect
 
 import (
+	"context"
 	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/config"
 	accessmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/accessmanage"
@@ -17,6 +18,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/interceptors"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
@@ -48,10 +50,12 @@ func GetSvcCtx() *svc.ServiceContext {
 // RunServer 如果是直连模式,同时提供Grpc的能力
 func RunServer(svcCtx *svc.ServiceContext) {
 	runSvrOnce.Do(func() {
-		go Run(svcCtx)
+		utils.Go(context.Background(), func() {
+			Run(svcCtx)
+		})
 	})
-
 }
+
 func Run(svcCtx *svc.ServiceContext) {
 	c := svcCtx.Config
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {

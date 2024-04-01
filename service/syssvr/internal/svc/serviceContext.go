@@ -7,6 +7,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/caches"
 	cas "gitee.com/i-Things/share/casbin"
+	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/domain/tenant"
 	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/oss"
@@ -32,6 +33,7 @@ type ServiceContext struct {
 	Cm          *ClientsManage
 	ServerMsg   *eventBus.FastEvent
 	TenantCache *caches.Cache[tenant.Info]
+	Sms         *clients.Sms
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -62,6 +64,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name)
 	logx.Must(err)
+	sms, err := clients.NewSms(c.Sms)
+	logx.Must(err)
 	return &ServiceContext{
 		ServerMsg: serverMsg,
 		Captcha:   cache.NewCaptcha(store),
@@ -75,5 +79,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserID:    UserID,
 		Casbin:    ca,
 		Store:     store,
+		Sms:       sms,
 	}
 }

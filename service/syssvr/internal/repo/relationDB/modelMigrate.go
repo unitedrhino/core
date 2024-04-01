@@ -21,6 +21,9 @@ func Migrate(c conf.Database) error {
 		needInitColumn = true
 	}
 	err := db.AutoMigrate(
+		&SysNotifyConfig{},
+		&SysNotifyTemplate{},
+		&SysTenantNotifyTemplate{},
 		&SysDictInfo{},
 		&SysDictDetail{},
 		&SysSlotInfo{},
@@ -54,35 +57,18 @@ func Migrate(c conf.Database) error {
 	if err != nil {
 		return err
 	}
-	//{
-	//	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-	//	if err := db.CreateInBatches(&MigrateAccessInfo, 100).Error; err != nil {
-	//		return err
-	//	}
-	//	if err := db.CreateInBatches(&MigrateApiInfo, 100).Error; err != nil {
-	//		return err
-	//	}
-	//}
-
-	//if true {
-	//	db = db.Clauses(clause.OnConflict{DoNothing: true})
-	//	if err := db.CreateInBatches(&MigrateModuleApi, 100).Error; err != nil {
-	//		return err
-	//	}
-	//	for _, v := range MigrateModuleApi {
-	//		data := SysTenantAppApi{
-	//			TempLateID:   v.ID,
-	//			TenantCode:   def.TenantCodeDefault,
-	//			AppCode:      def.AppCore,
-	//			SysModuleApi: v,
-	//		}
-	//		data.ID = 0
-	//		MigrateTenantAppApi = append(MigrateTenantAppApi, data)
-	//	}
-	//	if err := db.CreateInBatches(&MigrateTenantAppApi, 100).Error; err != nil {
-	//		return err
-	//	}
-	//}
+	{
+		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
+		if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+			return err
+		}
+		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+			return err
+		}
+		if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
+			return err
+		}
+	}
 
 	if needInitColumn {
 		return migrateTableColumn()
@@ -130,6 +116,15 @@ func migrateTableColumn() error {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateApiInfo, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
 		return err
 	}
 	//{
@@ -201,7 +196,29 @@ const (
 )
 
 // 子应用管理员可以配置自己子应用的角色
+
 var (
+	MigrateNotifyConfig = []SysNotifyConfig{
+		{Code: def.NotifyCodeSysUserRegisterCaptcha, Name: "用户注册验证码", SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail}},
+		{Code: def.NotifyCodeSysUserLoginCaptcha, Name: "用户登录验证码", SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail}},
+	}
+	templateCode          = "SMS_288215142"
+	MigrateNotifyTemplate = []SysNotifyTemplate{
+		{ID: 3, Code: templateCode, Name: "阿里注册验证码", ConfigCode: def.NotifyCodeSysUserRegisterCaptcha,
+			Type: def.NotifyTypeSms, SignName: "EbelongTool", Params: map[string]string{"code": "验证码code"}},
+		{ID: 4, Code: templateCode, Name: "阿里登录验证码", ConfigCode: def.NotifyCodeSysUserLoginCaptcha,
+			Type: def.NotifyTypeSms, SignName: "EbelongTool", Params: map[string]string{"code": "验证码code"}},
+		{ID: 5, Code: "sysUserEmailRegister", Name: "邮箱注册验证码", ConfigCode: def.NotifyCodeSysUserLoginCaptcha,
+			Type: def.NotifyTypeEmail, Body: "欢迎注册,你的验证码是:{{.code}},有效期为{{.expr}}分钟", Params: map[string]string{"code": "验证码code", "expr": "有效期(分钟)"}},
+		{ID: 6, Code: "sysUserEmailLogin", Name: "邮箱登录验证码", ConfigCode: def.NotifyCodeSysUserLoginCaptcha,
+			Type: def.NotifyTypeEmail, Body: "欢迎登录,你的验证码是:{{.code}},有效期为{{.expr}}分钟", Params: map[string]string{"code": "验证码code", "expr": "有效期(分钟)"}},
+	}
+	MigrateTenantNotifyTemplate = []SysTenantNotifyTemplate{
+		{TenantCode: def.TenantCodeAll, ConfigCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 3},
+		{TenantCode: def.TenantCodeAll, ConfigCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 4},
+		{TenantCode: def.TenantCodeAll, ConfigCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 5},
+		{TenantCode: def.TenantCodeAll, ConfigCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeEmail, TemplateID: 6},
+	}
 	MigrateModuleInfo = []SysModuleInfo{
 		{Name: "系统管理", Code: def.ModuleSystemManage},
 		{Name: "租户管理", Code: def.ModuleTenantManage},

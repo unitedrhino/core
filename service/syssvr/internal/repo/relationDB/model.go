@@ -11,11 +11,12 @@ type SysExample struct {
 	ID int64 `gorm:"column:id;type:bigint;primary_key;AUTO_INCREMENT"` // id编号
 }
 
+// 全局配置
 type SysConfig struct {
-	Sms *SysTenantSms `gorm:"embedded;embeddedPrefix:sms_"` //短信配置,全租户共用
+	Sms *SysConfigSms `gorm:"embedded;embeddedPrefix:sms_"` //短信配置,全租户共用
 }
 
-type SysTenantSms struct {
+type SysConfigSms struct {
 	From     string `gorm:"column:from;type:VARCHAR(50);default:'';NOT NULL"`     // 发件人  你自己要发邮件的邮箱
 	Host     string `gorm:"column:host;type:VARCHAR(50);default:'';NOT NULL"`     // 服务器地址 例如 smtp.qq.com  请前往QQ或者你要发邮件的邮箱查看其smtp协议
 	Secret   string `gorm:"column:secret;type:VARCHAR(50);default:'';NOT NULL"`   // 密钥    用于登录的密钥 最好不要用邮箱密码 去邮箱smtp申请一个用于登录的密钥

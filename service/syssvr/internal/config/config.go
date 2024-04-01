@@ -31,5 +31,6 @@ type Config struct {
 		Mode      string `json:",default=baidu"`
 		AccessKey string
 	}
+	Sms                  conf.Sms
 	WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
 }

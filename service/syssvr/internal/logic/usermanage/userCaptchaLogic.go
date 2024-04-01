@@ -1,16 +1,18 @@
 package usermanagelogic
 
 import (
+	"bytes"
 	"context"
-	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
+	"text/template"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -47,6 +49,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 				return nil, errors.Captcha
 			}
 		}
+		var ConfigCode = def.CaptchaUseRegister
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
 			count, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
 			if err != nil {
@@ -55,8 +58,27 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			if count == 0 && in.Use == def.CaptchaUseLogin {
 				return nil, errors.UnRegister
 			}
+			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
-		code = "123456"
+		c, err := relationDB.NewTenantNotifyTemplateRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantNotifyConfigFilter{
+			ConfigCode: ConfigCode,
+			Type:       def.NotifyTypeSms,
+		})
+		if err != nil {
+			if errors.Cmp(err, errors.NotFind) {
+				return nil, errors.NotEnable
+			}
+			return nil, err
+		}
+		err = l.svcCtx.Sms.SendSms(clients.SendSmsParam{
+			PhoneNumbers:  in.Account,
+			SignName:      c.Template.SignName,
+			TemplateCode:  c.Template.Code,
+			TemplateParam: map[string]any{"code": code},
+		})
+		if err != nil {
+			return nil, err
+		}
 	case def.CaptchaTypeEmail:
 		if uc == nil {
 			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, in.Use, in.CodeID, in.Code)
@@ -64,6 +86,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 				return nil, errors.Captcha
 			}
 		}
+		var ConfigCode = def.CaptchaUseRegister
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
 			count, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
 			if err != nil {
@@ -72,21 +95,40 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			if count == 0 && in.Use == def.CaptchaUseLogin {
 				return nil, errors.UnRegister
 			}
+			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
-		c, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
+		c, err := relationDB.NewTenantNotifyTemplateRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantNotifyConfigFilter{
+			ConfigCode: ConfigCode,
+			Type:       def.NotifyTypeEmail,
+		})
+		if err != nil {
+			if errors.Cmp(err, errors.NotFind) {
+				return nil, errors.NotEnable
+			}
+			return nil, err
+		}
+		tc, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
 		if err != nil {
 			return nil, err
 		}
-		code = "123456"
+		tmpl, err := template.New(c.Template.Code).Parse(c.Template.Body)
+		if err != nil {
+			return nil, errors.System.AddMsg("模版解析失败").AddDetail(err)
+		}
+		buffer := &bytes.Buffer{}
+		err = tmpl.Execute(buffer, map[string]any{"code": code, "expr": def.CaptchaExpire / 60})
+		if err != nil {
+			return nil, errors.System.AddMsg("模版匹配失败").AddDetail(err)
+		}
 		err = utils.SenEmail(conf.Email{
-			From:     c.Email.From,
-			Host:     c.Email.Host,
-			Secret:   c.Email.Secret,
-			Nickname: c.Email.Nickname,
-			Port:     c.Email.Port,
-			IsSSL:    c.Email.IsSSL == def.True,
-		}, []string{in.Account}, "验证码校验",
-			fmt.Sprintf("您的验证码为：%s，有效期为%d分钟", code, def.CaptchaExpire/60))
+			From:     tc.Email.From,
+			Host:     tc.Email.Host,
+			Secret:   tc.Email.Secret,
+			Nickname: tc.Email.Nickname,
+			Port:     tc.Email.Port,
+			IsSSL:    tc.Email.IsSSL == def.True,
+		}, []string{in.Account}, c.Template.Name,
+			buffer.String())
 		if err != nil {
 			return nil, err
 		}
