@@ -1,19 +1,15 @@
 package usermanagelogic
 
 import (
-	"bytes"
 	"context"
+	messagemanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/messagemanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/clients"
-	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
-	"text/template"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -39,6 +35,17 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 	if utils.SliceIn(in.Type, def.CaptchaTypePhone, def.CaptchaTypeEmail) && in.Account == "" {
 		return nil, errors.Parameter.AddMsg("account需要填写")
 	}
+	//{
+	//	err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
+	//		UserIds:    []int64{1740358057038188544},
+	//		ConfigCode: def.NotifyCodeDeviceAlarm,
+	//		Type:       def.NotifyTypeEmail,
+	//		Params:     map[string]any{"leve": "通知", "body": "xx设备电压过低"},
+	//		Str1:       "产品IDxxx", Str2: "设备IDxxx", Str3: "告警级别:warn",
+	//	})
+	//	fmt.Println(err)
+	//}
+
 	uc := ctxs.GetUserCtx(l.ctx)
 	switch in.Type {
 	case def.CaptchaTypeImage:
@@ -60,21 +67,12 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			}
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
-		c, err := relationDB.NewTenantNotifyTemplateRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantNotifyConfigFilter{
-			ConfigCode: ConfigCode,
-			Type:       def.NotifyTypeSms,
-		})
-		if err != nil {
-			if errors.Cmp(err, errors.NotFind) {
-				return nil, errors.NotEnable
-			}
-			return nil, err
-		}
-		err = l.svcCtx.Sms.SendSms(clients.SendSmsParam{
-			PhoneNumbers:  in.Account,
-			SignName:      c.Template.SignName,
-			TemplateCode:  c.Template.Code,
-			TemplateParam: map[string]any{"code": code},
+		err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
+			Accounts:    []string{in.Account},
+			AccountType: def.AccountTypePhone,
+			ConfigCode:  ConfigCode,
+			Type:        def.NotifyTypeSms,
+			Params:      map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
 		})
 		if err != nil {
 			return nil, err
@@ -97,38 +95,13 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			}
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
-		c, err := relationDB.NewTenantNotifyTemplateRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantNotifyConfigFilter{
-			ConfigCode: ConfigCode,
-			Type:       def.NotifyTypeEmail,
+		err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
+			Accounts:    []string{in.Account},
+			AccountType: def.AccountTypeEmail,
+			ConfigCode:  ConfigCode,
+			Type:        def.NotifyTypeEmail,
+			Params:      map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
 		})
-		if err != nil {
-			if errors.Cmp(err, errors.NotFind) {
-				return nil, errors.NotEnable
-			}
-			return nil, err
-		}
-		tc, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
-		if err != nil {
-			return nil, err
-		}
-		tmpl, err := template.New(c.Template.Code).Parse(c.Template.Body)
-		if err != nil {
-			return nil, errors.System.AddMsg("模版解析失败").AddDetail(err)
-		}
-		buffer := &bytes.Buffer{}
-		err = tmpl.Execute(buffer, map[string]any{"code": code, "expr": def.CaptchaExpire / 60})
-		if err != nil {
-			return nil, errors.System.AddMsg("模版匹配失败").AddDetail(err)
-		}
-		err = utils.SenEmail(conf.Email{
-			From:     tc.Email.From,
-			Host:     tc.Email.Host,
-			Secret:   tc.Email.Secret,
-			Nickname: tc.Email.Nickname,
-			Port:     tc.Email.Port,
-			IsSSL:    tc.Email.IsSSL == def.True,
-		}, []string{in.Account}, c.Template.Name,
-			buffer.String())
 		if err != nil {
 			return nil, err
 		}

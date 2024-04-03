@@ -7,66 +7,74 @@ package sys;
 service UserManage {
   rpc userInfoCreate(UserInfoCreateReq) returns(UserCreateResp);//创建用户信息
   rpc userInfoIndex(UserInfoIndexReq) returns(UserInfoIndexResp);
-  rpc userInfoUpdate(userInfoUpdateReq) returns(Response);//更新用户基本数据
+  rpc userInfoUpdate(userInfoUpdateReq) returns(Empty);//更新用户基本数据
   rpc userInfoRead(UserInfoReadReq) returns(UserInfo);//获取用户信息
-  rpc userInfoDelete(UserInfoDeleteReq) returns(Response);//刪除用戶
+  rpc userInfoDelete(UserInfoDeleteReq) returns(Empty);//刪除用戶
   rpc userLogin(UserLoginReq) returns(UserLoginResp);
-  rpc userForgetPwd(UserForgetPwdReq)returns(Response);
+  rpc userForgetPwd(UserForgetPwdReq)returns(Empty);
   rpc userCaptcha(UserCaptchaReq)returns(UserCaptchaResp);
   rpc userCheckToken(UserCheckTokenReq) returns(UserCheckTokenResp);
   rpc userRegister(UserRegisterReq) returns(UserRegisterResp);
-  rpc userChangePwd(UserChangePwdReq) returns(Response);
+  rpc userChangePwd(UserChangePwdReq) returns(Empty);
 
   rpc userRoleIndex(UserRoleIndexReq) returns (UserRoleIndexResp); //获取角色API权限列表
-  rpc userRoleMultiUpdate(UserRoleMultiUpdateReq) returns(Response); //添加角色
+  rpc userRoleMultiUpdate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
 
-  rpc userAreaApplyCreate(UserAreaApplyCreateReq) returns(Response);//申请区域权限
+  rpc userAreaApplyCreate(UserAreaApplyCreateReq) returns(Empty);//申请区域权限
+
+  rpc userMessageMultiIsRead(IDList)returns(Empty);
+  rpc userMessageIndex(UserMessageIndexReq)returns(UserMessageIndexResp);
 }
 
 service DataManage {
-  rpc dataProjectMultiUpdate (DataProjectMultiUpdateReq) returns (Response);   //授权用户数据权限
+  rpc dataProjectMultiUpdate (DataProjectMultiUpdateReq) returns (Empty);   //授权用户数据权限
   rpc dataProjectIndex (DataProjectIndexReq) returns (DataProjectIndexResp); //获取用户数据权限列表
 
-  rpc dataAreaMultiUpdate (DataAreaMultiUpdateReq) returns (Response);   //授权用户数据权限
+  rpc dataAreaMultiUpdate (DataAreaMultiUpdateReq) returns (Empty);   //授权用户数据权限
   rpc dataAreaIndex (DataAreaIndexReq) returns (DataAreaIndexResp); //获取用户数据权限列表
-  rpc dataAreaMultiDelete (DataAreaMultiDeleteReq) returns (Response); //删除用户授权
+  rpc dataAreaMultiDelete (DataAreaMultiDeleteReq) returns (Empty); //删除用户授权
 
   rpc userAreaApplyIndex(UserAreaApplyIndexReq)returns(UserAreaApplyIndexResp);
-  rpc userAreaApplyDeal(UserAreaApplyDealReq)returns(Response);//处理区域权限申请
+  rpc userAreaApplyDeal(UserAreaApplyDealReq)returns(Empty);//处理区域权限申请
 }
 
-
+service MessageManage {
+  rpc notifySend(NotifySendReq)returns(Empty);//发送消息通知
+  rpc messageSend(MessageInfo)returns(Empty);//发送站内信给用户
+  rpc messageIndex(Empty)returns(Empty);
+  rpc messageUpdate(MessageInfo)returns(Empty);
+}
 
 service AccessManage{
   rpc apiInfoCreate(ApiInfo) returns(WithID);   //添加接口
   rpc apiInfoIndex(ApiInfoIndexReq) returns(ApiInfoIndexResp); //获取接口列表
-  rpc apiInfoUpdate(ApiInfo) returns(Response);   //更新接口
-  rpc apiInfoDelete(WithID) returns(Response);   //删除接口
+  rpc apiInfoUpdate(ApiInfo) returns(Empty);   //更新接口
+  rpc apiInfoDelete(WithID) returns(Empty);   //删除接口
 
   rpc accessInfoCreate(AccessInfo) returns(WithID);   //添加接口
   rpc accessInfoIndex(AccessInfoIndexReq) returns(AccessInfoIndexResp); //获取接口列表
-  rpc accessInfoUpdate(AccessInfo) returns(Response);   //更新接口
-  rpc accessInfoDelete(WithID) returns(Response);   //删除接口
+  rpc accessInfoUpdate(AccessInfo) returns(Empty);   //更新接口
+  rpc accessInfoDelete(WithID) returns(Empty);   //删除接口
 }
 
 service RoleManage {
   rpc roleInfoCreate(RoleInfo) returns(WithID); //添加角色
   rpc roleInfoIndex(RoleInfoIndexReq) returns(RoleInfoIndexResp); //获取角色列表
-  rpc roleInfoUpdate(RoleInfo) returns(Response); //更新角色
-  rpc roleInfoDelete(WithID) returns(Response); //删除角色
+  rpc roleInfoUpdate(RoleInfo) returns(Empty); //更新角色
+  rpc roleInfoDelete(WithID) returns(Empty); //删除角色
 
   rpc roleMenuIndex(RoleMenuIndexReq) returns (RoleMenuIndexResp); //获取角色API权限列表
-  rpc roleMenuMultiUpdate(RoleMenuMultiUpdateReq) returns(Response); //添加角色
+  rpc roleMenuMultiUpdate(RoleMenuMultiUpdateReq) returns(Empty); //添加角色
 
   rpc roleAppIndex(RoleAppIndexReq) returns (RoleAppIndexResp); //获取角色API权限列表
-  rpc roleAppMultiUpdate(RoleAppMultiUpdateReq) returns (Response);  //更新角色API权限
+  rpc roleAppMultiUpdate(RoleAppMultiUpdateReq) returns (Empty);  //更新角色API权限
 
   rpc roleModuleIndex(RoleModuleIndexReq) returns (RoleModuleIndexResp); //获取角色API权限列表
-  rpc roleModuleMultiUpdate(RoleModuleMultiUpdateReq) returns (Response);  //更新角色API权限
+  rpc roleModuleMultiUpdate(RoleModuleMultiUpdateReq) returns (Empty);  //更新角色API权限
 
 
-  rpc roleApiAuth(RoleApiAuthReq) returns(Response);   //角色API鉴权
-  rpc roleAccessMultiUpdate(RoleAccessMultiUpdateReq) returns (Response);  //更新角色API权限
+  rpc roleApiAuth(RoleApiAuthReq) returns(Empty);   //角色API鉴权
+  rpc roleAccessMultiUpdate(RoleAccessMultiUpdateReq) returns (Empty);  //更新角色API权限
   rpc roleAccessIndex(RoleAccessIndexReq) returns (RoleAccessIndexResp); //获取角色API权限列表
 }
 
@@ -74,25 +82,25 @@ service RoleManage {
 service AppManage{
   rpc appInfoCreate(AppInfo) returns(WithID); //添加角色
   rpc appInfoIndex(AppInfoIndexReq) returns(AppInfoIndexResp); //获取角色列表
-  rpc appInfoUpdate(AppInfo) returns(Response); //更新角色
-  rpc appInfoDelete(WithIDCode) returns(Response); //删除角色
+  rpc appInfoUpdate(AppInfo) returns(Empty); //更新角色
+  rpc appInfoDelete(WithIDCode) returns(Empty); //删除角色
   rpc appInfoRead(WithIDCode) returns(AppInfo);   //获取详情接口
 
   rpc appModuleIndex(AppModuleIndexReq) returns (AppModuleIndexResp); //获取角色API权限列表
-  rpc appModuleMultiUpdate(AppModuleMultiUpdateReq) returns (Response);  //更新角色API权限
+  rpc appModuleMultiUpdate(AppModuleMultiUpdateReq) returns (Empty);  //更新角色API权限
 }
 
 service ModuleManage{
   rpc moduleInfoCreate(ModuleInfo) returns(WithID); //添加角色
   rpc moduleInfoIndex(ModuleInfoIndexReq) returns(ModuleInfoIndexResp); //获取角色列表
-  rpc moduleInfoUpdate(ModuleInfo) returns(Response); //更新角色
-  rpc moduleInfoDelete(WithIDCode) returns(Response); //删除角色
+  rpc moduleInfoUpdate(ModuleInfo) returns(Empty); //更新角色
+  rpc moduleInfoDelete(WithIDCode) returns(Empty); //删除角色
   rpc moduleInfoRead(WithIDCode) returns(ModuleInfo);   //获取详情接口
 
   rpc moduleMenuCreate(MenuInfo) returns(WithID); //添加菜单
   rpc moduleMenuIndex(MenuInfoIndexReq) returns(MenuInfoIndexResp); //获取菜单列表
-  rpc moduleMenuUpdate(MenuInfo) returns(Response); //更新菜单
-  rpc moduleMenuDelete(WithID) returns(Response); //删除菜单
+  rpc moduleMenuUpdate(MenuInfo) returns(Empty); //更新菜单
+  rpc moduleMenuDelete(WithID) returns(Empty); //删除菜单
 
 
 }
@@ -100,26 +108,26 @@ service ModuleManage{
 service DictManage{
   rpc dictInfoCreate(DictInfo) returns(WithID); //添加角色
   rpc dictInfoIndex(DictInfoIndexReq) returns(DictInfoIndexResp); //获取角色列表
-  rpc dictInfoUpdate(DictInfo) returns(Response); //更新角色
-  rpc dictInfoDelete(WithID) returns(Response); //删除角色
+  rpc dictInfoUpdate(DictInfo) returns(Empty); //更新角色
+  rpc dictInfoDelete(WithID) returns(Empty); //删除角色
   rpc dictInfoRead(DictInfoReadReq) returns(DictInfo);   //获取详情接口
 
   rpc dictDetailCreate(DictDetail) returns(WithID); //添加角色
   rpc dictDetailIndex(DictDetailIndexReq) returns(DictDetailIndexResp); //获取角色列表
-  rpc dictDetailUpdate(DictDetail) returns(Response); //更新角色
-  rpc dictDetailDelete(WithID) returns(Response); //删除角色
+  rpc dictDetailUpdate(DictDetail) returns(Empty); //更新角色
+  rpc dictDetailDelete(WithID) returns(Empty); //删除角色
 }
 
 
 service Common {
-  rpc config(Response) returns(configResp); //添加菜单
+  rpc config(Empty) returns(configResp); //添加菜单
 }
 
 service Log {
   rpc loginLogIndex(LoginLogIndexReq) returns (LoginLogIndexResp); //获取登录日志列表
   rpc operLogIndex(OperLogIndexReq) returns (OperLogIndexResp);    //获取操作日志列表
-  rpc loginLogCreate(LoginLogCreateReq) returns(Response);         //登录日志数据入库
-  rpc operLogCreate(OperLogCreateReq) returns(Response);           //操作日志数据入库
+  rpc loginLogCreate(LoginLogCreateReq) returns(Empty);         //登录日志数据入库
+  rpc operLogCreate(OperLogCreateReq) returns(Empty);           //操作日志数据入库
 }
 
 
@@ -128,9 +136,9 @@ service ProjectManage {
   //新增项目
   rpc projectInfoCreate (ProjectInfo) returns (ProjectWithID);
   //更新项目
-  rpc projectInfoUpdate (ProjectInfo) returns (Response);
+  rpc projectInfoUpdate (ProjectInfo) returns (Empty);
   //删除项目
-  rpc projectInfoDelete (ProjectWithID) returns (Response);
+  rpc projectInfoDelete (ProjectWithID) returns (Empty);
   //获取项目信息详情
   rpc projectInfoRead (ProjectWithID) returns (ProjectInfo);
   //获取项目信息列表
@@ -143,9 +151,9 @@ service AreaManage {
   //新增区域
   rpc areaInfoCreate (AreaInfo) returns (AreaWithID);
   //更新区域
-  rpc areaInfoUpdate (AreaInfo) returns (Response);
+  rpc areaInfoUpdate (AreaInfo) returns (Empty);
   //删除区域
-  rpc areaInfoDelete (AreaWithID) returns (Response);
+  rpc areaInfoDelete (AreaWithID) returns (Empty);
   //获取区域信息详情
   rpc areaInfoRead (AreaInfoReadReq) returns (AreaInfo);
   //获取区域信息列表
@@ -157,32 +165,95 @@ service TenantManage {
   //新增区域
   rpc tenantInfoCreate (TenantInfoCreateReq) returns (WithID);
   //更新区域
-  rpc tenantInfoUpdate (TenantInfo) returns (Response);
+  rpc tenantInfoUpdate (TenantInfo) returns (Empty);
   //删除区域
-  rpc tenantInfoDelete (WithIDCode) returns (Response);
+  rpc tenantInfoDelete (WithIDCode) returns (Empty);
   //获取租户信息详情
   rpc tenantInfoRead (WithIDCode) returns (TenantInfo);
   //获取租户信息列表
   rpc tenantInfoIndex (TenantInfoIndexReq) returns (TenantInfoIndexResp);
 
-  rpc tenantAccessMultiUpdate(TenantAccessMultiUpdateReq) returns (Response);  //更新角色API权限
+  rpc tenantAccessMultiUpdate(TenantAccessMultiUpdateReq) returns (Empty);  //更新角色API权限
   rpc tenantAccessIndex(TenantAccessIndexReq) returns (TenantAccessIndexResp); //获取角色API权限列表
 
   rpc tenantAppIndex(TenantAppIndexReq) returns (TenantAppIndexResp); //获取租户APP权限列表
-  rpc tenantAppCreate(TenantAppCreateReq) returns(Response); //添加角色
-  rpc tenantAppDelete(TenantAppWithIDOrCode) returns(Response); //删除角色
+  rpc tenantAppCreate(TenantAppCreateReq) returns(Empty); //添加角色
+  rpc tenantAppDelete(TenantAppWithIDOrCode) returns(Empty); //删除角色
 
-  rpc tenantAppModuleMultiCreate(TenantAppCreateReq) returns(Response); //添加角色
-  rpc tenantAppModuleCreate(TenantModuleCreateReq) returns(Response); //添加角色
+  rpc tenantAppModuleMultiCreate(TenantAppCreateReq) returns(Empty); //添加角色
+  rpc tenantAppModuleCreate(TenantModuleCreateReq) returns(Empty); //添加角色
   rpc tenantAppModuleIndex(TenantModuleIndexReq) returns(TenantModuleIndexResp); //获取角色列表
-  rpc tenantAppModuleDelete(TenantModuleWithIDOrCode) returns(Response); //删除角色
+  rpc tenantAppModuleDelete(TenantModuleWithIDOrCode) returns(Empty); //删除角色
 
   rpc tenantAppMenuCreate(TenantAppMenu) returns(WithID); //添加菜单
   rpc tenantAppMenuIndex(TenantAppMenuIndexReq) returns(TenantAppMenuIndexResp); //获取菜单列表
-  rpc tenantAppMenuUpdate(TenantAppMenu) returns(Response); //更新菜单
-  rpc tenantAppMenuDelete(WithAppCodeID) returns(Response); //删除菜单
+  rpc tenantAppMenuUpdate(TenantAppMenu) returns(Empty); //更新菜单
+  rpc tenantAppMenuDelete(WithAppCodeID) returns(Empty); //删除菜单
+}
 
+message IDList{
+  repeated int64 ids=1;
+}
 
+//消息中心
+
+message MessageSendReq{
+  int64 userIds     =1; //只有填写了这项才会记录
+  int64 isGlobal =2;//全局消息
+  //      string accounts    =2;
+  //      string accountType =3;
+  string configCode  =4;         //通知的code
+  string subject        =5; //通知类型
+  string body     =6;
+  string str1        =7;
+  string str2        =8;
+  string str3        =9;
+}
+
+message MessageInfo {
+  int64 id=10;
+  string group =1;
+  string configCode =2;
+  string subject=3;
+  string body=4;
+  string str1=5;
+  string str2=6;
+  string str3=7;
+  int64 isGlobal =8;
+  int64 createdTime=9;
+}
+
+message UserMessage{
+  int64 id =1;
+  int64 userID=2;
+  int64 isRead=3;
+  MessageInfo message=4;
+}
+
+message UserMessageIndexReq{
+  PageInfo page =1;
+  string group =2;
+  string configCode =3;
+  string str1        =4;
+  string str2        =5;
+  string str3        =6;
+}
+
+message UserMessageIndexResp{
+  int64 total =1;
+  repeated UserMessage list=2;
+}
+
+message NotifySendReq{
+      int64 userIds     =1; //只有填写了这项才会记录
+//      string accounts    =2;
+//      string accountType =3;
+      string configCode  =4;         //通知的code
+      string type        =5; //通知类型
+      map<string,string> params      =6;
+      string str1        =7;
+      string str2        =8;
+      string str3        =9;
 }
 
 //--------------------租户管理------------------------
@@ -320,7 +391,7 @@ message Point{
   double  latitude = 2;//纬度
 }
 
-message Response {
+message Empty {
 }
 
 message PageInfo {

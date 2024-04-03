@@ -36,7 +36,7 @@ func (l *TenantInfoReadLogic) TenantInfoRead(in *sys.WithIDCode) (*sys.TenantInf
 	}
 	f := relationDB.TenantInfoFilter{ID: in.Id}
 	if in.Code != "" {
-		//t, err := caches.GetTenant(l.ctx, in.Code)
+		//t, err := caches.GetTenant(l.ctx, in.TemplateCode)
 		//if err == nil {
 		//	return logic.CacheToTenantInfoRpc(l.ctx, l.svcCtx, t), nil
 		//}

@@ -8,13 +8,20 @@ import "gitee.com/i-Things/share/stores"
 
 // SysNotifyConfig 通知类型配置
 type SysNotifyConfig struct {
-	ID           int64    `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                     // id编号
-	Code         string   `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`              // 通知类型编码
-	Name         string   `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                                //通知的命名
-	SupportTypes []string `gorm:"column:support_types;type:json;serializer:json;NOT NULL;default:'[]'"` //支持的通知类型
-	Desc         string   `gorm:"column:desc;type:varchar(100);NOT NULL"`                               // 项目备注
+	ID                  int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                     // id编号
+	Group               string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                               //分组
+	Code                string            `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`              // 通知类型编码
+	Name                string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                                //通知的命名
+	SupportTypes        []string          `gorm:"column:support_types;type:json;serializer:json;NOT NULL;default:'[]'"` //支持的通知类型
+	Desc                string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                               // 项目备注
+	IsRecord            int64             `gorm:"column:is_record;type:BIGINT"`                                         //是否记录该消息,是的情况下会将消息存一份到消息中心
+	DefaultSubject      string            `gorm:"column:default_subject;type:VARCHAR(256);NOT NULL"`                    //默认消息主题
+	DefaultBody         string            `gorm:"column:default_body;type:VARCHAR(512);default:''"`                     //默认模版内容
+	DefaultTemplateCode string            `gorm:"column:default_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`      // 通知类型编码
+	DefaultSignName     string            `gorm:"column:default_sign_name;type:VARCHAR(50);default:''"`                 //默认签名(短信)
+	Params              map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL;default:'{}'"`        //变量属性 key是参数,value是描述
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:pn"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi;"`
 }
 
 func (m *SysNotifyConfig) TableName() string {
@@ -23,16 +30,16 @@ func (m *SysNotifyConfig) TableName() string {
 
 // 通知模版
 type SysNotifyTemplate struct {
-	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode string            `gorm:"column:tenant_code;type:VARCHAR(50);default:'all'"`              //限定租户,不填是通用的
-	Name       string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //通知的命名
-	ConfigCode string            `gorm:"column:config_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
-	Type       string            `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的配置类型 sms email
-	Code       string            `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 通知类型编码
-	SignName   string            `gorm:"column:sign_name;type:VARCHAR(50);default:''"`                   //签名(短信)
-	Body       string            `gorm:"column:body;type:VARCHAR(512);default:''"`                       //模版内容(email,钉钉)
-	Params     map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL;default:'{}'"`  //变量属性 key是参数,value是描述
-	Desc       string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                         // 项目备注
+	ID           int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode   string `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"`           //限定租户,不填是通用的
+	Name         string `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //通知的命名
+	ConfigCode   string `gorm:"column:config_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
+	Type         string `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的配置类型 sms email
+	TemplateCode string `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 通知类型编码
+	SignName     string `gorm:"column:sign_name;type:VARCHAR(50);default:''"`                   //签名(短信)
+	Subject      string `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //默认消息主题
+	Body         string `gorm:"column:body;type:VARCHAR(512);default:''"`                       //默认模版内容
+	Desc         string `gorm:"column:desc;type:varchar(100);NOT NULL"`                         // 项目备注
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
@@ -47,12 +54,46 @@ type SysTenantNotifyTemplate struct {
 	TenantCode stores.TenantCode  `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
 	ConfigCode string             `gorm:"column:config_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
 	Type       string             `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的类型
-	TemplateID int64              `gorm:"column:template_id;type:BIGINT"`                                 //绑定的模板code
+	TemplateID int64              `gorm:"column:template_id;type:BIGINT;default:1"`                       //绑定的模板code
 	Template   *SysNotifyTemplate `gorm:"foreignKey:ID;references:TemplateID"`
+	Config     *SysNotifyConfig   `gorm:"foreignKey:Code;references:ConfigCode"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 func (m *SysTenantNotifyTemplate) TableName() string {
 	return "sys_tenant_notify_template"
+}
+
+type SysMessageInfo struct {
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;index:ri_mi;type:VARCHAR(50);NOT NULL"`       // 租户编码
+	Group      string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                         //消息分类
+	ConfigCode string            `gorm:"column:config_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
+	Subject    string            `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //消息主题
+	Body       string            `gorm:"column:body;type:text;NOT NULL"`                                 //消息内容
+	Str1       string            `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);NOT NULL"`              //自定义字段(用来添加搜索索引),如产品id
+	Str2       string            `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);NOT NULL"`              //自定义字段(用来添加搜索索引),如设备id
+	Str3       string            `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);NOT NULL"`
+	IsGlobal   int64             `gorm:"column:is_global;index;type:bigint;default:2"` //是否是全局消息,是的话所有用户都能看到
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+}
+
+func (m *SysMessageInfo) TableName() string {
+	return "sys_message_info"
+}
+
+type SysUserMessage struct {
+	ID         int64              `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode stores.TenantCode  `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	UserID     int64              `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`          // 用户ID
+	MessageID  int64              `gorm:"column:message_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`       //消息id
+	IsRead     int64              `gorm:"column:is_read;NOT NULL;type:BIGINT;default:2"`                  //是否已读
+	Message    *SysNotifyTemplate `gorm:"foreignKey:ID;references:MessageID"`
+	stores.Time
+}
+
+func (m *SysUserMessage) TableName() string {
+	return "sys_user_message"
 }

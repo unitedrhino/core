@@ -47,7 +47,7 @@ func (p TenantNotifyTemplateRepo) Insert(ctx context.Context, data *SysTenantNot
 
 func (p TenantNotifyTemplateRepo) FindOneByFilter(ctx context.Context, f TenantNotifyConfigFilter) (*SysTenantNotifyTemplate, error) {
 	var result SysTenantNotifyTemplate
-	db := p.fmtFilter(ctx, f).Preload("Template")
+	db := p.fmtFilter(ctx, f).Preload("Template").Preload("Config")
 	err := db.First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
@@ -57,7 +57,7 @@ func (p TenantNotifyTemplateRepo) FindOneByFilter(ctx context.Context, f TenantN
 func (p TenantNotifyTemplateRepo) FindByFilter(ctx context.Context, f TenantNotifyConfigFilter, page *def.PageInfo) ([]*SysTenantNotifyTemplate, error) {
 	var results []*SysTenantNotifyTemplate
 	db := p.fmtFilter(ctx, f).Model(&SysTenantNotifyTemplate{})
-	db = page.ToGorm(db).Preload("Template")
+	db = page.ToGorm(db).Preload("Template").Preload("Config")
 	err := db.Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)

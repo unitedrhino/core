@@ -145,3 +145,13 @@ func (p UserInfoRepo) FindOne(ctx context.Context, userID int64) (*SysUserInfo, 
 	err := p.db.WithContext(ctx).Where("user_id = ?", userID).First(&result).Error
 	return &result, stores.ErrFmt(err)
 }
+
+func (p UserInfoRepo) FindUserCore(ctx context.Context, f UserInfoFilter) (ret []*SysUserInfo, err error) {
+	var results []*SysUserInfo
+	db := p.fmtFilter(ctx, f).Model(&SysUserInfo{})
+	err = db.Select("user_id,user_name,email,phone,wechat_union_id,wechat_open_id,ding_talk_user_id").Find(&results).Error
+	if err != nil {
+		return nil, stores.ErrFmt(err)
+	}
+	return results, nil
+}

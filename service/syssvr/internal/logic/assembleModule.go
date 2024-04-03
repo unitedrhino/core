@@ -44,7 +44,7 @@ func ToApiInfoPo(in *sys.ApiInfo) *relationDB.SysApiInfo {
 //	}
 //	return &relationDB.SysTenantAppApi{
 //		TempLateID:   in.TemplateID,
-//		TenantCode:   stores.TenantCode(in.Code),
+//		TenantCode:   stores.TenantCode(in.TemplateCode),
 //		AppCode:      in.AppCode,
 //		SysModuleApi: *ToApiInfoPo(in.Info),
 //	}
