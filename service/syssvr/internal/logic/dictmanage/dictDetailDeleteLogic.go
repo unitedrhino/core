@@ -24,8 +24,8 @@ func NewDictDetailDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *DictDetailDeleteLogic) DictDetailDelete(in *sys.WithID) (*sys.Response, error) {
+func (l *DictDetailDeleteLogic) DictDetailDelete(in *sys.WithID) (*sys.Empty, error) {
 	err := relationDB.NewDictDetailRepo(l.ctx).Delete(l.ctx, in.Id)
 
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

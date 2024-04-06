@@ -24,7 +24,7 @@ func NewAccessInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *AccessInfoUpdateLogic) AccessInfoUpdate(in *sys.AccessInfo) (*sys.Response, error) {
+func (l *AccessInfoUpdateLogic) AccessInfoUpdate(in *sys.AccessInfo) (*sys.Empty, error) {
 	old, err := relationDB.NewAccessRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
@@ -34,5 +34,5 @@ func (l *AccessInfoUpdateLogic) AccessInfoUpdate(in *sys.AccessInfo) (*sys.Respo
 	old.IsNeedAuth = in.IsNeedAuth
 	old.Desc = in.Desc
 	err = relationDB.NewAccessRepo(l.ctx).Update(l.ctx, old)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

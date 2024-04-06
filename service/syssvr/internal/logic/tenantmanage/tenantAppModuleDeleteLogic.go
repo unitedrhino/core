@@ -27,7 +27,7 @@ func NewTenantAppModuleDeleteLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
-func (l *TenantAppModuleDeleteLogic) TenantAppModuleDelete(in *sys.TenantModuleWithIDOrCode) (*sys.Response, error) {
+func (l *TenantAppModuleDeleteLogic) TenantAppModuleDelete(in *sys.TenantModuleWithIDOrCode) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -59,5 +59,5 @@ func (l *TenantAppModuleDeleteLogic) TenantAppModuleDelete(in *sys.TenantModuleW
 		return nil
 	})
 
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

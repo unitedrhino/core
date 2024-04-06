@@ -27,7 +27,7 @@ func NewModuleMenuDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *ModuleMenuDeleteLogic) ModuleMenuDelete(in *sys.WithID) (*sys.Response, error) {
+func (l *ModuleMenuDeleteLogic) ModuleMenuDelete(in *sys.WithID) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -47,5 +47,5 @@ func (l *ModuleMenuDeleteLogic) ModuleMenuDelete(in *sys.WithID) (*sys.Response,
 		}
 		return nil
 	})
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

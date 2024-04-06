@@ -27,7 +27,7 @@ func NewUserAreaApplyCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *UserAreaApplyCreateLogic) UserAreaApplyCreate(in *sys.UserAreaApplyCreateReq) (*sys.Response, error) {
+func (l *UserAreaApplyCreateLogic) UserAreaApplyCreate(in *sys.UserAreaApplyCreateReq) (*sys.Empty, error) {
 	_, err := relationDB.NewAreaInfoRepo(l.ctx).FindOne(l.ctx, in.AreaID, nil)
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {
@@ -42,10 +42,10 @@ func (l *UserAreaApplyCreateLogic) UserAreaApplyCreate(in *sys.UserAreaApplyCrea
 	})
 	if err != nil {
 		if errors.Cmp(err, errors.Duplicate) {
-			return &sys.Response{}, nil
+			return &sys.Empty{}, nil
 		}
 
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

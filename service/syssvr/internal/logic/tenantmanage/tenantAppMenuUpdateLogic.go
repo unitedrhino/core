@@ -25,7 +25,7 @@ func NewTenantAppMenuUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *TenantAppMenuUpdateLogic) TenantAppMenuUpdate(in *sys.TenantAppMenu) (*sys.Response, error) {
+func (l *TenantAppMenuUpdateLogic) TenantAppMenuUpdate(in *sys.TenantAppMenu) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -44,5 +44,5 @@ func (l *TenantAppMenuUpdateLogic) TenantAppMenuUpdate(in *sys.TenantAppMenu) (*
 	old.Body = in.Info.Body.Value
 	old.HideInMenu = in.Info.HideInMenu
 	err = relationDB.NewTenantAppMenuRepo(l.ctx).Update(l.ctx, old)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

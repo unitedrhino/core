@@ -24,7 +24,7 @@ func NewDictDetailUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *DictDetailUpdateLogic) DictDetailUpdate(in *sys.DictDetail) (*sys.Response, error) {
+func (l *DictDetailUpdateLogic) DictDetailUpdate(in *sys.DictDetail) (*sys.Empty, error) {
 	old, err := relationDB.NewDictDetailRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
@@ -37,5 +37,5 @@ func (l *DictDetailUpdateLogic) DictDetailUpdate(in *sys.DictDetail) (*sys.Respo
 	old.Desc = in.Desc.GetValue()
 	old.Body = in.Body.GetValue()
 	err = relationDB.NewDictDetailRepo(l.ctx).Update(l.ctx, old)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

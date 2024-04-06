@@ -27,7 +27,7 @@ func NewUserForgetPwdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 	}
 }
 
-func (l *UserForgetPwdLogic) UserForgetPwd(in *sys.UserForgetPwdReq) (*sys.Response, error) {
+func (l *UserForgetPwdLogic) UserForgetPwd(in *sys.UserForgetPwdReq) (*sys.Empty, error) {
 	var account string
 	var oldUi *relationDB.SysUserInfo
 	switch in.Type {
@@ -61,5 +61,5 @@ func (l *UserForgetPwdLogic) UserForgetPwd(in *sys.UserForgetPwdReq) (*sys.Respo
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

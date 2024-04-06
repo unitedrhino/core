@@ -30,7 +30,7 @@ func NewUserInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 	}
 }
 
-func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Response, error) {
+func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Empty, error) {
 	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{Code: ctxs.GetUserCtx(l.ctx).TenantCode})
 	if err != nil {
 		return nil, err
@@ -46,5 +46,5 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Re
 
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)
 
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

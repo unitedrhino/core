@@ -26,7 +26,7 @@ func NewAppInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *App
 	}
 }
 
-func (l *AppInfoDeleteLogic) AppInfoDelete(in *sys.WithIDCode) (*sys.Response, error) {
+func (l *AppInfoDeleteLogic) AppInfoDelete(in *sys.WithIDCode) (*sys.Empty, error) {
 	f := relationDB.AppInfoFilter{ID: in.Id}
 	if in.Code != "" {
 		f.Codes = []string{in.Code}
@@ -39,5 +39,5 @@ func (l *AppInfoDeleteLogic) AppInfoDelete(in *sys.WithIDCode) (*sys.Response, e
 		return nil, errors.Parameter.AddMsg("core应用不允许删除")
 	}
 	err = relationDB.NewAppInfoRepo(l.ctx).DeleteByFilter(l.ctx, f)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

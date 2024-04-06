@@ -24,7 +24,7 @@ func NewUserRoleMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *UserRoleMultiUpdateLogic) UserRoleMultiUpdate(in *sys.UserRoleMultiUpdateReq) (*sys.Response, error) {
+func (l *UserRoleMultiUpdateLogic) UserRoleMultiUpdate(in *sys.UserRoleMultiUpdateReq) (*sys.Empty, error) {
 	err := relationDB.NewUserRoleRepo(l.ctx).MultiUpdate(l.ctx, in.UserID, in.RoleIDs)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

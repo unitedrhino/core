@@ -26,7 +26,7 @@ func NewTenantAppModuleMultiCreateLogic(ctx context.Context, svcCtx *svc.Service
 	}
 }
 
-func (l *TenantAppModuleMultiCreateLogic) TenantAppModuleMultiCreate(in *sys.TenantAppCreateReq) (*sys.Response, error) {
+func (l *TenantAppModuleMultiCreateLogic) TenantAppModuleMultiCreate(in *sys.TenantAppCreateReq) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -43,5 +43,5 @@ func (l *TenantAppModuleMultiCreateLogic) TenantAppModuleMultiCreate(in *sys.Ten
 		}
 		return nil
 	})
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

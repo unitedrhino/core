@@ -24,10 +24,10 @@ func NewRoleAppMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *RoleAppMultiUpdateLogic) RoleAppMultiUpdate(in *sys.RoleAppMultiUpdateReq) (*sys.Response, error) {
+func (l *RoleAppMultiUpdateLogic) RoleAppMultiUpdate(in *sys.RoleAppMultiUpdateReq) (*sys.Empty, error) {
 	err := relationDB.NewRoleAppRepo(l.ctx).MultiUpdate(l.ctx, in.Id, in.AppCodes)
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

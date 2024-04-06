@@ -25,7 +25,7 @@ func NewTenantAppMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContex
 	}
 }
 
-func (l *TenantAppMultiUpdateLogic) TenantAppMultiUpdate(in *sys.TenantAppMultiUpdateReq) (*sys.Response, error) {
+func (l *TenantAppMultiUpdateLogic) TenantAppMultiUpdate(in *sys.TenantAppMultiUpdateReq) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -35,5 +35,5 @@ func (l *TenantAppMultiUpdateLogic) TenantAppMultiUpdate(in *sys.TenantAppMultiU
 	}()
 	err := relationDB.NewTenantAppRepo(l.ctx).MultiUpdate(l.ctx, in.Code, in.AppCodes)
 
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

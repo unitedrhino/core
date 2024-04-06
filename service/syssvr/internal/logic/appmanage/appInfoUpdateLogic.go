@@ -24,7 +24,7 @@ func NewAppInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *App
 	}
 }
 
-func (l *AppInfoUpdateLogic) AppInfoUpdate(in *sys.AppInfo) (*sys.Response, error) {
+func (l *AppInfoUpdateLogic) AppInfoUpdate(in *sys.AppInfo) (*sys.Empty, error) {
 	err := relationDB.NewAppInfoRepo(l.ctx).Update(l.ctx, ToAppInfoPo(in))
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

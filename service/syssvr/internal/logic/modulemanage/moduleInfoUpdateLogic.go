@@ -25,7 +25,7 @@ func NewModuleInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *ModuleInfoUpdateLogic) ModuleInfoUpdate(in *sys.ModuleInfo) (*sys.Response, error) {
+func (l *ModuleInfoUpdateLogic) ModuleInfoUpdate(in *sys.ModuleInfo) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -47,5 +47,5 @@ func (l *ModuleInfoUpdateLogic) ModuleInfoUpdate(in *sys.ModuleInfo) (*sys.Respo
 	}
 
 	err = relationDB.NewModuleInfoRepo(l.ctx).Update(l.ctx, old)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

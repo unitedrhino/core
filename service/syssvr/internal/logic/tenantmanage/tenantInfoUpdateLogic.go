@@ -34,7 +34,7 @@ func NewTenantInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 // 更新区域
-func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Response, error) {
+func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -105,5 +105,5 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Respo
 	if err != nil {
 		l.Error(err)
 	}
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

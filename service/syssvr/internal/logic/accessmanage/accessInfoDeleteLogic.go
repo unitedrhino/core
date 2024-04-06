@@ -24,7 +24,7 @@ func NewAccessInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *AccessInfoDeleteLogic) AccessInfoDelete(in *sys.WithID) (*sys.Response, error) {
+func (l *AccessInfoDeleteLogic) AccessInfoDelete(in *sys.WithID) (*sys.Empty, error) {
 	err := relationDB.NewAccessRepo(l.ctx).Delete(l.ctx, in.Id)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

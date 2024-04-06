@@ -27,7 +27,7 @@ func NewTenantAppCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 	}
 }
 
-func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppCreateReq) (*sys.Response, error) {
+func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppCreateReq) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppCreateReq) (*sys
 		}
 		return nil
 	})
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }
 func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, moduleCode string, menuIDs []int64) error {
 	if _, err := relationDB.NewTenantAppModuleRepo(tx).FindOneByFilter(ctx,

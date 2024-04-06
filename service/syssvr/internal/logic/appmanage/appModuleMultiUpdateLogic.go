@@ -24,7 +24,7 @@ func NewAppModuleMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContex
 	}
 }
 
-func (l *AppModuleMultiUpdateLogic) AppModuleMultiUpdate(in *sys.AppModuleMultiUpdateReq) (*sys.Response, error) {
+func (l *AppModuleMultiUpdateLogic) AppModuleMultiUpdate(in *sys.AppModuleMultiUpdateReq) (*sys.Empty, error) {
 	err := relationDB.NewAppModuleRepo(l.ctx).MultiUpdate(l.ctx, in.Code, in.ModuleCodes)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

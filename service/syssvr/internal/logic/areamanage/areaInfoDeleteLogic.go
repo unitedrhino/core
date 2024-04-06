@@ -29,7 +29,7 @@ func NewAreaInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ar
 }
 
 // 删除区域
-func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Response, error) {
+func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, error) {
 	if in.AreaID == 0 {
 		return nil, errors.Parameter
 	}
@@ -87,5 +87,5 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Response,
 		return nil
 	})
 
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

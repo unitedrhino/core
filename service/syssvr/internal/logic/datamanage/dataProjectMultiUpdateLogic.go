@@ -28,7 +28,7 @@ func NewDataProjectMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceCont
 	}
 }
 
-func (l *DataProjectMultiUpdateLogic) DataProjectMultiUpdate(in *sys.DataProjectMultiUpdateReq) (*sys.Response, error) {
+func (l *DataProjectMultiUpdateLogic) DataProjectMultiUpdate(in *sys.DataProjectMultiUpdateReq) (*sys.Empty, error) {
 	if in.TargetID == 0 {
 		return nil, errors.Parameter.AddDetail(in.TargetID).WithMsg("用户ID参数必填")
 	}
@@ -49,5 +49,5 @@ func (l *DataProjectMultiUpdateLogic) DataProjectMultiUpdate(in *sys.DataProject
 	if err != nil {
 		return nil, errors.Database.AddDetail(in.TargetID).WithMsg("用户数据权限缓存失败")
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

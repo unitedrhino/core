@@ -24,7 +24,7 @@ func NewApiInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Api
 	}
 }
 
-func (l *ApiInfoUpdateLogic) ApiInfoUpdate(in *sys.ApiInfo) (*sys.Response, error) {
+func (l *ApiInfoUpdateLogic) ApiInfoUpdate(in *sys.ApiInfo) (*sys.Empty, error) {
 	old, err := relationDB.NewApiInfoRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
@@ -37,5 +37,5 @@ func (l *ApiInfoUpdateLogic) ApiInfoUpdate(in *sys.ApiInfo) (*sys.Response, erro
 	old.Desc = in.Desc
 	old.IsAuthTenant = in.IsAuthTenant
 	err = relationDB.NewApiInfoRepo(l.ctx).Update(l.ctx, old)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

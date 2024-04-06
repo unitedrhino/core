@@ -26,7 +26,7 @@ func NewTenantAppModuleCreateLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
-func (l *TenantAppModuleCreateLogic) TenantAppModuleCreate(in *sys.TenantModuleCreateReq) (*sys.Response, error) {
+func (l *TenantAppModuleCreateLogic) TenantAppModuleCreate(in *sys.TenantModuleCreateReq) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -39,5 +39,5 @@ func (l *TenantAppModuleCreateLogic) TenantAppModuleCreate(in *sys.TenantModuleC
 		err := ModuleCreate(l.ctx, tx, in.Code, in.AppCode, in.ModuleCode, in.MenuIDs)
 		return err
 	})
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

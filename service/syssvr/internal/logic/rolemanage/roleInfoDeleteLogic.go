@@ -28,7 +28,7 @@ func NewRoleInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ro
 	}
 }
 
-func (l *RoleInfoDeleteLogic) RoleInfoDelete(in *sys.WithID) (*sys.Response, error) {
+func (l *RoleInfoDeleteLogic) RoleInfoDelete(in *sys.WithID) (*sys.Empty, error) {
 	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{Code: ctxs.GetUserCtx(l.ctx).TenantCode})
 	if err != nil {
 		return nil, err
@@ -40,5 +40,5 @@ func (l *RoleInfoDeleteLogic) RoleInfoDelete(in *sys.WithID) (*sys.Response, err
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

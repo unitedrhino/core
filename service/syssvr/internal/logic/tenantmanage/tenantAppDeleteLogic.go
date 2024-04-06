@@ -27,7 +27,7 @@ func NewTenantAppDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 	}
 }
 
-func (l *TenantAppDeleteLogic) TenantAppDelete(in *sys.TenantAppWithIDOrCode) (*sys.Response, error) {
+func (l *TenantAppDeleteLogic) TenantAppDelete(in *sys.TenantAppWithIDOrCode) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -81,5 +81,5 @@ func (l *TenantAppDeleteLogic) TenantAppDelete(in *sys.TenantAppWithIDOrCode) (*
 		}
 		return nil
 	})
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

@@ -28,7 +28,7 @@ func NewUserChangePwdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 	}
 }
 
-func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Response, error) {
+func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty, error) {
 	var account string
 	uc := ctxs.GetUserCtx(l.ctx)
 	var oldUi *relationDB.SysUserInfo
@@ -66,5 +66,5 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Respo
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

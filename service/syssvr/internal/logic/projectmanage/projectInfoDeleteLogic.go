@@ -33,7 +33,7 @@ func NewProjectInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 // 删除项目
-func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.Response, error) {
+func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.Empty, error) {
 	if in.ProjectID == 0 {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("项目ID参数必填")
 	}
@@ -77,5 +77,5 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		return nil
 	})
 
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

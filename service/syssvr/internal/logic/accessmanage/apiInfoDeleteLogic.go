@@ -24,7 +24,7 @@ func NewApiInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Api
 	}
 }
 
-func (l *ApiInfoDeleteLogic) ApiInfoDelete(in *sys.WithID) (*sys.Response, error) {
+func (l *ApiInfoDeleteLogic) ApiInfoDelete(in *sys.WithID) (*sys.Empty, error) {
 	err := relationDB.NewApiInfoRepo(l.ctx).Delete(l.ctx, in.Id)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

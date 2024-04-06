@@ -31,7 +31,7 @@ func NewDataAreaMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpdateReq) (*sys.Response, error) {
+func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpdateReq) (*sys.Empty, error) {
 	if in.TargetID == 0 {
 		return nil, errors.Parameter.AddDetail(in.TargetID).WithMsg("TargetID参数必填")
 	}
@@ -69,5 +69,5 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 		return nil, errors.Database.AddDetail(in.TargetID).WithMsg("用户数据权限缓存失败")
 	}
 
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

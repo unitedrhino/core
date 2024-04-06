@@ -37,8 +37,8 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 	}
 	//{
 	//	err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
-	//		UserIds:    []int64{1740358057038188544},
-	//		ConfigCode: def.NotifyCodeDeviceAlarm,
+	//		UserIDs:    []int64{1740358057038188544},
+	//		NotifyCode: def.NotifyCodeDeviceAlarm,
 	//		Type:       def.NotifyTypeEmail,
 	//		Params:     map[string]any{"leve": "通知", "body": "xx设备电压过低"},
 	//		Str1:       "产品IDxxx", Str2: "设备IDxxx", Str3: "告警级别:warn",
@@ -70,7 +70,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
 			Accounts:    []string{in.Account},
 			AccountType: def.AccountTypePhone,
-			ConfigCode:  ConfigCode,
+			NotifyCode:  ConfigCode,
 			Type:        def.NotifyTypeSms,
 			Params:      map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
 		})
@@ -98,7 +98,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
 			Accounts:    []string{in.Account},
 			AccountType: def.AccountTypeEmail,
-			ConfigCode:  ConfigCode,
+			NotifyCode:  ConfigCode,
 			Type:        def.NotifyTypeEmail,
 			Params:      map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
 		})

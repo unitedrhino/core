@@ -29,7 +29,7 @@ func NewProjectInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 // 更新项目
-func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Response, error) {
+func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Empty, error) {
 	ctxs.GetUserCtx(l.ctx).AllProject = true
 	defer func() {
 		ctxs.GetUserCtx(l.ctx).AllProject = false
@@ -51,7 +51,7 @@ func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Re
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }
 func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sys.ProjectInfo) {
 	if pb.ProjectName != "" {

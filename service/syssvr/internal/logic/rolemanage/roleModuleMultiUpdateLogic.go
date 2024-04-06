@@ -24,7 +24,7 @@ func NewRoleModuleMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
-func (l *RoleModuleMultiUpdateLogic) RoleModuleMultiUpdate(in *sys.RoleModuleMultiUpdateReq) (*sys.Response, error) {
+func (l *RoleModuleMultiUpdateLogic) RoleModuleMultiUpdate(in *sys.RoleModuleMultiUpdateReq) (*sys.Empty, error) {
 	err := relationDB.NewRoleModuleRepo(l.ctx).MultiUpdate(l.ctx, in.Id, in.AppCode, in.ModuleCodes)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

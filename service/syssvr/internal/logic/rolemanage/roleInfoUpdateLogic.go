@@ -26,7 +26,7 @@ func NewRoleInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ro
 	}
 }
 
-func (l *RoleInfoUpdateLogic) RoleInfoUpdate(in *sys.RoleInfo) (*sys.Response, error) {
+func (l *RoleInfoUpdateLogic) RoleInfoUpdate(in *sys.RoleInfo) (*sys.Empty, error) {
 	ro, err := l.RiDB.FindOne(l.ctx, in.Id)
 	if err != nil {
 		l.Logger.Error("RoleInfoModel.FindOne err , sql:%s", l.svcCtx)
@@ -53,5 +53,5 @@ func (l *RoleInfoUpdateLogic) RoleInfoUpdate(in *sys.RoleInfo) (*sys.Response, e
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

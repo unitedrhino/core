@@ -24,12 +24,25 @@ func NewUserMessageRepo(in any) *UserMessageRepo {
 }
 
 type UserMessageFilter struct {
-	//todo 添加过滤字段
+	MessageID   int64
+	WithMessage bool
+	Group       string
+	NotifyCode  string
+	IsRead      int64
+	Str1        string
+	Str2        string
+	Str3        string
 }
 
 func (p UserMessageRepo) fmtFilter(ctx context.Context, f UserMessageFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	//todo 添加条件
+	if f.MessageID != 0 {
+		db = db.Where("message_id=?", f.MessageID)
+	}
+
+	if f.WithMessage {
+		db = db.Preload("Message")
+	}
 	return db
 }
 
@@ -47,6 +60,7 @@ func (p UserMessageRepo) FindOneByFilter(ctx context.Context, f UserMessageFilte
 	}
 	return &result, nil
 }
+
 func (p UserMessageRepo) FindByFilter(ctx context.Context, f UserMessageFilter, page *def.PageInfo) ([]*SysUserMessage, error) {
 	var results []*SysUserMessage
 	db := p.fmtFilter(ctx, f).Model(&SysUserMessage{})
@@ -66,6 +80,11 @@ func (p UserMessageRepo) CountByFilter(ctx context.Context, f UserMessageFilter)
 
 func (p UserMessageRepo) Update(ctx context.Context, data *SysUserMessage) error {
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
+	return stores.ErrFmt(err)
+}
+
+func (p UserMessageRepo) MultiIsRead(ctx context.Context, userID int64, ids []int64) error {
+	err := p.db.WithContext(ctx).Where("user_id = ? and id in ?", userID, ids).Update("is_read", def.True).Error
 	return stores.ErrFmt(err)
 }
 

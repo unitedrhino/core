@@ -25,7 +25,7 @@ func NewModuleInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *ModuleInfoDeleteLogic) ModuleInfoDelete(in *sys.WithIDCode) (*sys.Response, error) {
+func (l *ModuleInfoDeleteLogic) ModuleInfoDelete(in *sys.WithIDCode) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -34,5 +34,5 @@ func (l *ModuleInfoDeleteLogic) ModuleInfoDelete(in *sys.WithIDCode) (*sys.Respo
 		f.Codes = []string{in.Code}
 	}
 	err := relationDB.NewModuleInfoRepo(l.ctx).DeleteByFilter(l.ctx, f)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

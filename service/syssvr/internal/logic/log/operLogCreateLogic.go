@@ -33,7 +33,7 @@ func NewOperLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ope
 	}
 }
 
-func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Response, error) {
+func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Empty, error) {
 	//OperUserName 用uid查用户表获得
 	resUser, err := l.UiDB.FindOne(l.ctx, in.UserID)
 	if err != nil {
@@ -64,5 +64,5 @@ func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Respo
 		}
 	}
 
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

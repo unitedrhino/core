@@ -24,12 +24,26 @@ func NewMessageInfoRepo(in any) *MessageInfoRepo {
 }
 
 type MessageInfoFilter struct {
-	//todo 添加过滤字段
+	NotifyCode     string
+	Group          string
+	IsGlobal       int64
+	IsDirectNotify int64 //是否是发送通知消息创建
 }
 
 func (p MessageInfoRepo) fmtFilter(ctx context.Context, f MessageInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	//todo 添加条件
+	if f.Group != "" {
+		db = db.Where("group=?", f.Group)
+	}
+	if f.NotifyCode != "" {
+		db = db.Where("notify_code=?", f.NotifyCode)
+	}
+	if f.IsGlobal != 0 {
+		db = db.Where("is_global=?", f.IsGlobal)
+	}
+	if f.IsDirectNotify != 0 {
+		db = db.Where("is_notify=?", f.IsDirectNotify)
+	}
 	return db
 }
 

@@ -32,7 +32,7 @@ func NewUserInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 	}
 }
 
-func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Response, error) {
+func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Empty, error) {
 	info := in.Info
 	ui, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{info.UserID}, WithRoles: true})
 	if err != nil {
@@ -98,5 +98,5 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Re
 	}
 	l.Infof("%s.modified usersvr info = %+v", utils.FuncName(), ui)
 
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

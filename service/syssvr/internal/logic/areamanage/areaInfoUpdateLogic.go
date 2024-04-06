@@ -32,7 +32,7 @@ func NewAreaInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ar
 }
 
 // 更新区域
-func (l *AreaInfoUpdateLogic) AreaInfoUpdate(in *sys.AreaInfo) (*sys.Response, error) {
+func (l *AreaInfoUpdateLogic) AreaInfoUpdate(in *sys.AreaInfo) (*sys.Empty, error) {
 	if in.AreaID == 0 || utils.SliceIn(in.AreaID, def.RootNode, def.NotClassified) {
 		return nil, errors.Parameter
 	}
@@ -80,7 +80,7 @@ func (l *AreaInfoUpdateLogic) AreaInfoUpdate(in *sys.AreaInfo) (*sys.Response, e
 		return nil
 	})
 
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }
 func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.AreaInfo) {
 	//不支持更改 区域所属项目，因此不进行赋值

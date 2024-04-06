@@ -24,10 +24,10 @@ func NewRoleAccessMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
-func (l *RoleAccessMultiUpdateLogic) RoleAccessMultiUpdate(in *sys.RoleAccessMultiUpdateReq) (*sys.Response, error) {
+func (l *RoleAccessMultiUpdateLogic) RoleAccessMultiUpdate(in *sys.RoleAccessMultiUpdateReq) (*sys.Empty, error) {
 	err := relationDB.NewRoleAccessRepo(l.ctx).MultiUpdate(l.ctx, in.Id, in.AccessCodes)
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }

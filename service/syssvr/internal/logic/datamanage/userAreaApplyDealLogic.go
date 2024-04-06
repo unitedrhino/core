@@ -28,10 +28,10 @@ func NewUserAreaApplyDealLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq) (*sys.Response, error) {
+func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq) (*sys.Empty, error) {
 	if !in.IsApprove {
 		err := relationDB.NewUserAreaApplyRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.UserAreaApplyFilter{IDs: in.Ids})
-		return &sys.Response{}, err
+		return &sys.Empty{}, err
 	}
 	db := stores.GetTenantConn(l.ctx)
 	err := db.Transaction(func(tx *gorm.DB) error {
@@ -65,5 +65,5 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 		return nil
 	})
 
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

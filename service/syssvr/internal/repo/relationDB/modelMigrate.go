@@ -23,9 +23,9 @@ func Migrate(c conf.Database) error {
 	err := db.AutoMigrate(
 		&SysUserMessage{},
 		&SysMessageInfo{},
-		&SysNotifyConfig{},
+		&SysNotifyInfo{},
 		&SysNotifyTemplate{},
-		&SysTenantNotifyTemplate{},
+		&SysTenantNotify{},
 		&SysDictInfo{},
 		&SysDictDetail{},
 		&SysSlotInfo{},
@@ -212,7 +212,7 @@ const (
 // 子应用管理员可以配置自己子应用的角色
 
 var (
-	MigrateNotifyConfig = []SysNotifyConfig{
+	MigrateNotifyConfig = []SysNotifyInfo{
 		{Group: def.NotifyGroupCaptcha, Code: def.NotifyCodeSysUserRegisterCaptcha, Name: "用户注册验证码",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail}, IsRecord: def.False,
 			DefaultSubject: "注册验证码", DefaultBody: "欢迎注册,你的验证码是:{{.code}},有效期为{{.expr}}分钟",
@@ -236,19 +236,19 @@ var (
 			Params: map[string]string{"body": "通知的内容"}},
 	}
 	MigrateNotifyTemplate       = []SysNotifyTemplate{}
-	MigrateTenantNotifyTemplate = []SysTenantNotifyTemplate{
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
+	MigrateTenantNotifyTemplate = []SysTenantNotify{
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
 
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeSms, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeEmail, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeDingTalk, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeSms, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeEmail, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeDingTalk, TemplateID: 1},
 
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeSms, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeEmail, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, ConfigCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeDingTalk, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeSms, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeEmail, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeDingTalk, TemplateID: 1},
 	}
 
 	MigrateModuleInfo = []SysModuleInfo{

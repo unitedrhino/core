@@ -17,10 +17,10 @@ import (
 )
 
 type SendMsgConfig struct {
-	UserIds     []int64 //只有填写了这项才会记录
+	UserIDs     []int64 //只有填写了这项才会记录
 	Accounts    []string
 	AccountType string
-	ConfigCode  string         //通知的code
+	NotifyCode  string         //通知的code
 	Type        def.NotifyType //通知类型
 	Params      map[string]any
 	Str1        string
@@ -29,8 +29,8 @@ type SendMsgConfig struct {
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
-	c, err := relationDB.NewTenantNotifyTemplateRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.TenantNotifyConfigFilter{
-		ConfigCode: cfg.ConfigCode,
+	c, err := relationDB.NewTenantNotifyRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.TenantNotifyConfigFilter{
+		NotifyCode: cfg.NotifyCode,
 		Type:       cfg.Type,
 	})
 	if err != nil {
@@ -77,7 +77,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 	}
 	var users []*relationDB.SysUserInfo
 	if c.Config.IsRecord == def.True { //需要记录到消息中心中
-		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIds})
+		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs})
 		if err != nil {
 			return err
 		}
@@ -86,7 +86,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 				mi := relationDB.NewMessageInfoRepo(tx)
 				miPo := relationDB.SysMessageInfo{
 					Group:      c.Config.Group,
-					ConfigCode: cfg.ConfigCode,
+					NotifyCode: cfg.NotifyCode,
 					Subject:    subject,
 					Body:       body,
 					Str1:       cfg.Str1,

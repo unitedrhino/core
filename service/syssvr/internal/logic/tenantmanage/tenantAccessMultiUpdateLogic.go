@@ -25,7 +25,7 @@ func NewTenantAccessMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceCon
 	}
 }
 
-func (l *TenantAccessMultiUpdateLogic) TenantAccessMultiUpdate(in *sys.TenantAccessMultiUpdateReq) (*sys.Response, error) {
+func (l *TenantAccessMultiUpdateLogic) TenantAccessMultiUpdate(in *sys.TenantAccessMultiUpdateReq) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -33,5 +33,5 @@ func (l *TenantAccessMultiUpdateLogic) TenantAccessMultiUpdate(in *sys.TenantAcc
 	uc.AllTenant = true
 	defer func() { uc.AllTenant = false }()
 	err := relationDB.NewTenantAccessRepo(l.ctx).MultiUpdate(l.ctx, in.Code, in.AccessCodes)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

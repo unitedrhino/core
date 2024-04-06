@@ -25,7 +25,7 @@ func NewTenantAppMenuDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *TenantAppMenuDeleteLogic) TenantAppMenuDelete(in *sys.WithAppCodeID) (*sys.Response, error) {
+func (l *TenantAppMenuDeleteLogic) TenantAppMenuDelete(in *sys.WithAppCodeID) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -34,5 +34,5 @@ func (l *TenantAppMenuDeleteLogic) TenantAppMenuDelete(in *sys.WithAppCodeID) (*
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
 	err := relationDB.NewTenantAppMenuRepo(l.ctx).Delete(l.ctx, in.Id)
-	return &sys.Response{}, err
+	return &sys.Empty{}, err
 }

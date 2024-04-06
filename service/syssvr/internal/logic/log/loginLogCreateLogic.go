@@ -26,7 +26,7 @@ func NewLoginLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Lo
 	}
 }
 
-func (l *LoginLogCreateLogic) LoginLogCreate(in *sys.LoginLogCreateReq) (*sys.Response, error) {
+func (l *LoginLogCreateLogic) LoginLogCreate(in *sys.LoginLogCreateReq) (*sys.Empty, error) {
 	err := l.LlDB.Insert(l.ctx, &relationDB.SysLoginLog{
 		AppCode:       in.AppCode,
 		UserID:        in.UserID,
@@ -41,5 +41,5 @@ func (l *LoginLogCreateLogic) LoginLogCreate(in *sys.LoginLogCreateReq) (*sys.Re
 	if err != nil {
 		return nil, err
 	}
-	return &sys.Response{}, nil
+	return &sys.Empty{}, nil
 }
