@@ -100,7 +100,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	if po.LogoImg != "" && in.Info.IsUpdateLogoImg {
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneLogoImg,
 			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.LogoImg)))
-		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(po.LogoImg, nwePath)
+		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(po.LogoImg, nwePath)
 		if err != nil {
 			return nil, errors.System.AddDetail(err)
 		}
