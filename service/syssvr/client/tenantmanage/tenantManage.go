@@ -79,6 +79,9 @@ type (
 	OperLogIndexReq            = sys.OperLogIndexReq
 	OperLogIndexResp           = sys.OperLogIndexResp
 	OperLogInfo                = sys.OperLogInfo
+	OpsWorkOrder               = sys.OpsWorkOrder
+	OpsWorkOrderIndexReq       = sys.OpsWorkOrderIndexReq
+	OpsWorkOrderIndexResp      = sys.OpsWorkOrderIndexResp
 	PageInfo                   = sys.PageInfo
 	PageInfo_OrderBy           = sys.PageInfo_OrderBy
 	Point                      = sys.Point

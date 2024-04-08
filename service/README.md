@@ -18,7 +18,7 @@ $ goctl env check --install --verbose --force
 
 ## rpc服务
 ```
-goctl rpc new rpcsvr  --style=goZero -m
+goctl rpc new opssvr  --style=goZero -m
 ```
 ## api服务
 ```
@@ -43,6 +43,15 @@ cd apisvr && goctl api swagger -filename swagger.json -api http/api.api -dir ./h
 
 
 # 系统管理模块-syssvr
+
+- rpc文件编译方法
+
+```shell
+cd syssvr && goctl rpc protoc  proto/sys.proto --go_out=./ --go-grpc_out=./ --zrpc_out=. --style=goZero -m && cd ..
+```
+
+
+# 运营维护模块-syssvr
 
 - rpc文件编译方法
 

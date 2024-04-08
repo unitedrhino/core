@@ -41,6 +41,7 @@ func Migrate(c conf.Database) error {
 		&SysAccessInfo{},
 		&SysAreaInfo{},
 		&SysProjectInfo{},
+		&SysOpsWorkOrder{},
 		&SysDataArea{},
 		&SysDataProject{},
 		&SysAppInfo{},

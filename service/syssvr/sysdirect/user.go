@@ -1,7 +1,9 @@
 package sysdirect
 
 import (
+	"gitee.com/i-Things/core/service/syssvr/client/ops"
 	client "gitee.com/i-Things/core/service/syssvr/client/usermanage"
+	opsServer "gitee.com/i-Things/core/service/syssvr/internal/server/ops"
 	server "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
 
 	clientRole "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
@@ -130,4 +132,12 @@ func NewAreaManage(runSvr bool) clientArea.AreaManage {
 		RunServer(svcCtx)
 	}
 	return clientArea.NewDirectAreaManage(svcCtx, serverArea.NewAreaManageServer(svcCtx))
+}
+
+func NewOps(runSvr bool) ops.Ops {
+	svcCtx := GetSvcCtx()
+	if runSvr {
+		RunServer(svcCtx)
+	}
+	return ops.NewDirectOps(svcCtx, opsServer.NewOpsServer(svcCtx))
 }
