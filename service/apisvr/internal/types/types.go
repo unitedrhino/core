@@ -617,13 +617,14 @@ type TenantAppWithIDOrCode struct {
 }
 
 type TenantCore struct {
-	Code          string  `json:"code"`          // 应用编号
-	Name          string  `json:"name,optional"` // 接口名称
-	Desc          *string `json:"desc,optional"` // 备注
-	BackgroundImg string  `json:"backgroundImg,optional"`
-	LogoImg       string  `json:"logoImg,optional"`
-	Title         string  `json:"title,optional"`
-	TitleEn       string  `json:"titleEn,optional"`
+	Code             string  `json:"code"`          // 应用编号
+	Name             string  `json:"name,optional"` // 接口名称
+	Desc             *string `json:"desc,optional"` // 备注
+	BackgroundImg    string  `json:"backgroundImg,optional"`
+	LogoImg          string  `json:"logoImg,optional"`
+	Title            string  `json:"title,optional"`
+	TitleEn          string  `json:"titleEn,optional"`
+	BackgroundColour string  `json:"backgroundColour,optional"`
 }
 
 type TenantInfo struct {
@@ -634,6 +635,7 @@ type TenantInfo struct {
 	AdminRoleID           int64     `json:"adminRoleID,optional"`
 	Desc                  *string   `json:"desc,optional"` // 备注
 	DefaultProjectID      int64     `json:"defaultProjectID,optional"`
+	BackgroundColour      string    `json:"backgroundColour,optional"`
 	BackgroundImg         string    `json:"backgroundImg,optional"`
 	IsUpdateBackgroundImg bool      `json:"isUpdateBackgroundImg,optional,omitempty"`
 	LogoImg               string    `json:"logoImg,optional"`

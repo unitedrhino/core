@@ -26,3 +26,20 @@ type SysOpsWorkOrder struct {
 func (m *SysOpsWorkOrder) TableName() string {
 	return "sys_ops_work_order"
 }
+
+// 帮助与反馈
+type SysOpsFeedback struct {
+	ID                 int64             `gorm:"column:id;type:bigint;primary_key;AUTO_INCREMENT"`
+	TenantCode         stores.TenantCode `gorm:"column:tenant_code;index;type:VARCHAR(50);NOT NULL"`   // 租户编码
+	RaiseUserID        int64             `gorm:"column:raise_user_id;type:BIGINT;NOT NULL"`            // 问题提出的用户
+	ProjectID          stores.ProjectID  `gorm:"column:project_id;type:bigint;default:0;NOT NULL"`     // 项目ID(雪花ID)
+	AreaID             stores.AreaID     `gorm:"column:area_id;type:bigint;default:0;NOT NULL"`        // 项目区域ID(雪花ID)
+	Type               string            `gorm:"column:type;type:VARCHAR(50);NOT NULL"`                //问题类型
+	ContactInformation string            `gorm:"column:contact_information;type:VARCHAR(50);NOT NULL"` //联系信息
+	IssueDesc          string            `gorm:"column:issue_desc;type:varchar(2000);NOT NULL"`
+	stores.SoftTime
+}
+
+func (m *SysOpsFeedback) TableName() string {
+	return "sys_ops_feedback"
+}

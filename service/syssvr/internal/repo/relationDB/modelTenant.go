@@ -13,15 +13,18 @@ type SysTenantInfo struct {
 	AdminRoleID      int64  `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`               // 超级角色
 	Desc             string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
 	DefaultProjectID int64  `gorm:"column:default_project_id;type:BIGINT;NOT NULL"`
-
-	//BaseUrl       string `gorm:"column:base_url;type:VARCHAR(100);"` //租户首页
-	BackgroundImg string `gorm:"column:background_img;type:VARCHAR(512);"`
-	LogoImg       string `gorm:"column:logo_img;type:VARCHAR(512);"` //租户logo地址
-	Title         string `gorm:"column:title;type:VARCHAR(100);"`
-	TitleEn       string `gorm:"column:title_en;type:VARCHAR(100);"`
-	Status        int64  `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
+	SysTenantOem
+	Status int64 `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code;uniqueIndex:name"`
+}
+
+type SysTenantOem struct {
+	BackGroundColour string `gorm:"column:background_colour;type:VARCHAR(54);"` //背景颜色
+	BackgroundImg    string `gorm:"column:background_img;type:VARCHAR(512);"`   //背景图片
+	LogoImg          string `gorm:"column:logo_img;type:VARCHAR(512);"`         //租户logo地址
+	Title            string `gorm:"column:title;type:VARCHAR(100);"`            //中文标题
+	TitleEn          string `gorm:"column:title_en;type:VARCHAR(100);"`         //英文标题
 }
 
 func (m *SysTenantInfo) TableName() string {

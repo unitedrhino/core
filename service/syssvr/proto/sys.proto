@@ -392,6 +392,7 @@ message TenantInfo{
   int64 defaultProjectID = 7;
   string backgroundImg =9;
   bool isUpdateBackgroundImg = 10;
+  string backgroundColour =15;//背景颜色
   string logoImg =11;
   bool isUpdateLogoImg =12;
   string title =13;
