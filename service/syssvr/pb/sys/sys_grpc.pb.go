@@ -35,6 +35,9 @@ const (
 	UserManage_UserAreaApplyCreate_FullMethodName    = "/sys.UserManage/userAreaApplyCreate"
 	UserManage_UserMessageMultiIsRead_FullMethodName = "/sys.UserManage/userMessageMultiIsRead"
 	UserManage_UserMessageIndex_FullMethodName       = "/sys.UserManage/userMessageIndex"
+	UserManage_UserProfileRead_FullMethodName        = "/sys.UserManage/userProfileRead"
+	UserManage_UserProfileUpdate_FullMethodName      = "/sys.UserManage/userProfileUpdate"
+	UserManage_UserProfileIndex_FullMethodName       = "/sys.UserManage/userProfileIndex"
 )
 
 // UserManageClient is the client API for UserManage service.
@@ -57,6 +60,9 @@ type UserManageClient interface {
 	UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
+	UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
+	UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
+	UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
 }
 
 type userManageClient struct {
@@ -211,6 +217,33 @@ func (c *userManageClient) UserMessageIndex(ctx context.Context, in *UserMessage
 	return out, nil
 }
 
+func (c *userManageClient) UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error) {
+	out := new(UserProfile)
+	err := c.cc.Invoke(ctx, UserManage_UserProfileRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserManage_UserProfileUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error) {
+	out := new(UserProfileIndexResp)
+	err := c.cc.Invoke(ctx, UserManage_UserProfileIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserManageServer is the server API for UserManage service.
 // All implementations must embed UnimplementedUserManageServer
 // for forward compatibility
@@ -231,6 +264,9 @@ type UserManageServer interface {
 	UserAreaApplyCreate(context.Context, *UserAreaApplyCreateReq) (*Empty, error)
 	UserMessageMultiIsRead(context.Context, *IDList) (*Empty, error)
 	UserMessageIndex(context.Context, *UserMessageIndexReq) (*UserMessageIndexResp, error)
+	UserProfileRead(context.Context, *WithCode) (*UserProfile, error)
+	UserProfileUpdate(context.Context, *UserProfile) (*Empty, error)
+	UserProfileIndex(context.Context, *UserProfileIndexReq) (*UserProfileIndexResp, error)
 	mustEmbedUnimplementedUserManageServer()
 }
 
@@ -285,6 +321,15 @@ func (UnimplementedUserManageServer) UserMessageMultiIsRead(context.Context, *ID
 }
 func (UnimplementedUserManageServer) UserMessageIndex(context.Context, *UserMessageIndexReq) (*UserMessageIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserMessageIndex not implemented")
+}
+func (UnimplementedUserManageServer) UserProfileRead(context.Context, *WithCode) (*UserProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserProfileRead not implemented")
+}
+func (UnimplementedUserManageServer) UserProfileUpdate(context.Context, *UserProfile) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserProfileUpdate not implemented")
+}
+func (UnimplementedUserManageServer) UserProfileIndex(context.Context, *UserProfileIndexReq) (*UserProfileIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserProfileIndex not implemented")
 }
 func (UnimplementedUserManageServer) mustEmbedUnimplementedUserManageServer() {}
 
@@ -587,6 +632,60 @@ func _UserManage_UserMessageIndex_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManage_UserProfileRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithCode)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserProfileRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserProfileRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserProfileRead(ctx, req.(*WithCode))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserProfileUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserProfile)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserProfileUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserProfileUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserProfileUpdate(ctx, req.(*UserProfile))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserProfileIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserProfileIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserProfileIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserProfileIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserProfileIndex(ctx, req.(*UserProfileIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserManage_ServiceDesc is the grpc.ServiceDesc for UserManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -657,6 +756,18 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userMessageIndex",
 			Handler:    _UserManage_UserMessageIndex_Handler,
+		},
+		{
+			MethodName: "userProfileRead",
+			Handler:    _UserManage_UserProfileRead_Handler,
+		},
+		{
+			MethodName: "userProfileUpdate",
+			Handler:    _UserManage_UserProfileUpdate_Handler,
+		},
+		{
+			MethodName: "userProfileIndex",
+			Handler:    _UserManage_UserProfileIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

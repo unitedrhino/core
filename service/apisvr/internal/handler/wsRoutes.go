@@ -1082,6 +1082,21 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/profile/index",
+					Handler: systemuserself.ProfileIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/profile/read",
+					Handler: systemuserself.ProfileReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/profile/update",
+					Handler: systemuserself.ProfileUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemuserself.ReadHandler(serverCtx),
 				},

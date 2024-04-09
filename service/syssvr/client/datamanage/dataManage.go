@@ -157,12 +157,16 @@ type (
 	UserMessage                = sys.UserMessage
 	UserMessageIndexReq        = sys.UserMessageIndexReq
 	UserMessageIndexResp       = sys.UserMessageIndexResp
+	UserProfile                = sys.UserProfile
+	UserProfileIndexReq        = sys.UserProfileIndexReq
+	UserProfileIndexResp       = sys.UserProfileIndexResp
 	UserRegisterReq            = sys.UserRegisterReq
 	UserRegisterResp           = sys.UserRegisterResp
 	UserRoleIndexReq           = sys.UserRoleIndexReq
 	UserRoleIndexResp          = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq     = sys.UserRoleMultiUpdateReq
 	WithAppCodeID              = sys.WithAppCodeID
+	WithCode                   = sys.WithCode
 	WithID                     = sys.WithID
 	WithIDCode                 = sys.WithIDCode
 

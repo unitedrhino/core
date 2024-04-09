@@ -1119,6 +1119,19 @@ type UserMessageIndexResp struct {
 	List  []*UserMessage `json:"list"`
 }
 
+type UserProfile struct {
+	Code   string `json:"code"`
+	Params string `json:"params"`
+}
+
+type UserProfileIndexReq struct {
+	Codes []string `json:"codes"`
+}
+
+type UserProfileIndexResp struct {
+	Profiles []*UserProfile `json:"profiles"`
+}
+
 type UserRegisterReq struct {
 	RegType  string    `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp"`
 	Account  string    `json:"account,optional"`  //手机号注册时填写手机号 账号密码注册时填写userName

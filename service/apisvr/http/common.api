@@ -20,6 +20,9 @@ type(
     WithID{
         ID int64 `json:"id,optional"`         // id
     }
+    WithCode{
+        Code string `json:"code,optional"`
+    }
     WithIDOrCode{
         ID int64 `json:"id,optional"`         // id
         Code string `json:"code,optional"`
@@ -51,9 +54,6 @@ type(
         TimeoutToFail  int64 `json:"timeoutToFail,optional"`   //超时失败时间
         RequestTimeout int64 `json:"requestTimeout,optional"` //请求超时,超时后会进行重试
         RetryInterval  int64 `json:"retryInterval,optional"`   //重试间隔
-    }
-    WithCode {
-        Code string `json:"code,optional"`
     }
     DeviceCore {
         ProductID string `json:"productID"`      //产品ID

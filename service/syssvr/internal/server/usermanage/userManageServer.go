@@ -101,3 +101,18 @@ func (s *UserManageServer) UserMessageIndex(ctx context.Context, in *sys.UserMes
 	l := usermanagelogic.NewUserMessageIndexLogic(ctx, s.svcCtx)
 	return l.UserMessageIndex(in)
 }
+
+func (s *UserManageServer) UserProfileRead(ctx context.Context, in *sys.WithCode) (*sys.UserProfile, error) {
+	l := usermanagelogic.NewUserProfileReadLogic(ctx, s.svcCtx)
+	return l.UserProfileRead(in)
+}
+
+func (s *UserManageServer) UserProfileUpdate(ctx context.Context, in *sys.UserProfile) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserProfileUpdateLogic(ctx, s.svcCtx)
+	return l.UserProfileUpdate(in)
+}
+
+func (s *UserManageServer) UserProfileIndex(ctx context.Context, in *sys.UserProfileIndexReq) (*sys.UserProfileIndexResp, error) {
+	l := usermanagelogic.NewUserProfileIndexLogic(ctx, s.svcCtx)
+	return l.UserProfileIndex(in)
+}

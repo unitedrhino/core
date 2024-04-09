@@ -57,6 +57,7 @@ func Migrate(c conf.Database) error {
 		&SysTenantAppMenu{},
 		&SysTenantAppModule{},
 		&SysUserAreaApply{},
+		&SysUserProfile{},
 	)
 	if err != nil {
 		return err

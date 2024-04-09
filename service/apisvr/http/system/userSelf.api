@@ -48,6 +48,17 @@ service api {
 	@handler messageIndex
 	post /message/index (UserMessageIndexReq) returns (UserMessageIndexResp)
 
+	@doc "获取用户配置详情"
+	@handler profileRead
+	post /profile/read (WithCode) returns (UserProfile)
+	@doc "获取用户配置详情"
+	@handler profileUpdate
+	post /profile/update (UserProfile) returns ()
+	@doc "获取用户配置详情"
+	@handler profileIndex
+	post /profile/index (UserProfileIndexReq) returns (UserProfileIndexResp)
+
+
 }
 
 @server (
@@ -130,6 +141,19 @@ type (
 		RefreshAfter int64  `json:"refreshAfter,string,omitempty"`//token刷新时间
 	}
 )
+type (
+	UserProfile{
+		Code string `json:"code"`
+		Params string  `json:"params"`
+	}
+	UserProfileIndexReq{
+	 	Codes []string `json:"codes"`
+	}
+	UserProfileIndexResp{
+		Profiles []*UserProfile `json:"profiles"`
+	}
+)
+
 
 type (
 	UserMessageIndexReq {
@@ -156,7 +180,7 @@ type (
 type (
 	//登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息
 	UserRegisterReq {
-													   //注册方式:	phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内登录 wxMiniP 微信小程序 pwd 账号密码注册
+		 //注册方式:	phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内登录 wxMiniP 微信小程序 pwd 账号密码注册
 		RegType string `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp"`
 		Account    string `json:"account,optional"`	//手机号注册时填写手机号 账号密码注册时填写userName
 		Code    string `json:"code"`	//验证码    微信登录填code 账号密码登录时填写密码

@@ -24,6 +24,10 @@ service UserManage {
 
   rpc userMessageMultiIsRead(IDList)returns(Empty);//用户消息批量已读
   rpc userMessageIndex(UserMessageIndexReq)returns(UserMessageIndexResp);//获取用户消息
+
+  rpc userProfileRead(WithCode)returns(UserProfile);
+  rpc userProfileUpdate(UserProfile)returns(Empty);
+  rpc userProfileIndex(UserProfileIndexReq)returns(UserProfileIndexResp);
 }
 
 service DataManage {
@@ -346,6 +350,20 @@ message TenantNotify{
 
 
 /* 用户相关 */
+
+message UserProfile{
+  string code =1;
+  string params =2;
+}
+
+message UserProfileIndexReq{
+  repeated string codes =1;
+}
+
+message UserProfileIndexResp{
+  repeated UserProfile profiles =1;
+}
+
 message UserMessage{
   int64 id =1;
   int64 userID=2;
@@ -539,6 +557,10 @@ message WithID{
 message WithIDCode{
   int64 id = 1;
   string code=2;
+}
+
+message WithCode{
+  string code=1;
 }
 
 message WithAppCodeID{

@@ -157,12 +157,16 @@ type (
 	UserMessage                = sys.UserMessage
 	UserMessageIndexReq        = sys.UserMessageIndexReq
 	UserMessageIndexResp       = sys.UserMessageIndexResp
+	UserProfile                = sys.UserProfile
+	UserProfileIndexReq        = sys.UserProfileIndexReq
+	UserProfileIndexResp       = sys.UserProfileIndexResp
 	UserRegisterReq            = sys.UserRegisterReq
 	UserRegisterResp           = sys.UserRegisterResp
 	UserRoleIndexReq           = sys.UserRoleIndexReq
 	UserRoleIndexResp          = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq     = sys.UserRoleMultiUpdateReq
 	WithAppCodeID              = sys.WithAppCodeID
+	WithCode                   = sys.WithCode
 	WithID                     = sys.WithID
 	WithIDCode                 = sys.WithIDCode
 
@@ -183,6 +187,9 @@ type (
 		UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
+		UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
+		UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
+		UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
 	}
 
 	defaultUserManage struct {
@@ -350,4 +357,31 @@ func (m *defaultUserManage) UserMessageIndex(ctx context.Context, in *UserMessag
 
 func (d *directUserManage) UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error) {
 	return d.svr.UserMessageIndex(ctx, in)
+}
+
+func (m *defaultUserManage) UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserProfileRead(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error) {
+	return d.svr.UserProfileRead(ctx, in)
+}
+
+func (m *defaultUserManage) UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserProfileUpdate(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.UserProfileUpdate(ctx, in)
+}
+
+func (m *defaultUserManage) UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserProfileIndex(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error) {
+	return d.svr.UserProfileIndex(ctx, in)
 }
