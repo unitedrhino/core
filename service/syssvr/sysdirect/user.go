@@ -6,6 +6,9 @@ import (
 	opsServer "gitee.com/i-Things/core/service/syssvr/internal/server/ops"
 	server "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
 
+	clientNotify "gitee.com/i-Things/core/service/syssvr/client/notifymanage"
+	serverNotify "gitee.com/i-Things/core/service/syssvr/internal/server/notifymanage"
+
 	clientRole "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
 	serverRole "gitee.com/i-Things/core/service/syssvr/internal/server/rolemanage"
 
@@ -140,4 +143,12 @@ func NewOps(runSvr bool) ops.Ops {
 		RunServer(svcCtx)
 	}
 	return ops.NewDirectOps(svcCtx, opsServer.NewOpsServer(svcCtx))
+}
+
+func NewNotify(runSvr bool) clientNotify.NotifyManage {
+	svcCtx := GetSvcCtx()
+	if runSvr {
+		RunServer(svcCtx)
+	}
+	return clientNotify.NewDirectNotifyManage(svcCtx, serverNotify.NewNotifyManageServer(svcCtx))
 }

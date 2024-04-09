@@ -12,6 +12,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/client/dictmanage"
 	"gitee.com/i-Things/core/service/syssvr/client/log"
 	module "gitee.com/i-Things/core/service/syssvr/client/modulemanage"
+	"gitee.com/i-Things/core/service/syssvr/client/notifymanage"
 	"gitee.com/i-Things/core/service/syssvr/client/ops"
 	"gitee.com/i-Things/core/service/syssvr/client/projectmanage"
 	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
@@ -45,8 +46,8 @@ type SvrClient struct {
 	ProjectM  projectmanage.ProjectManage
 	AreaM     areamanage.AreaManage
 	DictM     dictmanage.DictManage
-
-	Common common.Common
+	NotifyM   notifymanage.NotifyManage
+	Common    common.Common
 
 	AccessRpc      accessmanage.AccessManage
 	DataM          datamanage.DataManage
@@ -81,6 +82,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		DictM         dictmanage.DictManage
 		accessM       accessmanage.AccessManage
 		Ops           ops.Ops
+		NotifyM       notifymanage.NotifyManage
 	)
 	var ur user.UserManage
 	var ro role.RoleManage
@@ -105,7 +107,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			accessM = accessmanage.NewAccessManage(zrpc.MustNewClient(c.SysRpc.Conf))
 			DictM = dictmanage.NewDictManage(zrpc.MustNewClient(c.SysRpc.Conf))
 			Ops = ops.NewOps(zrpc.MustNewClient(c.SysRpc.Conf))
-
+			NotifyM = notifymanage.NewNotifyManage(zrpc.MustNewClient(c.SysRpc.Conf))
 		} else {
 			projectM = sysdirect.NewProjectManage(c.SysRpc.RunProxy)
 			areaM = sysdirect.NewAreaManage(c.SysRpc.RunProxy)
@@ -120,6 +122,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			accessM = sysdirect.NewAccess(c.SysRpc.RunProxy)
 			DictM = sysdirect.NewDict(c.SysRpc.RunProxy)
 			Ops = sysdirect.NewOps(c.SysRpc.RunProxy)
+			NotifyM = sysdirect.NewNotify(c.SysRpc.RunProxy)
 		}
 	}
 
@@ -165,6 +168,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			ModuleRpc:      me,
 			LogRpc:         lo,
 			AccessRpc:      accessM,
+			NotifyM:        NotifyM,
 			Timedscheduler: timedSchedule,
 			TimedJob:       timedJob,
 			ProjectM:       projectM,

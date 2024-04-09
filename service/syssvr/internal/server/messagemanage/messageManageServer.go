@@ -22,29 +22,25 @@ func NewMessageManageServer(svcCtx *svc.ServiceContext) *MessageManageServer {
 	}
 }
 
-func (s *MessageManageServer) NotifySend(ctx context.Context, in *sys.NotifySendReq) (*sys.Empty, error) {
-	l := messagemanagelogic.NewNotifySendLogic(ctx, s.svcCtx)
-	return l.NotifySend(in)
+// 站内信
+func (s *MessageManageServer) MessageInfoSend(ctx context.Context, in *sys.MessageInfoSendReq) (*sys.WithID, error) {
+	l := messagemanagelogic.NewMessageInfoSendLogic(ctx, s.svcCtx)
+	return l.MessageInfoSend(in)
 }
 
-func (s *MessageManageServer) MessageSend(ctx context.Context, in *sys.MessageSendReq) (*sys.WithID, error) {
-	l := messagemanagelogic.NewMessageSendLogic(ctx, s.svcCtx)
-	return l.MessageSend(in)
+func (s *MessageManageServer) MessageInfoIndex(ctx context.Context, in *sys.MessageInfoIndexReq) (*sys.MessageInfoIndexResp, error) {
+	l := messagemanagelogic.NewMessageInfoIndexLogic(ctx, s.svcCtx)
+	return l.MessageInfoIndex(in)
 }
 
-func (s *MessageManageServer) MessageIndex(ctx context.Context, in *sys.MessageIndexReq) (*sys.MessageIndexResp, error) {
-	l := messagemanagelogic.NewMessageIndexLogic(ctx, s.svcCtx)
-	return l.MessageIndex(in)
+func (s *MessageManageServer) MessageInfoUpdate(ctx context.Context, in *sys.MessageInfo) (*sys.Empty, error) {
+	l := messagemanagelogic.NewMessageInfoUpdateLogic(ctx, s.svcCtx)
+	return l.MessageInfoUpdate(in)
 }
 
-func (s *MessageManageServer) MessageUpdate(ctx context.Context, in *sys.MessageInfo) (*sys.Empty, error) {
-	l := messagemanagelogic.NewMessageUpdateLogic(ctx, s.svcCtx)
-	return l.MessageUpdate(in)
-}
-
-func (s *MessageManageServer) MessageDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
-	l := messagemanagelogic.NewMessageDeleteLogic(ctx, s.svcCtx)
-	return l.MessageDelete(in)
+func (s *MessageManageServer) MessageInfoDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := messagemanagelogic.NewMessageInfoDeleteLogic(ctx, s.svcCtx)
+	return l.MessageInfoDelete(in)
 }
 
 // 通知配置信息
@@ -71,6 +67,11 @@ func (s *MessageManageServer) NotifyInfoIndex(ctx context.Context, in *sys.Notif
 func (s *MessageManageServer) NotifyInfoDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
 	l := messagemanagelogic.NewNotifyInfoDeleteLogic(ctx, s.svcCtx)
 	return l.NotifyInfoDelete(in)
+}
+
+func (s *MessageManageServer) NotifyInfoSend(ctx context.Context, in *sys.NotifyInfoSendReq) (*sys.Empty, error) {
+	l := messagemanagelogic.NewNotifyInfoSendLogic(ctx, s.svcCtx)
+	return l.NotifyInfoSend(in)
 }
 
 // 通知模版

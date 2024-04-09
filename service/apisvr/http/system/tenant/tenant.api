@@ -65,6 +65,41 @@ service api {
 }
 
 
+@server (
+    group: system/tenant/notify
+    prefix: /api/v1/system/tenant/notify
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+
+service api {
+    @doc "获取租户操作权限树"
+    @handler index
+    post /index (TenantNotifyIndexReq) returns (TenantNotifyIndexResp)
+    @doc "批量更新租户操作权限"
+    @handler multiUpdate
+    post /multi-update (TenantNotifyMultiUpdateReq) returns ()
+}
+
+type (
+    TenantNotify {
+        ID int64 `json:"id"`
+        NotifyCode string `json:"notifyCode"`
+        Type string `json:"type"`
+        TemplateID int64 `json:"templateID"`
+    }
+    TenantNotifyMultiUpdateReq{
+        notifies []*TenantNotify `json:"notifies"`
+    }
+
+    TenantNotifyIndexReq{
+        NotifyCode string `json:"notifyCode"`
+        Type string `json:"type"`
+    }
+    TenantNotifyIndexResp{
+        List []*TenantNotify `json:"list"`
+    }
+)
+
 type(
     TenantAccessInfo{
         Code string `json:"code"`                     // 租户编号

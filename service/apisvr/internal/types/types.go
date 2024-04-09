@@ -269,6 +269,10 @@ type DictInfoReadReq struct {
 	WithChildren bool  `json:"withChildren,optional"`
 }
 
+type IDList struct {
+	IDs []int64 `json:"ids"`
+}
+
 type JwtToken struct {
 	AccessToken  string `json:"accessToken,omitempty"`         //用户token
 	AccessExpire int64  `json:"accessExpire,string,omitempty"` //token过期时间
@@ -308,6 +312,41 @@ type MenuInfoIndexResp struct {
 	List []*MenuInfo `json:"list"` //菜单列表
 }
 
+type MessageInfo struct {
+	ID          int64  `json:"id"`
+	Group       string `json:"group"`
+	NotifyCode  string `json:"notifyCode"`
+	Subject     string `json:"subject"`
+	Body        string `json:"body"`
+	Str1        string `json:"str1"`
+	Str2        string `json:"str2"`
+	Str3        string `json:"str3"`
+	IsGlobal    int64  `json:"isGlobal"`
+	CreatedTime int64  `json:"createdTime"`
+}
+
+type MessageInfoIndexReq struct {
+	Page       *PageInfo `json:"page,optional"`       // 分页信息,只获取一个则不填
+	NotifyCode string    `json:"notifyCode,optional"` //
+	Group      string    `json:"group,optional"`      //分组
+}
+
+type MessageInfoIndexResp struct {
+	List  []*MessageInfo `json:"list"`  // 消息列表数据
+	Total int64          `json:"total"` // 消息列表总记录数
+}
+
+type MessageInfoSendReq struct {
+	UserIDs    []int64 `json:"userIDs"`    //指定用户ID
+	IsGlobal   int64   `json:"isGlobal"`   //全局消息
+	NotifyCode string  `json:"notifyCode"` //通知的code
+	Subject    string  `json:"subject"`    //通知主题
+	Body       string  `json:"body"`
+	Str1       string  `json:"str1,optional"`
+	Str2       string  `json:"str2,optional"`
+	Str3       string  `json:"str3,optional"`
+}
+
 type ModuleInfo struct {
 	ID         int64   `json:"id,optional"`         // 编号
 	Code       string  `json:"code"`                // 应用编号
@@ -335,6 +374,58 @@ type ModuleInfoIndexReq struct {
 type ModuleInfoIndexResp struct {
 	Total int64         `json:"total"` //总数
 	List  []*ModuleInfo `json:"list"`  //菜单列表
+}
+
+type NotifyInfo struct {
+	ID                  int64             `json:"id,optional"`                  // id编号
+	Group               string            `json:"group,optional"`               //分组
+	Code                string            `json:"code,optional"`                // 通知类型编码
+	Name                string            `json:"name,optional"`                //通知的命名
+	SupportTypes        []string          `json:"supportTypes,optional"`        //支持的通知类型
+	Desc                string            `json:"desc,optional"`                // 项目备注
+	IsRecord            int64             `json:"isRecord,optional"`            //是否记录该消息,是的情况下会将消息存一份到消息中心
+	DefaultSubject      string            `json:"defaultSubject,optional"`      //默认消息主题
+	DefaultBody         string            `json:"defaultBody,optional"`         //默认模版内容
+	DefaultTemplateCode string            `json:"defaultTemplateCode,optional"` // 通知类型编码
+	DefaultSignName     string            `json:"defaultSignName,optional"`     //默认签名(短信)
+	Params              map[string]string `json:"params,optional"`              //变量属性 key是参数,value是描述
+}
+
+type NotifyInfoIndexReq struct {
+	Page  *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
+	Name  string    `json:"name,optional"`  // 应用名称
+	Code  string    `json:"code,optional"`  // 应用编号
+	Group string    `json:"group,optional"` //分组
+}
+
+type NotifyInfoIndexResp struct {
+	List  []*NotifyInfo `json:"list"`  // 通知列表数据
+	Total int64         `json:"total"` // 通知列表总记录数
+}
+
+type NotifyTemplate struct {
+	ID           int64  `json:"id,optional"`           // id编号
+	TenantCode   string `json:"tenantCode,optional"`   //限定租户,不填是通用的
+	Name         string `json:"name,optional"`         //通知的命名
+	NotifyCode   string `json:"notifyCode,optional"`   //对应的配置Code
+	Type         string `json:"type,optional"`         //对应的配置类型 sms email
+	TemplateCode string `json:"templateCode,optional"` // 通知类型编码
+	SignName     string `json:"signName,optional"`     //签名(短信)
+	Subject      string `json:"subject,optional"`      //默认消息主题
+	Body         string `json:"body,optional"`         //默认模版内容
+	Desc         string `json:"desc,optional"`         // 备注
+}
+
+type NotifyTemplateIndexReq struct {
+	Page       *PageInfo `json:"page,optional"`       // 分页信息,只获取一个则不填
+	Name       string    `json:"name,optional"`       //
+	NotifyCode string    `json:"notifyCode,optional"` // 应用编号
+	Type       string    `json:"type,optional"`       //对应的配置类型 sms email
+}
+
+type NotifyTemplateIndexResp struct {
+	List  []*NotifyTemplate `json:"list"`  // 通知模版列表数据
+	Total int64             `json:"total"` // 通知模版列表总记录数
 }
 
 type NtpReadReq struct {
@@ -713,6 +804,26 @@ type TenantModuleWithIDOrCode struct {
 	ModuleCode string `json:"moduleCode,optional"`
 }
 
+type TenantNotify struct {
+	ID         int64  `json:"id"`
+	NotifyCode string `json:"notifyCode"`
+	Type       string `json:"type"`
+	TemplateID int64  `json:"templateID"`
+}
+
+type TenantNotifyIndexReq struct {
+	NotifyCode string `json:"notifyCode"`
+	Type       string `json:"type"`
+}
+
+type TenantNotifyIndexResp struct {
+	List []*TenantNotify `json:"list"`
+}
+
+type TenantNotifyMultiUpdateReq struct {
+	Notifies []*TenantNotify `json:"notifies"`
+}
+
 type TimeRange struct {
 	Start int64 `json:"start,optional"` //开始时间 unix时间戳
 	End   int64 `json:"end,optional"`   //结束时间 unix时间戳
@@ -984,6 +1095,28 @@ type UserLoginResp struct {
 	Info  UserInfo    `json:"info"`  //用户信息
 	Roles []*RoleInfo `json:"roles"` //角色列表
 	Token JwtToken    `json:"token"` //用户token
+}
+
+type UserMessage struct {
+	ID     int64 `json:"id"`
+	UserID int64 `json:"userID"`
+	IsRead int64 `json:"isRead"`
+	*MessageInfo
+}
+
+type UserMessageIndexReq struct {
+	Page       *PageInfo `json:"page,optional"`
+	Group      string    `json:"group,optional"`
+	NotifyCode string    `json:"notifyCode,optional"`
+	IsRead     int64     `json:"isRead,optional"`
+	Str1       string    `json:"str1,optional"`
+	Str2       string    `json:"str2,optional"`
+	Str3       string    `json:"str3,optional"`
+}
+
+type UserMessageIndexResp struct {
+	Total int64          `json:"total"`
+	List  []*UserMessage `json:"list"`
 }
 
 type UserRegisterReq struct {

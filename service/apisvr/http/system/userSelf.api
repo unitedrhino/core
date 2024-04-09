@@ -41,6 +41,13 @@ service api {
 	@handler areaApplyCreate
 	post /area/apply/create (UserAreaApplyCreateReq) returns ()
 
+	@doc "用户消息批量已读"
+	@handler messageMultiIsRead
+	post /message/multi-is-read (IDList) returns ()
+	@doc "用户消息列表"
+	@handler messageIndex
+	post /message/index (UserMessageIndexReq) returns (UserMessageIndexResp)
+
 }
 
 @server (
@@ -121,6 +128,28 @@ type (
 		AccessToken  string `json:"accessToken,omitempty"`//用户token
 		AccessExpire int64  `json:"accessExpire,string,omitempty"`//token过期时间
 		RefreshAfter int64  `json:"refreshAfter,string,omitempty"`//token刷新时间
+	}
+)
+
+type (
+	UserMessageIndexReq {
+		Page *PageInfo `json:"page,optional"`
+		Group string `json:"group,optional"`
+		NotifyCode string `json:"notifyCode,optional"`
+		IsRead int64 `json:"isRead,optional"`
+		Str1 string `json:"str1,optional"`
+		Str2 string `json:"str2,optional"`
+		Str3 string `json:"str3,optional"`
+	}
+	UserMessage {
+		ID  int64 `json:"id"`
+		UserID  int64 `json:"userID"`
+		IsRead  int64 `json:"isRead"`
+		*MessageInfo
+	}
+	UserMessageIndexResp{
+		Total int64  `json:"total"`
+		List []*UserMessage `json:"list"`
 	}
 )
 

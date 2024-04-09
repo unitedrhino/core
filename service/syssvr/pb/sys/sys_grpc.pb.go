@@ -976,38 +976,39 @@ var DataManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	MessageManage_NotifySend_FullMethodName           = "/sys.MessageManage/notifySend"
-	MessageManage_MessageSend_FullMethodName          = "/sys.MessageManage/messageSend"
-	MessageManage_MessageIndex_FullMethodName         = "/sys.MessageManage/messageIndex"
-	MessageManage_MessageUpdate_FullMethodName        = "/sys.MessageManage/messageUpdate"
-	MessageManage_MessageDelete_FullMethodName        = "/sys.MessageManage/messageDelete"
-	MessageManage_NotifyInfoRead_FullMethodName       = "/sys.MessageManage/notifyInfoRead"
-	MessageManage_NotifyInfoCreate_FullMethodName     = "/sys.MessageManage/notifyInfoCreate"
-	MessageManage_NotifyInfoUpdate_FullMethodName     = "/sys.MessageManage/notifyInfoUpdate"
-	MessageManage_NotifyInfoIndex_FullMethodName      = "/sys.MessageManage/notifyInfoIndex"
-	MessageManage_NotifyInfoDelete_FullMethodName     = "/sys.MessageManage/notifyInfoDelete"
-	MessageManage_NotifyTemplateRead_FullMethodName   = "/sys.MessageManage/notifyTemplateRead"
-	MessageManage_NotifyTemplateCreate_FullMethodName = "/sys.MessageManage/notifyTemplateCreate"
-	MessageManage_NotifyTemplateUpdate_FullMethodName = "/sys.MessageManage/notifyTemplateUpdate"
-	MessageManage_NotifyTemplateIndex_FullMethodName  = "/sys.MessageManage/notifyTemplateIndex"
-	MessageManage_NotifyTemplateDelete_FullMethodName = "/sys.MessageManage/notifyTemplateDelete"
+	NotifyManage_MessageInfoSend_FullMethodName      = "/sys.NotifyManage/messageInfoSend"
+	NotifyManage_MessageInfoIndex_FullMethodName     = "/sys.NotifyManage/messageInfoIndex"
+	NotifyManage_MessageInfoUpdate_FullMethodName    = "/sys.NotifyManage/messageInfoUpdate"
+	NotifyManage_MessageInfoDelete_FullMethodName    = "/sys.NotifyManage/messageInfoDelete"
+	NotifyManage_NotifyInfoRead_FullMethodName       = "/sys.NotifyManage/notifyInfoRead"
+	NotifyManage_NotifyInfoCreate_FullMethodName     = "/sys.NotifyManage/notifyInfoCreate"
+	NotifyManage_NotifyInfoUpdate_FullMethodName     = "/sys.NotifyManage/notifyInfoUpdate"
+	NotifyManage_NotifyInfoIndex_FullMethodName      = "/sys.NotifyManage/notifyInfoIndex"
+	NotifyManage_NotifyInfoDelete_FullMethodName     = "/sys.NotifyManage/notifyInfoDelete"
+	NotifyManage_NotifyInfoSend_FullMethodName       = "/sys.NotifyManage/notifyInfoSend"
+	NotifyManage_NotifyTemplateRead_FullMethodName   = "/sys.NotifyManage/notifyTemplateRead"
+	NotifyManage_NotifyTemplateCreate_FullMethodName = "/sys.NotifyManage/notifyTemplateCreate"
+	NotifyManage_NotifyTemplateUpdate_FullMethodName = "/sys.NotifyManage/notifyTemplateUpdate"
+	NotifyManage_NotifyTemplateIndex_FullMethodName  = "/sys.NotifyManage/notifyTemplateIndex"
+	NotifyManage_NotifyTemplateDelete_FullMethodName = "/sys.NotifyManage/notifyTemplateDelete"
 )
 
-// MessageManageClient is the client API for MessageManage service.
+// NotifyManageClient is the client API for NotifyManage service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MessageManageClient interface {
-	NotifySend(ctx context.Context, in *NotifySendReq, opts ...grpc.CallOption) (*Empty, error)
-	MessageSend(ctx context.Context, in *MessageSendReq, opts ...grpc.CallOption) (*WithID, error)
-	MessageIndex(ctx context.Context, in *MessageIndexReq, opts ...grpc.CallOption) (*MessageIndexResp, error)
-	MessageUpdate(ctx context.Context, in *MessageInfo, opts ...grpc.CallOption) (*Empty, error)
-	MessageDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+type NotifyManageClient interface {
+	// 站内信
+	MessageInfoSend(ctx context.Context, in *MessageInfoSendReq, opts ...grpc.CallOption) (*WithID, error)
+	MessageInfoIndex(ctx context.Context, in *MessageInfoIndexReq, opts ...grpc.CallOption) (*MessageInfoIndexResp, error)
+	MessageInfoUpdate(ctx context.Context, in *MessageInfo, opts ...grpc.CallOption) (*Empty, error)
+	MessageInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	// 通知配置信息
 	NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error)
 	NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error)
 	NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error)
 	NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error)
 	NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error)
 	// 通知模版
 	NotifyTemplateRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyTemplate, error)
 	NotifyTemplateCreate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*WithID, error)
@@ -1016,571 +1017,572 @@ type MessageManageClient interface {
 	NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 }
 
-type messageManageClient struct {
+type notifyManageClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMessageManageClient(cc grpc.ClientConnInterface) MessageManageClient {
-	return &messageManageClient{cc}
+func NewNotifyManageClient(cc grpc.ClientConnInterface) NotifyManageClient {
+	return &notifyManageClient{cc}
 }
 
-func (c *messageManageClient) NotifySend(ctx context.Context, in *NotifySendReq, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_NotifySend_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *messageManageClient) MessageSend(ctx context.Context, in *MessageSendReq, opts ...grpc.CallOption) (*WithID, error) {
+func (c *notifyManageClient) MessageInfoSend(ctx context.Context, in *MessageInfoSendReq, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
-	err := c.cc.Invoke(ctx, MessageManage_MessageSend_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_MessageInfoSend_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) MessageIndex(ctx context.Context, in *MessageIndexReq, opts ...grpc.CallOption) (*MessageIndexResp, error) {
-	out := new(MessageIndexResp)
-	err := c.cc.Invoke(ctx, MessageManage_MessageIndex_FullMethodName, in, out, opts...)
+func (c *notifyManageClient) MessageInfoIndex(ctx context.Context, in *MessageInfoIndexReq, opts ...grpc.CallOption) (*MessageInfoIndexResp, error) {
+	out := new(MessageInfoIndexResp)
+	err := c.cc.Invoke(ctx, NotifyManage_MessageInfoIndex_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) MessageUpdate(ctx context.Context, in *MessageInfo, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) MessageInfoUpdate(ctx context.Context, in *MessageInfo, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_MessageUpdate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_MessageInfoUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) MessageDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) MessageInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_MessageDelete_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_MessageInfoDelete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error) {
+func (c *notifyManageClient) NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error) {
 	out := new(NotifyInfo)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyInfoRead_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error) {
+func (c *notifyManageClient) NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyInfoCreate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoCreate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyInfoUpdate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error) {
+func (c *notifyManageClient) NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error) {
 	out := new(NotifyInfoIndexResp)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyInfoIndex_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoIndex_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyInfoDelete_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoDelete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyTemplateRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyTemplate, error) {
+func (c *notifyManageClient) NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoSend_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyTemplateRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyTemplate, error) {
 	out := new(NotifyTemplate)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyTemplateRead_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyTemplateRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyTemplateCreate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*WithID, error) {
+func (c *notifyManageClient) NotifyTemplateCreate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyTemplateCreate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyTemplateCreate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyTemplateUpdate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyTemplateUpdate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyTemplateUpdate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyTemplateUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyTemplateIndex(ctx context.Context, in *NotifyTemplateIndexReq, opts ...grpc.CallOption) (*NotifyTemplateIndexResp, error) {
+func (c *notifyManageClient) NotifyTemplateIndex(ctx context.Context, in *NotifyTemplateIndexReq, opts ...grpc.CallOption) (*NotifyTemplateIndexResp, error) {
 	out := new(NotifyTemplateIndexResp)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyTemplateIndex_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyTemplateIndex_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *messageManageClient) NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, MessageManage_NotifyTemplateDelete_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyTemplateDelete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MessageManageServer is the server API for MessageManage service.
-// All implementations must embed UnimplementedMessageManageServer
+// NotifyManageServer is the server API for NotifyManage service.
+// All implementations must embed UnimplementedNotifyManageServer
 // for forward compatibility
-type MessageManageServer interface {
-	NotifySend(context.Context, *NotifySendReq) (*Empty, error)
-	MessageSend(context.Context, *MessageSendReq) (*WithID, error)
-	MessageIndex(context.Context, *MessageIndexReq) (*MessageIndexResp, error)
-	MessageUpdate(context.Context, *MessageInfo) (*Empty, error)
-	MessageDelete(context.Context, *WithID) (*Empty, error)
+type NotifyManageServer interface {
+	// 站内信
+	MessageInfoSend(context.Context, *MessageInfoSendReq) (*WithID, error)
+	MessageInfoIndex(context.Context, *MessageInfoIndexReq) (*MessageInfoIndexResp, error)
+	MessageInfoUpdate(context.Context, *MessageInfo) (*Empty, error)
+	MessageInfoDelete(context.Context, *WithID) (*Empty, error)
 	// 通知配置信息
 	NotifyInfoRead(context.Context, *WithIDCode) (*NotifyInfo, error)
 	NotifyInfoCreate(context.Context, *NotifyInfo) (*WithID, error)
 	NotifyInfoUpdate(context.Context, *NotifyInfo) (*Empty, error)
 	NotifyInfoIndex(context.Context, *NotifyInfoIndexReq) (*NotifyInfoIndexResp, error)
 	NotifyInfoDelete(context.Context, *WithID) (*Empty, error)
+	NotifyInfoSend(context.Context, *NotifyInfoSendReq) (*Empty, error)
 	// 通知模版
 	NotifyTemplateRead(context.Context, *WithID) (*NotifyTemplate, error)
 	NotifyTemplateCreate(context.Context, *NotifyTemplate) (*WithID, error)
 	NotifyTemplateUpdate(context.Context, *NotifyTemplate) (*Empty, error)
 	NotifyTemplateIndex(context.Context, *NotifyTemplateIndexReq) (*NotifyTemplateIndexResp, error)
 	NotifyTemplateDelete(context.Context, *WithID) (*Empty, error)
-	mustEmbedUnimplementedMessageManageServer()
+	mustEmbedUnimplementedNotifyManageServer()
 }
 
-// UnimplementedMessageManageServer must be embedded to have forward compatible implementations.
-type UnimplementedMessageManageServer struct {
+// UnimplementedNotifyManageServer must be embedded to have forward compatible implementations.
+type UnimplementedNotifyManageServer struct {
 }
 
-func (UnimplementedMessageManageServer) NotifySend(context.Context, *NotifySendReq) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifySend not implemented")
+func (UnimplementedNotifyManageServer) MessageInfoSend(context.Context, *MessageInfoSendReq) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MessageInfoSend not implemented")
 }
-func (UnimplementedMessageManageServer) MessageSend(context.Context, *MessageSendReq) (*WithID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MessageSend not implemented")
+func (UnimplementedNotifyManageServer) MessageInfoIndex(context.Context, *MessageInfoIndexReq) (*MessageInfoIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MessageInfoIndex not implemented")
 }
-func (UnimplementedMessageManageServer) MessageIndex(context.Context, *MessageIndexReq) (*MessageIndexResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MessageIndex not implemented")
+func (UnimplementedNotifyManageServer) MessageInfoUpdate(context.Context, *MessageInfo) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MessageInfoUpdate not implemented")
 }
-func (UnimplementedMessageManageServer) MessageUpdate(context.Context, *MessageInfo) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MessageUpdate not implemented")
+func (UnimplementedNotifyManageServer) MessageInfoDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MessageInfoDelete not implemented")
 }
-func (UnimplementedMessageManageServer) MessageDelete(context.Context, *WithID) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MessageDelete not implemented")
-}
-func (UnimplementedMessageManageServer) NotifyInfoRead(context.Context, *WithIDCode) (*NotifyInfo, error) {
+func (UnimplementedNotifyManageServer) NotifyInfoRead(context.Context, *WithIDCode) (*NotifyInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoRead not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyInfoCreate(context.Context, *NotifyInfo) (*WithID, error) {
+func (UnimplementedNotifyManageServer) NotifyInfoCreate(context.Context, *NotifyInfo) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoCreate not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyInfoUpdate(context.Context, *NotifyInfo) (*Empty, error) {
+func (UnimplementedNotifyManageServer) NotifyInfoUpdate(context.Context, *NotifyInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoUpdate not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyInfoIndex(context.Context, *NotifyInfoIndexReq) (*NotifyInfoIndexResp, error) {
+func (UnimplementedNotifyManageServer) NotifyInfoIndex(context.Context, *NotifyInfoIndexReq) (*NotifyInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoIndex not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyInfoDelete(context.Context, *WithID) (*Empty, error) {
+func (UnimplementedNotifyManageServer) NotifyInfoDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoDelete not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyTemplateRead(context.Context, *WithID) (*NotifyTemplate, error) {
+func (UnimplementedNotifyManageServer) NotifyInfoSend(context.Context, *NotifyInfoSendReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoSend not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyTemplateRead(context.Context, *WithID) (*NotifyTemplate, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateRead not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyTemplateCreate(context.Context, *NotifyTemplate) (*WithID, error) {
+func (UnimplementedNotifyManageServer) NotifyTemplateCreate(context.Context, *NotifyTemplate) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateCreate not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyTemplateUpdate(context.Context, *NotifyTemplate) (*Empty, error) {
+func (UnimplementedNotifyManageServer) NotifyTemplateUpdate(context.Context, *NotifyTemplate) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateUpdate not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyTemplateIndex(context.Context, *NotifyTemplateIndexReq) (*NotifyTemplateIndexResp, error) {
+func (UnimplementedNotifyManageServer) NotifyTemplateIndex(context.Context, *NotifyTemplateIndexReq) (*NotifyTemplateIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateIndex not implemented")
 }
-func (UnimplementedMessageManageServer) NotifyTemplateDelete(context.Context, *WithID) (*Empty, error) {
+func (UnimplementedNotifyManageServer) NotifyTemplateDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateDelete not implemented")
 }
-func (UnimplementedMessageManageServer) mustEmbedUnimplementedMessageManageServer() {}
+func (UnimplementedNotifyManageServer) mustEmbedUnimplementedNotifyManageServer() {}
 
-// UnsafeMessageManageServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MessageManageServer will
+// UnsafeNotifyManageServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NotifyManageServer will
 // result in compilation errors.
-type UnsafeMessageManageServer interface {
-	mustEmbedUnimplementedMessageManageServer()
+type UnsafeNotifyManageServer interface {
+	mustEmbedUnimplementedNotifyManageServer()
 }
 
-func RegisterMessageManageServer(s grpc.ServiceRegistrar, srv MessageManageServer) {
-	s.RegisterService(&MessageManage_ServiceDesc, srv)
+func RegisterNotifyManageServer(s grpc.ServiceRegistrar, srv NotifyManageServer) {
+	s.RegisterService(&NotifyManage_ServiceDesc, srv)
 }
 
-func _MessageManage_NotifySend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NotifySendReq)
+func _NotifyManage_MessageInfoSend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MessageInfoSendReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifySend(ctx, in)
+		return srv.(NotifyManageServer).MessageInfoSend(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifySend_FullMethodName,
+		FullMethod: NotifyManage_MessageInfoSend_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifySend(ctx, req.(*NotifySendReq))
+		return srv.(NotifyManageServer).MessageInfoSend(ctx, req.(*MessageInfoSendReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_MessageSend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MessageSendReq)
+func _NotifyManage_MessageInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MessageInfoIndexReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).MessageSend(ctx, in)
+		return srv.(NotifyManageServer).MessageInfoIndex(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_MessageSend_FullMethodName,
+		FullMethod: NotifyManage_MessageInfoIndex_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).MessageSend(ctx, req.(*MessageSendReq))
+		return srv.(NotifyManageServer).MessageInfoIndex(ctx, req.(*MessageInfoIndexReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_MessageIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MessageIndexReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MessageManageServer).MessageIndex(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: MessageManage_MessageIndex_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).MessageIndex(ctx, req.(*MessageIndexReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _MessageManage_MessageUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_MessageInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MessageInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).MessageUpdate(ctx, in)
+		return srv.(NotifyManageServer).MessageInfoUpdate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_MessageUpdate_FullMethodName,
+		FullMethod: NotifyManage_MessageInfoUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).MessageUpdate(ctx, req.(*MessageInfo))
+		return srv.(NotifyManageServer).MessageInfoUpdate(ctx, req.(*MessageInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_MessageDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_MessageInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).MessageDelete(ctx, in)
+		return srv.(NotifyManageServer).MessageInfoDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_MessageDelete_FullMethodName,
+		FullMethod: NotifyManage_MessageInfoDelete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).MessageDelete(ctx, req.(*WithID))
+		return srv.(NotifyManageServer).MessageInfoDelete(ctx, req.(*WithID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithIDCode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyInfoRead(ctx, in)
+		return srv.(NotifyManageServer).NotifyInfoRead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyInfoRead_FullMethodName,
+		FullMethod: NotifyManage_NotifyInfoRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyInfoRead(ctx, req.(*WithIDCode))
+		return srv.(NotifyManageServer).NotifyInfoRead(ctx, req.(*WithIDCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyInfoCreate(ctx, in)
+		return srv.(NotifyManageServer).NotifyInfoCreate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyInfoCreate_FullMethodName,
+		FullMethod: NotifyManage_NotifyInfoCreate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyInfoCreate(ctx, req.(*NotifyInfo))
+		return srv.(NotifyManageServer).NotifyInfoCreate(ctx, req.(*NotifyInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyInfoUpdate(ctx, in)
+		return srv.(NotifyManageServer).NotifyInfoUpdate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyInfoUpdate_FullMethodName,
+		FullMethod: NotifyManage_NotifyInfoUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyInfoUpdate(ctx, req.(*NotifyInfo))
+		return srv.(NotifyManageServer).NotifyInfoUpdate(ctx, req.(*NotifyInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyInfoIndexReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyInfoIndex(ctx, in)
+		return srv.(NotifyManageServer).NotifyInfoIndex(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyInfoIndex_FullMethodName,
+		FullMethod: NotifyManage_NotifyInfoIndex_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyInfoIndex(ctx, req.(*NotifyInfoIndexReq))
+		return srv.(NotifyManageServer).NotifyInfoIndex(ctx, req.(*NotifyInfoIndexReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyInfoDelete(ctx, in)
+		return srv.(NotifyManageServer).NotifyInfoDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyInfoDelete_FullMethodName,
+		FullMethod: NotifyManage_NotifyInfoDelete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyInfoDelete(ctx, req.(*WithID))
+		return srv.(NotifyManageServer).NotifyInfoDelete(ctx, req.(*WithID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyTemplateRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyInfoSend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyInfoSendReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyInfoSend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyInfoSend_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyInfoSend(ctx, req.(*NotifyInfoSendReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyTemplateRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyTemplateRead(ctx, in)
+		return srv.(NotifyManageServer).NotifyTemplateRead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyTemplateRead_FullMethodName,
+		FullMethod: NotifyManage_NotifyTemplateRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyTemplateRead(ctx, req.(*WithID))
+		return srv.(NotifyManageServer).NotifyTemplateRead(ctx, req.(*WithID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyTemplateCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyTemplateCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyTemplateCreate(ctx, in)
+		return srv.(NotifyManageServer).NotifyTemplateCreate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyTemplateCreate_FullMethodName,
+		FullMethod: NotifyManage_NotifyTemplateCreate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyTemplateCreate(ctx, req.(*NotifyTemplate))
+		return srv.(NotifyManageServer).NotifyTemplateCreate(ctx, req.(*NotifyTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyTemplateUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyTemplateUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyTemplate)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyTemplateUpdate(ctx, in)
+		return srv.(NotifyManageServer).NotifyTemplateUpdate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyTemplateUpdate_FullMethodName,
+		FullMethod: NotifyManage_NotifyTemplateUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyTemplateUpdate(ctx, req.(*NotifyTemplate))
+		return srv.(NotifyManageServer).NotifyTemplateUpdate(ctx, req.(*NotifyTemplate))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyTemplateIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyTemplateIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyTemplateIndexReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyTemplateIndex(ctx, in)
+		return srv.(NotifyManageServer).NotifyTemplateIndex(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyTemplateIndex_FullMethodName,
+		FullMethod: NotifyManage_NotifyTemplateIndex_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyTemplateIndex(ctx, req.(*NotifyTemplateIndexReq))
+		return srv.(NotifyManageServer).NotifyTemplateIndex(ctx, req.(*NotifyTemplateIndexReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageManage_NotifyTemplateDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyTemplateDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageManageServer).NotifyTemplateDelete(ctx, in)
+		return srv.(NotifyManageServer).NotifyTemplateDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageManage_NotifyTemplateDelete_FullMethodName,
+		FullMethod: NotifyManage_NotifyTemplateDelete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageManageServer).NotifyTemplateDelete(ctx, req.(*WithID))
+		return srv.(NotifyManageServer).NotifyTemplateDelete(ctx, req.(*WithID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// MessageManage_ServiceDesc is the grpc.ServiceDesc for MessageManage service.
+// NotifyManage_ServiceDesc is the grpc.ServiceDesc for NotifyManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var MessageManage_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "sys.MessageManage",
-	HandlerType: (*MessageManageServer)(nil),
+var NotifyManage_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sys.NotifyManage",
+	HandlerType: (*NotifyManageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "notifySend",
-			Handler:    _MessageManage_NotifySend_Handler,
+			MethodName: "messageInfoSend",
+			Handler:    _NotifyManage_MessageInfoSend_Handler,
 		},
 		{
-			MethodName: "messageSend",
-			Handler:    _MessageManage_MessageSend_Handler,
+			MethodName: "messageInfoIndex",
+			Handler:    _NotifyManage_MessageInfoIndex_Handler,
 		},
 		{
-			MethodName: "messageIndex",
-			Handler:    _MessageManage_MessageIndex_Handler,
+			MethodName: "messageInfoUpdate",
+			Handler:    _NotifyManage_MessageInfoUpdate_Handler,
 		},
 		{
-			MethodName: "messageUpdate",
-			Handler:    _MessageManage_MessageUpdate_Handler,
-		},
-		{
-			MethodName: "messageDelete",
-			Handler:    _MessageManage_MessageDelete_Handler,
+			MethodName: "messageInfoDelete",
+			Handler:    _NotifyManage_MessageInfoDelete_Handler,
 		},
 		{
 			MethodName: "notifyInfoRead",
-			Handler:    _MessageManage_NotifyInfoRead_Handler,
+			Handler:    _NotifyManage_NotifyInfoRead_Handler,
 		},
 		{
 			MethodName: "notifyInfoCreate",
-			Handler:    _MessageManage_NotifyInfoCreate_Handler,
+			Handler:    _NotifyManage_NotifyInfoCreate_Handler,
 		},
 		{
 			MethodName: "notifyInfoUpdate",
-			Handler:    _MessageManage_NotifyInfoUpdate_Handler,
+			Handler:    _NotifyManage_NotifyInfoUpdate_Handler,
 		},
 		{
 			MethodName: "notifyInfoIndex",
-			Handler:    _MessageManage_NotifyInfoIndex_Handler,
+			Handler:    _NotifyManage_NotifyInfoIndex_Handler,
 		},
 		{
 			MethodName: "notifyInfoDelete",
-			Handler:    _MessageManage_NotifyInfoDelete_Handler,
+			Handler:    _NotifyManage_NotifyInfoDelete_Handler,
+		},
+		{
+			MethodName: "notifyInfoSend",
+			Handler:    _NotifyManage_NotifyInfoSend_Handler,
 		},
 		{
 			MethodName: "notifyTemplateRead",
-			Handler:    _MessageManage_NotifyTemplateRead_Handler,
+			Handler:    _NotifyManage_NotifyTemplateRead_Handler,
 		},
 		{
 			MethodName: "notifyTemplateCreate",
-			Handler:    _MessageManage_NotifyTemplateCreate_Handler,
+			Handler:    _NotifyManage_NotifyTemplateCreate_Handler,
 		},
 		{
 			MethodName: "notifyTemplateUpdate",
-			Handler:    _MessageManage_NotifyTemplateUpdate_Handler,
+			Handler:    _NotifyManage_NotifyTemplateUpdate_Handler,
 		},
 		{
 			MethodName: "notifyTemplateIndex",
-			Handler:    _MessageManage_NotifyTemplateIndex_Handler,
+			Handler:    _NotifyManage_NotifyTemplateIndex_Handler,
 		},
 		{
 			MethodName: "notifyTemplateDelete",
-			Handler:    _MessageManage_NotifyTemplateDelete_Handler,
+			Handler:    _NotifyManage_NotifyTemplateDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

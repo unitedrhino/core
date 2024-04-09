@@ -2,7 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
-	messagemanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/messagemanage"
+	notifymanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/notifymanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -67,7 +67,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			}
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
-		err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
+		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
 			Accounts:    []string{in.Account},
 			AccountType: def.AccountTypePhone,
 			NotifyCode:  ConfigCode,
@@ -95,7 +95,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			}
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
-		err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
+		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
 			Accounts:    []string{in.Account},
 			AccountType: def.AccountTypeEmail,
 			NotifyCode:  ConfigCode,

@@ -1,0 +1,68 @@
+info(
+    title: "消息管理模块"
+    desc: "消息管理"
+    author: "L"
+    email: "174805676@qq.com"
+    version: "v0.1.0"
+)
+
+@server (
+    group: system/notify/message/info
+    prefix: /api/v1/system/notify/message/info
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+
+service api {
+    @doc "获取消息列表"
+    @handler index
+    post /index (MessageInfoIndexReq) returns (MessageInfoIndexResp)
+
+    @doc "更新消息"
+    @handler update
+    post /update (MessageInfo) returns ()
+
+    @doc "删除消息"
+    @handler delete
+    post /delete (WithID) returns ()
+
+    @doc "发送消息"
+    @handler send
+    post /send (MessageInfoSendReq) returns ()
+}
+
+type (
+    MessageInfoSendReq{
+      UserIDs []int64 `json:"userIDs"` //指定用户ID
+      IsGlobal int64 `json:"isGlobal"`//全局消息
+      NotifyCode string `json:"notifyCode"`         //通知的code
+      Subject string `json:"subject"` //通知主题
+      Body string `json:"body"`
+      Str1 string `json:"str1,optional"`
+      Str2 string `json:"str2,optional"`
+      Str3 string `json:"str3,optional"`
+    }
+    MessageInfoIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        NotifyCode string `json:"notifyCode,optional"`                     //
+        Group string  `json:"group,optional"` //分组
+    }
+
+
+    MessageInfoIndexResp  {
+        List []*MessageInfo `json:"list"`            // 消息列表数据
+        Total int64 `json:"total"`                    // 消息列表总记录数
+    }
+
+    MessageInfo{
+     ID int64 `json:"id"`
+     Group string `json:"group"`
+     NotifyCode string `json:"notifyCode"`
+     Subject string `json:"subject"`
+     Body string `json:"body"`
+     Str1 string `json:"str1"`
+     Str2 string `json:"str2"`
+     Str3 string `json:"str3"`
+     IsGlobal int64 `json:"isGlobal"`
+     CreatedTime int64 `json:"createdTime"`
+    }
+)

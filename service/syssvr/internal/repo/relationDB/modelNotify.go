@@ -86,12 +86,12 @@ func (m *SysMessageInfo) TableName() string {
 }
 
 type SysUserMessage struct {
-	ID         int64              `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode stores.TenantCode  `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	UserID     int64              `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`          // 用户ID
-	MessageID  int64              `gorm:"column:message_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`       //消息id
-	IsRead     int64              `gorm:"column:is_read;NOT NULL;type:BIGINT;default:2"`                  //是否已读
-	Message    *SysNotifyTemplate `gorm:"foreignKey:ID;references:MessageID"`
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	UserID     int64             `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`          // 用户ID
+	MessageID  int64             `gorm:"column:message_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`       //消息id
+	IsRead     int64             `gorm:"column:is_read;NOT NULL;type:BIGINT;default:2"`                  //是否已读
+	Message    *SysMessageInfo   `gorm:"foreignKey:ID;references:MessageID"`
 	stores.Time
 }
 

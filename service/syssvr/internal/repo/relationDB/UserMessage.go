@@ -39,6 +39,24 @@ func (p UserMessageRepo) fmtFilter(ctx context.Context, f UserMessageFilter) *go
 	if f.MessageID != 0 {
 		db = db.Where("message_id=?", f.MessageID)
 	}
+	if f.Group != "" {
+		db = db.Where("group = ?", f.Group)
+	}
+	if f.NotifyCode != "" {
+		db = db.Where("notify_code = ?", f.NotifyCode)
+	}
+	if f.IsRead != 0 {
+		db = db.Where("is_read = ?", f.IsRead)
+	}
+	if f.Str1 != "" {
+		db = db.Where("str1 = ?", f.Str1)
+	}
+	if f.Str2 != "" {
+		db = db.Where("str2 = ?", f.Str2)
+	}
+	if f.Str3 != "" {
+		db = db.Where("str3 = ?", f.Str3)
+	}
 
 	if f.WithMessage {
 		db = db.Preload("Message")
@@ -84,7 +102,7 @@ func (p UserMessageRepo) Update(ctx context.Context, data *SysUserMessage) error
 }
 
 func (p UserMessageRepo) MultiIsRead(ctx context.Context, userID int64, ids []int64) error {
-	err := p.db.WithContext(ctx).Where("user_id = ? and id in ?", userID, ids).Update("is_read", def.True).Error
+	err := p.db.WithContext(ctx).Model(&SysUserMessage{}).Where("user_id = ? and id in ?", userID, ids).Update("is_read", def.True).Error
 	return stores.ErrFmt(err)
 }
 

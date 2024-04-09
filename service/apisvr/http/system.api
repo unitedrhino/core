@@ -6,6 +6,7 @@ info(
 	version: "v1"
 )
 import "system/system.api" //用户相关功能
+import "system/notify.api"
 import "system/user.api" //用户相关功能
 import "system/role.api" //角色相关功能
 import "system/access.api"//访问权限

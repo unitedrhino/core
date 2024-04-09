@@ -38,12 +38,13 @@ service DataManage {
   rpc userAreaApplyDeal(UserAreaApplyDealReq)returns(Empty);//处理区域权限申请
 }
 
-service MessageManage {
-  rpc notifySend(NotifySendReq)returns(Empty);//发送消息通知(短信,邮箱,钉钉推送,微信推送,app推送)
-  rpc messageSend(MessageSendReq)returns(WithID);//发送站内信给用户
-  rpc messageIndex(MessageIndexReq)returns(MessageIndexResp);//获取全局站内信列表
-  rpc messageUpdate(MessageInfo)returns(Empty);//更新站内信
-  rpc messageDelete(WithID)returns(Empty);//删除站内信
+//通知管理
+service NotifyManage {
+  //站内信
+  rpc messageInfoSend(MessageInfoSendReq)returns(WithID);//发送站内信给用户
+  rpc messageInfoIndex(MessageInfoIndexReq)returns(MessageInfoIndexResp);//获取全局站内信列表
+  rpc messageInfoUpdate(MessageInfo)returns(Empty);//更新站内信
+  rpc messageInfoDelete(WithID)returns(Empty);//删除站内信
 
   //通知配置信息
   rpc notifyInfoRead(WithIDCode)returns(NotifyInfo);
@@ -51,6 +52,7 @@ service MessageManage {
   rpc notifyInfoUpdate(NotifyInfo)returns(Empty);
   rpc notifyInfoIndex(NotifyInfoIndexReq)returns(NotifyInfoIndexResp);
   rpc notifyInfoDelete(WithID)returns(Empty);
+  rpc notifyInfoSend(NotifyInfoSendReq)returns(Empty);//发送消息通知(短信,邮箱,钉钉推送,微信推送,app推送)
 
   //通知模版
   rpc notifyTemplateRead(WithID)returns(NotifyTemplate);
@@ -284,18 +286,18 @@ message NotifyTemplateIndexResp{
   int64 total= 2;
 }
 
-message MessageIndexReq{
+message MessageInfoIndexReq{
   PageInfo page =1;
   string group =2; //分组
   string notifyCode  =4;
 }
 
-message MessageIndexResp{
+message MessageInfoIndexResp{
   repeated MessageInfo list=1;
   int64 total = 2;
 }
 
-message MessageSendReq{
+message MessageInfoSendReq{
   repeated int64 userIDs     =1; //指定用户ID
   int64 isGlobal =2;//全局消息
   string notifyCode  =4;         //通知的code
@@ -309,7 +311,7 @@ message MessageSendReq{
 message MessageInfo {
   int64 id=10;
   string group =1;
-  string code =2;
+  string notifyCode =2;
   string subject=3;
   string body=4;
   string str1=5;
@@ -366,7 +368,7 @@ message UserMessageIndexResp{
   repeated UserMessage list=2;
 }
 
-message NotifySendReq{
+message NotifyInfoSendReq{
       repeated int64 userIDs     =1; //只有填写了用户ID才会记录
 //      string accounts    =2;
 //      string accountType =3;
