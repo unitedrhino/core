@@ -20,6 +20,7 @@ import (
 	systemlog "gitee.com/i-Things/core/service/apisvr/internal/handler/system/log"
 	systemmoduleinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/info"
 	systemmodulemenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/menu"
+	systemopsfeedback "gitee.com/i-Things/core/service/apisvr/internal/handler/system/ops/feedback"
 	systemopsworkOrder "gitee.com/i-Things/core/service/apisvr/internal/handler/system/ops/workOrder"
 	systemprojectinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/project/info"
 	systemroleaccess "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/access"
@@ -519,6 +520,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/module/menu"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/feedback/create",
+					Handler: systemopsfeedback.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/feedback/index",
+					Handler: systemopsfeedback.IndexHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/ops"),
 	)
 
 	server.AddRoutes(

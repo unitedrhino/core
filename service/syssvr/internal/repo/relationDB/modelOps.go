@@ -33,8 +33,7 @@ type SysOpsFeedback struct {
 	TenantCode         stores.TenantCode `gorm:"column:tenant_code;index;type:VARCHAR(50);NOT NULL"`   // 租户编码
 	RaiseUserID        int64             `gorm:"column:raise_user_id;type:BIGINT;NOT NULL"`            // 问题提出的用户
 	ProjectID          stores.ProjectID  `gorm:"column:project_id;type:bigint;default:0;NOT NULL"`     // 项目ID(雪花ID)
-	AreaID             stores.AreaID     `gorm:"column:area_id;type:bigint;default:0;NOT NULL"`        // 项目区域ID(雪花ID)
-	Type               string            `gorm:"column:type;type:VARCHAR(50);NOT NULL"`                //问题类型
+	Type               string            `gorm:"column:type;type:VARCHAR(50);NOT NULL"`                //问题类型 设备问题:thingsDevice 智能场景:thingsScene 体验问题: experience 其他: other
 	ContactInformation string            `gorm:"column:contact_information;type:VARCHAR(50);NOT NULL"` //联系信息
 	IssueDesc          string            `gorm:"column:issue_desc;type:varchar(2000);NOT NULL"`
 	stores.SoftTime

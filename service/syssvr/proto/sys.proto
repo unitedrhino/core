@@ -218,6 +218,9 @@ service ops{
   rpc opsWorkOrderCreate(OpsWorkOrder) returns(WithID);
   rpc opsWorkOrderUpdate(OpsWorkOrder) returns(Empty);
   rpc opsWorkOrderIndex(OpsWorkOrderIndexReq) returns(OpsWorkOrderIndexResp);
+
+  rpc opsFeedbackCreate(OpsFeedback)returns(WithID);
+  rpc opsFeedbackIndex(OpsFeedbackIndexReq)returns(OpsFeedbackIndexResp);
 }
 
 
@@ -1306,5 +1309,28 @@ message OpsWorkOrderIndexReq{
 
 message OpsWorkOrderIndexResp{
   repeated OpsWorkOrder list = 1;//设备信息
+  int64  total = 2;//总数(只有分页的时候会返回)
+}
+
+
+message OpsFeedback{
+  int64 id =1;
+  string tenantCode =2;
+  int64 raiseUserID =3;
+  int64 projectID =4;
+  string type =5;
+  string contactInformation =6;
+  string issueDesc =7;
+}
+
+message OpsFeedbackIndexReq{
+  PageInfo page = 1;//分页信息 只获取一个则不填
+  string tenantCode = 2;
+  int64 projectID=3;
+  string type =4;
+}
+
+message OpsFeedbackIndexResp{
+  repeated OpsFeedback list = 1;//设备信息
   int64  total = 2;//总数(只有分页的时候会返回)
 }

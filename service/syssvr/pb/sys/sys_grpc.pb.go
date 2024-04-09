@@ -5150,6 +5150,8 @@ const (
 	Ops_OpsWorkOrderCreate_FullMethodName = "/sys.ops/opsWorkOrderCreate"
 	Ops_OpsWorkOrderUpdate_FullMethodName = "/sys.ops/opsWorkOrderUpdate"
 	Ops_OpsWorkOrderIndex_FullMethodName  = "/sys.ops/opsWorkOrderIndex"
+	Ops_OpsFeedbackCreate_FullMethodName  = "/sys.ops/opsFeedbackCreate"
+	Ops_OpsFeedbackIndex_FullMethodName   = "/sys.ops/opsFeedbackIndex"
 )
 
 // OpsClient is the client API for Ops service.
@@ -5160,6 +5162,8 @@ type OpsClient interface {
 	OpsWorkOrderCreate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*WithID, error)
 	OpsWorkOrderUpdate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*Empty, error)
 	OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error)
+	OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error)
+	OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error)
 }
 
 type opsClient struct {
@@ -5197,6 +5201,24 @@ func (c *opsClient) OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndex
 	return out, nil
 }
 
+func (c *opsClient) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, Ops_OpsFeedbackCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *opsClient) OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error) {
+	out := new(OpsFeedbackIndexResp)
+	err := c.cc.Invoke(ctx, Ops_OpsFeedbackIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OpsServer is the server API for Ops service.
 // All implementations must embed UnimplementedOpsServer
 // for forward compatibility
@@ -5205,6 +5227,8 @@ type OpsServer interface {
 	OpsWorkOrderCreate(context.Context, *OpsWorkOrder) (*WithID, error)
 	OpsWorkOrderUpdate(context.Context, *OpsWorkOrder) (*Empty, error)
 	OpsWorkOrderIndex(context.Context, *OpsWorkOrderIndexReq) (*OpsWorkOrderIndexResp, error)
+	OpsFeedbackCreate(context.Context, *OpsFeedback) (*WithID, error)
+	OpsFeedbackIndex(context.Context, *OpsFeedbackIndexReq) (*OpsFeedbackIndexResp, error)
 	mustEmbedUnimplementedOpsServer()
 }
 
@@ -5220,6 +5244,12 @@ func (UnimplementedOpsServer) OpsWorkOrderUpdate(context.Context, *OpsWorkOrder)
 }
 func (UnimplementedOpsServer) OpsWorkOrderIndex(context.Context, *OpsWorkOrderIndexReq) (*OpsWorkOrderIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OpsWorkOrderIndex not implemented")
+}
+func (UnimplementedOpsServer) OpsFeedbackCreate(context.Context, *OpsFeedback) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OpsFeedbackCreate not implemented")
+}
+func (UnimplementedOpsServer) OpsFeedbackIndex(context.Context, *OpsFeedbackIndexReq) (*OpsFeedbackIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OpsFeedbackIndex not implemented")
 }
 func (UnimplementedOpsServer) mustEmbedUnimplementedOpsServer() {}
 
@@ -5288,6 +5318,42 @@ func _Ops_OpsWorkOrderIndex_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Ops_OpsFeedbackCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpsFeedback)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpsServer).OpsFeedbackCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ops_OpsFeedbackCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpsServer).OpsFeedbackCreate(ctx, req.(*OpsFeedback))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Ops_OpsFeedbackIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpsFeedbackIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpsServer).OpsFeedbackIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ops_OpsFeedbackIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpsServer).OpsFeedbackIndex(ctx, req.(*OpsFeedbackIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Ops_ServiceDesc is the grpc.ServiceDesc for Ops service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5306,6 +5372,14 @@ var Ops_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "opsWorkOrderIndex",
 			Handler:    _Ops_OpsWorkOrderIndex_Handler,
+		},
+		{
+			MethodName: "opsFeedbackCreate",
+			Handler:    _Ops_OpsFeedbackCreate_Handler,
+		},
+		{
+			MethodName: "opsFeedbackIndex",
+			Handler:    _Ops_OpsFeedbackIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -37,3 +37,13 @@ func (s *OpsServer) OpsWorkOrderIndex(ctx context.Context, in *sys.OpsWorkOrderI
 	l := opslogic.NewOpsWorkOrderIndexLogic(ctx, s.svcCtx)
 	return l.OpsWorkOrderIndex(in)
 }
+
+func (s *OpsServer) OpsFeedbackCreate(ctx context.Context, in *sys.OpsFeedback) (*sys.WithID, error) {
+	l := opslogic.NewOpsFeedbackCreateLogic(ctx, s.svcCtx)
+	return l.OpsFeedbackCreate(in)
+}
+
+func (s *OpsServer) OpsFeedbackIndex(ctx context.Context, in *sys.OpsFeedbackIndexReq) (*sys.OpsFeedbackIndexResp, error) {
+	l := opslogic.NewOpsFeedbackIndexLogic(ctx, s.svcCtx)
+	return l.OpsFeedbackIndex(in)
+}

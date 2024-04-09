@@ -79,6 +79,9 @@ type (
 	OperLogIndexReq            = sys.OperLogIndexReq
 	OperLogIndexResp           = sys.OperLogIndexResp
 	OperLogInfo                = sys.OperLogInfo
+	OpsFeedback                = sys.OpsFeedback
+	OpsFeedbackIndexReq        = sys.OpsFeedbackIndexReq
+	OpsFeedbackIndexResp       = sys.OpsFeedbackIndexResp
 	OpsWorkOrder               = sys.OpsWorkOrder
 	OpsWorkOrderIndexReq       = sys.OpsWorkOrderIndexReq
 	OpsWorkOrderIndexResp      = sys.OpsWorkOrderIndexResp
@@ -168,6 +171,8 @@ type (
 		OpsWorkOrderCreate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*WithID, error)
 		OpsWorkOrderUpdate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*Empty, error)
 		OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error)
+		OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error)
+		OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error)
 	}
 
 	defaultOps struct {
@@ -220,4 +225,22 @@ func (m *defaultOps) OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderInde
 
 func (d *directOps) OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error) {
 	return d.svr.OpsWorkOrderIndex(ctx, in)
+}
+
+func (m *defaultOps) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error) {
+	client := sys.NewOpsClient(m.cli.Conn())
+	return client.OpsFeedbackCreate(ctx, in, opts...)
+}
+
+func (d *directOps) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.OpsFeedbackCreate(ctx, in)
+}
+
+func (m *defaultOps) OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error) {
+	client := sys.NewOpsClient(m.cli.Conn())
+	return client.OpsFeedbackIndex(ctx, in, opts...)
+}
+
+func (d *directOps) OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error) {
+	return d.svr.OpsFeedbackIndex(ctx, in)
 }

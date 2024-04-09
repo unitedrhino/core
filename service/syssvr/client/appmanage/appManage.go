@@ -79,6 +79,9 @@ type (
 	OperLogIndexReq            = sys.OperLogIndexReq
 	OperLogIndexResp           = sys.OperLogIndexResp
 	OperLogInfo                = sys.OperLogInfo
+	OpsFeedback                = sys.OpsFeedback
+	OpsFeedbackIndexReq        = sys.OpsFeedbackIndexReq
+	OpsFeedbackIndexResp       = sys.OpsFeedbackIndexResp
 	OpsWorkOrder               = sys.OpsWorkOrder
 	OpsWorkOrderIndexReq       = sys.OpsWorkOrderIndexReq
 	OpsWorkOrderIndexResp      = sys.OpsWorkOrderIndexResp

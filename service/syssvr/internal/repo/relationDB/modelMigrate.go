@@ -42,6 +42,7 @@ func Migrate(c conf.Database) error {
 		&SysAreaInfo{},
 		&SysProjectInfo{},
 		&SysOpsWorkOrder{},
+		&SysOpsFeedback{},
 		&SysDataArea{},
 		&SysDataProject{},
 		&SysAppInfo{},

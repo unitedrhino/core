@@ -347,6 +347,28 @@ type NtpReadResp struct {
 	ServerRecvTime int64 `json:"serverRecvTime,string"`
 }
 
+type OpsFeedback struct {
+	ID                 int64  `json:"id,optional"`
+	TenantCode         string `json:"tenantCode,optional"`
+	RaiseUserID        int64  `json:"raiseUserID,optional"`
+	ProjectID          int64  `json:"projectID,optional"`
+	Type               string `json:"type"`
+	ContactInformation string `json:"contactInformation"`
+	IssueDesc          string `json:"issueDesc"`
+}
+
+type OpsFeedbackIndexReq struct {
+	Page       *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Type       string    `json:"type,optional"`
+	TenantCode string    `json:"tenantCode,optional"`
+	ProjectID  string    `json:"projectID,optional"`
+}
+
+type OpsFeedbackIndexResp struct {
+	Total int64          `json:"total"` //总数
+	List  []*OpsFeedback `json:"list"`  //菜单列表
+}
+
 type OpsWorkOrder struct {
 	ID           int64             `json:"id,optional"`
 	Number       string            `json:"number,optional"`                           //编号

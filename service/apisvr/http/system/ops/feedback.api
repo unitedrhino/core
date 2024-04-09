@@ -1,0 +1,44 @@
+info(
+    desc: "菜单权限"
+	author: "lbs"
+	email: "174805676@qq.com"
+)
+
+@server(
+    group: system/ops/feedback
+    prefix: /api/v1/system/ops
+    middleware:  CheckTokenWare,InitCtxsWare,CheckApiWare, DataAuthWare, TeardownWare
+)
+service api {
+    @doc "添加帮助与反馈"
+    @handler create
+    post /feedback/create (OpsFeedback) returns (WithID)
+
+    @doc "获取帮助与反馈"
+    @handler index
+    post /feedback/index (OpsFeedbackIndexReq) returns (OpsFeedbackIndexResp)
+
+}
+type (
+    OpsFeedback{
+        ID int64 `json:"id,optional"`
+        TenantCode string `json:"tenantCode,optional"`
+        RaiseUserID int64 `json:"raiseUserID,optional"`
+        ProjectID int64 `json:"projectID,optional"`
+        Type string `json:"type"`
+        ContactInformation string `json:"contactInformation"`
+        IssueDesc string `json:"issueDesc"`
+    }
+    OpsFeedbackIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        Type string  `json:"type,optional"`
+        TenantCode string  `json:"tenantCode,optional"`
+        ProjectID string  `json:"projectID,optional"`
+    }
+
+    OpsFeedbackIndexResp  {
+        Total int64 `json:"total"` //总数
+        List []*OpsFeedback `json:"list"` //菜单列表
+    }
+
+)
