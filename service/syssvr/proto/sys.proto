@@ -420,6 +420,7 @@ message TenantInfo{
   bool isUpdateLogoImg =12;
   string title =13;
   string titleEn =14;
+  int64 createdTime =16;
 }
 message TenantInfoIndexReq{
   PageInfo page = 1;//分页信息

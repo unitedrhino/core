@@ -755,7 +755,8 @@ type TenantInfo struct {
 	IsUpdateLogoImg       bool      `json:"isUpdateLogoImg,optional,omitempty"`
 	Title                 string    `json:"title,optional"`
 	TitleEn               string    `json:"titleEn,optional"`
-	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
+	CreatedTime           int64     `json:"createdTime,string,optional"` // 创建时间
+	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"`     //管理员信息
 }
 
 type TenantInfoCreateReq struct {
