@@ -117,8 +117,8 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, err
 		}
 	case users.RegDingApp:
-		cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if err != nil || cli.DingTalk == nil {
+		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+		if er != nil || cli.DingTalk == nil {
 			return nil, errors.System.AddDetail(err)
 		}
 		ret, er := cli.DingTalk.GetUserInfoByCode(in.Code)
@@ -130,8 +130,8 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
 	case users.RegWxMiniP:
-		cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if err != nil || cli.MiniProgram == nil {
+		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+		if er != nil || cli.MiniProgram == nil {
 			return nil, errors.System.AddDetail(err)
 		}
 		auth := cli.MiniProgram.GetAuth()
