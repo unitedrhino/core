@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	"database/sql"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -9,10 +10,12 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/users"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -129,6 +132,18 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
+		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc := relationDB.SysUserInfo{
+				UserID:         userID,
+				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
+				NickName:       ret.UserInfo.Name,
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, &uc, tx)
+			})
+		}
 	case users.RegWxMiniP:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 		if er != nil || cli.MiniProgram == nil {

@@ -148,9 +148,18 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 		return nil, errors.Parameter.AddDetail(ret.Msg)
 	}
 	userID := l.svcCtx.UserID.GetSnowflakeId()
-
-	conn := stores.GetTenantConn(l.ctx)
-	err = conn.Transaction(func(tx *gorm.DB) error {
+	ui := relationDB.SysUserInfo{
+		UserID:         userID,
+		DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
+		NickName:       ret.UserInfo.Name,
+	}
+	if in.Info != nil {
+		ui.NickName = in.Info.NickName
+		if in.Info.UserName != "" {
+			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+		}
+	}
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
 		if err == nil { //已经注册过
@@ -159,21 +168,8 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
-		ui := relationDB.SysUserInfo{
-			UserID:         userID,
-			DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
-			NickName:       ret.UserInfo.Name,
-		}
-		if in.Info != nil {
-			ui.NickName = in.Info.NickName
-			if in.Info.UserName != "" {
-				ui.UserName = utils.AnyToNullString(in.Info.UserName)
-			}
-		}
-		err = l.FillUserInfo(&ui, tx)
-		return err
+		return Register(l.ctx, l.svcCtx, &ui, tx)
 	})
-
 	return &sys.UserRegisterResp{UserID: userID}, err
 }
 
@@ -199,5 +195,27 @@ func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB
 	if err != nil && errors.Cmp(err, errors.Duplicate) { //已经注册过
 		return errors.DuplicateRegister
 	}
+	return err
+}
+
+func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, tx *gorm.DB) error {
+	err := tx.Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		cfg, err := relationDB.NewTenantConfigRepo(tx).FindOne(ctx)
+		if err != nil {
+			return err
+		}
+		in.RegIP = ctxs.GetUserCtx(ctx).IP
+		in.Role = cfg.RegisterRoleID
+		err = uidb.Insert(ctx, in)
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewUserRoleRepo(tx).Insert(ctx, &relationDB.SysUserRole{
+			UserID: in.UserID,
+			RoleID: cfg.RegisterRoleID,
+		})
+		return err
+	})
 	return err
 }
