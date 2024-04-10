@@ -32,7 +32,7 @@ type TenantNotifyConfigFilter struct {
 func (p TenantNotifyRepo) fmtFilter(ctx context.Context, f TenantNotifyConfigFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.NotifyCode != "" {
-		db = db.Where("config_code=?", f.NotifyCode)
+		db = db.Where("notify_code=?", f.NotifyCode)
 	}
 	if f.Type != "" {
 		db = db.Where(fmt.Sprintf("%v=?", stores.Col("type")), f.Type)
