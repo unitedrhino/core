@@ -135,14 +135,15 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
-			uc := relationDB.SysUserInfo{
+			uc = &relationDB.SysUserInfo{
 				UserID:         userID,
 				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
 				NickName:       ret.UserInfo.Name,
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-				return Register(l.ctx, l.svcCtx, &uc, tx)
+				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
 		}
 	case users.RegWxMiniP:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
