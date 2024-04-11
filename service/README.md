@@ -51,13 +51,6 @@ cd syssvr && goctl rpc protoc  proto/sys.proto --go_out=./ --go-grpc_out=./ --zr
 ```
 
 
-# 运营维护模块-syssvr
-
-- rpc文件编译方法
-
-```shell
-cd syssvr && goctl rpc protoc  proto/sys.proto --go_out=./ --go-grpc_out=./ --zrpc_out=. --style=goZero -m && cd ..
-```
 
 
 # 定时任务执行者引擎模块-timedjobsvr

@@ -106,6 +106,20 @@ func (p UserMessageRepo) MultiIsRead(ctx context.Context, userID int64, ids []in
 	err := p.db.WithContext(ctx).Model(&SysUserMessage{}).Where("user_id = ? and id in ?", userID, ids).Update("is_read", def.True).Error
 	return stores.ErrFmt(err)
 }
+func (p UserMessageRepo) CountNotRead(ctx context.Context, userID int64) (map[string]int64, error) {
+	var ret []struct {
+		Group string `json:"group"`
+		C     int64  `json:"c"`
+	}
+	err := p.db.WithContext(ctx).Model(&SysUserMessage{}).Group(stores.Col("group")).
+		Select(fmt.Sprintf("%s,count(1) as c", stores.Col("group"))).
+		Where("user_id = ? and is_read = ?", userID, def.False).Find(&ret).Error
+	var val = map[string]int64{}
+	for _, v := range ret {
+		val[v.Group] = v.C
+	}
+	return val, stores.ErrFmt(err)
+}
 
 func (p UserMessageRepo) DeleteByFilter(ctx context.Context, f UserMessageFilter) error {
 	db := p.fmtFilter(ctx, f)

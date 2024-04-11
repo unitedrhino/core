@@ -3,6 +3,7 @@ package notifymanagelogic
 import (
 	"bytes"
 	"context"
+	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/share/clients"
@@ -12,6 +13,7 @@ import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
 	"text/template"
 )
@@ -110,6 +112,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			})
 			if err != nil {
 				return nil
+			}
+			for _, user := range users {
+				err := usermanagelogic.UpdateUserNotRead(ctx, user.UserID)
+				if err != nil {
+					logx.WithContext(ctx).Error(err)
+				}
 			}
 		}
 	}

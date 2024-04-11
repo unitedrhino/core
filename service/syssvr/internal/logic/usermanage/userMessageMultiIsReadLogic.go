@@ -26,6 +26,24 @@ func NewUserMessageMultiIsReadLogic(ctx context.Context, svcCtx *svc.ServiceCont
 }
 
 func (l *UserMessageMultiIsReadLogic) UserMessageMultiIsRead(in *sys.IDList) (*sys.Empty, error) {
-	err := relationDB.NewUserMessageRepo(l.ctx).MultiIsRead(l.ctx, ctxs.GetUserCtxNoNil(l.ctx).UserID, in.Ids)
+	var userID = ctxs.GetUserCtxNoNil(l.ctx).UserID
+	err := relationDB.NewUserMessageRepo(l.ctx).MultiIsRead(l.ctx, userID, in.Ids)
+	if err != nil {
+		return nil, err
+	}
+	UpdateUserNotRead(l.ctx, userID)
 	return &sys.Empty{}, err
+}
+
+func UpdateUserNotRead(ctx context.Context, userID int64) (err error) {
+	var count = map[string]int64{}
+	count, err = relationDB.NewUserMessageRepo(ctx).CountNotRead(ctx, userID)
+	if err != nil {
+		return err
+	}
+	err = relationDB.NewUserInfoRepo(ctx).UpdateMessageNotRead(ctx, userID, count)
+	if err != nil {
+		return err
+	}
+	return err
 }

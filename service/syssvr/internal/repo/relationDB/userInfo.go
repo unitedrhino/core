@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
+	"gitee.com/i-Things/share/utils"
 	"gorm.io/gorm"
 )
 
@@ -127,6 +128,15 @@ func (p UserInfoRepo) CountByFilter(ctx context.Context, f UserInfoFilter) (size
 
 func (p UserInfoRepo) Update(ctx context.Context, data *SysUserInfo) error {
 	err := p.db.WithContext(ctx).Where("user_id = ?", data.UserID).Save(data).Error
+	return stores.ErrFmt(err)
+}
+
+func (p UserInfoRepo) UpdateMessageNotRead(ctx context.Context, userID int64, notRead map[string]int64) error {
+	var j = "{}"
+	if len(notRead) != 0 {
+		j = utils.MarshalNoErr(notRead)
+	}
+	err := p.db.WithContext(ctx).Model(&SysUserInfo{}).Where("user_id = ?", userID).Update("message_not_read", j).Error
 	return stores.ErrFmt(err)
 }
 

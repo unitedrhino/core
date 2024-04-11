@@ -31,6 +31,22 @@ func (m *SysTenantInfo) TableName() string {
 	return "sys_tenant_info"
 }
 
+// 租户开放认证
+type SysTenantOpen struct {
+	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode   stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
+	Account      string            `gorm:"column:account;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`
+	AccessSecret string            `gorm:"column:access_secret;type:VARCHAR(256);NOT NULL"`
+	Desc         string            `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`     //应用描述
+	IpRange      []string          `gorm:"column:ip_range;type:json;serializer:json;"` //ip白名单
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
+}
+
+func (m *SysTenantOpen) TableName() string {
+	return "sys_tenant_open"
+}
+
 //// 租户自定义表
 //type TenantOem struct {
 

@@ -133,6 +133,8 @@ type (
 	TenantNotifyIndexReq       = sys.TenantNotifyIndexReq
 	TenantNotifyIndexResp      = sys.TenantNotifyIndexResp
 	TenantNotifyMultiUpdateReq = sys.TenantNotifyMultiUpdateReq
+	TenantOpenCheckTokenReq    = sys.TenantOpenCheckTokenReq
+	TenantOpenCheckTokenResp   = sys.TenantOpenCheckTokenResp
 	UserAreaApplyCreateReq     = sys.UserAreaApplyCreateReq
 	UserAreaApplyDealReq       = sys.UserAreaApplyDealReq
 	UserAreaApplyIndexReq      = sys.UserAreaApplyIndexReq

@@ -20,26 +20,10 @@ func UserInfoToApi(ui *sys.UserInfo, roles []*sys.RoleInfo, tenant *sys.TenantIn
 	if ui == nil {
 		return nil
 	}
-	return &types.UserInfo{
-		UserID:      ui.UserID,
-		UserName:    ui.UserName,
-		Email:       utils.ToNullString(ui.Email),
-		Phone:       utils.ToNullString(ui.Phone),
-		LastIP:      ui.LastIP,
-		RegIP:       ui.RegIP,
-		Role:        ui.Role,
-		NickName:    ui.NickName,
-		Sex:         ui.Sex,
-		IsAllData:   ui.IsAllData,
-		City:        ui.City,
-		Country:     ui.Country,
-		Province:    ui.Province,
-		Language:    ui.Language,
-		HeadImg:     ui.HeadImg,
-		CreatedTime: ui.CreatedTime,
-		Roles:       role.ToRoleInfosTypes(roles),
-		Tenant:      system.ToTenantInfoTypes(tenant),
-	}
+	ret := utils.Copy[types.UserInfo](ui)
+	ret.Roles = role.ToRoleInfosTypes(roles)
+	ret.Tenant = system.ToTenantInfoTypes(tenant)
+	return ret
 }
 func UserInfoToRpc(ui *types.UserInfo) *sys.UserInfo {
 	if ui == nil {

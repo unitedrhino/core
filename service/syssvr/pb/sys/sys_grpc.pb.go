@@ -4475,6 +4475,7 @@ const (
 	TenantManage_TenantAppMenuDelete_FullMethodName        = "/sys.TenantManage/tenantAppMenuDelete"
 	TenantManage_TenantNotifyMultiUpdate_FullMethodName    = "/sys.TenantManage/tenantNotifyMultiUpdate"
 	TenantManage_TenantNotifyIndex_FullMethodName          = "/sys.TenantManage/tenantNotifyIndex"
+	TenantManage_TenantOpenCheckToken_FullMethodName       = "/sys.TenantManage/tenantOpenCheckToken"
 )
 
 // TenantManageClient is the client API for TenantManage service.
@@ -4507,6 +4508,7 @@ type TenantManageClient interface {
 	// 租户通知配置
 	TenantNotifyMultiUpdate(ctx context.Context, in *TenantNotifyMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantNotifyIndex(ctx context.Context, in *TenantNotifyIndexReq, opts ...grpc.CallOption) (*TenantNotifyIndexResp, error)
+	TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 }
 
 type tenantManageClient struct {
@@ -4697,6 +4699,15 @@ func (c *tenantManageClient) TenantNotifyIndex(ctx context.Context, in *TenantNo
 	return out, nil
 }
 
+func (c *tenantManageClient) TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error) {
+	out := new(TenantOpenCheckTokenResp)
+	err := c.cc.Invoke(ctx, TenantManage_TenantOpenCheckToken_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TenantManageServer is the server API for TenantManage service.
 // All implementations must embed UnimplementedTenantManageServer
 // for forward compatibility
@@ -4727,6 +4738,7 @@ type TenantManageServer interface {
 	// 租户通知配置
 	TenantNotifyMultiUpdate(context.Context, *TenantNotifyMultiUpdateReq) (*Empty, error)
 	TenantNotifyIndex(context.Context, *TenantNotifyIndexReq) (*TenantNotifyIndexResp, error)
+	TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error)
 	mustEmbedUnimplementedTenantManageServer()
 }
 
@@ -4793,6 +4805,9 @@ func (UnimplementedTenantManageServer) TenantNotifyMultiUpdate(context.Context, 
 }
 func (UnimplementedTenantManageServer) TenantNotifyIndex(context.Context, *TenantNotifyIndexReq) (*TenantNotifyIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyIndex not implemented")
+}
+func (UnimplementedTenantManageServer) TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantOpenCheckToken not implemented")
 }
 func (UnimplementedTenantManageServer) mustEmbedUnimplementedTenantManageServer() {}
 
@@ -5167,6 +5182,24 @@ func _TenantManage_TenantNotifyIndex_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TenantManage_TenantOpenCheckToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantOpenCheckTokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantOpenCheckToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantOpenCheckToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantOpenCheckToken(ctx, req.(*TenantOpenCheckTokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TenantManage_ServiceDesc is the grpc.ServiceDesc for TenantManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5253,6 +5286,10 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantNotifyIndex",
 			Handler:    _TenantManage_TenantNotifyIndex_Handler,
+		},
+		{
+			MethodName: "tenantOpenCheckToken",
+			Handler:    _TenantManage_TenantOpenCheckToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

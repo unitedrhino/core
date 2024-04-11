@@ -127,3 +127,8 @@ func (s *TenantManageServer) TenantNotifyIndex(ctx context.Context, in *sys.Tena
 	l := tenantmanagelogic.NewTenantNotifyIndexLogic(ctx, s.svcCtx)
 	return l.TenantNotifyIndex(in)
 }
+
+func (s *TenantManageServer) TenantOpenCheckToken(ctx context.Context, in *sys.TenantOpenCheckTokenReq) (*sys.TenantOpenCheckTokenResp, error) {
+	l := tenantmanagelogic.NewTenantOpenCheckTokenLogic(ctx, s.svcCtx)
+	return l.TenantOpenCheckToken(in)
+}

@@ -18,25 +18,7 @@ func UserInfoToPb(ctx context.Context, ui *relationDB.SysUserInfo, svcCtx *svc.S
 			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
 		}
 	}
-	return &sys.UserInfo{
-		UserID:        ui.UserID,
-		UserName:      ui.UserName.String,
-		Email:         utils.ToRpcNullString(ui.Email.String),
-		Phone:         utils.ToRpcNullString(ui.Phone.String),
-		WechatUnionID: ui.WechatUnionID.String,
-		LastIP:        ui.LastIP,
-		RegIP:         ui.RegIP,
-		NickName:      ui.NickName,
-		Role:          ui.Role,
-		Sex:           ui.Sex,
-		IsAllData:     ui.IsAllData,
-		City:          ui.City,
-		Country:       ui.Country,
-		Province:      ui.Province,
-		Language:      ui.Language,
-		HeadImg:       ui.HeadImg,
-		CreatedTime:   ui.CreatedTime.Unix(),
-	}
+	return utils.Copy[sys.UserInfo](ui)
 }
 
 func ToUserAreaApplyInfos(in []*relationDB.SysUserAreaApply) (ret []*sys.UserAreaApplyInfo) {

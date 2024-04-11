@@ -133,6 +133,8 @@ type (
 	TenantNotifyIndexReq       = sys.TenantNotifyIndexReq
 	TenantNotifyIndexResp      = sys.TenantNotifyIndexResp
 	TenantNotifyMultiUpdateReq = sys.TenantNotifyMultiUpdateReq
+	TenantOpenCheckTokenReq    = sys.TenantOpenCheckTokenReq
+	TenantOpenCheckTokenResp   = sys.TenantOpenCheckTokenResp
 	UserAreaApplyCreateReq     = sys.UserAreaApplyCreateReq
 	UserAreaApplyDealReq       = sys.UserAreaApplyDealReq
 	UserAreaApplyIndexReq      = sys.UserAreaApplyIndexReq
@@ -197,6 +199,7 @@ type (
 		// 租户通知配置
 		TenantNotifyMultiUpdate(ctx context.Context, in *TenantNotifyMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		TenantNotifyIndex(ctx context.Context, in *TenantNotifyIndexReq, opts ...grpc.CallOption) (*TenantNotifyIndexResp, error)
+		TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 	}
 
 	defaultTenantManage struct {
@@ -412,4 +415,13 @@ func (m *defaultTenantManage) TenantNotifyIndex(ctx context.Context, in *TenantN
 
 func (d *directTenantManage) TenantNotifyIndex(ctx context.Context, in *TenantNotifyIndexReq, opts ...grpc.CallOption) (*TenantNotifyIndexResp, error) {
 	return d.svr.TenantNotifyIndex(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantOpenCheckToken(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error) {
+	return d.svr.TenantOpenCheckToken(ctx, in)
 }

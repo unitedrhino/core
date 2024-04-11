@@ -216,6 +216,8 @@ service TenantManage {
   //租户通知配置
   rpc tenantNotifyMultiUpdate(TenantNotifyMultiUpdateReq)returns(Empty);
   rpc tenantNotifyIndex(TenantNotifyIndexReq)returns(TenantNotifyIndexResp);
+
+  rpc tenantOpenCheckToken(TenantOpenCheckTokenReq) returns(TenantOpenCheckTokenResp);
 }
 
 //运营
@@ -345,7 +347,15 @@ message TenantNotify{
   int64 templateID =4;
 }
 
+message TenantOpenCheckTokenReq{
+  string token = 1;
+  string ip = 2;
+}
 
+message TenantOpenCheckTokenResp{
+  string account = 1;
+  string tenantCode = 2;//租户编码
+}
 
 
 
@@ -821,6 +831,7 @@ message UserInfo{
   int64  isAllData =18;
   string headImg =19;
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
+  map<string,int64> messageNotRead = 21;//未读消息,key是消息分组,value是未读数量
 }
 
 

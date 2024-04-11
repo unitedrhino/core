@@ -58,10 +58,21 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 	}
 }
 
+func getHandle(r *http.Request, keys ...string) string {
+	var val string
+	for _, v := range keys {
+		val = r.Header.Get(v)
+		if val != "" {
+			return val
+		}
+	}
+	return val
+}
+
 func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Request) (*ctxs.UserCtx, error) {
 	strIP, _ := utils.GetIP(r)
 
-	strToken := r.Header.Get(ctxs.UserTokenKey)
+	strToken := getHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
 	if strToken == "" {
 		logx.WithContext(r.Context()).Errorf("%s.CheckTokenWare ip=%s not find token",
 			utils.FuncName(), strIP)
