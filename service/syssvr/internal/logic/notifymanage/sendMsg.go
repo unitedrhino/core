@@ -102,6 +102,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 					umPos = append(umPos, &relationDB.SysUserMessage{
 						UserID:    v.UserID,
 						MessageID: miPo.ID,
+						Group:     miPo.Group,
 						IsRead:    def.False,
 					})
 				}

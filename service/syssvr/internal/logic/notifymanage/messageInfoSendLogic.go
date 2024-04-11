@@ -72,6 +72,7 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 		for _, v := range in.UserIDs {
 			users = append(users, &relationDB.SysUserMessage{
 				UserID:    v,
+				Group:     po.Group,
 				MessageID: po.ID,
 				IsRead:    def.False,
 			})
