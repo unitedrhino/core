@@ -2,7 +2,6 @@ package notifymanagelogic
 
 import (
 	"context"
-	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
@@ -82,7 +81,7 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 		return err
 	})
 	for _, user := range in.UserIDs {
-		err := usermanagelogic.UpdateUserNotRead(l.ctx, user)
+		err := UpdateUserNotRead(l.ctx, user)
 		if err != nil {
 			logx.WithContext(l.ctx).Error(err)
 		}

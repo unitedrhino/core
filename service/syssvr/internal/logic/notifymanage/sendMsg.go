@@ -3,7 +3,6 @@ package notifymanagelogic
 import (
 	"bytes"
 	"context"
-	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/share/clients"
@@ -114,7 +113,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 				return nil
 			}
 			for _, user := range users {
-				err := usermanagelogic.UpdateUserNotRead(ctx, user.UserID)
+				err := UpdateUserNotRead(ctx, user.UserID)
 				if err != nil {
 					logx.WithContext(ctx).Error(err)
 				}
@@ -170,4 +169,17 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			body)
 	}
 	return nil
+}
+
+func UpdateUserNotRead(ctx context.Context, userID int64) (err error) {
+	var count = map[string]int64{}
+	count, err = relationDB.NewUserMessageRepo(ctx).CountNotRead(ctx, userID)
+	if err != nil {
+		return err
+	}
+	err = relationDB.NewUserInfoRepo(ctx).UpdateMessageNotRead(ctx, userID, count)
+	if err != nil {
+		return err
+	}
+	return err
 }
