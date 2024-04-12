@@ -66,19 +66,19 @@ func (m *SysTenantNotify) TableName() string {
 }
 
 type SysMessageInfo struct {
-	ID             int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode     stores.TenantCode `gorm:"column:tenant_code;index:ri_mi;type:VARCHAR(50);NOT NULL"`       // 租户编码
-	Group          string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                         //消息分类
-	NotifyCode     string            `gorm:"column:notify_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
-	Subject        string            `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //消息主题
-	Body           string            `gorm:"column:body;type:text;NOT NULL"`                                 //消息内容
-	Str1           string            `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);NOT NULL"`              //自定义字段(用来添加搜索索引),如产品id
-	Str2           string            `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);NOT NULL"`              //自定义字段(用来添加搜索索引),如设备id
+	ID             int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`         // id编号
+	TenantCode     stores.TenantCode `gorm:"column:tenant_code;index:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	Group          string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                   //消息分类
+	NotifyCode     string            `gorm:"column:notify_code;type:VARCHAR(50);NOT NULL"`             //对应的配置Code
+	Subject        string            `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                //消息主题
+	Body           string            `gorm:"column:body;type:text;NOT NULL"`                           //消息内容
+	Str1           string            `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);NOT NULL"`        //自定义字段(用来添加搜索索引),如产品id
+	Str2           string            `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);NOT NULL"`        //自定义字段(用来添加搜索索引),如设备id
 	Str3           string            `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);NOT NULL"`
 	IsGlobal       int64             `gorm:"column:is_global;index;type:bigint;default:2"`        //是否是全局消息,是的话所有用户都能看到
 	IsDirectNotify int64             `gorm:"column:is_direct_notify;index;type:bigint;default:2"` //是否是发送通知消息创建
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 }
 
 func (m *SysMessageInfo) TableName() string {
