@@ -159,6 +159,8 @@ type (
 	UserMessage                = sys.UserMessage
 	UserMessageIndexReq        = sys.UserMessageIndexReq
 	UserMessageIndexResp       = sys.UserMessageIndexResp
+	UserMessageStatistics      = sys.UserMessageStatistics
+	UserMessageStatisticsResp  = sys.UserMessageStatisticsResp
 	UserProfile                = sys.UserProfile
 	UserProfileIndexReq        = sys.UserProfileIndexReq
 	UserProfileIndexResp       = sys.UserProfileIndexResp
@@ -189,6 +191,7 @@ type (
 		UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
+		UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error)
 		UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
 		UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
 		UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
@@ -359,6 +362,15 @@ func (m *defaultUserManage) UserMessageIndex(ctx context.Context, in *UserMessag
 
 func (d *directUserManage) UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error) {
 	return d.svr.UserMessageIndex(ctx, in)
+}
+
+func (m *defaultUserManage) UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserMessageStatistics(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error) {
+	return d.svr.UserMessageStatistics(ctx, in)
 }
 
 func (m *defaultUserManage) UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error) {

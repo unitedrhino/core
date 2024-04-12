@@ -1121,6 +1121,15 @@ type UserMessageIndexResp struct {
 	List  []*UserMessage `json:"list"`
 }
 
+type UserMessageStatistics struct {
+	Group string `json:"group"`
+	Count int64  `json:"count"`
+}
+
+type UserMessageStatisticsResp struct {
+	List []*UserMessageStatistics `json:"list"`
+}
+
 type UserProfile struct {
 	Code   string `json:"code"`
 	Params string `json:"params"`

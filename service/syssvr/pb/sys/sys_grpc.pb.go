@@ -35,6 +35,7 @@ const (
 	UserManage_UserAreaApplyCreate_FullMethodName    = "/sys.UserManage/userAreaApplyCreate"
 	UserManage_UserMessageMultiIsRead_FullMethodName = "/sys.UserManage/userMessageMultiIsRead"
 	UserManage_UserMessageIndex_FullMethodName       = "/sys.UserManage/userMessageIndex"
+	UserManage_UserMessageStatistics_FullMethodName  = "/sys.UserManage/UserMessageStatistics"
 	UserManage_UserProfileRead_FullMethodName        = "/sys.UserManage/userProfileRead"
 	UserManage_UserProfileUpdate_FullMethodName      = "/sys.UserManage/userProfileUpdate"
 	UserManage_UserProfileIndex_FullMethodName       = "/sys.UserManage/userProfileIndex"
@@ -60,6 +61,7 @@ type UserManageClient interface {
 	UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
+	UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error)
 	UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
 	UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
 	UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
@@ -217,6 +219,15 @@ func (c *userManageClient) UserMessageIndex(ctx context.Context, in *UserMessage
 	return out, nil
 }
 
+func (c *userManageClient) UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error) {
+	out := new(UserMessageStatisticsResp)
+	err := c.cc.Invoke(ctx, UserManage_UserMessageStatistics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userManageClient) UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error) {
 	out := new(UserProfile)
 	err := c.cc.Invoke(ctx, UserManage_UserProfileRead_FullMethodName, in, out, opts...)
@@ -264,6 +275,7 @@ type UserManageServer interface {
 	UserAreaApplyCreate(context.Context, *UserAreaApplyCreateReq) (*Empty, error)
 	UserMessageMultiIsRead(context.Context, *IDList) (*Empty, error)
 	UserMessageIndex(context.Context, *UserMessageIndexReq) (*UserMessageIndexResp, error)
+	UserMessageStatistics(context.Context, *Empty) (*UserMessageStatisticsResp, error)
 	UserProfileRead(context.Context, *WithCode) (*UserProfile, error)
 	UserProfileUpdate(context.Context, *UserProfile) (*Empty, error)
 	UserProfileIndex(context.Context, *UserProfileIndexReq) (*UserProfileIndexResp, error)
@@ -321,6 +333,9 @@ func (UnimplementedUserManageServer) UserMessageMultiIsRead(context.Context, *ID
 }
 func (UnimplementedUserManageServer) UserMessageIndex(context.Context, *UserMessageIndexReq) (*UserMessageIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserMessageIndex not implemented")
+}
+func (UnimplementedUserManageServer) UserMessageStatistics(context.Context, *Empty) (*UserMessageStatisticsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserMessageStatistics not implemented")
 }
 func (UnimplementedUserManageServer) UserProfileRead(context.Context, *WithCode) (*UserProfile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserProfileRead not implemented")
@@ -632,6 +647,24 @@ func _UserManage_UserMessageIndex_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManage_UserMessageStatistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserMessageStatistics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserMessageStatistics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserMessageStatistics(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserManage_UserProfileRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithCode)
 	if err := dec(in); err != nil {
@@ -756,6 +789,10 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userMessageIndex",
 			Handler:    _UserManage_UserMessageIndex_Handler,
+		},
+		{
+			MethodName: "UserMessageStatistics",
+			Handler:    _UserManage_UserMessageStatistics_Handler,
 		},
 		{
 			MethodName: "userProfileRead",

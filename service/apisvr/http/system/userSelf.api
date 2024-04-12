@@ -44,6 +44,9 @@ service api {
 	@doc "用户消息批量已读"
 	@handler messageMultiIsRead
 	post /message/multi-is-read (IDList) returns ()
+	@doc "用户消息统计"
+	@handler messageStatistics
+	post /message/statistics () returns (UserMessageStatisticsResp)
 	@doc "用户消息列表"
 	@handler messageIndex
 	post /message/index (UserMessageIndexReq) returns (UserMessageIndexResp)
@@ -164,6 +167,13 @@ type (
 		Str1 string `json:"str1,optional"`
 		Str2 string `json:"str2,optional"`
 		Str3 string `json:"str3,optional"`
+	}
+	UserMessageStatisticsResp{
+		List []*UserMessageStatistics `json:"list"`
+	}
+	UserMessageStatistics{
+		Group string `json:"group"`
+		Count int64 `json:"count"`
 	}
 	UserMessage {
 		ID  int64 `json:"id"`

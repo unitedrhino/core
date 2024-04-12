@@ -1076,6 +1076,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/message/statistics",
+					Handler: systemuserself.MessageStatisticsHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/module/index",
 					Handler: systemuserself.ModuleIndexHandler(serverCtx),
 				},

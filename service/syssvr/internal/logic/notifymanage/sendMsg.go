@@ -12,7 +12,6 @@ import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
-	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
 	"text/template"
 )
@@ -112,12 +111,6 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			if err != nil {
 				return nil
 			}
-			for _, user := range users {
-				err := UpdateUserNotRead(ctx, user.UserID)
-				if err != nil {
-					logx.WithContext(ctx).Error(err)
-				}
-			}
 		}
 	}
 	switch cfg.Type {
@@ -169,17 +162,4 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			body)
 	}
 	return nil
-}
-
-func UpdateUserNotRead(ctx context.Context, userID int64) (err error) {
-	var count = map[string]int64{}
-	count, err = relationDB.NewUserMessageRepo(ctx).CountNotRead(ctx, userID)
-	if err != nil {
-		return err
-	}
-	err = relationDB.NewUserInfoRepo(ctx).UpdateMessageNotRead(ctx, userID, count)
-	if err != nil {
-		return err
-	}
-	return err
 }

@@ -102,6 +102,11 @@ func (s *UserManageServer) UserMessageIndex(ctx context.Context, in *sys.UserMes
 	return l.UserMessageIndex(in)
 }
 
+func (s *UserManageServer) UserMessageStatistics(ctx context.Context, in *sys.Empty) (*sys.UserMessageStatisticsResp, error) {
+	l := usermanagelogic.NewUserMessageStatisticsLogic(ctx, s.svcCtx)
+	return l.UserMessageStatistics(in)
+}
+
 func (s *UserManageServer) UserProfileRead(ctx context.Context, in *sys.WithCode) (*sys.UserProfile, error) {
 	l := usermanagelogic.NewUserProfileReadLogic(ctx, s.svcCtx)
 	return l.UserProfileRead(in)

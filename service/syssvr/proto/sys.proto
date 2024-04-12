@@ -24,7 +24,7 @@ service UserManage {
 
   rpc userMessageMultiIsRead(IDList)returns(Empty);//用户消息批量已读
   rpc userMessageIndex(UserMessageIndexReq)returns(UserMessageIndexResp);//获取用户消息
-
+  rpc   UserMessageStatistics(Empty)returns(UserMessageStatisticsResp);
   rpc userProfileRead(WithCode)returns(UserProfile);
   rpc userProfileUpdate(UserProfile)returns(Empty);
   rpc userProfileIndex(UserProfileIndexReq)returns(UserProfileIndexResp);
@@ -389,6 +389,15 @@ message UserMessageIndexReq{
   string str1        =5;
   string str2        =6;
   string str3        =7;
+}
+
+message UserMessageStatisticsResp{
+   repeated UserMessageStatistics list =1;
+}
+
+message UserMessageStatistics{
+  string group=1;
+  int64 count=2;
 }
 
 message UserMessageIndexResp{
@@ -831,7 +840,6 @@ message UserInfo{
   int64  isAllData =18;
   string headImg =19;
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
-  map<string,int64> messageNotRead = 21;//未读消息,key是消息分组,value是未读数量
 }
 
 

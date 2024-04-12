@@ -159,6 +159,8 @@ type (
 	UserMessage                = sys.UserMessage
 	UserMessageIndexReq        = sys.UserMessageIndexReq
 	UserMessageIndexResp       = sys.UserMessageIndexResp
+	UserMessageStatistics      = sys.UserMessageStatistics
+	UserMessageStatisticsResp  = sys.UserMessageStatisticsResp
 	UserProfile                = sys.UserProfile
 	UserProfileIndexReq        = sys.UserProfileIndexReq
 	UserProfileIndexResp       = sys.UserProfileIndexResp

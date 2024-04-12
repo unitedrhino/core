@@ -182,7 +182,6 @@ type SysUserInfo struct {
 	IsAllData      int64             `gorm:"column:is_all_data;type:SMALLINT;default:1;NOT NULL"` // 是否所有数据权限（1是，2否）
 	Roles          []*SysUserRole    `gorm:"foreignKey:UserID;references:UserID"`
 	Tenant         *SysTenantInfo    `gorm:"foreignKey:Code;references:TenantCode"`
-	MessageNotRead map[string]int64  `gorm:"column:message_not_read;type:json;serializer:json;NOT NULL;default:'{}'"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_un;uniqueIndex:tc_doi;uniqueIndex:tc_email;uniqueIndex:tc_phone;uniqueIndex:tc_wui;uniqueIndex:tc_woi"`
 }

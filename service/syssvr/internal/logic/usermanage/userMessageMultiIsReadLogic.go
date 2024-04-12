@@ -2,7 +2,6 @@ package usermanagelogic
 
 import (
 	"context"
-	notifymanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/notifymanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 
@@ -32,6 +31,5 @@ func (l *UserMessageMultiIsReadLogic) UserMessageMultiIsRead(in *sys.IDList) (*s
 	if err != nil {
 		return nil, err
 	}
-	notifymanagelogic.UpdateUserNotRead(l.ctx, userID)
 	return &sys.Empty{}, err
 }
