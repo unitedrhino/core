@@ -66,6 +66,15 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	logx.Must(err)
 	sms, err := clients.NewSms(c.Sms)
 	logx.Must(err)
+	//sms.SendSms(clients.SendSmsParam{
+	//	PhoneNumbers: []string{"17052709767"},
+	//	SignName:     "萤科物联小程序",
+	//	TemplateCode: "1842188",
+	//	TemplateParam: map[string]any{
+	//		"1": "123",
+	//		"2": "333",
+	//	},
+	//})
 	return &ServiceContext{
 		ServerMsg: serverMsg,
 		Captcha:   cache.NewCaptcha(store),

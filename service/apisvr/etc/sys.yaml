@@ -56,6 +56,12 @@ WrongPasswordCounter:
       forbiddenTime: 2 # 冻结时长 默认 2 单位：分钟
 Sms:
   Enable: true
+  Mode: ali
+  Tencent:
+    AccessKeyID:
+    AccessKeySecret:
+    AppID:
+    AppKey:
   Ali:
     AccessKeyID:
     AccessKeySecret:

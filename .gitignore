@@ -5,7 +5,7 @@ target/
 !**/service/test/**/target/
 /deploy/data/*
 /docker/run-debug/
-
+.env
 ### STS ###
 .apt_generated
 .classpath

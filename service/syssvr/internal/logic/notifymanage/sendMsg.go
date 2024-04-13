@@ -126,7 +126,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if len(accounts) == 0 {
 			return nil
 		}
-		err = svcCtx.Sms.SendSms(clients.SendSmsParam{
+		err = svcCtx.Sms.SendSms(ctx, clients.SendSmsParam{
 			PhoneNumbers:  accounts,
 			SignName:      signName,
 			TemplateCode:  templateCode,
