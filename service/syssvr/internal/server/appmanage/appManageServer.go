@@ -56,3 +56,8 @@ func (s *AppManageServer) AppModuleMultiUpdate(ctx context.Context, in *sys.AppM
 	l := appmanagelogic.NewAppModuleMultiUpdateLogic(ctx, s.svcCtx)
 	return l.AppModuleMultiUpdate(in)
 }
+
+func (s *AppManageServer) AppPolicyRead(ctx context.Context, in *sys.AppPolicyReadReq) (*sys.AppPolicy, error) {
+	l := appmanagelogic.NewAppPolicyReadLogic(ctx, s.svcCtx)
+	return l.AppPolicyRead(in)
+}

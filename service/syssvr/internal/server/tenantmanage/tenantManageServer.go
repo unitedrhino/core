@@ -132,3 +132,8 @@ func (s *TenantManageServer) TenantOpenCheckToken(ctx context.Context, in *sys.T
 	l := tenantmanagelogic.NewTenantOpenCheckTokenLogic(ctx, s.svcCtx)
 	return l.TenantOpenCheckToken(in)
 }
+
+func (s *TenantManageServer) TenantOpenWebHook(ctx context.Context, in *sys.WithCode) (*sys.TenantOpenWebHook, error) {
+	l := tenantmanagelogic.NewTenantOpenWebHookLogic(ctx, s.svcCtx)
+	return l.TenantOpenWebHook(in)
+}

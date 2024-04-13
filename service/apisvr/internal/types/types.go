@@ -99,6 +99,20 @@ type AppModuleMultiUpdateReq struct {
 	ModuleCodes []string `json:"moduleCodes"` //App列表数据
 }
 
+type AppPolicy struct {
+	ID      int64  `json:"id,optional"`
+	AppCode string `json:"appCode,optional"`
+	Code    string `json:"code,optional"` //
+	Name    string `json:"name,optional"` //
+	Subject string `json:"subject,optional"`
+	Body    string `json:"body,optional"`
+}
+
+type AppPolicyReadReq struct {
+	AppCode string `json:"appCode"`
+	Code    string `json:"code"`
+}
+
 type AreaInfo struct {
 	CreatedTime     int64       `json:"createdTime,optional,string"`  //创建时间（只读）
 	ProjectID       int64       `json:"projectID,string,optional"`    //项目id（只读）

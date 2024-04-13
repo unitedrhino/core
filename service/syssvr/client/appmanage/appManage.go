@@ -26,6 +26,8 @@ type (
 	AppModuleIndexReq          = sys.AppModuleIndexReq
 	AppModuleIndexResp         = sys.AppModuleIndexResp
 	AppModuleMultiUpdateReq    = sys.AppModuleMultiUpdateReq
+	AppPolicy                  = sys.AppPolicy
+	AppPolicyReadReq           = sys.AppPolicyReadReq
 	AreaInfo                   = sys.AreaInfo
 	AreaInfoIndexReq           = sys.AreaInfoIndexReq
 	AreaInfoIndexResp          = sys.AreaInfoIndexResp
@@ -135,6 +137,7 @@ type (
 	TenantNotifyMultiUpdateReq = sys.TenantNotifyMultiUpdateReq
 	TenantOpenCheckTokenReq    = sys.TenantOpenCheckTokenReq
 	TenantOpenCheckTokenResp   = sys.TenantOpenCheckTokenResp
+	TenantOpenWebHook          = sys.TenantOpenWebHook
 	UserAreaApplyCreateReq     = sys.UserAreaApplyCreateReq
 	UserAreaApplyDealReq       = sys.UserAreaApplyDealReq
 	UserAreaApplyIndexReq      = sys.UserAreaApplyIndexReq
@@ -182,6 +185,7 @@ type (
 		AppInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*AppInfo, error)
 		AppModuleIndex(ctx context.Context, in *AppModuleIndexReq, opts ...grpc.CallOption) (*AppModuleIndexResp, error)
 		AppModuleMultiUpdate(ctx context.Context, in *AppModuleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+		AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error)
 	}
 
 	defaultAppManage struct {
@@ -268,4 +272,13 @@ func (m *defaultAppManage) AppModuleMultiUpdate(ctx context.Context, in *AppModu
 
 func (d *directAppManage) AppModuleMultiUpdate(ctx context.Context, in *AppModuleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.AppModuleMultiUpdate(ctx, in)
+}
+
+func (m *defaultAppManage) AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error) {
+	client := sys.NewAppManageClient(m.cli.Conn())
+	return client.AppPolicyRead(ctx, in, opts...)
+}
+
+func (d *directAppManage) AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error) {
+	return d.svr.AppPolicyRead(ctx, in)
 }

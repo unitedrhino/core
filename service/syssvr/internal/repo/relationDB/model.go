@@ -66,12 +66,11 @@ type SysSlotInfo struct {
 	SlotCode string            `gorm:"column:slot_code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"`       //slot的编码
 	Method   string            `gorm:"column:method;type:VARCHAR(50);NOT NULL"`                                 // 请求方式 GET  POST
 	Uri      string            `gorm:"column:uri;type:VARCHAR(100);NOT NULL"`                                   // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
-	Proto    string            `gorm:"column:proto;type:VARCHAR(100);NOT NULL"`                                 //http https
 	Hosts    []string          `gorm:"column:hosts;type:json;serializer:json;NOT NULL;default:'[]';NOT NULL"`   //访问的地址 host or host:port
 	Body     string            `gorm:"column:body;type:VARCHAR(100);NOT NULL"`                                  // body 参数模板
 	Handler  map[string]string `gorm:"column:handler;type:json;serializer:json;NOT NULL;default:'{}';NOT NULL"` //http头
 	AuthType string            `gorm:"column:auth_type;type:VARCHAR(100);NOT NULL"`                             //鉴权类型 core
-	Desc     string            `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                                  // 备注
+	Desc     string            `gorm:"column:desc;type:VARCHAR(500);"`                                          // 备注
 	stores.SoftTime
 }
 
@@ -94,6 +93,19 @@ type SysAppInfo struct {
 
 func (m *SysAppInfo) TableName() string {
 	return "sys_app_info"
+}
+
+type SysAppPolicy struct {
+	ID      int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`            // id编号
+	AppCode string `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 应用编码
+	Code    string `gorm:"column:code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`
+	Name    string `gorm:"column:name;type:VARCHAR(50);NOT NULL"`              //命名
+	Subject string `gorm:"column:subject;uniqueIndex:tc_ac;type:VARCHAR(256)"` //主题
+	Body    string `gorm:"column:body;uniqueIndex:tc_ac;type:text;NOT NULL"`   //协议内容
+}
+
+func (m *SysAppPolicy) TableName() string {
+	return "sys_app_policy"
 }
 
 // 应用默认绑定的模块

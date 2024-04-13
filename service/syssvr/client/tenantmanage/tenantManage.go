@@ -26,6 +26,8 @@ type (
 	AppModuleIndexReq          = sys.AppModuleIndexReq
 	AppModuleIndexResp         = sys.AppModuleIndexResp
 	AppModuleMultiUpdateReq    = sys.AppModuleMultiUpdateReq
+	AppPolicy                  = sys.AppPolicy
+	AppPolicyReadReq           = sys.AppPolicyReadReq
 	AreaInfo                   = sys.AreaInfo
 	AreaInfoIndexReq           = sys.AreaInfoIndexReq
 	AreaInfoIndexResp          = sys.AreaInfoIndexResp
@@ -135,6 +137,7 @@ type (
 	TenantNotifyMultiUpdateReq = sys.TenantNotifyMultiUpdateReq
 	TenantOpenCheckTokenReq    = sys.TenantOpenCheckTokenReq
 	TenantOpenCheckTokenResp   = sys.TenantOpenCheckTokenResp
+	TenantOpenWebHook          = sys.TenantOpenWebHook
 	UserAreaApplyCreateReq     = sys.UserAreaApplyCreateReq
 	UserAreaApplyDealReq       = sys.UserAreaApplyDealReq
 	UserAreaApplyIndexReq      = sys.UserAreaApplyIndexReq
@@ -202,6 +205,7 @@ type (
 		TenantNotifyMultiUpdate(ctx context.Context, in *TenantNotifyMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		TenantNotifyIndex(ctx context.Context, in *TenantNotifyIndexReq, opts ...grpc.CallOption) (*TenantNotifyIndexResp, error)
 		TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
+		TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
 	}
 
 	defaultTenantManage struct {
@@ -426,4 +430,13 @@ func (m *defaultTenantManage) TenantOpenCheckToken(ctx context.Context, in *Tena
 
 func (d *directTenantManage) TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error) {
 	return d.svr.TenantOpenCheckToken(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantOpenWebHook(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error) {
+	return d.svr.TenantOpenWebHook(ctx, in)
 }

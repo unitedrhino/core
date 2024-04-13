@@ -32,19 +32,37 @@ func (m *SysTenantInfo) TableName() string {
 }
 
 // 租户开放认证
-type SysTenantOpen struct {
-	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode   stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
-	Account      string            `gorm:"column:account;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`
-	AccessSecret string            `gorm:"column:access_secret;type:VARCHAR(256);NOT NULL"`
-	Desc         string            `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`     //应用描述
-	IpRange      []string          `gorm:"column:ip_range;type:json;serializer:json;"` //ip白名单
+type SysTenantOpenAccess struct {
+	ID           int64    `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode   string   `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
+	UserID       int64    `gorm:"column:user_id;uniqueIndex:tc_ac;type:bigint;NOT NULL"`
+	Code         string   `gorm:"column:code;type:VARCHAR(50);uniqueIndex:tc_ac;NOT NULL"` //用来标识用来干嘛的
+	AccessSecret string   `gorm:"column:access_secret;type:VARCHAR(256);NOT NULL"`
+	Desc         string   `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`     //应用描述
+	IpRange      []string `gorm:"column:ip_range;type:json;serializer:json;"` //ip白名单
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }
 
-func (m *SysTenantOpen) TableName() string {
-	return "sys_tenant_open"
+func (m *SysTenantOpenAccess) TableName() string {
+	return "sys_tenant_open_access"
+}
+
+// 租户开放认证
+type SysTenantOpenWebhook struct {
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`          // 租户编码
+	Code       string            `gorm:"column:code;type:VARCHAR(50);uniqueIndex:tc_ac;NOT NULL"`                 //业务里定义的,推送的内容
+	Uri        string            `gorm:"column:uri;type:VARCHAR(100);NOT NULL"`                                   // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
+	Hosts      []string          `gorm:"column:hosts;type:json;serializer:json;NOT NULL;default:'[]';NOT NULL"`   //访问的地址 host or host:port
+	Desc       string            `gorm:"column:desc;type:VARCHAR(500);"`                                          // 备注
+	Handler    map[string]string `gorm:"column:handler;type:json;serializer:json;NOT NULL;default:'{}';NOT NULL"` //http头
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
+}
+
+func (m *SysTenantOpenWebhook) TableName() string {
+	return "sys_tenant_open_webhook"
 }
 
 //// 租户自定义表

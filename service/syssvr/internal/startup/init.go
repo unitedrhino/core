@@ -27,7 +27,7 @@ func Init(svcCtx *svc.ServiceContext) {
 
 func InitCache(svcCtx *svc.ServiceContext) {
 	tenantCache, err := caches.NewCache(caches.CacheConfig[tenant.Info]{
-		KeyType:   eventBus.ServerCacheKeySysTenant,
+		KeyType:   eventBus.ServerCacheKeySysTenantInfo,
 		FastEvent: svcCtx.ServerMsg,
 		GetData: func(ctx context.Context, key string) (*tenant.Info, error) {
 			db := relationDB.NewTenantInfoRepo(ctx)

@@ -2,6 +2,9 @@ package tenantmanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/users"
 	"gitee.com/i-Things/share/utils"
 	"github.com/golang-jwt/jwt/v5"
@@ -29,11 +32,22 @@ func NewTenantOpenCheckTokenLogic(ctx context.Context, svcCtx *svc.ServiceContex
 func (l *TenantOpenCheckTokenLogic) TenantOpenCheckToken(in *sys.TenantOpenCheckTokenReq) (*sys.TenantOpenCheckTokenResp, error) {
 	var claim users.OpenClaims
 	err := users.ParseTokenWithFunc(&claim, in.Token, func(token *jwt.Token) (interface{}, error) {
-		return []byte("asda"), nil
+		if claim.TenantCode == "" || claim.UserID == 0 || claim.Code == "" {
+			return nil, errors.TokenInvalid
+		}
+		po, err := relationDB.NewTenantOpenRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantOpenFilter{
+			TenantCode: claim.TenantCode,
+			UserID:     claim.UserID,
+			Code:       claim.Code,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return []byte(po.AccessSecret), nil
 	})
 	if err != nil {
 		l.Errorf("%s parse token fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
-	return &sys.TenantOpenCheckTokenResp{}, nil
+	return &sys.TenantOpenCheckTokenResp{UserID: claim.UserID, IsAdmin: def.True, UserName: "open", TenantCode: claim.TenantCode}, nil
 }

@@ -151,7 +151,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
 		Config:         c,
-		CheckTokenWare: export.NewCheckTokenWareMiddleware(ur, ro).Handle,
+		CheckTokenWare: export.NewCheckTokenWareMiddleware(ur, ro, tenantM).Handle,
 		DataAuthWare:   middleware.NewDataAuthWareMiddleware(c).Handle,
 		TeardownWare:   middleware.NewTeardownWareMiddleware(c, lo).Handle,
 		CheckApiWare:   middleware.NewCheckApiWareMiddleware().Handle,

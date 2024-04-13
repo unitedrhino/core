@@ -2628,6 +2628,7 @@ const (
 	AppManage_AppInfoRead_FullMethodName          = "/sys.AppManage/appInfoRead"
 	AppManage_AppModuleIndex_FullMethodName       = "/sys.AppManage/appModuleIndex"
 	AppManage_AppModuleMultiUpdate_FullMethodName = "/sys.AppManage/appModuleMultiUpdate"
+	AppManage_AppPolicyRead_FullMethodName        = "/sys.AppManage/appPolicyRead"
 )
 
 // AppManageClient is the client API for AppManage service.
@@ -2641,6 +2642,7 @@ type AppManageClient interface {
 	AppInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*AppInfo, error)
 	AppModuleIndex(ctx context.Context, in *AppModuleIndexReq, opts ...grpc.CallOption) (*AppModuleIndexResp, error)
 	AppModuleMultiUpdate(ctx context.Context, in *AppModuleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+	AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error)
 }
 
 type appManageClient struct {
@@ -2714,6 +2716,15 @@ func (c *appManageClient) AppModuleMultiUpdate(ctx context.Context, in *AppModul
 	return out, nil
 }
 
+func (c *appManageClient) AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error) {
+	out := new(AppPolicy)
+	err := c.cc.Invoke(ctx, AppManage_AppPolicyRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppManageServer is the server API for AppManage service.
 // All implementations must embed UnimplementedAppManageServer
 // for forward compatibility
@@ -2725,6 +2736,7 @@ type AppManageServer interface {
 	AppInfoRead(context.Context, *WithIDCode) (*AppInfo, error)
 	AppModuleIndex(context.Context, *AppModuleIndexReq) (*AppModuleIndexResp, error)
 	AppModuleMultiUpdate(context.Context, *AppModuleMultiUpdateReq) (*Empty, error)
+	AppPolicyRead(context.Context, *AppPolicyReadReq) (*AppPolicy, error)
 	mustEmbedUnimplementedAppManageServer()
 }
 
@@ -2752,6 +2764,9 @@ func (UnimplementedAppManageServer) AppModuleIndex(context.Context, *AppModuleIn
 }
 func (UnimplementedAppManageServer) AppModuleMultiUpdate(context.Context, *AppModuleMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppModuleMultiUpdate not implemented")
+}
+func (UnimplementedAppManageServer) AppPolicyRead(context.Context, *AppPolicyReadReq) (*AppPolicy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AppPolicyRead not implemented")
 }
 func (UnimplementedAppManageServer) mustEmbedUnimplementedAppManageServer() {}
 
@@ -2892,6 +2907,24 @@ func _AppManage_AppModuleMultiUpdate_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AppManage_AppPolicyRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AppPolicyReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppManageServer).AppPolicyRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AppManage_AppPolicyRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppManageServer).AppPolicyRead(ctx, req.(*AppPolicyReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AppManage_ServiceDesc is the grpc.ServiceDesc for AppManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2926,6 +2959,10 @@ var AppManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "appModuleMultiUpdate",
 			Handler:    _AppManage_AppModuleMultiUpdate_Handler,
+		},
+		{
+			MethodName: "appPolicyRead",
+			Handler:    _AppManage_AppPolicyRead_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -4513,6 +4550,7 @@ const (
 	TenantManage_TenantNotifyMultiUpdate_FullMethodName    = "/sys.TenantManage/tenantNotifyMultiUpdate"
 	TenantManage_TenantNotifyIndex_FullMethodName          = "/sys.TenantManage/tenantNotifyIndex"
 	TenantManage_TenantOpenCheckToken_FullMethodName       = "/sys.TenantManage/tenantOpenCheckToken"
+	TenantManage_TenantOpenWebHook_FullMethodName          = "/sys.TenantManage/tenantOpenWebHook"
 )
 
 // TenantManageClient is the client API for TenantManage service.
@@ -4546,6 +4584,7 @@ type TenantManageClient interface {
 	TenantNotifyMultiUpdate(ctx context.Context, in *TenantNotifyMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantNotifyIndex(ctx context.Context, in *TenantNotifyIndexReq, opts ...grpc.CallOption) (*TenantNotifyIndexResp, error)
 	TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
+	TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
 }
 
 type tenantManageClient struct {
@@ -4745,6 +4784,15 @@ func (c *tenantManageClient) TenantOpenCheckToken(ctx context.Context, in *Tenan
 	return out, nil
 }
 
+func (c *tenantManageClient) TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error) {
+	out := new(TenantOpenWebHook)
+	err := c.cc.Invoke(ctx, TenantManage_TenantOpenWebHook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TenantManageServer is the server API for TenantManage service.
 // All implementations must embed UnimplementedTenantManageServer
 // for forward compatibility
@@ -4776,6 +4824,7 @@ type TenantManageServer interface {
 	TenantNotifyMultiUpdate(context.Context, *TenantNotifyMultiUpdateReq) (*Empty, error)
 	TenantNotifyIndex(context.Context, *TenantNotifyIndexReq) (*TenantNotifyIndexResp, error)
 	TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error)
+	TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error)
 	mustEmbedUnimplementedTenantManageServer()
 }
 
@@ -4845,6 +4894,9 @@ func (UnimplementedTenantManageServer) TenantNotifyIndex(context.Context, *Tenan
 }
 func (UnimplementedTenantManageServer) TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantOpenCheckToken not implemented")
+}
+func (UnimplementedTenantManageServer) TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantOpenWebHook not implemented")
 }
 func (UnimplementedTenantManageServer) mustEmbedUnimplementedTenantManageServer() {}
 
@@ -5237,6 +5289,24 @@ func _TenantManage_TenantOpenCheckToken_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TenantManage_TenantOpenWebHook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithCode)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantOpenWebHook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantOpenWebHook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantOpenWebHook(ctx, req.(*WithCode))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TenantManage_ServiceDesc is the grpc.ServiceDesc for TenantManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5327,6 +5397,10 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantOpenCheckToken",
 			Handler:    _TenantManage_TenantOpenCheckToken_Handler,
+		},
+		{
+			MethodName: "tenantOpenWebHook",
+			Handler:    _TenantManage_TenantOpenWebHook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

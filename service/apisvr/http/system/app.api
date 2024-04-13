@@ -49,7 +49,31 @@ service api {
     post /index (AppModuleIndexReq) returns (AppModuleIndexResp)
 }
 
+@server(
+    group: system/app/policy
+    prefix: /api/v1/system/app/policy
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+service api {
+    @doc "获取应用协议"
+    @handler read
+    post /read (AppPolicyReadReq) returns (AppPolicy)
+
+}
+
 type (
+    AppPolicyReadReq{
+        AppCode string `json:"appCode"`
+        Code string `json:"code"`
+    }
+    AppPolicy{
+     ID int64 `json:"id,optional"`
+     AppCode string `json:"appCode,optional"`
+     Code string           `json:"code,optional"`//
+     Name string           `json:"name,optional"`//
+     Subject string `json:"subject,optional"`
+     Body string `json:"body,optional"`
+    }
 
     AppModuleMultiUpdateReq{
         Code string `json:"code"`                     // 应用编号

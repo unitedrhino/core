@@ -11,7 +11,6 @@ func ToSlotDo(in *SysSlotInfo) *slot.Info {
 		SlotCode: in.SlotCode,
 		Method:   in.Method,
 		Uri:      in.Uri,
-		Proto:    in.Proto,
 		Hosts:    in.Hosts,
 		Body:     in.Body,
 		Handler:  in.Handler,
