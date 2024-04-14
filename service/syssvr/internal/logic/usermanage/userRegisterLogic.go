@@ -215,6 +215,21 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 			UserID: in.UserID,
 			RoleID: cfg.RegisterRoleID,
 		})
+		if err != nil {
+			return err
+		}
+		if cfg.RegisterCreateProject != def.True {
+			return nil
+		}
+		po := &relationDB.SysProjectInfo{
+			ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
+			ProjectName: in.UserName.String + "的小屋",
+			//CompanyName: utils.ToEmptyString(in.CompanyName),
+			AdminUserID: in.UserID,
+			//Region:      utils.ToEmptyString(in.Region),
+			//Address:     utils.ToEmptyString(in.Address),
+		}
+		err = relationDB.NewProjectInfoRepo(tx).Insert(ctx, po)
 		return err
 	})
 	return err

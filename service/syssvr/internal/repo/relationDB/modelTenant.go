@@ -107,12 +107,13 @@ func (m *SysTenantAppMenu) TableName() string {
 
 // 租户下的邮箱配置
 type SysTenantConfig struct {
-	ID             int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode     stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	Email          *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                                 //邮箱配置
-	DingTalk       *SysTenantThird   `gorm:"embedded;embeddedPrefix:ding_talk_"`                             //钉钉企业应用接入
-	WxMini         *SysTenantThird   `gorm:"embedded;embeddedPrefix:wxmini_"`                                //微信小程序接入
-	RegisterRoleID int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
+	ID                    int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode            stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	Email                 *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                                 //邮箱配置
+	DingTalk              *SysTenantThird   `gorm:"embedded;embeddedPrefix:ding_talk_"`                             //钉钉企业应用接入
+	WxMini                *SysTenantThird   `gorm:"embedded;embeddedPrefix:wxmini_"`                                //微信小程序接入
+	RegisterRoleID        int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
+	RegisterCreateProject int64             `gorm:"column:register_create_project;type:int;default:2"`              //注册自动创建项目
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }

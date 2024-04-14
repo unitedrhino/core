@@ -264,7 +264,7 @@ type SysUserProfile struct {
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:tc_un;"`   // 租户编码
 	UserID     int64             `gorm:"column:user_id;primary_key;uniqueIndex:tc_un;type:BIGINT;NOT NULL"` // 用户id
 	Code       string            `gorm:"column:code;type:VARCHAR(50);uniqueIndex:tc_un;NOT NULL"`           //配置code
-	Params     string            `gorm:"column:params;type:json;NOT NULL"`
+	Params     string            `gorm:"column:params;type:text;NOT NULL"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_un;"`
 }
