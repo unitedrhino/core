@@ -994,6 +994,7 @@ message UserRegisterReq{
   string codeID =4;  //验证码编号 微信注册填state
   string password =5;
   UserInfo info = 6;//填写用户信息
+  map<string,string> expand =7; //拓展, 微信登录方式 phoneCode:获取手机号code
 }
 
 message UserRegisterResp{

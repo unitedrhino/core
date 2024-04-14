@@ -32,6 +32,7 @@ func (l *RegisterLogic) Register(req *types.UserRegisterReq) error {
 		Code:     req.Code,
 		CodeID:   req.CodeID,
 		Password: req.Password,
+		Expand:   req.Expand,
 		Info:     user.UserInfoToRpc(req.Info),
 	})
 	return err

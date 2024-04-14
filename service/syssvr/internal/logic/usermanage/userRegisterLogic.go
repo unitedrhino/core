@@ -93,22 +93,37 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		return nil, errors.System.AddDetail(err)
 	}
 	auth := cli.MiniProgram.GetAuth()
-	ret, err := auth.Code2SessionContext(l.ctx, in.Code)
+
+	wxUid, err := auth.Code2SessionContext(l.ctx, in.Code)
 	if err != nil {
 		l.Errorf("%v.Code2SessionContext err:%v", err)
-		if ret.ErrCode != 0 {
-			return nil, errors.System.AddDetail(ret.ErrMsg)
+		if wxUid.ErrCode != 0 {
+			return nil, errors.System.AddDetail(wxUid.ErrMsg)
 		}
 		return nil, errors.System.AddDetail(err)
-	} else if ret.ErrCode != 0 {
-		return nil, errors.Parameter.AddDetail(ret.ErrMsg)
+	} else if wxUid.ErrCode != 0 {
+		return nil, errors.Parameter.AddDetail(wxUid.ErrMsg)
 	}
+
+	if in.Expand == nil || in.Expand["phoneCode"] == "" {
+		return nil, errors.Parameter.AddMsg("微信小程序注册需要填写expand.phoneCode")
+	}
+	phoneCode := in.Expand["phoneCode"]
+	wxPhone, err := auth.GetPhoneNumberContext(l.ctx, phoneCode)
+	if err != nil {
+		return nil, errors.System.AddDetail(err)
+	}
+	if wxPhone.ErrCode != 0 {
+		return nil, errors.Parameter.AddDetail(wxPhone.ErrMsg)
+	}
+
 	userID := l.svcCtx.UserID.GetSnowflakeId()
 
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: ret.UnionID})
+		_, err = uidb.FindOneByFilter(l.ctx,
+			relationDB.UserInfoFilter{WechatUnionID: wxUid.UnionID, WechatOpenID: wxUid.OpenID})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister
 		}
@@ -116,8 +131,12 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 			return err
 		}
 		ui := relationDB.SysUserInfo{
-			UserID:        userID,
-			WechatUnionID: sql.NullString{Valid: true, String: ret.UnionID},
+			UserID:       userID,
+			Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+			WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+		}
+		if wxUid.UnionID != "" {
+			ui.WechatUnionID = sql.NullString{Valid: true, String: wxUid.UnionID}
 		}
 		if in.Info != nil {
 			ui.NickName = in.Info.NickName
