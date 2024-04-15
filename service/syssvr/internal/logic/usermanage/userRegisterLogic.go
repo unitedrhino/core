@@ -130,6 +130,16 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
+		phone, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phone: wxPhone.PhoneInfo.PurePhoneNumber})
+		if err == nil { //手机号注册过,绑定微信信息
+			phone.WechatOpenID = sql.NullString{Valid: true, String: wxUid.OpenID}
+			if wxUid.UnionID != "" {
+				phone.WechatUnionID = sql.NullString{Valid: true, String: wxUid.UnionID}
+			}
+			return uidb.Update(l.ctx, phone)
+		} else if !errors.Cmp(err, errors.NotFind) { //如果是数据库错误,则直接返回
+			return err
+		}
 		ui := relationDB.SysUserInfo{
 			UserID:       userID,
 			Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
