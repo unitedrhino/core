@@ -109,7 +109,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		return nil, errors.Parameter.AddMsg("微信小程序注册需要填写expand.phoneCode")
 	}
 	phoneCode := in.Expand["phoneCode"]
-	wxPhone, err := auth.GetPhoneNumberContext(l.ctx, phoneCode)
+	wxPhone, err := auth.GetPhoneNumber(phoneCode)
 	if err != nil {
 		return nil, errors.System.AddDetail(err)
 	}
