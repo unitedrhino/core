@@ -141,9 +141,9 @@ type SysTenantEmail struct {
 
 // 第三方app配置
 type SysTenantThird struct {
-	AppID     string `gorm:"column:app_id;type:VARCHAR(50);default:'';NOT NULL"`
-	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';NOT NULL"`
-	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';NOT NULL"`
+	AppID     string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`
+	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
+	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
 }
 
 func (m *SysTenantConfig) TableName() string {

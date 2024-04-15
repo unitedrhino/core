@@ -179,11 +179,11 @@ type SysUserInfo struct {
 	Password       string            `gorm:"column:password;type:CHAR(32);NOT NULL"`                                                                                                                            // 登录密码
 	Email          sql.NullString    `gorm:"column:email;uniqueIndex:tc_email;type:VARCHAR(255)"`                                                                                                               // 邮箱
 	Phone          sql.NullString    `gorm:"column:phone;uniqueIndex:tc_phone;type:VARCHAR(20)"`                                                                                                                // 手机号
-	WechatUnionID  sql.NullString    `gorm:"column:wechat_union_id;uniqueIndex:tc_wui;type:VARCHAR(20)"`                                                                                                        // 微信union id
-	WechatOpenID   sql.NullString    `gorm:"column:wechat_open_id;uniqueIndex:tc_woi;type:VARCHAR(20)"`                                                                                                         // 微信union id
-	DingTalkUserID sql.NullString    `gorm:"column:ding_talk_user_id;uniqueIndex:tc_doi;type:VARCHAR(20)"`
-	LastIP         string            `gorm:"column:last_ip;type:VARCHAR(40);NOT NULL"`            // 最后登录ip
-	RegIP          string            `gorm:"column:reg_ip;type:VARCHAR(40);NOT NULL"`             // 注册ip
+	WechatUnionID  sql.NullString    `gorm:"column:wechat_union_id;uniqueIndex:tc_wui;type:VARCHAR(128)"`                                                                                                       // 微信union id
+	WechatOpenID   sql.NullString    `gorm:"column:wechat_open_id;uniqueIndex:tc_woi;type:VARCHAR(128)"`                                                                                                        // 微信union id
+	DingTalkUserID sql.NullString    `gorm:"column:ding_talk_user_id;uniqueIndex:tc_doi;type:VARCHAR(128)"`
+	LastIP         string            `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`           // 最后登录ip
+	RegIP          string            `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`            // 注册ip
 	Sex            int64             `gorm:"column:sex;type:SMALLINT;default:3;NOT NULL"`         // 用户的性别，值为1时是男性，值为2时是女性，其他值为未知
 	City           string            `gorm:"column:city;type:VARCHAR(50);NOT NULL"`               // 用户所在城市
 	Country        string            `gorm:"column:country;type:VARCHAR(50);NOT NULL"`            // 用户所在国家
