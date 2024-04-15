@@ -16,7 +16,7 @@ import (
 const (
 	CodeDmDeviceConn           = "dmDeviceConn"
 	CodeDmDeviceDisConn        = "dmDeviceDisConn"
-	CodeDmDevicePropertyUpdate = "dmDevicePropertyUpdate"
+	CodeDmDevicePropertyReport = "dmDevicePropertyReport"
 )
 
 type Info struct {
