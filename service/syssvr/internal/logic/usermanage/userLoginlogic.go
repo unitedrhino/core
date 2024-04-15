@@ -165,13 +165,36 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, errors.Captcha
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}, WithRoles: true, WithTenant: true})
+		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{
+				UserID: userID,
+				Email:  sql.NullString{Valid: true, String: email},
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}, WithRoles: true, WithTenant: true})
+		}
 	case users.RegPhone:
 		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseLogin, in.CodeID, in.Code)
 		if phone == "" || phone != in.Account {
 			return nil, errors.Captcha
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}, WithRoles: true, WithTenant: true})
-
+		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{
+				UserID: userID,
+				Phone:  sql.NullString{Valid: true, String: phone},
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}, WithRoles: true, WithTenant: true})
+		}
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)
 		return nil, errors.Parameter
