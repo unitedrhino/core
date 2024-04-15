@@ -46,13 +46,16 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
 	userInfo := in.AdminUserInfo
-	//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
-	err := usermanagelogic.CheckUserName(userInfo.UserName)
-	if err != nil {
-		return nil, err
+	if userInfo.UserName != "" {
+		//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
+		err := usermanagelogic.CheckUserName(userInfo.UserName)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	//校验密码强度
-	err = usermanagelogic.CheckPwd(l.svcCtx, userInfo.Password)
+	err := usermanagelogic.CheckPwd(l.svcCtx, userInfo.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -60,6 +63,9 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	userID := l.svcCtx.UserID.GetSnowflakeId()
 	//2.对密码进行md5加密
 	password := utils.MakePwd(userInfo.Password, userID, false)
+	if userInfo.Phone == nil && userInfo.Email == nil {
+		return nil, errors.Parameter.AddMsgf("手机号和邮箱必须填写一个")
+	}
 	ui := relationDB.SysUserInfo{
 		TenantCode: stores.TenantCode(in.Info.Code),
 		UserID:     userID,
