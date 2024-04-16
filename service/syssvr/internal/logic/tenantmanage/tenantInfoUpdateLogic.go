@@ -99,6 +99,9 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Empty
 	if in.Desc != nil {
 		old.Desc = utils.ToEmptyString(in.Desc)
 	}
+	if in.Status != 0 {
+		old.Status = in.Status
+	}
 	err = repo.Update(l.ctx, old)
 	err = caches.SetTenant(l.ctx, logic.ToTenantInfoCache(old))
 	if err != nil {

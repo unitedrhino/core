@@ -770,7 +770,8 @@ type TenantInfo struct {
 	Title                 string    `json:"title,optional"`
 	TitleEn               string    `json:"titleEn,optional"`
 	CreatedTime           int64     `json:"createdTime,string,optional"` // 创建时间
-	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"`     //管理员信息
+	Status                int64     `json:"status,optional"`
+	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
 }
 
 type TenantInfoCreateReq struct {

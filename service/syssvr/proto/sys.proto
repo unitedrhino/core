@@ -455,6 +455,7 @@ message TenantInfo{
   string title =13;
   string titleEn =14;
   int64 createdTime =16;
+  int64 status =17;
 }
 message TenantInfoIndexReq{
   PageInfo page = 1;//分页信息

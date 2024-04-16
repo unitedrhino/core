@@ -19,7 +19,7 @@ service api {
     post /upload-url/create (UploadUrlCreateReq) returns (UploadUrlCreateResp)
     @doc(
         summary: "文件直传"
-        inject_formdata_param: "file"
+        injectFormdataParam: "file"
     )
     @handler uploadFile
     post /upload-file() returns (UploadFileResp)
