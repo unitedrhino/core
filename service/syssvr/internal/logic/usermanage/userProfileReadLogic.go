@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -31,6 +32,11 @@ func (l *UserProfileReadLogic) UserProfileRead(in *sys.WithCode) (*sys.UserProfi
 		Code:   in.Code,
 		UserID: ctxs.GetUserCtxNoNil(l.ctx).UserID,
 	})
-
+	if errors.Cmp(err, errors.NotFind) {
+		return &sys.UserProfile{
+			Code:   in.Code,
+			Params: "",
+		}, nil
+	}
 	return utils.Copy[sys.UserProfile](ret), err
 }
