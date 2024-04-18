@@ -1232,6 +1232,15 @@ type WeatherReadResp struct {
 	Air       WeatherAir `json:"air"`
 }
 
+type WebsocketSubscribeIndexResp struct {
+	List []*WebsocketSubscribeInfo `json:"list"`
+}
+
+type WebsocketSubscribeInfo struct {
+	Code   string                 `json:"code"`   //订阅的code
+	Params map[string]interface{} `json:"params"` //订阅参数
+}
+
 type WithAppCodeID struct {
 	AppCode string `json:"appCode"`
 	ID      int64  `json:"id"`

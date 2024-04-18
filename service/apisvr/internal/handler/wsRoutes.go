@@ -238,8 +238,23 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodGet,
-					Path:    "/ws",
-					Handler: systemcommon.WebsocketHandler(serverCtx),
+					Path:    "/websocket/connect",
+					Handler: systemcommon.WebsocketConnectHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/websocket/subscribe/create",
+					Handler: systemcommon.WebsocketSubscribeCreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/websocket/subscribe/delete",
+					Handler: systemcommon.WebsocketSubscribeDeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/websocket/subscribe/index",
+					Handler: systemcommon.WebsocketSubscribeIndexHandler(serverCtx),
 				},
 			}...,
 		),

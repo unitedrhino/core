@@ -1,21 +1,15 @@
 package apidirect
 
 import (
-	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/config"
 	"gitee.com/i-Things/core/service/apisvr/internal/handler"
 	"gitee.com/i-Things/core/service/apisvr/internal/handler/system/proxy"
-	"gitee.com/i-Things/core/service/apisvr/internal/repo/event/appDeviceEvent"
-	"gitee.com/i-Things/core/service/apisvr/internal/repo/event/subApp"
+	"gitee.com/i-Things/core/service/apisvr/internal/startup"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/conf"
-	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
-	"log"
 	"net/http"
-	"os"
 )
 
 type (
@@ -52,17 +46,7 @@ func runApi(apiCtx ApiCtx) ApiCtx {
 	}
 	handler.RegisterHandlers(server, ctx)
 	handler.RegisterWsHandlers(apiCtx.SvcCtx.Ws, ctx)
-	subAppCli, err := subApp.NewSubApp(ctx.Config.Event)
-	if err != nil {
-		logx.Error("NewSubApp err", err)
-		os.Exit(-1)
-	}
-	err = subAppCli.Subscribe(func(ctx1 context.Context) subApp.AppSubEvent {
-		return appDeviceEvent.NewAppDeviceHandle(ctx1, ctx)
-	})
-	if err != nil {
-		log.Fatalf("%v.subApp.Subscribe err:%v",
-			utils.FuncName(), err)
-	}
+	startup.Init(ctx)
+
 	return apiCtx
 }

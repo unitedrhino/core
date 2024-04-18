@@ -111,6 +111,9 @@ type (
 	RoleModuleIndexReq         = sys.RoleModuleIndexReq
 	RoleModuleIndexResp        = sys.RoleModuleIndexResp
 	RoleModuleMultiUpdateReq   = sys.RoleModuleMultiUpdateReq
+	SlotInfo                   = sys.SlotInfo
+	SlotInfoIndexReq           = sys.SlotInfoIndexReq
+	SlotInfoIndexResp          = sys.SlotInfoIndexResp
 	TenantAccessIndexReq       = sys.TenantAccessIndexReq
 	TenantAccessIndexResp      = sys.TenantAccessIndexResp
 	TenantAccessMultiUpdateReq = sys.TenantAccessMultiUpdateReq

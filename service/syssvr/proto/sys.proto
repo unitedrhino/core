@@ -145,6 +145,7 @@ service DictManage{
 
 service Common {
   rpc config(Empty) returns(configResp); //添加菜单
+  rpc slotInfoIndex(SlotInfoIndexReq) returns(SlotInfoIndexResp);//获取插槽列表
 }
 
 service Log {
@@ -691,8 +692,25 @@ message AreaInfoIndexResp {
 //----------------------------------------------------------------------------------------------
 
 
+message SlotInfo{
+  string  code =1;  // 鉴权的编码
+  string  slotCode =2;  //slot的编码
+  string  method =3;  // 请求方式 GET  POST
+  string  uri =4;  // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
+  repeated string  hosts =6;  //访问的地址 host or host:port
+  string  body =7;  // body 参数模板
+  map<string,string>  handler =8;  //http头
+  string  authType =9;  //鉴权类型 core
+}
 
+message SlotInfoIndexReq{
+  string code =1;
+  string subCode =2;
+}
 
+message SlotInfoIndexResp{
+  repeated SlotInfo slots=1;
+}
 
 message AuthApiInfo{
   string route = 1;

@@ -26,9 +26,18 @@ service api {
     @doc "获取天气情况"
     @handler weatherRead
     post /weather/read(WeatherReadReq) returns (WeatherReadResp)
-    @doc "websocket"
-    @handler websocket
-    get /ws () returns ()
+    @doc "websocket连接"
+    @handler websocketConnect
+    get /websocket/connect () returns ()
+    @doc "websocket取消订阅"
+    @handler websocketSubscribeDelete
+    post /websocket/subscribe/delete (WebsocketSubscribeInfo) returns ()
+    @doc "websocket订阅"
+    @handler websocketSubscribeCreate
+    post /websocket/subscribe/create (WebsocketSubscribeInfo) returns ()
+    @doc "websocket订阅列表"
+    @handler websocketSubscribeIndex
+    post /websocket/subscribe/index () returns (WebsocketSubscribeIndexResp)
 }
 
 @server (
@@ -43,6 +52,14 @@ service api {
 }
 
 type (
+    WebsocketSubscribeInfo{
+        Code string  `json:"code"`//订阅的code
+        Params map[string]interface{} `json:"params"`//订阅参数
+    }
+
+    WebsocketSubscribeIndexResp{
+        List []*WebsocketSubscribeInfo `json:"list"`
+    }
     NtpReadReq{
         DeviceSendTime int64  `json:"deviceSendTime,string"`
     }

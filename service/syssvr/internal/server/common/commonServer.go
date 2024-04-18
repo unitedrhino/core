@@ -26,3 +26,8 @@ func (s *CommonServer) Config(ctx context.Context, in *sys.Empty) (*sys.ConfigRe
 	l := commonlogic.NewConfigLogic(ctx, s.svcCtx)
 	return l.Config(in)
 }
+
+func (s *CommonServer) SlotInfoIndex(ctx context.Context, in *sys.SlotInfoIndexReq) (*sys.SlotInfoIndexResp, error) {
+	l := commonlogic.NewSlotInfoIndexLogic(ctx, s.svcCtx)
+	return l.SlotInfoIndex(in)
+}

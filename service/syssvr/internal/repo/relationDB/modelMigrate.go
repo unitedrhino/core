@@ -65,18 +65,22 @@ func Migrate(c conf.Database) error {
 	if err != nil {
 		return err
 	}
-	//{
-	//	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-	//	if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
-	//		return err
-	//	}
-	//	if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
-	//		return err
-	//	}
-	//	if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
-	//		return err
-	//	}
-	//}
+	{
+		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
+		//if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+		//	return err
+		//}
+		//if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+		//	return err
+		//}
+		//if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
+		//	return err
+		//}
+		if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
+			return err
+		}
+
+	}
 
 	if needInitColumn {
 		return migrateTableColumn()
@@ -133,6 +137,9 @@ func migrateTableColumn() error {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
 		return err
 	}
 	//{
@@ -317,6 +324,12 @@ var (
 	MigrateAppInfo = []SysAppInfo{
 		{Code: def.AppCore, Name: "中台"},
 		{Code: def.AppAll, Name: "全部"},
+	}
+
+	MigrateSlotInfo = []SysSlotInfo{
+		{Code: "areaInfo", SubCode: "create", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/area/create", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: "areaInfo", SubCode: "delete", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/area/delete", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: "userSubscribe", SubCode: "devicePropertyReport", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
 	}
 
 	MigrateModuleMenu = []SysModuleMenu{

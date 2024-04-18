@@ -36,8 +36,8 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		in.ParentAreaID == def.NotClassified { //未分类不能有下属的区域
 		return nil, errors.Parameter
 	}
-	list := l.svcCtx.Slot.Get(l.ctx, "areaInfoCreate")
-	err := list.Request(l.ctx, in)
+	list := l.svcCtx.Slot.Get(l.ctx, "areaInfo", "create")
+	err := list.Request(l.ctx, in, nil)
 	if err != nil {
 		return nil, err
 	}

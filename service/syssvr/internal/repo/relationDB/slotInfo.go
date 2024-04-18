@@ -26,12 +26,16 @@ func NewSlotInfoRepo(in any) *SlotInfoRepo {
 type SlotInfoFilter struct {
 	SlotCode string
 	Code     string
+	SubCode  string
 }
 
 func (p SlotInfoRepo) fmtFilter(ctx context.Context, f SlotInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.Code != "" {
 		db = db.Where("code = ?", f.Code)
+	}
+	if f.SubCode != "" {
+		db = db.Where("sub_code = ?", f.SubCode)
 	}
 	if f.SlotCode != "" {
 		db = db.Where("slot_code = ?", f.SlotCode)

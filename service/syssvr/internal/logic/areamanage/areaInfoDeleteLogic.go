@@ -33,8 +33,8 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if in.AreaID == 0 {
 		return nil, errors.Parameter
 	}
-	list := l.svcCtx.Slot.Get(l.ctx, "areaInfoDelete")
-	err := list.Request(l.ctx, in)
+	list := l.svcCtx.Slot.Get(l.ctx, "areaInfo", "delete")
+	err := list.Request(l.ctx, in, nil)
 	if err != nil {
 		return nil, err
 	}

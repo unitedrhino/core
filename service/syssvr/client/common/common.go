@@ -111,6 +111,9 @@ type (
 	RoleModuleIndexReq         = sys.RoleModuleIndexReq
 	RoleModuleIndexResp        = sys.RoleModuleIndexResp
 	RoleModuleMultiUpdateReq   = sys.RoleModuleMultiUpdateReq
+	SlotInfo                   = sys.SlotInfo
+	SlotInfoIndexReq           = sys.SlotInfoIndexReq
+	SlotInfoIndexResp          = sys.SlotInfoIndexResp
 	TenantAccessIndexReq       = sys.TenantAccessIndexReq
 	TenantAccessIndexResp      = sys.TenantAccessIndexResp
 	TenantAccessMultiUpdateReq = sys.TenantAccessMultiUpdateReq
@@ -179,6 +182,7 @@ type (
 
 	Common interface {
 		Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
+		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 	}
 
 	defaultCommon struct {
@@ -211,4 +215,13 @@ func (m *defaultCommon) Config(ctx context.Context, in *Empty, opts ...grpc.Call
 
 func (d *directCommon) Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error) {
 	return d.svr.Config(ctx, in)
+}
+
+func (m *defaultCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.SlotInfoIndex(ctx, in, opts...)
+}
+
+func (d *directCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {
+	return d.svr.SlotInfoIndex(ctx, in)
 }

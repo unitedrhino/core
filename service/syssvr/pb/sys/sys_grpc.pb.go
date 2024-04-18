@@ -3742,7 +3742,8 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Common_Config_FullMethodName = "/sys.Common/config"
+	Common_Config_FullMethodName        = "/sys.Common/config"
+	Common_SlotInfoIndex_FullMethodName = "/sys.Common/slotInfoIndex"
 )
 
 // CommonClient is the client API for Common service.
@@ -3750,6 +3751,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommonClient interface {
 	Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
+	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 }
 
 type commonClient struct {
@@ -3769,11 +3771,21 @@ func (c *commonClient) Config(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return out, nil
 }
 
+func (c *commonClient) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {
+	out := new(SlotInfoIndexResp)
+	err := c.cc.Invoke(ctx, Common_SlotInfoIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommonServer is the server API for Common service.
 // All implementations must embed UnimplementedCommonServer
 // for forward compatibility
 type CommonServer interface {
 	Config(context.Context, *Empty) (*ConfigResp, error)
+	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
 	mustEmbedUnimplementedCommonServer()
 }
 
@@ -3783,6 +3795,9 @@ type UnimplementedCommonServer struct {
 
 func (UnimplementedCommonServer) Config(context.Context, *Empty) (*ConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Config not implemented")
+}
+func (UnimplementedCommonServer) SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoIndex not implemented")
 }
 func (UnimplementedCommonServer) mustEmbedUnimplementedCommonServer() {}
 
@@ -3815,6 +3830,24 @@ func _Common_Config_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Common_SlotInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SlotInfoIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoIndex(ctx, req.(*SlotInfoIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Common_ServiceDesc is the grpc.ServiceDesc for Common service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3825,6 +3858,10 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "config",
 			Handler:    _Common_Config_Handler,
+		},
+		{
+			MethodName: "slotInfoIndex",
+			Handler:    _Common_SlotInfoIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -63,6 +63,7 @@ func (SysDictDetail) TableName() string {
 type SysSlotInfo struct {
 	ID       int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
 	Code     string            `gorm:"column:code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"`            // 鉴权的编码
+	SubCode  string            `gorm:"column:sub_code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"`        // 鉴权的编码
 	SlotCode string            `gorm:"column:slot_code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"`       //slot的编码
 	Method   string            `gorm:"column:method;type:VARCHAR(50);NOT NULL"`                                 // 请求方式 GET  POST
 	Uri      string            `gorm:"column:uri;type:VARCHAR(100);NOT NULL"`                                   // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe

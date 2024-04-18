@@ -26,10 +26,13 @@ import (
 	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/oss"
+	"gitee.com/i-Things/share/utils"
 	"gitee.com/i-Things/share/verify"
 	ws "gitee.com/i-Things/share/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
@@ -59,6 +62,7 @@ type SvrClient struct {
 type ServiceContext struct {
 	SvrClient
 	Ws             *ws.Server
+	UserSubscribe  *ws.UserSubscribe
 	Config         config.Config
 	CheckTokenWare rest.Middleware
 	DataAuthWare   rest.Middleware
@@ -67,6 +71,8 @@ type ServiceContext struct {
 	InitCtxsWare   rest.Middleware
 	Captcha        *verify.Captcha
 	OssClient      *oss.Client
+	NodeID         int64
+	ServerMsg      *eventBus.FastEvent
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -90,8 +96,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	var lo log.Log
 
 	caches.InitStore(c.CacheRedis)
-
-	ws.StartWsDp(false)
+	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name)
+	logx.Must(err)
+	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
+	ws.StartWsDp(false, nodeID, serverMsg, c.CacheRedis)
 	if c.SysRpc.Enable {
 		if c.SysRpc.Mode == conf.ClientModeGrpc {
 			projectM = projectmanage.NewProjectManage(zrpc.MustNewClient(c.SysRpc.Conf))
@@ -159,7 +167,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Captcha:        captcha,
 		OssClient:      ossClient,
 		Ws:             ws.MustNewServer(c.RestConf),
-
+		NodeID:         nodeID,
+		ServerMsg:      serverMsg,
+		UserSubscribe:  ws.NewUserSubscribe(kv.NewStore(c.CacheRedis)),
 		SvrClient: SvrClient{
 			TenantRpc:      tenantM,
 			AppRpc:         appRpc,
