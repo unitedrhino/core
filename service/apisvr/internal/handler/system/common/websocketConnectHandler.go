@@ -1,15 +1,17 @@
 package common
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/common"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/share/result"
 	"github.com/gorilla/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
+
+	"gitee.com/i-Things/share/result"
+
+	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/common"
+	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 )
 
-func WebsocketHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func WebsocketConnectHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var upgrader = websocket.Upgrader{
 			// 读取存储空间大小
@@ -28,7 +30,7 @@ func WebsocketHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			logx.WithContext(r.Context()).Error("[ws]连接失败", "RemoteAddr:", r.RemoteAddr, "err", err)
 			return
 		}
-		l := common.NewWebsocketLogic(r.Context(), svcCtx)
-		l.InitWebsocketConn(r, conn)
+		l := common.NewWebsocketConnectLogic(r.Context(), svcCtx)
+		l.WebsocketConnect(r, conn)
 	}
 }
