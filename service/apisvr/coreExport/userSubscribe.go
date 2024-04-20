@@ -33,42 +33,61 @@ func NewUserSubscribe(store kv.Store, ServerMsg *eventBus.FastEvent) *UserSubscr
 	return &UserSubscribe{us: ws.NewUserSubscribe(store), publishChan: map[int64]chan publishStu{}, ServerMsg: ServerMsg}
 }
 
-func (u *UserSubscribe) Publish(ctx context.Context, info *ws.SubscribeInfo, data any) error {
-	ret, err := u.us.IndexInfo(ctx, info)
-	if err != nil {
-		return err
-	}
-	if len(ret) == 0 {
-		return nil
-	}
-	func() { //初始化channel
-		u.mutex.Lock()
-		defer u.mutex.Unlock()
-		for k := range ret {
-			if u.publishChan[k] == nil {
-				c := make(chan publishStu, asyncExecMax)
-				u.publishChan[k] = c
-				kk := k
-				utils.Go(ctx, func() {
-					u.publish(kk, c)
-				})
-			}
+func (u *UserSubscribe) Publish(ctx context.Context, code string, data any, params ...map[string]any) error {
+	var pubMap = map[int64]map[int64]struct{}{} //第一个参数是nodeID,第二个参数是userID
+	for _, pa := range params {
+		ret, err := u.us.IndexInfo(ctx, &ws.SubscribeInfo{
+			Code:   code,
+			Params: pa,
+		})
+		if err != nil {
+			return err
 		}
-	}()
-	u.mutex.RLock()
-	defer u.mutex.RUnlock()
-	for k, vs := range ret {
-		for _, v := range vs {
+		if len(ret) == 0 {
+			continue
+		}
+		func() { //初始化channel
+			u.mutex.Lock()
+			defer u.mutex.Unlock()
+			for k := range ret {
+				if u.publishChan[k] == nil {
+					c := make(chan publishStu, asyncExecMax)
+					u.publishChan[k] = c
+					kk := k
+					utils.Go(ctx, func() {
+						u.publish(kk, c)
+					})
+				}
+			}
+		}()
+		func() {
+			u.mutex.RLock()
+			defer u.mutex.RUnlock()
+			for k, vs := range ret {
+				for _, v := range vs {
+					if pubMap[k] == nil {
+						pubMap[k] = map[int64]struct{}{v: {}}
+						continue
+					}
+					pubMap[k][v] = struct{}{}
+				}
+			}
+		}()
+	}
+	for k, vM := range pubMap {
+		for v := range vM {
 			u.publishChan[k] <- publishStu{
 				WsPublish: &ws.WsPublish{
 					UserID: v,
-					Code:   info.Code,
+					Code:   code,
 					Data:   data,
 				},
 				ctx: ctxs.CopyCtx(ctx),
 			}
 		}
+
 	}
+
 	return nil
 }
 
