@@ -47,5 +47,6 @@ func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		IsAllData:  claim.IsAllData,
 		TenantCode: claim.TenantCode,
 		IsAdmin:    claim.IsAdmin,
+		Account:    claim.Account,
 	}, nil
 }

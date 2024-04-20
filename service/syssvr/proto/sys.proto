@@ -896,6 +896,7 @@ message UserCheckTokenResp{
   string tenantCode = 5;//租户编码
   int64 isAdmin = 6;//是否是超级管理员
   string userName = 7;//用户名
+  string account = 8 ;//账号
 }
 
 message RoleAppMultiUpdateReq{

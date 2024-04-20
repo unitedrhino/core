@@ -154,5 +154,6 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		IsAdmin:    resp.IsAdmin == def.True,
 		IsAllData:  resp.IsAllData == def.True,
 		UserName:   resp.UserName,
+		Account:    resp.Account,
 	}, nil
 }
