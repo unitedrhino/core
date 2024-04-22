@@ -61,10 +61,10 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 
 	switch in.RegType {
 	case users.RegEmail:
-		email := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, def.CaptchaUseRegister, in.CodeID, in.Code)
-		if email == "" || email != in.Account {
-			return nil, errors.Captcha
-		}
+		//email := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, def.CaptchaUseRegister, in.CodeID, in.Code)
+		//if email == "" || email != in.Account {
+		//	return nil, errors.Captcha
+		//}
 		ui.Email = utils.AnyToNullString(in.Account)
 	case users.RegPhone:
 		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseRegister, in.CodeID, in.Code)
@@ -197,30 +197,13 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
-		return Register(l.ctx, l.svcCtx, &ui, tx)
+		return l.FillUserInfo(&ui, tx)
 	})
 	return &sys.UserRegisterResp{UserID: userID}, err
 }
 
 func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB) error {
-	err := tx.Transaction(func(tx *gorm.DB) error {
-		cfg, err := relationDB.NewTenantConfigRepo(tx).FindOne(l.ctx)
-		if err != nil {
-			return err
-		}
-		in.RegIP = l.uc.IP
-		in.Role = cfg.RegisterRoleID
-		uidb := relationDB.NewUserInfoRepo(tx)
-		err = uidb.Insert(l.ctx, in)
-		if err != nil {
-			return err
-		}
-		err = relationDB.NewUserRoleRepo(tx).Insert(l.ctx, &relationDB.SysUserRole{
-			UserID: in.UserID,
-			RoleID: cfg.RegisterRoleID,
-		})
-		return err
-	})
+	err := Register(l.ctx, l.svcCtx, in, tx)
 	if err != nil && errors.Cmp(err, errors.Duplicate) { //已经注册过
 		return errors.DuplicateRegister
 	}
@@ -252,13 +235,13 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		}
 		po := &relationDB.SysProjectInfo{
 			ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
-			ProjectName: in.UserName.String + "的小屋",
+			ProjectName: GetAccount(in) + "的小屋",
 			//CompanyName: utils.ToEmptyString(in.CompanyName),
 			AdminUserID: in.UserID,
 			//Region:      utils.ToEmptyString(in.Region),
 			//Address:     utils.ToEmptyString(in.Address),
 		}
-		err = relationDB.NewProjectInfoRepo(tx).Insert(ctx, po)
+		err = relationDB.NewProjectInfoRepo(tx).Insert(ctxs.WithRoot(ctx), po)
 		if err != nil {
 			return err
 		}

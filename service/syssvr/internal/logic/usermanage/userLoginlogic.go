@@ -232,3 +232,16 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 	}
 	return nil, err
 }
+func GetAccount(ui *relationDB.SysUserInfo) string {
+	var account = ui.UserName.String
+	if account == "" {
+		account = ui.Phone.String
+	}
+	if account == "" {
+		account = ui.Email.String
+	}
+	if account == "" {
+		account = cast.ToString(ui.UserID)
+	}
+	return account
+}
