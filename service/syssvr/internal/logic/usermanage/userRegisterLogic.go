@@ -211,13 +211,14 @@ func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB
 }
 
 func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, tx *gorm.DB) error {
+	uc := ctxs.GetUserCtx(ctx)
 	err := tx.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		cfg, err := relationDB.NewTenantConfigRepo(tx).FindOne(ctx)
 		if err != nil {
 			return err
 		}
-		in.RegIP = ctxs.GetUserCtx(ctx).IP
+		in.RegIP = uc.IP
 		in.Role = cfg.RegisterRoleID
 		err = uidb.Insert(ctx, in)
 		if err != nil {
@@ -234,6 +235,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 			return nil
 		}
 		po := &relationDB.SysProjectInfo{
+			TenantCode:  stores.TenantCode(uc.TenantCode),
 			ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
 			ProjectName: GetAccount(in) + "的小屋",
 			//CompanyName: utils.ToEmptyString(in.CompanyName),
