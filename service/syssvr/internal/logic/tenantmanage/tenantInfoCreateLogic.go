@@ -85,6 +85,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	}
 
 	projectPo := relationDB.SysProjectInfo{
+		TenantCode:  stores.TenantCode(in.Info.Code),
 		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.Info.Name,
 		//CompanyName: utils.ToEmptyString(in.CompanyName),
