@@ -29,6 +29,7 @@ func NewDataProjectMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceCont
 }
 
 func (l *DataProjectMultiUpdateLogic) DataProjectMultiUpdate(in *sys.DataProjectMultiUpdateReq) (*sys.Empty, error) {
+	// todo
 	if in.TargetID == 0 {
 		return nil, errors.Parameter.AddDetail(in.TargetID).WithMsg("用户ID参数必填")
 	}

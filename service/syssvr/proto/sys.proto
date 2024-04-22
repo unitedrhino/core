@@ -423,7 +423,7 @@ message UserMessageIndexResp{
 
 message NotifyInfoSendReq{
       repeated int64 userIDs     =1; //只有填写了用户ID才会记录
-//      string accounts    =2;
+      repeated string accounts    =2;
 //      string accountType =3;
       string notifyCode  =4;         //通知的code
       string type        =5; //通知类型

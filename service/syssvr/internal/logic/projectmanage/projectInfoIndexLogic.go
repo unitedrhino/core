@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -34,15 +35,31 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 		list  []*sys.ProjectInfo
 		total int64
 		err   error
+		uc    = ctxs.GetUserCtx(l.ctx)
 	)
-	ctxs.GetUserCtx(l.ctx).AllProject = true
+	uc.AllProject = true
 	defer func() {
-		ctxs.GetUserCtx(l.ctx).AllProject = false
+		uc.AllProject = false
 	}()
 	filter := relationDB.ProjectInfoFilter{
 		ProjectIDs:  in.ProjectIDs,
 		ProjectName: in.ProjectName,
 	}
+	if !uc.IsAdmin { //不是超管需要鉴权
+		projects, err := relationDB.NewDataProjectRepo(l.ctx).FindByFilter(l.ctx,
+			relationDB.DataProjectFilter{Targets: []*relationDB.Target{
+				{ID: uc.UserID, Type: def.TargetUser}, {ID: uc.RoleID, Type: def.TargetRole}}}, nil)
+		if err != nil {
+			return nil, err
+		}
+		if len(projects) == 0 {
+			return &sys.ProjectInfoIndexResp{}, nil
+		}
+		for _, v := range projects {
+			filter.ProjectIDs = append(filter.ProjectIDs, v.ProjectID)
+		}
+	}
+
 	total, err = l.PiDB.CountByFilter(l.ctx, filter)
 	if err != nil {
 		return nil, err

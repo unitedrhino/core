@@ -23,7 +23,7 @@ func checkUser(ctx context.Context, userID int64) (*relationDB.SysUserInfo, erro
 }
 
 func InitCacheUserAuthProject(ctx context.Context, userID int64) error {
-	projects, err := relationDB.NewDataProjectRepo(ctx).FindByFilter(ctx, relationDB.UserProjectFilter{UserID: userID}, nil)
+	projects, err := relationDB.NewDataProjectRepo(ctx).FindByFilter(ctx, relationDB.DataProjectFilter{ProjectID: userID}, nil)
 	if err != nil {
 		return err
 	}

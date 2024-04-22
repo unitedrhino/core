@@ -34,8 +34,8 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 		err   error
 	)
 
-	filter := relationDB.UserProjectFilter{
-		UserID: in.UserID,
+	filter := relationDB.DataProjectFilter{
+		ProjectID: in.UserID,
 	}
 
 	total, err = l.UapDB.CountByFilter(l.ctx, filter)

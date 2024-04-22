@@ -27,6 +27,7 @@ func NewNotifyInfoSendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *No
 func (l *NotifyInfoSendLogic) NotifyInfoSend(in *sys.NotifyInfoSendReq) (*sys.Empty, error) {
 	err := SendNotifyMsg(l.ctx, l.svcCtx, SendMsgConfig{
 		UserIDs:    in.UserIDs,
+		Accounts:   in.Accounts,
 		NotifyCode: in.NotifyCode,
 		Type:       in.Type,
 		Params:     utils.ToStringMap(in.Params),

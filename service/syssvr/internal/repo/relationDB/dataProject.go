@@ -24,15 +24,38 @@ func NewDataProjectRepo(in any) *DataProjectRepo {
 	return &DataProjectRepo{db: stores.GetCommonConn(in)}
 }
 
-type UserProjectFilter struct {
-	UserID int64
+type Target struct {
+	Type def.TargetType
+	ID   int64
 }
 
-func (p DataProjectRepo) fmtFilter(ctx context.Context, f UserProjectFilter) *gorm.DB {
+type DataProjectFilter struct {
+	ProjectID int64
+	Targets   []*Target
+	AuthType  int64
+}
+
+func (p DataProjectRepo) fmtFilter(ctx context.Context, f DataProjectFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	//if f.UserID != 0 {
-	//	db = db.Where("user_id= ?", f.UserID)
-	//}
+	if f.ProjectID != 0 {
+		db = db.Where("user_id= ?", f.ProjectID)
+	}
+	if len(f.Targets) != 0 {
+		scope := func(db *gorm.DB) *gorm.DB {
+			for i, d := range f.Targets {
+				if i == 0 {
+					db = db.Where("target_id = ? and target_type = ?", d.ID, d.Type)
+					continue
+				}
+				db = db.Or("target_id = ? and target_type = ?", d.ID, d.Type)
+			}
+			return db
+		}
+		db = db.Where(scope(db))
+	}
+	if f.AuthType != 0 {
+		db = db.Where("user_id= ?", f.AuthType)
+	}
 	return db
 }
 
@@ -41,7 +64,7 @@ func (g DataProjectRepo) Insert(ctx context.Context, data *SysDataProject) error
 	return stores.ErrFmt(result.Error)
 }
 
-func (g DataProjectRepo) FindOneByFilter(ctx context.Context, f UserProjectFilter) (*SysDataProject, error) {
+func (g DataProjectRepo) FindOneByFilter(ctx context.Context, f DataProjectFilter) (*SysDataProject, error) {
 	var result SysDataProject
 	db := g.fmtFilter(ctx, f)
 	err := db.First(&result).Error
@@ -50,7 +73,7 @@ func (g DataProjectRepo) FindOneByFilter(ctx context.Context, f UserProjectFilte
 	}
 	return &result, nil
 }
-func (p DataProjectRepo) FindByFilter(ctx context.Context, f UserProjectFilter, page *def.PageInfo) ([]*SysDataProject, error) {
+func (p DataProjectRepo) FindByFilter(ctx context.Context, f DataProjectFilter, page *def.PageInfo) ([]*SysDataProject, error) {
 	var results []*SysDataProject
 	db := p.fmtFilter(ctx, f).Model(&SysDataProject{})
 	db = page.ToGorm(db)
@@ -61,7 +84,7 @@ func (p DataProjectRepo) FindByFilter(ctx context.Context, f UserProjectFilter, 
 	return results, nil
 }
 
-func (p DataProjectRepo) CountByFilter(ctx context.Context, f UserProjectFilter) (size int64, err error) {
+func (p DataProjectRepo) CountByFilter(ctx context.Context, f DataProjectFilter) (size int64, err error) {
 	db := p.fmtFilter(ctx, f).Model(&SysDataProject{})
 	err = db.Count(&size).Error
 	return size, stores.ErrFmt(err)
@@ -72,7 +95,7 @@ func (g DataProjectRepo) Update(ctx context.Context, data *SysDataProject) error
 	return stores.ErrFmt(err)
 }
 
-func (g DataProjectRepo) DeleteByFilter(ctx context.Context, f UserProjectFilter) error {
+func (g DataProjectRepo) DeleteByFilter(ctx context.Context, f DataProjectFilter) error {
 	db := g.fmtFilter(ctx, f)
 	err := db.Delete(&SysDataProject{}).Error
 	return stores.ErrFmt(err)
@@ -108,7 +131,7 @@ func (g DataProjectRepo) MultiUpdate(ctx context.Context, userID int64, projects
 	}
 	err := g.db.Transaction(func(tx *gorm.DB) error {
 		rm := NewDataProjectRepo(tx)
-		err := rm.DeleteByFilter(ctx, UserProjectFilter{UserID: userID})
+		err := rm.DeleteByFilter(ctx, DataProjectFilter{ProjectID: userID})
 		if err != nil {
 			return err
 		}

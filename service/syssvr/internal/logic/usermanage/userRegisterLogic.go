@@ -259,6 +259,15 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 			//Address:     utils.ToEmptyString(in.Address),
 		}
 		err = relationDB.NewProjectInfoRepo(tx).Insert(ctx, po)
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewDataProjectRepo(tx).Insert(ctx, &relationDB.SysDataProject{
+			ProjectID:  int64(po.ProjectID),
+			TargetType: def.TargetUser,
+			TargetID:   in.UserID,
+			AuthType:   def.AuthAdmin,
+		})
 		return err
 	})
 	return err
