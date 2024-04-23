@@ -329,7 +329,8 @@ var (
 	MigrateSlotInfo = []SysSlotInfo{
 		{Code: "areaInfo", SubCode: "create", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/area/create", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
 		{Code: "areaInfo", SubCode: "delete", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/area/delete", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
-		{Code: "userSubscribe", SubCode: "devicePropertyReport", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport, SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: "userSubscribe", SubCode: def.UserSubscribeDeviceConn, SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
 	}
 
 	MigrateModuleMenu = []SysModuleMenu{

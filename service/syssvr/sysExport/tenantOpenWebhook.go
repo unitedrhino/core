@@ -1,10 +1,9 @@
-package tenantOpenWebhook
+package sysExport
 
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/service/syssvr/sysExport"
 	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/eventBus"
@@ -15,24 +14,23 @@ import (
 
 const (
 	CodeDmDeviceConn           = "dmDeviceConn"
-	CodeDmDeviceDisConn        = "dmDeviceDisConn"
-	CodeDmDevicePropertyReport = "dmDevicePropertyReport"
+	CodeDmDevicePropertyReport = "devicePropertyReport"
 )
 
-type Info struct {
+type Webhook struct {
 	*caches.Cache[sys.TenantOpenWebHook]
 }
 
-func NewTenantOpenWebhook(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*Info, error) {
-	c, err := sysExport.NewTenantOpenWebhookCache(pm, fastEvent)
+func NewTenantOpenWebhook(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*Webhook, error) {
+	c, err := NewTenantOpenWebhookCache(pm, fastEvent)
 	if err != nil {
 		return nil, err
 	}
-	return &Info{Cache: c}, nil
+	return &Webhook{Cache: c}, nil
 }
 
-func (i *Info) Publish(ctx context.Context, code string, in any) error {
-	hook, err := i.GetData(ctx, sysExport.GenWebhookCacheKey(ctx, code))
+func (i *Webhook) Publish(ctx context.Context, code string, in any) error {
+	hook, err := i.GetData(ctx, GenWebhookCacheKey(ctx, code))
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {
 			return nil
