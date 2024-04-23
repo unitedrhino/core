@@ -1066,10 +1066,10 @@ type UserInfo struct {
 	CreatedTime     int64            `json:"createdTime,string,optional"`        // 创建时间
 	Role            int64            `json:"role,optional"`                      // 用户角色默认
 	Sex             int64            `json:"sex,optional"`                       // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-	IsAllData       int64            `json:"isAllData,optional"`                 // 是否所有数据权限（1是，2否）
-	MessageNotRead  map[string]int64 `json:"messageNotRead,optional"`
-	Roles           []*RoleInfo      `json:"roles,optional"`
-	Tenant          *TenantInfo      `json:"tenant,optional"`
+	IsAllData       int64            `json:"isAllData,optional,omitempty"`       // 是否所有数据权限（1是，2否）
+	MessageNotRead  map[string]int64 `json:"messageNotRead,optional,omitempty"`
+	Roles           []*RoleInfo      `json:"roles,optional,omitempty"`
+	Tenant          *TenantInfo      `json:"tenant,optional,omitempty"`
 }
 
 type UserInfoCreateReq struct {
@@ -1086,6 +1086,7 @@ type UserInfoIndexReq struct {
 	UserName string    `json:"userName,optional"` //用户名(唯一)
 	Phone    string    `json:"phone,optional"`    // 手机号
 	Email    string    `json:"email,optional"`    // 邮箱
+	Account  string    `json:"account,optional"`
 }
 
 type UserInfoIndexResp struct {

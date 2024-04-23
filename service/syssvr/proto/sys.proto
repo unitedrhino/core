@@ -934,6 +934,7 @@ message UserInfoIndexReq{
   string phone = 3;
   string email = 4;
   repeated int64 userIDs =5;
+  string account =6;
 }
 
 message UserInfoIndexResp{
