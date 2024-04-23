@@ -7,7 +7,10 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/utils"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -40,12 +43,32 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 
 	var userInfo []*types.UserInfo
 	var total int64
+	var needCover bool
 	total = info.Total
-
+	uc := ctxs.GetUserCtx(l.ctx)
+	if !uc.IsAdmin || uc.TenantCode != def.TenantCodeDefault || uc.IsAllData != true {
+		needCover = true
+	}
 	userInfo = make([]*types.UserInfo, 0, len(userInfo))
 	for _, i := range info.List {
+		if needCover {
+			i.Password = ""
+			i.WechatUnionID = ""
+			i.LastIP = ""
+			i.RegIP = ""
+			i.CreatedTime = 0
+			i.IsAllData = 0
+			i.Phone = Cover(i.Phone)
+			i.Email = Cover(i.Email)
+		}
 		userInfo = append(userInfo, user.UserInfoToApi(i, nil, nil))
 	}
 
 	return &types.UserInfoIndexResp{userInfo, total}, nil
+}
+func Cover(in *wrapperspb.StringValue) *wrapperspb.StringValue {
+	if in == nil {
+		return nil
+	}
+	return &wrapperspb.StringValue{Value: "xxx"}
 }
