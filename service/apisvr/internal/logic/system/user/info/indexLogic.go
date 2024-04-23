@@ -11,6 +11,7 @@ import (
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/utils"
 	"google.golang.org/protobuf/types/known/wrapperspb"
+	"strings"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -71,5 +72,20 @@ func Cover(in *wrapperspb.StringValue) *wrapperspb.StringValue {
 	if in == nil {
 		return nil
 	}
-	return &wrapperspb.StringValue{Value: "xxx"}
+
+	return &wrapperspb.StringValue{Value: maskPhoneNumberOrEmail(in.Value)}
+}
+
+// maskPhoneNumberOrEmail 接受一个手机号或邮箱作为参数，并在适当位置替换为星号
+func maskPhoneNumberOrEmail(input string) string {
+	if strings.Count(input, "@") == 0 && (len(input) == 10 || len(input) == 11) {
+		// 假设输入是一个手机号
+		return input[:3] + "****" + input[len(input)-4:]
+	} else if strings.Count(input, "@") == 1 {
+		// 假设输入是一个邮箱
+		localPart := strings.Split(input, "@")[0]
+		domainPart := strings.Split(input, "@")[1]
+		return localPart[len(localPart)-4:] + "@" + "****" + domainPart[len(domainPart)-4:]
+	}
+	return input
 }
