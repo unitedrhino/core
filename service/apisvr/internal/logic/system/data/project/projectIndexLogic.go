@@ -29,7 +29,7 @@ func NewProjectIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Proj
 func (l *ProjectIndexLogic) ProjectIndex(req *types.DataProjectIndexReq) (resp *types.DataProjectIndexResp, err error) {
 	dto := &sys.DataProjectIndexReq{
 		Page:       logic.ToSysPageRpc(req.Page),
-		UserID:     req.UserID,
+		ProjectID:  req.ProjectID,
 		TargetID:   req.TargetID,
 		TargetType: req.TargetType,
 	}

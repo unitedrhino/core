@@ -18,7 +18,7 @@ func ToPageInfo(info *sys.PageInfo, defaultOrders ...def.OrderBy) *def.PageInfo 
 		orders = make([]def.OrderBy, 0, len(infoOrders))
 		for _, infoOd := range infoOrders {
 			if infoOd.GetFiled() != "" {
-				orders = append(orders, def.OrderBy{infoOd.GetFiled(), infoOd.GetSort()})
+				orders = append(orders, def.OrderBy{utils.CamelCaseToUdnderscore(infoOd.GetFiled()), infoOd.GetSort()})
 			}
 		}
 	}

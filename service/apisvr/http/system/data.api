@@ -75,7 +75,7 @@ type (
 
     DataProjectIndexReq  {
         Page *PageInfo `json:"page,optional"`        //进行数据分页（不传默认2000相当于全部）
-        UserID   int64   `json:"userID,string,optional"`    //用户ID（必填，雪花ID）
+        ProjectID   int64 `json:"projectID,string,optional"`     //权限数据ID
         TargetID   int64 `json:"targetID,string,optional"`    //用户ID
         TargetType string `json:"targetType,optional"`
     }

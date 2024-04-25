@@ -6998,10 +6998,10 @@
           "$ref": "#/definitions/PageInfo",
           "description": "进行数据分页（不传默认2000相当于全部）"
         },
-        "userID": {
+        "projectID": {
           "type": "integer",
           "format": "int64",
-          "description": "用户ID（必填，雪花ID）"
+          "description": "权限数据ID"
         },
         "targetID": {
           "type": "integer",
