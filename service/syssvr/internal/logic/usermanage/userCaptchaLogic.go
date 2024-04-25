@@ -84,7 +84,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 				return nil, errors.Captcha
 			}
 		}
-		var ConfigCode = def.CaptchaUseRegister
+		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
 			count, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
 			if err != nil {
