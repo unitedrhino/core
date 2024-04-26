@@ -8,12 +8,14 @@ import (
 	appmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/appmanage"
 	areamanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/areamanage"
 	commonServer "gitee.com/i-Things/core/service/syssvr/internal/server/common"
+	datamanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/datamanage"
 	logServer "gitee.com/i-Things/core/service/syssvr/internal/server/log"
 	modulemanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/modulemanage"
 	projectmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/projectmanage"
 	rolemanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/rolemanage"
 	tenantmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/tenantmanage"
 	usermanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
+
 	"gitee.com/i-Things/core/service/syssvr/internal/startup"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -69,6 +71,7 @@ func Run(svcCtx *svc.ServiceContext) {
 		sys.RegisterProjectManageServer(grpcServer, projectmanageServer.NewProjectManageServer(svcCtx))
 		sys.RegisterAreaManageServer(grpcServer, areamanageServer.NewAreaManageServer(svcCtx))
 		sys.RegisterTenantManageServer(grpcServer, tenantmanageServer.NewTenantManageServer(svcCtx))
+		sys.RegisterDataManageServer(grpcServer, datamanageServer.NewDataManageServer(svcCtx))
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}

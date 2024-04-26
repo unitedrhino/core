@@ -36,6 +36,7 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 
 	filter := relationDB.DataProjectFilter{
 		ProjectID: in.ProjectID,
+		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
 	}
 
 	total, err = l.UapDB.CountByFilter(l.ctx, filter)
