@@ -8208,6 +8208,11 @@
         "desc": {
           "type": "string",
           "description": "项目备注（读写）"
+        },
+        "areaCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目下的区域统计(只读)"
         }
       },
       "title": "ProjectInfo"

@@ -15,6 +15,7 @@ func transPoToPb(po *relationDB.SysProjectInfo) *sys.ProjectInfo {
 		AdminUserID: po.AdminUserID,
 		Desc:        utils.ToRpcNullString(po.Desc),
 		Position:    logic.ToSysPoint(po.Position),
+		AreaCount:   po.AreaCount,
 	}
 	return pb
 }

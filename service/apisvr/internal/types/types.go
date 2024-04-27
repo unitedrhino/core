@@ -520,6 +520,7 @@ type ProjectInfo struct {
 	AdminUserID int64   `json:"adminUserID,string,optional"` // 管理员用户id（读写）
 	Position    *Point  `json:"position,optional"`           //项目定位
 	Desc        *string `json:"desc,optional"`               //项目备注（读写）
+	AreaCount   int64   `json:"areaCount,optional"`          //项目下的区域统计(只读)
 }
 
 type ProjectInfoIndexReq struct {

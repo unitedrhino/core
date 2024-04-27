@@ -620,6 +620,7 @@ message ProjectInfo {
 //  google.protobuf.StringValue region = 6; //项目省市区县（读写）
   Point Position = 6; //项目区域定位
   google.protobuf.StringValue desc = 8; //项目备注（读写）
+    int64 areaCount =9;//项目下的区域统计(只读)
 }
 
 message ProjectInfoIndexReq {

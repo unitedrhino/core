@@ -101,6 +101,7 @@ type (
 //        Region *string `json:"region,optional"`                //项目省市区县（读写）
 //        Address *string `json:"address,optional"`              //项目详细地址（读写）
         Desc *string `json:"desc,optional"`                    //项目备注（读写）
+        AreaCount int64 `json:"areaCount,optional"` //项目下的区域统计(只读)
     }
 
 

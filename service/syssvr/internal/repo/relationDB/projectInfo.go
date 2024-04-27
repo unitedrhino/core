@@ -66,9 +66,10 @@ func (p ProjectInfoRepo) CountByFilter(ctx context.Context, f ProjectInfoFilter)
 	return size, stores.ErrFmt(err)
 }
 
-func (g ProjectInfoRepo) Update(ctx context.Context, data *SysProjectInfo) error {
+func (g ProjectInfoRepo) Update(ctx context.Context, data *SysProjectInfo, columns ...string) error {
 	//ctxs.ClearMetaProjectID(ctx) //默认情况下只返回当前项目,需要清除当前项目
-	err := g.db.WithContext(ctx).Where("project_id = ?", data.ProjectID).Save(data).Error
+	db := stores.WithSelect(g.db.WithContext(ctx), columns...)
+	err := db.Where("project_id = ?", data.ProjectID).Save(data).Error
 	return stores.ErrFmt(err)
 }
 

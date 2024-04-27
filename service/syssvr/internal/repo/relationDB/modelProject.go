@@ -13,8 +13,9 @@ type SysProjectInfo struct {
 	ProjectName string            `gorm:"column:project_name;uniqueIndex:pn;type:varchar(100);NOT NULL"` // 项目名称
 	//Region      string            `gorm:"column:region;type:varchar(100);NOT NULL"`      // 项目省市区县
 	//Address     string            `gorm:"column:address;type:varchar(512);NOT NULL"`     // 项目详细地址
-	Position stores.Point `gorm:"column:position;NOT NULL"`               // 项目地址
-	Desc     string       `gorm:"column:desc;type:varchar(100);NOT NULL"` // 项目备注
+	AreaCount int64        `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
+	Position  stores.Point `gorm:"column:position;NOT NULL"`                         // 项目地址
+	Desc      string       `gorm:"column:desc;type:varchar(100);NOT NULL"`           // 项目备注
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:pn"`
 }

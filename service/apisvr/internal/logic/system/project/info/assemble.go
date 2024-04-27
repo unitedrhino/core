@@ -17,5 +17,6 @@ func ToProjectPb(in *types.ProjectInfo) *sys.ProjectInfo {
 		AdminUserID: in.AdminUserID,
 		Position:    logic.ToSysPointRpc(in.Position),
 		Desc:        utils.ToRpcNullString(in.Desc),
+		AreaCount:   in.AreaCount,
 	}
 }
