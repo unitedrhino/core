@@ -243,7 +243,7 @@ var (
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk}, IsRecord: def.True,
 			Params: map[string]string{"body": "通知的内容"}},
 		{Group: def.NotifyGroupDevice, Code: def.NotifyCodeDeviceAlarm, Name: "设备告警通知",
-			DefaultSubject: "设备告警通知", DefaultBody: "你好,设备告警,告警级别{{.level}}:{{.body}}",
+			DefaultSubject: "设备告警通知", DefaultBody: "你好,{{.deviceAlias}}设备告警:{{.body}}",
 			DefaultTemplateCode: "SMS_465344291", DefaultSignName: "EbelongTool",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk}, IsRecord: def.True,
 			Params: map[string]string{"body": "通知的内容"}},
