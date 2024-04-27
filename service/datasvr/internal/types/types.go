@@ -4,6 +4,7 @@ package types
 type Aggregation struct {
 	Func   string `json:"argFunc,optional"`
 	Column string `json:"column,optional"`
+	AsName string `json:"asName,optional"`
 }
 
 type StaticsticsInfoReadReq struct {

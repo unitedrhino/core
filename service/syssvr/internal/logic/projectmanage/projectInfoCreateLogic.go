@@ -35,11 +35,14 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 	if in.ProjectName == "" {
 		return nil, errors.Parameter
 	}
-	ctxs.GetUserCtx(l.ctx).AllProject = true
+	uc := ctxs.GetUserCtx(l.ctx)
+	uc.AllProject = true
 	defer func() {
-		ctxs.GetUserCtx(l.ctx).AllProject = false
+		uc.AllProject = false
 	}()
-
+	if in.AdminUserID == 0 {
+		in.AdminUserID = uc.UserID
+	}
 	po := &relationDB.SysProjectInfo{
 		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.ProjectName,
@@ -50,8 +53,12 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		Position: logic.ToStorePoint(in.Position),
 		Desc:     utils.ToEmptyString(in.Desc),
 	}
+	_, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, in.AdminUserID)
+	if err != nil {
+		return nil, err
+	}
 	conn := stores.GetTenantConn(l.ctx)
-	err := conn.Transaction(func(tx *gorm.DB) error {
+	err = conn.Transaction(func(tx *gorm.DB) error {
 		tiDb := relationDB.NewTenantInfoRepo(tx)
 		ti, err := tiDb.FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
 		if err != nil {

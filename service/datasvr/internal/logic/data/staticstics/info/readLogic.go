@@ -115,11 +115,15 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		//	column = strings.Join(columns, ",")
 		//}
 		for _, agg := range req.Aggregations {
+			as := agg.AsName
+			if as == "" {
+				as = agg.Column
+			}
 			if val := si.ArgColumns[agg.Column]; val != "" {
-				column := fmt.Sprintf("%s(%s) as %s", agg.Func, val, agg.Column)
+				column := fmt.Sprintf("%s(%s) as %s", agg.Func, val, as)
 				columns = append(columns, column)
 			} else if agg.Column == "total" {
-				column := fmt.Sprintf("%s(1) as %s", agg.Func, agg.Column)
+				column := fmt.Sprintf("%s(1) as %s", agg.Func, as)
 				columns = append(columns, column)
 			} else {
 				column := fmt.Sprintf("%s(%s) as %s", agg.Func, agg.Column, agg.Column)

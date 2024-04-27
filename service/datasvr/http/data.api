@@ -22,6 +22,7 @@ type (
 	Aggregation {
 		Func   string `json:"argFunc,optional"`
 		Column string `json:"column,optional"`
+		AsName string `json:"asName,optional"`
 	}
 	StaticsticsInfoReadReq {
 		Code         string                 `json:"code"`

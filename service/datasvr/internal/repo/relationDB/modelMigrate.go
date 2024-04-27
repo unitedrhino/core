@@ -68,5 +68,29 @@ var (
 				},
 			},
 		},
+		{
+			IsFilterTenant:  1,
+			IsFilterProject: 1,
+			IsFilterArea:    1,
+			Code:            "dmDeviceCount",
+			Type:            "table",
+			Table:           "dm_device_info",
+			Omits:           "created_time,updated_time",
+			IsToHump:        1,
+			Sql:             "",
+			OrderBy:         "",
+			Filter: map[string]FilterKeywords{
+				"startDate": { //开始时间
+					Sql:    "?>=date",
+					ValNum: 1,
+					Type:   "date",
+				},
+				"endDate": { //开始时间
+					Sql:    "?<=date",
+					ValNum: 1,
+					Type:   "date",
+				},
+			},
+		},
 	}
 )
