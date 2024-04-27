@@ -36,9 +36,9 @@ Proxy:
     - Router: /api/v1/oss/
       DeletePrefix: true
       Dest: http://127.0.0.1:9000
-    - Router: /module/emqx/
-      DeletePrefix: true
-      Dest: http://127.0.0.1:18083
+    - Router: /iot
+      DeletePrefix: false
+      Dest: http://127.0.0.1:9119
 
 SysRpc:
   Enable: true
