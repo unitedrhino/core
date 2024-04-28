@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/domain/slot"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm/clause"
 	"net/http"
@@ -327,10 +328,10 @@ var (
 	}
 
 	MigrateSlotInfo = []SysSlotInfo{
-		{Code: "areaInfo", SubCode: "create", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/area/create", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
-		{Code: "areaInfo", SubCode: "delete", SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/area/delete", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
-		{Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport, SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
-		{Code: "userSubscribe", SubCode: def.UserSubscribeDeviceConn, SlotCode: "ithings", Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: slot.CodeAreaInfo, SubCode: slot.SubCodeCreate, SlotCode: slot.SlotCodeIthings, Method: "POST", Uri: "/api/v1/things/slot/area/create", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: slot.CodeAreaInfo, SubCode: slot.SubCodeDelete, SlotCode: slot.SlotCodeIthings, Method: "POST", Uri: "/api/v1/things/slot/area/delete", Hosts: []string{"http://127.0.0.1:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: slot.CodeUserSubscribe, SubCode: def.UserSubscribeDevicePropertyReport, SlotCode: slot.SlotCodeIthings, Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
+		{Code: slot.CodeUserSubscribe, SubCode: def.UserSubscribeDeviceConn, SlotCode: slot.SlotCodeIthings, Method: "POST", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://127.0.0.1:7788"}, Body: ``, Handler: nil, AuthType: "core", Desc: ""},
 	}
 
 	MigrateModuleMenu = []SysModuleMenu{
