@@ -2,7 +2,6 @@ package area
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/utils"
 
@@ -27,12 +26,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.DataAreaIndexReq) (resp *types.DataAreaIndexResp, err error) {
-	dto := &sys.DataAreaIndexReq{
-		Page:      logic.ToSysPageRpc(req.Page),
-		UserID:    req.UserID,
-		ProjectID: req.ProjectID,
-	}
-	dmResp, err := l.svcCtx.DataM.DataAreaIndex(l.ctx, dto)
+	dmResp, err := l.svcCtx.DataM.DataAreaIndex(l.ctx, utils.Copy[sys.DataAreaIndexReq](req))
 	if err != nil {
 		l.Errorf("%s.rpc.DataAreaIndex req=%v err=%+v", utils.FuncName(), req, err)
 		return nil, err

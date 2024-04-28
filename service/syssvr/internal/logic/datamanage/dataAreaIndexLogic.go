@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -33,9 +34,11 @@ func (l *DataAreaIndexLogic) DataAreaIndex(in *sys.DataAreaIndexReq) (*sys.DataA
 		total int64
 		err   error
 	)
-
+	if in.ProjectID == 0 {
+		in.ProjectID = ctxs.GetUserCtx(l.ctx).ProjectID
+	}
 	filter := relationDB.DataAreaFilter{
-		UserID:    in.UserID,
+		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
 		ProjectID: in.ProjectID,
 	}
 

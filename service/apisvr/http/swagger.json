@@ -6864,11 +6864,6 @@
           "$ref": "#/definitions/PageInfo",
           "description": "进行数据分页（不传默认2000相当于全部）"
         },
-        "userID": {
-          "type": "integer",
-          "format": "int64",
-          "description": "用户ID（必填，雪花ID）"
-        },
         "targetID": {
           "type": "integer",
           "format": "int64",
@@ -6933,7 +6928,6 @@
       },
       "title": "DataAreaMultiDeleteReq",
       "required": [
-        "projectID",
         "targetID",
         "targetType",
         "areaIDs"

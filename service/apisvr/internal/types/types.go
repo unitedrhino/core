@@ -171,7 +171,6 @@ type DataAreaDetail struct {
 
 type DataAreaIndexReq struct {
 	Page       *PageInfo `json:"page,optional"`            //进行数据分页（不传默认2000相当于全部）
-	UserID     int64     `json:"userID,string,optional"`   //用户ID（必填，雪花ID）
 	TargetID   int64     `json:"targetID,string,optional"` //用户ID
 	TargetType string    `json:"targetType,optional"`
 	ProjectID  int64     `json:"projectID,string,optional"` //项目id
@@ -183,8 +182,8 @@ type DataAreaIndexResp struct {
 }
 
 type DataAreaMultiDeleteReq struct {
-	ProjectID  int64   `json:"projectID,string"` //项目id
-	TargetID   int64   `json:"targetID,string"`  //用户ID
+	ProjectID  int64   `json:"projectID,string,optional"` //项目id
+	TargetID   int64   `json:"targetID,string"`           //用户ID
 	TargetType string  `json:"targetType"`
 	AreaIDs    []int64 `json:"areaIDs,string"`
 }

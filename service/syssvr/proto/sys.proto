@@ -1078,7 +1078,6 @@ message DataAreaMultiUpdateReq {
 
 message DataAreaIndexReq {
   PageInfo page = 1 ; //进行数据分页（不传默认2000相当于全部）
-  int64 userID = 2; //用户ID（必填，雪花ID）
   int64 projectID = 3; //项目id 必选
   int64 targetID = 4;
   string targetType =5;

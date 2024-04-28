@@ -25,17 +25,29 @@ func NewDataAreaRepo(in any) *DataAreaRepo {
 }
 
 type DataAreaFilter struct {
-	UserID     int64
-	ProjectID  int64
-	TargetID   int
-	TargetType string
-	AreaIDs    []int64
+	ProjectID int64
+	AreaIDs   []int64
+	Targets   []*Target
+	AuthType  def.AuthType
 }
 
 func (p DataAreaRepo) fmtFilter(ctx context.Context, f DataAreaFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if len(f.AreaIDs) > 0 {
 		db = db.Where("area_id in ?", f.AreaIDs)
+	}
+	if len(f.Targets) != 0 {
+		scope := func(db *gorm.DB) *gorm.DB {
+			for i, d := range f.Targets {
+				if i == 0 {
+					db = db.Where("target_id = ? and target_type = ?", d.ID, d.Type)
+					continue
+				}
+				db = db.Or("target_id = ? and target_type = ?", d.ID, d.Type)
+			}
+			return db
+		}
+		db = db.Where(scope(db))
 	}
 	//if f.UserID != 0 {
 	//	db = db.Where("user_id= ?", f.UserID)
@@ -107,19 +119,20 @@ func (m DataAreaRepo) MultiInsert(ctx context.Context, data []*SysDataArea) erro
 	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDataArea{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
-func (g DataAreaRepo) MultiUpdate(ctx context.Context, userID, projectID int64, areas []*userDataAuth.Area) error {
+func (g DataAreaRepo) MultiUpdate(ctx context.Context, target *Target, projectID int64, areas []*userDataAuth.Area) error {
 	var datas []*SysDataArea
 	for _, v := range areas {
 		datas = append(datas, &SysDataArea{
-			TargetID:  userID,
-			ProjectID: stores.ProjectID(projectID),
-			AreaID:    v.AreaID,
-			AuthType:  v.AuthType,
+			TargetID:   target.ID,
+			TargetType: target.Type,
+			ProjectID:  stores.ProjectID(projectID),
+			AreaID:     v.AreaID,
+			AuthType:   v.AuthType,
 		})
 	}
 	err := g.db.Transaction(func(tx *gorm.DB) error {
 		rm := NewDataAreaRepo(tx)
-		err := rm.DeleteByFilter(ctx, DataAreaFilter{UserID: userID, ProjectID: projectID})
+		err := rm.DeleteByFilter(ctx, DataAreaFilter{Targets: []*Target{target}, ProjectID: projectID})
 		if err != nil {
 			return err
 		}

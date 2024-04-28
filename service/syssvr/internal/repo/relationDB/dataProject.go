@@ -32,13 +32,13 @@ type Target struct {
 type DataProjectFilter struct {
 	ProjectID int64
 	Targets   []*Target
-	AuthType  int64
+	AuthType  def.AuthType
 }
 
 func (p DataProjectRepo) fmtFilter(ctx context.Context, f DataProjectFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.ProjectID != 0 {
-		db = db.Where("user_id= ?", f.ProjectID)
+		db = db.Where("project_id= ?", f.ProjectID)
 	}
 	if len(f.Targets) != 0 {
 		scope := func(db *gorm.DB) *gorm.DB {

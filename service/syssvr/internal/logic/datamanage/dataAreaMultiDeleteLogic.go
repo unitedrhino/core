@@ -25,6 +25,6 @@ func NewDataAreaMultiDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *DataAreaMultiDeleteLogic) DataAreaMultiDelete(in *sys.DataAreaMultiDeleteReq) (*sys.Empty, error) {
-	err := relationDB.NewDataAreaRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DataAreaFilter{AreaIDs: in.AreaIDs})
+	err := relationDB.NewDataAreaRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DataAreaFilter{Targets: []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}}, AreaIDs: in.AreaIDs})
 	return &sys.Empty{}, err
 }

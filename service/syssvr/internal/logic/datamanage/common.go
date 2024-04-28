@@ -5,7 +5,6 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/share/caches"
-	"gitee.com/i-Things/share/domain/userDataAuth"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
 	"regexp"
@@ -30,17 +29,17 @@ func InitCacheUserAuthProject(ctx context.Context, userID int64) error {
 	return caches.SetUserAuthProject(ctx, userID, DBToAuthProjectDos(projects))
 }
 func InitCacheUserAuthArea(ctx context.Context, userID int64) error {
-	areas, err := relationDB.NewDataAreaRepo(ctx).FindByFilter(ctx, relationDB.DataAreaFilter{UserID: userID}, nil)
-	if err != nil {
-		return err
-	}
-	var areaMap = map[int64][]*userDataAuth.Area{}
-	for _, v := range areas {
-		areaMap[int64(v.ProjectID)] = append(areaMap[int64(v.ProjectID)], DBToAuthAreaDo(v))
-	}
-	for projectID, areas := range areaMap {
-		caches.SetUserAuthArea(ctx, userID, projectID, areas)
-	}
+	//areas, err := relationDB.NewDataAreaRepo(ctx).FindByFilter(ctx, relationDB.DataAreaFilter{UserID: userID}, nil)
+	//if err != nil {
+	//	return err
+	//}
+	//var areaMap = map[int64][]*userDataAuth.Area{}
+	//for _, v := range areas {
+	//	areaMap[int64(v.ProjectID)] = append(areaMap[int64(v.ProjectID)], DBToAuthAreaDo(v))
+	//}
+	//for projectID, areas := range areaMap {
+	//	caches.SetUserAuthArea(ctx, userID, projectID, areas)
+	//}
 	return nil
 }
 
