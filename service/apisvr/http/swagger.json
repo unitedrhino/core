@@ -7334,19 +7334,24 @@
     "Map": {
       "type": "object",
       "properties": {
-        "mode，options=baidu": {
+        "mode，options=gaode": {
           "type": "string",
           "description": "坐标系 默认百度坐标系"
         },
         "accessKey": {
           "type": "string",
           "description": "设备地图key"
+        },
+        "accessSecret": {
+          "type": "string",
+          "description": "地图秘钥"
         }
       },
       "title": "Map",
       "required": [
-        "mode，options=baidu",
-        "accessKey"
+        "mode，options=gaode",
+        "accessKey",
+        "accessSecret"
       ]
     },
     "MenuInfo": {

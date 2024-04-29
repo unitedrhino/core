@@ -293,8 +293,9 @@ type JwtToken struct {
 }
 
 type Map struct {
-	Mode      string `json:"mode，options=baidu"` //坐标系 默认百度坐标系
-	AccessKey string `json:"accessKey"`          //设备地图key
+	Mode         string `json:"mode，options=gaode"` //坐标系 默认百度坐标系
+	AccessKey    string `json:"accessKey"`          //设备地图key
+	AccessSecret string `json:"accessSecret"`       //地图秘钥
 }
 
 type MenuInfo struct {

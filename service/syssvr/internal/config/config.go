@@ -28,8 +28,9 @@ type Config struct {
 		PassLevel    int32 `json:",default=2"`    //用户密码强度级别
 	} // 用户登录注册选项
 	Map struct {
-		Mode      string `json:",default=baidu"`
-		AccessKey string
+		Mode         string `json:",default=gaode"`
+		AccessKey    string
+		AccessSecret string
 	}
 	Sms                  conf.Sms
 	WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`

@@ -33,6 +33,6 @@ func (l *ConfigLogic) Config() (resp *types.ConfigResp, err error) {
 		l.Errorf("%s.rpc.SysConfig err=%+v", utils.FuncName(), err)
 		return nil, err
 	}
-	return &types.ConfigResp{Map: types.Map{Mode: rsp.Map.Mode, AccessKey: rsp.Map.AccessKey},
+	return &types.ConfigResp{Map: types.Map{Mode: rsp.Map.Mode, AccessKey: rsp.Map.AccessKey, AccessSecret: rsp.Map.AccessSecret},
 		Oss: types.Oss{Host: l.svcCtx.Config.OssConf.CustomHost}}, nil
 }

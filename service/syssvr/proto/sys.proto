@@ -1325,6 +1325,7 @@ message MenuInfoIndexResp{
 message Map{
   string mode = 1;       //坐标系 默认百度坐标系
   string accessKey = 2;  //设备地图key
+  string accessSecret =3;
 }
 message configResp{
   Map map = 1;           //设备地图相关配置
