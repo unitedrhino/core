@@ -67,9 +67,9 @@ func (m *DataStatisticsInfo) TableName() string {
 }
 
 type FilterKeywords struct {
-	Sql    string
-	ValNum int64  //问号的数量
-	Type   string //time:时间类型时间戳 date: 日期类型的字符串
+	Sql    string `json:"sql"`
+	ValNum int64  `json:"valNum"` //问号的数量
+	Type   string `json:"type"`   //time:时间类型时间戳 date: 日期类型的字符串
 }
 
 // 设备功耗

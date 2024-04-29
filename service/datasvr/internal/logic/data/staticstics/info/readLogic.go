@@ -87,8 +87,11 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		} else {
 			var args []interface{}
 			for i := int64(0); i < f.ValNum; i++ {
-				if f.Type == "date" {
+				switch f.Type {
+				case "date":
 					v = utils.FmtDateStr(cast.ToString(v))
+				case "array": //数组类型
+					v = strings.Split(cast.ToString(v), ",")
 				}
 				args = append(args, v)
 			}
