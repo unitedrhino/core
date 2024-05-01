@@ -8427,6 +8427,13 @@
           "type": "integer",
           "format": "int64",
           "description": "按状态查找角色"
+        },
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "title": "RoleInfoIndexReq"

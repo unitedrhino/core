@@ -31,6 +31,7 @@ func (l *RoleInfoIndexLogic) RoleInfoIndex(in *sys.RoleInfoIndexReq) (*sys.RoleI
 	f := relationDB.RoleInfoFilter{
 		Name:   in.Name,
 		Status: in.Status,
+		IDs:    in.Ids,
 	}
 	ros, err := l.RiDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	if err != nil {

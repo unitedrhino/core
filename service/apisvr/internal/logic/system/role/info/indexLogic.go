@@ -31,6 +31,7 @@ func (l *IndexLogic) Index(req *types.RoleInfoIndexReq) (resp *types.RoleInfoInd
 		Page:   logic.ToSysPageRpc(req.Page),
 		Name:   req.Name,
 		Status: req.Status,
+		Ids:    req.IDs,
 	})
 	if err != nil {
 		return nil, err

@@ -577,6 +577,7 @@ type RoleInfoIndexReq struct {
 	Page   *PageInfo `json:"page,optional"`    //分页信息,只获取一个则不填
 	Name   string    `json:"name,optional "`   //按名称查找角色
 	Status int64     `json:"status,optional "` //按状态查找角色
+	IDs    []int64   `json:"ids,optional"`
 }
 
 type RoleInfoIndexResp struct {

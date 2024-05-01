@@ -1272,6 +1272,7 @@ message RoleInfoIndexReq{
   PageInfo page = 1;//分页信息
   string name = 2;
   int64 status = 3;
+  repeated int64 ids =4;//角色id列表
 }
 
 message RoleInfoIndexResp{
