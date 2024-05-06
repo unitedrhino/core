@@ -61,7 +61,7 @@ func (p NotifyTemplateRepo) FindByFilter(ctx context.Context, f NotifyTemplateFi
 	var results []*SysNotifyTemplate
 	db := p.fmtFilter(ctx, f).Model(&SysNotifyTemplate{})
 	db = page.ToGorm(db)
-	err := db.Find(&results).Error
+	err := db.Preload("Channel").Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}
@@ -91,7 +91,7 @@ func (p NotifyTemplateRepo) Delete(ctx context.Context, id int64) error {
 }
 func (p NotifyTemplateRepo) FindOne(ctx context.Context, id int64) (*SysNotifyTemplate, error) {
 	var result SysNotifyTemplate
-	err := p.db.WithContext(ctx).Where("id = ?", id).First(&result).Error
+	err := p.db.WithContext(ctx).Preload("Channel").Where("id = ?", id).First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}

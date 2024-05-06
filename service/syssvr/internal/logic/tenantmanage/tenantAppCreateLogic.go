@@ -8,6 +8,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
+	"gitee.com/i-Things/share/utils"
 	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -27,7 +28,7 @@ func NewTenantAppCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 	}
 }
 
-func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppCreateReq) (*sys.Empty, error) {
+func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppSaveReq) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -40,6 +41,8 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppCreateReq) (*sys
 		err := relationDB.NewTenantAppRepo(tx).Insert(l.ctx, &relationDB.SysTenantApp{
 			TenantCode: stores.TenantCode(in.Code),
 			AppCode:    in.AppCode,
+			MiniWx:     utils.Copy[relationDB.SysTenantThird](in.MiniWx),
+			MiniDing:   utils.Copy[relationDB.SysTenantThird](in.MiniDing),
 		})
 		if err != nil {
 			return err

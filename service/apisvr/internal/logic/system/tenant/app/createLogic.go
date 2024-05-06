@@ -25,7 +25,7 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 }
 
 func (l *CreateLogic) Create(req *types.TenantAppCreateReq) error {
-	_, err := l.svcCtx.TenantRpc.TenantAppCreate(l.ctx, &sys.TenantAppCreateReq{
+	_, err := l.svcCtx.TenantRpc.TenantAppCreate(l.ctx, &sys.TenantAppSaveReq{
 		Code:    req.Code,
 		AppCode: req.AppCode,
 		Modules: ToTenantAppModulesPb(req.Modules),

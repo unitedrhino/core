@@ -26,7 +26,7 @@ func Migrate(c conf.Database) error {
 		&SysMessageInfo{},
 		&SysNotifyInfo{},
 		&SysNotifyTemplate{},
-		&SysTenantNotify{},
+		&SysTenantNotifyTemplate{},
 		&SysDictInfo{},
 		&SysDictDetail{},
 		&SysSlotInfo{},
@@ -62,21 +62,22 @@ func Migrate(c conf.Database) error {
 		&SysTenantAppModule{},
 		&SysUserAreaApply{},
 		&SysUserProfile{},
+		&SysTenantNotifyChannel{},
 	)
 	if err != nil {
 		return err
 	}
 	{
 		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-		//if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+		//if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
 		//	return err
 		//}
 		//if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
 		//	return err
 		//}
-		//if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
-		//	return err
-		//}
+		if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
+			return err
+		}
 		if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
 			return err
 		}
@@ -131,13 +132,13 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateApiInfo, 100).Error; err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+	if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
+	if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
@@ -193,13 +194,13 @@ func migrateTableColumn() error {
 	}
 
 	{
-		if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+		if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
 			return err
 		}
 		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
 			return err
 		}
-		if err := db.CreateInBatches(&MigrateTenantNotifyTemplate, 100).Error; err != nil {
+		if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
 			return err
 		}
 	}
@@ -226,7 +227,7 @@ const (
 // 子应用管理员可以配置自己子应用的角色
 
 var (
-	MigrateNotifyConfig = []SysNotifyInfo{
+	MigrateNotifyInfo = []SysNotifyInfo{
 		{Group: def.NotifyGroupCaptcha, Code: def.NotifyCodeSysUserRegisterCaptcha, Name: "用户注册验证码",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail}, IsRecord: def.False,
 			DefaultSubject: "注册验证码", DefaultBody: "欢迎注册,你的验证码是:{{.code}},有效期为{{.expr}}分钟",
@@ -249,8 +250,8 @@ var (
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk}, IsRecord: def.True,
 			Params: map[string]string{"body": "通知的内容"}},
 	}
-	MigrateNotifyTemplate       = []SysNotifyTemplate{}
-	MigrateTenantNotifyTemplate = []SysTenantNotify{
+	MigrateNotifyTemplate = []SysNotifyTemplate{}
+	MigrateTenantNotify   = []SysTenantNotifyTemplate{
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
@@ -264,6 +265,7 @@ var (
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeEmail, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeDingTalk, TemplateID: 1},
 	}
+	MigrateTenantNotifyChannel = []SysTenantNotifyChannel{}
 
 	MigrateModuleInfo = []SysModuleInfo{
 		{Name: "系统管理", Code: def.ModuleSystemManage},
@@ -297,14 +299,7 @@ var (
 	MigrateTenantAppModule = []SysTenantAppModule{}
 	MigrateTenantAppMenu   = []SysTenantAppMenu{}
 	MigrateTenantConfig    = []SysTenantConfig{
-		{TenantCode: def.TenantCodeDefault, RegisterRoleID: 2, Email: &SysTenantEmail{
-			From:     "godlei6@qq.com",
-			Host:     "smtp.qq.com",
-			Secret:   "xxx",
-			Nickname: "验证码机器人",
-			Port:     465,
-			IsSSL:    def.True},
-		},
+		{TenantCode: def.TenantCodeDefault, RegisterRoleID: 2},
 	}
 	MigrateProjectInfo = []SysProjectInfo{{TenantCode: def.TenantCodeDefault, AdminUserID: adminUserID, ProjectID: defaultProjectID, ProjectName: "默认项目"}}
 	MigrateTenantInfo  = []SysTenantInfo{{Code: def.TenantCodeDefault, Name: "默认租户", AdminUserID: adminUserID, DefaultProjectID: defaultProjectID}}

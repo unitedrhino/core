@@ -5129,10 +5129,10 @@
         ]
       }
     },
-    "/api/v1/system/tenant/notify/index": {
+    "/api/v1/system/tenant/notify/channel/create": {
       "post": {
-        "summary": "获取租户操作权限树",
-        "operationId": "postApiV1SystemTenantNotifyIndex",
+        "summary": "添加通知通道",
+        "operationId": "postApiV1SystemTenantNotifyChannelCreate",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -5149,7 +5149,7 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/TenantNotifyIndexResp"
+                  "$ref": "#/definitions/WithID"
                 }
               }
             }
@@ -5161,20 +5161,20 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TenantNotifyIndexReq"
+              "$ref": "#/definitions/TenantNotifyChannel"
             }
           }
         ],
         "tags": [
-          "system/tenant/notify",
-          "systemTenantNotify"
+          "system/tenant/notify/channel",
+          "systemTenantNotifyChannel"
         ]
       }
     },
-    "/api/v1/system/tenant/notify/multi-update": {
+    "/api/v1/system/tenant/notify/channel/delete": {
       "post": {
-        "summary": "批量更新租户操作权限",
-        "operationId": "postApiV1SystemTenantNotifyMulti-update",
+        "summary": "删除通知通道",
+        "operationId": "postApiV1SystemTenantNotifyChannelDelete",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -5200,13 +5200,217 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TenantNotifyMultiUpdateReq"
+              "$ref": "#/definitions/WithID"
             }
           }
         ],
         "tags": [
-          "system/tenant/notify",
-          "systemTenantNotify"
+          "system/tenant/notify/channel",
+          "systemTenantNotifyChannel"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/notify/channel/index": {
+      "post": {
+        "summary": "获取通知通道列表",
+        "operationId": "postApiV1SystemTenantNotifyChannelIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantNotifyChannelIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantNotifyChannelIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/notify/channel",
+          "systemTenantNotifyChannel"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/notify/channel/read": {
+      "post": {
+        "summary": "获取通知通道详情",
+        "operationId": "postApiV1SystemTenantNotifyChannelRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantNotifyChannel"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/notify/channel",
+          "systemTenantNotifyChannel"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/notify/channel/update": {
+      "post": {
+        "summary": "更新通知通道",
+        "operationId": "postApiV1SystemTenantNotifyChannelUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantNotifyChannel"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/notify/channel",
+          "systemTenantNotifyChannel"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/notify/template/index": {
+      "post": {
+        "summary": "获取租户操作权限树",
+        "operationId": "postApiV1SystemTenantNotifyTemplateIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantNotifyTemplateIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantNotifyTemplateIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/notify/template",
+          "systemTenantNotifyTemplate"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/notify/template/multi-update": {
+      "post": {
+        "summary": "批量更新租户操作权限",
+        "operationId": "postApiV1SystemTenantNotifyTemplateMulti-update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantNotifyTemplateMultiUpdateReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/notify/template",
+          "systemTenantNotifyTemplate"
         ]
       }
     },
@@ -7865,6 +8069,13 @@
         "desc": {
           "type": "string",
           "description": " 备注"
+        },
+        "channelID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "channel": {
+          "$ref": "#/definitions/TenantNotifyChannel"
         }
       },
       "title": "NotifyTemplate"
@@ -9438,7 +9649,81 @@
       },
       "title": "TenantModuleWithIDOrCode"
     },
-    "TenantNotify": {
+    "TenantNotifyChannel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " id编号"
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": "限定租户,不填是通用的"
+        },
+        "name": {
+          "type": "string",
+          "description": "通知的命名"
+        },
+        "type": {
+          "type": "string",
+          "description": "对应的配置类型 sms email"
+        },
+        "desc": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "webhook": {
+          "type": "string",
+          "description": "默认消息主题"
+        },
+        "email": {
+          "$ref": "#/definitions/ThirdEmailConfig",
+          "description": "默认模版内容"
+        }
+      },
+      "title": "TenantNotifyChannel"
+    },
+    "TenantNotifyChannelIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息,只获取一个则不填"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "对应的配置类型 sms email"
+        }
+      },
+      "title": "TenantNotifyChannelIndexReq"
+    },
+    "TenantNotifyChannelIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantNotifyChannel"
+          },
+          "description": " 通知模版列表数据"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 通知模版列表总记录数"
+        }
+      },
+      "title": "TenantNotifyChannelIndexResp",
+      "required": [
+        "list",
+        "total"
+      ]
+    },
+    "TenantNotifyTemplate": {
       "type": "object",
       "properties": {
         "id": {
@@ -9456,7 +9741,7 @@
           "format": "int64"
         }
       },
-      "title": "TenantNotify",
+      "title": "TenantNotifyTemplate",
       "required": [
         "id",
         "notifyCode",
@@ -9464,7 +9749,7 @@
         "templateID"
       ]
     },
-    "TenantNotifyIndexReq": {
+    "TenantNotifyTemplateIndexReq": {
       "type": "object",
       "properties": {
         "notifyCode": {
@@ -9474,40 +9759,80 @@
           "type": "string"
         }
       },
-      "title": "TenantNotifyIndexReq",
+      "title": "TenantNotifyTemplateIndexReq",
       "required": [
         "notifyCode",
         "type"
       ]
     },
-    "TenantNotifyIndexResp": {
+    "TenantNotifyTemplateIndexResp": {
       "type": "object",
       "properties": {
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TenantNotify"
+            "$ref": "#/definitions/TenantNotifyTemplate"
           }
         }
       },
-      "title": "TenantNotifyIndexResp",
+      "title": "TenantNotifyTemplateIndexResp",
       "required": [
         "list"
       ]
     },
-    "TenantNotifyMultiUpdateReq": {
+    "TenantNotifyTemplateMultiUpdateReq": {
       "type": "object",
       "properties": {
         "notifies": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TenantNotify"
+            "$ref": "#/definitions/TenantNotifyTemplate"
           }
         }
       },
-      "title": "TenantNotifyMultiUpdateReq",
+      "title": "TenantNotifyTemplateMultiUpdateReq",
       "required": [
         "notifies"
+      ]
+    },
+    "ThirdEmailConfig": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": " 发件人  你自己要发邮件的邮箱"
+        },
+        "host": {
+          "type": "string",
+          "description": " 服务器地址 例如 smtp.qq.com  请前往QQ或者你要发邮件的邮箱查看其smtp协议"
+        },
+        "secret": {
+          "type": "string",
+          "description": " 密钥    用于登录的密钥 最好不要用邮箱密码 去邮箱smtp申请一个用于登录的密钥"
+        },
+        "nickname": {
+          "type": "string",
+          "description": " 昵称    发件人昵称 通常为自己的邮箱"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 端口     请前往QQ或者你要发邮件的邮箱查看其smtp协议 大多为 465"
+        },
+        "isSsl": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 是否SSL   是否开启SSL"
+        }
+      },
+      "title": "ThirdEmailConfig",
+      "required": [
+        "from",
+        "host",
+        "secret",
+        "nickname",
+        "port",
+        "isSsl"
       ]
     },
     "TimeRange": {

@@ -1,7 +1,7 @@
-package notify
+package template
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/tenant/notify"
+	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/tenant/notify/template"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/share/errors"
@@ -10,16 +10,16 @@ import (
 	"net/http"
 )
 
-func IndexHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func MultiUpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.TenantNotifyIndexReq
+		var req types.TenantNotifyTemplateMultiUpdateReq
 		if err := httpx.Parse(r, &req); err != nil {
 			result.Http(w, r, nil, errors.Parameter.WithMsg("入参不正确:"+err.Error()))
 			return
 		}
 
-		l := notify.NewIndexLogic(r.Context(), svcCtx)
-		resp, err := l.Index(&req)
-		result.Http(w, r, resp, err)
+		l := template.NewMultiUpdateLogic(r.Context(), svcCtx)
+		err := l.MultiUpdate(&req)
+		result.Http(w, r, nil, err)
 	}
 }

@@ -7,12 +7,13 @@ import (
 	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/errors"
 	"sync"
 )
 
 type Clients struct {
 	MiniProgram *clients.MiniProgram
-	DingTalk    *clients.DingTalk
+	MiniDing    *clients.DingTalk
 }
 type ClientsManage struct {
 	Config config.Config
@@ -27,34 +28,44 @@ func NewClients(c config.Config) *ClientsManage {
 }
 
 func (c *ClientsManage) GetClients(ctx context.Context, tenantCode string) (Clients, error) {
+	uc := ctxs.GetUserCtx(ctx)
 	if tenantCode == "" {
-		tenantCode = ctxs.GetUserCtx(ctx).TenantCode
+		tenantCode = uc.TenantCode
 	}
-	val, ok := tc.Load(tenantCode)
+	val, ok := tc.Load(tenantCode + uc.AppCode)
 	if ok {
 		return val.(Clients), nil
 	}
 	//如果缓存里没有,需要查库
-	cfg, err := relationDB.NewTenantConfigRepo(ctx).FindOneByFilter(ctx, relationDB.TenantConfigFilter{TenantCode: tenantCode})
+	cfg, err := relationDB.NewTenantAppRepo(ctx).FindOneByFilter(ctx, relationDB.TenantAppFilter{TenantCode: tenantCode, AppCodes: []string{uc.AppCode}})
 	if err != nil {
-		return Clients{}, err
+		if !errors.Cmp(err, errors.NotFind) {
+			return Clients{}, err
+		}
+		cfg2, err := relationDB.NewAppInfoRepo(ctx).FindOneByFilter(ctx, relationDB.AppInfoFilter{Code: uc.AppCode})
+		if err != nil {
+			return Clients{}, err
+		}
+		cfg = &relationDB.SysTenantApp{
+			MiniWx: cfg2.MiniWx,
+		}
 	}
 	var cli Clients
-	if cfg.DingTalk != nil && cfg.DingTalk.AppSecret != "" {
-		cli.DingTalk, err = clients.NewDingTalkClient(&conf.ThirdConf{
-			AppID:     cfg.DingTalk.AppID,
-			AppKey:    cfg.DingTalk.AppKey,
-			AppSecret: cfg.DingTalk.AppSecret,
+	if cfg.MiniDing != nil && cfg.MiniDing.AppSecret != "" {
+		cli.MiniDing, err = clients.NewDingTalkClient(&conf.ThirdConf{
+			AppID:     cfg.MiniDing.AppID,
+			AppKey:    cfg.MiniDing.AppKey,
+			AppSecret: cfg.MiniDing.AppSecret,
 		})
 		if err != nil {
 			return Clients{}, err
 		}
 	}
-	if cfg.WxMini != nil && cfg.WxMini.AppSecret != "" {
+	if cfg.MiniWx != nil && cfg.MiniWx.AppSecret != "" {
 		cli.MiniProgram, _ = clients.NewWxMiniProgram(ctx, &conf.ThirdConf{
-			AppID:     cfg.WxMini.AppID,
-			AppKey:    cfg.WxMini.AppKey,
-			AppSecret: cfg.WxMini.AppSecret,
+			AppID:     cfg.MiniWx.AppID,
+			AppKey:    cfg.MiniWx.AppKey,
+			AppSecret: cfg.MiniWx.AppSecret,
 		}, c.Config.CacheRedis)
 	}
 	tc.Store(tenantCode, cli)

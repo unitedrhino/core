@@ -26,7 +26,7 @@ func NewMultiCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Multi
 }
 
 func (l *MultiCreateLogic) MultiCreate(req *types.TenantAppCreateReq) error {
-	_, err := l.svcCtx.TenantRpc.TenantAppModuleMultiCreate(l.ctx, &sys.TenantAppCreateReq{
+	_, err := l.svcCtx.TenantRpc.TenantAppModuleMultiCreate(l.ctx, &sys.TenantAppSaveReq{
 		Code:    req.Code,
 		AppCode: req.AppCode,
 		Modules: app.ToTenantAppModulesPb(req.Modules),

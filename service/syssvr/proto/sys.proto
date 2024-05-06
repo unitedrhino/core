@@ -65,6 +65,7 @@ service NotifyManage {
   rpc notifyTemplateIndex(NotifyTemplateIndexReq)returns(NotifyTemplateIndexResp);
   rpc notifyTemplateDelete(WithID)returns(Empty);
 
+
 }
 
 service AccessManage{
@@ -202,10 +203,11 @@ service TenantManage {
   rpc tenantAccessIndex(TenantAccessIndexReq) returns (TenantAccessIndexResp); //获取角色API权限列表
 
   rpc tenantAppIndex(TenantAppIndexReq) returns (TenantAppIndexResp); //获取租户APP权限列表
-  rpc tenantAppCreate(TenantAppCreateReq) returns(Empty); //添加角色
+  rpc tenantAppCreate(TenantAppSaveReq) returns(Empty); //添加角色
+  rpc tenantAppUpdate(TenantAppSaveReq) returns(Empty); //添加角色
   rpc tenantAppDelete(TenantAppWithIDOrCode) returns(Empty); //删除角色
 
-  rpc tenantAppModuleMultiCreate(TenantAppCreateReq) returns(Empty); //添加角色
+  rpc tenantAppModuleMultiCreate(TenantAppSaveReq) returns(Empty); //添加角色
   rpc tenantAppModuleCreate(TenantModuleCreateReq) returns(Empty); //添加角色
   rpc tenantAppModuleIndex(TenantModuleIndexReq) returns(TenantModuleIndexResp); //获取角色列表
   rpc tenantAppModuleDelete(TenantModuleWithIDOrCode) returns(Empty); //删除角色
@@ -216,13 +218,21 @@ service TenantManage {
   rpc tenantAppMenuDelete(WithAppCodeID) returns(Empty); //删除菜单
 
 
-  //租户通知配置
-  rpc tenantNotifyMultiUpdate(TenantNotifyMultiUpdateReq)returns(Empty);
-  rpc tenantNotifyIndex(TenantNotifyIndexReq)returns(TenantNotifyIndexResp);
 
   rpc tenantOpenCheckToken(TenantOpenCheckTokenReq) returns(TenantOpenCheckTokenResp);
 
   rpc tenantOpenWebHook(WithCode)returns(TenantOpenWebHook);
+
+
+  //租户通知配置
+  rpc tenantNotifyTemplateMultiUpdate(TenantNotifyTemplateMultiUpdateReq)returns(Empty);
+  rpc tenantNotifyTemplateIndex(TenantNotifyTemplateIndexReq)returns(TenantNotifyTemplateIndexResp);
+
+  rpc tenantNotifyChannelRead(WithID)returns(TenantNotifyChannel);
+  rpc tenantNotifyChannelCreate(TenantNotifyChannel)returns(WithID);
+  rpc tenantNotifyChannelUpdate(TenantNotifyChannel)returns(Empty);
+  rpc tenantNotifyChannelIndex(TenantNotifyChannelIndexReq)returns(TenantNotifyChannelIndexResp);
+  rpc tenantNotifyChannelDelete(WithID)returns(Empty);
 }
 
 //运营
@@ -237,7 +247,11 @@ service ops{
 }
 
 
-
+message ThirdAppConfig {
+  string appID =1;
+  string appKey=2;
+  string appSecret=3;
+}
 
 
 message IDList{
@@ -283,6 +297,38 @@ message NotifyTemplate{
   string subject =8;  //默认消息主题
   string body =9;  //默认模版内容
   string desc =10;  // 备注
+  int64 channelID =11;//通道ID
+    TenantNotifyChannel Channel =12;
+}
+
+message TenantNotifyChannel{
+  int64 id =1;  // id编号
+  string tenantCode =2;  //限定租户,不填是通用的
+  string name =3;  //通知的命名
+  string type =5;  //对应的配置类型 sms email
+  string desc =10;  // 备注
+  string webhook =11;//钉钉webhook及企微webhook
+  ThirdEmail email =12;//邮箱配置
+}
+
+message TenantNotifyChannelIndexReq{
+  PageInfo page =1;
+  string name =3;  //通知的命名
+  string type =2;  //对应的配置类型 sms email
+}
+
+message TenantNotifyChannelIndexResp{
+  repeated TenantNotifyChannel list =1;
+  int64 total= 2;
+}
+
+message ThirdEmail {
+  string From    =1;// 发件人  你自己要发邮件的邮箱
+  string Host    =2;// 服务器地址 例如 smtp.qq.com  请前往QQ或者你要发邮件的邮箱查看其smtp协议
+  string Secret  =3;// 密钥    用于登录的密钥 最好不要用邮箱密码 去邮箱smtp申请一个用于登录的密钥
+  string Nickname=4;// 昵称    发件人昵称 通常为自己的邮箱
+  int64 Port     =5;// 端口     请前往QQ或者你要发邮件的邮箱查看其smtp协议 大多为 465
+  int64 IsSSL    =6;// 是否SSL   是否开启SSL
 }
 
 message NotifyTemplateIndexReq{
@@ -332,16 +378,16 @@ message MessageInfo {
   int64 createdTime=9;
 }
 
-message TenantNotifyMultiUpdateReq{
+message TenantNotifyTemplateMultiUpdateReq{
    repeated TenantNotify notifies=1;
 }
 
-message TenantNotifyIndexReq{
+message TenantNotifyTemplateIndexReq{
   string notifyCode =2;
   string type =3;
 }
 
-message TenantNotifyIndexResp{
+message TenantNotifyTemplateIndexResp{
   repeated TenantNotify list =1;
 }
 
@@ -486,10 +532,12 @@ message TenantAccessIndexResp{
 }
 
 
-message TenantAppCreateReq{
+message TenantAppSaveReq{
   string code = 1;
   string appCode = 2;
   repeated TenantAppModule modules = 3;//模块列表
+  ThirdAppConfig miniDing =4;//钉钉小程序
+  ThirdAppConfig miniWx =5;//微信小程序
 }
 
 message TenantAppWithIDOrCode{
@@ -1234,10 +1282,13 @@ message AppInfo{
   int64 id = 1;
   string name= 2;          // 应用名称
   string type=7;//应用类型 web:web页面  app:应用  mini:小程序
+  string subType=10;//子类型  wx:微信小程序  dingTalk:钉钉小程序
   string code = 3;          // 应用编码
   google.protobuf.StringValue desc = 4;        // 应用描述
   string baseUrl = 5;      // 基础URL
   string logoUrl = 6;     // 应用logo地址
+  ThirdAppConfig miniDing =8;//钉钉小程序
+  ThirdAppConfig miniWx =9;//微信小程序
 }
 
 message AppInfoIndexReq{

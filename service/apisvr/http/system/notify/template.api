@@ -61,5 +61,7 @@ type (
          Subject string `json:"subject,optional"`  //默认消息主题
          Body string `json:"body,optional"`  //默认模版内容
          Desc string `json:"desc,optional"`  // 备注
+         ChannelID int64 `json:"channelID,optional"`
+         Channel *TenantNotifyChannel `json:"channel,optional"`
     }
 )

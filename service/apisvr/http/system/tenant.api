@@ -7,3 +7,4 @@ info(
 )
 import "tenant/tenant.api"
 import "tenant/app.api"
+import "tenant/notify.api"

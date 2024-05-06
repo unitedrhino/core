@@ -29,6 +29,5 @@ func (l *NotifyTemplateCreateLogic) NotifyTemplateCreate(in *sys.NotifyTemplate)
 	po := utils.Copy[relationDB.SysNotifyTemplate](in)
 	po.ID = 0
 	err := relationDB.NewNotifyTemplateRepo(l.ctx).Insert(l.ctx, po)
-
 	return &sys.WithID{Id: po.ID}, err
 }

@@ -75,6 +75,8 @@ type SysTenantApp struct {
 	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
 	AppCode    string            `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
+	MiniDing   *SysTenantThird   `gorm:"embedded;embeddedPrefix:mini_ding_"`                             //钉钉企业应用接入
+	MiniWx     *SysTenantThird   `gorm:"embedded;embeddedPrefix:mini_wx_"`                               //微信小程序接入
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }
@@ -109,16 +111,10 @@ func (m *SysTenantAppMenu) TableName() string {
 type SysTenantConfig struct {
 	ID                    int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
 	TenantCode            stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	Email                 *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                                 //邮箱配置
-	DingTalk              *SysTenantThird   `gorm:"embedded;embeddedPrefix:ding_talk_"`                             //钉钉企业应用接入
-	WxMini                *SysTenantThird   `gorm:"embedded;embeddedPrefix:wxmini_"`                                //微信小程序接入
 	RegisterRoleID        int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
 	RegisterCreateProject int64             `gorm:"column:register_create_project;type:int;default:2"`              //注册自动创建项目
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
-}
-
-type SysTenantLogin struct {
 }
 
 type SysTenantEmail struct {

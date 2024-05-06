@@ -1,6 +1,9 @@
 package relationDB
 
-import "gitee.com/i-Things/share/stores"
+import (
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
+)
 
 /*
 
@@ -30,16 +33,18 @@ func (m *SysNotifyInfo) TableName() string {
 
 // 通知配置
 type SysNotifyTemplate struct {
-	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode   stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"`           //限定租户,不填是通用的
-	Name         string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //通知的命名
-	NotifyCode   string            `gorm:"column:config_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
-	Type         string            `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的配置类型 sms email
-	TemplateCode string            `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 通知类型编码
-	SignName     string            `gorm:"column:sign_name;type:VARCHAR(50);default:''"`                   //签名(短信)
-	Subject      string            `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //默认消息主题
-	Body         string            `gorm:"column:body;type:VARCHAR(512);default:''"`                       //默认模版内容
-	Desc         string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                         // 备注
+	ID           int64                   `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode   stores.TenantCode       `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"`           //限定租户,不填是通用的
+	Name         string                  `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //通知的命名
+	NotifyCode   string                  `gorm:"column:config_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
+	Type         def.NotifyType          `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的配置类型 sms email
+	TemplateCode string                  `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 通知类型编码
+	SignName     string                  `gorm:"column:sign_name;type:VARCHAR(50);default:''"`                   //签名(短信)
+	Subject      string                  `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //默认消息主题
+	Body         string                  `gorm:"column:body;type:VARCHAR(512);default:''"`                       //默认模版内容
+	Desc         string                  `gorm:"column:desc;type:varchar(100);NOT NULL"`                         // 备注
+	ChannelID    int64                   `gorm:"column:channel_id;type:BIGINT;"`
+	Channel      *SysTenantNotifyChannel `gorm:"foreignKey:ID;references:ChannelID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
@@ -49,7 +54,7 @@ func (m *SysNotifyTemplate) TableName() string {
 }
 
 // 租户下的通知配置
-type SysTenantNotify struct {
+type SysTenantNotifyTemplate struct {
 	ID         int64              `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
 	TenantCode stores.TenantCode  `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
 	NotifyCode string             `gorm:"column:notify_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
@@ -61,8 +66,26 @@ type SysTenantNotify struct {
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
-func (m *SysTenantNotify) TableName() string {
-	return "sys_tenant_notify"
+func (m *SysTenantNotifyTemplate) TableName() string {
+	return "sys_tenant_notify_template"
+}
+
+// 租户下的通道配置
+type SysTenantNotifyChannel struct {
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`            // 租户编码
+	Type       def.NotifyType    `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置类型 sms email
+	Email      *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                          //邮箱配置
+	//AppCode    string            `gorm:"column:app_code;type:VARCHAR(100)"`                       //绑定的应用
+	WebHook string `gorm:"column:webhook;type:VARCHAR(256)"` //钉钉webhook模式及企业微信webhook方式
+	Name    string `gorm:"column:name;uniqueIndex:ri_mi;type:VARCHAR(100);NOT NULL"`
+	Desc    string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"` //应用描述
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+}
+
+func (m *SysTenantNotifyChannel) TableName() string {
+	return "sys_tenant_channel"
 }
 
 type SysMessageInfo struct {

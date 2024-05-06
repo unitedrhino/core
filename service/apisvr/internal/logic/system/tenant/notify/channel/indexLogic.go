@@ -1,4 +1,4 @@
-package notify
+package channel
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 	}
 }
 
-func (l *IndexLogic) Index(req *types.TenantNotifyIndexReq) (resp *types.TenantNotifyIndexResp, err error) {
-	ret, err := l.svcCtx.TenantRpc.TenantNotifyIndex(l.ctx, utils.Copy[sys.TenantNotifyIndexReq](req))
-	return utils.Copy[types.TenantNotifyIndexResp](ret), err
+func (l *IndexLogic) Index(req *types.TenantNotifyChannelIndexReq) (resp *types.TenantNotifyChannelIndexResp, err error) {
+	ret, err := l.svcCtx.TenantRpc.TenantNotifyChannelRead(l.ctx, utils.Copy[sys.WithID](req))
+	return utils.Copy[types.TenantNotifyChannelIndexResp](ret), err
 }

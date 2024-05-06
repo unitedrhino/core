@@ -67,9 +67,14 @@ func (s *TenantManageServer) TenantAppIndex(ctx context.Context, in *sys.TenantA
 	return l.TenantAppIndex(in)
 }
 
-func (s *TenantManageServer) TenantAppCreate(ctx context.Context, in *sys.TenantAppCreateReq) (*sys.Empty, error) {
+func (s *TenantManageServer) TenantAppCreate(ctx context.Context, in *sys.TenantAppSaveReq) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAppCreateLogic(ctx, s.svcCtx)
 	return l.TenantAppCreate(in)
+}
+
+func (s *TenantManageServer) TenantAppUpdate(ctx context.Context, in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantAppUpdateLogic(ctx, s.svcCtx)
+	return l.TenantAppUpdate(in)
 }
 
 func (s *TenantManageServer) TenantAppDelete(ctx context.Context, in *sys.TenantAppWithIDOrCode) (*sys.Empty, error) {
@@ -77,7 +82,7 @@ func (s *TenantManageServer) TenantAppDelete(ctx context.Context, in *sys.Tenant
 	return l.TenantAppDelete(in)
 }
 
-func (s *TenantManageServer) TenantAppModuleMultiCreate(ctx context.Context, in *sys.TenantAppCreateReq) (*sys.Empty, error) {
+func (s *TenantManageServer) TenantAppModuleMultiCreate(ctx context.Context, in *sys.TenantAppSaveReq) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAppModuleMultiCreateLogic(ctx, s.svcCtx)
 	return l.TenantAppModuleMultiCreate(in)
 }
@@ -117,17 +122,6 @@ func (s *TenantManageServer) TenantAppMenuDelete(ctx context.Context, in *sys.Wi
 	return l.TenantAppMenuDelete(in)
 }
 
-// 租户通知配置
-func (s *TenantManageServer) TenantNotifyMultiUpdate(ctx context.Context, in *sys.TenantNotifyMultiUpdateReq) (*sys.Empty, error) {
-	l := tenantmanagelogic.NewTenantNotifyMultiUpdateLogic(ctx, s.svcCtx)
-	return l.TenantNotifyMultiUpdate(in)
-}
-
-func (s *TenantManageServer) TenantNotifyIndex(ctx context.Context, in *sys.TenantNotifyIndexReq) (*sys.TenantNotifyIndexResp, error) {
-	l := tenantmanagelogic.NewTenantNotifyIndexLogic(ctx, s.svcCtx)
-	return l.TenantNotifyIndex(in)
-}
-
 func (s *TenantManageServer) TenantOpenCheckToken(ctx context.Context, in *sys.TenantOpenCheckTokenReq) (*sys.TenantOpenCheckTokenResp, error) {
 	l := tenantmanagelogic.NewTenantOpenCheckTokenLogic(ctx, s.svcCtx)
 	return l.TenantOpenCheckToken(in)
@@ -136,4 +130,40 @@ func (s *TenantManageServer) TenantOpenCheckToken(ctx context.Context, in *sys.T
 func (s *TenantManageServer) TenantOpenWebHook(ctx context.Context, in *sys.WithCode) (*sys.TenantOpenWebHook, error) {
 	l := tenantmanagelogic.NewTenantOpenWebHookLogic(ctx, s.svcCtx)
 	return l.TenantOpenWebHook(in)
+}
+
+// 租户通知配置
+func (s *TenantManageServer) TenantNotifyTemplateMultiUpdate(ctx context.Context, in *sys.TenantNotifyTemplateMultiUpdateReq) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantNotifyTemplateMultiUpdateLogic(ctx, s.svcCtx)
+	return l.TenantNotifyTemplateMultiUpdate(in)
+}
+
+func (s *TenantManageServer) TenantNotifyTemplateIndex(ctx context.Context, in *sys.TenantNotifyTemplateIndexReq) (*sys.TenantNotifyTemplateIndexResp, error) {
+	l := tenantmanagelogic.NewTenantNotifyTemplateIndexLogic(ctx, s.svcCtx)
+	return l.TenantNotifyTemplateIndex(in)
+}
+
+func (s *TenantManageServer) TenantNotifyChannelRead(ctx context.Context, in *sys.WithID) (*sys.TenantNotifyChannel, error) {
+	l := tenantmanagelogic.NewTenantNotifyChannelReadLogic(ctx, s.svcCtx)
+	return l.TenantNotifyChannelRead(in)
+}
+
+func (s *TenantManageServer) TenantNotifyChannelCreate(ctx context.Context, in *sys.TenantNotifyChannel) (*sys.WithID, error) {
+	l := tenantmanagelogic.NewTenantNotifyChannelCreateLogic(ctx, s.svcCtx)
+	return l.TenantNotifyChannelCreate(in)
+}
+
+func (s *TenantManageServer) TenantNotifyChannelUpdate(ctx context.Context, in *sys.TenantNotifyChannel) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantNotifyChannelUpdateLogic(ctx, s.svcCtx)
+	return l.TenantNotifyChannelUpdate(in)
+}
+
+func (s *TenantManageServer) TenantNotifyChannelIndex(ctx context.Context, in *sys.TenantNotifyChannelIndexReq) (*sys.TenantNotifyChannelIndexResp, error) {
+	l := tenantmanagelogic.NewTenantNotifyChannelIndexLogic(ctx, s.svcCtx)
+	return l.TenantNotifyChannelIndex(in)
+}
+
+func (s *TenantManageServer) TenantNotifyChannelDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantNotifyChannelDeleteLogic(ctx, s.svcCtx)
+	return l.TenantNotifyChannelDelete(in)
 }

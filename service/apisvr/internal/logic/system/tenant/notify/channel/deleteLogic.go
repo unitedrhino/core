@@ -1,4 +1,4 @@
-package notify
+package channel
 
 import (
 	"context"
@@ -11,22 +11,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type MultiUpdateLogic struct {
+type DeleteLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MultiUpdateLogic {
-	return &MultiUpdateLogic{
+func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteLogic {
+	return &DeleteLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *MultiUpdateLogic) MultiUpdate(req *types.TenantNotifyMultiUpdateReq) error {
-	_, err := l.svcCtx.TenantRpc.TenantNotifyMultiUpdate(l.ctx, utils.Copy[sys.TenantNotifyMultiUpdateReq](req))
-
+func (l *DeleteLogic) Delete(req *types.WithID) error {
+	_, err := l.svcCtx.TenantRpc.TenantNotifyChannelDelete(l.ctx, utils.Copy[sys.WithID](req))
 	return err
 }

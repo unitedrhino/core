@@ -29,7 +29,7 @@ type SendMsgConfig struct {
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
-	c, err := relationDB.NewTenantNotifyRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.TenantNotifyConfigFilter{
+	c, err := relationDB.NewTenantNotifyTemplateRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.TenantNotifyTemplateFilter{
 		NotifyCode: cfg.NotifyCode,
 		Type:       cfg.Type,
 	})
@@ -136,10 +136,6 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			return err
 		}
 	case def.NotifyTypeEmail:
-		tc, err := relationDB.NewTenantConfigRepo(ctx).FindOne(ctx)
-		if err != nil {
-			return err
-		}
 		var accounts = cfg.Accounts
 		if len(users) != 0 {
 			for _, v := range users {
@@ -152,12 +148,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			return nil
 		}
 		err = utils.SenEmail(conf.Email{
-			From:     tc.Email.From,
-			Host:     tc.Email.Host,
-			Secret:   tc.Email.Secret,
-			Nickname: tc.Email.Nickname,
-			Port:     tc.Email.Port,
-			IsSSL:    tc.Email.IsSSL == def.True,
+			From:     c.Template.Channel.Email.From,
+			Host:     c.Template.Channel.Email.Host,
+			Secret:   c.Template.Channel.Email.Secret,
+			Nickname: c.Template.Channel.Email.Nickname,
+			Port:     c.Template.Channel.Email.Port,
+			IsSSL:    c.Template.Channel.Email.IsSSL == def.True,
 		}, accounts, subject,
 			body)
 	}
