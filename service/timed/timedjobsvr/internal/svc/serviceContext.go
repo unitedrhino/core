@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/config"
 	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/stores"
+	"gitee.com/i-Things/share/utils"
 	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
@@ -20,6 +21,7 @@ type ServiceContext struct {
 	PubJob         *pubJob.PubJob
 	AsynqClient    *asynq.Client
 	AsynqInspector *asynq.Inspector
+	NodeID         int64
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -41,5 +43,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		AsynqClient:    clients.NewAsynqClient(c.CacheRedis),
 		AsynqInspector: clients.NewAsynqInspector(c.CacheRedis),
 		Store:          kv.NewStore(c.CacheRedis),
+		NodeID:         utils.GetNodeID(c.CacheRedis, c.Name),
 	}
 }

@@ -62,7 +62,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		logx.Errorf("NewOss err err:%v", err)
 		os.Exit(-1)
 	}
-	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name)
+	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name, nodeID)
 	logx.Must(err)
 	sms, err := clients.NewSms(c.Sms)
 	logx.Must(err)

@@ -19,7 +19,7 @@ func Init(svcCtx *svc.ServiceContext) error {
 }
 
 func Subscribe(svcCtx *svc.ServiceContext) {
-	subAppCli, err := subscribe.NewSubServer(svcCtx.Config.Event)
+	subAppCli, err := subscribe.NewSubServer(svcCtx.Config.Event, svcCtx.NodeID)
 	logx.Must(err)
 	err = subAppCli.Subscribe(func(ctx context.Context) subscribe.ServerEvent {
 		return event.NewEventServer(ctx, svcCtx)

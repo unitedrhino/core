@@ -21,8 +21,8 @@ const (
 
 var ()
 
-func newNatsClient(conf conf.EventConf) (*NatsClient, error) {
-	nc, err := clients.NewNatsClient2(conf.Mode, natsJsConsumerName, conf.Nats)
+func newNatsClient(conf conf.EventConf, nodeID int64) (*NatsClient, error) {
+	nc, err := clients.NewNatsClient2(conf.Mode, natsJsConsumerName, conf.Nats, nodeID)
 	if err != nil {
 		return nil, err
 	}

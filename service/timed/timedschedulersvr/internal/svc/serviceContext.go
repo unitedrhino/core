@@ -8,6 +8,7 @@ import (
 	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/stores"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -21,6 +22,7 @@ type ServiceContext struct {
 	SchedulerRun bool //只启动单例
 	TimedM       timedmanage.TimedManage
 	Queue        *clients.NatsClient
+	NodeID       int64
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -42,7 +44,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			TimedM = timedjobdirect.NewTimedJob(c.TimedJobRpc.RunProxy)
 		}
 	}
-	queue, err := clients.NewNatsClient2(c.Event.Mode, c.Name, c.Event.Nats)
+	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
+	queue, err := clients.NewNatsClient2(c.Event.Mode, c.Name, c.Event.Nats, nodeID)
 	logx.Must(err)
 	return &ServiceContext{
 		Scheduler: Scheduler,
@@ -50,5 +53,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Store:     kv.NewStore(c.CacheRedis),
 		TimedM:    TimedM,
 		Queue:     queue,
+		NodeID:    nodeID,
 	}
 }

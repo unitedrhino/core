@@ -96,9 +96,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	var lo log.Log
 
 	caches.InitStore(c.CacheRedis)
-	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name)
-	logx.Must(err)
 	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
+	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name, nodeID)
+	logx.Must(err)
 	ws.StartWsDp(false, nodeID, serverMsg, c.CacheRedis)
 	if c.SysRpc.Enable {
 		if c.SysRpc.Mode == conf.ClientModeGrpc {
