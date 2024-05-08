@@ -59,6 +59,9 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	if si.IsFilterProject == def.True {
 		conn = conn.Where("project_id=?", uc.ProjectID)
 	}
+	if si.IsSoftDelete == def.True {
+		conn = conn.Where("deleted_time= 0")
+	}
 	if si.IsFilterArea == def.True {
 		//todo
 	}
