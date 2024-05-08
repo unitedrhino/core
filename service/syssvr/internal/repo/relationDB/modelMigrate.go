@@ -75,13 +75,18 @@ func Migrate(c conf.Database) error {
 		//if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
 		//	return err
 		//}
+		//if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
+		//	return err
+		//}
+		//if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
+		//	return err
+		//}
+		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+			return err
+		}
 		if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
 			return err
 		}
-		if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
-			return err
-		}
-
 	}
 
 	if needInitColumn {
@@ -250,18 +255,64 @@ var (
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk}, IsRecord: def.True,
 			Params: map[string]string{"body": "通知的内容"}},
 	}
-	MigrateNotifyTemplate = []SysNotifyTemplate{}
-	MigrateTenantNotify   = []SysTenantNotifyTemplate{
-		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
-		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeEmail, TemplateID: 1},
+	MigrateNotifyTemplate = []SysNotifyTemplate{
+		{
+			ID:           1,
+			TenantCode:   def.TenantCodeCommon,
+			Name:         "用户注册验证码",
+			NotifyCode:   def.NotifyCodeSysUserRegisterCaptcha,
+			Type:         def.NotifyTypeSms,
+			TemplateCode: "SMS_288215142",
+			SignName:     "EbelongTool",
+			Subject:      "注册验证码",
+			Body:         "欢迎注册,你的验证码是:{{.code}},有效期为{{.expr}}分钟",
+		},
+		{
+			ID:           2,
+			TenantCode:   def.TenantCodeCommon,
+			Name:         "登录验证码",
+			NotifyCode:   def.NotifyCodeSysUserLoginCaptcha,
+			Type:         def.NotifyTypeSms,
+			TemplateCode: "SMS_288215142",
+			SignName:     "EbelongTool",
+			Subject:      "登录验证码",
+			Body:         "欢迎登录,你的验证码是:{{.code}},有效期为{{.expr}}分钟",
+		},
+		{
+			ID:           3,
+			TenantCode:   def.TenantCodeCommon,
+			Name:         "场景通知",
+			NotifyCode:   def.NotifyCodeRuleScene,
+			Type:         def.NotifyTypeSms,
+			TemplateCode: "SMS_465414256",
+			SignName:     "EbelongTool",
+			Subject:      "场景通知",
+			Body:         "你好,场景联动通知,内容如下:{{.body}}",
+		},
+		{
+			ID:           4,
+			TenantCode:   def.TenantCodeCommon,
+			Name:         "设备告警通知",
+			NotifyCode:   def.NotifyCodeDeviceAlarm,
+			Type:         def.NotifyTypeSms,
+			TemplateCode: "SMS_465344291",
+			SignName:     "EbelongTool",
+			Subject:      "设备告警通知",
+			Body:         "你好,{{.deviceAlias}}设备告警:{{.body}}",
+		},
+	}
 
-		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeSms, TemplateID: 1},
+	MigrateTenantNotify = []SysTenantNotifyTemplate{
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 0},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 2},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeEmail, TemplateID: 0},
+
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeSms, TemplateID: 3},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeEmail, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeRuleScene, Type: def.NotifyTypeDingTalk, TemplateID: 1},
 
-		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeSms, TemplateID: 1},
+		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeSms, TemplateID: 4},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeEmail, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeDingTalk, TemplateID: 1},
 	}
