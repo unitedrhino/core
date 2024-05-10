@@ -32,6 +32,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		codeID = utils.Random(20, 1)
 		code   = utils.Random(6, 0)
 	)
+	code = "123456" //todo debug
 	if utils.SliceIn(in.Type, def.CaptchaTypePhone, def.CaptchaTypeEmail) && in.Account == "" {
 		return nil, errors.Parameter.AddMsg("account需要填写")
 	}
