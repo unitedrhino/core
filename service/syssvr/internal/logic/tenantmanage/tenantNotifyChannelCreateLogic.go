@@ -31,7 +31,7 @@ func (l *TenantNotifyChannelCreateLogic) TenantNotifyChannelCreate(in *sys.Tenan
 	po := utils.Copy[relationDB.SysTenantNotifyChannel](in)
 	po.ID = 0
 	if !utils.SliceIn(po.Type, def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk,
-		def.NotifyTypeDingWebhook, def.NotifyTypeWx, def.NotifyTypeMessage) {
+		def.NotifyTypeDingWebhook, def.NotifyTypeWx, def.NotifyTypeMessage, def.NotifyTypeWxEWebhook) {
 		return nil, errors.Parameter.AddMsg("type not support")
 	}
 	err := relationDB.NewTenantNotifyChannelRepo(l.ctx).Insert(l.ctx, po)

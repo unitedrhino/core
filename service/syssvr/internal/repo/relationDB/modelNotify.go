@@ -15,7 +15,7 @@ type SysNotifyInfo struct {
 	Group               string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                               //分组
 	Code                string            `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`              // 通知类型编码
 	Name                string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                                //通知的命名
-	SupportTypes        []string          `gorm:"column:support_types;type:json;serializer:json;NOT NULL;default:'[]'"` //支持的通知类型
+	SupportTypes        []def.NotifyType  `gorm:"column:support_types;type:json;serializer:json;NOT NULL;default:'[]'"` //支持的通知类型
 	Desc                string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                               // 项目备注
 	IsRecord            int64             `gorm:"column:is_record;type:BIGINT"`                                         //是否记录该消息,是的情况下会将消息存一份到消息中心
 	DefaultSubject      string            `gorm:"column:default_subject;type:VARCHAR(256);NOT NULL"`                    //默认消息主题

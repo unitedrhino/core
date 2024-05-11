@@ -28,6 +28,9 @@ type TenantAppFilter struct {
 	TenantCode string
 	IDs        []int64
 	AppCodes   []string
+	Type       string
+	SubType    string
+	AppID      string
 	//todo 添加过滤字段
 }
 
@@ -41,6 +44,12 @@ func (p TenantAppRepo) fmtFilter(ctx context.Context, f TenantAppFilter) *gorm.D
 	}
 	if len(f.AppCodes) > 0 {
 		db = db.Where("app_code in ?", f.AppCodes)
+	}
+	if f.AppID != "" && f.SubType == def.AppSubTypeWx {
+		db = db.Where("mini_wx_app_id=?", f.AppID)
+	}
+	if f.AppID != "" && f.SubType == def.AppSubTypeDing {
+		db = db.Where("mini_ding_app_id=?", f.AppID)
 	}
 	return db
 }

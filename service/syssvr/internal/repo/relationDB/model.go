@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"database/sql"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"time"
 )
@@ -84,8 +85,8 @@ type SysAppInfo struct {
 	ID      int64           `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
 	Code    string          `gorm:"column:code;uniqueIndex:code;type:VARCHAR(100);NOT NULL"` // 应用编码
 	Name    string          `gorm:"column:name;uniqueIndex:name;type:VARCHAR(100);NOT NULL"` //应用名称
-	Type    string          `gorm:"column:type;type:VARCHAR(100);default:web;NOT NULL"`      //应用类型 web:web页面  app:应用  mini:小程序
-	SubType string          `gorm:"column:sub_type;type:VARCHAR(100);default:wx;NOT NULL"`   // 类型  wx:微信小程序  ding:钉钉小程序
+	Type    def.AppType     `gorm:"column:type;type:VARCHAR(100);default:web;NOT NULL"`      //应用类型 web:web页面  app:应用  mini:小程序
+	SubType def.AppSubType  `gorm:"column:sub_type;type:VARCHAR(100);default:wx;NOT NULL"`   // 类型  wx:微信小程序  ding:钉钉小程序
 	Desc    string          `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
 	BaseUrl string          `gorm:"column:base_url;type:VARCHAR(100);NOT NULL"`              //应用首页
 	LogoUrl string          `gorm:"column:logo_url;type:VARCHAR(100);NOT NULL"`              //应用logo地址

@@ -5763,6 +5763,48 @@
         ]
       }
     },
+    "/api/v1/system/user/self/app/read": {
+      "post": {
+        "summary": "获取用户应用详情",
+        "operationId": "postApiV1SystemUserSelfAppRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/UserSelfAppReadResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSelfAppReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/self",
+          "systemUserSelf"
+        ]
+      }
+    },
     "/api/v1/system/user/self/area/apply/create": {
       "post": {
         "summary": "申请用户区域权限",
@@ -11187,6 +11229,52 @@
       "required": [
         "userID",
         "roleIDs"
+      ]
+    },
+    "UserSelfAppReadReq": {
+      "type": "object",
+      "properties": {
+        "appID": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "  app:应用  mini:小程序"
+        },
+        "subType": {
+          "type": "string",
+          "description": "wx:微信小程序  dingTalk:钉钉小程序"
+        }
+      },
+      "title": "UserSelfAppReadReq",
+      "required": [
+        "appID",
+        "type",
+        "subType"
+      ]
+    },
+    "UserSelfAppReadResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        },
+        "tenantCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "拥有这个app的租户列表"
+        }
+      },
+      "title": "UserSelfAppReadResp",
+      "required": [
+        "code"
       ]
     },
     "UserSelfReadReq": {

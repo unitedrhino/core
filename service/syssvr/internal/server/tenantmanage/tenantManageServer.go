@@ -67,12 +67,12 @@ func (s *TenantManageServer) TenantAppIndex(ctx context.Context, in *sys.TenantA
 	return l.TenantAppIndex(in)
 }
 
-func (s *TenantManageServer) TenantAppCreate(ctx context.Context, in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+func (s *TenantManageServer) TenantAppCreate(ctx context.Context, in *sys.TenantAppInfo) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAppCreateLogic(ctx, s.svcCtx)
 	return l.TenantAppCreate(in)
 }
 
-func (s *TenantManageServer) TenantAppUpdate(ctx context.Context, in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+func (s *TenantManageServer) TenantAppUpdate(ctx context.Context, in *sys.TenantAppInfo) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAppUpdateLogic(ctx, s.svcCtx)
 	return l.TenantAppUpdate(in)
 }
@@ -82,7 +82,7 @@ func (s *TenantManageServer) TenantAppDelete(ctx context.Context, in *sys.Tenant
 	return l.TenantAppDelete(in)
 }
 
-func (s *TenantManageServer) TenantAppModuleMultiCreate(ctx context.Context, in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+func (s *TenantManageServer) TenantAppModuleMultiCreate(ctx context.Context, in *sys.TenantAppInfo) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAppModuleMultiCreateLogic(ctx, s.svcCtx)
 	return l.TenantAppModuleMultiCreate(in)
 }

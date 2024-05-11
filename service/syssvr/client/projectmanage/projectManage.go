@@ -119,12 +119,12 @@ type (
 	TenantAccessMultiUpdateReq         = sys.TenantAccessMultiUpdateReq
 	TenantAppIndexReq                  = sys.TenantAppIndexReq
 	TenantAppIndexResp                 = sys.TenantAppIndexResp
+	TenantAppInfo                      = sys.TenantAppInfo
 	TenantAppMenu                      = sys.TenantAppMenu
 	TenantAppMenuIndexReq              = sys.TenantAppMenuIndexReq
 	TenantAppMenuIndexResp             = sys.TenantAppMenuIndexResp
 	TenantAppModule                    = sys.TenantAppModule
 	TenantAppMultiUpdateReq            = sys.TenantAppMultiUpdateReq
-	TenantAppSaveReq                   = sys.TenantAppSaveReq
 	TenantAppWithIDOrCode              = sys.TenantAppWithIDOrCode
 	TenantInfo                         = sys.TenantInfo
 	TenantInfoCreateReq                = sys.TenantInfoCreateReq

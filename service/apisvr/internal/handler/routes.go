@@ -1185,6 +1185,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/app/read",
+					Handler: systemuserself.AppReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/captcha",
 					Handler: systemuserself.CaptchaHandler(serverCtx),
 				},

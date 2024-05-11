@@ -26,7 +26,7 @@ func NewTenantAppModuleMultiCreateLogic(ctx context.Context, svcCtx *svc.Service
 	}
 }
 
-func (l *TenantAppModuleMultiCreateLogic) TenantAppModuleMultiCreate(in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+func (l *TenantAppModuleMultiCreateLogic) TenantAppModuleMultiCreate(in *sys.TenantAppInfo) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}

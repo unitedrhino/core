@@ -203,11 +203,11 @@ service TenantManage {
   rpc tenantAccessIndex(TenantAccessIndexReq) returns (TenantAccessIndexResp); //获取角色API权限列表
 
   rpc tenantAppIndex(TenantAppIndexReq) returns (TenantAppIndexResp); //获取租户APP权限列表
-  rpc tenantAppCreate(TenantAppSaveReq) returns(Empty); //添加角色
-  rpc tenantAppUpdate(TenantAppSaveReq) returns(Empty); //添加角色
+  rpc tenantAppCreate(TenantAppInfo) returns(Empty); //添加角色
+  rpc tenantAppUpdate(TenantAppInfo) returns(Empty); //添加角色
   rpc tenantAppDelete(TenantAppWithIDOrCode) returns(Empty); //删除角色
 
-  rpc tenantAppModuleMultiCreate(TenantAppSaveReq) returns(Empty); //添加角色
+  rpc tenantAppModuleMultiCreate(TenantAppInfo) returns(Empty); //添加角色
   rpc tenantAppModuleCreate(TenantModuleCreateReq) returns(Empty); //添加角色
   rpc tenantAppModuleIndex(TenantModuleIndexReq) returns(TenantModuleIndexResp); //获取角色列表
   rpc tenantAppModuleDelete(TenantModuleWithIDOrCode) returns(Empty); //删除角色
@@ -532,7 +532,8 @@ message TenantAccessIndexResp{
 }
 
 
-message TenantAppSaveReq{
+message TenantAppInfo{
+  int64 id =6;
   string code = 1;
   string appCode = 2;
   repeated TenantAppModule modules = 3;//模块列表
@@ -555,11 +556,14 @@ message TenantAppIndexReq{
   PageInfo page = 1;//分页信息
   string code = 2;
   repeated string appCodes = 3;
+  string type=4;//应用类型 web:web页面  app:应用  mini:小程序
+  string subType=5;//子类型  wx:微信小程序  dingTalk:钉钉小程序
+  string appID =6;
 }
 
 message TenantAppIndexResp{
   int64 total = 1;
-  repeated AppInfo list = 2;//app列表数据
+  repeated TenantAppInfo list = 2;//app列表数据
 }
 
 message TenantAppMultiUpdateReq{
@@ -1295,6 +1299,7 @@ message AppInfoIndexReq{
   PageInfo page = 1;//分页信息
   string name = 2;
   string code = 3;
+  repeated string codes =4;
 }
 
 message AppInfoIndexResp{

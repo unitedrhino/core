@@ -2,11 +2,11 @@ package tenantmanagelogic
 
 import (
 	"context"
-	appmanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/appmanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/utils"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -32,26 +32,32 @@ func (l *TenantAppIndexLogic) TenantAppIndex(in *sys.TenantAppIndexReq) (*sys.Te
 			ctxs.GetUserCtx(l.ctx).AllTenant = false
 		}()
 	}
-	f := relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: in.AppCodes}
+	f := relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: in.AppCodes, AppID: in.AppID, Type: in.Type, SubType: in.SubType}
 	list, err := relationDB.NewTenantAppRepo(l.ctx).FindByFilter(l.ctx, f, nil)
 	if err != nil {
 		return nil, err
 	}
-	if len(list) == 0 {
-		return &sys.TenantAppIndexResp{List: []*sys.AppInfo{}, Total: 0}, nil
-	}
-	appCodes := make([]string, 0)
-	codeIDMap := make(map[string]int64)
+	//if len(list) == 0 {
+	//	return &sys.TenantAppIndexResp{List: []*sys.TenantAppInfo{}, Total: 0}, nil
+	//}
+	//appCodes := make([]string, 0)
+	//codeIDMap := make(map[string]int64)
+	//for _, v := range list {
+	//	appCodes = append(appCodes, v.AppCode)
+	//	codeIDMap[v.AppCode] = v.ID
+	//}
+	//apps, err := relationDB.NewAppInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.AppInfoFilter{Codes: appCodes}, nil)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//for _, v := range apps {
+	//	v.ID = codeIDMap[v.Code] //修正为关联的id
+	//}
+	var retList []*sys.TenantAppInfo
 	for _, v := range list {
-		appCodes = append(appCodes, v.AppCode)
-		codeIDMap[v.AppCode] = v.ID
+		val := utils.Copy[sys.TenantAppInfo](v)
+		val.Code = string(v.TenantCode)
+		retList = append(retList, val)
 	}
-	apps, err := relationDB.NewAppInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.AppInfoFilter{Codes: appCodes}, nil)
-	if err != nil {
-		return nil, err
-	}
-	for _, v := range apps {
-		v.ID = codeIDMap[v.Code] //修正为关联的id
-	}
-	return &sys.TenantAppIndexResp{List: appmanagelogic.ToAppInfosPb(apps), Total: int64(len(list))}, nil
+	return &sys.TenantAppIndexResp{List: retList, Total: int64(len(list))}, nil
 }

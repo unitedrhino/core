@@ -4613,10 +4613,10 @@ type TenantManageClient interface {
 	TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantAccessIndex(ctx context.Context, in *TenantAccessIndexReq, opts ...grpc.CallOption) (*TenantAccessIndexResp, error)
 	TenantAppIndex(ctx context.Context, in *TenantAppIndexReq, opts ...grpc.CallOption) (*TenantAppIndexResp, error)
-	TenantAppCreate(ctx context.Context, in *TenantAppSaveReq, opts ...grpc.CallOption) (*Empty, error)
-	TenantAppUpdate(ctx context.Context, in *TenantAppSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	TenantAppCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
+	TenantAppUpdate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
 	TenantAppDelete(ctx context.Context, in *TenantAppWithIDOrCode, opts ...grpc.CallOption) (*Empty, error)
-	TenantAppModuleMultiCreate(ctx context.Context, in *TenantAppSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	TenantAppModuleMultiCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
 	TenantAppModuleCreate(ctx context.Context, in *TenantModuleCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantAppModuleIndex(ctx context.Context, in *TenantModuleIndexReq, opts ...grpc.CallOption) (*TenantModuleIndexResp, error)
 	TenantAppModuleDelete(ctx context.Context, in *TenantModuleWithIDOrCode, opts ...grpc.CallOption) (*Empty, error)
@@ -4716,7 +4716,7 @@ func (c *tenantManageClient) TenantAppIndex(ctx context.Context, in *TenantAppIn
 	return out, nil
 }
 
-func (c *tenantManageClient) TenantAppCreate(ctx context.Context, in *TenantAppSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *tenantManageClient) TenantAppCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, TenantManage_TenantAppCreate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -4725,7 +4725,7 @@ func (c *tenantManageClient) TenantAppCreate(ctx context.Context, in *TenantAppS
 	return out, nil
 }
 
-func (c *tenantManageClient) TenantAppUpdate(ctx context.Context, in *TenantAppSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *tenantManageClient) TenantAppUpdate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, TenantManage_TenantAppUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -4743,7 +4743,7 @@ func (c *tenantManageClient) TenantAppDelete(ctx context.Context, in *TenantAppW
 	return out, nil
 }
 
-func (c *tenantManageClient) TenantAppModuleMultiCreate(ctx context.Context, in *TenantAppSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *tenantManageClient) TenantAppModuleMultiCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, TenantManage_TenantAppModuleMultiCreate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -4913,10 +4913,10 @@ type TenantManageServer interface {
 	TenantAccessMultiUpdate(context.Context, *TenantAccessMultiUpdateReq) (*Empty, error)
 	TenantAccessIndex(context.Context, *TenantAccessIndexReq) (*TenantAccessIndexResp, error)
 	TenantAppIndex(context.Context, *TenantAppIndexReq) (*TenantAppIndexResp, error)
-	TenantAppCreate(context.Context, *TenantAppSaveReq) (*Empty, error)
-	TenantAppUpdate(context.Context, *TenantAppSaveReq) (*Empty, error)
+	TenantAppCreate(context.Context, *TenantAppInfo) (*Empty, error)
+	TenantAppUpdate(context.Context, *TenantAppInfo) (*Empty, error)
 	TenantAppDelete(context.Context, *TenantAppWithIDOrCode) (*Empty, error)
-	TenantAppModuleMultiCreate(context.Context, *TenantAppSaveReq) (*Empty, error)
+	TenantAppModuleMultiCreate(context.Context, *TenantAppInfo) (*Empty, error)
 	TenantAppModuleCreate(context.Context, *TenantModuleCreateReq) (*Empty, error)
 	TenantAppModuleIndex(context.Context, *TenantModuleIndexReq) (*TenantModuleIndexResp, error)
 	TenantAppModuleDelete(context.Context, *TenantModuleWithIDOrCode) (*Empty, error)
@@ -4965,16 +4965,16 @@ func (UnimplementedTenantManageServer) TenantAccessIndex(context.Context, *Tenan
 func (UnimplementedTenantManageServer) TenantAppIndex(context.Context, *TenantAppIndexReq) (*TenantAppIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppIndex not implemented")
 }
-func (UnimplementedTenantManageServer) TenantAppCreate(context.Context, *TenantAppSaveReq) (*Empty, error) {
+func (UnimplementedTenantManageServer) TenantAppCreate(context.Context, *TenantAppInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppCreate not implemented")
 }
-func (UnimplementedTenantManageServer) TenantAppUpdate(context.Context, *TenantAppSaveReq) (*Empty, error) {
+func (UnimplementedTenantManageServer) TenantAppUpdate(context.Context, *TenantAppInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppUpdate not implemented")
 }
 func (UnimplementedTenantManageServer) TenantAppDelete(context.Context, *TenantAppWithIDOrCode) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppDelete not implemented")
 }
-func (UnimplementedTenantManageServer) TenantAppModuleMultiCreate(context.Context, *TenantAppSaveReq) (*Empty, error) {
+func (UnimplementedTenantManageServer) TenantAppModuleMultiCreate(context.Context, *TenantAppInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppModuleMultiCreate not implemented")
 }
 func (UnimplementedTenantManageServer) TenantAppModuleCreate(context.Context, *TenantModuleCreateReq) (*Empty, error) {
@@ -5183,7 +5183,7 @@ func _TenantManage_TenantAppIndex_Handler(srv interface{}, ctx context.Context, 
 }
 
 func _TenantManage_TenantAppCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantAppSaveReq)
+	in := new(TenantAppInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -5195,13 +5195,13 @@ func _TenantManage_TenantAppCreate_Handler(srv interface{}, ctx context.Context,
 		FullMethod: TenantManage_TenantAppCreate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantAppCreate(ctx, req.(*TenantAppSaveReq))
+		return srv.(TenantManageServer).TenantAppCreate(ctx, req.(*TenantAppInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _TenantManage_TenantAppUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantAppSaveReq)
+	in := new(TenantAppInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -5213,7 +5213,7 @@ func _TenantManage_TenantAppUpdate_Handler(srv interface{}, ctx context.Context,
 		FullMethod: TenantManage_TenantAppUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantAppUpdate(ctx, req.(*TenantAppSaveReq))
+		return srv.(TenantManageServer).TenantAppUpdate(ctx, req.(*TenantAppInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -5237,7 +5237,7 @@ func _TenantManage_TenantAppDelete_Handler(srv interface{}, ctx context.Context,
 }
 
 func _TenantManage_TenantAppModuleMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantAppSaveReq)
+	in := new(TenantAppInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -5249,7 +5249,7 @@ func _TenantManage_TenantAppModuleMultiCreate_Handler(srv interface{}, ctx conte
 		FullMethod: TenantManage_TenantAppModuleMultiCreate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantAppModuleMultiCreate(ctx, req.(*TenantAppSaveReq))
+		return srv.(TenantManageServer).TenantAppModuleMultiCreate(ctx, req.(*TenantAppInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }

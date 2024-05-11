@@ -28,7 +28,7 @@ func NewTenantAppCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 	}
 }
 
-func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empty, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}

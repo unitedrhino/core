@@ -1226,6 +1226,18 @@ type UserRoleMultiUpdateReq struct {
 	RoleIDs []int64 `json:"roleIDs"`       //角色编号列表
 }
 
+type UserSelfAppReadReq struct {
+	AppID   string `json:"appID"`   //
+	Type    string `json:"type"`    //  app:应用  mini:小程序
+	SubType string `json:"subType"` //wx:微信小程序  dingTalk:钉钉小程序
+}
+
+type UserSelfAppReadResp struct {
+	Code        string   `json:"code"`                 // 应用编号
+	Name        string   `json:"name,optional"`        // 名称
+	TenantCodes []string `json:"tenantCodes,optional"` //拥有这个app的租户列表
+}
+
 type UserSelfReadReq struct {
 	WithRoles  bool `json:"withRoles,optional"`
 	WithTenant bool `json:"withTenant,optional"`

@@ -25,7 +25,7 @@ func NewTenantAppUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 	}
 }
 
-func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppSaveReq) (*sys.Empty, error) {
+func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empty, error) {
 	old, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: []string{in.AppCode}})
 	if err != nil {
 		return nil, err
