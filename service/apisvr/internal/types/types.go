@@ -390,6 +390,13 @@ type ModuleInfoIndexResp struct {
 	List  []*ModuleInfo `json:"list"`  //菜单列表
 }
 
+type NotifyGroupInfo struct {
+	ID       string        `json:"id,optional"`        // id
+	Code     string        `json:"code,optional"`      // 应用编号
+	Name     string        `json:"name,optional"`      // 接口分组
+	Children []*NotifyInfo `json:"children,omitempty"` // 列表数据
+}
+
 type NotifyInfo struct {
 	ID                  int64             `json:"id,optional"`                  // id编号
 	Group               string            `json:"group,optional"`               //分组
@@ -415,6 +422,10 @@ type NotifyInfoIndexReq struct {
 type NotifyInfoIndexResp struct {
 	List  []*NotifyInfo `json:"list"`  // 通知列表数据
 	Total int64         `json:"total"` // 通知列表总记录数
+}
+
+type NotifyInfoTreeResp struct {
+	List []*NotifyGroupInfo `json:"list"` // 通知列表数据
 }
 
 type NotifyTemplate struct {

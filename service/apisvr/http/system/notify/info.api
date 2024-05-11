@@ -21,6 +21,11 @@ service api {
     @handler index
     post /index (NotifyInfoIndexReq) returns (NotifyInfoIndexResp)
 
+    @doc "获取通知列表树"
+    @handler tree
+    post /tree (NotifyInfoIndexReq) returns (NotifyInfoTreeResp)
+
+
     @doc "获取通知详情"
     @handler read
     post /read (WithIDOrCode) returns (NotifyInfo)
@@ -48,6 +53,15 @@ type (
     NotifyInfoIndexResp  {
         List []*NotifyInfo `json:"list"`            // 通知列表数据
         Total int64 `json:"total"`                    // 通知列表总记录数
+    }
+    NotifyInfoTreeResp  {
+        List []*NotifyGroupInfo `json:"list"`            // 通知列表数据
+    }
+    NotifyGroupInfo  {
+        ID string `json:"id,optional"`                               // id
+        Code string `json:"code,optional"`                               // 应用编号
+        name  string `json:"name,optional"`                               // 接口分组
+        Children []*NotifyInfo `json:"children,omitempty"`            // 列表数据
     }
 
     NotifyInfo{

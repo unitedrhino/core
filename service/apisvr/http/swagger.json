@@ -3017,6 +3017,48 @@
         ]
       }
     },
+    "/api/v1/system/notify/info/tree": {
+      "post": {
+        "summary": "获取通知列表树",
+        "operationId": "postApiV1SystemNotifyInfoTree",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/NotifyInfoTreeResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyInfoIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/info",
+          "systemNotifyInfo"
+        ]
+      }
+    },
     "/api/v1/system/notify/info/update": {
       "post": {
         "summary": "更新通知",
@@ -7965,6 +8007,31 @@
         "list"
       ]
     },
+    "NotifyGroupInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " id"
+        },
+        "code": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 接口分组"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NotifyInfo"
+          },
+          "description": " 列表数据"
+        }
+      },
+      "title": "NotifyGroupInfo"
+    },
     "NotifyInfo": {
       "type": "object",
       "properties": {
@@ -8066,6 +8133,22 @@
       "required": [
         "list",
         "total"
+      ]
+    },
+    "NotifyInfoTreeResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NotifyGroupInfo"
+          },
+          "description": " 通知列表数据"
+        }
+      },
+      "title": "NotifyInfoTreeResp",
+      "required": [
+        "list"
       ]
     },
     "NotifyTemplate": {
