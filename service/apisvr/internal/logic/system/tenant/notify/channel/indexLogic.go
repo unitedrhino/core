@@ -26,6 +26,6 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.TenantNotifyChannelIndexReq) (resp *types.TenantNotifyChannelIndexResp, err error) {
-	ret, err := l.svcCtx.TenantRpc.TenantNotifyChannelRead(l.ctx, utils.Copy[sys.WithID](req))
+	ret, err := l.svcCtx.TenantRpc.TenantNotifyChannelIndex(l.ctx, utils.Copy[sys.TenantNotifyChannelIndexReq](req))
 	return utils.Copy[types.TenantNotifyChannelIndexResp](ret), err
 }
