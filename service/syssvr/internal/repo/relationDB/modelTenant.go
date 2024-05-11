@@ -138,6 +138,7 @@ type SysTenantEmail struct {
 // 第三方app配置
 type SysTenantThird struct {
 	AppID     string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`
+	MiniAppID string `gorm:"column:mini_app_id;type:VARCHAR(50);default:'';"`
 	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
 	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
 }
