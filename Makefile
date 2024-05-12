@@ -3,7 +3,7 @@
 
 build:build.clean mod cp.etc build.api  build.view  build.sys  build.timedjob build.timedscheduler
 
-buildback: build.clean mod cp.etc build.api  build.view build.data
+buildback: build.clean mod cp.etc build.api  build.view
 
 
 buildone: buildback moduleupdate build.front
@@ -63,7 +63,6 @@ cp.etc:
 	@mkdir -p ./cmd/etc/
 	@cp -rf ./service/apisvr/etc/* ./cmd/etc/
 	@cp -rf ./service/viewsvr/etc/* ./cmd/etc/
-	@cp -rf ./service/datasvr/etc/* ./cmd/etc/
 
 
 build.api:

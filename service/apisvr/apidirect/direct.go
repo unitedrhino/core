@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/handler/system/proxy"
 	"gitee.com/i-Things/core/service/apisvr/internal/startup"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/i-Things/core/service/datasvr/dataExport"
 	"gitee.com/i-Things/share/ctxs"
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -47,6 +48,6 @@ func runApi(apiCtx ApiCtx) ApiCtx {
 	handler.RegisterHandlers(server, ctx)
 	handler.RegisterWsHandlers(apiCtx.SvcCtx.Ws, ctx)
 	startup.Init(ctx)
-
+	dataExport.Run(server)
 	return apiCtx
 }
