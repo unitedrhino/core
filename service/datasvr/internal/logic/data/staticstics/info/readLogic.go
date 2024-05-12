@@ -170,9 +170,13 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 			case time.Time:
 				r[utils.UderscoreToLowerCamelCase(k)] = v.(time.Time).Unix()
 			default:
-				r[utils.UderscoreToLowerCamelCase(k)] = v
+				k2 := utils.UderscoreToLowerCamelCase(k)
+				if utils.SliceIn(k2, "areaID", "projectID") {
+					r[k2] = cast.ToString(v)
+				} else {
+					r[k2] = v
+				}
 			}
-
 		}
 	}
 	return &types.StaticsticsInfoReadResp{List: ret}, nil
