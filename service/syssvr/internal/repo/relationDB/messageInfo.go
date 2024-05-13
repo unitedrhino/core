@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
@@ -33,7 +34,7 @@ type MessageInfoFilter struct {
 func (p MessageInfoRepo) fmtFilter(ctx context.Context, f MessageInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.Group != "" {
-		db = db.Where("group=?", f.Group)
+		db = db.Where(fmt.Sprintf("%s=?", stores.Col("group")), f.Group)
 	}
 	if f.NotifyCode != "" {
 		db = db.Where("notify_code=?", f.NotifyCode)
