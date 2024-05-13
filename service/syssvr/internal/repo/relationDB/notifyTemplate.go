@@ -89,6 +89,7 @@ func (p NotifyTemplateRepo) Delete(ctx context.Context, id int64) error {
 	err := p.db.WithContext(ctx).Where("id = ?", id).Delete(&SysNotifyTemplate{}).Error
 	return stores.ErrFmt(err)
 }
+
 func (p NotifyTemplateRepo) FindOne(ctx context.Context, id int64) (*SysNotifyTemplate, error) {
 	var result SysNotifyTemplate
 	err := p.db.WithContext(ctx).Preload("Channel").Where("id = ?", id).First(&result).Error
