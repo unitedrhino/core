@@ -14,7 +14,7 @@ CacheRedis:
     Pass:
     Type: node
 Event:
-  Mode: natsJs
+  
   Nats:
     Url: nats://127.0.0.1:4222
     Consumer: dmsvr

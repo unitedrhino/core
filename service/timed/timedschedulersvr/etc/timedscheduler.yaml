@@ -5,7 +5,7 @@ Etcd:
     - 127.0.0.1:2379
   Key: timedscheduler.rpc
 Event:
-  Mode: natsJs
+  
 CacheRedis:
   - Host: 127.0.0.1:6379
     Pass:
