@@ -44,6 +44,7 @@ func transPoToPb(po *relationDB.SysAreaInfo) *sys.AreaInfo {
 		AreaIDPath:      utils.GetIDPath(po.AreaIDPath),
 		Position:        logic.ToSysPoint(po.Position),
 		Desc:            utils.ToRpcNullString(po.Desc),
+		IsLeaf:          po.IsLeaf,
 		LowerLevelCount: po.LowerLevelCount,
 		ChildrenAreaIDs: po.ChildrenAreaIDs,
 	}
