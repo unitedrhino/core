@@ -3,8 +3,7 @@ ListenOn: 0.0.0.0:3256
 Log:
   Encoding: plain
   #Mode: file
-Event:
-  
+
 Etcd:
   Hosts:
   - 127.0.0.1:2379
