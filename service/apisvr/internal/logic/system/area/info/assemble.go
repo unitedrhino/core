@@ -17,6 +17,7 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 		AreaNamePath:    root.AreaNamePath,
 		LowerLevelCount: root.LowerLevelCount,
 		AreaIDPath:      root.AreaIDPath,
+		IsLeaf:          root.IsLeaf,
 		Position:        logic.ToSysPointApi(root.Position),
 		Desc:            utils.ToNullString(root.Desc),
 		Children:        nil,

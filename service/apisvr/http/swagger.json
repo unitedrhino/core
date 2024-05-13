@@ -6964,6 +6964,11 @@
           "format": "int64",
           "description": "下级的数量统计（只读）"
         },
+        "isLeaf": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否是子节点（只读）"
+        },
         "areaIDPath": {
           "type": "array",
           "items": {
