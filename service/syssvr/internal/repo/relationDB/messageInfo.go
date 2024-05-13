@@ -42,7 +42,7 @@ func (p MessageInfoRepo) fmtFilter(ctx context.Context, f MessageInfoFilter) *go
 		db = db.Where("is_global=?", f.IsGlobal)
 	}
 	if f.IsDirectNotify != 0 {
-		db = db.Where("is_notify=?", f.IsDirectNotify)
+		db = db.Where("is_direct_notify=?", f.IsDirectNotify)
 	}
 	return db
 }
