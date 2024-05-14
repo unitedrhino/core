@@ -34,7 +34,7 @@ func (l *MenuIndexLogic) MenuIndex(req *types.UserResourceWithModuleReq) (resp *
 	}
 	var menuIDs []int64
 	if !uc.IsAdmin {
-		ids, err := l.svcCtx.RoleRpc.RoleMenuIndex(l.ctx, &sys.RoleMenuIndexReq{AppCode: uc.AppCode, ModuleCode: req.ModuleCode})
+		ids, err := l.svcCtx.RoleRpc.RoleMenuIndex(l.ctx, &sys.RoleMenuIndexReq{Id: roleID, AppCode: uc.AppCode, ModuleCode: req.ModuleCode})
 		if err != nil {
 			return nil, err
 		}
