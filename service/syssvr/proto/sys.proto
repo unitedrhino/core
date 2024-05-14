@@ -988,6 +988,7 @@ message UserInfoIndexReq{
   string email = 4;
   repeated int64 userIDs =5;
   string account =6;
+  repeated int64 hasAccessAreas =7;
 }
 
 message UserInfoIndexResp{

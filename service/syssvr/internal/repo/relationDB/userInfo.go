@@ -17,6 +17,7 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 
 type UserInfoFilter struct {
 	UserIDs        []int64
+	HasAccessAreas []int64
 	TenantCode     string
 	UserNames      []string
 	UserName       string
@@ -42,6 +43,14 @@ func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
 
 func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	if f.HasAccessAreas != nil {
+		if len(f.HasAccessAreas) == 0 {
+			db = db.Where("user_id in (select target_id from sys_data_area where deleted_time =0 and target_type=?)", def.TargetUser)
+		} else {
+			db = db.Where("user_id in (select target_id from sys_data_area where deleted_time =0 and target_type=? and area_id in ?)",
+				def.TargetUser, f.HasAccessAreas)
+		}
+	}
 	if f.DingTalkUserID != "" {
 		db = db.Where("ding_talk_user_id = ?", f.DingTalkUserID)
 	}

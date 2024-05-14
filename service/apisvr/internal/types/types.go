@@ -1128,12 +1128,13 @@ type UserInfoDeleteReq struct {
 }
 
 type UserInfoIndexReq struct {
-	Page     *PageInfo `json:"page,optional"`     //分页信息
-	UserName string    `json:"userName,optional"` //用户名(唯一)
-	Phone    string    `json:"phone,optional"`    // 手机号
-	Email    string    `json:"email,optional"`    // 邮箱
-	Account  string    `json:"account,optional"`
-	UserIDs  []int64   `json:"userIDs,optional"`
+	Page           *PageInfo `json:"page,optional"`     //分页信息
+	UserName       string    `json:"userName,optional"` //用户名(唯一)
+	Phone          string    `json:"phone,optional"`    // 手机号
+	Email          string    `json:"email,optional"`    // 邮箱
+	Account        string    `json:"account,optional"`
+	UserIDs        []int64   `json:"userIDs,optional"`
+	HasAccessAreas []int64   `json:"hasAccessAreas,optional"`
 }
 
 type UserInfoIndexResp struct {

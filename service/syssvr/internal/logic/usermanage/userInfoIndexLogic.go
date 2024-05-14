@@ -30,10 +30,11 @@ func NewUserInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserInfoIndexResp, error) {
 	l.Infof("%s req=%+v", utils.FuncName(), in)
 	f := relationDB.UserInfoFilter{
-		UserName: in.UserName,
-		Phone:    in.Phone,
-		Email:    in.Email,
-		UserIDs:  in.UserIDs,
+		UserName:       in.UserName,
+		Phone:          in.Phone,
+		Email:          in.Email,
+		UserIDs:        in.UserIDs,
+		HasAccessAreas: in.HasAccessAreas,
 	}
 	if in.Account != "" {
 		f.Accounts = []string{in.Account}

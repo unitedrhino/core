@@ -33,12 +33,13 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoIndexResp, err error) {
 	l.Infof("%s req=%v", utils.FuncName(), req)
 	info, err := l.svcCtx.UserRpc.UserInfoIndex(l.ctx, &sys.UserInfoIndexReq{
-		Page:     logic.ToSysPageRpc(req.Page),
-		UserName: req.UserName,
-		Phone:    req.Phone,
-		Email:    req.Email,
-		Account:  req.Account,
-		UserIDs:  req.UserIDs,
+		Page:           logic.ToSysPageRpc(req.Page),
+		UserName:       req.UserName,
+		Phone:          req.Phone,
+		Email:          req.Email,
+		Account:        req.Account,
+		UserIDs:        req.UserIDs,
+		HasAccessAreas: req.HasAccessAreas,
 	})
 	if err != nil {
 		return nil, err

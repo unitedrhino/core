@@ -10929,6 +10929,13 @@
             "type": "integer",
             "format": "int64"
           }
+        },
+        "hasAccessAreas": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "title": "UserInfoIndexReq"

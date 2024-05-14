@@ -25,16 +25,20 @@ func NewDataAreaRepo(in any) *DataAreaRepo {
 }
 
 type DataAreaFilter struct {
-	ProjectID int64
-	AreaIDs   []int64
-	Targets   []*Target
-	AuthType  def.AuthType
+	ProjectID  int64
+	AreaIDs    []int64
+	Targets    []*Target
+	TargetType def.TargetType
+	AuthType   def.AuthType
 }
 
 func (p DataAreaRepo) fmtFilter(ctx context.Context, f DataAreaFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if len(f.AreaIDs) > 0 {
 		db = db.Where("area_id in ?", f.AreaIDs)
+	}
+	if f.TargetType != "" {
+		db = db.Where("target_type in ?", f.TargetType)
 	}
 	if len(f.Targets) != 0 {
 		scope := func(db *gorm.DB) *gorm.DB {
