@@ -27,7 +27,7 @@ func NewAppInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AppI
 
 func (l *AppInfoIndexLogic) AppInfoIndex(in *sys.AppInfoIndexReq) (*sys.AppInfoIndexResp, error) {
 	ret, err := relationDB.NewAppInfoRepo(l.ctx).FindByFilter(l.ctx,
-		relationDB.AppInfoFilter{Code: in.Code, Name: in.Name}, logic.ToPageInfo(in.Page))
+		relationDB.AppInfoFilter{Code: in.Code, Codes: in.Codes, Name: in.Name}, logic.ToPageInfo(in.Page))
 	if err != nil {
 		return nil, err
 	}
