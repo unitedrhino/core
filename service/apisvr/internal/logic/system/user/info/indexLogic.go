@@ -38,6 +38,7 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 		Phone:    req.Phone,
 		Email:    req.Email,
 		Account:  req.Account,
+		UserIDs:  req.UserIDs,
 	})
 	if err != nil {
 		return nil, err

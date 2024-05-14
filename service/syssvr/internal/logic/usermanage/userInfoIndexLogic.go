@@ -34,7 +34,9 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 		Phone:    in.Phone,
 		Email:    in.Email,
 		UserIDs:  in.UserIDs,
-		Accounts: []string{in.Account},
+	}
+	if in.Account != "" {
+		f.Accounts = []string{in.Account}
 	}
 	ucs, err := l.UiDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	if err != nil {

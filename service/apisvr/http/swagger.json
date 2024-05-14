@@ -10922,6 +10922,13 @@
         },
         "account": {
           "type": "string"
+        },
+        "userIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "title": "UserInfoIndexReq"

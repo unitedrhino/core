@@ -1133,6 +1133,7 @@ type UserInfoIndexReq struct {
 	Phone    string    `json:"phone,optional"`    // 手机号
 	Email    string    `json:"email,optional"`    // 邮箱
 	Account  string    `json:"account,optional"`
+	UserIDs  []int64   `json:"userIDs,optional"`
 }
 
 type UserInfoIndexResp struct {
