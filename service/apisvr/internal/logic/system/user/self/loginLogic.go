@@ -104,7 +104,7 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		Code:          200,
 	})
 	info, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
-		UserID: uc.UserID,
+		UserID: uResp.Info.UserID,
 	})
 	if err != nil {
 		return nil, err
