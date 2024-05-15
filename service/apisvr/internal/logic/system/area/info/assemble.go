@@ -8,6 +8,9 @@ import (
 )
 
 func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
+	if root == nil {
+		return nil
+	}
 	api := &types.AreaInfo{
 		CreatedTime:     root.CreatedTime,
 		ProjectID:       root.ProjectID,
