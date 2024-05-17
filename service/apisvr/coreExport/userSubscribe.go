@@ -97,6 +97,7 @@ func (u *UserSubscribe) publish(nodeID int64, infos chan publishStu) {
 		if len(execCache) == 0 {
 			return
 		}
+		logx.Infof("UserSubscribe.publish nodeID:%v publishs:%v", nodeID, utils.Fmt(execCache))
 		err := u.ServerMsg.Publish(context.Background(), fmt.Sprintf(eventBus.CoreApiUserPublish, nodeID), execCache)
 		if err != nil {
 			logx.Error(err)
