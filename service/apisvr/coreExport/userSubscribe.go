@@ -50,6 +50,7 @@ func (u *UserSubscribe) Publish(ctx context.Context, code string, data any, para
 		WsPublish: &pb,
 		ctx:       ctxs.CopyCtx(ctx),
 	}
+	logx.Infof("UserSubscribe.publish:%v", utils.Fmt(pb))
 
 	return nil
 }
