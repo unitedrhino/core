@@ -215,6 +215,9 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 	}
 	uc, err := l.GetUserInfo(in)
 	if err == nil {
+		if uc.Status != def.True {
+			return nil, errors.AccountDisable
+		}
 		return l.getRet(uc, list)
 	}
 	if errors.Cmp(err, errors.NotFind) {

@@ -59,6 +59,7 @@ type (
         Role        int64  `json:"role,optional"`                       // 用户角色默认
         Sex         int64  `json:"sex,optional"`               // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 		IsAllData   int64  `json:"isAllData,optional,omitempty"`  	   // 是否所有数据权限（1是，2否）
+		Status int64  `json:"status,optional"`
 		MessageNotRead map[string]int64  `json:"messageNotRead,optional,omitempty"`
 	 	Roles []*RoleInfo `json:"roles,optional,omitempty"`
 		Tenant *TenantInfo `json:"tenant,optional,omitempty"`

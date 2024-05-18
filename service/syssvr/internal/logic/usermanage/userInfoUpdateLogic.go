@@ -46,6 +46,9 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 		if info.Email != nil {
 			ui.Email = utils.AnyToNullString(info.Email)
 		}
+		if info.Status != 0 {
+			ui.Status = info.Status
+		}
 	}
 	if info.UserName != "" {
 		ui.UserName = sql.NullString{String: info.UserName, Valid: true}
