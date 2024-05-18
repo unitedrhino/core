@@ -28,6 +28,7 @@ type DataAreaFilter struct {
 	ProjectID  int64
 	AreaIDs    []int64
 	Targets    []*Target
+	TargetID   int64
 	TargetType def.TargetType
 	AuthType   def.AuthType
 }
@@ -52,6 +53,9 @@ func (p DataAreaRepo) fmtFilter(ctx context.Context, f DataAreaFilter) *gorm.DB 
 			return db
 		}
 		db = db.Where(scope(db))
+	}
+	if f.TargetID != 0 {
+		db = db.Where("target_id = ? ", f.TargetID)
 	}
 	//if f.UserID != 0 {
 	//	db = db.Where("user_id= ?", f.UserID)

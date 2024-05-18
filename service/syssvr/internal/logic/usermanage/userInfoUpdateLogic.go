@@ -34,6 +34,10 @@ func NewUserInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 
 func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Empty, error) {
 	info := in.Info
+	var (
+		updateStatus bool
+	)
+
 	ui, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{info.UserID}, WithRoles: true})
 	if err != nil {
 		l.Errorf("%s.FindOne UserID=%d err=%v", utils.FuncName(), info.UserID, err)
@@ -46,8 +50,9 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 		if info.Email != nil {
 			ui.Email = utils.AnyToNullString(info.Email)
 		}
-		if info.Status != 0 {
+		if info.Status != 0 && ui.Status != info.Status {
 			ui.Status = info.Status
+			updateStatus = true
 		}
 	}
 	if info.UserName != "" {
@@ -99,7 +104,15 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 		l.Errorf("%s.Update ui=%v err=%v", utils.FuncName(), ui, err)
 		return nil, err
 	}
-	l.Infof("%s.modified usersvr info = %+v", utils.FuncName(), ui)
+	if updateStatus == true && ui.Status == def.False {
+		err = relationDB.NewDataAreaRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DataAreaFilter{
+			TargetID:   ui.UserID,
+			TargetType: def.TargetUser,
+		})
+		if err != nil {
+			l.Error(err)
+		}
+	}
 
 	return &sys.Empty{}, nil
 }
