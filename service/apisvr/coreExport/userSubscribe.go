@@ -2,6 +2,7 @@ package coreExport
 
 import (
 	"context"
+	"crypto/md5"
 	"fmt"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/eventBus"
@@ -14,7 +15,7 @@ import (
 )
 
 const (
-	asyncExecMax = 100
+	asyncExecMax = 500
 )
 
 type publishStu struct {
@@ -24,81 +25,43 @@ type publishStu struct {
 
 type UserSubscribe struct {
 	us          *ws.UserSubscribe
-	publishChan map[int64]chan publishStu //key是apisvr的节点id
+	publishChan chan publishStu //key是apisvr的节点id
 	mutex       sync.RWMutex
 	ServerMsg   *eventBus.FastEvent
 }
 
 func NewUserSubscribe(store kv.Store, ServerMsg *eventBus.FastEvent) *UserSubscribe {
-	return &UserSubscribe{us: ws.NewUserSubscribe(store), publishChan: map[int64]chan publishStu{}, ServerMsg: ServerMsg}
+	u := UserSubscribe{us: ws.NewUserSubscribe(store), publishChan: make(chan publishStu, asyncExecMax), ServerMsg: ServerMsg}
+	utils.Go(context.Background(), func() {
+		u.publish()
+	})
+	return &u
 }
 
 func (u *UserSubscribe) Publish(ctx context.Context, code string, data any, params ...map[string]any) error {
-	var pubMap = map[int64]map[int64]struct{}{} //第一个参数是nodeID,第二个参数是userID
-	for _, pa := range params {
-		ret, err := u.us.IndexInfo(ctx, &ws.SubscribeInfo{
-			Code:   code,
-			Params: pa,
-		})
-		if err != nil {
-			return err
-		}
-		if len(ret) == 0 {
-			continue
-		}
-		func() { //初始化channel
-			u.mutex.Lock()
-			defer u.mutex.Unlock()
-			for k := range ret {
-				if u.publishChan[k] == nil {
-					c := make(chan publishStu, asyncExecMax)
-					u.publishChan[k] = c
-					kk := k
-					utils.Go(ctx, func() {
-						u.publish(kk, c)
-					})
-				}
-			}
-		}()
-		func() {
-			u.mutex.RLock()
-			defer u.mutex.RUnlock()
-			for k, vs := range ret {
-				for _, v := range vs {
-					if pubMap[k] == nil {
-						pubMap[k] = map[int64]struct{}{v: {}}
-						continue
-					}
-					pubMap[k][v] = struct{}{}
-				}
-			}
-		}()
+	pb := ws.WsPublish{
+		Code: code,
+		Data: data,
 	}
-	for k, vM := range pubMap {
-		for v := range vM {
-			u.publishChan[k] <- publishStu{
-				WsPublish: &ws.WsPublish{
-					UserID: v,
-					Code:   code,
-					Data:   data,
-				},
-				ctx: ctxs.CopyCtx(ctx),
-			}
-		}
-
+	for _, param := range params {
+		pb.Params = append(pb.Params, md5.Sum([]byte(utils.MarshalNoErr(param))))
+	}
+	u.publishChan <- publishStu{
+		WsPublish: &pb,
+		ctx:       ctxs.CopyCtx(ctx),
 	}
 
 	return nil
 }
 
-func (u *UserSubscribe) publish(nodeID int64, infos chan publishStu) {
+func (u *UserSubscribe) publish() {
 	execCache := make([]publishStu, 0, asyncExecMax)
 	exec := func() {
 		if len(execCache) == 0 {
 			return
 		}
-		logx.Infof("UserSubscribe.publish nodeID:%v publishs:%v", nodeID, utils.Fmt(execCache))
-		err := u.ServerMsg.Publish(context.Background(), fmt.Sprintf(eventBus.CoreApiUserPublish, nodeID), execCache)
+		logx.Infof("UserSubscribe.publish publishs:%v", utils.Fmt(execCache))
+		err := u.ServerMsg.Publish(context.Background(), fmt.Sprintf(eventBus.CoreApiUserPublish, 1), execCache)
 		if err != nil {
 			logx.Error(err)
 		}
@@ -109,7 +72,7 @@ func (u *UserSubscribe) publish(nodeID int64, infos chan publishStu) {
 		select {
 		case _ = <-tick:
 			exec()
-		case e := <-infos:
+		case e := <-u.publishChan:
 			execCache = append(execCache, e)
 			if len(execCache) > asyncExecMax {
 				exec()
