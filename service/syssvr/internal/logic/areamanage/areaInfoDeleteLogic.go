@@ -33,8 +33,12 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if in.AreaID == 0 {
 		return nil, errors.Parameter
 	}
+	area, err := relationDB.NewAreaInfoRepo(l.ctx).FindOne(l.ctx, in.AreaID, nil)
+	if err != nil {
+		return nil, err
+	}
 	list := l.svcCtx.Slot.Get(l.ctx, "areaInfo", "delete")
-	err := list.Request(l.ctx, in, nil)
+	err = list.Request(l.ctx, area, nil)
 	if err != nil {
 		return nil, err
 	}
