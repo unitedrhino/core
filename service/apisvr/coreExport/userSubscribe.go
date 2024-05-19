@@ -2,7 +2,6 @@ package coreExport
 
 import (
 	"context"
-	"crypto/md5"
 	"fmt"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/eventBus"
@@ -44,7 +43,7 @@ func (u *UserSubscribe) Publish(ctx context.Context, code string, data any, para
 		Data: data,
 	}
 	for _, param := range params {
-		pb.Params = append(pb.Params, md5.Sum([]byte(utils.MarshalNoErr(param))))
+		pb.Params = append(pb.Params, utils.Md5Map(param))
 	}
 	u.publishChan <- publishStu{
 		WsPublish: &pb,
