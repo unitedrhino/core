@@ -32,7 +32,6 @@ import (
 	"gitee.com/i-Things/share/verify"
 	ws "gitee.com/i-Things/share/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"os"
@@ -62,7 +61,6 @@ type SvrClient struct {
 type ServiceContext struct {
 	SvrClient
 	Ws             *ws.Server
-	UserSubscribe  *ws.UserSubscribe
 	Config         config.Config
 	CheckTokenWare rest.Middleware
 	DataAuthWare   rest.Middleware
@@ -169,7 +167,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Ws:             ws.MustNewServer(c.RestConf),
 		NodeID:         nodeID,
 		ServerMsg:      serverMsg,
-		UserSubscribe:  ws.NewUserSubscribe(kv.NewStore(c.CacheRedis)),
 		SvrClient: SvrClient{
 			TenantRpc:      tenantM,
 			AppRpc:         appRpc,

@@ -2,9 +2,6 @@ package common
 
 import (
 	"context"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
-
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 
@@ -26,9 +23,5 @@ func NewWebsocketSubscribeIndexLogic(ctx context.Context, svcCtx *svc.ServiceCon
 }
 
 func (l *WebsocketSubscribeIndexLogic) WebsocketSubscribeIndex() (resp *types.WebsocketSubscribeIndexResp, err error) {
-	list, err := l.svcCtx.UserSubscribe.Index(l.ctx, ctxs.GetUserCtx(l.ctx).UserID)
-	if err != nil {
-		return nil, err
-	}
-	return &types.WebsocketSubscribeIndexResp{List: utils.CopySlice[types.WebsocketSubscribeInfo](list)}, nil
+	return
 }
