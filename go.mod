@@ -10,7 +10,6 @@ replace (
 	github.com/taosdata/driver-go/v3 => github.com/i-Things/driver-go/v3 v3.10.5
 )
 
-
 require (
 	gitee.com/i-Things/share v0.1.9
 	github.com/Masterminds/squirrel v1.20.1
