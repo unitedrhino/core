@@ -5377,7 +5377,7 @@
     },
     "/api/v1/system/tenant/notify/template/index": {
       "post": {
-        "summary": "获取租户操作权限树",
+        "summary": "获取租户通知绑定模版列表",
         "operationId": "postApiV1SystemTenantNotifyTemplateIndex",
         "responses": {
           "200": {
@@ -5419,7 +5419,7 @@
     },
     "/api/v1/system/tenant/notify/template/multi-update": {
       "post": {
-        "summary": "批量更新租户操作权限",
+        "summary": "批量更新租户通知绑定模版",
         "operationId": "postApiV1SystemTenantNotifyTemplateMulti-update",
         "responses": {
           "200": {
@@ -5447,6 +5447,45 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/TenantNotifyTemplateMultiUpdateReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/notify/template",
+          "systemTenantNotifyTemplate"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/notify/template/update": {
+      "post": {
+        "summary": "更新租户通知绑定模版",
+        "operationId": "postApiV1SystemTenantNotifyTemplateUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantNotifyTemplate"
             }
           }
         ],
@@ -9873,7 +9912,6 @@
       },
       "title": "TenantNotifyTemplate",
       "required": [
-        "id",
         "notifyCode",
         "type",
         "templateID"
@@ -10853,6 +10891,10 @@
           "type": "integer",
           "format": "int64",
           "description": " 是否所有数据权限（1是，2否）"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64"
         },
         "messageNotRead": {
           "type": "object"

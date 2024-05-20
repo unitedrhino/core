@@ -4587,6 +4587,7 @@ const (
 	TenantManage_TenantAppMenuDelete_FullMethodName             = "/sys.TenantManage/tenantAppMenuDelete"
 	TenantManage_TenantOpenCheckToken_FullMethodName            = "/sys.TenantManage/tenantOpenCheckToken"
 	TenantManage_TenantOpenWebHook_FullMethodName               = "/sys.TenantManage/tenantOpenWebHook"
+	TenantManage_TenantNotifyTemplateUpdate_FullMethodName      = "/sys.TenantManage/tenantNotifyTemplateUpdate"
 	TenantManage_TenantNotifyTemplateMultiUpdate_FullMethodName = "/sys.TenantManage/tenantNotifyTemplateMultiUpdate"
 	TenantManage_TenantNotifyTemplateIndex_FullMethodName       = "/sys.TenantManage/tenantNotifyTemplateIndex"
 	TenantManage_TenantNotifyChannelRead_FullMethodName         = "/sys.TenantManage/tenantNotifyChannelRead"
@@ -4627,6 +4628,7 @@ type TenantManageClient interface {
 	TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 	TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
 	// 租户通知配置
+	TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error)
 	TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantNotifyTemplateIndex(ctx context.Context, in *TenantNotifyTemplateIndexReq, opts ...grpc.CallOption) (*TenantNotifyTemplateIndexResp, error)
 	TenantNotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*TenantNotifyChannel, error)
@@ -4833,6 +4835,15 @@ func (c *tenantManageClient) TenantOpenWebHook(ctx context.Context, in *WithCode
 	return out, nil
 }
 
+func (c *tenantManageClient) TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyTemplateUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *tenantManageClient) TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyTemplateMultiUpdate_FullMethodName, in, out, opts...)
@@ -4927,6 +4938,7 @@ type TenantManageServer interface {
 	TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error)
 	TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error)
 	// 租户通知配置
+	TenantNotifyTemplateUpdate(context.Context, *TenantNotify) (*Empty, error)
 	TenantNotifyTemplateMultiUpdate(context.Context, *TenantNotifyTemplateMultiUpdateReq) (*Empty, error)
 	TenantNotifyTemplateIndex(context.Context, *TenantNotifyTemplateIndexReq) (*TenantNotifyTemplateIndexResp, error)
 	TenantNotifyChannelRead(context.Context, *WithID) (*TenantNotifyChannel, error)
@@ -5003,6 +5015,9 @@ func (UnimplementedTenantManageServer) TenantOpenCheckToken(context.Context, *Te
 }
 func (UnimplementedTenantManageServer) TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantOpenWebHook not implemented")
+}
+func (UnimplementedTenantManageServer) TenantNotifyTemplateUpdate(context.Context, *TenantNotify) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyTemplateUpdate not implemented")
 }
 func (UnimplementedTenantManageServer) TenantNotifyTemplateMultiUpdate(context.Context, *TenantNotifyTemplateMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyTemplateMultiUpdate not implemented")
@@ -5416,6 +5431,24 @@ func _TenantManage_TenantOpenWebHook_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TenantManage_TenantNotifyTemplateUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantNotify)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantNotifyTemplateUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantNotifyTemplateUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantNotifyTemplateUpdate(ctx, req.(*TenantNotify))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TenantManage_TenantNotifyTemplateMultiUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TenantNotifyTemplateMultiUpdateReq)
 	if err := dec(in); err != nil {
@@ -5632,6 +5665,10 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantOpenWebHook",
 			Handler:    _TenantManage_TenantOpenWebHook_Handler,
+		},
+		{
+			MethodName: "tenantNotifyTemplateUpdate",
+			Handler:    _TenantManage_TenantNotifyTemplateUpdate_Handler,
 		},
 		{
 			MethodName: "tenantNotifyTemplateMultiUpdate",

@@ -63,3 +63,4 @@ service/usersvr/usersvr*
 /service/timedqueuesvr/scheduler/scheduler
 /service/timedjobsvr/job
 /go.sum
+/service/apisvr/.token/corp/dingu3zh1aifodxsgtye

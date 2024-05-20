@@ -101,7 +101,7 @@ func (p TenantNotifyTemplateRepo) MultiInsert(ctx context.Context, data []*SysTe
 	return stores.ErrFmt(err)
 }
 
-func (p TenantNotifyTemplateRepo) MultiUpdate(ctx context.Context, appCode string, pos []*SysTenantNotifyTemplate) error {
+func (p TenantNotifyTemplateRepo) MultiUpdate(ctx context.Context, pos []*SysTenantNotifyTemplate) error {
 	for i := range pos {
 		pos[i].ID = 0
 	}
@@ -119,5 +119,11 @@ func (p TenantNotifyTemplateRepo) MultiUpdate(ctx context.Context, appCode strin
 		}
 		return nil
 	})
+	return stores.ErrFmt(err)
+}
+
+// 批量插入 LightStrategyDevice 记录
+func (p TenantNotifyTemplateRepo) Save(ctx context.Context, data *SysTenantNotifyTemplate) error {
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysTenantNotifyTemplate{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

@@ -213,6 +213,7 @@ type (
 		TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 		TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
 		// 租户通知配置
+		TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error)
 		TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		TenantNotifyTemplateIndex(ctx context.Context, in *TenantNotifyTemplateIndexReq, opts ...grpc.CallOption) (*TenantNotifyTemplateIndexResp, error)
 		TenantNotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*TenantNotifyChannel, error)
@@ -445,12 +446,21 @@ func (d *directTenantManage) TenantOpenWebHook(ctx context.Context, in *WithCode
 }
 
 // 租户通知配置
+func (m *defaultTenantManage) TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantNotifyTemplateUpdate(ctx, in, opts...)
+}
+
+// 租户通知配置
+func (d *directTenantManage) TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.TenantNotifyTemplateUpdate(ctx, in)
+}
+
 func (m *defaultTenantManage) TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	client := sys.NewTenantManageClient(m.cli.Conn())
 	return client.TenantNotifyTemplateMultiUpdate(ctx, in, opts...)
 }
 
-// 租户通知配置
 func (d *directTenantManage) TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.TenantNotifyTemplateMultiUpdate(ctx, in)
 }

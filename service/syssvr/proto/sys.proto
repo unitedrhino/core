@@ -225,6 +225,7 @@ service TenantManage {
 
 
   //租户通知配置
+  rpc tenantNotifyTemplateUpdate(TenantNotify)returns(Empty);
   rpc tenantNotifyTemplateMultiUpdate(TenantNotifyTemplateMultiUpdateReq)returns(Empty);
   rpc tenantNotifyTemplateIndex(TenantNotifyTemplateIndexReq)returns(TenantNotifyTemplateIndexResp);
 
@@ -377,6 +378,7 @@ message MessageInfo {
   int64 isGlobal =8;
   int64 createdTime=9;
 }
+
 
 message TenantNotifyTemplateMultiUpdateReq{
    repeated TenantNotify notifies=1;

@@ -27,7 +27,7 @@ func NewTenantNotifyTemplateMultiUpdateLogic(ctx context.Context, svcCtx *svc.Se
 
 // 租户通知配置
 func (l *TenantNotifyTemplateMultiUpdateLogic) TenantNotifyTemplateMultiUpdate(in *sys.TenantNotifyTemplateMultiUpdateReq) (*sys.Empty, error) {
-	err := relationDB.NewTenantNotifyTemplateRepo(l.ctx).MultiInsert(l.ctx, utils.CopySlice[relationDB.SysTenantNotifyTemplate](in.Notifies))
-
+	return &sys.Empty{}, nil //暂停使用
+	err := relationDB.NewTenantNotifyTemplateRepo(l.ctx).MultiUpdate(l.ctx, utils.CopySlice[relationDB.SysTenantNotifyTemplate](in.Notifies))
 	return &sys.Empty{}, err
 }

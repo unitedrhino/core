@@ -13,12 +13,15 @@ info(
 )
 
 service api {
-    @doc "获取租户操作权限树"
+    @doc "获取租户通知绑定模版列表"
     @handler index
     post /index (TenantNotifyTemplateIndexReq) returns (TenantNotifyTemplateIndexResp)
-    @doc "批量更新租户操作权限"
+    @doc "批量更新租户通知绑定模版"
     @handler multiUpdate
     post /multi-update (TenantNotifyTemplateMultiUpdateReq) returns ()
+    @doc "更新租户通知绑定模版"
+    @handler update
+    post /update (TenantNotifyTemplate) returns ()
 }
 
 @server (
@@ -78,7 +81,7 @@ type (
 
 type (
     TenantNotifyTemplate {
-        ID int64 `json:"id"`
+        ID int64 `json:"id,optional"`
         NotifyCode string `json:"notifyCode"`
         Type string `json:"type"`
         TemplateID int64 `json:"templateID"`

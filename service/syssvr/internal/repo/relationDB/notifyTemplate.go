@@ -104,3 +104,9 @@ func (p NotifyTemplateRepo) MultiInsert(ctx context.Context, data []*SysNotifyTe
 	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysNotifyTemplate{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
+
+// 批量插入 LightStrategyDevice 记录
+func (p NotifyTemplateRepo) Save(ctx context.Context, data *SysNotifyTemplate) error {
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysNotifyTemplate{}).Create(data).Error
+	return stores.ErrFmt(err)
+}

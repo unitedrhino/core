@@ -133,6 +133,11 @@ func (s *TenantManageServer) TenantOpenWebHook(ctx context.Context, in *sys.With
 }
 
 // 租户通知配置
+func (s *TenantManageServer) TenantNotifyTemplateUpdate(ctx context.Context, in *sys.TenantNotify) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantNotifyTemplateUpdateLogic(ctx, s.svcCtx)
+	return l.TenantNotifyTemplateUpdate(in)
+}
+
 func (s *TenantManageServer) TenantNotifyTemplateMultiUpdate(ctx context.Context, in *sys.TenantNotifyTemplateMultiUpdateReq) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantNotifyTemplateMultiUpdateLogic(ctx, s.svcCtx)
 	return l.TenantNotifyTemplateMultiUpdate(in)

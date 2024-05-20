@@ -1043,6 +1043,11 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/multi-update",
 					Handler: systemtenantnotifytemplate.MultiUpdateHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemtenantnotifytemplate.UpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/tenant/notify/template"),
