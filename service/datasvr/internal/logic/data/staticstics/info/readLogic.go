@@ -56,7 +56,7 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	if si.IsFilterTenant == def.True {
 		conn = conn.Where("tenant_code=?", uc.TenantCode)
 	}
-	if si.IsFilterProject == def.True {
+	if si.IsFilterProject == def.True && uc.ProjectID != 0 {
 		conn = conn.Where("project_id=?", uc.ProjectID)
 	}
 	if si.IsSoftDelete == def.True {
