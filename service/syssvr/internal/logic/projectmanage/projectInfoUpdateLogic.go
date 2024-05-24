@@ -51,6 +51,10 @@ func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Em
 	if err != nil {
 		return nil, err
 	}
+	err = l.svcCtx.ProjectCache.SetData(l.ctx, in.ProjectID, nil)
+	if err != nil {
+		l.Error(err)
+	}
 	return &sys.Empty{}, nil
 }
 func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sys.ProjectInfo) {

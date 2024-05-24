@@ -113,6 +113,9 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 			l.Error(err)
 		}
 	}
-
+	err = l.svcCtx.UserCache.SetData(l.ctx, ui.UserID, nil)
+	if err != nil {
+		l.Error(err)
+	}
 	return &sys.Empty{}, nil
 }

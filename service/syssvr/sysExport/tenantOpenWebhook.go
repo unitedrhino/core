@@ -18,7 +18,7 @@ const (
 )
 
 type Webhook struct {
-	*caches.Cache[sys.TenantOpenWebHook]
+	*caches.Cache[sys.TenantOpenWebHook, string]
 }
 
 func NewTenantOpenWebhook(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*Webhook, error) {

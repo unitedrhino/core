@@ -95,7 +95,7 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 		return nil
 	})
 	if err == nil {
-		FillProjectAreaCount(l.ctx, int64(areaPo.ProjectID))
+		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
 	}
 	return &sys.Empty{}, err
 }

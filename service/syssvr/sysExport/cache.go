@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/client/common"
+	"gitee.com/i-Things/core/service/syssvr/client/projectmanage"
 	"gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
+	"gitee.com/i-Things/core/service/syssvr/client/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/caches"
@@ -16,8 +18,30 @@ import (
 	"strings"
 )
 
-func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*caches.Cache[tenant.Info], error) {
-	return caches.NewCache(caches.CacheConfig[tenant.Info]{
+func NewProjectInfoCache(pm projectmanage.ProjectManage, fastEvent *eventBus.FastEvent) (*caches.Cache[projectmanage.ProjectInfo, int64], error) {
+	return caches.NewCache(caches.CacheConfig[projectmanage.ProjectInfo, int64]{
+		KeyType:   eventBus.ServerCacheKeySysProjectInfo,
+		FastEvent: fastEvent,
+		GetData: func(ctx context.Context, key int64) (*projectmanage.ProjectInfo, error) {
+			ret, err := pm.ProjectInfoRead(ctx, &sys.ProjectWithID{ProjectID: key})
+			return ret, err
+		},
+	})
+}
+
+func NewUserInfoCache(pm usermanage.UserManage, fastEvent *eventBus.FastEvent) (*caches.Cache[usermanage.UserInfo, int64], error) {
+	return caches.NewCache(caches.CacheConfig[usermanage.UserInfo, int64]{
+		KeyType:   eventBus.ServerCacheKeySysUserInfo,
+		FastEvent: fastEvent,
+		GetData: func(ctx context.Context, key int64) (*usermanage.UserInfo, error) {
+			ret, err := pm.UserInfoRead(ctx, &sys.UserInfoReadReq{UserID: key})
+			return ret, err
+		},
+	})
+}
+
+func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*caches.Cache[tenant.Info, string], error) {
+	return caches.NewCache(caches.CacheConfig[tenant.Info, string]{
 		KeyType:   eventBus.ServerCacheKeySysTenantInfo,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key string) (*tenant.Info, error) {
@@ -27,8 +51,8 @@ func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEv
 	})
 }
 
-func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*caches.Cache[sys.TenantOpenWebHook], error) {
-	return caches.NewCache(caches.CacheConfig[sys.TenantOpenWebHook]{
+func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*caches.Cache[sys.TenantOpenWebHook, string], error) {
+	return caches.NewCache(caches.CacheConfig[sys.TenantOpenWebHook, string]{
 		KeyType:   eventBus.ServerCacheKeySysTenantOpenWebhook,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key string) (*sys.TenantOpenWebHook, error) {
@@ -39,8 +63,8 @@ func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus
 	})
 }
 
-func NewSlotCache(pm common.Common) (*caches.Cache[slot.Infos], error) {
-	return caches.NewCache(caches.CacheConfig[slot.Infos]{
+func NewSlotCache(pm common.Common) (*caches.Cache[slot.Infos, string], error) {
+	return caches.NewCache(caches.CacheConfig[slot.Infos, string]{
 		KeyType: "slot",
 		GetData: func(ctx context.Context, key string) (*slot.Infos, error) {
 			t := strings.Split(key, ":")

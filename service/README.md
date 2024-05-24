@@ -40,6 +40,13 @@ goctl api new viewsvr  --style=goZero
 cd apisvr && goctl api go -api http/api.api  -dir ./  --style=goZero -ws  && goctl api swagger -filename swagger.json -api http/api.api -dir ./http  && cd ..
 cd apisvr && goctl api swagger -filename swagger.json -api http/api.api -dir ./http && cd ..
 ```
+# 销售模块-salesvr
+
+```shell
+#cd apisvr && goctl api go -api http/api.api  -dir ./  --style=goZero && cd ..
+cd salesvr && goctl api go -api http/sale.api  -dir ./  --style=goZero   && goctl api swagger -filename swagger.json -api http/sale.api -dir ./http  && cd ..
+cd salesvr && goctl api swagger -filename swagger.json -api http/sale.api -dir ./http && cd ..
+```
 
 
 # 系统管理模块-syssvr

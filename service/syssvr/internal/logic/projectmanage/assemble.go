@@ -7,7 +7,7 @@ import (
 	"gitee.com/i-Things/share/utils"
 )
 
-func transPoToPb(po *relationDB.SysProjectInfo) *sys.ProjectInfo {
+func ProjectInfoToPb(po *relationDB.SysProjectInfo) *sys.ProjectInfo {
 	pb := &sys.ProjectInfo{
 		CreatedTime: po.CreatedTime.Unix(),
 		ProjectID:   int64(po.ProjectID),

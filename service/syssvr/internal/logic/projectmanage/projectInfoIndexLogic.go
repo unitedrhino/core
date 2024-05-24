@@ -72,7 +72,7 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 
 	list = make([]*sys.ProjectInfo, 0, len(poArr))
 	for _, po := range poArr {
-		list = append(list, transPoToPb(po))
+		list = append(list, ProjectInfoToPb(po))
 	}
 	return &sys.ProjectInfoIndexResp{List: list, Total: total}, nil
 }

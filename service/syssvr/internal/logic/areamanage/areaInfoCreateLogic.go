@@ -93,12 +93,12 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		return nil
 	})
 	if err == nil {
-		FillProjectAreaCount(l.ctx, int64(areaPo.ProjectID))
+		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
 	}
 	return &sys.AreaWithID{AreaID: int64(areaPo.AreaID)}, err
 }
 
-func FillProjectAreaCount(ctx context.Context, projectID int64) {
+func FillProjectAreaCount(ctx context.Context, svcCtx *svc.ServiceContext, projectID int64) {
 	ctxs.GoNewCtx(ctx, func(ctx context.Context) {
 		count, err := relationDB.NewAreaInfoRepo(ctx).CountByFilter(ctx, relationDB.AreaInfoFilter{ProjectID: projectID})
 		if err != nil {
@@ -111,6 +111,10 @@ func FillProjectAreaCount(ctx context.Context, projectID int64) {
 		if err != nil {
 			logx.WithContext(ctx).Error(err)
 			return
+		}
+		err = svcCtx.ProjectCache.SetData(ctx, projectID, nil)
+		if err != nil {
+			logx.WithContext(ctx).Error(err)
 		}
 	})
 
