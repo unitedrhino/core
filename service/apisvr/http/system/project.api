@@ -34,6 +34,7 @@ type (
 
     ProjectWithID  {
         ProjectID int64 `json:"projectID,string"` //项目id 只读
+        WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
     }
 
     ProjectInfoIndexReq  {

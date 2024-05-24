@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
 
@@ -34,5 +35,9 @@ func (l *ReadLogic) Read(req *types.ProjectWithID) (resp *types.ProjectInfo, err
 		l.Errorf("%s rpc.ProjectManage req=%v err=%+v", utils.FuncName(), req, er)
 		return nil, er
 	}
-	return system.ProjectInfoToApi(dmResp), nil
+	user, err := l.svcCtx.UserRpc.UserInfoRead(ctxs.WithRoot(l.ctx), &sys.UserInfoReadReq{
+		UserID: dmResp.AdminUserID,
+	})
+
+	return system.ProjectInfoToApi(dmResp, user), nil
 }

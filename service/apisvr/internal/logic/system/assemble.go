@@ -7,20 +7,21 @@ import (
 	"gitee.com/i-Things/share/utils"
 )
 
-func ProjectInfoToApi(pb *sys.ProjectInfo) *types.ProjectInfo {
+func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo {
 	return &types.ProjectInfo{
-		CreatedTime: pb.CreatedTime,
-		ProjectID:   pb.ProjectID,
-		ProjectName: pb.ProjectName,
-		AdminUserID: pb.AdminUserID,
-		Desc:        utils.ToNullString(pb.Desc),
-		Position:    logic.ToSysPointApi(pb.Position),
-		AreaCount:   pb.AreaCount,
+		CreatedTime:   pb.CreatedTime,
+		ProjectID:     pb.ProjectID,
+		ProjectName:   pb.ProjectName,
+		AdminUserID:   pb.AdminUserID,
+		Desc:          utils.ToNullString(pb.Desc),
+		Position:      logic.ToSysPointApi(pb.Position),
+		AreaCount:     pb.AreaCount,
+		AdminUserInfo: utils.Copy[types.UserCore](ui),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {
 	for _, v := range pb {
-		ret = append(ret, ProjectInfoToApi(v))
+		ret = append(ret, ProjectInfoToApi(v, nil))
 	}
 	return
 }

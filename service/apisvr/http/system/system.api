@@ -102,6 +102,7 @@ type (
 //        Address *string `json:"address,optional"`              //项目详细地址（读写）
         Desc *string `json:"desc,optional"`                    //项目备注（读写）
         AreaCount int64 `json:"areaCount,optional"` //项目下的区域统计(只读)
+        AdminUserInfo *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
     }
 
 

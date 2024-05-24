@@ -43,7 +43,7 @@ func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectI
 
 	list := make([]*types.ProjectInfo, 0, len(dmResp.List))
 	for _, pb := range dmResp.List {
-		list = append(list, system.ProjectInfoToApi(pb))
+		list = append(list, system.ProjectInfoToApi(pb, nil))
 	}
 
 	return &types.ProjectInfoIndexResp{

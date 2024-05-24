@@ -38,7 +38,7 @@ type SysNotifyTemplate struct {
 	Name         string                  `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //通知的命名
 	NotifyCode   string                  `gorm:"column:notify_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
 	Type         def.NotifyType          `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的配置类型 sms email
-	TemplateCode string                  `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 通知类型编码
+	TemplateCode string                  `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 短信通知模版编码
 	SignName     string                  `gorm:"column:sign_name;type:VARCHAR(50);default:''"`                   //签名(短信)
 	Subject      string                  `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //默认消息主题
 	Body         string                  `gorm:"column:body;type:VARCHAR(512);default:''"`                       //默认模版内容
@@ -73,7 +73,7 @@ func (m *SysTenantNotifyTemplate) TableName() string {
 // 租户下的通道配置
 type SysTenantNotifyChannel struct {
 	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
-	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`            // 租户编码
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`            // 租户编码,为common是公共的
 	Type       def.NotifyType    `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置类型 sms email
 	Email      *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                          //邮箱配置
 	//AppCode    string            `gorm:"column:app_code;type:VARCHAR(100)"`                       //绑定的应用

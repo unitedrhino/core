@@ -528,13 +528,14 @@ type Point struct {
 }
 
 type ProjectInfo struct {
-	CreatedTime int64   `json:"createdTime,optional,string"` //创建时间（只读）
-	ProjectID   int64   `json:"projectID,string,optional"`   //项目id（只读）
-	ProjectName string  `json:"projectName,optional"`        //项目名称（读写）
-	AdminUserID int64   `json:"adminUserID,string,optional"` // 管理员用户id（读写）
-	Position    *Point  `json:"position,optional"`           //项目定位
-	Desc        *string `json:"desc,optional"`               //项目备注（读写）
-	AreaCount   int64   `json:"areaCount,optional"`          //项目下的区域统计(只读)
+	CreatedTime   int64     `json:"createdTime,optional,string"` //创建时间（只读）
+	ProjectID     int64     `json:"projectID,string,optional"`   //项目id（只读）
+	ProjectName   string    `json:"projectName,optional"`        //项目名称（读写）
+	AdminUserID   int64     `json:"adminUserID,string,optional"` // 管理员用户id（读写）
+	Position      *Point    `json:"position,optional"`           //项目定位
+	Desc          *string   `json:"desc,optional"`               //项目备注（读写）
+	AreaCount     int64     `json:"areaCount,optional"`          //项目下的区域统计(只读)
+	AdminUserInfo *UserCore `json:"adminUserInfo,omitempty"`     //管理员信息
 }
 
 type ProjectInfoIndexReq struct {
@@ -549,7 +550,8 @@ type ProjectInfoIndexResp struct {
 }
 
 type ProjectWithID struct {
-	ProjectID int64 `json:"projectID,string"` //项目id 只读
+	ProjectID     int64 `json:"projectID,string"`       //项目id 只读
+	WithAdminUser bool  `json:"withAdminUser,optional"` //同时获取管理员核心信息
 }
 
 type RoleAccessIndexReq struct {

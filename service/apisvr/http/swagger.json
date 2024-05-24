@@ -8592,6 +8592,10 @@
           "type": "integer",
           "format": "int64",
           "description": "项目下的区域统计(只读)"
+        },
+        "adminUserInfo": {
+          "$ref": "#/definitions/UserCore",
+          "description": "管理员信息"
         }
       },
       "title": "ProjectInfo"
@@ -8646,6 +8650,11 @@
           "type": "integer",
           "format": "int64",
           "description": "项目id 只读"
+        },
+        "withAdminUser": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时获取管理员核心信息"
         }
       },
       "title": "ProjectWithID",
