@@ -53,10 +53,10 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	}
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	conn := stores.GetTenantConn(l.ctx)
-	if si.IsFilterTenant == def.True {
+	if si.IsFilterTenant == def.True && uc.TenantCode != def.TenantCodeDefault {
 		conn = conn.Where("tenant_code=?", uc.TenantCode)
 	}
-	if si.IsFilterProject == def.True && uc.ProjectID != 0 {
+	if si.IsFilterProject == def.True && uc.ProjectID != def.NotClassified {
 		conn = conn.Where("project_id=?", uc.ProjectID)
 	}
 	if si.IsSoftDelete == def.True {
