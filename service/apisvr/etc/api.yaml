@@ -33,6 +33,8 @@ Proxy:
       Dest: http://127.0.0.1:7788
     - Router: /api/v1/data/
       Dest: http://127.0.0.1:9218
+    - Router: /api/v1/sale/
+      Dest: http://127.0.0.1:9283
     - Router: /api/v1/oss/
       DeletePrefix: true
       Dest: http://127.0.0.1:9000
