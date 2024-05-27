@@ -45,5 +45,5 @@ func (l *AreaInfoIndexLogic) AreaInfoIndex(in *sys.AreaInfoIndexReq) (*sys.AreaI
 		return nil, err
 	}
 
-	return &sys.AreaInfoIndexResp{List: AreaInfosToPb(poArr), Total: total}, nil
+	return &sys.AreaInfoIndexResp{List: AreaInfosToPb(l.ctx, l.svcCtx, poArr), Total: total}, nil
 }

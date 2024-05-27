@@ -2,6 +2,7 @@ package areamanagelogic
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -9,6 +10,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
@@ -58,6 +60,14 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		Desc:         utils.ToEmptyString(in.Desc),
 		IsLeaf:       def.True,
 		UseBy:        in.UseBy,
+	}
+	if in.IsUpdateAreaImg && in.AreaImg != "" {
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BUsinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", areaID, oss.GetFileNameWithPath(in.AreaImg)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(in.AreaImg, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		areaPo.AreaImg = path
 	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {

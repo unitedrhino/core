@@ -26,13 +26,14 @@ func (m *SysProjectInfo) TableName() string {
 
 // 区域信息表
 type SysAreaInfo struct {
-	TenantCode      stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`            // 租户编码
-	ProjectID       stores.ProjectID  `gorm:"column:project_id;type:bigint;NOT NULL"`                  // 所属项目ID(雪花ID)
-	AreaID          stores.AreaID     `gorm:"column:area_id;type:bigint;NOT NULL"`                     // 区域ID(雪花ID)
-	ParentAreaID    int64             `gorm:"column:parent_area_id;type:bigint;NOT NULL"`              // 上级区域ID(雪花ID)
-	AreaIDPath      string            `gorm:"column:area_id_path;type:varchar(1024);NOT NULL"`         // 1-2-3-的格式记录顶级区域到当前区域的路径
-	AreaNamePath    string            `gorm:"column:area_name_path;type:varchar(1024);NOT NULL"`       // 1-2-3-的格式记录顶级区域到当前区域的路径
-	AreaName        string            `gorm:"column:area_name;type:varchar(100);NOT NULL"`             // 区域名称
+	TenantCode      stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`      // 租户编码
+	ProjectID       stores.ProjectID  `gorm:"column:project_id;type:bigint;NOT NULL"`            // 所属项目ID(雪花ID)
+	AreaID          stores.AreaID     `gorm:"column:area_id;type:bigint;NOT NULL"`               // 区域ID(雪花ID)
+	ParentAreaID    int64             `gorm:"column:parent_area_id;type:bigint;NOT NULL"`        // 上级区域ID(雪花ID)
+	AreaIDPath      string            `gorm:"column:area_id_path;type:varchar(1024);NOT NULL"`   // 1-2-3-的格式记录顶级区域到当前区域的路径
+	AreaNamePath    string            `gorm:"column:area_name_path;type:varchar(1024);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前区域的路径
+	AreaName        string            `gorm:"column:area_name;type:varchar(100);NOT NULL"`       // 区域名称
+	AreaImg         string            `gorm:"column:area_img;type:varchar(1024);NOT NULL"`
 	Position        stores.Point      `gorm:"column:position;NOT NULL"`                                // 区域定位(默认火星坐标系)
 	Desc            string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                  // 区域备注
 	LowerLevelCount int64             `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计

@@ -1,19 +1,23 @@
 package areamanagelogic
 
 import (
+	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/oss/common"
 	"gitee.com/i-Things/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
-func transPoArrToPbTree(root *relationDB.SysAreaInfo, poArr []*relationDB.SysAreaInfo) *sys.AreaInfo {
+func transPoArrToPbTree(ctx context.Context, svcCtx *svc.ServiceContext, root *relationDB.SysAreaInfo, poArr []*relationDB.SysAreaInfo) *sys.AreaInfo {
 	pbList := make([]*sys.AreaInfo, 0, len(poArr))
 	for _, po := range poArr {
-		pbList = append(pbList, transPoToPb(po))
+		pbList = append(pbList, transPoToPb(ctx, po, svcCtx))
 	}
-	return buildPbTree(transPoToPb(root), pbList)
+	return buildPbTree(transPoToPb(ctx, root, svcCtx), pbList)
 }
 
 func buildPbTree(rootArea *sys.AreaInfo, pbList []*sys.AreaInfo) *sys.AreaInfo {
@@ -29,10 +33,17 @@ func buildPbTree(rootArea *sys.AreaInfo, pbList []*sys.AreaInfo) *sys.AreaInfo {
 	return rootArea
 }
 
-func transPoToPb(po *relationDB.SysAreaInfo) *sys.AreaInfo {
+func transPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.ServiceContext) *sys.AreaInfo {
 	parentAreaID := po.ParentAreaID
 	if parentAreaID == 0 {
 		parentAreaID = def.RootNode
+	}
+	if po.AreaImg != "" {
+		var err error
+		po.AreaImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, po.AreaImg, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
 	}
 	return &sys.AreaInfo{
 		CreatedTime:     po.CreatedTime.Unix(),
@@ -48,11 +59,12 @@ func transPoToPb(po *relationDB.SysAreaInfo) *sys.AreaInfo {
 		LowerLevelCount: po.LowerLevelCount,
 		ChildrenAreaIDs: po.ChildrenAreaIDs,
 		UseBy:           po.UseBy,
+		AreaImg:         po.AreaImg,
 	}
 }
-func AreaInfosToPb(po []*relationDB.SysAreaInfo) (ret []*sys.AreaInfo) {
-	for _, po := range po {
-		ret = append(ret, transPoToPb(po))
+func AreaInfosToPb(ctx context.Context, svcCtx *svc.ServiceContext, pos []*relationDB.SysAreaInfo) (ret []*sys.AreaInfo) {
+	for _, po := range pos {
+		ret = append(ret, transPoToPb(ctx, po, svcCtx))
 	}
 	return
 }

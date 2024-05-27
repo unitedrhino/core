@@ -55,7 +55,7 @@ func (l *AreaInfoReadLogic) AreaInfoRead(in *sys.AreaInfoReadReq) (*sys.AreaInfo
 		po = &rootNode
 	case def.NotClassified:
 		po = &notClassifiedNode
-		return transPoToPb(po), nil
+		return transPoToPb(l.ctx, po, l.svcCtx), nil
 	default:
 		po, err = l.AiDB.FindOne(l.ctx, in.AreaID, nil)
 		if err != nil {
@@ -63,14 +63,14 @@ func (l *AreaInfoReadLogic) AreaInfoRead(in *sys.AreaInfoReadReq) (*sys.AreaInfo
 		}
 	}
 	if !in.WithChildren {
-		return transPoToPb(po), nil
+		return transPoToPb(l.ctx, po, l.svcCtx), nil
 	}
 	poArr, err := l.AiDB.FindByFilter(l.ctx, relationDB.AreaInfoFilter{ProjectID: in.ProjectID, AreaIDPath: po.AreaIDPath}, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return transPoArrToPbTree(po, poArr), err
+	return transPoArrToPbTree(l.ctx, l.svcCtx, po, poArr), err
 }
 
 func (l *AreaInfoReadLogic) checkMissingParentIdMenuIndex(areaInfos []*relationDB.SysAreaInfo) []*relationDB.SysAreaInfo {

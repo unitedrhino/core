@@ -7005,7 +7005,7 @@
         },
         "useBy": {
           "type": "string",
-          "description": "用途:"
+          "description": "用途: commonSpace default"
         },
         "isLeaf": {
           "type": "integer",
@@ -7026,6 +7026,13 @@
             "type": "string"
           },
           "description": "（只读）"
+        },
+        "areaImg": {
+          "type": "string"
+        },
+        "isUpdateAreaImg": {
+          "type": "boolean",
+          "format": "boolean"
         },
         "children": {
           "type": "array",

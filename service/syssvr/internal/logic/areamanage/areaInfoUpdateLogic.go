@@ -2,12 +2,15 @@ package areamanagelogic
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
+	"gitee.com/i-Things/share/oss/common"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -99,5 +102,21 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 	}
 	if pb.UseBy != "" {
 		po.UseBy = pb.UseBy
+	}
+	if pb.IsUpdateAreaImg && pb.AreaImg != "" {
+		if po.AreaImg != "" {
+			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, po.AreaImg, common.OptionKv{})
+			if err != nil {
+				l.Errorf("Delete file err path:%v,err:%v", po.AreaImg, err)
+			}
+		}
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BUsinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", pb.AreaID, oss.GetFileNameWithPath(pb.AreaImg)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(pb.AreaImg, nwePath)
+		if err != nil {
+			l.Error(err)
+		} else {
+			po.AreaIDPath = path
+		}
+
 	}
 }

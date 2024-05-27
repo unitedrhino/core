@@ -36,6 +36,7 @@ func (l *UpdateLogic) Update(req *types.AreaInfo) error {
 		Position:     logic.ToSysPointRpc(req.Position),
 		Desc:         utils.ToRpcNullString(req.Desc),
 		UseBy:        req.UseBy,
+		AreaImg:      req.AreaImg,
 	}
 	_, err := l.svcCtx.AreaM.AreaInfoUpdate(l.ctx, dmReq)
 	if err != nil {

@@ -34,12 +34,14 @@ func (l *CreateLogic) Create(req *types.AreaInfo) (*types.AreaWithID, error) {
 		return nil, errors.Parameter
 	}
 	dmReq := &sys.AreaInfo{
-		ParentAreaID: req.ParentAreaID,
-		ProjectID:    req.ProjectID,
-		AreaName:     req.AreaName,
-		Position:     logic.ToSysPointRpc(req.Position),
-		Desc:         utils.ToRpcNullString(req.Desc),
-		UseBy:        req.UseBy,
+		ParentAreaID:    req.ParentAreaID,
+		ProjectID:       req.ProjectID,
+		AreaName:        req.AreaName,
+		Position:        logic.ToSysPointRpc(req.Position),
+		Desc:            utils.ToRpcNullString(req.Desc),
+		UseBy:           req.UseBy,
+		AreaImg:         req.AreaImg,
+		IsUpdateAreaImg: req.IsUpdateAreaImg,
 	}
 	resp, err := l.svcCtx.AreaM.AreaInfoCreate(l.ctx, dmReq)
 	if er := errors.Fmt(err); er != nil {

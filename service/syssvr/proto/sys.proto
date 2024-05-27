@@ -707,6 +707,8 @@ message AreaInfo {
   repeated int64 childrenAreaIDs =12;//所属的子区域id列表
   int64 isLeaf =13;//是否是叶子节点
   string useBy =14;//用途
+  string areaImg =15;//区域图片
+  bool isUpdateAreaImg =16;//是否更新区域的图片
 }
 
 

@@ -25,6 +25,7 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 		Position:        logic.ToSysPointApi(root.Position),
 		Desc:            utils.ToNullString(root.Desc),
 		Children:        nil,
+		AreaImg:         root.AreaImg,
 	}
 	if len(root.Children) > 0 {
 		for _, child := range root.Children {

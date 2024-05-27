@@ -43,6 +43,8 @@ type (
         IsLeaf int64 `json:"isLeaf,optional"` //是否是子节点（只读）
         AreaIDPath []int64 `json:"areaIDPath,optional"`          //项目区域ids（只读）
         AreaNamePath []string `json:"areaNamePath,optional"`//（只读）
+        AreaImg string  `json:"areaImg,optional"`
+        IsUpdateAreaImg bool  `json:"isUpdateAreaImg,optional"`
 //        DeviceInfoCount *DeviceInfoCount `json:"deviceInfoCount,optional"`//（只读）
         Children []*AreaInfo `json:"children,optional"`          //下级项目区域列表（只读）
     }
