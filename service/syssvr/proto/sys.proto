@@ -706,6 +706,7 @@ message AreaInfo {
   int64 lowerLevelCount =11;//下级区域的数量
   repeated int64 childrenAreaIDs =12;//所属的子区域id列表
   int64 isLeaf =13;//是否是叶子节点
+  string useBy =14;//用途
 }
 
 

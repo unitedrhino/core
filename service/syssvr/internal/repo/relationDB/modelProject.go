@@ -37,6 +37,7 @@ type SysAreaInfo struct {
 	Desc            string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                  // 区域备注
 	LowerLevelCount int64             `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计
 	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`           //是否是叶子节点
+	UseBy           string            `gorm:"column:use_by;type:varchar(100);default:''"`              //用途
 	ChildrenAreaIDs []int64           `gorm:"column:children_area_ids;type:json;serializer:json"`      //所有的子区域的id列表
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`

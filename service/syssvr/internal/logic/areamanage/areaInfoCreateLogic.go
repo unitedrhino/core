@@ -57,6 +57,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		Position:     logic.ToStorePoint(in.Position),
 		Desc:         utils.ToEmptyString(in.Desc),
 		IsLeaf:       def.True,
+		UseBy:        in.UseBy,
 	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {

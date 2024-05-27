@@ -7003,6 +7003,10 @@
           "format": "int64",
           "description": "下级的数量统计（只读）"
         },
+        "useBy": {
+          "type": "string",
+          "description": "用途:"
+        },
         "isLeaf": {
           "type": "integer",
           "format": "int64",

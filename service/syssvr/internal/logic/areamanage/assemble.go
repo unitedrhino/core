@@ -47,6 +47,7 @@ func transPoToPb(po *relationDB.SysAreaInfo) *sys.AreaInfo {
 		IsLeaf:          po.IsLeaf,
 		LowerLevelCount: po.LowerLevelCount,
 		ChildrenAreaIDs: po.ChildrenAreaIDs,
+		UseBy:           po.UseBy,
 	}
 }
 func AreaInfosToPb(po []*relationDB.SysAreaInfo) (ret []*sys.AreaInfo) {

@@ -97,4 +97,7 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 	if pb.Desc != nil {
 		po.Desc = pb.Desc.GetValue()
 	}
+	if pb.UseBy != "" {
+		po.UseBy = pb.UseBy
+	}
 }

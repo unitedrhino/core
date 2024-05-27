@@ -39,6 +39,7 @@ func (l *CreateLogic) Create(req *types.AreaInfo) (*types.AreaWithID, error) {
 		AreaName:     req.AreaName,
 		Position:     logic.ToSysPointRpc(req.Position),
 		Desc:         utils.ToRpcNullString(req.Desc),
+		UseBy:        req.UseBy,
 	}
 	resp, err := l.svcCtx.AreaM.AreaInfoCreate(l.ctx, dmReq)
 	if er := errors.Fmt(err); er != nil {
