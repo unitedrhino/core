@@ -46,9 +46,11 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 	if in.WithRoot {
 		if info.Phone != nil {
 			ui.Phone = utils.AnyToNullString(info.Phone)
+			ui.UserName = ui.Phone
 		}
 		if info.Email != nil {
 			ui.Email = utils.AnyToNullString(info.Email)
+			ui.UserName = ui.Email
 		}
 		if info.Status != 0 && ui.Status != info.Status {
 			ui.Status = info.Status

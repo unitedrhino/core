@@ -66,12 +66,14 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		//	return nil, errors.Captcha
 		//}
 		ui.Email = utils.AnyToNullString(in.Account)
+		ui.UserName = ui.Email
 	case users.RegPhone:
 		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseRegister, in.CodeID, in.Code)
 		if phone == "" || phone != in.Account {
 			return nil, errors.Captcha
 		}
 		ui.Phone = utils.AnyToNullString(in.Account)
+		ui.UserName = ui.Phone
 	}
 	err := CheckPwd(l.svcCtx, in.Password)
 	if err != nil {
