@@ -18,7 +18,9 @@ import (
 	"strings"
 )
 
-func NewProjectInfoCache(pm projectmanage.ProjectManage, fastEvent *eventBus.FastEvent) (*caches.Cache[projectmanage.ProjectInfo, int64], error) {
+type ProjectCacheT = *caches.Cache[projectmanage.ProjectInfo, int64]
+
+func NewProjectInfoCache(pm projectmanage.ProjectManage, fastEvent *eventBus.FastEvent) (ProjectCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[projectmanage.ProjectInfo, int64]{
 		KeyType:   eventBus.ServerCacheKeySysProjectInfo,
 		FastEvent: fastEvent,
@@ -29,7 +31,9 @@ func NewProjectInfoCache(pm projectmanage.ProjectManage, fastEvent *eventBus.Fas
 	})
 }
 
-func NewUserInfoCache(pm usermanage.UserManage, fastEvent *eventBus.FastEvent) (*caches.Cache[usermanage.UserInfo, int64], error) {
+type UserCacheT = *caches.Cache[usermanage.UserInfo, int64]
+
+func NewUserInfoCache(pm usermanage.UserManage, fastEvent *eventBus.FastEvent) (UserCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[usermanage.UserInfo, int64]{
 		KeyType:   eventBus.ServerCacheKeySysUserInfo,
 		FastEvent: fastEvent,
@@ -40,7 +44,9 @@ func NewUserInfoCache(pm usermanage.UserManage, fastEvent *eventBus.FastEvent) (
 	})
 }
 
-func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*caches.Cache[tenant.Info, string], error) {
+type TenantCacheT = *caches.Cache[tenant.Info, string]
+
+func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (TenantCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[tenant.Info, string]{
 		KeyType:   eventBus.ServerCacheKeySysTenantInfo,
 		FastEvent: fastEvent,
@@ -51,7 +57,9 @@ func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEv
 	})
 }
 
-func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (*caches.Cache[sys.TenantOpenWebHook, string], error) {
+type WebHookCacheT = *caches.Cache[sys.TenantOpenWebHook, string]
+
+func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (WebHookCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[sys.TenantOpenWebHook, string]{
 		KeyType:   eventBus.ServerCacheKeySysTenantOpenWebhook,
 		FastEvent: fastEvent,
@@ -63,7 +71,9 @@ func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus
 	})
 }
 
-func NewSlotCache(pm common.Common) (*caches.Cache[slot.Infos, string], error) {
+type SlotCacheT = *caches.Cache[slot.Infos, string]
+
+func NewSlotCache(pm common.Common) (SlotCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[slot.Infos, string]{
 		KeyType: "slot",
 		GetData: func(ctx context.Context, key string) (*slot.Infos, error) {
