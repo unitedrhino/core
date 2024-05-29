@@ -7,17 +7,17 @@ import (
 
 // SysProjectInfo 项目信息表,在智能家居中一个项目是一个家庭,一个区域是一个房间
 type SysProjectInfo struct {
-	TenantCode  stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);uniqueIndex:pn;NOT NULL"`   // 租户编码
-	AdminUserID int64             `gorm:"column:admin_user_id;type:BIGINT;NOT NULL"`                     // 超级管理员id,拥有全部权限,默认是创建者
-	ProjectID   stores.ProjectID  `gorm:"column:project_id;type:bigint;NOT NULL"`                        // 项目ID(雪花ID)
-	ProjectName string            `gorm:"column:project_name;uniqueIndex:pn;type:varchar(100);NOT NULL"` // 项目名称
+	TenantCode  stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`   // 租户编码
+	AdminUserID int64             `gorm:"column:admin_user_id;type:BIGINT;NOT NULL"`      // 超级管理员id,拥有全部权限,默认是创建者
+	ProjectID   stores.ProjectID  `gorm:"column:project_id;type:bigint;NOT NULL"`         // 项目ID(雪花ID)
+	ProjectName string            `gorm:"column:project_name;type:varchar(100);NOT NULL"` // 项目名称
 	//Region      string            `gorm:"column:region;type:varchar(100);NOT NULL"`      // 项目省市区县
 	//Address     string            `gorm:"column:address;type:varchar(512);NOT NULL"`     // 项目详细地址
 	AreaCount int64        `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
 	Position  stores.Point `gorm:"column:position;NOT NULL"`                         // 项目地址
 	Desc      string       `gorm:"column:desc;type:varchar(100);NOT NULL"`           // 项目备注
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:pn"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0"`
 }
 
 func (m *SysProjectInfo) TableName() string {

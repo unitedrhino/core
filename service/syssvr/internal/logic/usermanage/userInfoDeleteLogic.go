@@ -5,8 +5,10 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
+	"gorm.io/gorm"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -38,12 +40,18 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 	if ti.AdminUserID == in.UserID {
 		return nil, errors.Permissions.AddMsg("超级管理员不允许删除")
 	}
-	err = l.UiDB.Delete(l.ctx, cast.ToInt64(in.UserID))
-	if err != nil {
-		l.Errorf("%s.Delete uid=%d err=%+v", utils.FuncName(), in.UserID, err)
-		return nil, err
-	}
-
+	stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		err := uidb.Delete(l.ctx, cast.ToInt64(in.UserID))
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(l.ctx, relationDB.UserRoleFilter{UserID: in.UserID})
+		if err != nil {
+			return err
+		}
+		return nil
+	})
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)
 
 	return &sys.Empty{}, nil
