@@ -43,9 +43,16 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 	if ti.AdminUserID == in.UserID {
 		return nil, errors.Permissions.AddMsg("超级管理员不允许删除")
 	}
+	cfg, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
+	if err != nil {
+		return nil, err
+	}
 	pis, err := relationDB.NewProjectInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.ProjectInfoFilter{AdminUserID: in.UserID}, nil)
 	if err != nil {
 		return nil, err
+	}
+	if len(pis) > 0 && cfg.RegisterCreateProject == def.False {
+		return nil, errors.Permissions.AddMsg("名下还有项目,需要先转让项目给其他人才可以注销")
 	}
 	stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
@@ -61,10 +68,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		if err != nil {
 			return err
 		}
-		cfg, err := relationDB.NewTenantConfigRepo(tx).FindOne(l.ctx)
-		if err != nil {
-			return err
-		}
+
 		if cfg.RegisterCreateProject != def.True { //如果是自动创建的,那还需要清除项目信息
 			return nil
 		}
@@ -76,7 +80,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 	if err != nil {
 		l.Errorf("Publish userDelete %v err:%v", in, err)
 	}
-	if len(pis) != 0 {
+	if len(pis) != 0 && cfg.RegisterCreateProject == def.True {
 		var ids []int64
 		for _, v := range pis {
 			ids = append(ids, int64(v.ProjectID))
