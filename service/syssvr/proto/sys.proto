@@ -913,6 +913,7 @@ message OperLogCreateReq{
 
 //用户属性信息
 message UserInfo{
+  string tenantCode =22;
   int64  userID = 1;
   string userName =2;
   string password =3;
