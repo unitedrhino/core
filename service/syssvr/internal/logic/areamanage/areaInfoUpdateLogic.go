@@ -115,7 +115,7 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 		if err != nil {
 			l.Error(err)
 		} else {
-			po.AreaIDPath = path
+			po.AreaImg = path
 		}
 
 	}
