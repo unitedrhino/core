@@ -29,14 +29,15 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 func (l *UpdateLogic) Update(req *types.AreaInfo) error {
 	dmReq := &sys.AreaInfo{
-		AreaID:       req.AreaID,
-		ParentAreaID: req.ParentAreaID,
-		ProjectID:    req.ProjectID,
-		AreaName:     req.AreaName,
-		Position:     logic.ToSysPointRpc(req.Position),
-		Desc:         utils.ToRpcNullString(req.Desc),
-		UseBy:        req.UseBy,
-		AreaImg:      req.AreaImg,
+		AreaID:          req.AreaID,
+		ParentAreaID:    req.ParentAreaID,
+		ProjectID:       req.ProjectID,
+		AreaName:        req.AreaName,
+		Position:        logic.ToSysPointRpc(req.Position),
+		Desc:            utils.ToRpcNullString(req.Desc),
+		UseBy:           req.UseBy,
+		AreaImg:         req.AreaImg,
+		IsUpdateAreaImg: req.IsUpdateAreaImg,
 	}
 	_, err := l.svcCtx.AreaM.AreaInfoUpdate(l.ctx, dmReq)
 	if err != nil {
