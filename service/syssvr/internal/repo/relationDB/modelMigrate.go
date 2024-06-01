@@ -12,9 +12,9 @@ import (
 )
 
 func Migrate(c conf.Database) error {
-	if c.IsInitTable == false {
-		return nil
-	}
+	//if c.IsInitTable == false {
+	//	return nil
+	//}
 	db := stores.GetCommonConn(context.TODO())
 	var needInitColumn bool
 	if !db.Migrator().HasTable(&SysUserInfo{}) {
@@ -362,8 +362,8 @@ var (
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 1},
 	}
 	MigrateRoleInfo = []SysRoleInfo{
-		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "admin"},
-		{ID: 2, TenantCode: def.TenantCodeDefault, Name: "client", Desc: "C端用户"}}
+		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "admin", Code: "admin"},
+		{ID: 2, TenantCode: def.TenantCodeDefault, Name: "client", Code: "client", Desc: "C端用户"}}
 	MigrateRoleMenu []SysRoleMenu
 	MigrateRoleApp  = []SysRoleApp{
 		{RoleID: 1, TenantCode: def.TenantCodeDefault, AppCode: def.AppCore},

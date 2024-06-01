@@ -12,7 +12,7 @@ type SysRoleInfo struct {
 	Status     int64             `gorm:"column:status;type:SMALLINT;default:1"`                          // 状态  1:启用,2:禁用
 	Apps       []*SysRoleApp     `gorm:"foreignKey:RoleID;references:ID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;:tc_ac"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }
 
 func (m *SysRoleInfo) TableName() string {
