@@ -8808,6 +8808,10 @@
           "type": "integer",
           "format": "int64",
           "description": " 角色状态"
+        },
+        "code": {
+          "type": "string",
+          "description": "角色编码"
         }
       },
       "title": "RoleInfo"

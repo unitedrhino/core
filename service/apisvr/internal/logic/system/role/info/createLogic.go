@@ -35,6 +35,7 @@ func (l *CreateLogic) Create(req *types.RoleInfo) (*types.WithID, error) {
 		Name:   req.Name,
 		Desc:   req.Desc,
 		Status: req.Status,
+		Code:   req.Code,
 	})
 	if err != nil {
 		err := errors.Fmt(err)

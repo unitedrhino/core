@@ -13,6 +13,7 @@ func ToRoleInfoRpc(in *relationDB.SysRoleInfo) *sys.RoleInfo {
 		Id:          in.ID,
 		Name:        in.Name,
 		Desc:        in.Desc,
+		Code:        in.Code,
 		CreatedTime: in.CreatedTime.Unix(),
 		Status:      in.Status,
 	}

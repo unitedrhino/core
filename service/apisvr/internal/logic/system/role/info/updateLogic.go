@@ -32,6 +32,7 @@ func (l *UpdateLogic) Update(req *types.RoleInfo) error {
 		Name:   req.Name,
 		Desc:   req.Desc,
 		Status: req.Status,
+		Code:   req.Code,
 	})
 	if err != nil {
 		err := errors.Fmt(err)

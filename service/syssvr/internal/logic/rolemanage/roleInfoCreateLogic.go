@@ -3,6 +3,7 @@ package rolemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -31,6 +32,10 @@ func (l *RoleInfoCreateLogic) RoleInfoCreate(in *sys.RoleInfo) (*sys.WithID, err
 		Name:   in.Name,
 		Desc:   in.Desc,
 		Status: in.Status,
+		Code:   in.Code,
+	}
+	if in.Code == "" {
+		in.Code = utils.Random(10, 1)
 	}
 	err := l.RiDB.Insert(l.ctx, &po)
 	if err != nil {

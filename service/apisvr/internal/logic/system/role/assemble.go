@@ -15,6 +15,7 @@ func ToRoleInfoTypes(in *sys.RoleInfo) *types.RoleInfo {
 		Desc:        in.Desc,
 		Status:      in.Status,
 		CreatedTime: in.CreatedTime,
+		Code:        in.Code,
 	}
 }
 func ToRoleInfosTypes(in []*sys.RoleInfo) (ret []*types.RoleInfo) {

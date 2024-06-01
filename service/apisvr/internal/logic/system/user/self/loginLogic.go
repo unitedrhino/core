@@ -76,7 +76,7 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 
 	if err != nil {
 		er := errors.Fmt(err)
-		l.Errorf("%s.rpc.Login req=%v err=%+v", utils.FuncName(), req, er)
+		l.Errorf("%s.rpc.Login req=%v err=%+v", utils.FuncName(), utils.Fmt(req), er)
 		//登录失败记录
 		l.svcCtx.LogRpc.LoginLogCreate(l.ctx, &sys.LoginLogCreateReq{
 			UserID:        0,

@@ -590,6 +590,7 @@ type RoleInfo struct {
 	Desc        string `json:"desc,optional"`        // 备注
 	CreatedTime int64  `json:"createdTime,optional"` // 创建时间
 	Status      int64  `json:"status,optional"`      // 角色状态
+	Code        string `json:"code,optional"`        //角色编码
 }
 
 type RoleInfoIndexReq struct {

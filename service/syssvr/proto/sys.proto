@@ -1350,6 +1350,7 @@ message RoleInfo{
   string  desc = 3;
   int64   createdTime  =4;
   int64   status = 5;
+  string code =6;
 }
 
 
