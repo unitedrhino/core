@@ -920,6 +920,7 @@ message UserInfo{
   google.protobuf.StringValue email = 4;
   google.protobuf.StringValue phone =5;
   string wechatUnionID = 6;
+  string wechatOpenID =23;
   string lastIP =7;
   string regIP =8;
   string nickName =9;
