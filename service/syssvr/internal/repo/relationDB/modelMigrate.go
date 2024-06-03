@@ -12,9 +12,9 @@ import (
 )
 
 func Migrate(c conf.Database) error {
-	//if c.IsInitTable == false {
-	//	return nil
-	//}
+	if c.IsInitTable == false {
+		return nil
+	}
 	db := stores.GetCommonConn(context.TODO())
 	var needInitColumn bool
 	if !db.Migrator().HasTable(&SysUserInfo{}) {
