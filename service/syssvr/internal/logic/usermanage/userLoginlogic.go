@@ -63,9 +63,13 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCt
 	now := time.Now()
 	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
 	var rolses []int64
+	var roleCodes []string
 	var isAdmin int64 = def.False
 	for _, v := range ui.Roles {
 		rolses = append(rolses, v.RoleID)
+		if v.Role != nil && v.Role.Code != "" {
+			roleCodes = append(roleCodes, v.Role.Code)
+		}
 	}
 
 	if ui.Tenant != nil && (utils.SliceIn(ui.Tenant.AdminRoleID, rolses...) || ui.Tenant.AdminUserID == ui.UserID) {
@@ -82,7 +86,7 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCt
 		account = cast.ToString(ui.UserID)
 	}
 	jwtToken, err := users.GetLoginJwtToken(l.svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
-		ui.UserID, account, ctxs.GetUserCtx(l.ctx).TenantCode, rolses, ui.IsAllData, isAdmin)
+		ui.UserID, account, ctxs.GetUserCtx(l.ctx).TenantCode, rolses, roleCodes, ui.IsAllData, isAdmin)
 	if err != nil {
 		l.Error(err)
 		return nil, errors.System.AddDetail(err)

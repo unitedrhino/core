@@ -55,7 +55,7 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 		db = db.Where("ding_talk_user_id = ?", f.DingTalkUserID)
 	}
 	if f.WithRoles {
-		db = db.Preload("Roles")
+		db = db.Preload("Roles.Role")
 	}
 	if f.WithTenant {
 		db = db.Preload("Tenant")
