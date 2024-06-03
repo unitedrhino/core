@@ -87,6 +87,11 @@ func (s *UserManageServer) UserRoleMultiUpdate(ctx context.Context, in *sys.User
 	return l.UserRoleMultiUpdate(in)
 }
 
+func (s *UserManageServer) UserRoleMultiCreate(ctx context.Context, in *sys.UserRoleMultiUpdateReq) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserRoleMultiCreateLogic(ctx, s.svcCtx)
+	return l.UserRoleMultiCreate(in)
+}
+
 func (s *UserManageServer) UserAreaApplyCreate(ctx context.Context, in *sys.UserAreaApplyCreateReq) (*sys.Empty, error) {
 	l := usermanagelogic.NewUserAreaApplyCreateLogic(ctx, s.svcCtx)
 	return l.UserAreaApplyCreate(in)

@@ -199,6 +199,7 @@ type (
 		UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 		UserRoleIndex(ctx context.Context, in *UserRoleIndexReq, opts ...grpc.CallOption) (*UserRoleIndexResp, error)
 		UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+		UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
@@ -346,6 +347,15 @@ func (m *defaultUserManage) UserRoleMultiUpdate(ctx context.Context, in *UserRol
 
 func (d *directUserManage) UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.UserRoleMultiUpdate(ctx, in)
+}
+
+func (m *defaultUserManage) UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserRoleMultiCreate(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.UserRoleMultiCreate(ctx, in)
 }
 
 func (m *defaultUserManage) UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error) {

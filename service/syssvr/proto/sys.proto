@@ -19,6 +19,7 @@ service UserManage {
 
   rpc userRoleIndex(UserRoleIndexReq) returns (UserRoleIndexResp); //获取角色API权限列表
   rpc userRoleMultiUpdate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
+  rpc userRoleMultiCreate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
 
   rpc userAreaApplyCreate(UserAreaApplyCreateReq) returns(Empty);//申请区域权限
 
@@ -1097,6 +1098,7 @@ message UserRoleIndexResp{
 message UserRoleMultiUpdateReq{
   int64 userID = 1;
   repeated int64 roleIDs = 2;//API列表数据
+  repeated string roleCodes =3;//角色code
 }
 
 //----------------------------------------------------------------------------------------------

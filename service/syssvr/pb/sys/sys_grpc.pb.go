@@ -32,6 +32,7 @@ const (
 	UserManage_UserChangePwd_FullMethodName          = "/sys.UserManage/userChangePwd"
 	UserManage_UserRoleIndex_FullMethodName          = "/sys.UserManage/userRoleIndex"
 	UserManage_UserRoleMultiUpdate_FullMethodName    = "/sys.UserManage/userRoleMultiUpdate"
+	UserManage_UserRoleMultiCreate_FullMethodName    = "/sys.UserManage/userRoleMultiCreate"
 	UserManage_UserAreaApplyCreate_FullMethodName    = "/sys.UserManage/userAreaApplyCreate"
 	UserManage_UserMessageMultiIsRead_FullMethodName = "/sys.UserManage/userMessageMultiIsRead"
 	UserManage_UserMessageIndex_FullMethodName       = "/sys.UserManage/userMessageIndex"
@@ -58,6 +59,7 @@ type UserManageClient interface {
 	UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 	UserRoleIndex(ctx context.Context, in *UserRoleIndexReq, opts ...grpc.CallOption) (*UserRoleIndexResp, error)
 	UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+	UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
@@ -192,6 +194,15 @@ func (c *userManageClient) UserRoleMultiUpdate(ctx context.Context, in *UserRole
 	return out, nil
 }
 
+func (c *userManageClient) UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserManage_UserRoleMultiCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userManageClient) UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, UserManage_UserAreaApplyCreate_FullMethodName, in, out, opts...)
@@ -272,6 +283,7 @@ type UserManageServer interface {
 	UserChangePwd(context.Context, *UserChangePwdReq) (*Empty, error)
 	UserRoleIndex(context.Context, *UserRoleIndexReq) (*UserRoleIndexResp, error)
 	UserRoleMultiUpdate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error)
+	UserRoleMultiCreate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error)
 	UserAreaApplyCreate(context.Context, *UserAreaApplyCreateReq) (*Empty, error)
 	UserMessageMultiIsRead(context.Context, *IDList) (*Empty, error)
 	UserMessageIndex(context.Context, *UserMessageIndexReq) (*UserMessageIndexResp, error)
@@ -324,6 +336,9 @@ func (UnimplementedUserManageServer) UserRoleIndex(context.Context, *UserRoleInd
 }
 func (UnimplementedUserManageServer) UserRoleMultiUpdate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRoleMultiUpdate not implemented")
+}
+func (UnimplementedUserManageServer) UserRoleMultiCreate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserRoleMultiCreate not implemented")
 }
 func (UnimplementedUserManageServer) UserAreaApplyCreate(context.Context, *UserAreaApplyCreateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAreaApplyCreate not implemented")
@@ -593,6 +608,24 @@ func _UserManage_UserRoleMultiUpdate_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManage_UserRoleMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRoleMultiUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserRoleMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserRoleMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserRoleMultiCreate(ctx, req.(*UserRoleMultiUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserManage_UserAreaApplyCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserAreaApplyCreateReq)
 	if err := dec(in); err != nil {
@@ -777,6 +810,10 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userRoleMultiUpdate",
 			Handler:    _UserManage_UserRoleMultiUpdate_Handler,
+		},
+		{
+			MethodName: "userRoleMultiCreate",
+			Handler:    _UserManage_UserRoleMultiCreate_Handler,
 		},
 		{
 			MethodName: "userAreaApplyCreate",
