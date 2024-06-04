@@ -29,8 +29,11 @@ func (l *UserCodeToUserIDLogic) UserCodeToUserID(in *sys.UserCodeToUserIDReq) (*
 	switch in.LoginType {
 	case users.RegWxMiniP:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if er != nil || cli.MiniProgram == nil {
+		if er != nil {
 			return nil, errors.System.AddDetail(er)
+		}
+		if cli.MiniProgram == nil {
+			return nil, errors.System.AddMsg("未配置小程序")
 		}
 		auth := cli.MiniProgram.GetAuth()
 		ret, er := auth.Code2SessionContext(l.ctx, in.Code)

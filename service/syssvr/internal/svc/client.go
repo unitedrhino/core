@@ -8,6 +8,8 @@ import (
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 	"sync"
 )
 
@@ -32,6 +34,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, tenantCode string) (Clie
 	if tenantCode == "" {
 		tenantCode = uc.TenantCode
 	}
+	logx.WithContext(ctx).Error(utils.Fmt(uc))
 	val, ok := tc.Load(tenantCode + uc.AppCode)
 	if ok {
 		return val.(Clients), nil
