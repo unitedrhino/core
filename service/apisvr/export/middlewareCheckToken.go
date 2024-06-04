@@ -10,7 +10,6 @@ import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/result"
 	"gitee.com/i-Things/share/utils"
-	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 	"strings"
@@ -63,7 +62,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		if !isOpen {
 			////校验 Casbin Rule
 			_, err = m.AuthRpc.RoleApiAuth(r.Context(), &user.RoleApiAuthReq{
-				RoleID: userCtx.RoleID,
+				//RoleID: userCtx.RoleID, todo
 				Path:   r.URL.Path,
 				Method: r.Method,
 			})
@@ -118,9 +117,6 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 			utils.FuncName(), strIP)
 		return nil, errors.NotLogin
 	}
-	strRoleID := r.Header.Get(ctxs.UserRoleKey)
-	roleID := cast.ToInt64(strRoleID)
-
 	resp, err := m.UserRpc.UserCheckToken(r.Context(), &user.UserCheckTokenReq{
 		Ip:    strIP,
 		Token: strToken,
@@ -136,21 +132,14 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		w.Header().Set("Access-Control-Expose-Headers", ctxs.UserSetTokenKey)
 		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)
 	}
-	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s roleID：%v checkResp:%v",
-		utils.FuncName(), strIP, strToken, strRoleID, utils.Fmt(resp))
-	if roleID != 0 && resp.IsAdmin != def.True { //如果传了角色
-		if !utils.SliceIn(roleID, resp.RoleIDs...) {
-			err := errors.Parameter.AddMsgf("所选角色无权限")
-			return nil, err
-		}
-	} else {
-		roleID = resp.RoleIDs[0]
-	}
+	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
+		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
 	return &ctxs.UserCtx{
 		IsOpen:     false,
 		TenantCode: resp.TenantCode,
 		UserID:     resp.UserID,
-		RoleID:     roleID,
+		RoleIDs:    resp.RoleIDs,
+		RoleCodes:  resp.RoleCodes,
 		IsAdmin:    resp.IsAdmin == def.True,
 		IsAllData:  resp.IsAllData == def.True,
 		UserName:   resp.UserName,

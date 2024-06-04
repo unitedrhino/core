@@ -19,6 +19,7 @@ func NewRoleMenuRepo(in any) *RoleMenuRepo {
 type RoleMenuFilter struct {
 	TenantCode string
 	RoleIDs    []int64
+	RoleID     int64
 	AppCode    string
 	ModuleCode string
 }
@@ -31,8 +32,11 @@ func (p RoleMenuRepo) fmtFilter(ctx context.Context, f RoleMenuFilter) *gorm.DB 
 	if f.ModuleCode != "" {
 		db = db.Where("module_code =?", f.ModuleCode)
 	}
-	if len(f.RoleIDs) != 0 {
-		db = db.Where("role_id in ?", f.RoleIDs)
+	if f.AppCode != "" {
+		db = db.Where("app_code =?", f.AppCode)
+	}
+	if f.RoleID != 0 {
+		db = db.Where("role_id =?", f.RoleID)
 	}
 	if f.AppCode != "" {
 		db = db.Where("app_code =?", f.AppCode)

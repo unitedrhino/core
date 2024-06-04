@@ -26,7 +26,8 @@ func NewRoleAppIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Role
 
 func (l *RoleAppIndexLogic) RoleAppIndex(in *sys.RoleAppIndexReq) (*sys.RoleAppIndexResp, error) {
 	var appCodes []string
-	ra, err := relationDB.NewRoleAppRepo(l.ctx).FindByFilter(l.ctx, relationDB.RoleAppFilter{RoleID: in.Id}, nil)
+	ra, err := relationDB.NewRoleAppRepo(l.ctx).FindByFilter(l.ctx,
+		relationDB.RoleAppFilter{RoleIDs: in.Ids, RoleID: in.Id}, nil)
 	if err != nil {
 		return nil, err
 	}

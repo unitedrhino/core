@@ -28,13 +28,9 @@ func NewMenuIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MenuInd
 
 func (l *MenuIndexLogic) MenuIndex(req *types.UserResourceWithModuleReq) (resp *types.TenantAppMenuIndexResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
-	roleID := uc.RoleID
-	if roleID == 0 {
-		return nil, nil
-	}
 	var menuIDs []int64
 	if !uc.IsAdmin {
-		ids, err := l.svcCtx.RoleRpc.RoleMenuIndex(l.ctx, &sys.RoleMenuIndexReq{Id: roleID, AppCode: uc.AppCode, ModuleCode: req.ModuleCode})
+		ids, err := l.svcCtx.RoleRpc.RoleMenuIndex(l.ctx, &sys.RoleMenuIndexReq{Ids: uc.RoleIDs, AppCode: uc.AppCode, ModuleCode: req.ModuleCode})
 		if err != nil {
 			return nil, err
 		}

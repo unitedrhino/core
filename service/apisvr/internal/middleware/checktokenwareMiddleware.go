@@ -53,7 +53,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			r = r.WithContext(ctx2)
 			////校验 Casbin Rule
 			_, err = m.AuthRpc.RoleApiAuth(r.Context(), &user.RoleApiAuthReq{
-				RoleID: userCtx.RoleID,
+				//RoleID: userCtx.RoleID, //todo
 				Path:   r.URL.Path,
 				Method: r.Method,
 			})
@@ -88,7 +88,6 @@ func (m *CheckTokenWareMiddleware) OpenAuth(w http.ResponseWriter, r *http.Reque
 	return isOpen, &ctxs.UserCtx{
 		IsOpen:    isOpen,
 		UserID:    0,
-		RoleID:    0,
 		IsAllData: true,
 		IP:        strIP,
 		Os:        r.Header.Get("User-Agent"),
@@ -109,9 +108,6 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 	if projectID == 0 {
 		projectID = def.NotClassified
 	}
-	strRoleID := r.Header.Get(ctxs.UserRoleKey)
-	roleID := cast.ToInt64(strRoleID)
-
 	appCode := r.Header.Get(ctxs.UserAppCodeKey)
 
 	resp, err := m.UserRpc.UserCheckToken(r.Context(), &user.UserCheckTokenReq{
@@ -129,16 +125,8 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		w.Header().Set("Access-Control-Expose-Headers", ctxs.UserSetTokenKey)
 		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)
 	}
-	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s roleID：%v checkResp:%v",
-		utils.FuncName(), strIP, strToken, strRoleID, utils.Fmt(resp))
-	if roleID != 0 { //如果传了角色
-		if !utils.SliceIn(roleID, resp.RoleIDs...) {
-			err := errors.Parameter.AddMsgf("所选角色无权限")
-			return nil, err
-		}
-	} else {
-		roleID = resp.RoleIDs[0]
-	}
+	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s checkResp:%v",
+		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
 	return &ctxs.UserCtx{
 		IsOpen:     false,
 		TenantCode: resp.TenantCode,
@@ -146,7 +134,8 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		ProjectID:  projectID,
 		AppCode:    appCode,
 		UserID:     resp.UserID,
-		RoleID:     roleID,
+		RoleIDs:    resp.RoleIDs,
+		RoleCodes:  resp.RoleCodes,
 		IsAdmin:    resp.IsAdmin == def.True,
 		IsAllData:  resp.IsAllData == def.True,
 		IP:         strIP,

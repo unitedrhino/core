@@ -28,14 +28,10 @@ func NewAccessTreeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Access
 
 func (l *AccessTreeLogic) AccessTree() (resp *types.AccessTreeResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
-	roleID := uc.RoleID
-	if roleID == 0 {
-		return nil, nil
-	}
 	var accessCodes []string
 	if !uc.IsAdmin {
 		ids, err := l.svcCtx.RoleRpc.RoleAccessIndex(l.ctx, &sys.RoleAccessIndexReq{
-			Id: roleID,
+			Ids: uc.RoleIDs,
 		})
 		if err != nil {
 			return nil, err

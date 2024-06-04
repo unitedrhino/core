@@ -44,6 +44,7 @@ func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		Token:      token,
 		UserID:     claim.UserID,
 		RoleIDs:    claim.RoleIDs,
+		RoleCodes:  claim.RoleCodes,
 		IsAllData:  claim.IsAllData,
 		TenantCode: claim.TenantCode,
 		IsAdmin:    claim.IsAdmin,

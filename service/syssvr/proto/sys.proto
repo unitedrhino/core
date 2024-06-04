@@ -784,7 +784,8 @@ message RoleAccessMultiUpdateReq{
 }
 
 message RoleAccessIndexReq{
-  int64 id = 1;//角色ID
+  repeated int64 ids = 1;//角色ID
+  int64 id = 2;//角色ID
 }
 
 message RoleAccessIndexResp{
@@ -795,7 +796,8 @@ message RoleAccessIndexResp{
 
 
 message RoleMenuIndexReq{
-  int64 id = 1;//角色ID
+  repeated int64 ids = 1;//角色ID
+  int64 id = 4;//角色ID
   string appCode = 2;//appCode
   string moduleCode = 3;//模块编码
 }
@@ -806,7 +808,8 @@ message RoleMenuIndexResp{
 }
 
 message RoleAppIndexReq{
-  int64 id = 1;//角色ID
+  repeated int64 ids = 1;//角色ID
+  int64 id = 2;//角色ID
 }
 
 message RoleAppIndexResp{
@@ -815,7 +818,8 @@ message RoleAppIndexResp{
 }
 
 message RoleModuleIndexReq{
-  int64 id = 1;//角色ID
+  repeated int64 ids = 1;//角色ID
+  int64 id = 3;//角色ID
   string appCode = 2;//appCode
 }
 
@@ -955,6 +959,7 @@ message UserCheckTokenResp{
   string token = 1;  //如果时间不多会更新jwt，需要判断jwt是否为“” 如果不为空，则需要更新用户的token
   int64 userID = 2;
   repeated int64 roleIDs = 3;
+  repeated string roleCodes = 9;
   int64 isAllData = 4;
   string tenantCode = 5;//租户编码
   int64 isAdmin = 6;//是否是超级管理员

@@ -46,9 +46,16 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 		ProjectName: in.ProjectName,
 	}
 	if !uc.IsAdmin { //不是超管需要鉴权
+		f := relationDB.DataProjectFilter{Targets: []*relationDB.Target{
+			{ID: uc.UserID, Type: def.TargetUser}}}
+		for _, v := range uc.RoleIDs {
+			f.Targets = append(f.Targets, &relationDB.Target{
+				Type: def.TargetRole,
+				ID:   v,
+			})
+		}
 		projects, err := relationDB.NewDataProjectRepo(l.ctx).FindByFilter(l.ctx,
-			relationDB.DataProjectFilter{Targets: []*relationDB.Target{
-				{ID: uc.UserID, Type: def.TargetUser}, {ID: uc.RoleID, Type: def.TargetRole}}}, nil)
+			f, nil)
 		if err != nil {
 			return nil, err
 		}

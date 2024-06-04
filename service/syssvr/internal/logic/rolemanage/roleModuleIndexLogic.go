@@ -26,7 +26,8 @@ func NewRoleModuleIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *R
 
 func (l *RoleModuleIndexLogic) RoleModuleIndex(in *sys.RoleModuleIndexReq) (*sys.RoleModuleIndexResp, error) {
 	ret, err := relationDB.NewRoleModuleRepo(l.ctx).FindByFilter(l.ctx, relationDB.RoleModuleFilter{
-		RoleIDs: []int64{in.Id},
+		RoleIDs: in.Ids,
+		RoleID:  in.Id,
 		AppCode: in.AppCode,
 	}, nil)
 	if err != nil {

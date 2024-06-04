@@ -19,6 +19,7 @@ func NewRoleModuleRepo(in any) *RoleModuleRepo {
 type RoleModuleFilter struct {
 	TenantCode string
 	RoleIDs    []int64
+	RoleID     int64
 	AppCode    string
 }
 
@@ -32,6 +33,9 @@ func (p RoleModuleRepo) fmtFilter(ctx context.Context, f RoleModuleFilter) *gorm
 	}
 	if f.AppCode != "" {
 		db = db.Where("app_code =?", f.AppCode)
+	}
+	if f.RoleID != 0 {
+		db = db.Where("role_id =?", f.RoleID)
 	}
 	return db
 }

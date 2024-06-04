@@ -28,13 +28,10 @@ func NewAppIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AppIndex
 
 func (l *AppIndexLogic) AppIndex() (resp *types.AppInfoIndexResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
-	roleID := uc.RoleID
-	if roleID == 0 {
-		return nil, nil
-	}
+
 	var appCodes []string
 	if !uc.IsAdmin {
-		as, err := l.svcCtx.RoleRpc.RoleAppIndex(l.ctx, &sys.RoleAppIndexReq{Id: roleID})
+		as, err := l.svcCtx.RoleRpc.RoleAppIndex(l.ctx, &sys.RoleAppIndexReq{Ids: uc.RoleIDs})
 		if err != nil {
 			return nil, err
 		}

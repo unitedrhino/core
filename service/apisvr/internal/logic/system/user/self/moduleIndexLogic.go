@@ -29,13 +29,9 @@ func NewModuleIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Modul
 
 func (l *ModuleIndexLogic) ModuleIndex() (resp *types.ModuleInfoIndexResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
-	roleID := uc.RoleID
-	if roleID == 0 {
-		return nil, nil
-	}
 	var moduleCodes []string
 	if !uc.IsAdmin {
-		codes, err := l.svcCtx.RoleRpc.RoleModuleIndex(l.ctx, &role.RoleModuleIndexReq{AppCode: uc.AppCode, Id: roleID})
+		codes, err := l.svcCtx.RoleRpc.RoleModuleIndex(l.ctx, &role.RoleModuleIndexReq{AppCode: uc.AppCode, Ids: uc.RoleIDs})
 		if err != nil {
 			return nil, err
 		}
