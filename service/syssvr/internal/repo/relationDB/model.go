@@ -160,7 +160,7 @@ type SysModuleMenu struct {
 	Order      int64            `gorm:"column:order;type:BIGINT;default:1;NOT NULL"`        // 左侧table排序序号
 	Name       string           `gorm:"column:name;type:VARCHAR(50);NOT NULL"`              // 菜单名称
 	Path       string           `gorm:"column:path;type:VARCHAR(64);NOT NULL"`              // 系统的path
-	Component  string           `gorm:"column:component;type:VARCHAR(64);NOT NULL"`         // 页面
+	Component  string           `gorm:"column:component;type:VARCHAR(1024);NOT NULL"`       // 页面
 	Icon       string           `gorm:"column:icon;type:VARCHAR(64);NOT NULL"`              // 图标
 	Redirect   string           `gorm:"column:redirect;type:VARCHAR(64);NOT NULL"`          // 路由重定向
 	Body       string           `gorm:"column:body;type:VARCHAR(1024)"`                     // 菜单自定义数据
