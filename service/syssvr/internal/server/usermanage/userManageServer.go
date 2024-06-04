@@ -77,6 +77,11 @@ func (s *UserManageServer) UserChangePwd(ctx context.Context, in *sys.UserChange
 	return l.UserChangePwd(in)
 }
 
+func (s *UserManageServer) UserCodeToUserID(ctx context.Context, in *sys.UserCodeToUserIDReq) (*sys.UserCodeToUserIDResp, error) {
+	l := usermanagelogic.NewUserCodeToUserIDLogic(ctx, s.svcCtx)
+	return l.UserCodeToUserID(in)
+}
+
 func (s *UserManageServer) UserRoleIndex(ctx context.Context, in *sys.UserRoleIndexReq) (*sys.UserRoleIndexResp, error) {
 	l := usermanagelogic.NewUserRoleIndexLogic(ctx, s.svcCtx)
 	return l.UserRoleIndex(in)

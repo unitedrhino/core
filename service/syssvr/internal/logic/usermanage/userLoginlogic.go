@@ -152,7 +152,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	case users.RegWxMiniP:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 		if er != nil || cli.MiniProgram == nil {
-			return nil, errors.System.AddDetail(err)
+			return nil, errors.System.AddDetail(er)
 		}
 		auth := cli.MiniProgram.GetAuth()
 		ret, er := auth.Code2SessionContext(l.ctx, in.Code)

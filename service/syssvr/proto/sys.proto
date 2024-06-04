@@ -16,6 +16,7 @@ service UserManage {
   rpc userCheckToken(UserCheckTokenReq) returns(UserCheckTokenResp);
   rpc userRegister(UserRegisterReq) returns(UserRegisterResp);
   rpc userChangePwd(UserChangePwdReq) returns(Empty);
+  rpc userCodeToUserID(UserCodeToUserIDReq)returns(UserCodeToUserIDResp);//第三方的code获取用户的id
 
   rpc userRoleIndex(UserRoleIndexReq) returns (UserRoleIndexResp); //获取角色API权限列表
   rpc userRoleMultiUpdate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
@@ -1046,6 +1047,16 @@ message UserForgetPwdReq{
   string password =3;//密码
   string code = 5;//验证码    微信登录填code
   string codeID = 6;//验证码编号 微信登录填state
+}
+
+message UserCodeToUserIDReq{
+  string loginType =4;//验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码
+  string code = 5;//验证码    微信登录填code
+}
+
+message UserCodeToUserIDResp{
+  string openID =1;
+  string unionID =2;
 }
 
 message  UserChangePwdReq{

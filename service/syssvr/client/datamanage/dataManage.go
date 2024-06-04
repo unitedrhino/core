@@ -156,6 +156,8 @@ type (
 	UserChangePwdReq                   = sys.UserChangePwdReq
 	UserCheckTokenReq                  = sys.UserCheckTokenReq
 	UserCheckTokenResp                 = sys.UserCheckTokenResp
+	UserCodeToUserIDReq                = sys.UserCodeToUserIDReq
+	UserCodeToUserIDResp               = sys.UserCodeToUserIDResp
 	UserCreateResp                     = sys.UserCreateResp
 	UserForgetPwdReq                   = sys.UserForgetPwdReq
 	UserInfo                           = sys.UserInfo
