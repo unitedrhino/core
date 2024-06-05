@@ -45,7 +45,13 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	var (
 		areaPo *relationDB.SysAreaInfo
 	)
-
+	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
+	if err != nil {
+		return nil, err
+	}
+	if ti.DefaultAreaID == in.AreaID {
+		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("默认区域禁止删除")
+	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 

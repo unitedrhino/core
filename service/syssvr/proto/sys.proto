@@ -498,6 +498,7 @@ message TenantInfo{
   int64 adminRoleID = 5;
   google.protobuf.StringValue desc = 6;
   int64 defaultProjectID = 7;
+  int64 defaultAreaID = 8;
   string backgroundImg =9;
   bool isUpdateBackgroundImg = 10;
   string backgroundColour =15;//背景颜色

@@ -13,6 +13,7 @@ type SysTenantInfo struct {
 	AdminRoleID      int64  `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`               // 超级角色
 	Desc             string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
 	DefaultProjectID int64  `gorm:"column:default_project_id;type:BIGINT;NOT NULL"`
+	DefaultAreaID    int64  `gorm:"column:default_area_id;type:BIGINT;NOT NULL"`
 	SysTenantOem
 	Status int64 `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
 	stores.NoDelTime
