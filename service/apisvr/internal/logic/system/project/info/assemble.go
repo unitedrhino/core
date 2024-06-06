@@ -18,5 +18,6 @@ func ToProjectPb(in *types.ProjectInfo) *sys.ProjectInfo {
 		Position:    logic.ToSysPointRpc(in.Position),
 		Desc:        utils.ToRpcNullString(in.Desc),
 		AreaCount:   in.AreaCount,
+		Area:        utils.ToRpcNullFloat32(in.Area),
 	}
 }

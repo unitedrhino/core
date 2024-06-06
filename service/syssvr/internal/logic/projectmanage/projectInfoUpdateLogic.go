@@ -73,6 +73,12 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 	if pb.Position != nil {
 		po.Position = logic.ToStorePoint(pb.Position)
 	}
+	if pb.Area != nil {
+		po.Area = pb.Area.GetValue()
+	}
+	if pb.Ppsm != 0 {
+		po.Ppsm = pb.Ppsm
+	}
 	//if pb.Region != nil {
 	//	po.Region = pb.Region.GetValue()
 	//}

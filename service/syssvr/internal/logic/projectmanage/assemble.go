@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/utils"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 func ProjectInfoToPb(po *relationDB.SysProjectInfo) *sys.ProjectInfo {
@@ -13,6 +14,8 @@ func ProjectInfoToPb(po *relationDB.SysProjectInfo) *sys.ProjectInfo {
 		ProjectID:   int64(po.ProjectID),
 		ProjectName: po.ProjectName,
 		AdminUserID: po.AdminUserID,
+		Ppsm:        po.Ppsm,
+		Area:        &wrapperspb.FloatValue{Value: po.Area},
 		Desc:        utils.ToRpcNullString(po.Desc),
 		Position:    logic.ToSysPoint(po.Position),
 		AreaCount:   po.AreaCount,

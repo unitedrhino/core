@@ -17,6 +17,7 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		Position:      logic.ToSysPointApi(pb.Position),
 		AreaCount:     pb.AreaCount,
 		AdminUserInfo: utils.Copy[types.UserCore](ui),
+		Area:          utils.ToNullFloat32(pb.Area),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {

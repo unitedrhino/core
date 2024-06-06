@@ -676,8 +676,10 @@ message ProjectInfo {
   int64 adminUserID = 5;//管理员
 //  google.protobuf.StringValue region = 6; //项目省市区县（读写）
   Point Position = 6; //项目区域定位
+  google.protobuf.FloatValue area =7;//建筑面积(单位平米)
+  int64 ppsm =10;//w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
   google.protobuf.StringValue desc = 8; //项目备注（读写）
-    int64 areaCount =9;//项目下的区域统计(只读)
+  int64 areaCount =9;//项目下的区域统计(只读)
 }
 
 message ProjectInfoIndexReq {

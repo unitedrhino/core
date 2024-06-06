@@ -102,7 +102,9 @@ type (
 //        Address *string `json:"address,optional"`              //项目详细地址（读写）
         Desc *string `json:"desc,optional"`                    //项目备注（读写）
         AreaCount int64 `json:"areaCount,optional"` //项目下的区域统计(只读)
-        AdminUserInfo *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
+        Ppsm int64  `json:"ppsm,optional,omitempty"`//w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
+        Area *float32  `json:"area,optional,omitempty"`//建筑面积(单位平米)
+        AdminUserInfo *UserCore `json:"adminUserInfo,optional,omitempty"` //管理员信息
     }
 
 

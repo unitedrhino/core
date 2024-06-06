@@ -48,6 +48,8 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		ProjectName: in.ProjectName,
 		//CompanyName: utils.ToEmptyString(in.CompanyName),
 		AdminUserID: in.AdminUserID,
+		Ppsm:        in.Ppsm,
+		Area:        in.Area.GetValue(),
 		//Region:      utils.ToEmptyString(in.Region),
 		//Address:     utils.ToEmptyString(in.Address),
 		Position: logic.ToStorePoint(in.Position),

@@ -8604,6 +8604,16 @@
           "format": "int64",
           "description": "项目下的区域统计(只读)"
         },
+        "ppsm": {
+          "type": "integer",
+          "format": "int64",
+          "description": "w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter"
+        },
+        "area": {
+          "type": "number",
+          "format": "float",
+          "description": "建筑面积(单位平米)"
+        },
         "adminUserInfo": {
           "$ref": "#/definitions/UserCore",
           "description": "管理员信息"
