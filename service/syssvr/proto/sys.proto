@@ -26,7 +26,7 @@ service UserManage {
 
   rpc userMessageMultiIsRead(IDList)returns(Empty);//用户消息批量已读
   rpc userMessageIndex(UserMessageIndexReq)returns(UserMessageIndexResp);//获取用户消息
-  rpc   UserMessageStatistics(Empty)returns(UserMessageStatisticsResp);
+  rpc userMessageStatistics(Empty)returns(UserMessageStatisticsResp);
   rpc userProfileRead(WithCode)returns(UserProfile);
   rpc userProfileUpdate(UserProfile)returns(Empty);
   rpc userProfileIndex(UserProfileIndexReq)returns(UserProfileIndexResp);
@@ -962,12 +962,13 @@ message UserCheckTokenResp{
   string token = 1;  //如果时间不多会更新jwt，需要判断jwt是否为“” 如果不为空，则需要更新用户的token
   int64 userID = 2;
   repeated int64 roleIDs = 3;
-  repeated string roleCodes = 9;
-  int64 isAllData = 4;
-  string tenantCode = 5;//租户编码
-  int64 isAdmin = 6;//是否是超级管理员
-  string userName = 7;//用户名
-  string account = 8 ;//账号
+  repeated string roleCodes = 4;
+  int64 isAllData = 5;
+  string tenantCode = 6;//租户编码
+  bool isAdmin = 7;//是否是管理员
+  bool isSuperAdmin = 8;//是否是超级管理员(可以跨租户)
+  string userName = 9;//用户名
+  string account = 10 ;//账号
 }
 
 message RoleAppMultiUpdateReq{

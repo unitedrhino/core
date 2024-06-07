@@ -135,14 +135,15 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
 		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
 	return &ctxs.UserCtx{
-		IsOpen:     false,
-		TenantCode: resp.TenantCode,
-		UserID:     resp.UserID,
-		RoleIDs:    resp.RoleIDs,
-		RoleCodes:  resp.RoleCodes,
-		IsAdmin:    resp.IsAdmin == def.True,
-		IsAllData:  resp.IsAllData == def.True,
-		UserName:   resp.UserName,
-		Account:    resp.Account,
+		IsOpen:       false,
+		TenantCode:   resp.TenantCode,
+		UserID:       resp.UserID,
+		RoleIDs:      resp.RoleIDs,
+		RoleCodes:    resp.RoleCodes,
+		IsAdmin:      resp.IsAdmin,
+		IsSuperAdmin: resp.IsSuperAdmin,
+		IsAllData:    resp.IsAllData == def.True,
+		UserName:     resp.UserName,
+		Account:      resp.Account,
 	}, nil
 }

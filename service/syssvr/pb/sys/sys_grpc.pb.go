@@ -37,7 +37,7 @@ const (
 	UserManage_UserAreaApplyCreate_FullMethodName    = "/sys.UserManage/userAreaApplyCreate"
 	UserManage_UserMessageMultiIsRead_FullMethodName = "/sys.UserManage/userMessageMultiIsRead"
 	UserManage_UserMessageIndex_FullMethodName       = "/sys.UserManage/userMessageIndex"
-	UserManage_UserMessageStatistics_FullMethodName  = "/sys.UserManage/UserMessageStatistics"
+	UserManage_UserMessageStatistics_FullMethodName  = "/sys.UserManage/userMessageStatistics"
 	UserManage_UserProfileRead_FullMethodName        = "/sys.UserManage/userProfileRead"
 	UserManage_UserProfileUpdate_FullMethodName      = "/sys.UserManage/userProfileUpdate"
 	UserManage_UserProfileIndex_FullMethodName       = "/sys.UserManage/userProfileIndex"
@@ -865,7 +865,7 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserManage_UserMessageIndex_Handler,
 		},
 		{
-			MethodName: "UserMessageStatistics",
+			MethodName: "userMessageStatistics",
 			Handler:    _UserManage_UserMessageStatistics_Handler,
 		},
 		{

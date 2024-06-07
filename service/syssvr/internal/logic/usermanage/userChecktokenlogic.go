@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/users"
 	"gitee.com/i-Things/share/utils"
 	"time"
@@ -41,13 +42,14 @@ func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, time.Now().Unix()+l.svcCtx.Config.UserToken.AccessExpire)
 	}
 	return &sys.UserCheckTokenResp{
-		Token:      token,
-		UserID:     claim.UserID,
-		RoleIDs:    claim.RoleIDs,
-		RoleCodes:  claim.RoleCodes,
-		IsAllData:  claim.IsAllData,
-		TenantCode: claim.TenantCode,
-		IsAdmin:    claim.IsAdmin,
-		Account:    claim.Account,
+		Token:        token,
+		UserID:       claim.UserID,
+		RoleIDs:      claim.RoleIDs,
+		RoleCodes:    claim.RoleCodes,
+		IsAllData:    claim.IsAllData,
+		TenantCode:   claim.TenantCode,
+		IsAdmin:      utils.SliceIn(def.RoleCodeAdmin, claim.RoleCodes...),
+		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, claim.RoleCodes...),
+		Account:      claim.Account,
 	}, nil
 }
