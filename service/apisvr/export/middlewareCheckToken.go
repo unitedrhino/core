@@ -140,7 +140,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		UserID:       resp.UserID,
 		RoleIDs:      resp.RoleIDs,
 		RoleCodes:    resp.RoleCodes,
-		IsAdmin:      resp.IsAdmin,
+		IsAdmin:      resp.IsAdmin || resp.IsSuperAdmin,
 		IsSuperAdmin: resp.IsSuperAdmin,
 		IsAllData:    resp.IsAllData == def.True,
 		UserName:     resp.UserName,
