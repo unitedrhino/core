@@ -969,6 +969,17 @@ message UserCheckTokenResp{
   bool isSuperAdmin = 8;//是否是超级管理员(可以跨租户)
   string userName = 9;//用户名
   string account = 10 ;//账号
+  map<int64,ProjectAuth> projectAuth = 11;
+}
+
+message ProjectAuth {
+  map<int64,int64> area=1;//key是区域ID,value是授权类型
+  /*
+  1 //管理权限,可以修改别人的权限,及读写权限 管理权限不限制区域权限
+  2 //读权限,只能读,不能修改
+  3 //读写权限,可以读写该权限
+  */
+  int64  AuthType =2; //项目的授权类型
 }
 
 message RoleAppMultiUpdateReq{

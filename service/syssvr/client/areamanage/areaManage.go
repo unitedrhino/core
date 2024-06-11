@@ -90,6 +90,7 @@ type (
 	PageInfo                           = sys.PageInfo
 	PageInfo_OrderBy                   = sys.PageInfo_OrderBy
 	Point                              = sys.Point
+	ProjectAuth                        = sys.ProjectAuth
 	ProjectInfo                        = sys.ProjectInfo
 	ProjectInfoIndexReq                = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp               = sys.ProjectInfoIndexResp

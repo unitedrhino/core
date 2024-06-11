@@ -145,5 +145,6 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		IsAllData:    resp.IsAllData == def.True,
 		UserName:     resp.UserName,
 		Account:      resp.Account,
+		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
 	}, nil
 }
