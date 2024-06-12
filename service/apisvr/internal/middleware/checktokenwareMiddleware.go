@@ -120,7 +120,14 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 			utils.FuncName(), strIP, strToken, err)
 		return nil, er
 	}
-
+	if !resp.IsAdmin {
+		pi := resp.ProjectAuth[projectID]
+		if pi == nil {
+			logx.WithContext(r.Context()).Errorf("%s.ProjectAuth projectID:%v checkRet:%v",
+				utils.FuncName(), projectID, utils.Fmt(resp))
+			return nil, errors.Permissions.AddMsg("所选的项目无权限")
+		}
+	}
 	if resp.Token != "" {
 		w.Header().Set("Access-Control-Expose-Headers", ctxs.UserSetTokenKey)
 		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)

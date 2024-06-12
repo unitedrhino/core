@@ -245,6 +245,7 @@ service ops{
   rpc opsWorkOrderUpdate(OpsWorkOrder) returns(Empty);
   rpc opsWorkOrderIndex(OpsWorkOrderIndexReq) returns(OpsWorkOrderIndexResp);
 
+  //反馈
   rpc opsFeedbackCreate(OpsFeedback)returns(WithID);
   rpc opsFeedbackIndex(OpsFeedbackIndexReq)returns(OpsFeedbackIndexResp);
 }

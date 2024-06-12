@@ -14,11 +14,11 @@ info(
 )
 
 service api {
-    @doc "授权用户项目权限"
+    @doc "授权项目权限"
     @handler projectMultiUpdate
     post /multi-update (DataProjectMultiUpdateReq) returns ()
 
-    @doc "获取用户项目权限列表"
+    @doc "获取项目权限列表"
     @handler projectIndex
     post /index (DataProjectIndexReq) returns (DataProjectIndexResp)
 
@@ -31,15 +31,15 @@ service api {
 )
 
 service api {
-    @doc "授权用户区域权限"
+    @doc "授权区域权限"
     @handler multiUpdate
     post /multi-update (DataAreaMultiUpdateReq) returns ()
 
-    @doc "授权用户区域权限"
+    @doc "授权区域权限"
     @handler multiDelete
     post /multi-delete (DataAreaMultiDeleteReq) returns ()
 
-    @doc "获取用户区域权限列表"
+    @doc "获取区域权限列表"
     @handler index
     post /index (DataAreaIndexReq) returns (DataAreaIndexResp)
 }
@@ -51,11 +51,11 @@ service api {
 )
 
 service api {
-    @doc "授权用户区域权限"
+    @doc "授权区域权限"
     @handler deal
     post /deal (UserAreaApplyDealReq) returns ()
 
-    @doc "获取用户区域权限列表"
+    @doc "获取区域权限列表"
     @handler index
     post /index (UserAreaApplyIndexReq) returns (UserAreaApplyIndexResp)
 }
@@ -65,8 +65,10 @@ service api {
 type (
     DataProject  {
         ProjectID   int64 `json:"projectID,string"`     //权限数据ID
-        AuthType  int64 `json:"authType"`// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+        AuthType  int64 `json:"authType"`// 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
     }
+
+
     DataProjectMultiUpdateReq  {
         TargetID   int64 `json:"targetID,string"`    //用户ID
         TargetType string `json:"targetType"`

@@ -135,6 +135,27 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if err != nil {
 			return err
 		}
+	case def.NotifyTypeDingWebhook:
+		channel := c.Template.Channel
+		if channel == nil || channel.WebHook == "" {
+			return errors.NotEnable.AddMsg("通道没有配置")
+		}
+		cli := clients.NewDingRobotClient(channel.WebHook)
+		_, err := cli.SendRobotMsg(clients.NewTextMessage(body))
+		return err
+	case def.NotifyTypeDingTalk:
+		channel := c.Template.Channel
+		if channel == nil || channel.DingTalk == nil {
+			return errors.NotEnable.AddMsg("通道没有配置")
+		}
+		//cli, err := clients.NewDingTalkClient(&conf.ThirdConf{
+		//	AppKey:    channel.DingTalk.AppKey,
+		//	AppSecret: channel.DingTalk.AppSecret,
+		//})
+		//if err != nil {
+		//	return err
+		//}
+		//cli.SendCorpConvMessage()
 	case def.NotifyTypeEmail:
 		var accounts = cfg.Accounts
 		if len(users) != 0 {

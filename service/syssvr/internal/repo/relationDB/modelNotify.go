@@ -76,12 +76,18 @@ type SysTenantNotifyChannel struct {
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`            // 租户编码,为common是公共的
 	Type       def.NotifyType    `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置类型 sms email
 	Email      *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                          //邮箱配置
+	DingTalk   *SysThirdApp      `gorm:"embedded;embeddedPrefix:ding_talk_"`                      //钉钉消息
 	//AppCode    string            `gorm:"column:app_code;type:VARCHAR(100)"`                       //绑定的应用
 	WebHook string `gorm:"column:webhook;type:VARCHAR(256)"` //钉钉webhook模式及企业微信webhook方式
 	Name    string `gorm:"column:name;uniqueIndex:ri_mi;type:VARCHAR(100);NOT NULL"`
 	Desc    string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"` //应用描述
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+}
+
+type SysThirdApp struct {
+	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
+	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
 }
 
 func (m *SysTenantNotifyChannel) TableName() string {
