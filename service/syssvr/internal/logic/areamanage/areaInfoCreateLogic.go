@@ -34,18 +34,29 @@ func NewAreaInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ar
 
 // 新增区域
 func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID, error) {
-	if in.AreaName == "" || in.ParentAreaID == 0 || ////root节点不为0
+	if in.AreaName == "" || ////root节点不为0
 		in.ParentAreaID == def.NotClassified { //未分类不能有下属的区域
 		return nil, errors.Parameter
 	}
+	uc := ctxs.GetUserCtx(l.ctx)
 	list := l.svcCtx.Slot.Get(l.ctx, "areaInfo", "create")
 	err := list.Request(l.ctx, in, nil)
 	if err != nil {
 		return nil, err
 	}
 	if in.ProjectID == 0 {
-		in.ProjectID = ctxs.GetUserCtx(l.ctx).ProjectID
+		in.ProjectID = uc.ProjectID
 	}
+	if !uc.IsAdmin {
+		pa := uc.ProjectAuth[in.ProjectID]
+		if pa.AuthType != def.AuthAdmin {
+			return nil, errors.Permissions.AddMsg("只有项目管理员才能创建区域")
+		}
+	}
+	if in.ParentAreaID == 0 {
+		in.ParentAreaID = def.RootNode
+	}
+
 	var areaID = l.svcCtx.AreaID.GetSnowflakeId()
 	var areaIDPath string = cast.ToString(areaID) + "-"
 	var areaNamePath = in.AreaName + "-"
