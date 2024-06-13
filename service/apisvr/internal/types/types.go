@@ -201,7 +201,7 @@ type DataAreaMultiUpdateReq struct {
 
 type DataProject struct {
 	ProjectID int64 `json:"projectID,string"` //权限数据ID
-	AuthType  int64 `json:"authType"`         // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	AuthType  int64 `json:"authType"`         // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
 }
 
 type DataProjectIndexReq struct {
@@ -557,6 +557,16 @@ type ProjectInfoIndexResp struct {
 type ProjectWithID struct {
 	ProjectID     int64 `json:"projectID,string"`       //项目id 只读
 	WithAdminUser bool  `json:"withAdminUser,optional"` //同时获取管理员核心信息
+}
+
+type QRCodeReadReq struct {
+	Page       string `json:"page"`       //默认是主页，页面 page，例如 pages/index/index，根路径前不要填加 /，不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面。scancode_time为系统保留参数，不允许配置
+	Scene      string `json:"scene"`      //        	最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~，其它字符请自行编码为合法字符（因不支持%，中文无法使用 urlencode 处理，请使用其他编码方式）
+	EnvVersion string `json:"envVersion"` //要打开的小程序版本。正式版为 "release"，体验版为 "trial"，开发版为 "develop"。默认是正式版。
+}
+
+type QRCodeReadResp struct {
+	Buffer []byte `json:"buffer"`
 }
 
 type RoleAccessIndexReq struct {

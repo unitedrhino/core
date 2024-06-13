@@ -95,6 +95,8 @@ type (
 	ProjectInfoIndexReq                = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp               = sys.ProjectInfoIndexResp
 	ProjectWithID                      = sys.ProjectWithID
+	QRCodeReadReq                      = sys.QRCodeReadReq
+	QRCodeReadResp                     = sys.QRCodeReadResp
 	RoleAccessIndexReq                 = sys.RoleAccessIndexReq
 	RoleAccessIndexResp                = sys.RoleAccessIndexResp
 	RoleAccessMultiUpdateReq           = sys.RoleAccessMultiUpdateReq
@@ -193,6 +195,7 @@ type (
 		OpsWorkOrderCreate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*WithID, error)
 		OpsWorkOrderUpdate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*Empty, error)
 		OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error)
+		// 反馈
 		OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error)
 		OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error)
 	}
@@ -249,11 +252,13 @@ func (d *directOps) OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndex
 	return d.svr.OpsWorkOrderIndex(ctx, in)
 }
 
+// 反馈
 func (m *defaultOps) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error) {
 	client := sys.NewOpsClient(m.cli.Conn())
 	return client.OpsFeedbackCreate(ctx, in, opts...)
 }
 
+// 反馈
 func (d *directOps) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error) {
 	return d.svr.OpsFeedbackCreate(ctx, in)
 }

@@ -95,6 +95,8 @@ type (
 	ProjectInfoIndexReq                = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp               = sys.ProjectInfoIndexResp
 	ProjectWithID                      = sys.ProjectWithID
+	QRCodeReadReq                      = sys.QRCodeReadReq
+	QRCodeReadResp                     = sys.QRCodeReadResp
 	RoleAccessIndexReq                 = sys.RoleAccessIndexReq
 	RoleAccessIndexResp                = sys.RoleAccessIndexResp
 	RoleAccessMultiUpdateReq           = sys.RoleAccessMultiUpdateReq
@@ -191,6 +193,7 @@ type (
 	Common interface {
 		Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
 		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
+		QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
 	}
 
 	defaultCommon struct {
@@ -232,4 +235,13 @@ func (m *defaultCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq,
 
 func (d *directCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {
 	return d.svr.SlotInfoIndex(ctx, in)
+}
+
+func (m *defaultCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.QRCodeRead(ctx, in, opts...)
+}
+
+func (d *directCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	return d.svr.QRCodeRead(ctx, in)
 }

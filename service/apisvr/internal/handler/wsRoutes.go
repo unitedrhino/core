@@ -224,6 +224,11 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/qr-code/read",
+					Handler: systemcommon.QRCodeReadReqHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/upload-file",
 					Handler: systemcommon.UploadFileHandler(serverCtx),
 				},
@@ -241,21 +246,6 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodGet,
 					Path:    "/websocket/connect",
 					Handler: systemcommon.WebsocketConnectHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/websocket/subscribe/create",
-					Handler: systemcommon.WebsocketSubscribeCreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/websocket/subscribe/delete",
-					Handler: systemcommon.WebsocketSubscribeDeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/websocket/subscribe/index",
-					Handler: systemcommon.WebsocketSubscribeIndexHandler(serverCtx),
 				},
 			}...,
 		),

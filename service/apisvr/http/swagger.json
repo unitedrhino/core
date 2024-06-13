@@ -986,6 +986,48 @@
         ]
       }
     },
+    "/api/v1/system/common/qr-code/read": {
+      "post": {
+        "summary": "获取",
+        "operationId": "postApiV1SystemCommonQr-codeRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/QRCodeReadResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QRCodeReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
     "/api/v1/system/common/upload-file": {
       "post": {
         "summary": "文件直传",
@@ -1131,119 +1173,9 @@
         ]
       }
     },
-    "/api/v1/system/common/websocket/subscribe/create": {
-      "post": {
-        "summary": "websocket订阅",
-        "operationId": "postApiV1SystemCommonWebsocketSubscribeCreate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WebsocketSubscribeInfo"
-            }
-          }
-        ],
-        "tags": [
-          "system/common",
-          "systemCommon"
-        ]
-      }
-    },
-    "/api/v1/system/common/websocket/subscribe/delete": {
-      "post": {
-        "summary": "websocket取消订阅",
-        "operationId": "postApiV1SystemCommonWebsocketSubscribeDelete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WebsocketSubscribeInfo"
-            }
-          }
-        ],
-        "tags": [
-          "system/common",
-          "systemCommon"
-        ]
-      }
-    },
-    "/api/v1/system/common/websocket/subscribe/index": {
-      "post": {
-        "summary": "websocket订阅列表",
-        "operationId": "postApiV1SystemCommonWebsocketSubscribeIndex",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                },
-                "data": {
-                  "$ref": "#/definitions/WebsocketSubscribeIndexResp"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "system/common",
-          "systemCommon"
-        ]
-      }
-    },
     "/api/v1/system/data/area/index": {
       "post": {
-        "summary": "获取用户区域权限列表",
+        "summary": "获取区域权限列表",
         "operationId": "postApiV1SystemDataAreaIndex",
         "responses": {
           "200": {
@@ -1285,7 +1217,7 @@
     },
     "/api/v1/system/data/area/multi-delete": {
       "post": {
-        "summary": "授权用户区域权限",
+        "summary": "授权区域权限",
         "operationId": "postApiV1SystemDataAreaMulti-delete",
         "responses": {
           "200": {
@@ -1324,7 +1256,7 @@
     },
     "/api/v1/system/data/area/multi-update": {
       "post": {
-        "summary": "授权用户区域权限",
+        "summary": "授权区域权限",
         "operationId": "postApiV1SystemDataAreaMulti-update",
         "responses": {
           "200": {
@@ -1363,7 +1295,7 @@
     },
     "/api/v1/system/data/area/user/apply/deal": {
       "post": {
-        "summary": "授权用户区域权限",
+        "summary": "授权区域权限",
         "operationId": "postApiV1SystemDataAreaUserApplyDeal",
         "responses": {
           "200": {
@@ -1402,7 +1334,7 @@
     },
     "/api/v1/system/data/area/user/apply/index": {
       "post": {
-        "summary": "获取用户区域权限列表",
+        "summary": "获取区域权限列表",
         "operationId": "postApiV1SystemDataAreaUserApplyIndex",
         "responses": {
           "200": {
@@ -1444,7 +1376,7 @@
     },
     "/api/v1/system/data/project/index": {
       "post": {
-        "summary": "获取用户项目权限列表",
+        "summary": "获取项目权限列表",
         "operationId": "postApiV1SystemDataProjectIndex",
         "responses": {
           "200": {
@@ -1486,7 +1418,7 @@
     },
     "/api/v1/system/data/project/multi-update": {
       "post": {
-        "summary": "授权用户项目权限",
+        "summary": "授权项目权限",
         "operationId": "postApiV1SystemDataProjectMulti-update",
         "responses": {
           "200": {
@@ -7319,7 +7251,7 @@
         "authType": {
           "type": "integer",
           "format": "int64",
-          "description": " 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限"
+          "description": " 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改"
         }
       },
       "title": "DataProject",
@@ -8681,6 +8613,41 @@
       "title": "ProjectWithID",
       "required": [
         "projectID"
+      ]
+    },
+    "QRCodeReadReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "string",
+          "description": "默认是主页，页面 page，例如 pages/index/index，根路径前不要填加 /，不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面。scancode_time为系统保留参数，不允许配置"
+        },
+        "scene": {
+          "type": "string",
+          "description": "        \t最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$\u0026'()*+,/:;=?@-._~，其它字符请自行编码为合法字符（因不支持%，中文无法使用 urlencode 处理，请使用其他编码方式）"
+        },
+        "envVersion": {
+          "type": "string",
+          "description": "要打开的小程序版本。正式版为 \"release\"，体验版为 \"trial\"，开发版为 \"develop\"。默认是正式版。"
+        }
+      },
+      "title": "QRCodeReadReq",
+      "required": [
+        "page",
+        "scene",
+        "envVersion"
+      ]
+    },
+    "QRCodeReadResp": {
+      "type": "object",
+      "properties": {
+        "buffer": {
+          "type": "string"
+        }
+      },
+      "title": "QRCodeReadResp",
+      "required": [
+        "buffer"
       ]
     },
     "RoleAccessIndexReq": {

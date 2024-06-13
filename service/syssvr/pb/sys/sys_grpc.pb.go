@@ -3818,6 +3818,7 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 const (
 	Common_Config_FullMethodName        = "/sys.Common/config"
 	Common_SlotInfoIndex_FullMethodName = "/sys.Common/slotInfoIndex"
+	Common_QRCodeRead_FullMethodName    = "/sys.Common/QRCodeRead"
 )
 
 // CommonClient is the client API for Common service.
@@ -3826,6 +3827,7 @@ const (
 type CommonClient interface {
 	Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
 	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
+	QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
 }
 
 type commonClient struct {
@@ -3854,12 +3856,22 @@ func (c *commonClient) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, 
 	return out, nil
 }
 
+func (c *commonClient) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	out := new(QRCodeReadResp)
+	err := c.cc.Invoke(ctx, Common_QRCodeRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommonServer is the server API for Common service.
 // All implementations must embed UnimplementedCommonServer
 // for forward compatibility
 type CommonServer interface {
 	Config(context.Context, *Empty) (*ConfigResp, error)
 	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
+	QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error)
 	mustEmbedUnimplementedCommonServer()
 }
 
@@ -3872,6 +3884,9 @@ func (UnimplementedCommonServer) Config(context.Context, *Empty) (*ConfigResp, e
 }
 func (UnimplementedCommonServer) SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoIndex not implemented")
+}
+func (UnimplementedCommonServer) QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QRCodeRead not implemented")
 }
 func (UnimplementedCommonServer) mustEmbedUnimplementedCommonServer() {}
 
@@ -3922,6 +3937,24 @@ func _Common_SlotInfoIndex_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Common_QRCodeRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QRCodeReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).QRCodeRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_QRCodeRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).QRCodeRead(ctx, req.(*QRCodeReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Common_ServiceDesc is the grpc.ServiceDesc for Common service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3936,6 +3969,10 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "slotInfoIndex",
 			Handler:    _Common_SlotInfoIndex_Handler,
+		},
+		{
+			MethodName: "QRCodeRead",
+			Handler:    _Common_QRCodeRead_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -5793,6 +5830,7 @@ type OpsClient interface {
 	OpsWorkOrderCreate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*WithID, error)
 	OpsWorkOrderUpdate(ctx context.Context, in *OpsWorkOrder, opts ...grpc.CallOption) (*Empty, error)
 	OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error)
+	// 反馈
 	OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error)
 	OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error)
 }
@@ -5858,6 +5896,7 @@ type OpsServer interface {
 	OpsWorkOrderCreate(context.Context, *OpsWorkOrder) (*WithID, error)
 	OpsWorkOrderUpdate(context.Context, *OpsWorkOrder) (*Empty, error)
 	OpsWorkOrderIndex(context.Context, *OpsWorkOrderIndexReq) (*OpsWorkOrderIndexResp, error)
+	// 反馈
 	OpsFeedbackCreate(context.Context, *OpsFeedback) (*WithID, error)
 	OpsFeedbackIndex(context.Context, *OpsFeedbackIndexReq) (*OpsFeedbackIndexResp, error)
 	mustEmbedUnimplementedOpsServer()

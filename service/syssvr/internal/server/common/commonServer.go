@@ -31,3 +31,8 @@ func (s *CommonServer) SlotInfoIndex(ctx context.Context, in *sys.SlotInfoIndexR
 	l := commonlogic.NewSlotInfoIndexLogic(ctx, s.svcCtx)
 	return l.SlotInfoIndex(in)
 }
+
+func (s *CommonServer) QRCodeRead(ctx context.Context, in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
+	l := commonlogic.NewQRCodeReadLogic(ctx, s.svcCtx)
+	return l.QRCodeRead(in)
+}

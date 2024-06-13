@@ -95,6 +95,8 @@ type (
 	ProjectInfoIndexReq                = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp               = sys.ProjectInfoIndexResp
 	ProjectWithID                      = sys.ProjectWithID
+	QRCodeReadReq                      = sys.QRCodeReadReq
+	QRCodeReadResp                     = sys.QRCodeReadResp
 	RoleAccessIndexReq                 = sys.RoleAccessIndexReq
 	RoleAccessIndexResp                = sys.RoleAccessIndexResp
 	RoleAccessMultiUpdateReq           = sys.RoleAccessMultiUpdateReq

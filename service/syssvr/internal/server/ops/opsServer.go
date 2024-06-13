@@ -38,6 +38,7 @@ func (s *OpsServer) OpsWorkOrderIndex(ctx context.Context, in *sys.OpsWorkOrderI
 	return l.OpsWorkOrderIndex(in)
 }
 
+// 反馈
 func (s *OpsServer) OpsFeedbackCreate(ctx context.Context, in *sys.OpsFeedback) (*sys.WithID, error) {
 	l := opslogic.NewOpsFeedbackCreateLogic(ctx, s.svcCtx)
 	return l.OpsFeedbackCreate(in)
