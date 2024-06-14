@@ -5,8 +5,6 @@ import (
 	"database/sql"
 	"gitee.com/i-Things/core/service/syssvr/domain/log"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/errors"
-
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 
@@ -37,12 +35,14 @@ func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Empty
 	//OperUserName 用uid查用户表获得
 	resUser, err := l.UiDB.FindOne(l.ctx, in.UserID)
 	if err != nil {
-		return nil, errors.Database.AddMsgf("UserInfoModel.FindOne is err, UserID:%ld", in.UserID)
+		l.Debug(in, err)
+		return &sys.Empty{}, nil
 	}
 	//OperName，BusinessType 用Route查接口管理表获得
 	resApi, err := l.AiDB.FindOneByFilter(l.ctx, relationDB.ApiInfoFilter{Route: in.Route})
 	if err != nil {
-		return nil, errors.Database.AddMsgf("ApiModel.FindOneByRoute is err, url:%s", in.Route)
+		l.Debug(in, err)
+		return &sys.Empty{}, nil
 	}
 	if resApi.BusinessType != log.OptQuery {
 		err := l.OlDB.Insert(l.ctx, &relationDB.SysOperLog{
