@@ -22,7 +22,7 @@ func UserInfoToApi(ui *sys.UserInfo, roles []*sys.RoleInfo, tenant *sys.TenantIn
 	}
 	ret := utils.Copy[types.UserInfo](ui)
 	ret.Roles = role.ToRoleInfosTypes(roles)
-	ret.Tenant = system.ToTenantInfoTypes(tenant)
+	ret.Tenant = system.ToTenantInfoTypes(tenant, nil)
 	return ret
 }
 func UserInfoToRpc(ui *types.UserInfo) *sys.UserInfo {

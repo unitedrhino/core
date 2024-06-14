@@ -85,8 +85,10 @@ func ToTenantInfoRpc(in *types.TenantInfo) *sys.TenantInfo {
 	return utils.Copy[sys.TenantInfo](in)
 }
 
-func ToTenantInfoTypes(in *sys.TenantInfo) *types.TenantInfo {
-	return utils.Copy[types.TenantInfo](in)
+func ToTenantInfoTypes(in *sys.TenantInfo, user *sys.UserInfo) *types.TenantInfo {
+	ret := utils.Copy[types.TenantInfo](in)
+	ret.AdminUserInfo = utils.Copy[types.UserCore](user)
+	return ret
 }
 
 func ToTenantCoreTypes(in *sys.TenantInfo) *types.TenantCore {
@@ -96,8 +98,7 @@ func ToTenantCoreTypes(in *sys.TenantInfo) *types.TenantCore {
 func ToTenantInfosTypes(in []*sys.TenantInfo, userMap map[int64]*sys.UserInfo) []*types.TenantInfo {
 	var ret []*types.TenantInfo
 	for _, v := range in {
-		ti := ToTenantInfoTypes(v)
-		ti.AdminUserInfo = utils.Copy[types.UserCore](userMap[v.AdminUserID])
+		ti := ToTenantInfoTypes(v, userMap[v.AdminUserID])
 		ret = append(ret, ti)
 	}
 	return ret

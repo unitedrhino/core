@@ -3,6 +3,7 @@ package info
 import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
@@ -30,5 +31,15 @@ func (l *ReadLogic) Read(req *types.WithIDOrCode) (resp *types.TenantInfo, err e
 		return nil, err
 	}
 	ret, err := l.svcCtx.TenantRpc.TenantInfoRead(l.ctx, system.ToSysWithIDCode(req))
-	return system.ToTenantInfoTypes(ret), err
+	if err != nil {
+		return nil, err
+	}
+	user, err := l.svcCtx.UserRpc.UserInfoRead(ctxs.WithRoot(l.ctx), &sys.UserInfoReadReq{
+		UserID: ret.AdminUserID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return system.ToTenantInfoTypes(ret, user), err
 }
