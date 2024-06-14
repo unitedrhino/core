@@ -19,5 +19,6 @@ func ToProjectPb(in *types.ProjectInfo) *sys.ProjectInfo {
 		Desc:        utils.ToRpcNullString(in.Desc),
 		AreaCount:   in.AreaCount,
 		Area:        utils.ToRpcNullFloat32(in.Area),
+		Ppsm:        in.Ppsm,
 	}
 }
