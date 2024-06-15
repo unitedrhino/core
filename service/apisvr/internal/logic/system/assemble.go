@@ -86,6 +86,9 @@ func ToTenantInfoRpc(in *types.TenantInfo) *sys.TenantInfo {
 }
 
 func ToTenantInfoTypes(in *sys.TenantInfo, user *sys.UserInfo) *types.TenantInfo {
+	if in == nil {
+		return nil
+	}
 	ret := utils.Copy[types.TenantInfo](in)
 	ret.AdminUserInfo = utils.Copy[types.UserCore](user)
 	return ret
