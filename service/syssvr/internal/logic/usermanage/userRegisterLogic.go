@@ -233,28 +233,6 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		if err != nil {
 			return err
 		}
-		if cfg.RegisterCreateProject != def.True {
-			return nil
-		}
-		po := &relationDB.SysProjectInfo{
-			TenantCode:  stores.TenantCode(uc.TenantCode),
-			ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
-			ProjectName: GetAccount(in) + "的小屋",
-			//CompanyName: utils.ToEmptyString(in.CompanyName),
-			AdminUserID: in.UserID,
-			//Region:      utils.ToEmptyString(in.Region),
-			//Address:     utils.ToEmptyString(in.Address),
-		}
-		err = relationDB.NewProjectInfoRepo(tx).Insert(ctxs.WithRoot(ctx), po)
-		if err != nil {
-			return err
-		}
-		err = relationDB.NewDataProjectRepo(tx).Insert(ctx, &relationDB.SysDataProject{
-			ProjectID:  int64(po.ProjectID),
-			TargetType: def.TargetUser,
-			TargetID:   in.UserID,
-			AuthType:   def.AuthAdmin,
-		})
 		return err
 	})
 	return err
