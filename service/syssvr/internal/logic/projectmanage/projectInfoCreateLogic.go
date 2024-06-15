@@ -7,6 +7,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
@@ -61,11 +62,11 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
-		tiDb := relationDB.NewTenantInfoRepo(tx)
-		ti, err := tiDb.FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
-		if err != nil {
-			return err
-		}
+		//tiDb := relationDB.NewTenantInfoRepo(tx)
+		//ti, err := tiDb.FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
+		//if err != nil {
+		//	return err
+		//}
 		piDb := relationDB.NewProjectInfoRepo(tx)
 		//total, err := piDb.CountByFilter(l.ctx, relationDB.ProjectInfoFilter{})
 		//if err != nil {
@@ -79,12 +80,18 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 			l.Errorf("%s.Insert err=%+v", utils.FuncName(), err)
 			return err
 		}
+		err = relationDB.NewDataProjectRepo(tx).Insert(l.ctx, &relationDB.SysDataProject{
+			ProjectID:  int64(po.ProjectID),
+			TargetType: def.TargetUser,
+			TargetID:   po.AdminUserID,
+			AuthType:   def.AuthAdmin,
+		})
+		return err
 		//ti.ProjectLimit++
-		err = tiDb.Update(l.ctx, ti)
-		if err != nil {
-			return err
-		}
-		return nil
+		//err = tiDb.Update(l.ctx, ti)
+		//if err != nil {
+		//	return err
+		//}
 	})
 	if err != nil {
 		l.Errorf("%s err=%+v", utils.FuncName(), err)
