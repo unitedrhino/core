@@ -2,13 +2,11 @@ package projectmanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/def"
-
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -37,34 +35,10 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 		err   error
 		uc    = ctxs.GetUserCtx(l.ctx)
 	)
-	uc.AllProject = true
-	defer func() {
-		uc.AllProject = false
-	}()
+	uc.ProjectID = 0 //获取全部项目
 	filter := relationDB.ProjectInfoFilter{
 		ProjectIDs:  in.ProjectIDs,
 		ProjectName: in.ProjectName,
-	}
-	if !uc.IsAdmin { //不是超管需要鉴权
-		f := relationDB.DataProjectFilter{Targets: []*relationDB.Target{
-			{ID: uc.UserID, Type: def.TargetUser}}}
-		for _, v := range uc.RoleIDs {
-			f.Targets = append(f.Targets, &relationDB.Target{
-				Type: def.TargetRole,
-				ID:   v,
-			})
-		}
-		projects, err := relationDB.NewDataProjectRepo(l.ctx).FindByFilter(l.ctx,
-			f, nil)
-		if err != nil {
-			return nil, err
-		}
-		if len(projects) == 0 {
-			return &sys.ProjectInfoIndexResp{}, nil
-		}
-		for _, v := range projects {
-			filter.ProjectIDs = append(filter.ProjectIDs, v.ProjectID)
-		}
 	}
 
 	total, err = l.PiDB.CountByFilter(l.ctx, filter)
