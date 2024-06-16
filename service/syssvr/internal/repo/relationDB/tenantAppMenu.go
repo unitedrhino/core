@@ -69,7 +69,7 @@ func (p TenantAppMenuRepo) FindOneByFilter(ctx context.Context, f TenantAppMenuF
 func (p TenantAppMenuRepo) FindByFilter(ctx context.Context, f TenantAppMenuFilter, page *def.PageInfo) ([]*SysTenantAppMenu, error) {
 	var results []*SysTenantAppMenu
 	db := p.fmtFilter(ctx, f).Model(&SysTenantAppMenu{})
-	db = page.ToGorm(db).Order(stores.Col("order"))
+	db = page.ToGorm(db)
 	err := db.Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
