@@ -69,15 +69,15 @@ func Migrate(c conf.Database) error {
 	}
 	{
 		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-		//if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
-		//	return err
-		//}
-		//if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
-		//	return err
-		//}
-		//if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
-		//	return err
-		//}
+		if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
+			return err
+		}
+		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+			return err
+		}
+		if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
+			return err
+		}
 		//if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
 		//	return err
 		//}
@@ -250,7 +250,7 @@ var (
 	MigrateNotifyTemplate = []SysNotifyTemplate{
 		{
 			ID:           1,
-			TenantCode:   def.TenantCodeCommon,
+			TenantCode:   def.TenantCodeDefault,
 			Name:         "用户注册验证码",
 			NotifyCode:   def.NotifyCodeSysUserRegisterCaptcha,
 			Type:         def.NotifyTypeSms,
@@ -261,7 +261,7 @@ var (
 		},
 		{
 			ID:           2,
-			TenantCode:   def.TenantCodeCommon,
+			TenantCode:   def.TenantCodeDefault,
 			Name:         "登录验证码",
 			NotifyCode:   def.NotifyCodeSysUserLoginCaptcha,
 			Type:         def.NotifyTypeSms,
@@ -272,7 +272,7 @@ var (
 		},
 		{
 			ID:           3,
-			TenantCode:   def.TenantCodeCommon,
+			TenantCode:   def.TenantCodeDefault,
 			Name:         "场景通知",
 			NotifyCode:   def.NotifyCodeRuleScene,
 			Type:         def.NotifyTypeSms,
@@ -283,7 +283,7 @@ var (
 		},
 		{
 			ID:           4,
-			TenantCode:   def.TenantCodeCommon,
+			TenantCode:   def.TenantCodeDefault,
 			Name:         "设备告警通知",
 			NotifyCode:   def.NotifyCodeDeviceAlarm,
 			Type:         def.NotifyTypeSms,
