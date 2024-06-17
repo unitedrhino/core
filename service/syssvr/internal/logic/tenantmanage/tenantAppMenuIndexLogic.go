@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -40,7 +41,8 @@ func (l *TenantAppMenuIndexLogic) TenantAppMenuIndex(in *sys.TenantAppMenuIndexR
 		AppCode:    in.AppCode,
 		MenuIDs:    in.MenuIDs,
 	}
-	resp, err := relationDB.NewTenantAppMenuRepo(l.ctx).FindByFilter(l.ctx, f, &def.PageInfo{Orders: []def.OrderBy{{Filed: "order", Sort: def.OrderAsc}}})
+	resp, err := relationDB.NewTenantAppMenuRepo(l.ctx).FindByFilter(l.ctx, f, &def.PageInfo{Orders: []def.OrderBy{
+		{Filed: "hide_in_menu", Sort: def.OrderDesc}, {Filed: stores.Col("order"), Sort: def.OrderAsc}}})
 	if err != nil {
 		return nil, err
 	}
