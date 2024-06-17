@@ -45,13 +45,13 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 	if err != nil {
 		return nil, err
 	}
-	pis, err := relationDB.NewProjectInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.ProjectInfoFilter{AdminUserID: in.UserID}, nil)
-	if err != nil {
-		return nil, err
-	}
-	if len(pis) > 0 {
-		return nil, errors.Permissions.AddMsg("名下还有项目,需要先转让项目给其他人才可以注销")
-	}
+	//pis, err := relationDB.NewProjectInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.ProjectInfoFilter{AdminUserID: in.UserID}, nil)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//if len(pis) > 0 {
+	//	return nil, errors.Permissions.AddMsg("名下还有项目,需要先转让项目给其他人才可以注销")
+	//}
 	stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		err := uidb.Delete(l.ctx, cast.ToInt64(in.UserID))
