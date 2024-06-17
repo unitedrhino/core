@@ -30,7 +30,7 @@ func NewMessageInfoSendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *M
 
 // 站内信
 func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys.WithID, error) {
-	ni, err := relationDB.NewNotifyInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.NotifyInfoFilter{Code: in.NotifyCode})
+	ni, err := relationDB.NewNotifyConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.NotifyConfigFilter{Code: in.NotifyCode})
 	if err != nil {
 		return nil, err
 	}

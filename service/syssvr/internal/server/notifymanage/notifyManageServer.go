@@ -44,34 +44,34 @@ func (s *NotifyManageServer) MessageInfoDelete(ctx context.Context, in *sys.With
 }
 
 // 通知配置信息
-func (s *NotifyManageServer) NotifyInfoRead(ctx context.Context, in *sys.WithIDCode) (*sys.NotifyInfo, error) {
-	l := notifymanagelogic.NewNotifyInfoReadLogic(ctx, s.svcCtx)
-	return l.NotifyInfoRead(in)
+func (s *NotifyManageServer) NotifyConfigRead(ctx context.Context, in *sys.WithIDCode) (*sys.NotifyConfig, error) {
+	l := notifymanagelogic.NewNotifyConfigReadLogic(ctx, s.svcCtx)
+	return l.NotifyConfigRead(in)
 }
 
-func (s *NotifyManageServer) NotifyInfoCreate(ctx context.Context, in *sys.NotifyInfo) (*sys.WithID, error) {
-	l := notifymanagelogic.NewNotifyInfoCreateLogic(ctx, s.svcCtx)
-	return l.NotifyInfoCreate(in)
+func (s *NotifyManageServer) NotifyConfigCreate(ctx context.Context, in *sys.NotifyConfig) (*sys.WithID, error) {
+	l := notifymanagelogic.NewNotifyConfigCreateLogic(ctx, s.svcCtx)
+	return l.NotifyConfigCreate(in)
 }
 
-func (s *NotifyManageServer) NotifyInfoUpdate(ctx context.Context, in *sys.NotifyInfo) (*sys.Empty, error) {
-	l := notifymanagelogic.NewNotifyInfoUpdateLogic(ctx, s.svcCtx)
-	return l.NotifyInfoUpdate(in)
+func (s *NotifyManageServer) NotifyConfigUpdate(ctx context.Context, in *sys.NotifyConfig) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyConfigUpdateLogic(ctx, s.svcCtx)
+	return l.NotifyConfigUpdate(in)
 }
 
-func (s *NotifyManageServer) NotifyInfoIndex(ctx context.Context, in *sys.NotifyInfoIndexReq) (*sys.NotifyInfoIndexResp, error) {
-	l := notifymanagelogic.NewNotifyInfoIndexLogic(ctx, s.svcCtx)
-	return l.NotifyInfoIndex(in)
+func (s *NotifyManageServer) NotifyConfigIndex(ctx context.Context, in *sys.NotifyConfigIndexReq) (*sys.NotifyConfigIndexResp, error) {
+	l := notifymanagelogic.NewNotifyConfigIndexLogic(ctx, s.svcCtx)
+	return l.NotifyConfigIndex(in)
 }
 
-func (s *NotifyManageServer) NotifyInfoDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
-	l := notifymanagelogic.NewNotifyInfoDeleteLogic(ctx, s.svcCtx)
-	return l.NotifyInfoDelete(in)
+func (s *NotifyManageServer) NotifyConfigDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyConfigDeleteLogic(ctx, s.svcCtx)
+	return l.NotifyConfigDelete(in)
 }
 
-func (s *NotifyManageServer) NotifyInfoSend(ctx context.Context, in *sys.NotifyInfoSendReq) (*sys.Empty, error) {
-	l := notifymanagelogic.NewNotifyInfoSendLogic(ctx, s.svcCtx)
-	return l.NotifyInfoSend(in)
+func (s *NotifyManageServer) NotifyConfigSend(ctx context.Context, in *sys.NotifyConfigSendReq) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyConfigSendLogic(ctx, s.svcCtx)
+	return l.NotifyConfigSend(in)
 }
 
 // 通知模版
@@ -98,4 +98,40 @@ func (s *NotifyManageServer) NotifyTemplateIndex(ctx context.Context, in *sys.No
 func (s *NotifyManageServer) NotifyTemplateDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
 	l := notifymanagelogic.NewNotifyTemplateDeleteLogic(ctx, s.svcCtx)
 	return l.NotifyTemplateDelete(in)
+}
+
+// 租户通知配置
+func (s *NotifyManageServer) NotifyConfigTemplateUpdate(ctx context.Context, in *sys.NotifyConfigTemplate) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyConfigTemplateUpdateLogic(ctx, s.svcCtx)
+	return l.NotifyConfigTemplateUpdate(in)
+}
+
+func (s *NotifyManageServer) NotifyConfigTemplateIndex(ctx context.Context, in *sys.NotifyConfigTemplateIndexReq) (*sys.NotifyConfigTemplateIndexResp, error) {
+	l := notifymanagelogic.NewNotifyConfigTemplateIndexLogic(ctx, s.svcCtx)
+	return l.NotifyConfigTemplateIndex(in)
+}
+
+func (s *NotifyManageServer) NotifyChannelRead(ctx context.Context, in *sys.WithID) (*sys.NotifyChannel, error) {
+	l := notifymanagelogic.NewNotifyChannelReadLogic(ctx, s.svcCtx)
+	return l.NotifyChannelRead(in)
+}
+
+func (s *NotifyManageServer) NotifyChannelCreate(ctx context.Context, in *sys.NotifyChannel) (*sys.WithID, error) {
+	l := notifymanagelogic.NewNotifyChannelCreateLogic(ctx, s.svcCtx)
+	return l.NotifyChannelCreate(in)
+}
+
+func (s *NotifyManageServer) NotifyChannelUpdate(ctx context.Context, in *sys.NotifyChannel) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyChannelUpdateLogic(ctx, s.svcCtx)
+	return l.NotifyChannelUpdate(in)
+}
+
+func (s *NotifyManageServer) NotifyChannelIndex(ctx context.Context, in *sys.NotifyChannelIndexReq) (*sys.NotifyChannelIndexResp, error) {
+	l := notifymanagelogic.NewNotifyChannelIndexLogic(ctx, s.svcCtx)
+	return l.NotifyChannelIndex(in)
+}
+
+func (s *NotifyManageServer) NotifyChannelDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyChannelDeleteLogic(ctx, s.svcCtx)
+	return l.NotifyChannelDelete(in)
 }

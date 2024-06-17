@@ -1,0 +1,77 @@
+info(
+	title: "租户管理模块"
+	desc: "租户管理"
+	author: "L"
+	email: "174805676@qq.com"
+	version: "v0.1.0"
+)
+
+
+@server (
+    group: system/notify/channel
+    prefix: /api/v1/system/notify/channel
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+
+service api {
+    @doc "添加通知通道"
+    @handler create
+    post /create (NotifyChannel) returns (WithID)
+
+    @doc "获取通知通道列表"
+    @handler index
+    post /index (NotifyChannelIndexReq) returns (NotifyChannelIndexResp)
+
+    @doc "获取通知通道详情"
+    @handler read
+    post /read (WithID) returns (NotifyChannel)
+
+    @doc "更新通知通道"
+    @handler update
+    post /update (NotifyChannel) returns ()
+
+    @doc "删除通知通道"
+    @handler delete
+    post /delete (WithID) returns ()
+
+}
+
+type (
+
+    NotifyChannelIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        Name string `json:"name,optional"`                     //
+        Type string  `json:"type,optional"` //对应的配置类型 sms email
+    }
+
+
+    NotifyChannelIndexResp  {
+        List []*NotifyChannel `json:"list"`            // 通知模版列表数据
+        Total int64 `json:"total"`                    // 通知模版列表总记录数
+    }
+
+    NotifyChannel{
+        ID int64 `json:"id,optional"`  // id编号
+        Name string `json:"name,optional"`  //通知的命名
+        Type string `json:"type,optional"`  //对应的配置类型 通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
+        Desc string `json:"desc,optional"`  // 备注
+        WebHook string `json:"webhook,optional"`  //钉钉webhook及企微webhook
+        Email *ThirdEmailConfig `json:"email,optional"`  //邮箱
+        App *ThirdApp `json:"app,optional"`//第三方应用配置
+        Sms *ThirdSms `json:"sms,optional"`//短信配置
+    }
+     ThirdApp {
+        AppID string `json:"appID,optional"`
+        AppKey string `json:"appKey,optional"`
+        AppSecret string `json:"appSecret,optional"`
+    }
+
+     ThirdSms {
+        Type string `json:"type,optional"`
+        AccessKeyID string `json:"accessKeyID,optional"`
+        AccessKeySecret string `json:"accessKeySecret,optional"`
+        AppID string `json:"appID,optional"`
+        AppKey string `json:"appKey,optional"`
+    }
+)
+

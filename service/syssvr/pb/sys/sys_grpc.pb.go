@@ -1198,21 +1198,28 @@ var DataManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	NotifyManage_MessageInfoSend_FullMethodName      = "/sys.NotifyManage/messageInfoSend"
-	NotifyManage_MessageInfoIndex_FullMethodName     = "/sys.NotifyManage/messageInfoIndex"
-	NotifyManage_MessageInfoUpdate_FullMethodName    = "/sys.NotifyManage/messageInfoUpdate"
-	NotifyManage_MessageInfoDelete_FullMethodName    = "/sys.NotifyManage/messageInfoDelete"
-	NotifyManage_NotifyInfoRead_FullMethodName       = "/sys.NotifyManage/notifyInfoRead"
-	NotifyManage_NotifyInfoCreate_FullMethodName     = "/sys.NotifyManage/notifyInfoCreate"
-	NotifyManage_NotifyInfoUpdate_FullMethodName     = "/sys.NotifyManage/notifyInfoUpdate"
-	NotifyManage_NotifyInfoIndex_FullMethodName      = "/sys.NotifyManage/notifyInfoIndex"
-	NotifyManage_NotifyInfoDelete_FullMethodName     = "/sys.NotifyManage/notifyInfoDelete"
-	NotifyManage_NotifyInfoSend_FullMethodName       = "/sys.NotifyManage/notifyInfoSend"
-	NotifyManage_NotifyTemplateRead_FullMethodName   = "/sys.NotifyManage/notifyTemplateRead"
-	NotifyManage_NotifyTemplateCreate_FullMethodName = "/sys.NotifyManage/notifyTemplateCreate"
-	NotifyManage_NotifyTemplateUpdate_FullMethodName = "/sys.NotifyManage/notifyTemplateUpdate"
-	NotifyManage_NotifyTemplateIndex_FullMethodName  = "/sys.NotifyManage/notifyTemplateIndex"
-	NotifyManage_NotifyTemplateDelete_FullMethodName = "/sys.NotifyManage/notifyTemplateDelete"
+	NotifyManage_MessageInfoSend_FullMethodName            = "/sys.NotifyManage/messageInfoSend"
+	NotifyManage_MessageInfoIndex_FullMethodName           = "/sys.NotifyManage/messageInfoIndex"
+	NotifyManage_MessageInfoUpdate_FullMethodName          = "/sys.NotifyManage/messageInfoUpdate"
+	NotifyManage_MessageInfoDelete_FullMethodName          = "/sys.NotifyManage/messageInfoDelete"
+	NotifyManage_NotifyConfigRead_FullMethodName           = "/sys.NotifyManage/notifyConfigRead"
+	NotifyManage_NotifyConfigCreate_FullMethodName         = "/sys.NotifyManage/notifyConfigCreate"
+	NotifyManage_NotifyConfigUpdate_FullMethodName         = "/sys.NotifyManage/notifyConfigUpdate"
+	NotifyManage_NotifyConfigIndex_FullMethodName          = "/sys.NotifyManage/notifyConfigIndex"
+	NotifyManage_NotifyConfigDelete_FullMethodName         = "/sys.NotifyManage/notifyConfigDelete"
+	NotifyManage_NotifyConfigSend_FullMethodName           = "/sys.NotifyManage/notifyConfigSend"
+	NotifyManage_NotifyTemplateRead_FullMethodName         = "/sys.NotifyManage/notifyTemplateRead"
+	NotifyManage_NotifyTemplateCreate_FullMethodName       = "/sys.NotifyManage/notifyTemplateCreate"
+	NotifyManage_NotifyTemplateUpdate_FullMethodName       = "/sys.NotifyManage/notifyTemplateUpdate"
+	NotifyManage_NotifyTemplateIndex_FullMethodName        = "/sys.NotifyManage/notifyTemplateIndex"
+	NotifyManage_NotifyTemplateDelete_FullMethodName       = "/sys.NotifyManage/notifyTemplateDelete"
+	NotifyManage_NotifyConfigTemplateUpdate_FullMethodName = "/sys.NotifyManage/notifyConfigTemplateUpdate"
+	NotifyManage_NotifyConfigTemplateIndex_FullMethodName  = "/sys.NotifyManage/notifyConfigTemplateIndex"
+	NotifyManage_NotifyChannelRead_FullMethodName          = "/sys.NotifyManage/notifyChannelRead"
+	NotifyManage_NotifyChannelCreate_FullMethodName        = "/sys.NotifyManage/notifyChannelCreate"
+	NotifyManage_NotifyChannelUpdate_FullMethodName        = "/sys.NotifyManage/notifyChannelUpdate"
+	NotifyManage_NotifyChannelIndex_FullMethodName         = "/sys.NotifyManage/notifyChannelIndex"
+	NotifyManage_NotifyChannelDelete_FullMethodName        = "/sys.NotifyManage/notifyChannelDelete"
 )
 
 // NotifyManageClient is the client API for NotifyManage service.
@@ -1225,18 +1232,26 @@ type NotifyManageClient interface {
 	MessageInfoUpdate(ctx context.Context, in *MessageInfo, opts ...grpc.CallOption) (*Empty, error)
 	MessageInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	// 通知配置信息
-	NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error)
-	NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error)
-	NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error)
-	NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error)
-	NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
-	NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error)
+	NotifyConfigRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyConfig, error)
+	NotifyConfigCreate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*WithID, error)
+	NotifyConfigUpdate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*Empty, error)
+	NotifyConfigIndex(ctx context.Context, in *NotifyConfigIndexReq, opts ...grpc.CallOption) (*NotifyConfigIndexResp, error)
+	NotifyConfigDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	NotifyConfigSend(ctx context.Context, in *NotifyConfigSendReq, opts ...grpc.CallOption) (*Empty, error)
 	// 通知模版
 	NotifyTemplateRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyTemplate, error)
 	NotifyTemplateCreate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*WithID, error)
 	NotifyTemplateUpdate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*Empty, error)
 	NotifyTemplateIndex(ctx context.Context, in *NotifyTemplateIndexReq, opts ...grpc.CallOption) (*NotifyTemplateIndexResp, error)
 	NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	// 租户通知配置
+	NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error)
+	NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error)
+	NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error)
+	NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error)
+	NotifyChannelUpdate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*Empty, error)
+	NotifyChannelIndex(ctx context.Context, in *NotifyChannelIndexReq, opts ...grpc.CallOption) (*NotifyChannelIndexResp, error)
+	NotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type notifyManageClient struct {
@@ -1283,54 +1298,54 @@ func (c *notifyManageClient) MessageInfoDelete(ctx context.Context, in *WithID, 
 	return out, nil
 }
 
-func (c *notifyManageClient) NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error) {
-	out := new(NotifyInfo)
-	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoRead_FullMethodName, in, out, opts...)
+func (c *notifyManageClient) NotifyConfigRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyConfig, error) {
+	out := new(NotifyConfig)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifyManageClient) NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error) {
+func (c *notifyManageClient) NotifyConfigCreate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
-	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoCreate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigCreate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifyManageClient) NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyConfigUpdate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoUpdate_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifyManageClient) NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error) {
-	out := new(NotifyInfoIndexResp)
-	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoIndex_FullMethodName, in, out, opts...)
+func (c *notifyManageClient) NotifyConfigIndex(ctx context.Context, in *NotifyConfigIndexReq, opts ...grpc.CallOption) (*NotifyConfigIndexResp, error) {
+	out := new(NotifyConfigIndexResp)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigIndex_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifyManageClient) NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyConfigDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoDelete_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigDelete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *notifyManageClient) NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *notifyManageClient) NotifyConfigSend(ctx context.Context, in *NotifyConfigSendReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, NotifyManage_NotifyInfoSend_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigSend_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1382,6 +1397,69 @@ func (c *notifyManageClient) NotifyTemplateDelete(ctx context.Context, in *WithI
 	return out, nil
 }
 
+func (c *notifyManageClient) NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigTemplateUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error) {
+	out := new(NotifyConfigTemplateIndexResp)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigTemplateIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error) {
+	out := new(NotifyChannel)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyChannelRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyChannelCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyChannelUpdate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyChannelUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyChannelIndex(ctx context.Context, in *NotifyChannelIndexReq, opts ...grpc.CallOption) (*NotifyChannelIndexResp, error) {
+	out := new(NotifyChannelIndexResp)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyChannelIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *notifyManageClient) NotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyChannelDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NotifyManageServer is the server API for NotifyManage service.
 // All implementations must embed UnimplementedNotifyManageServer
 // for forward compatibility
@@ -1392,18 +1470,26 @@ type NotifyManageServer interface {
 	MessageInfoUpdate(context.Context, *MessageInfo) (*Empty, error)
 	MessageInfoDelete(context.Context, *WithID) (*Empty, error)
 	// 通知配置信息
-	NotifyInfoRead(context.Context, *WithIDCode) (*NotifyInfo, error)
-	NotifyInfoCreate(context.Context, *NotifyInfo) (*WithID, error)
-	NotifyInfoUpdate(context.Context, *NotifyInfo) (*Empty, error)
-	NotifyInfoIndex(context.Context, *NotifyInfoIndexReq) (*NotifyInfoIndexResp, error)
-	NotifyInfoDelete(context.Context, *WithID) (*Empty, error)
-	NotifyInfoSend(context.Context, *NotifyInfoSendReq) (*Empty, error)
+	NotifyConfigRead(context.Context, *WithIDCode) (*NotifyConfig, error)
+	NotifyConfigCreate(context.Context, *NotifyConfig) (*WithID, error)
+	NotifyConfigUpdate(context.Context, *NotifyConfig) (*Empty, error)
+	NotifyConfigIndex(context.Context, *NotifyConfigIndexReq) (*NotifyConfigIndexResp, error)
+	NotifyConfigDelete(context.Context, *WithID) (*Empty, error)
+	NotifyConfigSend(context.Context, *NotifyConfigSendReq) (*Empty, error)
 	// 通知模版
 	NotifyTemplateRead(context.Context, *WithID) (*NotifyTemplate, error)
 	NotifyTemplateCreate(context.Context, *NotifyTemplate) (*WithID, error)
 	NotifyTemplateUpdate(context.Context, *NotifyTemplate) (*Empty, error)
 	NotifyTemplateIndex(context.Context, *NotifyTemplateIndexReq) (*NotifyTemplateIndexResp, error)
 	NotifyTemplateDelete(context.Context, *WithID) (*Empty, error)
+	// 租户通知配置
+	NotifyConfigTemplateUpdate(context.Context, *NotifyConfigTemplate) (*Empty, error)
+	NotifyConfigTemplateIndex(context.Context, *NotifyConfigTemplateIndexReq) (*NotifyConfigTemplateIndexResp, error)
+	NotifyChannelRead(context.Context, *WithID) (*NotifyChannel, error)
+	NotifyChannelCreate(context.Context, *NotifyChannel) (*WithID, error)
+	NotifyChannelUpdate(context.Context, *NotifyChannel) (*Empty, error)
+	NotifyChannelIndex(context.Context, *NotifyChannelIndexReq) (*NotifyChannelIndexResp, error)
+	NotifyChannelDelete(context.Context, *WithID) (*Empty, error)
 	mustEmbedUnimplementedNotifyManageServer()
 }
 
@@ -1423,23 +1509,23 @@ func (UnimplementedNotifyManageServer) MessageInfoUpdate(context.Context, *Messa
 func (UnimplementedNotifyManageServer) MessageInfoDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MessageInfoDelete not implemented")
 }
-func (UnimplementedNotifyManageServer) NotifyInfoRead(context.Context, *WithIDCode) (*NotifyInfo, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoRead not implemented")
+func (UnimplementedNotifyManageServer) NotifyConfigRead(context.Context, *WithIDCode) (*NotifyConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigRead not implemented")
 }
-func (UnimplementedNotifyManageServer) NotifyInfoCreate(context.Context, *NotifyInfo) (*WithID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoCreate not implemented")
+func (UnimplementedNotifyManageServer) NotifyConfigCreate(context.Context, *NotifyConfig) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigCreate not implemented")
 }
-func (UnimplementedNotifyManageServer) NotifyInfoUpdate(context.Context, *NotifyInfo) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoUpdate not implemented")
+func (UnimplementedNotifyManageServer) NotifyConfigUpdate(context.Context, *NotifyConfig) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigUpdate not implemented")
 }
-func (UnimplementedNotifyManageServer) NotifyInfoIndex(context.Context, *NotifyInfoIndexReq) (*NotifyInfoIndexResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoIndex not implemented")
+func (UnimplementedNotifyManageServer) NotifyConfigIndex(context.Context, *NotifyConfigIndexReq) (*NotifyConfigIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigIndex not implemented")
 }
-func (UnimplementedNotifyManageServer) NotifyInfoDelete(context.Context, *WithID) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoDelete not implemented")
+func (UnimplementedNotifyManageServer) NotifyConfigDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigDelete not implemented")
 }
-func (UnimplementedNotifyManageServer) NotifyInfoSend(context.Context, *NotifyInfoSendReq) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NotifyInfoSend not implemented")
+func (UnimplementedNotifyManageServer) NotifyConfigSend(context.Context, *NotifyConfigSendReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigSend not implemented")
 }
 func (UnimplementedNotifyManageServer) NotifyTemplateRead(context.Context, *WithID) (*NotifyTemplate, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateRead not implemented")
@@ -1455,6 +1541,27 @@ func (UnimplementedNotifyManageServer) NotifyTemplateIndex(context.Context, *Not
 }
 func (UnimplementedNotifyManageServer) NotifyTemplateDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyTemplateDelete not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyConfigTemplateUpdate(context.Context, *NotifyConfigTemplate) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigTemplateUpdate not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyConfigTemplateIndex(context.Context, *NotifyConfigTemplateIndexReq) (*NotifyConfigTemplateIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigTemplateIndex not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyChannelRead(context.Context, *WithID) (*NotifyChannel, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyChannelRead not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyChannelCreate(context.Context, *NotifyChannel) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyChannelCreate not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyChannelUpdate(context.Context, *NotifyChannel) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyChannelUpdate not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyChannelIndex(context.Context, *NotifyChannelIndexReq) (*NotifyChannelIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyChannelIndex not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyChannelDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyChannelDelete not implemented")
 }
 func (UnimplementedNotifyManageServer) mustEmbedUnimplementedNotifyManageServer() {}
 
@@ -1541,110 +1648,110 @@ func _NotifyManage_MessageInfoDelete_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifyManage_NotifyInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyConfigRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithIDCode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifyManageServer).NotifyInfoRead(ctx, in)
+		return srv.(NotifyManageServer).NotifyConfigRead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifyManage_NotifyInfoRead_FullMethodName,
+		FullMethod: NotifyManage_NotifyConfigRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifyManageServer).NotifyInfoRead(ctx, req.(*WithIDCode))
+		return srv.(NotifyManageServer).NotifyConfigRead(ctx, req.(*WithIDCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifyManage_NotifyInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NotifyInfo)
+func _NotifyManage_NotifyConfigCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfig)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifyManageServer).NotifyInfoCreate(ctx, in)
+		return srv.(NotifyManageServer).NotifyConfigCreate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifyManage_NotifyInfoCreate_FullMethodName,
+		FullMethod: NotifyManage_NotifyConfigCreate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifyManageServer).NotifyInfoCreate(ctx, req.(*NotifyInfo))
+		return srv.(NotifyManageServer).NotifyConfigCreate(ctx, req.(*NotifyConfig))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifyManage_NotifyInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NotifyInfo)
+func _NotifyManage_NotifyConfigUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfig)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifyManageServer).NotifyInfoUpdate(ctx, in)
+		return srv.(NotifyManageServer).NotifyConfigUpdate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifyManage_NotifyInfoUpdate_FullMethodName,
+		FullMethod: NotifyManage_NotifyConfigUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifyManageServer).NotifyInfoUpdate(ctx, req.(*NotifyInfo))
+		return srv.(NotifyManageServer).NotifyConfigUpdate(ctx, req.(*NotifyConfig))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifyManage_NotifyInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NotifyInfoIndexReq)
+func _NotifyManage_NotifyConfigIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfigIndexReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifyManageServer).NotifyInfoIndex(ctx, in)
+		return srv.(NotifyManageServer).NotifyConfigIndex(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifyManage_NotifyInfoIndex_FullMethodName,
+		FullMethod: NotifyManage_NotifyConfigIndex_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifyManageServer).NotifyInfoIndex(ctx, req.(*NotifyInfoIndexReq))
+		return srv.(NotifyManageServer).NotifyConfigIndex(ctx, req.(*NotifyConfigIndexReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifyManage_NotifyInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NotifyManage_NotifyConfigDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WithID)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifyManageServer).NotifyInfoDelete(ctx, in)
+		return srv.(NotifyManageServer).NotifyConfigDelete(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifyManage_NotifyInfoDelete_FullMethodName,
+		FullMethod: NotifyManage_NotifyConfigDelete_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifyManageServer).NotifyInfoDelete(ctx, req.(*WithID))
+		return srv.(NotifyManageServer).NotifyConfigDelete(ctx, req.(*WithID))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NotifyManage_NotifyInfoSend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NotifyInfoSendReq)
+func _NotifyManage_NotifyConfigSend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfigSendReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NotifyManageServer).NotifyInfoSend(ctx, in)
+		return srv.(NotifyManageServer).NotifyConfigSend(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NotifyManage_NotifyInfoSend_FullMethodName,
+		FullMethod: NotifyManage_NotifyConfigSend_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NotifyManageServer).NotifyInfoSend(ctx, req.(*NotifyInfoSendReq))
+		return srv.(NotifyManageServer).NotifyConfigSend(ctx, req.(*NotifyConfigSendReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1739,6 +1846,132 @@ func _NotifyManage_NotifyTemplateDelete_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifyManage_NotifyConfigTemplateUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfigTemplate)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyConfigTemplateUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyConfigTemplateUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyConfigTemplateUpdate(ctx, req.(*NotifyConfigTemplate))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyConfigTemplateIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfigTemplateIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyConfigTemplateIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyConfigTemplateIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyConfigTemplateIndex(ctx, req.(*NotifyConfigTemplateIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyChannelRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyChannelRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyChannelRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyChannelRead(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyChannelCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyChannel)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyChannelCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyChannelCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyChannelCreate(ctx, req.(*NotifyChannel))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyChannelUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyChannel)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyChannelUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyChannelUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyChannelUpdate(ctx, req.(*NotifyChannel))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyChannelIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyChannelIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyChannelIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyChannelIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyChannelIndex(ctx, req.(*NotifyChannelIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NotifyManage_NotifyChannelDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyChannelDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyChannelDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyChannelDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NotifyManage_ServiceDesc is the grpc.ServiceDesc for NotifyManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1763,28 +1996,28 @@ var NotifyManage_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NotifyManage_MessageInfoDelete_Handler,
 		},
 		{
-			MethodName: "notifyInfoRead",
-			Handler:    _NotifyManage_NotifyInfoRead_Handler,
+			MethodName: "notifyConfigRead",
+			Handler:    _NotifyManage_NotifyConfigRead_Handler,
 		},
 		{
-			MethodName: "notifyInfoCreate",
-			Handler:    _NotifyManage_NotifyInfoCreate_Handler,
+			MethodName: "notifyConfigCreate",
+			Handler:    _NotifyManage_NotifyConfigCreate_Handler,
 		},
 		{
-			MethodName: "notifyInfoUpdate",
-			Handler:    _NotifyManage_NotifyInfoUpdate_Handler,
+			MethodName: "notifyConfigUpdate",
+			Handler:    _NotifyManage_NotifyConfigUpdate_Handler,
 		},
 		{
-			MethodName: "notifyInfoIndex",
-			Handler:    _NotifyManage_NotifyInfoIndex_Handler,
+			MethodName: "notifyConfigIndex",
+			Handler:    _NotifyManage_NotifyConfigIndex_Handler,
 		},
 		{
-			MethodName: "notifyInfoDelete",
-			Handler:    _NotifyManage_NotifyInfoDelete_Handler,
+			MethodName: "notifyConfigDelete",
+			Handler:    _NotifyManage_NotifyConfigDelete_Handler,
 		},
 		{
-			MethodName: "notifyInfoSend",
-			Handler:    _NotifyManage_NotifyInfoSend_Handler,
+			MethodName: "notifyConfigSend",
+			Handler:    _NotifyManage_NotifyConfigSend_Handler,
 		},
 		{
 			MethodName: "notifyTemplateRead",
@@ -1805,6 +2038,34 @@ var NotifyManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "notifyTemplateDelete",
 			Handler:    _NotifyManage_NotifyTemplateDelete_Handler,
+		},
+		{
+			MethodName: "notifyConfigTemplateUpdate",
+			Handler:    _NotifyManage_NotifyConfigTemplateUpdate_Handler,
+		},
+		{
+			MethodName: "notifyConfigTemplateIndex",
+			Handler:    _NotifyManage_NotifyConfigTemplateIndex_Handler,
+		},
+		{
+			MethodName: "notifyChannelRead",
+			Handler:    _NotifyManage_NotifyChannelRead_Handler,
+		},
+		{
+			MethodName: "notifyChannelCreate",
+			Handler:    _NotifyManage_NotifyChannelCreate_Handler,
+		},
+		{
+			MethodName: "notifyChannelUpdate",
+			Handler:    _NotifyManage_NotifyChannelUpdate_Handler,
+		},
+		{
+			MethodName: "notifyChannelIndex",
+			Handler:    _NotifyManage_NotifyChannelIndex_Handler,
+		},
+		{
+			MethodName: "notifyChannelDelete",
+			Handler:    _NotifyManage_NotifyChannelDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -4677,35 +4938,27 @@ var AreaManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	TenantManage_TenantInfoCreate_FullMethodName                = "/sys.TenantManage/tenantInfoCreate"
-	TenantManage_TenantInfoUpdate_FullMethodName                = "/sys.TenantManage/tenantInfoUpdate"
-	TenantManage_TenantInfoDelete_FullMethodName                = "/sys.TenantManage/tenantInfoDelete"
-	TenantManage_TenantInfoRead_FullMethodName                  = "/sys.TenantManage/tenantInfoRead"
-	TenantManage_TenantInfoIndex_FullMethodName                 = "/sys.TenantManage/tenantInfoIndex"
-	TenantManage_TenantAccessMultiUpdate_FullMethodName         = "/sys.TenantManage/tenantAccessMultiUpdate"
-	TenantManage_TenantAccessIndex_FullMethodName               = "/sys.TenantManage/tenantAccessIndex"
-	TenantManage_TenantAppIndex_FullMethodName                  = "/sys.TenantManage/tenantAppIndex"
-	TenantManage_TenantAppCreate_FullMethodName                 = "/sys.TenantManage/tenantAppCreate"
-	TenantManage_TenantAppUpdate_FullMethodName                 = "/sys.TenantManage/tenantAppUpdate"
-	TenantManage_TenantAppDelete_FullMethodName                 = "/sys.TenantManage/tenantAppDelete"
-	TenantManage_TenantAppModuleMultiCreate_FullMethodName      = "/sys.TenantManage/tenantAppModuleMultiCreate"
-	TenantManage_TenantAppModuleCreate_FullMethodName           = "/sys.TenantManage/tenantAppModuleCreate"
-	TenantManage_TenantAppModuleIndex_FullMethodName            = "/sys.TenantManage/tenantAppModuleIndex"
-	TenantManage_TenantAppModuleDelete_FullMethodName           = "/sys.TenantManage/tenantAppModuleDelete"
-	TenantManage_TenantAppMenuCreate_FullMethodName             = "/sys.TenantManage/tenantAppMenuCreate"
-	TenantManage_TenantAppMenuIndex_FullMethodName              = "/sys.TenantManage/tenantAppMenuIndex"
-	TenantManage_TenantAppMenuUpdate_FullMethodName             = "/sys.TenantManage/tenantAppMenuUpdate"
-	TenantManage_TenantAppMenuDelete_FullMethodName             = "/sys.TenantManage/tenantAppMenuDelete"
-	TenantManage_TenantOpenCheckToken_FullMethodName            = "/sys.TenantManage/tenantOpenCheckToken"
-	TenantManage_TenantOpenWebHook_FullMethodName               = "/sys.TenantManage/tenantOpenWebHook"
-	TenantManage_TenantNotifyTemplateUpdate_FullMethodName      = "/sys.TenantManage/tenantNotifyTemplateUpdate"
-	TenantManage_TenantNotifyTemplateMultiUpdate_FullMethodName = "/sys.TenantManage/tenantNotifyTemplateMultiUpdate"
-	TenantManage_TenantNotifyTemplateIndex_FullMethodName       = "/sys.TenantManage/tenantNotifyTemplateIndex"
-	TenantManage_TenantNotifyChannelRead_FullMethodName         = "/sys.TenantManage/tenantNotifyChannelRead"
-	TenantManage_TenantNotifyChannelCreate_FullMethodName       = "/sys.TenantManage/tenantNotifyChannelCreate"
-	TenantManage_TenantNotifyChannelUpdate_FullMethodName       = "/sys.TenantManage/tenantNotifyChannelUpdate"
-	TenantManage_TenantNotifyChannelIndex_FullMethodName        = "/sys.TenantManage/tenantNotifyChannelIndex"
-	TenantManage_TenantNotifyChannelDelete_FullMethodName       = "/sys.TenantManage/tenantNotifyChannelDelete"
+	TenantManage_TenantInfoCreate_FullMethodName           = "/sys.TenantManage/tenantInfoCreate"
+	TenantManage_TenantInfoUpdate_FullMethodName           = "/sys.TenantManage/tenantInfoUpdate"
+	TenantManage_TenantInfoDelete_FullMethodName           = "/sys.TenantManage/tenantInfoDelete"
+	TenantManage_TenantInfoRead_FullMethodName             = "/sys.TenantManage/tenantInfoRead"
+	TenantManage_TenantInfoIndex_FullMethodName            = "/sys.TenantManage/tenantInfoIndex"
+	TenantManage_TenantAccessMultiUpdate_FullMethodName    = "/sys.TenantManage/tenantAccessMultiUpdate"
+	TenantManage_TenantAccessIndex_FullMethodName          = "/sys.TenantManage/tenantAccessIndex"
+	TenantManage_TenantAppIndex_FullMethodName             = "/sys.TenantManage/tenantAppIndex"
+	TenantManage_TenantAppCreate_FullMethodName            = "/sys.TenantManage/tenantAppCreate"
+	TenantManage_TenantAppUpdate_FullMethodName            = "/sys.TenantManage/tenantAppUpdate"
+	TenantManage_TenantAppDelete_FullMethodName            = "/sys.TenantManage/tenantAppDelete"
+	TenantManage_TenantAppModuleMultiCreate_FullMethodName = "/sys.TenantManage/tenantAppModuleMultiCreate"
+	TenantManage_TenantAppModuleCreate_FullMethodName      = "/sys.TenantManage/tenantAppModuleCreate"
+	TenantManage_TenantAppModuleIndex_FullMethodName       = "/sys.TenantManage/tenantAppModuleIndex"
+	TenantManage_TenantAppModuleDelete_FullMethodName      = "/sys.TenantManage/tenantAppModuleDelete"
+	TenantManage_TenantAppMenuCreate_FullMethodName        = "/sys.TenantManage/tenantAppMenuCreate"
+	TenantManage_TenantAppMenuIndex_FullMethodName         = "/sys.TenantManage/tenantAppMenuIndex"
+	TenantManage_TenantAppMenuUpdate_FullMethodName        = "/sys.TenantManage/tenantAppMenuUpdate"
+	TenantManage_TenantAppMenuDelete_FullMethodName        = "/sys.TenantManage/tenantAppMenuDelete"
+	TenantManage_TenantOpenCheckToken_FullMethodName       = "/sys.TenantManage/tenantOpenCheckToken"
+	TenantManage_TenantOpenWebHook_FullMethodName          = "/sys.TenantManage/tenantOpenWebHook"
 )
 
 // TenantManageClient is the client API for TenantManage service.
@@ -4738,15 +4991,6 @@ type TenantManageClient interface {
 	TenantAppMenuDelete(ctx context.Context, in *WithAppCodeID, opts ...grpc.CallOption) (*Empty, error)
 	TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 	TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
-	// 租户通知配置
-	TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error)
-	TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
-	TenantNotifyTemplateIndex(ctx context.Context, in *TenantNotifyTemplateIndexReq, opts ...grpc.CallOption) (*TenantNotifyTemplateIndexResp, error)
-	TenantNotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*TenantNotifyChannel, error)
-	TenantNotifyChannelCreate(ctx context.Context, in *TenantNotifyChannel, opts ...grpc.CallOption) (*WithID, error)
-	TenantNotifyChannelUpdate(ctx context.Context, in *TenantNotifyChannel, opts ...grpc.CallOption) (*Empty, error)
-	TenantNotifyChannelIndex(ctx context.Context, in *TenantNotifyChannelIndexReq, opts ...grpc.CallOption) (*TenantNotifyChannelIndexResp, error)
-	TenantNotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type tenantManageClient struct {
@@ -4946,78 +5190,6 @@ func (c *tenantManageClient) TenantOpenWebHook(ctx context.Context, in *WithCode
 	return out, nil
 }
 
-func (c *tenantManageClient) TenantNotifyTemplateUpdate(ctx context.Context, in *TenantNotify, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyTemplateUpdate_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyTemplateMultiUpdate(ctx context.Context, in *TenantNotifyTemplateMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyTemplateMultiUpdate_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyTemplateIndex(ctx context.Context, in *TenantNotifyTemplateIndexReq, opts ...grpc.CallOption) (*TenantNotifyTemplateIndexResp, error) {
-	out := new(TenantNotifyTemplateIndexResp)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyTemplateIndex_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*TenantNotifyChannel, error) {
-	out := new(TenantNotifyChannel)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyChannelRead_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyChannelCreate(ctx context.Context, in *TenantNotifyChannel, opts ...grpc.CallOption) (*WithID, error) {
-	out := new(WithID)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyChannelCreate_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyChannelUpdate(ctx context.Context, in *TenantNotifyChannel, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyChannelUpdate_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyChannelIndex(ctx context.Context, in *TenantNotifyChannelIndexReq, opts ...grpc.CallOption) (*TenantNotifyChannelIndexResp, error) {
-	out := new(TenantNotifyChannelIndexResp)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyChannelIndex_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tenantManageClient) TenantNotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, TenantManage_TenantNotifyChannelDelete_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // TenantManageServer is the server API for TenantManage service.
 // All implementations must embed UnimplementedTenantManageServer
 // for forward compatibility
@@ -5048,15 +5220,6 @@ type TenantManageServer interface {
 	TenantAppMenuDelete(context.Context, *WithAppCodeID) (*Empty, error)
 	TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error)
 	TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error)
-	// 租户通知配置
-	TenantNotifyTemplateUpdate(context.Context, *TenantNotify) (*Empty, error)
-	TenantNotifyTemplateMultiUpdate(context.Context, *TenantNotifyTemplateMultiUpdateReq) (*Empty, error)
-	TenantNotifyTemplateIndex(context.Context, *TenantNotifyTemplateIndexReq) (*TenantNotifyTemplateIndexResp, error)
-	TenantNotifyChannelRead(context.Context, *WithID) (*TenantNotifyChannel, error)
-	TenantNotifyChannelCreate(context.Context, *TenantNotifyChannel) (*WithID, error)
-	TenantNotifyChannelUpdate(context.Context, *TenantNotifyChannel) (*Empty, error)
-	TenantNotifyChannelIndex(context.Context, *TenantNotifyChannelIndexReq) (*TenantNotifyChannelIndexResp, error)
-	TenantNotifyChannelDelete(context.Context, *WithID) (*Empty, error)
 	mustEmbedUnimplementedTenantManageServer()
 }
 
@@ -5126,30 +5289,6 @@ func (UnimplementedTenantManageServer) TenantOpenCheckToken(context.Context, *Te
 }
 func (UnimplementedTenantManageServer) TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantOpenWebHook not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyTemplateUpdate(context.Context, *TenantNotify) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyTemplateUpdate not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyTemplateMultiUpdate(context.Context, *TenantNotifyTemplateMultiUpdateReq) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyTemplateMultiUpdate not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyTemplateIndex(context.Context, *TenantNotifyTemplateIndexReq) (*TenantNotifyTemplateIndexResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyTemplateIndex not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyChannelRead(context.Context, *WithID) (*TenantNotifyChannel, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyChannelRead not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyChannelCreate(context.Context, *TenantNotifyChannel) (*WithID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyChannelCreate not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyChannelUpdate(context.Context, *TenantNotifyChannel) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyChannelUpdate not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyChannelIndex(context.Context, *TenantNotifyChannelIndexReq) (*TenantNotifyChannelIndexResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyChannelIndex not implemented")
-}
-func (UnimplementedTenantManageServer) TenantNotifyChannelDelete(context.Context, *WithID) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TenantNotifyChannelDelete not implemented")
 }
 func (UnimplementedTenantManageServer) mustEmbedUnimplementedTenantManageServer() {}
 
@@ -5542,150 +5681,6 @@ func _TenantManage_TenantOpenWebHook_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TenantManage_TenantNotifyTemplateUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantNotify)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyTemplateUpdate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyTemplateUpdate_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyTemplateUpdate(ctx, req.(*TenantNotify))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyTemplateMultiUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantNotifyTemplateMultiUpdateReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyTemplateMultiUpdate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyTemplateMultiUpdate_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyTemplateMultiUpdate(ctx, req.(*TenantNotifyTemplateMultiUpdateReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyTemplateIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantNotifyTemplateIndexReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyTemplateIndex(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyTemplateIndex_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyTemplateIndex(ctx, req.(*TenantNotifyTemplateIndexReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyChannelRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WithID)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyChannelRead(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyChannelRead_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyChannelRead(ctx, req.(*WithID))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyChannelCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantNotifyChannel)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyChannelCreate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyChannelCreate_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyChannelCreate(ctx, req.(*TenantNotifyChannel))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyChannelUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantNotifyChannel)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyChannelUpdate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyChannelUpdate_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyChannelUpdate(ctx, req.(*TenantNotifyChannel))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyChannelIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantNotifyChannelIndexReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyChannelIndex(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyChannelIndex_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyChannelIndex(ctx, req.(*TenantNotifyChannelIndexReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TenantManage_TenantNotifyChannelDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WithID)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TenantManageServer).TenantNotifyChannelDelete(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: TenantManage_TenantNotifyChannelDelete_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantNotifyChannelDelete(ctx, req.(*WithID))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // TenantManage_ServiceDesc is the grpc.ServiceDesc for TenantManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5776,38 +5771,6 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantOpenWebHook",
 			Handler:    _TenantManage_TenantOpenWebHook_Handler,
-		},
-		{
-			MethodName: "tenantNotifyTemplateUpdate",
-			Handler:    _TenantManage_TenantNotifyTemplateUpdate_Handler,
-		},
-		{
-			MethodName: "tenantNotifyTemplateMultiUpdate",
-			Handler:    _TenantManage_TenantNotifyTemplateMultiUpdate_Handler,
-		},
-		{
-			MethodName: "tenantNotifyTemplateIndex",
-			Handler:    _TenantManage_TenantNotifyTemplateIndex_Handler,
-		},
-		{
-			MethodName: "tenantNotifyChannelRead",
-			Handler:    _TenantManage_TenantNotifyChannelRead_Handler,
-		},
-		{
-			MethodName: "tenantNotifyChannelCreate",
-			Handler:    _TenantManage_TenantNotifyChannelCreate_Handler,
-		},
-		{
-			MethodName: "tenantNotifyChannelUpdate",
-			Handler:    _TenantManage_TenantNotifyChannelUpdate_Handler,
-		},
-		{
-			MethodName: "tenantNotifyChannelIndex",
-			Handler:    _TenantManage_TenantNotifyChannelIndex_Handler,
-		},
-		{
-			MethodName: "tenantNotifyChannelDelete",
-			Handler:    _TenantManage_TenantNotifyChannelDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

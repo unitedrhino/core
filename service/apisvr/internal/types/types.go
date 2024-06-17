@@ -394,57 +394,91 @@ type ModuleInfoIndexResp struct {
 	List  []*ModuleInfo `json:"list"`  //菜单列表
 }
 
-type NotifyGroupInfo struct {
-	ID       string        `json:"id,optional"`        // id
-	Code     string        `json:"code,optional"`      // 应用编号
-	Name     string        `json:"name,optional"`      // 接口分组
-	Children []*NotifyInfo `json:"children,omitempty"` // 列表数据
+type NotifyChannel struct {
+	ID      int64             `json:"id,optional"`      // id编号
+	Name    string            `json:"name,optional"`    //通知的命名
+	Type    string            `json:"type,optional"`    //对应的配置类型 通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
+	Desc    string            `json:"desc,optional"`    // 备注
+	WebHook string            `json:"webhook,optional"` //钉钉webhook及企微webhook
+	Email   *ThirdEmailConfig `json:"email,optional"`   //邮箱
+	App     *ThirdApp         `json:"app,optional"`     //第三方应用配置
+	Sms     *ThirdSms         `json:"sms,optional"`     //短信配置
 }
 
-type NotifyInfo struct {
-	ID                  int64             `json:"id,optional"`                  // id编号
-	Group               string            `json:"group,optional"`               //分组
-	Code                string            `json:"code,optional"`                // 通知类型编码
-	Name                string            `json:"name,optional"`                //通知的命名
-	SupportTypes        []string          `json:"supportTypes,optional"`        //支持的通知类型
-	Desc                string            `json:"desc,optional"`                // 项目备注
-	IsRecord            int64             `json:"isRecord,optional"`            //是否记录该消息,是的情况下会将消息存一份到消息中心
-	DefaultSubject      string            `json:"defaultSubject,optional"`      //默认消息主题
-	DefaultBody         string            `json:"defaultBody,optional"`         //默认模版内容
-	DefaultTemplateCode string            `json:"defaultTemplateCode,optional"` // 通知类型编码
-	DefaultSignName     string            `json:"defaultSignName,optional"`     //默认签名(短信)
-	Params              map[string]string `json:"params,optional"`              //变量属性 key是参数,value是描述
+type NotifyChannelIndexReq struct {
+	Page *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Name string    `json:"name,optional"` //
+	Type string    `json:"type,optional"` //对应的配置类型 sms email
 }
 
-type NotifyInfoIndexReq struct {
+type NotifyChannelIndexResp struct {
+	List  []*NotifyChannel `json:"list"`  // 通知模版列表数据
+	Total int64            `json:"total"` // 通知模版列表总记录数
+}
+
+type NotifyConfig struct {
+	ID           int64             `json:"id,optional"`           // id编号
+	Group        string            `json:"group,optional"`        //分组
+	Code         string            `json:"code,optional"`         // 通知类型编码
+	Name         string            `json:"name,optional"`         //通知的命名
+	SupportTypes []string          `json:"supportTypes,optional"` //支持的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
+	Desc         string            `json:"desc,optional"`         // 备注
+	IsRecord     int64             `json:"isRecord,optional"`     //是否记录该消息,是的情况下会将消息存一份到消息中心
+	Params       map[string]string `json:"params,optional"`       //变量属性 key是变量参数,value是变量描述
+}
+
+type NotifyConfigIndexReq struct {
 	Page  *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
 	Name  string    `json:"name,optional"`  // 应用名称
 	Code  string    `json:"code,optional"`  // 应用编号
 	Group string    `json:"group,optional"` //分组
 }
 
-type NotifyInfoIndexResp struct {
-	List  []*NotifyInfo `json:"list"`  // 通知列表数据
-	Total int64         `json:"total"` // 通知列表总记录数
+type NotifyConfigIndexResp struct {
+	List  []*NotifyConfig `json:"list"`  // 通知列表数据
+	Total int64           `json:"total"` // 通知列表总记录数
 }
 
-type NotifyInfoTreeResp struct {
+type NotifyConfigTemplate struct {
+	ID         int64  `json:"id,optional"`
+	NotifyCode string `json:"notifyCode"`
+	Type       string `json:"type"`
+	TemplateID int64  `json:"templateID"`
+}
+
+type NotifyConfigTemplateIndexReq struct {
+	NotifyCode string `json:"notifyCode"`
+	Type       string `json:"type"`
+}
+
+type NotifyConfigTemplateIndexResp struct {
+	List []*NotifyConfigTemplate `json:"list"`
+}
+
+type NotifyConfigTreeResp struct {
 	List []*NotifyGroupInfo `json:"list"` // 通知列表数据
 }
 
+type NotifyGroupInfo struct {
+	ID       string          `json:"id,optional"`        // id
+	Code     string          `json:"code,optional"`      // 应用编号
+	Name     string          `json:"name,optional"`      // 接口分组
+	Children []*NotifyConfig `json:"children,omitempty"` // 列表数据
+}
+
 type NotifyTemplate struct {
-	ID           int64                `json:"id,optional"`           // id编号
-	TenantCode   string               `json:"tenantCode,optional"`   //限定租户,不填是通用的
-	Name         string               `json:"name,optional"`         //通知的命名
-	NotifyCode   string               `json:"notifyCode,optional"`   //对应的配置Code
-	Type         string               `json:"type,optional"`         //对应的配置类型 sms email
-	TemplateCode string               `json:"templateCode,optional"` // 通知类型编码
-	SignName     string               `json:"signName,optional"`     //签名(短信)
-	Subject      string               `json:"subject,optional"`      //默认消息主题
-	Body         string               `json:"body,optional"`         //默认模版内容
-	Desc         string               `json:"desc,optional"`         // 备注
-	ChannelID    int64                `json:"channelID,optional"`
-	Channel      *TenantNotifyChannel `json:"channel,optional"`
+	ID           int64          `json:"id,optional"`           // id编号
+	TenantCode   string         `json:"tenantCode,optional"`   //限定租户,不填是通用的
+	Name         string         `json:"name,optional"`         //通知的命名
+	NotifyCode   string         `json:"notifyCode,optional"`   //对应的配置Code
+	Type         string         `json:"type,optional"`         //对应的配置类型 sms email
+	TemplateCode string         `json:"templateCode,optional"` // 通知类型编码
+	SignName     string         `json:"signName,optional"`     //签名(短信)
+	Subject      string         `json:"subject,optional"`      //默认消息主题
+	Body         string         `json:"body,optional"`         //默认模版内容
+	Desc         string         `json:"desc,optional"`         // 备注
+	ChannelID    int64          `json:"channelID,optional"`
+	Channel      *NotifyChannel `json:"channel,optional"`
 }
 
 type NotifyTemplateIndexReq struct {
@@ -854,45 +888,10 @@ type TenantModuleWithIDOrCode struct {
 	ModuleCode string `json:"moduleCode,optional"`
 }
 
-type TenantNotifyChannel struct {
-	ID         int64             `json:"id,optional"`         // id编号
-	TenantCode string            `json:"tenantCode,optional"` //限定租户,不填是通用的
-	Name       string            `json:"name,optional"`       //通知的命名
-	Type       string            `json:"type,optional"`       //对应的配置类型 sms email
-	Desc       string            `json:"desc,optional"`       // 备注
-	WebHook    string            `json:"webhook,optional"`    //默认消息主题
-	Email      *ThirdEmailConfig `json:"email,optional"`      //默认模版内容
-}
-
-type TenantNotifyChannelIndexReq struct {
-	Page *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	Name string    `json:"name,optional"` //
-	Type string    `json:"type,optional"` //对应的配置类型 sms email
-}
-
-type TenantNotifyChannelIndexResp struct {
-	List  []*TenantNotifyChannel `json:"list"`  // 通知模版列表数据
-	Total int64                  `json:"total"` // 通知模版列表总记录数
-}
-
-type TenantNotifyTemplate struct {
-	ID         int64  `json:"id,optional"`
-	NotifyCode string `json:"notifyCode"`
-	Type       string `json:"type"`
-	TemplateID int64  `json:"templateID"`
-}
-
-type TenantNotifyTemplateIndexReq struct {
-	NotifyCode string `json:"notifyCode"`
-	Type       string `json:"type"`
-}
-
-type TenantNotifyTemplateIndexResp struct {
-	List []*TenantNotifyTemplate `json:"list"`
-}
-
-type TenantNotifyTemplateMultiUpdateReq struct {
-	Notifies []*TenantNotifyTemplate `json:"notifies"`
+type ThirdApp struct {
+	AppID     string `json:"appID,optional"`
+	AppKey    string `json:"appKey,optional"`
+	AppSecret string `json:"appSecret,optional"`
 }
 
 type ThirdEmailConfig struct {
@@ -902,6 +901,14 @@ type ThirdEmailConfig struct {
 	Nickname string `json:"nickname"` // 昵称    发件人昵称 通常为自己的邮箱
 	Port     int64  `json:"port"`     // 端口     请前往QQ或者你要发邮件的邮箱查看其smtp协议 大多为 465
 	IsSSL    int64  `json:"isSsl"`    // 是否SSL   是否开启SSL
+}
+
+type ThirdSms struct {
+	Type            string `json:"type,optional"`
+	AccessKeyID     string `json:"accessKeyID,optional"`
+	AccessKeySecret string `json:"accessKeySecret,optional"`
+	AppID           string `json:"appID,optional"`
+	AppKey          string `json:"appKey,optional"`
 }
 
 type TimeRange struct {

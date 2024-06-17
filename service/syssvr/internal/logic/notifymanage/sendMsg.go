@@ -29,7 +29,7 @@ type SendMsgConfig struct {
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
-	c, err := relationDB.NewTenantNotifyTemplateRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.TenantNotifyTemplateFilter{
+	c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.NotifyConfigTemplateFilter{
 		NotifyCode: cfg.NotifyCode,
 		Type:       cfg.Type,
 	})
@@ -40,10 +40,10 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		return err
 	}
 	var (
-		subject      = c.Config.DefaultSubject
-		body         = c.Config.DefaultBody
-		signName     = c.Config.DefaultSignName
-		templateCode = c.Config.DefaultTemplateCode
+		subject      string
+		body         string
+		signName     string
+		templateCode string
 	)
 	if c.Template != nil {
 		subject = c.Template.Subject
@@ -145,7 +145,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		return err
 	case def.NotifyTypeDingTalk:
 		channel := c.Template.Channel
-		if channel == nil || channel.DingTalk == nil {
+		if channel == nil || channel.App == nil {
 			return errors.NotEnable.AddMsg("通道没有配置")
 		}
 		//cli, err := clients.NewDingTalkClient(&conf.ThirdConf{

@@ -988,7 +988,7 @@
     },
     "/api/v1/system/common/qr-code/read": {
       "post": {
-        "summary": "获取",
+        "summary": "获取小程序二维码",
         "operationId": "postApiV1SystemCommonQr-codeRead",
         "responses": {
           "200": {
@@ -2784,10 +2784,10 @@
         ]
       }
     },
-    "/api/v1/system/notify/info/create": {
+    "/api/v1/system/notify/channel/create": {
       "post": {
-        "summary": "添加通知",
-        "operationId": "postApiV1SystemNotifyInfoCreate",
+        "summary": "添加通知通道",
+        "operationId": "postApiV1SystemNotifyChannelCreate",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2816,20 +2816,20 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NotifyInfo"
+              "$ref": "#/definitions/NotifyChannel"
             }
           }
         ],
         "tags": [
-          "system/notify/info",
-          "systemNotifyInfo"
+          "system/notify/channel",
+          "systemNotifyChannel"
         ]
       }
     },
-    "/api/v1/system/notify/info/delete": {
+    "/api/v1/system/notify/channel/delete": {
       "post": {
-        "summary": "删除通知",
-        "operationId": "postApiV1SystemNotifyInfoDelete",
+        "summary": "删除通知通道",
+        "operationId": "postApiV1SystemNotifyChannelDelete",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2860,15 +2860,15 @@
           }
         ],
         "tags": [
-          "system/notify/info",
-          "systemNotifyInfo"
+          "system/notify/channel",
+          "systemNotifyChannel"
         ]
       }
     },
-    "/api/v1/system/notify/info/index": {
+    "/api/v1/system/notify/channel/index": {
       "post": {
-        "summary": "获取通知列表",
-        "operationId": "postApiV1SystemNotifyInfoIndex",
+        "summary": "获取通知通道列表",
+        "operationId": "postApiV1SystemNotifyChannelIndex",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2885,7 +2885,7 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/NotifyInfoIndexResp"
+                  "$ref": "#/definitions/NotifyChannelIndexResp"
                 }
               }
             }
@@ -2897,20 +2897,20 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NotifyInfoIndexReq"
+              "$ref": "#/definitions/NotifyChannelIndexReq"
             }
           }
         ],
         "tags": [
-          "system/notify/info",
-          "systemNotifyInfo"
+          "system/notify/channel",
+          "systemNotifyChannel"
         ]
       }
     },
-    "/api/v1/system/notify/info/read": {
+    "/api/v1/system/notify/channel/read": {
       "post": {
-        "summary": "获取通知详情",
-        "operationId": "postApiV1SystemNotifyInfoRead",
+        "summary": "获取通知通道详情",
+        "operationId": "postApiV1SystemNotifyChannelRead",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2927,7 +2927,211 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/NotifyInfo"
+                  "$ref": "#/definitions/NotifyChannel"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/channel",
+          "systemNotifyChannel"
+        ]
+      }
+    },
+    "/api/v1/system/notify/channel/update": {
+      "post": {
+        "summary": "更新通知通道",
+        "operationId": "postApiV1SystemNotifyChannelUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyChannel"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/channel",
+          "systemNotifyChannel"
+        ]
+      }
+    },
+    "/api/v1/system/notify/config/create": {
+      "post": {
+        "summary": "添加通知配置",
+        "operationId": "postApiV1SystemNotifyConfigCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithID"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyConfig"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/config",
+          "systemNotifyConfig"
+        ]
+      }
+    },
+    "/api/v1/system/notify/config/delete": {
+      "post": {
+        "summary": "删除通知配置",
+        "operationId": "postApiV1SystemNotifyConfigDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/config",
+          "systemNotifyConfig"
+        ]
+      }
+    },
+    "/api/v1/system/notify/config/index": {
+      "post": {
+        "summary": "获取通知列表",
+        "operationId": "postApiV1SystemNotifyConfigIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/NotifyConfigIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyConfigIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/config",
+          "systemNotifyConfig"
+        ]
+      }
+    },
+    "/api/v1/system/notify/config/read": {
+      "post": {
+        "summary": "获取通知详情",
+        "operationId": "postApiV1SystemNotifyConfigRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/NotifyConfig"
                 }
               }
             }
@@ -2944,15 +3148,15 @@
           }
         ],
         "tags": [
-          "system/notify/info",
-          "systemNotifyInfo"
+          "system/notify/config",
+          "systemNotifyConfig"
         ]
       }
     },
-    "/api/v1/system/notify/info/tree": {
+    "/api/v1/system/notify/config/template/index": {
       "post": {
-        "summary": "获取通知列表树",
-        "operationId": "postApiV1SystemNotifyInfoTree",
+        "summary": "获取通知绑定模版列表",
+        "operationId": "postApiV1SystemNotifyConfigTemplateIndex",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -2969,7 +3173,7 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/NotifyInfoTreeResp"
+                  "$ref": "#/definitions/NotifyConfigTemplateIndexResp"
                 }
               }
             }
@@ -2981,20 +3185,20 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NotifyInfoIndexReq"
+              "$ref": "#/definitions/NotifyConfigTemplateIndexReq"
             }
           }
         ],
         "tags": [
-          "system/notify/info",
-          "systemNotifyInfo"
+          "system/notify/config/template",
+          "systemNotifyConfigTemplate"
         ]
       }
     },
-    "/api/v1/system/notify/info/update": {
+    "/api/v1/system/notify/config/template/update": {
       "post": {
-        "summary": "更新通知",
-        "operationId": "postApiV1SystemNotifyInfoUpdate",
+        "summary": "更新通知绑定模版",
+        "operationId": "postApiV1SystemNotifyConfigTemplateUpdate",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -3020,13 +3224,94 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/NotifyInfo"
+              "$ref": "#/definitions/NotifyConfigTemplate"
             }
           }
         ],
         "tags": [
-          "system/notify/info",
-          "systemNotifyInfo"
+          "system/notify/config/template",
+          "systemNotifyConfigTemplate"
+        ]
+      }
+    },
+    "/api/v1/system/notify/config/tree": {
+      "post": {
+        "summary": "获取通知列表树",
+        "operationId": "postApiV1SystemNotifyConfigTree",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/NotifyConfigTreeResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyConfigIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/config",
+          "systemNotifyConfig"
+        ]
+      }
+    },
+    "/api/v1/system/notify/config/update": {
+      "post": {
+        "summary": "更新通知配置",
+        "operationId": "postApiV1SystemNotifyConfigUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyConfig"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/config",
+          "systemNotifyConfig"
         ]
       }
     },
@@ -5100,330 +5385,6 @@
         "tags": [
           "system/tenant/info",
           "systemTenantInfo"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/channel/create": {
-      "post": {
-        "summary": "添加通知通道",
-        "operationId": "postApiV1SystemTenantNotifyChannelCreate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                },
-                "data": {
-                  "$ref": "#/definitions/WithID"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TenantNotifyChannel"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/channel",
-          "systemTenantNotifyChannel"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/channel/delete": {
-      "post": {
-        "summary": "删除通知通道",
-        "operationId": "postApiV1SystemTenantNotifyChannelDelete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WithID"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/channel",
-          "systemTenantNotifyChannel"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/channel/index": {
-      "post": {
-        "summary": "获取通知通道列表",
-        "operationId": "postApiV1SystemTenantNotifyChannelIndex",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                },
-                "data": {
-                  "$ref": "#/definitions/TenantNotifyChannelIndexResp"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TenantNotifyChannelIndexReq"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/channel",
-          "systemTenantNotifyChannel"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/channel/read": {
-      "post": {
-        "summary": "获取通知通道详情",
-        "operationId": "postApiV1SystemTenantNotifyChannelRead",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                },
-                "data": {
-                  "$ref": "#/definitions/TenantNotifyChannel"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/WithID"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/channel",
-          "systemTenantNotifyChannel"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/channel/update": {
-      "post": {
-        "summary": "更新通知通道",
-        "operationId": "postApiV1SystemTenantNotifyChannelUpdate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TenantNotifyChannel"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/channel",
-          "systemTenantNotifyChannel"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/template/index": {
-      "post": {
-        "summary": "获取租户通知绑定模版列表",
-        "operationId": "postApiV1SystemTenantNotifyTemplateIndex",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                },
-                "data": {
-                  "$ref": "#/definitions/TenantNotifyTemplateIndexResp"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TenantNotifyTemplateIndexReq"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/template",
-          "systemTenantNotifyTemplate"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/template/multi-update": {
-      "post": {
-        "summary": "批量更新租户通知绑定模版",
-        "operationId": "postApiV1SystemTenantNotifyTemplateMulti-update",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TenantNotifyTemplateMultiUpdateReq"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/template",
-          "systemTenantNotifyTemplate"
-        ]
-      }
-    },
-    "/api/v1/system/tenant/notify/template/update": {
-      "post": {
-        "summary": "更新租户通知绑定模版",
-        "operationId": "postApiV1SystemTenantNotifyTemplateUpdate",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TenantNotifyTemplate"
-            }
-          }
-        ],
-        "tags": [
-          "system/tenant/notify/template",
-          "systemTenantNotifyTemplate"
         ]
       }
     },
@@ -7994,32 +7955,85 @@
         "list"
       ]
     },
-    "NotifyGroupInfo": {
+    "NotifyChannel": {
       "type": "object",
       "properties": {
         "id": {
-          "type": "string",
-          "description": " id"
-        },
-        "code": {
-          "type": "string",
-          "description": " 应用编号"
+          "type": "integer",
+          "format": "int64",
+          "description": " id编号"
         },
         "name": {
           "type": "string",
-          "description": " 接口分组"
+          "description": "通知的命名"
         },
-        "children": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/NotifyInfo"
-          },
-          "description": " 列表数据"
+        "type": {
+          "type": "string",
+          "description": "对应的配置类型 通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)"
+        },
+        "desc": {
+          "type": "string",
+          "description": " 备注"
+        },
+        "webhook": {
+          "type": "string",
+          "description": "钉钉webhook及企微webhook"
+        },
+        "email": {
+          "$ref": "#/definitions/ThirdEmailConfig",
+          "description": "邮箱"
+        },
+        "app": {
+          "$ref": "#/definitions/ThirdApp",
+          "description": "第三方应用配置"
+        },
+        "sms": {
+          "$ref": "#/definitions/ThirdSms",
+          "description": "短信配置"
         }
       },
-      "title": "NotifyGroupInfo"
+      "title": "NotifyChannel"
     },
-    "NotifyInfo": {
+    "NotifyChannelIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息,只获取一个则不填"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "对应的配置类型 sms email"
+        }
+      },
+      "title": "NotifyChannelIndexReq"
+    },
+    "NotifyChannelIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NotifyChannel"
+          },
+          "description": " 通知模版列表数据"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 通知模版列表总记录数"
+        }
+      },
+      "title": "NotifyChannelIndexResp",
+      "required": [
+        "list",
+        "total"
+      ]
+    },
+    "NotifyConfig": {
       "type": "object",
       "properties": {
         "id": {
@@ -8044,41 +8058,25 @@
           "items": {
             "type": "string"
           },
-          "description": "支持的通知类型"
+          "description": "支持的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)"
         },
         "desc": {
           "type": "string",
-          "description": " 项目备注"
+          "description": " 备注"
         },
         "isRecord": {
           "type": "integer",
           "format": "int64",
           "description": "是否记录该消息,是的情况下会将消息存一份到消息中心"
         },
-        "defaultSubject": {
-          "type": "string",
-          "description": "默认消息主题"
-        },
-        "defaultBody": {
-          "type": "string",
-          "description": "默认模版内容"
-        },
-        "defaultTemplateCode": {
-          "type": "string",
-          "description": " 通知类型编码"
-        },
-        "defaultSignName": {
-          "type": "string",
-          "description": "默认签名(短信)"
-        },
         "params": {
           "type": "object",
-          "description": "变量属性 key是参数,value是描述"
+          "description": "变量属性 key是变量参数,value是变量描述"
         }
       },
-      "title": "NotifyInfo"
+      "title": "NotifyConfig"
     },
-    "NotifyInfoIndexReq": {
+    "NotifyConfigIndexReq": {
       "type": "object",
       "properties": {
         "page": {
@@ -8098,15 +8096,15 @@
           "description": "分组"
         }
       },
-      "title": "NotifyInfoIndexReq"
+      "title": "NotifyConfigIndexReq"
     },
-    "NotifyInfoIndexResp": {
+    "NotifyConfigIndexResp": {
       "type": "object",
       "properties": {
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/NotifyInfo"
+            "$ref": "#/definitions/NotifyConfig"
           },
           "description": " 通知列表数据"
         },
@@ -8116,13 +8114,69 @@
           "description": " 通知列表总记录数"
         }
       },
-      "title": "NotifyInfoIndexResp",
+      "title": "NotifyConfigIndexResp",
       "required": [
         "list",
         "total"
       ]
     },
-    "NotifyInfoTreeResp": {
+    "NotifyConfigTemplate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "notifyCode": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "templateID": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "NotifyConfigTemplate",
+      "required": [
+        "notifyCode",
+        "type",
+        "templateID"
+      ]
+    },
+    "NotifyConfigTemplateIndexReq": {
+      "type": "object",
+      "properties": {
+        "notifyCode": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "title": "NotifyConfigTemplateIndexReq",
+      "required": [
+        "notifyCode",
+        "type"
+      ]
+    },
+    "NotifyConfigTemplateIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NotifyConfigTemplate"
+          }
+        }
+      },
+      "title": "NotifyConfigTemplateIndexResp",
+      "required": [
+        "list"
+      ]
+    },
+    "NotifyConfigTreeResp": {
       "type": "object",
       "properties": {
         "list": {
@@ -8133,10 +8187,35 @@
           "description": " 通知列表数据"
         }
       },
-      "title": "NotifyInfoTreeResp",
+      "title": "NotifyConfigTreeResp",
       "required": [
         "list"
       ]
+    },
+    "NotifyGroupInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " id"
+        },
+        "code": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 接口分组"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NotifyConfig"
+          },
+          "description": " 列表数据"
+        }
+      },
+      "title": "NotifyGroupInfo"
     },
     "NotifyTemplate": {
       "type": "object",
@@ -8187,7 +8266,7 @@
           "format": "int64"
         },
         "channel": {
-          "$ref": "#/definitions/TenantNotifyChannel"
+          "$ref": "#/definitions/NotifyChannel"
         }
       },
       "title": "NotifyTemplate"
@@ -9819,150 +9898,20 @@
       },
       "title": "TenantModuleWithIDOrCode"
     },
-    "TenantNotifyChannel": {
+    "ThirdApp": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64",
-          "description": " id编号"
-        },
-        "tenantCode": {
-          "type": "string",
-          "description": "限定租户,不填是通用的"
-        },
-        "name": {
-          "type": "string",
-          "description": "通知的命名"
-        },
-        "type": {
-          "type": "string",
-          "description": "对应的配置类型 sms email"
-        },
-        "desc": {
-          "type": "string",
-          "description": " 备注"
-        },
-        "webhook": {
-          "type": "string",
-          "description": "默认消息主题"
-        },
-        "email": {
-          "$ref": "#/definitions/ThirdEmailConfig",
-          "description": "默认模版内容"
-        }
-      },
-      "title": "TenantNotifyChannel"
-    },
-    "TenantNotifyChannelIndexReq": {
-      "type": "object",
-      "properties": {
-        "page": {
-          "$ref": "#/definitions/PageInfo",
-          "description": " 分页信息,只获取一个则不填"
-        },
-        "name": {
+        "appID": {
           "type": "string"
         },
-        "type": {
-          "type": "string",
-          "description": "对应的配置类型 sms email"
-        }
-      },
-      "title": "TenantNotifyChannelIndexReq"
-    },
-    "TenantNotifyChannelIndexResp": {
-      "type": "object",
-      "properties": {
-        "list": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TenantNotifyChannel"
-          },
-          "description": " 通知模版列表数据"
-        },
-        "total": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 通知模版列表总记录数"
-        }
-      },
-      "title": "TenantNotifyChannelIndexResp",
-      "required": [
-        "list",
-        "total"
-      ]
-    },
-    "TenantNotifyTemplate": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "notifyCode": {
+        "appKey": {
           "type": "string"
         },
-        "type": {
-          "type": "string"
-        },
-        "templateID": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "TenantNotifyTemplate",
-      "required": [
-        "notifyCode",
-        "type",
-        "templateID"
-      ]
-    },
-    "TenantNotifyTemplateIndexReq": {
-      "type": "object",
-      "properties": {
-        "notifyCode": {
-          "type": "string"
-        },
-        "type": {
+        "appSecret": {
           "type": "string"
         }
       },
-      "title": "TenantNotifyTemplateIndexReq",
-      "required": [
-        "notifyCode",
-        "type"
-      ]
-    },
-    "TenantNotifyTemplateIndexResp": {
-      "type": "object",
-      "properties": {
-        "list": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TenantNotifyTemplate"
-          }
-        }
-      },
-      "title": "TenantNotifyTemplateIndexResp",
-      "required": [
-        "list"
-      ]
-    },
-    "TenantNotifyTemplateMultiUpdateReq": {
-      "type": "object",
-      "properties": {
-        "notifies": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TenantNotifyTemplate"
-          }
-        }
-      },
-      "title": "TenantNotifyTemplateMultiUpdateReq",
-      "required": [
-        "notifies"
-      ]
+      "title": "ThirdApp"
     },
     "ThirdEmailConfig": {
       "type": "object",
@@ -10003,6 +9952,27 @@
         "port",
         "isSsl"
       ]
+    },
+    "ThirdSms": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "accessKeyID": {
+          "type": "string"
+        },
+        "accessKeySecret": {
+          "type": "string"
+        },
+        "appID": {
+          "type": "string"
+        },
+        "appKey": {
+          "type": "string"
+        }
+      },
+      "title": "ThirdSms"
     },
     "TimeRange": {
       "type": "object",

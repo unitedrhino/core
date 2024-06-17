@@ -14,181 +14,182 @@ import (
 )
 
 type (
-	AccessInfo                         = sys.AccessInfo
-	AccessInfoIndexReq                 = sys.AccessInfoIndexReq
-	AccessInfoIndexResp                = sys.AccessInfoIndexResp
-	ApiInfo                            = sys.ApiInfo
-	ApiInfoIndexReq                    = sys.ApiInfoIndexReq
-	ApiInfoIndexResp                   = sys.ApiInfoIndexResp
-	AppInfo                            = sys.AppInfo
-	AppInfoIndexReq                    = sys.AppInfoIndexReq
-	AppInfoIndexResp                   = sys.AppInfoIndexResp
-	AppModuleIndexReq                  = sys.AppModuleIndexReq
-	AppModuleIndexResp                 = sys.AppModuleIndexResp
-	AppModuleMultiUpdateReq            = sys.AppModuleMultiUpdateReq
-	AppPolicy                          = sys.AppPolicy
-	AppPolicyReadReq                   = sys.AppPolicyReadReq
-	AreaInfo                           = sys.AreaInfo
-	AreaInfoIndexReq                   = sys.AreaInfoIndexReq
-	AreaInfoIndexResp                  = sys.AreaInfoIndexResp
-	AreaInfoReadReq                    = sys.AreaInfoReadReq
-	AreaWithID                         = sys.AreaWithID
-	AuthApiInfo                        = sys.AuthApiInfo
-	ConfigResp                         = sys.ConfigResp
-	DataArea                           = sys.DataArea
-	DataAreaIndexReq                   = sys.DataAreaIndexReq
-	DataAreaIndexResp                  = sys.DataAreaIndexResp
-	DataAreaMultiDeleteReq             = sys.DataAreaMultiDeleteReq
-	DataAreaMultiUpdateReq             = sys.DataAreaMultiUpdateReq
-	DataProject                        = sys.DataProject
-	DataProjectIndexReq                = sys.DataProjectIndexReq
-	DataProjectIndexResp               = sys.DataProjectIndexResp
-	DataProjectMultiUpdateReq          = sys.DataProjectMultiUpdateReq
-	DateRange                          = sys.DateRange
-	DictDetail                         = sys.DictDetail
-	DictDetailIndexReq                 = sys.DictDetailIndexReq
-	DictDetailIndexResp                = sys.DictDetailIndexResp
-	DictInfo                           = sys.DictInfo
-	DictInfoIndexReq                   = sys.DictInfoIndexReq
-	DictInfoIndexResp                  = sys.DictInfoIndexResp
-	DictInfoReadReq                    = sys.DictInfoReadReq
-	Empty                              = sys.Empty
-	IDList                             = sys.IDList
-	JwtToken                           = sys.JwtToken
-	LoginLogCreateReq                  = sys.LoginLogCreateReq
-	LoginLogIndexReq                   = sys.LoginLogIndexReq
-	LoginLogIndexResp                  = sys.LoginLogIndexResp
-	LoginLogInfo                       = sys.LoginLogInfo
-	Map                                = sys.Map
-	MenuInfo                           = sys.MenuInfo
-	MenuInfoIndexReq                   = sys.MenuInfoIndexReq
-	MenuInfoIndexResp                  = sys.MenuInfoIndexResp
-	MessageInfo                        = sys.MessageInfo
-	MessageInfoIndexReq                = sys.MessageInfoIndexReq
-	MessageInfoIndexResp               = sys.MessageInfoIndexResp
-	MessageInfoSendReq                 = sys.MessageInfoSendReq
-	ModuleInfo                         = sys.ModuleInfo
-	ModuleInfoIndexReq                 = sys.ModuleInfoIndexReq
-	ModuleInfoIndexResp                = sys.ModuleInfoIndexResp
-	NotifyInfo                         = sys.NotifyInfo
-	NotifyInfoIndexReq                 = sys.NotifyInfoIndexReq
-	NotifyInfoIndexResp                = sys.NotifyInfoIndexResp
-	NotifyInfoSendReq                  = sys.NotifyInfoSendReq
-	NotifyTemplate                     = sys.NotifyTemplate
-	NotifyTemplateIndexReq             = sys.NotifyTemplateIndexReq
-	NotifyTemplateIndexResp            = sys.NotifyTemplateIndexResp
-	OperLogCreateReq                   = sys.OperLogCreateReq
-	OperLogIndexReq                    = sys.OperLogIndexReq
-	OperLogIndexResp                   = sys.OperLogIndexResp
-	OperLogInfo                        = sys.OperLogInfo
-	OpsFeedback                        = sys.OpsFeedback
-	OpsFeedbackIndexReq                = sys.OpsFeedbackIndexReq
-	OpsFeedbackIndexResp               = sys.OpsFeedbackIndexResp
-	OpsWorkOrder                       = sys.OpsWorkOrder
-	OpsWorkOrderIndexReq               = sys.OpsWorkOrderIndexReq
-	OpsWorkOrderIndexResp              = sys.OpsWorkOrderIndexResp
-	PageInfo                           = sys.PageInfo
-	PageInfo_OrderBy                   = sys.PageInfo_OrderBy
-	Point                              = sys.Point
-	ProjectAuth                        = sys.ProjectAuth
-	ProjectInfo                        = sys.ProjectInfo
-	ProjectInfoIndexReq                = sys.ProjectInfoIndexReq
-	ProjectInfoIndexResp               = sys.ProjectInfoIndexResp
-	ProjectWithID                      = sys.ProjectWithID
-	QRCodeReadReq                      = sys.QRCodeReadReq
-	QRCodeReadResp                     = sys.QRCodeReadResp
-	RoleAccessIndexReq                 = sys.RoleAccessIndexReq
-	RoleAccessIndexResp                = sys.RoleAccessIndexResp
-	RoleAccessMultiUpdateReq           = sys.RoleAccessMultiUpdateReq
-	RoleApiAuthReq                     = sys.RoleApiAuthReq
-	RoleAppIndexReq                    = sys.RoleAppIndexReq
-	RoleAppIndexResp                   = sys.RoleAppIndexResp
-	RoleAppMultiUpdateReq              = sys.RoleAppMultiUpdateReq
-	RoleAppUpdateReq                   = sys.RoleAppUpdateReq
-	RoleInfo                           = sys.RoleInfo
-	RoleInfoIndexReq                   = sys.RoleInfoIndexReq
-	RoleInfoIndexResp                  = sys.RoleInfoIndexResp
-	RoleMenuIndexReq                   = sys.RoleMenuIndexReq
-	RoleMenuIndexResp                  = sys.RoleMenuIndexResp
-	RoleMenuMultiUpdateReq             = sys.RoleMenuMultiUpdateReq
-	RoleModuleIndexReq                 = sys.RoleModuleIndexReq
-	RoleModuleIndexResp                = sys.RoleModuleIndexResp
-	RoleModuleMultiUpdateReq           = sys.RoleModuleMultiUpdateReq
-	SlotInfo                           = sys.SlotInfo
-	SlotInfoIndexReq                   = sys.SlotInfoIndexReq
-	SlotInfoIndexResp                  = sys.SlotInfoIndexResp
-	TenantAccessIndexReq               = sys.TenantAccessIndexReq
-	TenantAccessIndexResp              = sys.TenantAccessIndexResp
-	TenantAccessMultiUpdateReq         = sys.TenantAccessMultiUpdateReq
-	TenantAppIndexReq                  = sys.TenantAppIndexReq
-	TenantAppIndexResp                 = sys.TenantAppIndexResp
-	TenantAppInfo                      = sys.TenantAppInfo
-	TenantAppMenu                      = sys.TenantAppMenu
-	TenantAppMenuIndexReq              = sys.TenantAppMenuIndexReq
-	TenantAppMenuIndexResp             = sys.TenantAppMenuIndexResp
-	TenantAppModule                    = sys.TenantAppModule
-	TenantAppMultiUpdateReq            = sys.TenantAppMultiUpdateReq
-	TenantAppWithIDOrCode              = sys.TenantAppWithIDOrCode
-	TenantInfo                         = sys.TenantInfo
-	TenantInfoCreateReq                = sys.TenantInfoCreateReq
-	TenantInfoIndexReq                 = sys.TenantInfoIndexReq
-	TenantInfoIndexResp                = sys.TenantInfoIndexResp
-	TenantModuleCreateReq              = sys.TenantModuleCreateReq
-	TenantModuleIndexReq               = sys.TenantModuleIndexReq
-	TenantModuleIndexResp              = sys.TenantModuleIndexResp
-	TenantModuleWithIDOrCode           = sys.TenantModuleWithIDOrCode
-	TenantNotify                       = sys.TenantNotify
-	TenantNotifyChannel                = sys.TenantNotifyChannel
-	TenantNotifyChannelIndexReq        = sys.TenantNotifyChannelIndexReq
-	TenantNotifyChannelIndexResp       = sys.TenantNotifyChannelIndexResp
-	TenantNotifyTemplateIndexReq       = sys.TenantNotifyTemplateIndexReq
-	TenantNotifyTemplateIndexResp      = sys.TenantNotifyTemplateIndexResp
-	TenantNotifyTemplateMultiUpdateReq = sys.TenantNotifyTemplateMultiUpdateReq
-	TenantOpenCheckTokenReq            = sys.TenantOpenCheckTokenReq
-	TenantOpenCheckTokenResp           = sys.TenantOpenCheckTokenResp
-	TenantOpenWebHook                  = sys.TenantOpenWebHook
-	ThirdAppConfig                     = sys.ThirdAppConfig
-	ThirdEmail                         = sys.ThirdEmail
-	UserAreaApplyCreateReq             = sys.UserAreaApplyCreateReq
-	UserAreaApplyDealReq               = sys.UserAreaApplyDealReq
-	UserAreaApplyIndexReq              = sys.UserAreaApplyIndexReq
-	UserAreaApplyIndexResp             = sys.UserAreaApplyIndexResp
-	UserAreaApplyInfo                  = sys.UserAreaApplyInfo
-	UserCaptchaReq                     = sys.UserCaptchaReq
-	UserCaptchaResp                    = sys.UserCaptchaResp
-	UserChangePwdReq                   = sys.UserChangePwdReq
-	UserCheckTokenReq                  = sys.UserCheckTokenReq
-	UserCheckTokenResp                 = sys.UserCheckTokenResp
-	UserCodeToUserIDReq                = sys.UserCodeToUserIDReq
-	UserCodeToUserIDResp               = sys.UserCodeToUserIDResp
-	UserCreateResp                     = sys.UserCreateResp
-	UserForgetPwdReq                   = sys.UserForgetPwdReq
-	UserInfo                           = sys.UserInfo
-	UserInfoCreateReq                  = sys.UserInfoCreateReq
-	UserInfoDeleteReq                  = sys.UserInfoDeleteReq
-	UserInfoIndexReq                   = sys.UserInfoIndexReq
-	UserInfoIndexResp                  = sys.UserInfoIndexResp
-	UserInfoReadReq                    = sys.UserInfoReadReq
-	UserInfoUpdateReq                  = sys.UserInfoUpdateReq
-	UserLoginReq                       = sys.UserLoginReq
-	UserLoginResp                      = sys.UserLoginResp
-	UserMessage                        = sys.UserMessage
-	UserMessageIndexReq                = sys.UserMessageIndexReq
-	UserMessageIndexResp               = sys.UserMessageIndexResp
-	UserMessageStatistics              = sys.UserMessageStatistics
-	UserMessageStatisticsResp          = sys.UserMessageStatisticsResp
-	UserProfile                        = sys.UserProfile
-	UserProfileIndexReq                = sys.UserProfileIndexReq
-	UserProfileIndexResp               = sys.UserProfileIndexResp
-	UserRegisterReq                    = sys.UserRegisterReq
-	UserRegisterResp                   = sys.UserRegisterResp
-	UserRoleIndexReq                   = sys.UserRoleIndexReq
-	UserRoleIndexResp                  = sys.UserRoleIndexResp
-	UserRoleMultiUpdateReq             = sys.UserRoleMultiUpdateReq
-	WithAppCodeID                      = sys.WithAppCodeID
-	WithCode                           = sys.WithCode
-	WithID                             = sys.WithID
-	WithIDCode                         = sys.WithIDCode
+	AccessInfo                    = sys.AccessInfo
+	AccessInfoIndexReq            = sys.AccessInfoIndexReq
+	AccessInfoIndexResp           = sys.AccessInfoIndexResp
+	ApiInfo                       = sys.ApiInfo
+	ApiInfoIndexReq               = sys.ApiInfoIndexReq
+	ApiInfoIndexResp              = sys.ApiInfoIndexResp
+	AppInfo                       = sys.AppInfo
+	AppInfoIndexReq               = sys.AppInfoIndexReq
+	AppInfoIndexResp              = sys.AppInfoIndexResp
+	AppModuleIndexReq             = sys.AppModuleIndexReq
+	AppModuleIndexResp            = sys.AppModuleIndexResp
+	AppModuleMultiUpdateReq       = sys.AppModuleMultiUpdateReq
+	AppPolicy                     = sys.AppPolicy
+	AppPolicyReadReq              = sys.AppPolicyReadReq
+	AreaInfo                      = sys.AreaInfo
+	AreaInfoIndexReq              = sys.AreaInfoIndexReq
+	AreaInfoIndexResp             = sys.AreaInfoIndexResp
+	AreaInfoReadReq               = sys.AreaInfoReadReq
+	AreaWithID                    = sys.AreaWithID
+	AuthApiInfo                   = sys.AuthApiInfo
+	ConfigResp                    = sys.ConfigResp
+	DataArea                      = sys.DataArea
+	DataAreaIndexReq              = sys.DataAreaIndexReq
+	DataAreaIndexResp             = sys.DataAreaIndexResp
+	DataAreaMultiDeleteReq        = sys.DataAreaMultiDeleteReq
+	DataAreaMultiUpdateReq        = sys.DataAreaMultiUpdateReq
+	DataProject                   = sys.DataProject
+	DataProjectIndexReq           = sys.DataProjectIndexReq
+	DataProjectIndexResp          = sys.DataProjectIndexResp
+	DataProjectMultiUpdateReq     = sys.DataProjectMultiUpdateReq
+	DateRange                     = sys.DateRange
+	DictDetail                    = sys.DictDetail
+	DictDetailIndexReq            = sys.DictDetailIndexReq
+	DictDetailIndexResp           = sys.DictDetailIndexResp
+	DictInfo                      = sys.DictInfo
+	DictInfoIndexReq              = sys.DictInfoIndexReq
+	DictInfoIndexResp             = sys.DictInfoIndexResp
+	DictInfoReadReq               = sys.DictInfoReadReq
+	Empty                         = sys.Empty
+	IDList                        = sys.IDList
+	JwtToken                      = sys.JwtToken
+	LoginLogCreateReq             = sys.LoginLogCreateReq
+	LoginLogIndexReq              = sys.LoginLogIndexReq
+	LoginLogIndexResp             = sys.LoginLogIndexResp
+	LoginLogInfo                  = sys.LoginLogInfo
+	Map                           = sys.Map
+	MenuInfo                      = sys.MenuInfo
+	MenuInfoIndexReq              = sys.MenuInfoIndexReq
+	MenuInfoIndexResp             = sys.MenuInfoIndexResp
+	MessageInfo                   = sys.MessageInfo
+	MessageInfoIndexReq           = sys.MessageInfoIndexReq
+	MessageInfoIndexResp          = sys.MessageInfoIndexResp
+	MessageInfoSendReq            = sys.MessageInfoSendReq
+	ModuleInfo                    = sys.ModuleInfo
+	ModuleInfoIndexReq            = sys.ModuleInfoIndexReq
+	ModuleInfoIndexResp           = sys.ModuleInfoIndexResp
+	NotifyChannel                 = sys.NotifyChannel
+	NotifyChannelIndexReq         = sys.NotifyChannelIndexReq
+	NotifyChannelIndexResp        = sys.NotifyChannelIndexResp
+	NotifyConfig                  = sys.NotifyConfig
+	NotifyConfigIndexReq          = sys.NotifyConfigIndexReq
+	NotifyConfigIndexResp         = sys.NotifyConfigIndexResp
+	NotifyConfigSendReq           = sys.NotifyConfigSendReq
+	NotifyConfigTemplate          = sys.NotifyConfigTemplate
+	NotifyConfigTemplateIndexReq  = sys.NotifyConfigTemplateIndexReq
+	NotifyConfigTemplateIndexResp = sys.NotifyConfigTemplateIndexResp
+	NotifyTemplate                = sys.NotifyTemplate
+	NotifyTemplateIndexReq        = sys.NotifyTemplateIndexReq
+	NotifyTemplateIndexResp       = sys.NotifyTemplateIndexResp
+	OperLogCreateReq              = sys.OperLogCreateReq
+	OperLogIndexReq               = sys.OperLogIndexReq
+	OperLogIndexResp              = sys.OperLogIndexResp
+	OperLogInfo                   = sys.OperLogInfo
+	OpsFeedback                   = sys.OpsFeedback
+	OpsFeedbackIndexReq           = sys.OpsFeedbackIndexReq
+	OpsFeedbackIndexResp          = sys.OpsFeedbackIndexResp
+	OpsWorkOrder                  = sys.OpsWorkOrder
+	OpsWorkOrderIndexReq          = sys.OpsWorkOrderIndexReq
+	OpsWorkOrderIndexResp         = sys.OpsWorkOrderIndexResp
+	PageInfo                      = sys.PageInfo
+	PageInfo_OrderBy              = sys.PageInfo_OrderBy
+	Point                         = sys.Point
+	ProjectAuth                   = sys.ProjectAuth
+	ProjectInfo                   = sys.ProjectInfo
+	ProjectInfoIndexReq           = sys.ProjectInfoIndexReq
+	ProjectInfoIndexResp          = sys.ProjectInfoIndexResp
+	ProjectWithID                 = sys.ProjectWithID
+	QRCodeReadReq                 = sys.QRCodeReadReq
+	QRCodeReadResp                = sys.QRCodeReadResp
+	RoleAccessIndexReq            = sys.RoleAccessIndexReq
+	RoleAccessIndexResp           = sys.RoleAccessIndexResp
+	RoleAccessMultiUpdateReq      = sys.RoleAccessMultiUpdateReq
+	RoleApiAuthReq                = sys.RoleApiAuthReq
+	RoleAppIndexReq               = sys.RoleAppIndexReq
+	RoleAppIndexResp              = sys.RoleAppIndexResp
+	RoleAppMultiUpdateReq         = sys.RoleAppMultiUpdateReq
+	RoleAppUpdateReq              = sys.RoleAppUpdateReq
+	RoleInfo                      = sys.RoleInfo
+	RoleInfoIndexReq              = sys.RoleInfoIndexReq
+	RoleInfoIndexResp             = sys.RoleInfoIndexResp
+	RoleMenuIndexReq              = sys.RoleMenuIndexReq
+	RoleMenuIndexResp             = sys.RoleMenuIndexResp
+	RoleMenuMultiUpdateReq        = sys.RoleMenuMultiUpdateReq
+	RoleModuleIndexReq            = sys.RoleModuleIndexReq
+	RoleModuleIndexResp           = sys.RoleModuleIndexResp
+	RoleModuleMultiUpdateReq      = sys.RoleModuleMultiUpdateReq
+	SlotInfo                      = sys.SlotInfo
+	SlotInfoIndexReq              = sys.SlotInfoIndexReq
+	SlotInfoIndexResp             = sys.SlotInfoIndexResp
+	TenantAccessIndexReq          = sys.TenantAccessIndexReq
+	TenantAccessIndexResp         = sys.TenantAccessIndexResp
+	TenantAccessMultiUpdateReq    = sys.TenantAccessMultiUpdateReq
+	TenantAppIndexReq             = sys.TenantAppIndexReq
+	TenantAppIndexResp            = sys.TenantAppIndexResp
+	TenantAppInfo                 = sys.TenantAppInfo
+	TenantAppMenu                 = sys.TenantAppMenu
+	TenantAppMenuIndexReq         = sys.TenantAppMenuIndexReq
+	TenantAppMenuIndexResp        = sys.TenantAppMenuIndexResp
+	TenantAppModule               = sys.TenantAppModule
+	TenantAppMultiUpdateReq       = sys.TenantAppMultiUpdateReq
+	TenantAppWithIDOrCode         = sys.TenantAppWithIDOrCode
+	TenantInfo                    = sys.TenantInfo
+	TenantInfoCreateReq           = sys.TenantInfoCreateReq
+	TenantInfoIndexReq            = sys.TenantInfoIndexReq
+	TenantInfoIndexResp           = sys.TenantInfoIndexResp
+	TenantModuleCreateReq         = sys.TenantModuleCreateReq
+	TenantModuleIndexReq          = sys.TenantModuleIndexReq
+	TenantModuleIndexResp         = sys.TenantModuleIndexResp
+	TenantModuleWithIDOrCode      = sys.TenantModuleWithIDOrCode
+	TenantOpenCheckTokenReq       = sys.TenantOpenCheckTokenReq
+	TenantOpenCheckTokenResp      = sys.TenantOpenCheckTokenResp
+	TenantOpenWebHook             = sys.TenantOpenWebHook
+	ThirdApp                      = sys.ThirdApp
+	ThirdAppConfig                = sys.ThirdAppConfig
+	ThirdEmail                    = sys.ThirdEmail
+	ThirdSms                      = sys.ThirdSms
+	UserAreaApplyCreateReq        = sys.UserAreaApplyCreateReq
+	UserAreaApplyDealReq          = sys.UserAreaApplyDealReq
+	UserAreaApplyIndexReq         = sys.UserAreaApplyIndexReq
+	UserAreaApplyIndexResp        = sys.UserAreaApplyIndexResp
+	UserAreaApplyInfo             = sys.UserAreaApplyInfo
+	UserCaptchaReq                = sys.UserCaptchaReq
+	UserCaptchaResp               = sys.UserCaptchaResp
+	UserChangePwdReq              = sys.UserChangePwdReq
+	UserCheckTokenReq             = sys.UserCheckTokenReq
+	UserCheckTokenResp            = sys.UserCheckTokenResp
+	UserCodeToUserIDReq           = sys.UserCodeToUserIDReq
+	UserCodeToUserIDResp          = sys.UserCodeToUserIDResp
+	UserCreateResp                = sys.UserCreateResp
+	UserForgetPwdReq              = sys.UserForgetPwdReq
+	UserInfo                      = sys.UserInfo
+	UserInfoCreateReq             = sys.UserInfoCreateReq
+	UserInfoDeleteReq             = sys.UserInfoDeleteReq
+	UserInfoIndexReq              = sys.UserInfoIndexReq
+	UserInfoIndexResp             = sys.UserInfoIndexResp
+	UserInfoReadReq               = sys.UserInfoReadReq
+	UserInfoUpdateReq             = sys.UserInfoUpdateReq
+	UserLoginReq                  = sys.UserLoginReq
+	UserLoginResp                 = sys.UserLoginResp
+	UserMessage                   = sys.UserMessage
+	UserMessageIndexReq           = sys.UserMessageIndexReq
+	UserMessageIndexResp          = sys.UserMessageIndexResp
+	UserMessageStatistics         = sys.UserMessageStatistics
+	UserMessageStatisticsResp     = sys.UserMessageStatisticsResp
+	UserProfile                   = sys.UserProfile
+	UserProfileIndexReq           = sys.UserProfileIndexReq
+	UserProfileIndexResp          = sys.UserProfileIndexResp
+	UserRegisterReq               = sys.UserRegisterReq
+	UserRegisterResp              = sys.UserRegisterResp
+	UserRoleIndexReq              = sys.UserRoleIndexReq
+	UserRoleIndexResp             = sys.UserRoleIndexResp
+	UserRoleMultiUpdateReq        = sys.UserRoleMultiUpdateReq
+	WithAppCodeID                 = sys.WithAppCodeID
+	WithCode                      = sys.WithCode
+	WithID                        = sys.WithID
+	WithIDCode                    = sys.WithIDCode
 
 	NotifyManage interface {
 		// 站内信
@@ -197,18 +198,26 @@ type (
 		MessageInfoUpdate(ctx context.Context, in *MessageInfo, opts ...grpc.CallOption) (*Empty, error)
 		MessageInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 		// 通知配置信息
-		NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error)
-		NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error)
-		NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error)
-		NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error)
-		NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
-		NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error)
+		NotifyConfigRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyConfig, error)
+		NotifyConfigCreate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*WithID, error)
+		NotifyConfigUpdate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*Empty, error)
+		NotifyConfigIndex(ctx context.Context, in *NotifyConfigIndexReq, opts ...grpc.CallOption) (*NotifyConfigIndexResp, error)
+		NotifyConfigDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		NotifyConfigSend(ctx context.Context, in *NotifyConfigSendReq, opts ...grpc.CallOption) (*Empty, error)
 		// 通知模版
 		NotifyTemplateRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyTemplate, error)
 		NotifyTemplateCreate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*WithID, error)
 		NotifyTemplateUpdate(ctx context.Context, in *NotifyTemplate, opts ...grpc.CallOption) (*Empty, error)
 		NotifyTemplateIndex(ctx context.Context, in *NotifyTemplateIndexReq, opts ...grpc.CallOption) (*NotifyTemplateIndexResp, error)
 		NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		// 租户通知配置
+		NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error)
+		NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error)
+		NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error)
+		NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error)
+		NotifyChannelUpdate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*Empty, error)
+		NotifyChannelIndex(ctx context.Context, in *NotifyChannelIndexReq, opts ...grpc.CallOption) (*NotifyChannelIndexResp, error)
+		NotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	}
 
 	defaultNotifyManage struct {
@@ -273,59 +282,59 @@ func (d *directNotifyManage) MessageInfoDelete(ctx context.Context, in *WithID, 
 }
 
 // 通知配置信息
-func (m *defaultNotifyManage) NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error) {
+func (m *defaultNotifyManage) NotifyConfigRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyConfig, error) {
 	client := sys.NewNotifyManageClient(m.cli.Conn())
-	return client.NotifyInfoRead(ctx, in, opts...)
+	return client.NotifyConfigRead(ctx, in, opts...)
 }
 
 // 通知配置信息
-func (d *directNotifyManage) NotifyInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyInfo, error) {
-	return d.svr.NotifyInfoRead(ctx, in)
+func (d *directNotifyManage) NotifyConfigRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*NotifyConfig, error) {
+	return d.svr.NotifyConfigRead(ctx, in)
 }
 
-func (m *defaultNotifyManage) NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error) {
+func (m *defaultNotifyManage) NotifyConfigCreate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*WithID, error) {
 	client := sys.NewNotifyManageClient(m.cli.Conn())
-	return client.NotifyInfoCreate(ctx, in, opts...)
+	return client.NotifyConfigCreate(ctx, in, opts...)
 }
 
-func (d *directNotifyManage) NotifyInfoCreate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*WithID, error) {
-	return d.svr.NotifyInfoCreate(ctx, in)
+func (d *directNotifyManage) NotifyConfigCreate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.NotifyConfigCreate(ctx, in)
 }
 
-func (m *defaultNotifyManage) NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error) {
+func (m *defaultNotifyManage) NotifyConfigUpdate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*Empty, error) {
 	client := sys.NewNotifyManageClient(m.cli.Conn())
-	return client.NotifyInfoUpdate(ctx, in, opts...)
+	return client.NotifyConfigUpdate(ctx, in, opts...)
 }
 
-func (d *directNotifyManage) NotifyInfoUpdate(ctx context.Context, in *NotifyInfo, opts ...grpc.CallOption) (*Empty, error) {
-	return d.svr.NotifyInfoUpdate(ctx, in)
+func (d *directNotifyManage) NotifyConfigUpdate(ctx context.Context, in *NotifyConfig, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyConfigUpdate(ctx, in)
 }
 
-func (m *defaultNotifyManage) NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error) {
+func (m *defaultNotifyManage) NotifyConfigIndex(ctx context.Context, in *NotifyConfigIndexReq, opts ...grpc.CallOption) (*NotifyConfigIndexResp, error) {
 	client := sys.NewNotifyManageClient(m.cli.Conn())
-	return client.NotifyInfoIndex(ctx, in, opts...)
+	return client.NotifyConfigIndex(ctx, in, opts...)
 }
 
-func (d *directNotifyManage) NotifyInfoIndex(ctx context.Context, in *NotifyInfoIndexReq, opts ...grpc.CallOption) (*NotifyInfoIndexResp, error) {
-	return d.svr.NotifyInfoIndex(ctx, in)
+func (d *directNotifyManage) NotifyConfigIndex(ctx context.Context, in *NotifyConfigIndexReq, opts ...grpc.CallOption) (*NotifyConfigIndexResp, error) {
+	return d.svr.NotifyConfigIndex(ctx, in)
 }
 
-func (m *defaultNotifyManage) NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+func (m *defaultNotifyManage) NotifyConfigDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	client := sys.NewNotifyManageClient(m.cli.Conn())
-	return client.NotifyInfoDelete(ctx, in, opts...)
+	return client.NotifyConfigDelete(ctx, in, opts...)
 }
 
-func (d *directNotifyManage) NotifyInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
-	return d.svr.NotifyInfoDelete(ctx, in)
+func (d *directNotifyManage) NotifyConfigDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyConfigDelete(ctx, in)
 }
 
-func (m *defaultNotifyManage) NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error) {
+func (m *defaultNotifyManage) NotifyConfigSend(ctx context.Context, in *NotifyConfigSendReq, opts ...grpc.CallOption) (*Empty, error) {
 	client := sys.NewNotifyManageClient(m.cli.Conn())
-	return client.NotifyInfoSend(ctx, in, opts...)
+	return client.NotifyConfigSend(ctx, in, opts...)
 }
 
-func (d *directNotifyManage) NotifyInfoSend(ctx context.Context, in *NotifyInfoSendReq, opts ...grpc.CallOption) (*Empty, error) {
-	return d.svr.NotifyInfoSend(ctx, in)
+func (d *directNotifyManage) NotifyConfigSend(ctx context.Context, in *NotifyConfigSendReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyConfigSend(ctx, in)
 }
 
 // 通知模版
@@ -373,4 +382,69 @@ func (m *defaultNotifyManage) NotifyTemplateDelete(ctx context.Context, in *With
 
 func (d *directNotifyManage) NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.NotifyTemplateDelete(ctx, in)
+}
+
+// 租户通知配置
+func (m *defaultNotifyManage) NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyConfigTemplateUpdate(ctx, in, opts...)
+}
+
+// 租户通知配置
+func (d *directNotifyManage) NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyConfigTemplateUpdate(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyConfigTemplateIndex(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error) {
+	return d.svr.NotifyConfigTemplateIndex(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyChannelRead(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error) {
+	return d.svr.NotifyChannelRead(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyChannelCreate(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.NotifyChannelCreate(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyChannelUpdate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyChannelUpdate(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyChannelUpdate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyChannelUpdate(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyChannelIndex(ctx context.Context, in *NotifyChannelIndexReq, opts ...grpc.CallOption) (*NotifyChannelIndexResp, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyChannelIndex(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyChannelIndex(ctx context.Context, in *NotifyChannelIndexReq, opts ...grpc.CallOption) (*NotifyChannelIndexResp, error) {
+	return d.svr.NotifyChannelIndex(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyChannelDelete(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyChannelDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyChannelDelete(ctx, in)
 }

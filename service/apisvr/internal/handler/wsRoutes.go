@@ -21,7 +21,9 @@ import (
 	systemlog "gitee.com/i-Things/core/service/apisvr/internal/handler/system/log"
 	systemmoduleinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/info"
 	systemmodulemenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/module/menu"
-	systemnotifyinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/notify/info"
+	systemnotifychannel "gitee.com/i-Things/core/service/apisvr/internal/handler/system/notify/channel"
+	systemnotifyconfig "gitee.com/i-Things/core/service/apisvr/internal/handler/system/notify/config"
+	systemnotifyconfigtemplate "gitee.com/i-Things/core/service/apisvr/internal/handler/system/notify/config/template"
 	systemnotifymessageinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/notify/message/info"
 	systemnotifytemplate "gitee.com/i-Things/core/service/apisvr/internal/handler/system/notify/template"
 	systemopsfeedback "gitee.com/i-Things/core/service/apisvr/internal/handler/system/ops/feedback"
@@ -38,8 +40,6 @@ import (
 	systemtenantappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/module"
 	systemtenantcore "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/core"
 	systemtenantinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/info"
-	systemtenantnotifychannel "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/notify/channel"
-	systemtenantnotifytemplate "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/notify/template"
 	systemuserinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/info"
 	systemuserrole "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/role"
 	systemuserself "gitee.com/i-Things/core/service/apisvr/internal/handler/system/user/self"
@@ -554,36 +554,89 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				{
 					Method:  http.MethodPost,
 					Path:    "/create",
-					Handler: systemnotifyinfo.CreateHandler(serverCtx),
+					Handler: systemnotifychannel.CreateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/delete",
-					Handler: systemnotifyinfo.DeleteHandler(serverCtx),
+					Handler: systemnotifychannel.DeleteHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/index",
-					Handler: systemnotifyinfo.IndexHandler(serverCtx),
+					Handler: systemnotifychannel.IndexHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/read",
-					Handler: systemnotifyinfo.ReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/tree",
-					Handler: systemnotifyinfo.TreeHandler(serverCtx),
+					Handler: systemnotifychannel.ReadHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,
 					Path:    "/update",
-					Handler: systemnotifyinfo.UpdateHandler(serverCtx),
+					Handler: systemnotifychannel.UpdateHandler(serverCtx),
 				},
 			}...,
 		),
-		ws.WithPrefix("/api/v1/system/notify/info"),
+		ws.WithPrefix("/api/v1/system/notify/channel"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemnotifyconfig.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemnotifyconfig.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemnotifyconfig.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemnotifyconfig.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/tree",
+					Handler: systemnotifyconfig.TreeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemnotifyconfig.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/notify/config"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemnotifyconfigtemplate.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemnotifyconfigtemplate.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/notify/config/template"),
 	)
 
 	server.AddRoutes(
@@ -983,64 +1036,6 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/tenant/info"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemtenantnotifychannel.CreateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemtenantnotifychannel.DeleteHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemtenantnotifychannel.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemtenantnotifychannel.ReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemtenantnotifychannel.UpdateHandler(serverCtx),
-				},
-			}...,
-		),
-		ws.WithPrefix("/api/v1/system/tenant/notify/channel"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemtenantnotifytemplate.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemtenantnotifytemplate.MultiUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemtenantnotifytemplate.UpdateHandler(serverCtx),
-				},
-			}...,
-		),
-		ws.WithPrefix("/api/v1/system/tenant/notify/template"),
 	)
 
 	server.AddRoutes(

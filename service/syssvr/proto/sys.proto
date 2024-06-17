@@ -53,12 +53,12 @@ service NotifyManage {
   rpc messageInfoDelete(WithID)returns(Empty);//删除站内信
 
   //通知配置信息
-  rpc notifyInfoRead(WithIDCode)returns(NotifyInfo);
-  rpc notifyInfoCreate(NotifyInfo)returns(WithID);
-  rpc notifyInfoUpdate(NotifyInfo)returns(Empty);
-  rpc notifyInfoIndex(NotifyInfoIndexReq)returns(NotifyInfoIndexResp);
-  rpc notifyInfoDelete(WithID)returns(Empty);
-  rpc notifyInfoSend(NotifyInfoSendReq)returns(Empty);//发送消息通知(短信,邮箱,钉钉推送,微信推送,app推送)
+  rpc notifyConfigRead(WithIDCode)returns(NotifyConfig);
+  rpc notifyConfigCreate(NotifyConfig)returns(WithID);
+  rpc notifyConfigUpdate(NotifyConfig)returns(Empty);
+  rpc notifyConfigIndex(NotifyConfigIndexReq)returns(NotifyConfigIndexResp);
+  rpc notifyConfigDelete(WithID)returns(Empty);
+  rpc notifyConfigSend(NotifyConfigSendReq)returns(Empty);//发送消息通知(短信,邮箱,钉钉推送,微信推送,app推送)
 
   //通知模版
   rpc notifyTemplateRead(WithID)returns(NotifyTemplate);
@@ -67,7 +67,15 @@ service NotifyManage {
   rpc notifyTemplateIndex(NotifyTemplateIndexReq)returns(NotifyTemplateIndexResp);
   rpc notifyTemplateDelete(WithID)returns(Empty);
 
+  //租户通知配置
+  rpc notifyConfigTemplateUpdate(NotifyConfigTemplate)returns(Empty);
+  rpc notifyConfigTemplateIndex(NotifyConfigTemplateIndexReq)returns(NotifyConfigTemplateIndexResp);
 
+  rpc notifyChannelRead(WithID)returns(NotifyChannel);
+  rpc notifyChannelCreate(NotifyChannel)returns(WithID);
+  rpc notifyChannelUpdate(NotifyChannel)returns(Empty);
+  rpc notifyChannelIndex(NotifyChannelIndexReq)returns(NotifyChannelIndexResp);
+  rpc notifyChannelDelete(WithID)returns(Empty);
 }
 
 service AccessManage{
@@ -225,18 +233,7 @@ service TenantManage {
   rpc tenantOpenCheckToken(TenantOpenCheckTokenReq) returns(TenantOpenCheckTokenResp);
 
   rpc tenantOpenWebHook(WithCode)returns(TenantOpenWebHook);
-
-
-  //租户通知配置
-  rpc tenantNotifyTemplateUpdate(TenantNotify)returns(Empty);
-  rpc tenantNotifyTemplateMultiUpdate(TenantNotifyTemplateMultiUpdateReq)returns(Empty);
-  rpc tenantNotifyTemplateIndex(TenantNotifyTemplateIndexReq)returns(TenantNotifyTemplateIndexResp);
-
-  rpc tenantNotifyChannelRead(WithID)returns(TenantNotifyChannel);
-  rpc tenantNotifyChannelCreate(TenantNotifyChannel)returns(WithID);
-  rpc tenantNotifyChannelUpdate(TenantNotifyChannel)returns(Empty);
-  rpc tenantNotifyChannelIndex(TenantNotifyChannelIndexReq)returns(TenantNotifyChannelIndexResp);
-  rpc tenantNotifyChannelDelete(WithID)returns(Empty);
+  
 }
 
 //运营
@@ -265,7 +262,7 @@ message IDList{
 
 //消息中心
 
-message NotifyInfo{
+message NotifyConfig{
   int64 id =1; // id编号
   string group =2; //分组
   string code =3; // 通知类型编码
@@ -273,21 +270,17 @@ message NotifyInfo{
   repeated string supportTypes =5; //支持的通知类型
   string desc =6; // 项目备注
   int64 isRecord =7; //是否记录该消息,是的情况下会将消息存一份到消息中心
-  string defaultSubject =8; //默认消息主题
-  string defaultBody =9; //默认模版内容
-  string defaultTemplateCode =10; // 通知类型编码
-  string defaultSignName =11; //默认签名(短信)
   map<string,string> params =12; //变量属性 key是参数,value是描述
 }
 
-message NotifyInfoIndexReq{
+message NotifyConfigIndexReq{
   PageInfo page =1;
   string group =2; //分组
   string code =3; // 通知类型编码
   string name =4; //通知的命名
 }
-message NotifyInfoIndexResp{
-  repeated NotifyInfo list =1;
+message NotifyConfigIndexResp{
+  repeated NotifyConfig list =1;
   int64 total= 2;
 }
 
@@ -303,27 +296,28 @@ message NotifyTemplate{
   string body =9;  //默认模版内容
   string desc =10;  // 备注
   int64 channelID =11;//通道ID
-    TenantNotifyChannel Channel =12;
+  NotifyChannel Channel =12;
 }
 
-message TenantNotifyChannel{
+message NotifyChannel{
   int64 id =1;  // id编号
-  string tenantCode =2;  //限定租户,不填是通用的
-  string name =3;  //通知的命名
-  string type =5;  //对应的配置类型 sms email
-  string desc =10;  // 备注
-  string webhook =11;//钉钉webhook及企微webhook
-  ThirdEmail email =12;//邮箱配置
+  string name =2;  //通知的命名
+  string type =3;  //对应的配置类型 sms email
+  string desc =4;  // 备注
+  string webhook =5;//钉钉webhook及企微webhook
+  ThirdEmail email =6;//邮箱配置
+  ThirdApp app =7;//第三方应用配置
+  ThirdSms sms =8;//短信配置
 }
 
-message TenantNotifyChannelIndexReq{
+message NotifyChannelIndexReq{
   PageInfo page =1;
   string name =3;  //通知的命名
   string type =2;  //对应的配置类型 sms email
 }
 
-message TenantNotifyChannelIndexResp{
-  repeated TenantNotifyChannel list =1;
+message NotifyChannelIndexResp{
+  repeated NotifyChannel list =1;
   int64 total= 2;
 }
 
@@ -334,6 +328,20 @@ message ThirdEmail {
   string Nickname=4;// 昵称    发件人昵称 通常为自己的邮箱
   int64 Port     =5;// 端口     请前往QQ或者你要发邮件的邮箱查看其smtp协议 大多为 465
   int64 IsSSL    =6;// 是否SSL   是否开启SSL
+}
+
+message ThirdApp {
+  string appID    =1; //钉钉为agentID
+  string appKey     =2;
+  string appSecret   =3;
+}
+
+message ThirdSms {
+  string type =1;//ali|tencent
+  string accessKeyID =2;
+  string accessKeySecret =3;
+  string appID = 4;
+  string appKey = 5;
 }
 
 message NotifyTemplateIndexReq{
@@ -384,20 +392,18 @@ message MessageInfo {
 }
 
 
-message TenantNotifyTemplateMultiUpdateReq{
-   repeated TenantNotify notifies=1;
-}
 
-message TenantNotifyTemplateIndexReq{
+
+message NotifyConfigTemplateIndexReq{
   string notifyCode =2;
   string type =3;
 }
 
-message TenantNotifyTemplateIndexResp{
-  repeated TenantNotify list =1;
+message NotifyConfigTemplateIndexResp{
+  repeated NotifyConfigTemplate list =1;
 }
 
-message TenantNotify{
+message NotifyConfigTemplate{
   int64 id =1;
   string notifyCode =2;
   string type =3;
@@ -473,7 +479,7 @@ message UserMessageIndexResp{
   repeated UserMessage list=2;
 }
 
-message NotifyInfoSendReq{
+message NotifyConfigSendReq{
       repeated int64 userIDs     =1; //只有填写了用户ID才会记录
       repeated string accounts    =2;
 //      string accountType =3;

@@ -54,15 +54,15 @@ type (
     }
 
     MessageInfo{
-     ID int64 `json:"id"`
-     Group string `json:"group"`
-     NotifyCode string `json:"notifyCode"`
-     Subject string `json:"subject"`
-     Body string `json:"body"`
-     Str1 string `json:"str1"`
-     Str2 string `json:"str2"`
-     Str3 string `json:"str3"`
-     IsGlobal int64 `json:"isGlobal"`
-     CreatedTime int64 `json:"createdTime"`
+         ID int64 `json:"id"`
+         Group string `json:"group"`
+         NotifyCode string `json:"notifyCode"`
+         Subject string `json:"subject"`
+         Body string `json:"body"`
+         Str1 string `json:"str1"`
+         Str2 string `json:"str2"`
+         Str3 string `json:"str3"`
+         IsGlobal int64 `json:"isGlobal"`
+         CreatedTime int64 `json:"createdTime"`
     }
 )

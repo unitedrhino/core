@@ -24,9 +24,9 @@ func Migrate(c conf.Database) error {
 	err := db.AutoMigrate(
 		&SysUserMessage{},
 		&SysMessageInfo{},
-		&SysNotifyInfo{},
+		&SysNotifyConfig{},
 		&SysNotifyTemplate{},
-		&SysTenantNotifyTemplate{},
+		&SysNotifyConfigTemplate{},
 		&SysDictInfo{},
 		&SysDictDetail{},
 		&SysSlotInfo{},
@@ -62,7 +62,7 @@ func Migrate(c conf.Database) error {
 		&SysTenantAppModule{},
 		&SysUserAreaApply{},
 		&SysUserProfile{},
-		&SysTenantNotifyChannel{},
+		&SysNotifyChannel{},
 	)
 	if err != nil {
 		return err
@@ -232,26 +232,18 @@ const (
 // 子应用管理员可以配置自己子应用的角色
 
 var (
-	MigrateNotifyInfo = []SysNotifyInfo{
+	MigrateNotifyInfo = []SysNotifyConfig{
 		{Group: def.NotifyGroupCaptcha, Code: def.NotifyCodeSysUserRegisterCaptcha, Name: "用户注册验证码",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail}, IsRecord: def.False,
-			DefaultSubject: "注册验证码", DefaultBody: "欢迎注册,你的验证码是:{{.code}},有效期为{{.expr}}分钟",
-			DefaultTemplateCode: "SMS_288215142", DefaultSignName: "EbelongTool",
 			Params: map[string]string{"code": "验证码code"}},
 		{Group: def.NotifyGroupCaptcha, Code: def.NotifyCodeSysUserLoginCaptcha, Name: "用户登录验证码",
-			DefaultSubject: "登录验证码", DefaultBody: "欢迎登录,你的验证码是:{{.code}},有效期为{{.expr}}分钟",
-			DefaultTemplateCode: "SMS_288215142", DefaultSignName: "EbelongTool",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail}, IsRecord: def.False,
 			Params: map[string]string{"code": "验证码code"}},
 
 		{Group: def.NotifyGroupDevice, Code: def.NotifyCodeRuleScene, Name: "场景联动通知",
-			DefaultSubject: "场景通知", DefaultBody: "你好,场景联动通知,内容如下:{{.body}}",
-			DefaultTemplateCode: "SMS_465414256", DefaultSignName: "EbelongTool",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk}, IsRecord: def.True,
 			Params: map[string]string{"body": "通知的内容"}},
 		{Group: def.NotifyGroupDevice, Code: def.NotifyCodeDeviceAlarm, Name: "设备告警通知",
-			DefaultSubject: "设备告警通知", DefaultBody: "你好,{{.deviceAlias}}设备告警:{{.body}}",
-			DefaultTemplateCode: "SMS_465344291", DefaultSignName: "EbelongTool",
 			SupportTypes: []string{def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk}, IsRecord: def.True,
 			Params: map[string]string{"body": "通知的内容"}},
 	}
@@ -302,7 +294,7 @@ var (
 		},
 	}
 
-	MigrateTenantNotify = []SysTenantNotifyTemplate{
+	MigrateTenantNotify = []SysNotifyConfigTemplate{
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeSms, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserRegisterCaptcha, Type: def.NotifyTypeEmail, TemplateID: 0},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeSysUserLoginCaptcha, Type: def.NotifyTypeSms, TemplateID: 2},
@@ -316,7 +308,7 @@ var (
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeEmail, TemplateID: 1},
 		{TenantCode: def.TenantCodeDefault, NotifyCode: def.NotifyCodeDeviceAlarm, Type: def.NotifyTypeDingTalk, TemplateID: 1},
 	}
-	MigrateTenantNotifyChannel = []SysTenantNotifyChannel{}
+	MigrateTenantNotifyChannel = []SysNotifyChannel{}
 
 	MigrateModuleInfo = []SysModuleInfo{
 		{Name: "系统管理", Code: def.ModuleSystemManage},
