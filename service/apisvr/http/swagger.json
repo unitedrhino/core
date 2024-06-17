@@ -9957,19 +9957,20 @@
       "type": "object",
       "properties": {
         "type": {
-          "type": "string"
+          "type": "string",
+          "description": "ali(阿里云) tencent(腾讯云)"
         },
         "accessKeyID": {
-          "type": "string"
+          "type": "string",
+          "description": "阿里云,腾讯云必填"
         },
         "accessKeySecret": {
-          "type": "string"
+          "type": "string",
+          "description": "阿里云,腾讯云必填"
         },
         "appID": {
-          "type": "string"
-        },
-        "appKey": {
-          "type": "string"
+          "type": "string",
+          "description": "腾讯云必填"
         }
       },
       "title": "ThirdSms"
