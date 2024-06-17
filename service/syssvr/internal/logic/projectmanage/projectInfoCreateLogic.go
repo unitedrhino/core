@@ -3,7 +3,7 @@ package projectmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
-	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -98,6 +98,6 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		l.Errorf("%s err=%+v", utils.FuncName(), err)
 		return nil, err
 	}
-	usermanagelogic.ClearProjectAuth(uc.UserID)
+	cache.ClearProjectAuth(uc.UserID)
 	return &sys.ProjectWithID{ProjectID: int64(po.ProjectID)}, nil
 }

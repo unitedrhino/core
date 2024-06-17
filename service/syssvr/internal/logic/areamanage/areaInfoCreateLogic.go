@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
-	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -117,7 +117,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 	if err == nil {
 		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
 	}
-	usermanagelogic.ClearProjectAuth(uc.UserID)
+	cache.ClearProjectAuth(uc.UserID)
 
 	return &sys.AreaWithID{AreaID: int64(areaPo.AreaID)}, err
 }
