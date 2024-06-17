@@ -58,24 +58,29 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
-		err = relationDB.NewProjectInfoRepo(tx).Delete(l.ctx, in.ProjectID)
-		if err != nil {
-			return err
-		}
-		err = relationDB.NewAreaInfoRepo(tx).DeleteByFilter(l.ctx, relationDB.AreaInfoFilter{ProjectID: in.ProjectID})
-		if err != nil {
-			return errors.Fmt(err).WithMsg("删除区域及子区域出错")
-		}
-		err = relationDB.NewDataAreaRepo(tx).DeleteByFilter(l.ctx, relationDB.DataAreaFilter{ProjectID: in.ProjectID})
-		if err != nil {
-			return err
-		}
-		err = relationDB.NewUserAreaApplyRepo(tx).DeleteByFilter(l.ctx, relationDB.UserAreaApplyFilter{ProjectID: in.ProjectID})
-		if err != nil {
-			return err
-		}
-		return nil
+		err = ProjectDelete(l.ctx, tx, in.ProjectID)
+		return err
 	})
 
-	return &sys.Empty{}, nil
+	return &sys.Empty{}, err
+}
+
+func ProjectDelete(ctx context.Context, tx *gorm.DB, id int64) error {
+	err := relationDB.NewProjectInfoRepo(tx).Delete(ctx, id)
+	if err != nil {
+		return err
+	}
+	err = relationDB.NewAreaInfoRepo(tx).DeleteByFilter(ctx, relationDB.AreaInfoFilter{ProjectID: id})
+	if err != nil {
+		return errors.Fmt(err).WithMsg("删除区域及子区域出错")
+	}
+	err = relationDB.NewDataAreaRepo(tx).DeleteByFilter(ctx, relationDB.DataAreaFilter{ProjectID: id})
+	if err != nil {
+		return err
+	}
+	err = relationDB.NewUserAreaApplyRepo(tx).DeleteByFilter(ctx, relationDB.UserAreaApplyFilter{ProjectID: id})
+	if err != nil {
+		return err
+	}
+	return nil
 }

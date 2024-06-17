@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	projectmanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/projectmanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/domain/application"
@@ -45,13 +46,21 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 	if err != nil {
 		return nil, err
 	}
-	//pis, err := relationDB.NewProjectInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.ProjectInfoFilter{AdminUserID: in.UserID}, nil)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//if len(pis) > 0 {
-	//	return nil, errors.Permissions.AddMsg("名下还有项目,需要先转让项目给其他人才可以注销")
-	//}
+	tc, err := relationDB.NewTenantConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: ctxs.GetUserCtx(l.ctx).TenantCode})
+	if err != nil {
+		return nil, err
+	}
+	pis, err := relationDB.NewProjectInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.ProjectInfoFilter{AdminUserID: in.UserID}, nil)
+	if err != nil {
+		return nil, err
+	}
+	if tc.CheckUserDelete == 1 {
+
+		if len(pis) > 0 {
+			return nil, errors.Permissions.AddMsg("名下还有项目,需要先转让项目给其他人才可以注销")
+		}
+	}
+
 	stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		err := uidb.Delete(l.ctx, cast.ToInt64(in.UserID))
@@ -63,6 +72,15 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 			return err
 		}
 		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(l.ctx, relationDB.UserRoleFilter{UserID: in.UserID})
+		for _, v := range pis {
+			if tc.CheckUserDelete != 1 { //如果是不检查项目下的设备,那么就直接全部删除
+				err = projectmanagelogic.ProjectDelete(l.ctx, tx, int64(v.ProjectID))
+				if err != nil {
+					return err
+				}
+			}
+		}
+
 		return err
 	})
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)

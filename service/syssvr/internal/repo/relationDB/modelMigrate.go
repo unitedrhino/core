@@ -67,27 +67,27 @@ func Migrate(c conf.Database) error {
 	if err != nil {
 		return err
 	}
-	{
-		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-		if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
-			return err
-		}
-		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
-			return err
-		}
-		if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
-			return err
-		}
-		//if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
-		//	return err
-		//}
-		if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
-			return err
-		}
-		if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
-			return err
-		}
-	}
+	//{
+	//	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
+	//	if err := db.CreateInBatches(&MigrateNotifyInfo, 100).Error; err != nil {
+	//		return err
+	//	}
+	//	if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+	//		return err
+	//	}
+	//	if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
+	//		return err
+	//	}
+	//	//if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
+	//	//	return err
+	//	//}
+	//	if err := db.CreateInBatches(&MigrateNotifyTemplate, 100).Error; err != nil {
+	//		return err
+	//	}
+	//	if err := db.CreateInBatches(&MigrateTenantNotify, 100).Error; err != nil {
+	//		return err
+	//	}
+	//}
 
 	if needInitColumn {
 		return migrateTableColumn()

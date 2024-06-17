@@ -110,9 +110,10 @@ func (m *SysTenantAppMenu) TableName() string {
 
 // 租户下的邮箱配置
 type SysTenantConfig struct {
-	ID             int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode     stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	RegisterRoleID int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
+	ID              int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode      stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	RegisterRoleID  int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
+	CheckUserDelete int64             `gorm:"column:check_user_delete;type:BIGINT;default:2"`                 // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
