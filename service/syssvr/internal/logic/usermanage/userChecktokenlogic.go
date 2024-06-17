@@ -81,6 +81,10 @@ func init() {
 	projectAuthCache = cache
 }
 
+func ClearProjectAuth(userID int64) {
+	projectAuthCache.Delete(userID)
+}
+
 func GetProjectAuth(ctx context.Context, userID int64, roleIDs []int64) (map[int64]*sys.ProjectAuth, error) {
 	ret, ok := projectAuthCache.Get(userID)
 	if ok {

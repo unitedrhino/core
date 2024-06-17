@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
+	usermanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -48,8 +49,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		in.ProjectID = uc.ProjectID
 	}
 	if !uc.IsAdmin {
-		pa := uc.ProjectAuth[in.ProjectID]
-		if pa.AuthType != def.AuthAdmin {
+		if uc.ProjectAuth == nil || uc.ProjectAuth[in.ProjectID] == nil || uc.ProjectAuth[in.ProjectID].AuthType != def.AuthAdmin {
 			return nil, errors.Permissions.AddMsg("只有项目管理员才能创建区域")
 		}
 	}
@@ -117,6 +117,8 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 	if err == nil {
 		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
 	}
+	usermanagelogic.ClearProjectAuth(uc.UserID)
+
 	return &sys.AreaWithID{AreaID: int64(areaPo.AreaID)}, err
 }
 
