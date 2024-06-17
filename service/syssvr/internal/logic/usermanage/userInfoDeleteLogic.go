@@ -63,18 +63,18 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 
 	stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
-		err := uidb.Delete(l.ctx, cast.ToInt64(in.UserID))
+		err := uidb.Delete(ctxs.WithRoot(l.ctx), cast.ToInt64(in.UserID))
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewUserProfileRepo(tx).DeleteByFilter(l.ctx, relationDB.UserProfileFilter{UserID: in.UserID})
+		err = relationDB.NewUserProfileRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.UserProfileFilter{UserID: in.UserID})
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(l.ctx, relationDB.UserRoleFilter{UserID: in.UserID})
+		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.UserRoleFilter{UserID: in.UserID})
 		for _, v := range pis {
 			if tc.CheckUserDelete != 1 { //如果是不检查项目下的设备,那么就直接全部删除
-				err = projectmanagelogic.ProjectDelete(l.ctx, tx, int64(v.ProjectID))
+				err = projectmanagelogic.ProjectDelete(ctxs.WithRoot(l.ctx), tx, int64(v.ProjectID))
 				if err != nil {
 					return err
 				}
