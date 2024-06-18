@@ -39,6 +39,9 @@ func (l *NotifyTemplateUpdateLogic) NotifyTemplateUpdate(in *sys.NotifyTemplate)
 	if in.SignName != "" {
 		old.SignName = in.SignName
 	}
+	if in.TemplateCode != "" {
+		old.TemplateCode = in.TemplateCode
+	}
 	if in.Subject != "" {
 		old.Subject = in.Subject
 	}
@@ -47,6 +50,9 @@ func (l *NotifyTemplateUpdateLogic) NotifyTemplateUpdate(in *sys.NotifyTemplate)
 	}
 	if in.Desc != "" {
 		old.Desc = in.Desc
+	}
+	if in.ChannelID != 0 {
+		old.ChannelID = in.ChannelID
 	}
 	err = db.Update(l.ctx, old)
 	return &sys.Empty{}, err

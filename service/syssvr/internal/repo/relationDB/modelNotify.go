@@ -31,20 +31,20 @@ func (m *SysNotifyConfig) TableName() string {
 
 // 通知配置
 type SysNotifyTemplate struct {
-	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode   stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"`           //限定租户,不填是通用的
-	Name         string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //通知的命名
-	NotifyCode   string            `gorm:"column:notify_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
-	Type         def.NotifyType    `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的配置类型 sms email
-	TemplateCode string            `gorm:"column:code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        // 短信通知模版编码
-	SignName     string            `gorm:"column:sign_name;type:VARCHAR(50);default:''"`                   //签名(短信)
-	Subject      string            `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`                      //默认消息主题
-	Body         string            `gorm:"column:body;type:VARCHAR(512);default:''"`                       //默认模版内容
-	Desc         string            `gorm:"column:desc;type:varchar(100)"`                                  // 备注
+	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`     // id编号
+	TenantCode   stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"` //限定租户,不填是通用的
+	Name         string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                //通知的命名
+	NotifyCode   string            `gorm:"column:notify_code;type:VARCHAR(50);NOT NULL"`         //对应的配置Code
+	Type         def.NotifyType    `gorm:"column:type;type:VARCHAR(50);NOT NULL"`                //对应的配置类型 sms email
+	TemplateCode string            `gorm:"column:code;type:VARCHAR(50);NOT NULL"`                // 短信通知模版编码
+	SignName     string            `gorm:"column:sign_name;type:VARCHAR(50);default:''"`         //签名(短信)
+	Subject      string            `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`            //默认消息主题
+	Body         string            `gorm:"column:body;type:VARCHAR(512);default:''"`             //默认模版内容
+	Desc         string            `gorm:"column:desc;type:varchar(100)"`                        // 备注
 	ChannelID    int64             `gorm:"column:channel_id;type:BIGINT;"`
 	Channel      *SysNotifyChannel `gorm:"foreignKey:ID;references:ChannelID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 }
 
 func (m *SysNotifyTemplate) TableName() string {
