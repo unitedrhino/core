@@ -3,11 +3,11 @@ package opslogic
 import (
 	"context"
 	"fmt"
-	"gitee.com/i-Things/core/service/syssvr/domain/ops"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/domain/ops"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"

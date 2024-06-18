@@ -3,10 +3,10 @@ package opslogic
 import (
 	"context"
 	"database/sql"
-	"gitee.com/i-Things/core/service/syssvr/domain/ops"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/domain/ops"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 )

@@ -29,12 +29,20 @@ type OpsWorkOrderFilter struct {
 	Type      string
 	StartTime time.Time
 	EndTime   time.Time
+	AreaID    int64
+	Number    string
 }
 
 func (p OpsWorkOrderRepo) fmtFilter(ctx context.Context, f OpsWorkOrderFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.Type != "" {
 		db = db.Where("type = ?", f.Type)
+	}
+	if f.Number != "" {
+		db = db.Where("number = ?", f.Number)
+	}
+	if f.AreaID != 0 {
+		db = db.Where("area_id=?", f.AreaID)
 	}
 	if f.Status != 0 {
 		db = db.Where("status = ?", f.Status)

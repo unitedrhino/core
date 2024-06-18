@@ -25,7 +25,7 @@ func NewOpsWorkOrderIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *OpsWorkOrderIndexLogic) OpsWorkOrderIndex(in *sys.OpsWorkOrderIndexReq) (*sys.OpsWorkOrderIndexResp, error) {
-	f := relationDB.OpsWorkOrderFilter{Status: in.Status}
+	f := relationDB.OpsWorkOrderFilter{Status: in.Status, AreaID: in.AreaID, Type: in.Type, Number: in.Number}
 	total, err := relationDB.NewOpsWorkOrderRepo(l.ctx).CountByFilter(l.ctx, f)
 	if err != nil {
 		return nil, err
