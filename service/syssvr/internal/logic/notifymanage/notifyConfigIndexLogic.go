@@ -48,6 +48,7 @@ func (l *NotifyConfigIndexLogic) NotifyConfigIndex(in *sys.NotifyConfigIndexReq)
 		for _, val := range po.Templates {
 			v.TemplateIDs = append(v.TemplateIDs, val.TemplateID)
 		}
+		list = append(list, v)
 	}
 	return &sys.NotifyConfigIndexResp{List: list, Total: totaol}, nil
 }
