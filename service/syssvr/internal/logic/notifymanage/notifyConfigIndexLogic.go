@@ -29,9 +29,10 @@ func NewNotifyConfigIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *NotifyConfigIndexLogic) NotifyConfigIndex(in *sys.NotifyConfigIndexReq) (*sys.NotifyConfigIndexResp, error) {
 	db := relationDB.NewNotifyConfigRepo(l.ctx)
 	f := relationDB.NotifyConfigFilter{
-		Code:  in.Code,
-		Group: in.Group,
-		Name:  in.Name,
+		Code:          in.Code,
+		Group:         in.Group,
+		Name:          in.Name,
+		WithTemplates: in.WithChooseTemplateID,
 	}
 	totaol, err := db.CountByFilter(l.ctx, f)
 	if err != nil {
@@ -41,6 +42,12 @@ func (l *NotifyConfigIndexLogic) NotifyConfigIndex(in *sys.NotifyConfigIndexReq)
 	if err != nil {
 		return nil, err
 	}
-	list := utils.CopySlice[sys.NotifyConfig](pos)
+	var list []*sys.NotifyConfig
+	for _, po := range pos {
+		v := utils.Copy[sys.NotifyConfig](po)
+		for _, val := range po.Templates {
+			v.TemplateIDs = append(v.TemplateIDs, val.TemplateID)
+		}
+	}
 	return &sys.NotifyConfigIndexResp{List: list, Total: totaol}, nil
 }

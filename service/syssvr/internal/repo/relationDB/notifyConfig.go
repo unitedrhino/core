@@ -24,10 +24,11 @@ func NewNotifyConfigRepo(in any) *NotifyConfigRepo {
 }
 
 type NotifyConfigFilter struct {
-	ID    int64
-	Code  string
-	Group string
-	Name  string
+	ID            int64
+	Code          string
+	Group         string
+	Name          string
+	WithTemplates bool
 }
 
 func (p NotifyConfigRepo) fmtFilter(ctx context.Context, f NotifyConfigFilter) *gorm.DB {
@@ -43,6 +44,9 @@ func (p NotifyConfigRepo) fmtFilter(ctx context.Context, f NotifyConfigFilter) *
 	}
 	if f.Name != "" {
 		db = db.Where("name like ?", "%"+f.Name+"%")
+	}
+	if f.WithTemplates {
+		db = db.Preload("Templates")
 	}
 	return db
 }

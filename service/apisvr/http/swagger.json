@@ -8111,6 +8111,13 @@
         "params": {
           "type": "object",
           "description": "变量属性 key是变量参数,value是变量描述"
+        },
+        "templateIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "title": "NotifyConfig"
@@ -8133,6 +8140,10 @@
         "group": {
           "type": "string",
           "description": "分组"
+        },
+        "withChooseTemplateID": {
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "NotifyConfigIndexReq"
@@ -8273,10 +8284,6 @@
           "type": "integer",
           "format": "int64",
           "description": " id编号"
-        },
-        "tenantCode": {
-          "type": "string",
-          "description": "限定租户,不填是通用的"
         },
         "name": {
           "type": "string",

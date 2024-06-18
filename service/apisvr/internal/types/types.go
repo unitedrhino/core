@@ -425,13 +425,15 @@ type NotifyConfig struct {
 	Desc         string            `json:"desc,optional"`         // 备注
 	IsRecord     int64             `json:"isRecord,optional"`     //是否记录该消息,是的情况下会将消息存一份到消息中心
 	Params       map[string]string `json:"params,optional"`       //变量属性 key是变量参数,value是变量描述
+	TemplateIDs  []int64           `json:"templateIDs,optional"`
 }
 
 type NotifyConfigIndexReq struct {
-	Page  *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
-	Name  string    `json:"name,optional"`  // 应用名称
-	Code  string    `json:"code,optional"`  // 应用编号
-	Group string    `json:"group,optional"` //分组
+	Page                 *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
+	Name                 string    `json:"name,optional"`  // 应用名称
+	Code                 string    `json:"code,optional"`  // 应用编号
+	Group                string    `json:"group,optional"` //分组
+	WithChooseTemplateID bool      `json:"withChooseTemplateID,optional"`
 }
 
 type NotifyConfigIndexResp struct {
@@ -473,7 +475,6 @@ type NotifyGroupInfo struct {
 
 type NotifyTemplate struct {
 	ID           int64          `json:"id,optional"`           // id编号
-	TenantCode   string         `json:"tenantCode,optional"`   //限定租户,不填是通用的
 	Name         string         `json:"name,optional"`         //通知的命名
 	NotifyCode   string         `json:"notifyCode,optional"`   //对应的配置Code
 	Type         string         `json:"type,optional"`         //对应的配置类型 sms email

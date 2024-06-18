@@ -21,7 +21,8 @@ type SysNotifyConfig struct {
 	IsRecord     int64             `gorm:"column:is_record;type:BIGINT"`                                         //是否记录该消息,是的情况下会将消息存一份到消息中心
 	Params       map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL;default:'{}'"`        //变量属性 key是参数,value是描述
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi;"`
+	Templates   []*SysNotifyConfigTemplate `gorm:"foreignKey:NotifyCode;references:ID"`
+	DeletedTime stores.DeletedTime         `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi;"`
 }
 
 func (m *SysNotifyConfig) TableName() string {

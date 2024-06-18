@@ -52,7 +52,6 @@ type (
 
     NotifyTemplate{
          ID int64 `json:"id,optional"`  // id编号
-         TenantCode string `json:"tenantCode,optional"`  //限定租户,不填是通用的
          Name string `json:"name,optional"`  //通知的命名
          NotifyCode string `json:"notifyCode,optional"`  //对应的配置Code
          Type string `json:"type,optional"`  //对应的配置类型 sms email
