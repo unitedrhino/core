@@ -78,6 +78,7 @@ type (
 	NotifyConfigIndexResp         = sys.NotifyConfigIndexResp
 	NotifyConfigSendReq           = sys.NotifyConfigSendReq
 	NotifyConfigTemplate          = sys.NotifyConfigTemplate
+	NotifyConfigTemplateDeleteReq = sys.NotifyConfigTemplateDeleteReq
 	NotifyConfigTemplateIndexReq  = sys.NotifyConfigTemplateIndexReq
 	NotifyConfigTemplateIndexResp = sys.NotifyConfigTemplateIndexResp
 	NotifyTemplate                = sys.NotifyTemplate

@@ -441,14 +441,19 @@ type NotifyConfigIndexResp struct {
 
 type NotifyConfigTemplate struct {
 	ID         int64  `json:"id,optional"`
+	NotifyCode string `json:"notifyCode,optional"`
+	Type       string `json:"type,optional"`
+	TemplateID int64  `json:"templateID,optional"`
+}
+
+type NotifyConfigTemplateDeleteReq struct {
 	NotifyCode string `json:"notifyCode"`
 	Type       string `json:"type"`
-	TemplateID int64  `json:"templateID"`
 }
 
 type NotifyConfigTemplateIndexReq struct {
 	NotifyCode string `json:"notifyCode"`
-	Type       string `json:"type"`
+	Type       string `json:"type,optional"`
 }
 
 type NotifyConfigTemplateIndexResp struct {

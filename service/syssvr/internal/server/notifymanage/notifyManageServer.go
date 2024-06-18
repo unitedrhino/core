@@ -106,6 +106,11 @@ func (s *NotifyManageServer) NotifyConfigTemplateUpdate(ctx context.Context, in 
 	return l.NotifyConfigTemplateUpdate(in)
 }
 
+func (s *NotifyManageServer) NotifyConfigTemplateDelete(ctx context.Context, in *sys.NotifyConfigTemplateDeleteReq) (*sys.Empty, error) {
+	l := notifymanagelogic.NewNotifyConfigTemplateDeleteLogic(ctx, s.svcCtx)
+	return l.NotifyConfigTemplateDelete(in)
+}
+
 func (s *NotifyManageServer) NotifyConfigTemplateIndex(ctx context.Context, in *sys.NotifyConfigTemplateIndexReq) (*sys.NotifyConfigTemplateIndexResp, error) {
 	l := notifymanagelogic.NewNotifyConfigTemplateIndexLogic(ctx, s.svcCtx)
 	return l.NotifyConfigTemplateIndex(in)

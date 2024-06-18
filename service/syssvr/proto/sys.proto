@@ -69,6 +69,8 @@ service NotifyManage {
 
   //租户通知配置
   rpc notifyConfigTemplateUpdate(NotifyConfigTemplate)returns(Empty);
+  rpc notifyConfigTemplateDelete(NotifyConfigTemplateDeleteReq)returns(Empty);
+
   rpc notifyConfigTemplateIndex(NotifyConfigTemplateIndexReq)returns(NotifyConfigTemplateIndexResp);
 
   rpc notifyChannelRead(WithID)returns(NotifyChannel);
@@ -392,7 +394,10 @@ message MessageInfo {
 }
 
 
-
+message NotifyConfigTemplateDeleteReq{
+  string notifyCode =2;
+  string type =3;
+}
 
 message NotifyConfigTemplateIndexReq{
   string notifyCode =2;

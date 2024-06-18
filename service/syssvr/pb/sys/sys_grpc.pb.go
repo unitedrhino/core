@@ -1214,6 +1214,7 @@ const (
 	NotifyManage_NotifyTemplateIndex_FullMethodName        = "/sys.NotifyManage/notifyTemplateIndex"
 	NotifyManage_NotifyTemplateDelete_FullMethodName       = "/sys.NotifyManage/notifyTemplateDelete"
 	NotifyManage_NotifyConfigTemplateUpdate_FullMethodName = "/sys.NotifyManage/notifyConfigTemplateUpdate"
+	NotifyManage_NotifyConfigTemplateDelete_FullMethodName = "/sys.NotifyManage/notifyConfigTemplateDelete"
 	NotifyManage_NotifyConfigTemplateIndex_FullMethodName  = "/sys.NotifyManage/notifyConfigTemplateIndex"
 	NotifyManage_NotifyChannelRead_FullMethodName          = "/sys.NotifyManage/notifyChannelRead"
 	NotifyManage_NotifyChannelCreate_FullMethodName        = "/sys.NotifyManage/notifyChannelCreate"
@@ -1246,6 +1247,7 @@ type NotifyManageClient interface {
 	NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	// 租户通知配置
 	NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error)
+	NotifyConfigTemplateDelete(ctx context.Context, in *NotifyConfigTemplateDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 	NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error)
 	NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error)
 	NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error)
@@ -1406,6 +1408,15 @@ func (c *notifyManageClient) NotifyConfigTemplateUpdate(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *notifyManageClient) NotifyConfigTemplateDelete(ctx context.Context, in *NotifyConfigTemplateDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigTemplateDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *notifyManageClient) NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error) {
 	out := new(NotifyConfigTemplateIndexResp)
 	err := c.cc.Invoke(ctx, NotifyManage_NotifyConfigTemplateIndex_FullMethodName, in, out, opts...)
@@ -1484,6 +1495,7 @@ type NotifyManageServer interface {
 	NotifyTemplateDelete(context.Context, *WithID) (*Empty, error)
 	// 租户通知配置
 	NotifyConfigTemplateUpdate(context.Context, *NotifyConfigTemplate) (*Empty, error)
+	NotifyConfigTemplateDelete(context.Context, *NotifyConfigTemplateDeleteReq) (*Empty, error)
 	NotifyConfigTemplateIndex(context.Context, *NotifyConfigTemplateIndexReq) (*NotifyConfigTemplateIndexResp, error)
 	NotifyChannelRead(context.Context, *WithID) (*NotifyChannel, error)
 	NotifyChannelCreate(context.Context, *NotifyChannel) (*WithID, error)
@@ -1544,6 +1556,9 @@ func (UnimplementedNotifyManageServer) NotifyTemplateDelete(context.Context, *Wi
 }
 func (UnimplementedNotifyManageServer) NotifyConfigTemplateUpdate(context.Context, *NotifyConfigTemplate) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigTemplateUpdate not implemented")
+}
+func (UnimplementedNotifyManageServer) NotifyConfigTemplateDelete(context.Context, *NotifyConfigTemplateDeleteReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigTemplateDelete not implemented")
 }
 func (UnimplementedNotifyManageServer) NotifyConfigTemplateIndex(context.Context, *NotifyConfigTemplateIndexReq) (*NotifyConfigTemplateIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NotifyConfigTemplateIndex not implemented")
@@ -1864,6 +1879,24 @@ func _NotifyManage_NotifyConfigTemplateUpdate_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NotifyManage_NotifyConfigTemplateDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NotifyConfigTemplateDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NotifyManageServer).NotifyConfigTemplateDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NotifyManage_NotifyConfigTemplateDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NotifyManageServer).NotifyConfigTemplateDelete(ctx, req.(*NotifyConfigTemplateDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NotifyManage_NotifyConfigTemplateIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NotifyConfigTemplateIndexReq)
 	if err := dec(in); err != nil {
@@ -2042,6 +2075,10 @@ var NotifyManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "notifyConfigTemplateUpdate",
 			Handler:    _NotifyManage_NotifyConfigTemplateUpdate_Handler,
+		},
+		{
+			MethodName: "notifyConfigTemplateDelete",
+			Handler:    _NotifyManage_NotifyConfigTemplateDelete_Handler,
 		},
 		{
 			MethodName: "notifyConfigTemplateIndex",

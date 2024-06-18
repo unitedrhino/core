@@ -78,6 +78,7 @@ type (
 	NotifyConfigIndexResp         = sys.NotifyConfigIndexResp
 	NotifyConfigSendReq           = sys.NotifyConfigSendReq
 	NotifyConfigTemplate          = sys.NotifyConfigTemplate
+	NotifyConfigTemplateDeleteReq = sys.NotifyConfigTemplateDeleteReq
 	NotifyConfigTemplateIndexReq  = sys.NotifyConfigTemplateIndexReq
 	NotifyConfigTemplateIndexResp = sys.NotifyConfigTemplateIndexResp
 	NotifyTemplate                = sys.NotifyTemplate
@@ -212,6 +213,7 @@ type (
 		NotifyTemplateDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 		// 租户通知配置
 		NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error)
+		NotifyConfigTemplateDelete(ctx context.Context, in *NotifyConfigTemplateDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 		NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error)
 		NotifyChannelRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*NotifyChannel, error)
 		NotifyChannelCreate(ctx context.Context, in *NotifyChannel, opts ...grpc.CallOption) (*WithID, error)
@@ -393,6 +395,15 @@ func (m *defaultNotifyManage) NotifyConfigTemplateUpdate(ctx context.Context, in
 // 租户通知配置
 func (d *directNotifyManage) NotifyConfigTemplateUpdate(ctx context.Context, in *NotifyConfigTemplate, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.NotifyConfigTemplateUpdate(ctx, in)
+}
+
+func (m *defaultNotifyManage) NotifyConfigTemplateDelete(ctx context.Context, in *NotifyConfigTemplateDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewNotifyManageClient(m.cli.Conn())
+	return client.NotifyConfigTemplateDelete(ctx, in, opts...)
+}
+
+func (d *directNotifyManage) NotifyConfigTemplateDelete(ctx context.Context, in *NotifyConfigTemplateDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.NotifyConfigTemplateDelete(ctx, in)
 }
 
 func (m *defaultNotifyManage) NotifyConfigTemplateIndex(ctx context.Context, in *NotifyConfigTemplateIndexReq, opts ...grpc.CallOption) (*NotifyConfigTemplateIndexResp, error) {

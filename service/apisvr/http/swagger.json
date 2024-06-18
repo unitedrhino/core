@@ -3153,6 +3153,45 @@
         ]
       }
     },
+    "/api/v1/system/notify/config/template/delete": {
+      "post": {
+        "summary": "删除通知绑定模版",
+        "operationId": "postApiV1SystemNotifyConfigTemplateDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NotifyConfigTemplateDeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/notify/config/template",
+          "systemNotifyConfigTemplate"
+        ]
+      }
+    },
     "/api/v1/system/notify/config/template/index": {
       "post": {
         "summary": "获取通知绑定模版列表",
@@ -8138,11 +8177,22 @@
           "format": "int64"
         }
       },
-      "title": "NotifyConfigTemplate",
+      "title": "NotifyConfigTemplate"
+    },
+    "NotifyConfigTemplateDeleteReq": {
+      "type": "object",
+      "properties": {
+        "notifyCode": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "title": "NotifyConfigTemplateDeleteReq",
       "required": [
         "notifyCode",
-        "type",
-        "templateID"
+        "type"
       ]
     },
     "NotifyConfigTemplateIndexReq": {
@@ -8157,8 +8207,7 @@
       },
       "title": "NotifyConfigTemplateIndexReq",
       "required": [
-        "notifyCode",
-        "type"
+        "notifyCode"
       ]
     },
     "NotifyConfigTemplateIndexResp": {

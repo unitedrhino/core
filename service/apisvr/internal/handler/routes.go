@@ -625,6 +625,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemnotifyconfigtemplate.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemnotifyconfigtemplate.IndexHandler(serverCtx),
 				},

@@ -54,6 +54,9 @@ service api {
     @doc "更新通知绑定模版"
     @handler update
     post /update (NotifyConfigTemplate) returns ()
+    @doc "删除通知绑定模版"
+    @handler delete
+    post /delete (NotifyConfigTemplateDeleteReq) returns ()
 }
 
 
@@ -61,14 +64,17 @@ service api {
 type (
     NotifyConfigTemplate {
         ID int64 `json:"id,optional"`
+        NotifyCode string `json:"notifyCode,optional"`
+        Type string `json:"type,optional"`
+        TemplateID int64 `json:"templateID,optional"`
+    }
+    NotifyConfigTemplateDeleteReq{
         NotifyCode string `json:"notifyCode"`
         Type string `json:"type"`
-        TemplateID int64 `json:"templateID"`
     }
-
     NotifyConfigTemplateIndexReq{
         NotifyCode string `json:"notifyCode"`
-        Type string `json:"type"`
+        Type string `json:"type,optional"`
     }
     NotifyConfigTemplateIndexResp{
         List []*NotifyConfigTemplate `json:"list"`
