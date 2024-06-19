@@ -422,18 +422,17 @@ type NotifyConfig struct {
 	Code         string            `json:"code,optional"`         // 通知类型编码
 	Name         string            `json:"name,optional"`         //通知的命名
 	SupportTypes []string          `json:"supportTypes,optional"` //支持的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
+	EnableTypes  []string          `json:"enableTypes,optional"`  //启用的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
 	Desc         string            `json:"desc,optional"`         // 备注
 	IsRecord     int64             `json:"isRecord,optional"`     //是否记录该消息,是的情况下会将消息存一份到消息中心
 	Params       map[string]string `json:"params,optional"`       //变量属性 key是变量参数,value是变量描述
-	TemplateIDs  []int64           `json:"templateIDs,optional"`
 }
 
 type NotifyConfigIndexReq struct {
-	Page                 *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
-	Name                 string    `json:"name,optional"`  // 应用名称
-	Code                 string    `json:"code,optional"`  // 应用编号
-	Group                string    `json:"group,optional"` //分组
-	WithChooseTemplateID bool      `json:"withChooseTemplateID,optional"`
+	Page  *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
+	Name  string    `json:"name,optional"`  // 应用名称
+	Code  string    `json:"code,optional"`  // 应用编号
+	Group string    `json:"group,optional"` //分组
 }
 
 type NotifyConfigIndexResp struct {

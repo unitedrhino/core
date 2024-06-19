@@ -3,6 +3,7 @@ package notifymanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/stores"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -29,5 +30,9 @@ func (l *NotifyConfigTemplateDeleteLogic) NotifyConfigTemplateDelete(in *sys.Not
 		NotifyCode: in.NotifyCode,
 		Type:       in.Type,
 	})
+	if err != nil {
+		return nil, err
+	}
+	err = InitConfigEnableTypes(l.ctx, stores.GetTenantConn(l.ctx), in.NotifyCode)
 	return &sys.Empty{}, err
 }

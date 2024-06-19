@@ -71,6 +71,12 @@ func (p TenantConfigRepo) Update(ctx context.Context, data *SysTenantConfig) err
 	return stores.ErrFmt(err)
 }
 
+func (d TenantConfigRepo) UpdateWithField(ctx context.Context, f TenantConfigFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysTenantConfig{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
+
 func (p TenantConfigRepo) DeleteByFilter(ctx context.Context, f TenantConfigFilter) error {
 	db := p.fmtFilter(ctx, f)
 	err := db.Delete(&SysTenantConfig{}).Error

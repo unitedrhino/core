@@ -8099,6 +8099,13 @@
           },
           "description": "支持的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)"
         },
+        "enableTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "启用的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)"
+        },
         "desc": {
           "type": "string",
           "description": " 备注"
@@ -8111,13 +8118,6 @@
         "params": {
           "type": "object",
           "description": "变量属性 key是变量参数,value是变量描述"
-        },
-        "templateIDs": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
         }
       },
       "title": "NotifyConfig"
@@ -8140,10 +8140,6 @@
         "group": {
           "type": "string",
           "description": "分组"
-        },
-        "withChooseTemplateID": {
-          "type": "boolean",
-          "format": "boolean"
         }
       },
       "title": "NotifyConfigIndexReq"

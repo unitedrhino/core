@@ -87,6 +87,12 @@ func (p NotifyConfigRepo) Update(ctx context.Context, data *SysNotifyConfig) err
 	return stores.ErrFmt(err)
 }
 
+func (d NotifyConfigRepo) UpdateWithField(ctx context.Context, f NotifyConfigFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysNotifyConfig{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
+
 func (p NotifyConfigRepo) DeleteByFilter(ctx context.Context, f NotifyConfigFilter) error {
 	db := p.fmtFilter(ctx, f)
 	err := db.Delete(&SysNotifyConfig{}).Error
