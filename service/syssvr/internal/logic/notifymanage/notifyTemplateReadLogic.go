@@ -3,7 +3,6 @@ package notifymanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -28,7 +27,6 @@ func NewNotifyTemplateReadLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // 通知模版
 func (l *NotifyTemplateReadLogic) NotifyTemplateRead(in *sys.WithID) (*sys.NotifyTemplate, error) {
-	l.ctx = ctxs.WithCommonTenant(l.ctx)
 	po, err := relationDB.NewNotifyTemplateRepo(l.ctx).FindOne(l.ctx, in.Id)
 	return utils.Copy[sys.NotifyTemplate](po), err
 }

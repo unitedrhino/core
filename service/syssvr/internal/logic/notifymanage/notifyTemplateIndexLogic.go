@@ -4,7 +4,6 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -34,7 +33,6 @@ func (l *NotifyTemplateIndexLogic) NotifyTemplateIndex(in *sys.NotifyTemplateInd
 		NotifyCode: in.NotifyCode,
 		Type:       in.Type,
 	}
-	l.ctx = ctxs.WithCommonTenant(l.ctx)
 	total, err := db.CountByFilter(l.ctx, f)
 	if err != nil {
 		return nil, err

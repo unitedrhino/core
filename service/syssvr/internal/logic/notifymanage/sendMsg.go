@@ -7,7 +7,6 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
@@ -29,7 +28,7 @@ type SendMsgConfig struct {
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
-	c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctxs.WithCommonTenant(ctx), relationDB.NotifyConfigTemplateFilter{
+	c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
 		NotifyCode: cfg.NotifyCode,
 		Type:       cfg.Type,
 	})
