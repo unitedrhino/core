@@ -35,7 +35,7 @@ func (p NotifyTemplateRepo) fmtFilter(ctx context.Context, f NotifyTemplateFilte
 		db = db.Where("name =?", f.Name)
 	}
 	if f.NotifyCode != "" {
-		db = db.Where("notifyCode=?", f.NotifyCode)
+		db = db.Where("notify_code=?", f.NotifyCode)
 	}
 	if f.Type != "" {
 		db = db.Where("type =?", f.Type)
