@@ -1044,6 +1044,7 @@ message UserInfoIndexReq{
   repeated int64 userIDs =5;
   string account =6;
   repeated int64 hasAccessAreas =7;
+  string roleCode =8;
 }
 
 message UserInfoIndexResp{

@@ -40,6 +40,7 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 		Account:        req.Account,
 		UserIDs:        req.UserIDs,
 		HasAccessAreas: req.HasAccessAreas,
+		RoleCode:       req.RoleCode,
 	})
 	if err != nil {
 		return nil, err

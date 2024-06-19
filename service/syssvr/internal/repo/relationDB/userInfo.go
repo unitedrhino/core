@@ -32,6 +32,7 @@ type UserInfoFilter struct {
 	DingTalkUserID string
 	WithRoles      bool
 	WithTenant     bool
+	RoleCode       string
 }
 
 func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
@@ -45,10 +46,11 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	db := p.db.WithContext(ctx)
 	if f.HasAccessAreas != nil {
 		if len(f.HasAccessAreas) == 0 {
-			db = db.Where("user_id in (select target_id from sys_data_area where deleted_time =0 and target_type=?)", def.TargetUser)
+			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=?", def.TargetUser)
+			db = db.Where("user_id in (?)", subQuery)
 		} else {
-			db = db.Where("user_id in (select target_id from sys_data_area where deleted_time =0 and target_type=? and area_id in ?)",
-				def.TargetUser, f.HasAccessAreas)
+			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=? and area_id in ?", def.TargetUser, f.HasAccessAreas)
+			db = db.Where("user_id in (?)", subQuery)
 		}
 	}
 	if f.DingTalkUserID != "" {
@@ -99,6 +101,11 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)
+	}
+	if f.RoleCode != "" {
+		subQuery1 := p.db.Model(&SysRoleInfo{}).Select("id").Where("code=?", f.RoleCode)
+		subQuery2 := p.db.Model(&SysUserRole{}).Select("user_id").Where("role_id in (?)", subQuery1)
+		db = db.Where("user_id in (?)", subQuery2)
 	}
 	return db
 }

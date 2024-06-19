@@ -1166,6 +1166,7 @@ type UserInfoIndexReq struct {
 	Account        string    `json:"account,optional"`
 	UserIDs        []int64   `json:"userIDs,optional"`
 	HasAccessAreas []int64   `json:"hasAccessAreas,optional"`
+	RoleCode       string    `json:"roleCode,optional"`
 }
 
 type UserInfoIndexResp struct {

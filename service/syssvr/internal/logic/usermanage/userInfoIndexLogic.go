@@ -35,6 +35,7 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 		Email:          in.Email,
 		UserIDs:        in.UserIDs,
 		HasAccessAreas: in.HasAccessAreas,
+		RoleCode:       in.RoleCode,
 	}
 	if in.Account != "" {
 		f.Accounts = []string{in.Account}
