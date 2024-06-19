@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
+	"gitee.com/i-Things/share/utils"
 	"gorm.io/gorm"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -66,6 +67,6 @@ func InitConfigEnableTypes(ctx context.Context, tx *gorm.DB, notifyCode string) 
 		enableTypes = append(enableTypes, v.Template.Type)
 	}
 	return relationDB.NewNotifyConfigRepo(tx).UpdateWithField(ctx, relationDB.NotifyConfigFilter{Code: notifyCode}, map[string]any{
-		"enable_types": enableTypes,
+		"enable_types": utils.MarshalNoErr(enableTypes),
 	})
 }
