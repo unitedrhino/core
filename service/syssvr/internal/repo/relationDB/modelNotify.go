@@ -21,7 +21,7 @@ type SysNotifyConfig struct {
 	IsRecord     int64             `gorm:"column:is_record;type:BIGINT"`                                         //是否记录该消息,是的情况下会将消息存一份到消息中心
 	Params       map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL;default:'{}'"`        //变量属性 key是参数,value是描述
 	stores.NoDelTime
-	Templates   []*SysNotifyConfigTemplate `gorm:"foreignKey:NotifyCode;references:ID"`
+	Templates   []*SysNotifyConfigTemplate `gorm:"foreignKey:NotifyCode;references:Code"`
 	DeletedTime stores.DeletedTime         `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi;"`
 }
 
@@ -53,11 +53,12 @@ func (m *SysNotifyTemplate) TableName() string {
 
 // 租户下的通知配置
 type SysNotifyConfigTemplate struct {
-	ID         int64              `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode stores.TenantCode  `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	NotifyCode string             `gorm:"column:notify_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置Code
-	Type       string             `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的类型
-	TemplateID int64              `gorm:"column:template_id;type:BIGINT;default:1"`                       //绑定的模板id,1为默认
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);uniqueIndex:ri_mi;NOT NULL"` // 租户编码
+	//NotifyCode string             `gorm:"column:notify_code;type:VARCHAR(50);uniqueIndex:ri_mi;NOT NULL"` //对应的配置Code
+	NotifyCode string             `gorm:"column:notify_code;type:VARCHAR(50);NOT NULL"`            //对应的配置Code
+	Type       string             `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的类型
+	TemplateID int64              `gorm:"column:template_id;type:BIGINT;default:1"`                //绑定的模板id,1为默认
 	Template   *SysNotifyTemplate `gorm:"foreignKey:ID;references:TemplateID"`
 	Config     *SysNotifyConfig   `gorm:"foreignKey:Code;references:NotifyCode"`
 	stores.NoDelTime

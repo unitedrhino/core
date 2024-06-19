@@ -124,6 +124,6 @@ func (p NotifyConfigTemplateRepo) MultiUpdate(ctx context.Context, pos []*SysNot
 
 // 批量插入 LightStrategyDevice 记录
 func (p NotifyConfigTemplateRepo) Save(ctx context.Context, data *SysNotifyConfigTemplate) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysNotifyConfigTemplate{}).Create(data).Error
+	err := p.db.WithContext(ctx).Model(&SysNotifyConfigTemplate{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
