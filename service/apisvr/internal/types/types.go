@@ -914,6 +914,7 @@ type ThirdSms struct {
 	AccessKeyID     string `json:"accessKeyID,optional"`     //阿里云,腾讯云必填
 	AccessKeySecret string `json:"accessKeySecret,optional"` //阿里云,腾讯云必填
 	AppID           string `json:"appID,optional"`           //腾讯云必填
+	AppKey          string `json:"appKey,optional"`          //腾讯云必填
 }
 
 type TimeRange struct {

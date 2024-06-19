@@ -10027,6 +10027,10 @@
         "appID": {
           "type": "string",
           "description": "腾讯云必填"
+        },
+        "appKey": {
+          "type": "string",
+          "description": "腾讯云必填"
         }
       },
       "title": "ThirdSms"
