@@ -6899,23 +6899,19 @@
       "type": "object",
       "properties": {
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "创建时间（只读）"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id（只读）"
         },
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目区域id（只读）"
         },
         "parentAreaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "上级项目区域id（只读）"
         },
         "areaName": {
@@ -6984,8 +6980,7 @@
           "description": "进行数据分页（不传默认2000相当于全部）"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id"
         },
         "areaIDs": {
@@ -6997,8 +6992,7 @@
           "description": "项目区域ids"
         },
         "parentAreaID": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "isRetTopLevel": {
           "type": "boolean",
@@ -7033,13 +7027,11 @@
       "type": "object",
       "properties": {
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目区域id"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id 不填选默认项目"
         },
         "withChildren": {
@@ -7056,8 +7048,7 @@
       "type": "object",
       "properties": {
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目区域id 只读"
         }
       },
@@ -7099,8 +7090,7 @@
       "type": "object",
       "properties": {
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id"
         },
         "authType": {
@@ -7140,16 +7130,14 @@
           "description": "进行数据分页（不传默认2000相当于全部）"
         },
         "targetID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "用户ID"
         },
         "targetType": {
           "type": "string"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id"
         }
       },
@@ -7181,13 +7169,11 @@
       "type": "object",
       "properties": {
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id"
         },
         "targetID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "用户ID"
         },
         "targetType": {
@@ -7196,8 +7182,7 @@
         "areaIDs": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         }
       },
@@ -7212,16 +7197,14 @@
       "type": "object",
       "properties": {
         "targetID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "用户ID"
         },
         "targetType": {
           "type": "string"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id"
         },
         "areas": {
@@ -7244,8 +7227,7 @@
       "type": "object",
       "properties": {
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "权限数据ID"
         },
         "authType": {
@@ -7268,13 +7250,11 @@
           "description": "进行数据分页（不传默认2000相当于全部）"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "权限数据ID"
         },
         "targetID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "用户ID"
         },
         "targetType": {
@@ -7309,8 +7289,7 @@
       "type": "object",
       "properties": {
         "targetID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "用户ID"
         },
         "targetType": {
@@ -7594,13 +7573,11 @@
           "description": "用户token"
         },
         "accessExpire": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "token过期时间"
         },
         "refreshAfter": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "token刷新时间"
         }
       },
@@ -8370,8 +8347,7 @@
       "type": "object",
       "properties": {
         "deviceSendTime": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       },
       "title": "NtpReadReq",
@@ -8383,16 +8359,13 @@
       "type": "object",
       "properties": {
         "deviceSendTime": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "serverSendTime": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "serverRecvTime": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       },
       "title": "NtpReadResp",
@@ -8490,13 +8463,11 @@
           "description": "编号"
         },
         "raiseUserID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "问题提出的用户"
         },
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目区域id"
         },
         "type": {
@@ -8636,13 +8607,11 @@
       "type": "object",
       "properties": {
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "创建时间（只读）"
         },
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id（只读）"
         },
         "projectName": {
@@ -8650,8 +8619,7 @@
           "description": "项目名称（读写）"
         },
         "adminUserID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 管理员用户id（读写）"
         },
         "position": {
@@ -8731,8 +8699,7 @@
       "type": "object",
       "properties": {
         "projectID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id 只读"
         },
         "withAdminUser": {
@@ -9178,8 +9145,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         },
         "appCode": {
@@ -9207,8 +9173,7 @@
           "description": " 操作系统"
         },
         "code": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 登录状态（200成功 其它失败）"
         },
         "msg": {
@@ -9216,8 +9181,7 @@
           "description": " 提示消息"
         },
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 登录时间"
         }
       },
@@ -9250,8 +9214,7 @@
           "description": "按操作人员名称查找"
         },
         "businessType": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "按业务类型（1新增 2修改 3删除 4查询）查找"
         },
         "appCode": {
@@ -9287,8 +9250,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         },
         "appCode": {
@@ -9304,8 +9266,7 @@
           "description": "操作名称"
         },
         "businessType": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "业务类型（1新增 2修改 3删除 4查询）"
         },
         "uri": {
@@ -9329,8 +9290,7 @@
           "description": "返回参数"
         },
         "code": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "登录状态（200成功 其它失败）"
         },
         "msg": {
@@ -9338,8 +9298,7 @@
           "description": "提示消息"
         },
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "操作时间"
         }
       },
@@ -9726,8 +9685,7 @@
           "description": " 接口名称"
         },
         "adminUserID": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "adminRoleID": {
           "type": "integer",
@@ -9765,8 +9723,7 @@
           "type": "string"
         },
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 创建时间"
         },
         "status": {
@@ -10525,8 +10482,7 @@
       "type": "object",
       "properties": {
         "areaID": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "authType": {
           "type": "integer",
@@ -10620,13 +10576,11 @@
           "description": "项目id"
         },
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "用户ID"
         },
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "项目id"
         },
         "authType": {
@@ -10754,8 +10708,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         },
         "userName": {
@@ -10787,8 +10740,7 @@
           "description": " 用户头像"
         },
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 创建时间"
         }
       },
@@ -10798,8 +10750,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         }
       },
@@ -10843,8 +10794,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         },
         "userName": {
@@ -10901,8 +10851,7 @@
           "description": " 用户头像"
         },
         "createdTime": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 创建时间"
         },
         "role": {
@@ -10964,8 +10913,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         }
       },
@@ -11035,8 +10983,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         },
         "withRoles": {
@@ -11352,8 +11299,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         }
       },
@@ -11387,8 +11333,7 @@
       "type": "object",
       "properties": {
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 用户id"
         },
         "roleIDs": {
