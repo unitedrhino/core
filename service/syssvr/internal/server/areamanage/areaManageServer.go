@@ -51,3 +51,18 @@ func (s *AreaManageServer) AreaInfoIndex(ctx context.Context, in *sys.AreaInfoIn
 	l := areamanagelogic.NewAreaInfoIndexLogic(ctx, s.svcCtx)
 	return l.AreaInfoIndex(in)
 }
+
+func (s *AreaManageServer) AreaProfileRead(ctx context.Context, in *sys.AreaProfileReadReq) (*sys.AreaProfile, error) {
+	l := areamanagelogic.NewAreaProfileReadLogic(ctx, s.svcCtx)
+	return l.AreaProfileRead(in)
+}
+
+func (s *AreaManageServer) AreaProfileUpdate(ctx context.Context, in *sys.AreaProfile) (*sys.Empty, error) {
+	l := areamanagelogic.NewAreaProfileUpdateLogic(ctx, s.svcCtx)
+	return l.AreaProfileUpdate(in)
+}
+
+func (s *AreaManageServer) AreaProfileIndex(ctx context.Context, in *sys.AreaProfileIndexReq) (*sys.AreaProfileIndexResp, error) {
+	l := areamanagelogic.NewAreaProfileIndexLogic(ctx, s.svcCtx)
+	return l.AreaProfileIndex(in)
+}

@@ -51,3 +51,18 @@ func (s *ProjectManageServer) ProjectInfoIndex(ctx context.Context, in *sys.Proj
 	l := projectmanagelogic.NewProjectInfoIndexLogic(ctx, s.svcCtx)
 	return l.ProjectInfoIndex(in)
 }
+
+func (s *ProjectManageServer) ProjectProfileRead(ctx context.Context, in *sys.ProjectProfileReadReq) (*sys.ProjectProfile, error) {
+	l := projectmanagelogic.NewProjectProfileReadLogic(ctx, s.svcCtx)
+	return l.ProjectProfileRead(in)
+}
+
+func (s *ProjectManageServer) ProjectProfileUpdate(ctx context.Context, in *sys.ProjectProfile) (*sys.Empty, error) {
+	l := projectmanagelogic.NewProjectProfileUpdateLogic(ctx, s.svcCtx)
+	return l.ProjectProfileUpdate(in)
+}
+
+func (s *ProjectManageServer) ProjectProfileIndex(ctx context.Context, in *sys.ProjectProfileIndexReq) (*sys.ProjectProfileIndexResp, error) {
+	l := projectmanagelogic.NewProjectProfileIndexLogic(ctx, s.svcCtx)
+	return l.ProjectProfileIndex(in)
+}

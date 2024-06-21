@@ -32,6 +32,10 @@ type (
 	AreaInfoIndexReq              = sys.AreaInfoIndexReq
 	AreaInfoIndexResp             = sys.AreaInfoIndexResp
 	AreaInfoReadReq               = sys.AreaInfoReadReq
+	AreaProfile                   = sys.AreaProfile
+	AreaProfileIndexReq           = sys.AreaProfileIndexReq
+	AreaProfileIndexResp          = sys.AreaProfileIndexResp
+	AreaProfileReadReq            = sys.AreaProfileReadReq
 	AreaWithID                    = sys.AreaWithID
 	AuthApiInfo                   = sys.AuthApiInfo
 	ConfigResp                    = sys.ConfigResp
@@ -103,6 +107,10 @@ type (
 	ProjectInfo                   = sys.ProjectInfo
 	ProjectInfoIndexReq           = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp          = sys.ProjectInfoIndexResp
+	ProjectProfile                = sys.ProjectProfile
+	ProjectProfileIndexReq        = sys.ProjectProfileIndexReq
+	ProjectProfileIndexResp       = sys.ProjectProfileIndexResp
+	ProjectProfileReadReq         = sys.ProjectProfileReadReq
 	ProjectWithID                 = sys.ProjectWithID
 	QRCodeReadReq                 = sys.QRCodeReadReq
 	QRCodeReadResp                = sys.QRCodeReadResp

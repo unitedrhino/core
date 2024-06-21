@@ -62,7 +62,9 @@ service api {
 	@handler profileIndex
 	post /profile/index (UserProfileIndexReq) returns (UserProfileIndexResp)
 
-
+	@doc "精准搜索用户"
+	@handler userSearch
+	post /user/search (UserSearchReq) returns (UserSearchResp)
 }
 
 @server (
@@ -92,6 +94,16 @@ service api {
 }
 
 type (
+	UserSearchReq{
+		Account string  `json:"account"`
+	}
+	UserSearchResp{
+		UserID         int64  `json:"userID,string,optional"`        // 用户id
+		UserName    string `json:"userName,optional"`          // 用户名(唯一)
+		NickName    string `json:"nickName,optional"`          // 用户的昵称
+		HeadImg  string `json:"headImg,optional"`        // 用户头像
+		Status int64  `json:"status,optional"`
+	}
 	UserSelfAppReadReq{
 		AppID string `json:"appID"`//
 		Type string `json:"type"`//  app:应用  mini:小程序

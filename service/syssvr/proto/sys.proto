@@ -184,6 +184,10 @@ service ProjectManage {
   rpc projectInfoRead (ProjectWithID) returns (ProjectInfo);
   //获取项目信息列表
   rpc projectInfoIndex (ProjectInfoIndexReq) returns (ProjectInfoIndexResp);
+
+  rpc projectProfileRead(ProjectProfileReadReq)returns(ProjectProfile);
+  rpc projectProfileUpdate(ProjectProfile)returns(Empty);
+  rpc projectProfileIndex(ProjectProfileIndexReq)returns(ProjectProfileIndexResp);
 }
 
 
@@ -199,6 +203,10 @@ service AreaManage {
   rpc areaInfoRead (AreaInfoReadReq) returns (AreaInfo);
   //获取区域信息列表
   rpc areaInfoIndex (AreaInfoIndexReq) returns (AreaInfoIndexResp);
+
+  rpc areaProfileRead(AreaProfileReadReq)returns(AreaProfile);
+  rpc areaProfileUpdate(AreaProfile)returns(Empty);
+  rpc areaProfileIndex(AreaProfileIndexReq)returns(AreaProfileIndexResp);
 }
 
 
@@ -699,6 +707,24 @@ message ProjectInfo {
   int64 areaCount =9;//项目下的区域统计(只读)
 }
 
+
+message ProjectProfile{
+  string code =4;
+  string params =5;
+}
+
+message ProjectProfileReadReq{
+  string code =1;
+}
+
+message ProjectProfileIndexReq{
+  repeated string codes = 2;
+}
+
+message ProjectProfileIndexResp{
+  repeated ProjectProfile profiles =1;
+}
+
 message ProjectInfoIndexReq {
   PageInfo page = 1; //进行数据分页（不传默认2000相当于全部）
   string projectName = 2; //过滤条件: 项目名称
@@ -738,6 +764,27 @@ message AreaInfo {
 message AreaWithID {
   int64 areaID = 1; //项目区域id
 }
+
+message AreaProfile{
+  int64 areaID = 1; //项目区域id
+  string code =2;
+  string params =3;
+}
+
+message AreaProfileReadReq{
+  int64 areaID = 2; //项目区域id
+  string code =4;
+}
+
+message AreaProfileIndexReq{
+  int64 areaID = 1; //项目区域id
+  repeated string codes = 2;
+}
+
+message AreaProfileIndexResp{
+  repeated AreaProfile profiles =1;
+}
+
 
 
 message AreaInfoReadReq {

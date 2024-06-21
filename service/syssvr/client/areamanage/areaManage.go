@@ -32,6 +32,10 @@ type (
 	AreaInfoIndexReq              = sys.AreaInfoIndexReq
 	AreaInfoIndexResp             = sys.AreaInfoIndexResp
 	AreaInfoReadReq               = sys.AreaInfoReadReq
+	AreaProfile                   = sys.AreaProfile
+	AreaProfileIndexReq           = sys.AreaProfileIndexReq
+	AreaProfileIndexResp          = sys.AreaProfileIndexResp
+	AreaProfileReadReq            = sys.AreaProfileReadReq
 	AreaWithID                    = sys.AreaWithID
 	AuthApiInfo                   = sys.AuthApiInfo
 	ConfigResp                    = sys.ConfigResp
@@ -103,6 +107,10 @@ type (
 	ProjectInfo                   = sys.ProjectInfo
 	ProjectInfoIndexReq           = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp          = sys.ProjectInfoIndexResp
+	ProjectProfile                = sys.ProjectProfile
+	ProjectProfileIndexReq        = sys.ProjectProfileIndexReq
+	ProjectProfileIndexResp       = sys.ProjectProfileIndexResp
+	ProjectProfileReadReq         = sys.ProjectProfileReadReq
 	ProjectWithID                 = sys.ProjectWithID
 	QRCodeReadReq                 = sys.QRCodeReadReq
 	QRCodeReadResp                = sys.QRCodeReadResp
@@ -205,6 +213,9 @@ type (
 		AreaInfoRead(ctx context.Context, in *AreaInfoReadReq, opts ...grpc.CallOption) (*AreaInfo, error)
 		// 获取区域信息列表
 		AreaInfoIndex(ctx context.Context, in *AreaInfoIndexReq, opts ...grpc.CallOption) (*AreaInfoIndexResp, error)
+		AreaProfileRead(ctx context.Context, in *AreaProfileReadReq, opts ...grpc.CallOption) (*AreaProfile, error)
+		AreaProfileUpdate(ctx context.Context, in *AreaProfile, opts ...grpc.CallOption) (*Empty, error)
+		AreaProfileIndex(ctx context.Context, in *AreaProfileIndexReq, opts ...grpc.CallOption) (*AreaProfileIndexResp, error)
 	}
 
 	defaultAreaManage struct {
@@ -283,4 +294,31 @@ func (m *defaultAreaManage) AreaInfoIndex(ctx context.Context, in *AreaInfoIndex
 // 获取区域信息列表
 func (d *directAreaManage) AreaInfoIndex(ctx context.Context, in *AreaInfoIndexReq, opts ...grpc.CallOption) (*AreaInfoIndexResp, error) {
 	return d.svr.AreaInfoIndex(ctx, in)
+}
+
+func (m *defaultAreaManage) AreaProfileRead(ctx context.Context, in *AreaProfileReadReq, opts ...grpc.CallOption) (*AreaProfile, error) {
+	client := sys.NewAreaManageClient(m.cli.Conn())
+	return client.AreaProfileRead(ctx, in, opts...)
+}
+
+func (d *directAreaManage) AreaProfileRead(ctx context.Context, in *AreaProfileReadReq, opts ...grpc.CallOption) (*AreaProfile, error) {
+	return d.svr.AreaProfileRead(ctx, in)
+}
+
+func (m *defaultAreaManage) AreaProfileUpdate(ctx context.Context, in *AreaProfile, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewAreaManageClient(m.cli.Conn())
+	return client.AreaProfileUpdate(ctx, in, opts...)
+}
+
+func (d *directAreaManage) AreaProfileUpdate(ctx context.Context, in *AreaProfile, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.AreaProfileUpdate(ctx, in)
+}
+
+func (m *defaultAreaManage) AreaProfileIndex(ctx context.Context, in *AreaProfileIndexReq, opts ...grpc.CallOption) (*AreaProfileIndexResp, error) {
+	client := sys.NewAreaManageClient(m.cli.Conn())
+	return client.AreaProfileIndex(ctx, in, opts...)
+}
+
+func (d *directAreaManage) AreaProfileIndex(ctx context.Context, in *AreaProfileIndexReq, opts ...grpc.CallOption) (*AreaProfileIndexResp, error) {
+	return d.svr.AreaProfileIndex(ctx, in)
 }

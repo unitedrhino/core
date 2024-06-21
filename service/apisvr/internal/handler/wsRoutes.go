@@ -1185,6 +1185,11 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/update",
 					Handler: systemuserself.UpdateHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/search",
+					Handler: systemuserself.UserSearchHandler(serverCtx),
+				},
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/user/self"),

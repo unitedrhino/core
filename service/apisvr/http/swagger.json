@@ -6546,6 +6546,48 @@
           "systemUserSelf"
         ]
       }
+    },
+    "/api/v1/system/user/self/user/search": {
+      "post": {
+        "summary": "精准搜索用户",
+        "operationId": "postApiV1SystemUserSelfUserSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/UserSearchResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSearchReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/self",
+          "systemUserSelf"
+        ]
+      }
     }
   },
   "definitions": {
@@ -11483,6 +11525,44 @@
         "userID",
         "roleIDs"
       ]
+    },
+    "UserSearchReq": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string"
+        }
+      },
+      "title": "UserSearchReq",
+      "required": [
+        "account"
+      ]
+    },
+    "UserSearchResp": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "string",
+          "description": " 用户id"
+        },
+        "userName": {
+          "type": "string",
+          "description": " 用户名(唯一)"
+        },
+        "nickName": {
+          "type": "string",
+          "description": " 用户的昵称"
+        },
+        "headImg": {
+          "type": "string",
+          "description": " 用户头像"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserSearchResp"
     },
     "UserSelfAppReadReq": {
       "type": "object",

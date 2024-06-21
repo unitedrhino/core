@@ -32,6 +32,10 @@ type (
 	AreaInfoIndexReq              = sys.AreaInfoIndexReq
 	AreaInfoIndexResp             = sys.AreaInfoIndexResp
 	AreaInfoReadReq               = sys.AreaInfoReadReq
+	AreaProfile                   = sys.AreaProfile
+	AreaProfileIndexReq           = sys.AreaProfileIndexReq
+	AreaProfileIndexResp          = sys.AreaProfileIndexResp
+	AreaProfileReadReq            = sys.AreaProfileReadReq
 	AreaWithID                    = sys.AreaWithID
 	AuthApiInfo                   = sys.AuthApiInfo
 	ConfigResp                    = sys.ConfigResp
@@ -103,6 +107,10 @@ type (
 	ProjectInfo                   = sys.ProjectInfo
 	ProjectInfoIndexReq           = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp          = sys.ProjectInfoIndexResp
+	ProjectProfile                = sys.ProjectProfile
+	ProjectProfileIndexReq        = sys.ProjectProfileIndexReq
+	ProjectProfileIndexResp       = sys.ProjectProfileIndexResp
+	ProjectProfileReadReq         = sys.ProjectProfileReadReq
 	ProjectWithID                 = sys.ProjectWithID
 	QRCodeReadReq                 = sys.QRCodeReadReq
 	QRCodeReadResp                = sys.QRCodeReadResp
@@ -205,6 +213,9 @@ type (
 		ProjectInfoRead(ctx context.Context, in *ProjectWithID, opts ...grpc.CallOption) (*ProjectInfo, error)
 		// 获取项目信息列表
 		ProjectInfoIndex(ctx context.Context, in *ProjectInfoIndexReq, opts ...grpc.CallOption) (*ProjectInfoIndexResp, error)
+		ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error)
+		ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error)
+		ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error)
 	}
 
 	defaultProjectManage struct {
@@ -283,4 +294,31 @@ func (m *defaultProjectManage) ProjectInfoIndex(ctx context.Context, in *Project
 // 获取项目信息列表
 func (d *directProjectManage) ProjectInfoIndex(ctx context.Context, in *ProjectInfoIndexReq, opts ...grpc.CallOption) (*ProjectInfoIndexResp, error) {
 	return d.svr.ProjectInfoIndex(ctx, in)
+}
+
+func (m *defaultProjectManage) ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectProfileRead(ctx, in, opts...)
+}
+
+func (d *directProjectManage) ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error) {
+	return d.svr.ProjectProfileRead(ctx, in)
+}
+
+func (m *defaultProjectManage) ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectProfileUpdate(ctx, in, opts...)
+}
+
+func (d *directProjectManage) ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.ProjectProfileUpdate(ctx, in)
+}
+
+func (m *defaultProjectManage) ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectProfileIndex(ctx, in, opts...)
+}
+
+func (d *directProjectManage) ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error) {
+	return d.svr.ProjectProfileIndex(ctx, in)
 }

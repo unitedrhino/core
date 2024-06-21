@@ -1286,6 +1286,18 @@ type UserRoleMultiUpdateReq struct {
 	RoleIDs []int64 `json:"roleIDs"`       //角色编号列表
 }
 
+type UserSearchReq struct {
+	Account string `json:"account"`
+}
+
+type UserSearchResp struct {
+	UserID   int64  `json:"userID,string,optional"` // 用户id
+	UserName string `json:"userName,optional"`      // 用户名(唯一)
+	NickName string `json:"nickName,optional"`      // 用户的昵称
+	HeadImg  string `json:"headImg,optional"`       // 用户头像
+	Status   int64  `json:"status,optional"`
+}
+
 type UserSelfAppReadReq struct {
 	AppID   string `json:"appID"`   //
 	Type    string `json:"type"`    //  app:应用  mini:小程序

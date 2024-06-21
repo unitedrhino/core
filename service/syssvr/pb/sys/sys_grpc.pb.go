@@ -4553,11 +4553,14 @@ var Log_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	ProjectManage_ProjectInfoCreate_FullMethodName = "/sys.ProjectManage/projectInfoCreate"
-	ProjectManage_ProjectInfoUpdate_FullMethodName = "/sys.ProjectManage/projectInfoUpdate"
-	ProjectManage_ProjectInfoDelete_FullMethodName = "/sys.ProjectManage/projectInfoDelete"
-	ProjectManage_ProjectInfoRead_FullMethodName   = "/sys.ProjectManage/projectInfoRead"
-	ProjectManage_ProjectInfoIndex_FullMethodName  = "/sys.ProjectManage/projectInfoIndex"
+	ProjectManage_ProjectInfoCreate_FullMethodName    = "/sys.ProjectManage/projectInfoCreate"
+	ProjectManage_ProjectInfoUpdate_FullMethodName    = "/sys.ProjectManage/projectInfoUpdate"
+	ProjectManage_ProjectInfoDelete_FullMethodName    = "/sys.ProjectManage/projectInfoDelete"
+	ProjectManage_ProjectInfoRead_FullMethodName      = "/sys.ProjectManage/projectInfoRead"
+	ProjectManage_ProjectInfoIndex_FullMethodName     = "/sys.ProjectManage/projectInfoIndex"
+	ProjectManage_ProjectProfileRead_FullMethodName   = "/sys.ProjectManage/projectProfileRead"
+	ProjectManage_ProjectProfileUpdate_FullMethodName = "/sys.ProjectManage/projectProfileUpdate"
+	ProjectManage_ProjectProfileIndex_FullMethodName  = "/sys.ProjectManage/projectProfileIndex"
 )
 
 // ProjectManageClient is the client API for ProjectManage service.
@@ -4574,6 +4577,9 @@ type ProjectManageClient interface {
 	ProjectInfoRead(ctx context.Context, in *ProjectWithID, opts ...grpc.CallOption) (*ProjectInfo, error)
 	// 获取项目信息列表
 	ProjectInfoIndex(ctx context.Context, in *ProjectInfoIndexReq, opts ...grpc.CallOption) (*ProjectInfoIndexResp, error)
+	ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error)
+	ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error)
+	ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error)
 }
 
 type projectManageClient struct {
@@ -4629,6 +4635,33 @@ func (c *projectManageClient) ProjectInfoIndex(ctx context.Context, in *ProjectI
 	return out, nil
 }
 
+func (c *projectManageClient) ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error) {
+	out := new(ProjectProfile)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectProfileRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectManageClient) ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectProfileUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectManageClient) ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error) {
+	out := new(ProjectProfileIndexResp)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectProfileIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectManageServer is the server API for ProjectManage service.
 // All implementations must embed UnimplementedProjectManageServer
 // for forward compatibility
@@ -4643,6 +4676,9 @@ type ProjectManageServer interface {
 	ProjectInfoRead(context.Context, *ProjectWithID) (*ProjectInfo, error)
 	// 获取项目信息列表
 	ProjectInfoIndex(context.Context, *ProjectInfoIndexReq) (*ProjectInfoIndexResp, error)
+	ProjectProfileRead(context.Context, *ProjectProfileReadReq) (*ProjectProfile, error)
+	ProjectProfileUpdate(context.Context, *ProjectProfile) (*Empty, error)
+	ProjectProfileIndex(context.Context, *ProjectProfileIndexReq) (*ProjectProfileIndexResp, error)
 	mustEmbedUnimplementedProjectManageServer()
 }
 
@@ -4664,6 +4700,15 @@ func (UnimplementedProjectManageServer) ProjectInfoRead(context.Context, *Projec
 }
 func (UnimplementedProjectManageServer) ProjectInfoIndex(context.Context, *ProjectInfoIndexReq) (*ProjectInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProjectInfoIndex not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectProfileRead(context.Context, *ProjectProfileReadReq) (*ProjectProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectProfileRead not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectProfileUpdate(context.Context, *ProjectProfile) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectProfileUpdate not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectProfileIndex(context.Context, *ProjectProfileIndexReq) (*ProjectProfileIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectProfileIndex not implemented")
 }
 func (UnimplementedProjectManageServer) mustEmbedUnimplementedProjectManageServer() {}
 
@@ -4768,6 +4813,60 @@ func _ProjectManage_ProjectInfoIndex_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectManage_ProjectProfileRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectProfileReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectProfileRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectProfileRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectProfileRead(ctx, req.(*ProjectProfileReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectManage_ProjectProfileUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectProfile)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectProfileUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectProfileUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectProfileUpdate(ctx, req.(*ProjectProfile))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectManage_ProjectProfileIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectProfileIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectProfileIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectProfileIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectProfileIndex(ctx, req.(*ProjectProfileIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectManage_ServiceDesc is the grpc.ServiceDesc for ProjectManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4795,17 +4894,32 @@ var ProjectManage_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "projectInfoIndex",
 			Handler:    _ProjectManage_ProjectInfoIndex_Handler,
 		},
+		{
+			MethodName: "projectProfileRead",
+			Handler:    _ProjectManage_ProjectProfileRead_Handler,
+		},
+		{
+			MethodName: "projectProfileUpdate",
+			Handler:    _ProjectManage_ProjectProfileUpdate_Handler,
+		},
+		{
+			MethodName: "projectProfileIndex",
+			Handler:    _ProjectManage_ProjectProfileIndex_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/sys.proto",
 }
 
 const (
-	AreaManage_AreaInfoCreate_FullMethodName = "/sys.AreaManage/areaInfoCreate"
-	AreaManage_AreaInfoUpdate_FullMethodName = "/sys.AreaManage/areaInfoUpdate"
-	AreaManage_AreaInfoDelete_FullMethodName = "/sys.AreaManage/areaInfoDelete"
-	AreaManage_AreaInfoRead_FullMethodName   = "/sys.AreaManage/areaInfoRead"
-	AreaManage_AreaInfoIndex_FullMethodName  = "/sys.AreaManage/areaInfoIndex"
+	AreaManage_AreaInfoCreate_FullMethodName    = "/sys.AreaManage/areaInfoCreate"
+	AreaManage_AreaInfoUpdate_FullMethodName    = "/sys.AreaManage/areaInfoUpdate"
+	AreaManage_AreaInfoDelete_FullMethodName    = "/sys.AreaManage/areaInfoDelete"
+	AreaManage_AreaInfoRead_FullMethodName      = "/sys.AreaManage/areaInfoRead"
+	AreaManage_AreaInfoIndex_FullMethodName     = "/sys.AreaManage/areaInfoIndex"
+	AreaManage_AreaProfileRead_FullMethodName   = "/sys.AreaManage/areaProfileRead"
+	AreaManage_AreaProfileUpdate_FullMethodName = "/sys.AreaManage/areaProfileUpdate"
+	AreaManage_AreaProfileIndex_FullMethodName  = "/sys.AreaManage/areaProfileIndex"
 )
 
 // AreaManageClient is the client API for AreaManage service.
@@ -4822,6 +4936,9 @@ type AreaManageClient interface {
 	AreaInfoRead(ctx context.Context, in *AreaInfoReadReq, opts ...grpc.CallOption) (*AreaInfo, error)
 	// 获取区域信息列表
 	AreaInfoIndex(ctx context.Context, in *AreaInfoIndexReq, opts ...grpc.CallOption) (*AreaInfoIndexResp, error)
+	AreaProfileRead(ctx context.Context, in *AreaProfileReadReq, opts ...grpc.CallOption) (*AreaProfile, error)
+	AreaProfileUpdate(ctx context.Context, in *AreaProfile, opts ...grpc.CallOption) (*Empty, error)
+	AreaProfileIndex(ctx context.Context, in *AreaProfileIndexReq, opts ...grpc.CallOption) (*AreaProfileIndexResp, error)
 }
 
 type areaManageClient struct {
@@ -4877,6 +4994,33 @@ func (c *areaManageClient) AreaInfoIndex(ctx context.Context, in *AreaInfoIndexR
 	return out, nil
 }
 
+func (c *areaManageClient) AreaProfileRead(ctx context.Context, in *AreaProfileReadReq, opts ...grpc.CallOption) (*AreaProfile, error) {
+	out := new(AreaProfile)
+	err := c.cc.Invoke(ctx, AreaManage_AreaProfileRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *areaManageClient) AreaProfileUpdate(ctx context.Context, in *AreaProfile, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, AreaManage_AreaProfileUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *areaManageClient) AreaProfileIndex(ctx context.Context, in *AreaProfileIndexReq, opts ...grpc.CallOption) (*AreaProfileIndexResp, error) {
+	out := new(AreaProfileIndexResp)
+	err := c.cc.Invoke(ctx, AreaManage_AreaProfileIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AreaManageServer is the server API for AreaManage service.
 // All implementations must embed UnimplementedAreaManageServer
 // for forward compatibility
@@ -4891,6 +5035,9 @@ type AreaManageServer interface {
 	AreaInfoRead(context.Context, *AreaInfoReadReq) (*AreaInfo, error)
 	// 获取区域信息列表
 	AreaInfoIndex(context.Context, *AreaInfoIndexReq) (*AreaInfoIndexResp, error)
+	AreaProfileRead(context.Context, *AreaProfileReadReq) (*AreaProfile, error)
+	AreaProfileUpdate(context.Context, *AreaProfile) (*Empty, error)
+	AreaProfileIndex(context.Context, *AreaProfileIndexReq) (*AreaProfileIndexResp, error)
 	mustEmbedUnimplementedAreaManageServer()
 }
 
@@ -4912,6 +5059,15 @@ func (UnimplementedAreaManageServer) AreaInfoRead(context.Context, *AreaInfoRead
 }
 func (UnimplementedAreaManageServer) AreaInfoIndex(context.Context, *AreaInfoIndexReq) (*AreaInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AreaInfoIndex not implemented")
+}
+func (UnimplementedAreaManageServer) AreaProfileRead(context.Context, *AreaProfileReadReq) (*AreaProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AreaProfileRead not implemented")
+}
+func (UnimplementedAreaManageServer) AreaProfileUpdate(context.Context, *AreaProfile) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AreaProfileUpdate not implemented")
+}
+func (UnimplementedAreaManageServer) AreaProfileIndex(context.Context, *AreaProfileIndexReq) (*AreaProfileIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AreaProfileIndex not implemented")
 }
 func (UnimplementedAreaManageServer) mustEmbedUnimplementedAreaManageServer() {}
 
@@ -5016,6 +5172,60 @@ func _AreaManage_AreaInfoIndex_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AreaManage_AreaProfileRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AreaProfileReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AreaManageServer).AreaProfileRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AreaManage_AreaProfileRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AreaManageServer).AreaProfileRead(ctx, req.(*AreaProfileReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AreaManage_AreaProfileUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AreaProfile)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AreaManageServer).AreaProfileUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AreaManage_AreaProfileUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AreaManageServer).AreaProfileUpdate(ctx, req.(*AreaProfile))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AreaManage_AreaProfileIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AreaProfileIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AreaManageServer).AreaProfileIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AreaManage_AreaProfileIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AreaManageServer).AreaProfileIndex(ctx, req.(*AreaProfileIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AreaManage_ServiceDesc is the grpc.ServiceDesc for AreaManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5042,6 +5252,18 @@ var AreaManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "areaInfoIndex",
 			Handler:    _AreaManage_AreaInfoIndex_Handler,
+		},
+		{
+			MethodName: "areaProfileRead",
+			Handler:    _AreaManage_AreaProfileRead_Handler,
+		},
+		{
+			MethodName: "areaProfileUpdate",
+			Handler:    _AreaManage_AreaProfileUpdate_Handler,
+		},
+		{
+			MethodName: "areaProfileIndex",
+			Handler:    _AreaManage_AreaProfileIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
