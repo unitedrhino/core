@@ -39,6 +39,7 @@ type (
         Position *Point `json:"position,optional"`               //项目区域定位，默认百度坐标系（读写）
         Desc *string `json:"desc,optional"`                      //项目区域备注（读写）
         LowerLevelCount int64 `json:"lowerLevelCount,optional"` //下级的数量统计（只读）
+        DeviceCount int64  `json:"deviceCount,optional"` //设备数量统计
         UseBy string `json:"useBy,optional"`//用途: commonSpace default
         IsLeaf int64 `json:"isLeaf,optional"` //是否是子节点（只读）
         AreaIDPath []int64 `json:"areaIDPath,optional"`          //项目区域ids（只读）

@@ -6931,6 +6931,11 @@
           "format": "int64",
           "description": "下级的数量统计（只读）"
         },
+        "deviceCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "设备数量统计"
+        },
         "useBy": {
           "type": "string",
           "description": "用途: commonSpace default"

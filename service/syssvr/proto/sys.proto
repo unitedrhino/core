@@ -729,6 +729,7 @@ message AreaInfo {
   string useBy =14;//用途
   string areaImg =15;//区域图片
   bool isUpdateAreaImg =16;//是否更新区域的图片
+  google.protobuf.Int64Value deviceCount=17;
 }
 
 

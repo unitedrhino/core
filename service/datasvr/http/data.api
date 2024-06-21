@@ -12,6 +12,14 @@ service data {
 }
 
 type (
+	StaticsticsInfoExportReq{
+		Columns []Column `json:"columns"`
+		Format string `json:"format"`//默认xslx
+	}
+	Column {
+		Column string  `json:"column"`//导出的列
+		ShowName string  `json:"showName"`//展示的名字
+	}
 	// StaticsticsInfoIndexReq {
 	//  Reqs []*StaticsticsInfo `json:"reqs"`
 	// }
