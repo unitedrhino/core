@@ -94,8 +94,8 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 	if pb.AreaName != "" {
 		po.AreaName = pb.AreaName
 	}
-	if pb.DeviceCount != 0 {
-		po.DeviceCount = pb.DeviceCount
+	if pb.DeviceCount != nil {
+		po.DeviceCount = pb.DeviceCount.GetValue()
 	}
 	if pb.Position != nil {
 		po.Position = logic.ToStorePoint(pb.Position)

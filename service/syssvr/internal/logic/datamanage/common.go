@@ -4,7 +4,6 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
 	"regexp"
@@ -21,13 +20,13 @@ func checkUser(ctx context.Context, userID int64) (*relationDB.SysUserInfo, erro
 	return nil, err
 }
 
-func InitCacheUserAuthProject(ctx context.Context, userID int64) error {
-	projects, err := relationDB.NewDataProjectRepo(ctx).FindByFilter(ctx, relationDB.DataProjectFilter{ProjectID: userID}, nil)
-	if err != nil {
-		return err
-	}
-	return caches.SetUserAuthProject(ctx, userID, DBToAuthProjectDos(projects))
-}
+//	func InitCacheUserAuthProject(ctx context.Context, userID int64) error {
+//		projects, err := relationDB.NewDataProjectRepo(ctx).FindByFilter(ctx, relationDB.DataProjectFilter{ProjectID: userID}, nil)
+//		if err != nil {
+//			return err
+//		}
+//		return caches.SetUserAuthProject(ctx, userID, DBToAuthProjectDos(projects))
+//	}
 func InitCacheUserAuthArea(ctx context.Context, userID int64) error {
 	//areas, err := relationDB.NewDataAreaRepo(ctx).FindByFilter(ctx, relationDB.DataAreaFilter{UserID: userID}, nil)
 	//if err != nil {

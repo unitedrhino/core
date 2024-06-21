@@ -205,6 +205,12 @@ type DataProject struct {
 	AuthType  int64 `json:"authType"`         // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
 }
 
+type DataProjectDeleteReq struct {
+	ArgetID    int64  `json:"targetID,string"` //用户ID
+	TargetType string `json:"targetType"`
+	ProjectID  int64  `json:"projectID,string"` //权限数据ID
+}
+
 type DataProjectIndexReq struct {
 	Page       *PageInfo `json:"page,optional"`             //进行数据分页（不传默认2000相当于全部）
 	ProjectID  int64     `json:"projectID,string,optional"` //权限数据ID
@@ -221,6 +227,13 @@ type DataProjectMultiUpdateReq struct {
 	TargetID   int64          `json:"targetID,string"` //用户ID
 	TargetType string         `json:"targetType"`
 	Projects   []*DataProject `json:"projects"` //权限数据IDs（必填）
+}
+
+type DataProjectSaveReq struct {
+	ArgetID    int64  `json:"targetID,string"` //用户ID
+	TargetType string `json:"targetType"`
+	ProjectID  int64  `json:"projectID,string"` //权限数据ID
+	AuthType   int64  `json:"authType"`         // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
 }
 
 type DateRange struct {

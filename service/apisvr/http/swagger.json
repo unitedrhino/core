@@ -1374,6 +1374,84 @@
         ]
       }
     },
+    "/api/v1/system/data/project/create": {
+      "post": {
+        "summary": "批量更新授权项目权限",
+        "operationId": "postApiV1SystemDataProjectCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataProjectSaveReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/project",
+          "systemDataProject"
+        ]
+      }
+    },
+    "/api/v1/system/data/project/delete": {
+      "post": {
+        "summary": "批量更新授权项目权限",
+        "operationId": "postApiV1SystemDataProjectDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataProjectDeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/project",
+          "systemDataProject"
+        ]
+      }
+    },
     "/api/v1/system/data/project/index": {
       "post": {
         "summary": "获取项目权限列表",
@@ -1418,7 +1496,7 @@
     },
     "/api/v1/system/data/project/multi-update": {
       "post": {
-        "summary": "授权项目权限",
+        "summary": "批量更新授权项目权限",
         "operationId": "postApiV1SystemDataProjectMulti-update",
         "responses": {
           "200": {
@@ -7247,6 +7325,28 @@
         "authType"
       ]
     },
+    "DataProjectDeleteReq": {
+      "type": "object",
+      "properties": {
+        "targetID": {
+          "type": "string",
+          "description": "用户ID"
+        },
+        "targetType": {
+          "type": "string"
+        },
+        "projectID": {
+          "type": "string",
+          "description": "权限数据ID"
+        }
+      },
+      "title": "DataProjectDeleteReq",
+      "required": [
+        "targetID",
+        "targetType",
+        "projectID"
+      ]
+    },
     "DataProjectIndexReq": {
       "type": "object",
       "properties": {
@@ -7313,6 +7413,34 @@
         "targetID",
         "targetType",
         "projects"
+      ]
+    },
+    "DataProjectSaveReq": {
+      "type": "object",
+      "properties": {
+        "targetID": {
+          "type": "string",
+          "description": "用户ID"
+        },
+        "targetType": {
+          "type": "string"
+        },
+        "projectID": {
+          "type": "string",
+          "description": "权限数据ID"
+        },
+        "authType": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改"
+        }
+      },
+      "title": "DataProjectSaveReq",
+      "required": [
+        "targetID",
+        "targetType",
+        "projectID",
+        "authType"
       ]
     },
     "DateRange": {

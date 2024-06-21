@@ -26,7 +26,7 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 		Desc:            utils.ToNullString(root.Desc),
 		Children:        nil,
 		AreaImg:         root.AreaImg,
-		DeviceCount:     root.GetDeviceCount(),
+		DeviceCount:     root.DeviceCount.GetValue(),
 	}
 	if len(root.Children) > 0 {
 		for _, child := range root.Children {

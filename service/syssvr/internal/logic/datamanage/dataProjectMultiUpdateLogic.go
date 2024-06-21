@@ -3,7 +3,7 @@ package datamanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/caches"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -29,7 +29,10 @@ func NewDataProjectMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceCont
 }
 
 func (l *DataProjectMultiUpdateLogic) DataProjectMultiUpdate(in *sys.DataProjectMultiUpdateReq) (*sys.Empty, error) {
-	// todo
+	uc := ctxs.GetUserCtx(l.ctx)
+	if !uc.IsAdmin {
+		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
+	}
 	if in.TargetID == 0 {
 		return nil, errors.Parameter.AddDetail(in.TargetID).WithMsg("用户ID参数必填")
 	}
@@ -46,9 +49,9 @@ func (l *DataProjectMultiUpdateLogic) DataProjectMultiUpdate(in *sys.DataProject
 	}
 
 	//更新 用户数据权限 缓存
-	err = caches.SetUserAuthProject(l.ctx, in.TargetID, projects)
-	if err != nil {
-		return nil, errors.Database.AddDetail(in.TargetID).WithMsg("用户数据权限缓存失败")
-	}
+	//err = caches.SetUserAuthProject(l.ctx, in.TargetID, projects)
+	//if err != nil {
+	//	return nil, errors.Database.AddDetail(in.TargetID).WithMsg("用户数据权限缓存失败")
+	//}
 	return &sys.Empty{}, nil
 }

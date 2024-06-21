@@ -41,9 +41,11 @@ type (
 	DataAreaMultiDeleteReq        = sys.DataAreaMultiDeleteReq
 	DataAreaMultiUpdateReq        = sys.DataAreaMultiUpdateReq
 	DataProject                   = sys.DataProject
+	DataProjectDeleteReq          = sys.DataProjectDeleteReq
 	DataProjectIndexReq           = sys.DataProjectIndexReq
 	DataProjectIndexResp          = sys.DataProjectIndexResp
 	DataProjectMultiUpdateReq     = sys.DataProjectMultiUpdateReq
+	DataProjectSaveReq            = sys.DataProjectSaveReq
 	DateRange                     = sys.DateRange
 	DictDetail                    = sys.DictDetail
 	DictDetailIndexReq            = sys.DictDetailIndexReq

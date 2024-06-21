@@ -41,9 +41,11 @@ type (
 	DataAreaMultiDeleteReq        = sys.DataAreaMultiDeleteReq
 	DataAreaMultiUpdateReq        = sys.DataAreaMultiUpdateReq
 	DataProject                   = sys.DataProject
+	DataProjectDeleteReq          = sys.DataProjectDeleteReq
 	DataProjectIndexReq           = sys.DataProjectIndexReq
 	DataProjectIndexResp          = sys.DataProjectIndexResp
 	DataProjectMultiUpdateReq     = sys.DataProjectMultiUpdateReq
+	DataProjectSaveReq            = sys.DataProjectSaveReq
 	DateRange                     = sys.DateRange
 	DictDetail                    = sys.DictDetail
 	DictDetailIndexReq            = sys.DictDetailIndexReq
@@ -194,6 +196,8 @@ type (
 
 	DataManage interface {
 		DataProjectMultiUpdate(ctx context.Context, in *DataProjectMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+		DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectIndex(ctx context.Context, in *DataProjectIndexReq, opts ...grpc.CallOption) (*DataProjectIndexResp, error)
 		DataAreaMultiUpdate(ctx context.Context, in *DataAreaMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		DataAreaIndex(ctx context.Context, in *DataAreaIndexReq, opts ...grpc.CallOption) (*DataAreaIndexResp, error)
@@ -232,6 +236,24 @@ func (m *defaultDataManage) DataProjectMultiUpdate(ctx context.Context, in *Data
 
 func (d *directDataManage) DataProjectMultiUpdate(ctx context.Context, in *DataProjectMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.DataProjectMultiUpdate(ctx, in)
+}
+
+func (m *defaultDataManage) DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataProjectCreate(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DataProjectCreate(ctx, in)
+}
+
+func (m *defaultDataManage) DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataProjectDelete(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DataProjectDelete(ctx, in)
 }
 
 func (m *defaultDataManage) DataProjectIndex(ctx context.Context, in *DataProjectIndexReq, opts ...grpc.CallOption) (*DataProjectIndexResp, error) {

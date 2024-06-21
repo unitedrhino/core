@@ -27,6 +27,16 @@ func (s *DataManageServer) DataProjectMultiUpdate(ctx context.Context, in *sys.D
 	return l.DataProjectMultiUpdate(in)
 }
 
+func (s *DataManageServer) DataProjectCreate(ctx context.Context, in *sys.DataProjectSaveReq) (*sys.Empty, error) {
+	l := datamanagelogic.NewDataProjectCreateLogic(ctx, s.svcCtx)
+	return l.DataProjectCreate(in)
+}
+
+func (s *DataManageServer) DataProjectDelete(ctx context.Context, in *sys.DataProjectDeleteReq) (*sys.Empty, error) {
+	l := datamanagelogic.NewDataProjectDeleteLogic(ctx, s.svcCtx)
+	return l.DataProjectDelete(in)
+}
+
 func (s *DataManageServer) DataProjectIndex(ctx context.Context, in *sys.DataProjectIndexReq) (*sys.DataProjectIndexResp, error) {
 	l := datamanagelogic.NewDataProjectIndexLogic(ctx, s.svcCtx)
 	return l.DataProjectIndex(in)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/caches"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 
@@ -44,6 +45,10 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 			return nil, err
 		}
 	}
+	uc := ctxs.GetUserCtx(l.ctx)
+	if !(uc.IsAdmin || uc.UserID == project.ProjectID) {
+		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
+	}
 	//po, err := checkUser(l.ctx, in.TargetID)
 	//if err != nil {
 	//	return nil, errors.Fmt(err).WithMsg("检查用户出错")
@@ -57,11 +62,11 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 	}
 	if len(areas) == 0 && project != nil { //如果把项目下所有区域权限取消了,则项目权限默认也取消
 		l.UapDB.Delete(l.ctx, in.TargetType, in.TargetID, in.ProjectID)
-		InitCacheUserAuthProject(l.ctx, in.TargetID)
+		//InitCacheUserAuthProject(l.ctx, in.TargetID)
 	}
 	if len(areas) != 0 && project == nil {
 		l.UapDB.Insert(l.ctx, &relationDB.SysDataProject{TargetType: def.TargetUser, TargetID: in.TargetID, ProjectID: in.ProjectID})
-		InitCacheUserAuthProject(l.ctx, in.TargetID)
+		//InitCacheUserAuthProject(l.ctx, in.TargetID)
 	}
 	//更新 用户数据权限 缓存
 	err = caches.SetUserAuthArea(l.ctx, in.TargetID, in.ProjectID, areas)
