@@ -721,8 +721,8 @@ message AreaInfo {
   Point Position = 6; //项目区域定位，默认百度坐标系（读写）
   google.protobuf.StringValue desc = 7; //项目区域备注（读写）
   repeated AreaInfo children = 8; //下级项目区域列表（只读）
-  repeated int64 areaIDPath =9;
-  repeated string areaNamePath =10;
+  string areaIDPath =9;
+  string areaNamePath =10;
   int64 lowerLevelCount =11;//下级区域的数量
   repeated int64 childrenAreaIDs =12;//所属的子区域id列表
   int64 isLeaf =13;//是否是叶子节点

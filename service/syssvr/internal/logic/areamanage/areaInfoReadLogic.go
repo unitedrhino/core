@@ -37,7 +37,7 @@ var (
 	}
 	notClassifiedNode = relationDB.SysAreaInfo{
 		AreaID:       def.NotClassified,
-		AreaIDPath:   "2-",
+		AreaIDPath:   def.NotClassifiedPath,
 		AreaNamePath: "未分类的区域",
 		AreaName:     "未分类的区域",
 	}

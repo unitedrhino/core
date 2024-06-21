@@ -3,6 +3,7 @@ package sysExport
 import (
 	"context"
 	"fmt"
+	"gitee.com/i-Things/core/service/syssvr/client/areamanage"
 	"gitee.com/i-Things/core/service/syssvr/client/common"
 	"gitee.com/i-Things/core/service/syssvr/client/projectmanage"
 	"gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
@@ -17,6 +18,19 @@ import (
 	"gitee.com/i-Things/share/utils"
 	"strings"
 )
+
+type AreaCacheT = *caches.Cache[areamanage.AreaInfo, int64]
+
+func NewAreaInfoCache(pm areamanage.AreaManage, fastEvent *eventBus.FastEvent) (AreaCacheT, error) {
+	return caches.NewCache(caches.CacheConfig[areamanage.AreaInfo, int64]{
+		KeyType:   eventBus.ServerCacheKeySysAreaInfo,
+		FastEvent: fastEvent,
+		GetData: func(ctx context.Context, key int64) (*areamanage.AreaInfo, error) {
+			ret, err := pm.AreaInfoRead(ctx, &sys.AreaInfoReadReq{ProjectID: ctxs.GetUserCtxNoNil(ctx).ProjectID, AreaID: key})
+			return ret, err
+		},
+	})
+}
 
 type ProjectCacheT = *caches.Cache[projectmanage.ProjectInfo, int64]
 
