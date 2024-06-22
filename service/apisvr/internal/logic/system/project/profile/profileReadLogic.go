@@ -2,6 +2,8 @@ package profile
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -24,7 +26,6 @@ func NewProfileReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Profi
 }
 
 func (l *ProfileReadLogic) ProfileRead(req *types.WithCode) (resp *types.ProjectProfile, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	ret, err := l.svcCtx.ProjectM.ProjectProfileRead(l.ctx, utils.Copy[sys.ProjectProfileReadReq](req))
+	return utils.Copy[types.ProjectProfile](ret), err
 }

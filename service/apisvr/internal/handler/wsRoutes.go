@@ -202,21 +202,6 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/profile/index",
-					Handler: systemareainfo.ProfileIndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/profile/read",
-					Handler: systemareainfo.ProfileReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/profile/update",
-					Handler: systemareainfo.ProfileUpdateHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemareainfo.ReadHandler(serverCtx),
 				},
@@ -819,21 +804,6 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemprojectinfo.IndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/profile/index",
-					Handler: systemprojectinfo.ProfileIndexHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/profile/read",
-					Handler: systemprojectinfo.ProfileReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/profile/update",
-					Handler: systemprojectinfo.ProfileUpdateHandler(serverCtx),
 				},
 				{
 					Method:  http.MethodPost,

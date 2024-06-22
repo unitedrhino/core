@@ -2,6 +2,8 @@ package profile
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -24,7 +26,7 @@ func NewProfileUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pro
 }
 
 func (l *ProfileUpdateLogic) ProfileUpdate(req *types.AreaProfile) error {
-	// todo: add your logic here and delete this line
+	_, err := l.svcCtx.AreaM.AreaProfileUpdate(l.ctx, utils.Copy[sys.AreaProfile](req))
 
-	return nil
+	return err
 }

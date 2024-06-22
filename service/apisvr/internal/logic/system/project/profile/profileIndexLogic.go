@@ -2,6 +2,8 @@ package profile
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -24,7 +26,7 @@ func NewProfileIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Prof
 }
 
 func (l *ProfileIndexLogic) ProfileIndex(req *types.ProjectProfileIndexReq) (resp *types.ProjectProfileIndexResp, err error) {
-	// todo: add your logic here and delete this line
+	ret, err := l.svcCtx.ProjectM.ProjectProfileIndex(l.ctx, utils.Copy[sys.ProjectProfileIndexReq](req))
 
-	return
+	return utils.Copy[types.ProjectProfileIndexResp](ret), nil
 }

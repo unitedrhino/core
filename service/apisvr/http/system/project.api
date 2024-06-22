@@ -28,15 +28,6 @@ service api {
     @handler index
     post /index (ProjectInfoIndexReq) returns (ProjectInfoIndexResp)
 
-    @doc "获取项目配置详情"
-    @handler profileRead
-    post /profile/read (WithCode) returns (ProjectProfile)
-    @doc "更新项目配置"
-    @handler profileUpdate
-    post /profile/update (ProjectProfile) returns ()
-    @doc "获取项目配置列表"
-    @handler profileIndex
-    post /profile/index (ProjectProfileIndexReq) returns (ProjectProfileIndexResp)
 }
 
 @server(

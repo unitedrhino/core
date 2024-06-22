@@ -27,16 +27,6 @@ service api {
     @doc "获取项目区域列表"
     @handler index
     post /index (AreaInfoIndexReq) returns (AreaInfoIndexResp)
-
-    @doc "获取区域配置详情"
-    @handler profileRead
-    post /profile/read (AreaProfileReadReq) returns (AreaProfile)
-    @doc "更新区域配置"
-    @handler profileUpdate
-    post /profile/update (AreaProfile) returns ()
-    @doc "获取区域配置列表"
-    @handler profileIndex
-    post /profile/index (AreaProfileIndexReq) returns (AreaProfileIndexResp)
 }
 
 @server(
