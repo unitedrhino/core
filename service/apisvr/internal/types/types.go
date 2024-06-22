@@ -151,6 +151,26 @@ type AreaInfoReadReq struct {
 	WithChildren bool  `json:"withChildren,optional"`
 }
 
+type AreaProfile struct {
+	AreaID int64  `json:"areaID,string"` //项目区域id（只读）
+	Code   string `json:"code"`
+	Params string `json:"params"`
+}
+
+type AreaProfileIndexReq struct {
+	AreaID int64    `json:"areaID,string"` //项目区域id（只读）
+	Codes  []string `json:"codes"`
+}
+
+type AreaProfileIndexResp struct {
+	Profiles []*AreaProfile `json:"profiles"`
+}
+
+type AreaProfileReadReq struct {
+	AreaID int64  `json:"areaID,string"` //项目区域id（只读）
+	Code   string `json:"code"`
+}
+
 type AreaWithID struct {
 	AreaID int64 `json:"areaID,string"` //项目区域id 只读
 }
@@ -607,9 +627,22 @@ type ProjectInfoIndexResp struct {
 	List  []*ProjectInfo `json:"list"`           //项目列表
 }
 
+type ProjectProfile struct {
+	Code   string `json:"code"`
+	Params string `json:"params"`
+}
+
+type ProjectProfileIndexReq struct {
+	Codes []string `json:"codes"`
+}
+
+type ProjectProfileIndexResp struct {
+	Profiles []*ProjectProfile `json:"profiles"`
+}
+
 type ProjectWithID struct {
-	ProjectID     int64 `json:"projectID,string"`       //项目id 只读
-	WithAdminUser bool  `json:"withAdminUser,optional"` //同时获取管理员核心信息
+	ProjectID        int64 `json:"projectID,string"`          //项目id 只读
+	WithAdminProject bool  `json:"withAdminProject,optional"` //同时获取管理员核心信息
 }
 
 type QRCodeReadReq struct {

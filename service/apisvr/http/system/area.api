@@ -27,9 +27,60 @@ service api {
     @doc "获取项目区域列表"
     @handler index
     post /index (AreaInfoIndexReq) returns (AreaInfoIndexResp)
+
+    @doc "获取区域配置详情"
+    @handler profileRead
+    post /profile/read (AreaProfileReadReq) returns (AreaProfile)
+    @doc "更新区域配置"
+    @handler profileUpdate
+    post /profile/update (AreaProfile) returns ()
+    @doc "获取区域配置列表"
+    @handler profileIndex
+    post /profile/index (AreaProfileIndexReq) returns (AreaProfileIndexResp)
 }
 
+@server(
+    group: system/area/profile
+    prefix: /api/v1/system/area/profile
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+service api {
+    @doc "获取区域配置详情"
+    @handler profileRead
+    post /read (AreaProfileReadReq) returns (AreaProfile)
+    @doc "更新区域配置"
+    @handler profileUpdate
+    post /update (AreaProfile) returns ()
+    @doc "获取区域配置列表"
+    @handler profileIndex
+    post /index (AreaProfileIndexReq) returns (AreaProfileIndexResp)
+}
+
+
 type (
+    AreaProfileReadReq{
+        AreaID int64 `json:"areaID,string"`             //项目区域id（只读）
+        Code string `json:"code"`
+    }
+    AreaProfile{
+        AreaID int64 `json:"areaID,string"`             //项目区域id（只读）
+        Code string `json:"code"`
+        Params string  `json:"params"`
+    }
+    AreaProfileIndexReq{
+        AreaID int64 `json:"areaID,string"`             //项目区域id（只读）
+        Codes []string `json:"codes"`
+    }
+    AreaProfileIndexResp{
+        Profiles []*AreaProfile `json:"profiles"`
+    }
+)
+
+
+type (
+
+
+
     AreaInfo  {
         CreatedTime int64 `json:"createdTime,optional,string"`   //创建时间（只读）
         ProjectID int64 `json:"projectID,string,optional"`       //项目id（只读）

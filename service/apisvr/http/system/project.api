@@ -27,14 +27,57 @@ service api {
     @doc "获取项目列表"
     @handler index
     post /index (ProjectInfoIndexReq) returns (ProjectInfoIndexResp)
+
+    @doc "获取项目配置详情"
+    @handler profileRead
+    post /profile/read (WithCode) returns (ProjectProfile)
+    @doc "更新项目配置"
+    @handler profileUpdate
+    post /profile/update (ProjectProfile) returns ()
+    @doc "获取项目配置列表"
+    @handler profileIndex
+    post /profile/index (ProjectProfileIndexReq) returns (ProjectProfileIndexResp)
 }
+
+@server(
+    group: system/project/profile
+    prefix: /api/v1/system/project/profile
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+service api {
+    @doc "获取项目配置详情"
+    @handler profileRead
+    post /read (WithCode) returns (ProjectProfile)
+    @doc "更新项目配置"
+    @handler profileUpdate
+    post /update (ProjectProfile) returns ()
+    @doc "获取项目配置列表"
+    @handler profileIndex
+    post /index (ProjectProfileIndexReq) returns (ProjectProfileIndexResp)
+}
+
+
+type (
+    ProjectProfile{
+        Code string `json:"code"`
+        Params string  `json:"params"`
+    }
+    ProjectProfileIndexReq{
+        Codes []string `json:"codes"`
+    }
+    ProjectProfileIndexResp{
+        Profiles []*ProjectProfile `json:"profiles"`
+    }
+)
+
+
 
 type (
 
 
     ProjectWithID  {
         ProjectID int64 `json:"projectID,string"` //项目id 只读
-        WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
+        WithAdminProject bool `json:"withAdminProject,optional"` //同时获取管理员核心信息
     }
 
     ProjectInfoIndexReq  {

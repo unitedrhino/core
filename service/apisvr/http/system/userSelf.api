@@ -55,10 +55,10 @@ service api {
 	@doc "获取用户配置详情"
 	@handler profileRead
 	post /profile/read (WithCode) returns (UserProfile)
-	@doc "获取用户配置详情"
+	@doc "更新用户配置"
 	@handler profileUpdate
 	post /profile/update (UserProfile) returns ()
-	@doc "获取用户配置详情"
+	@doc "获取用户配置列表"
 	@handler profileIndex
 	post /profile/index (UserProfileIndexReq) returns (UserProfileIndexResp)
 

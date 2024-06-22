@@ -831,6 +831,129 @@
         ]
       }
     },
+    "/api/v1/system/area/info/profile/index": {
+      "post": {
+        "summary": "获取区域配置列表",
+        "operationId": "postApiV1SystemAreaInfoProfileIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/AreaProfileIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AreaProfileIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/area/info",
+          "systemAreaInfo"
+        ]
+      }
+    },
+    "/api/v1/system/area/info/profile/read": {
+      "post": {
+        "summary": "获取区域配置详情",
+        "operationId": "postApiV1SystemAreaInfoProfileRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/AreaProfile"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AreaProfileReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/area/info",
+          "systemAreaInfo"
+        ]
+      }
+    },
+    "/api/v1/system/area/info/profile/update": {
+      "post": {
+        "summary": "更新区域配置",
+        "operationId": "postApiV1SystemAreaInfoProfileUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AreaProfile"
+            }
+          }
+        ],
+        "tags": [
+          "system/area/info",
+          "systemAreaInfo"
+        ]
+      }
+    },
     "/api/v1/system/area/info/read": {
       "post": {
         "summary": "获取项目区域详情",
@@ -909,6 +1032,129 @@
         "tags": [
           "system/area/info",
           "systemAreaInfo"
+        ]
+      }
+    },
+    "/api/v1/system/area/profile/index": {
+      "post": {
+        "summary": "获取区域配置列表",
+        "operationId": "postApiV1SystemAreaProfileIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/AreaProfileIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AreaProfileIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/area/profile",
+          "systemAreaProfile"
+        ]
+      }
+    },
+    "/api/v1/system/area/profile/read": {
+      "post": {
+        "summary": "获取区域配置详情",
+        "operationId": "postApiV1SystemAreaProfileRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/AreaProfile"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AreaProfileReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/area/profile",
+          "systemAreaProfile"
+        ]
+      }
+    },
+    "/api/v1/system/area/profile/update": {
+      "post": {
+        "summary": "更新区域配置",
+        "operationId": "postApiV1SystemAreaProfileUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AreaProfile"
+            }
+          }
+        ],
+        "tags": [
+          "system/area/profile",
+          "systemAreaProfile"
         ]
       }
     },
@@ -4125,6 +4371,129 @@
         ]
       }
     },
+    "/api/v1/system/project/info/profile/index": {
+      "post": {
+        "summary": "获取项目配置列表",
+        "operationId": "postApiV1SystemProjectInfoProfileIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ProjectProfileIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectProfileIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/info",
+          "systemProjectInfo"
+        ]
+      }
+    },
+    "/api/v1/system/project/info/profile/read": {
+      "post": {
+        "summary": "获取项目配置详情",
+        "operationId": "postApiV1SystemProjectInfoProfileRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ProjectProfile"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithCode"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/info",
+          "systemProjectInfo"
+        ]
+      }
+    },
+    "/api/v1/system/project/info/profile/update": {
+      "post": {
+        "summary": "更新项目配置",
+        "operationId": "postApiV1SystemProjectInfoProfileUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectProfile"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/info",
+          "systemProjectInfo"
+        ]
+      }
+    },
     "/api/v1/system/project/info/read": {
       "post": {
         "summary": "获取项目详情",
@@ -4203,6 +4572,129 @@
         "tags": [
           "system/project/info",
           "systemProjectInfo"
+        ]
+      }
+    },
+    "/api/v1/system/project/profile/index": {
+      "post": {
+        "summary": "获取项目配置列表",
+        "operationId": "postApiV1SystemProjectProfileIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ProjectProfileIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectProfileIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/profile",
+          "systemProjectProfile"
+        ]
+      }
+    },
+    "/api/v1/system/project/profile/read": {
+      "post": {
+        "summary": "获取项目配置详情",
+        "operationId": "postApiV1SystemProjectProfileRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ProjectProfile"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithCode"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/profile",
+          "systemProjectProfile"
+        ]
+      }
+    },
+    "/api/v1/system/project/profile/update": {
+      "post": {
+        "summary": "更新项目配置",
+        "operationId": "postApiV1SystemProjectProfileUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectProfile"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/profile",
+          "systemProjectProfile"
         ]
       }
     },
@@ -6305,7 +6797,7 @@
     },
     "/api/v1/system/user/self/profile/index": {
       "post": {
-        "summary": "获取用户配置详情",
+        "summary": "获取用户配置列表",
         "operationId": "postApiV1SystemUserSelfProfileIndex",
         "responses": {
           "200": {
@@ -6389,7 +6881,7 @@
     },
     "/api/v1/system/user/self/profile/update": {
       "post": {
-        "summary": "获取用户配置详情",
+        "summary": "更新用户配置",
         "operationId": "postApiV1SystemUserSelfProfileUpdate",
         "responses": {
           "200": {
@@ -7167,6 +7659,79 @@
       "title": "AreaInfoReadReq",
       "required": [
         "areaID"
+      ]
+    },
+    "AreaProfile": {
+      "type": "object",
+      "properties": {
+        "areaID": {
+          "type": "string",
+          "description": "项目区域id（只读）"
+        },
+        "code": {
+          "type": "string"
+        },
+        "params": {
+          "type": "string"
+        }
+      },
+      "title": "AreaProfile",
+      "required": [
+        "areaID",
+        "code",
+        "params"
+      ]
+    },
+    "AreaProfileIndexReq": {
+      "type": "object",
+      "properties": {
+        "areaID": {
+          "type": "string",
+          "description": "项目区域id（只读）"
+        },
+        "codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "AreaProfileIndexReq",
+      "required": [
+        "areaID",
+        "codes"
+      ]
+    },
+    "AreaProfileIndexResp": {
+      "type": "object",
+      "properties": {
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AreaProfile"
+          }
+        }
+      },
+      "title": "AreaProfileIndexResp",
+      "required": [
+        "profiles"
+      ]
+    },
+    "AreaProfileReadReq": {
+      "type": "object",
+      "properties": {
+        "areaID": {
+          "type": "string",
+          "description": "项目区域id（只读）"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "title": "AreaProfileReadReq",
+      "required": [
+        "areaID",
+        "code"
       ]
     },
     "AreaWithID": {
@@ -8870,6 +9435,52 @@
         "list"
       ]
     },
+    "ProjectProfile": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "params": {
+          "type": "string"
+        }
+      },
+      "title": "ProjectProfile",
+      "required": [
+        "code",
+        "params"
+      ]
+    },
+    "ProjectProfileIndexReq": {
+      "type": "object",
+      "properties": {
+        "codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "ProjectProfileIndexReq",
+      "required": [
+        "codes"
+      ]
+    },
+    "ProjectProfileIndexResp": {
+      "type": "object",
+      "properties": {
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectProfile"
+          }
+        }
+      },
+      "title": "ProjectProfileIndexResp",
+      "required": [
+        "profiles"
+      ]
+    },
     "ProjectWithID": {
       "type": "object",
       "properties": {
@@ -8877,7 +9488,7 @@
           "type": "string",
           "description": "项目id 只读"
         },
-        "withAdminUser": {
+        "withAdminProject": {
           "type": "boolean",
           "format": "boolean",
           "description": "同时获取管理员核心信息"

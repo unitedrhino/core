@@ -12,13 +12,13 @@ func ToProjectPb(in *types.ProjectInfo) *sys.ProjectInfo {
 		return nil
 	}
 	return &sys.ProjectInfo{
-		ProjectID:   in.ProjectID,
-		ProjectName: in.ProjectName,
-		AdminUserID: in.AdminUserID,
-		Position:    logic.ToSysPointRpc(in.Position),
-		Desc:        utils.ToRpcNullString(in.Desc),
-		AreaCount:   in.AreaCount,
-		Area:        utils.ToRpcNullFloat32(in.Area),
-		Ppsm:        in.Ppsm,
+		ProjectID:      in.ProjectID,
+		ProjectName:    in.ProjectName,
+		AdminProjectID: in.AdminProjectID,
+		Position:       logic.ToSysPointRpc(in.Position),
+		Desc:           utils.ToRpcNullString(in.Desc),
+		AreaCount:      in.AreaCount,
+		Area:           utils.ToRpcNullFloat32(in.Area),
+		Ppsm:           in.Ppsm,
 	}
 }

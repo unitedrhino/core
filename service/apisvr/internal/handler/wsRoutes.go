@@ -11,6 +11,7 @@ import (
 	systemappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/module"
 	systemapppolicy "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/policy"
 	systemareainfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/area/info"
+	systemareaprofile "gitee.com/i-Things/core/service/apisvr/internal/handler/system/area/profile"
 	systemcommon "gitee.com/i-Things/core/service/apisvr/internal/handler/system/common"
 	systemdataarea "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/area"
 	systemdataareauserapply "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/area/user/apply"
@@ -29,6 +30,7 @@ import (
 	systemopsfeedback "gitee.com/i-Things/core/service/apisvr/internal/handler/system/ops/feedback"
 	systemopsworkOrder "gitee.com/i-Things/core/service/apisvr/internal/handler/system/ops/workOrder"
 	systemprojectinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/project/info"
+	systemprojectprofile "gitee.com/i-Things/core/service/apisvr/internal/handler/system/project/profile"
 	systemroleaccess "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/access"
 	systemroleapp "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/app"
 	systemroleinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/info"
@@ -200,6 +202,21 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/profile/index",
+					Handler: systemareainfo.ProfileIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/profile/read",
+					Handler: systemareainfo.ProfileReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/profile/update",
+					Handler: systemareainfo.ProfileUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemareainfo.ReadHandler(serverCtx),
 				},
@@ -211,6 +228,30 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/area/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemareaprofile.ProfileIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemareaprofile.ProfileReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemareaprofile.ProfileUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/area/profile"),
 	)
 
 	server.AddRoutes(
@@ -781,6 +822,21 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/profile/index",
+					Handler: systemprojectinfo.ProfileIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/profile/read",
+					Handler: systemprojectinfo.ProfileReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/profile/update",
+					Handler: systemprojectinfo.ProfileUpdateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemprojectinfo.ReadHandler(serverCtx),
 				},
@@ -792,6 +848,30 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/project/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemprojectprofile.ProfileIndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemprojectprofile.ProfileReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemprojectprofile.ProfileUpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/project/profile"),
 	)
 
 	server.AddRoutes(
