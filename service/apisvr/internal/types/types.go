@@ -250,7 +250,7 @@ type DataProjectMultiUpdateReq struct {
 }
 
 type DataProjectSaveReq struct {
-	ArgetID    int64  `json:"targetID,string"` //用户ID
+	TargetID   int64  `json:"targetID,string"` //用户ID
 	TargetType string `json:"targetType"`
 	ProjectID  int64  `json:"projectID,string"` //权限数据ID
 	AuthType   int64  `json:"authType"`         // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改

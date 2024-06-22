@@ -35,8 +35,8 @@ func (l *ReadLogic) Read(req *types.ProjectWithID) (resp *types.ProjectInfo, err
 		l.Errorf("%s rpc.ProjectManage req=%v err=%+v", utils.FuncName(), req, er)
 		return nil, er
 	}
-	user, err := l.svcCtx.ProjectRpc.ProjectInfoRead(ctxs.WithRoot(l.ctx), &sys.ProjectInfoReadReq{
-		ProjectID: dmResp.AdminProjectID,
+	user, err := l.svcCtx.UserRpc.UserInfoRead(ctxs.WithRoot(l.ctx), &sys.UserInfoReadReq{
+		UserID: dmResp.AdminUserID,
 	})
 
 	return system.ProjectInfoToApi(dmResp, user), nil
