@@ -33,14 +33,12 @@ func (l *DataProjectCreateLogic) DataProjectCreate(in *sys.DataProjectSaveReq) (
 	if in.ProjectID == 0 {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("项目id参数必填")
 	}
-	project, err := relationDB.NewDataProjectRepo(l.ctx).FindOne(l.ctx, in.TargetType, in.TargetID, in.ProjectID)
+	project, err := relationDB.NewProjectInfoRepo(l.ctx).FindOne(l.ctx, in.ProjectID)
 	if err != nil {
-		if !errors.Cmp(err, errors.NotFind) {
-			return nil, err
-		}
+		return nil, err
 	}
 	uc := ctxs.GetUserCtx(l.ctx)
-	if !(uc.IsAdmin || uc.UserID == project.ProjectID && in.TargetType != def.TargetRole) {
+	if !(uc.IsAdmin || uc.UserID == project.AdminUserID && in.TargetType != def.TargetRole) {
 		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
 	}
 	err = relationDB.NewDataProjectRepo(l.ctx).Insert(l.ctx, &relationDB.SysDataProject{
