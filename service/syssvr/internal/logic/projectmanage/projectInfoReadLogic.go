@@ -37,5 +37,5 @@ func (l *ProjectInfoReadLogic) ProjectInfoRead(in *sys.ProjectWithID) (*sys.Proj
 	if err != nil {
 		return nil, err
 	}
-	return ProjectInfoToPb(po), nil
+	return ProjectInfoToPb(l.ctx, l.svcCtx, po), nil
 }

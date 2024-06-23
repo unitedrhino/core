@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
@@ -10,6 +11,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -60,6 +62,15 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 	_, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, in.AdminUserID)
 	if err != nil {
 		return nil, err
+	}
+	if in.IsUpdateProjectImg && in.ProjectImg != "" {
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessProject, oss.SceneHeadIng,
+			fmt.Sprintf("%d/%s", po.ProjectID, oss.GetFileNameWithPath(in.ProjectImg)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(in.ProjectImg, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		po.ProjectImg = path
 	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {

@@ -73,7 +73,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		UseBy:        in.UseBy,
 	}
 	if in.IsUpdateAreaImg && in.AreaImg != "" {
-		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BUsinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", areaID, oss.GetFileNameWithPath(in.AreaImg)))
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", areaID, oss.GetFileNameWithPath(in.AreaImg)))
 		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(in.AreaImg, nwePath)
 		if err != nil {
 			return nil, errors.System.AddDetail(err)

@@ -2,12 +2,15 @@ package projectmanagelogic
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/oss"
+	"gitee.com/i-Things/share/oss/common"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -90,6 +93,23 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 	//if pb.Address != nil {
 	//	po.Address = pb.Address.GetValue()
 	//}
+	if pb.IsUpdateProjectImg && pb.ProjectImg != "" {
+		if po.ProjectImg != "" {
+			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, po.ProjectImg, common.OptionKv{})
+			if err != nil {
+				l.Errorf("Delete file err path:%v,err:%v", po.ProjectImg, err)
+			}
+		}
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessProject, oss.SceneHeadIng,
+			fmt.Sprintf("%d/%s", pb.ProjectID, oss.GetFileNameWithPath(pb.ProjectImg)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(pb.ProjectImg, nwePath)
+		if err != nil {
+			l.Error(err)
+		} else {
+			po.ProjectImg = path
+		}
+
+	}
 	if pb.Desc != nil {
 		po.Desc = pb.Desc.GetValue()
 	}

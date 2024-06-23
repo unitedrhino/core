@@ -113,7 +113,7 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 				l.Errorf("Delete file err path:%v,err:%v", po.AreaImg, err)
 			}
 		}
-		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BUsinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", pb.AreaID, oss.GetFileNameWithPath(pb.AreaImg)))
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", pb.AreaID, oss.GetFileNameWithPath(pb.AreaImg)))
 		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(pb.AreaImg, nwePath)
 		if err != nil {
 			l.Error(err)

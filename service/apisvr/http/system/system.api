@@ -100,6 +100,8 @@ type (
         Position *Point `json:"position,optional"`               //项目定位
 //        Region *string `json:"region,optional"`                //项目省市区县（读写）
 //        Address *string `json:"address,optional"`              //项目详细地址（读写）
+        ProjectImg string  `json:"projectImg,optional"`
+        IsUpdateProjectImg bool  `json:"isUpdateProjectImg,optional"`
         Desc *string `json:"desc,optional"`                    //项目备注（读写）
         AreaCount int64 `json:"areaCount,optional"` //项目下的区域统计(只读)
         Ppsm int64  `json:"ppsm,optional,omitempty"`//w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter

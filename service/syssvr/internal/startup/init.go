@@ -73,7 +73,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 				key = ctxs.GetUserCtxNoNil(ctx).ProjectID
 			}
 			pi, err := db.FindOne(ctx, key)
-			pb := projectmanagelogic.ProjectInfoToPb(pi)
+			pb := projectmanagelogic.ProjectInfoToPb(ctx, svcCtx, pi)
 			return pb, err
 		},
 		ExpireTime: 20 * time.Minute,

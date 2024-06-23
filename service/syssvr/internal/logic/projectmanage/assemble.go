@@ -1,14 +1,25 @@
 package projectmanagelogic
 
 import (
+	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/oss/common"
 	"gitee.com/i-Things/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
-func ProjectInfoToPb(po *relationDB.SysProjectInfo) *sys.ProjectInfo {
+func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysProjectInfo) *sys.ProjectInfo {
+	if po.ProjectImg != "" {
+		var err error
+		po.ProjectImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, po.ProjectImg, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
 	pb := &sys.ProjectInfo{
 		CreatedTime: po.CreatedTime.Unix(),
 		ProjectID:   int64(po.ProjectID),

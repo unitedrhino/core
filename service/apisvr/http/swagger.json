@@ -9130,6 +9130,13 @@
           "$ref": "#/definitions/Point",
           "description": "项目定位"
         },
+        "projectImg": {
+          "type": "string"
+        },
+        "isUpdateProjectImg": {
+          "type": "boolean",
+          "format": "boolean"
+        },
         "desc": {
           "type": "string",
           "description": "项目备注（读写）"
