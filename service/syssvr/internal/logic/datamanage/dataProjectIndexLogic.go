@@ -43,7 +43,10 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 
 	filter := relationDB.DataProjectFilter{
 		ProjectID: uc.ProjectID,
-		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
+		Target: &relationDB.Target{
+			Type: in.TargetType,
+			ID:   in.TargetID,
+		},
 	}
 	if in.ProjectID != 0 && uc.IsAdmin {
 		filter.ProjectID = in.ProjectID

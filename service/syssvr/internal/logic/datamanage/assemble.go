@@ -17,6 +17,7 @@ func transProjectPoToPb(po *relationDB.SysDataProject) *sys.DataProject {
 	return &sys.DataProject{
 		ProjectID: int64(po.ProjectID),
 		AuthType:  po.AuthType,
+		TargetID:  po.TargetID,
 	}
 }
 
