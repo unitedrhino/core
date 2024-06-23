@@ -7712,8 +7712,7 @@
       "title": "DataProjectDeleteReq",
       "required": [
         "targetID",
-        "targetType",
-        "projectID"
+        "targetType"
       ]
     },
     "DataProjectIndexReq": {

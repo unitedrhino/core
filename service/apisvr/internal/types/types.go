@@ -228,9 +228,9 @@ type DataProject struct {
 }
 
 type DataProjectDeleteReq struct {
-	ArgetID    int64  `json:"targetID,string"` //用户ID
+	TargetID   int64  `json:"targetID,string"` //用户ID
 	TargetType string `json:"targetType"`
-	ProjectID  int64  `json:"projectID,string"` //权限数据ID
+	ProjectID  int64  `json:"projectID,string,optional"` //权限数据ID
 }
 
 type DataProjectIndexReq struct {
