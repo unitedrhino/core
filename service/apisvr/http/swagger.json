@@ -7678,6 +7678,14 @@
           "type": "integer",
           "format": "int64",
           "description": " 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改"
+        },
+        "targetID": {
+          "type": "string",
+          "description": "用户ID"
+        },
+        "user": {
+          "$ref": "#/definitions/UserCore",
+          "description": "获取用户类型返回"
         }
       },
       "title": "DataProject",
@@ -7727,7 +7735,10 @@
           "type": "string"
         }
       },
-      "title": "DataProjectIndexReq"
+      "title": "DataProjectIndexReq",
+      "required": [
+        "targetType"
+      ]
     },
     "DataProjectIndexResp": {
       "type": "object",

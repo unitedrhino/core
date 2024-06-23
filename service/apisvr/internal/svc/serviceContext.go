@@ -18,6 +18,7 @@ import (
 	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/i-Things/core/service/syssvr/client/usermanage"
+	"gitee.com/i-Things/core/service/syssvr/sysExport"
 	"gitee.com/i-Things/core/service/syssvr/sysdirect"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/client/timedmanage"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/timedjobdirect"
@@ -60,8 +61,10 @@ type SvrClient struct {
 
 type ServiceContext struct {
 	SvrClient
-	Ws             *ws.Server
-	Config         config.Config
+	Ws        *ws.Server
+	Config    config.Config
+	UserCache sysExport.UserCacheT
+
 	CheckTokenWare rest.Middleware
 	DataAuthWare   rest.Middleware
 	TeardownWare   rest.Middleware
@@ -152,7 +155,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		logx.Errorf("NewOss err err:%v", err)
 		os.Exit(-1)
 	}
-
+	userCache, err := sysExport.NewUserInfoCache(user.NewUserManage(zrpc.MustNewClient(c.SysRpc.Conf)), serverMsg)
+	logx.Must(err)
 	captcha := verify.NewCaptcha(c.Captcha.ImgHeight, c.Captcha.ImgWidth,
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
@@ -162,6 +166,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		TeardownWare:   middleware.NewTeardownWareMiddleware(c, lo).Handle,
 		CheckApiWare:   middleware.NewCheckApiWareMiddleware().Handle,
 		InitCtxsWare:   ctxs.InitMiddleware,
+		UserCache:      userCache,
 		Captcha:        captcha,
 		OssClient:      ossClient,
 		Ws:             ws.MustNewServer(c.RestConf),

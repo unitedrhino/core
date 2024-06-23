@@ -1214,6 +1214,7 @@ message UserRoleMultiUpdateReq{
 message DataProject {
     int64 projectID = 1; //权限数据ID
     int64 authType =2;// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+    int64 targetID = 3; //用户ID（必填，雪花ID）
 }
 
 message DataProjectDeleteReq{

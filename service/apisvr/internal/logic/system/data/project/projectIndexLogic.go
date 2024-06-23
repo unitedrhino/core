@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
@@ -38,7 +39,11 @@ func (l *ProjectIndexLogic) ProjectIndex(req *types.DataProjectIndexReq) (resp *
 		l.Errorf("%s.rpc.DataProjectIndex req=%v err=%+v", utils.FuncName(), req, err)
 		return nil, err
 	}
-	list := ToProjectApis(dmResp.List)
+	svcCtx := l.svcCtx
+	if req.TargetType != def.TargetUser {
+		svcCtx = nil
+	}
+	list := ToProjectApis(l.ctx, svcCtx, dmResp.List)
 	return &types.DataProjectIndexResp{
 		Total: dmResp.Total,
 		List:  list,
