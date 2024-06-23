@@ -155,7 +155,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		logx.Errorf("NewOss err err:%v", err)
 		os.Exit(-1)
 	}
-	userCache, err := sysExport.NewUserInfoCache(user.NewUserManage(zrpc.MustNewClient(c.SysRpc.Conf)), serverMsg)
+	userCache, err := sysExport.NewUserInfoCache(ur, serverMsg)
 	logx.Must(err)
 	captcha := verify.NewCaptcha(c.Captcha.ImgHeight, c.Captcha.ImgWidth,
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
