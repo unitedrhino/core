@@ -4,6 +4,9 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -32,13 +35,19 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 		list  []*sys.DataProject
 		total int64
 		err   error
+		uc    = ctxs.GetUserCtx(l.ctx)
 	)
-
-	filter := relationDB.DataProjectFilter{
-		ProjectID: in.ProjectID,
-		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
+	if !uc.IsAdmin && in.TargetType != def.TargetUser {
+		return nil, errors.Permissions.AddMsg("非管理员只能获取用户类型的")
 	}
 
+	filter := relationDB.DataProjectFilter{
+		ProjectID: uc.ProjectID,
+		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
+	}
+	if in.ProjectID != 0 && uc.IsAdmin {
+		filter.ProjectID = in.ProjectID
+	}
 	total, err = l.UapDB.CountByFilter(l.ctx, filter)
 	if err != nil {
 		return nil, err
