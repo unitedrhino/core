@@ -118,9 +118,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 	if wxPhone.ErrCode != 0 {
 		return nil, errors.Parameter.AddDetail(wxPhone.ErrMsg)
 	}
-
-	userID := l.svcCtx.UserID.GetSnowflakeId()
-
+	var userID int64
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
@@ -132,6 +130,26 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
+		ui, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phone: wxPhone.PhoneInfo.PurePhoneNumber})
+		if err != nil {
+			if !errors.Cmp(err, errors.NotFind) {
+				return err
+			}
+			userID = l.svcCtx.UserID.GetSnowflakeId()
+			ui = &relationDB.SysUserInfo{
+				UserID:       userID,
+				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+			}
+		} else if !(ui.WechatUnionID.Valid || ui.WechatOpenID.Valid) {
+			userID = l.svcCtx.UserID.GetSnowflakeId()
+			ui = &relationDB.SysUserInfo{
+				UserID:       userID,
+				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+			}
+		}
+		userID = ui.UserID
 		phone, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phone: wxPhone.PhoneInfo.PurePhoneNumber})
 		if err == nil { //手机号注册过,绑定微信信息
 			phone.WechatOpenID = sql.NullString{Valid: true, String: wxUid.OpenID}
@@ -142,11 +160,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		} else if !errors.Cmp(err, errors.NotFind) { //如果是数据库错误,则直接返回
 			return err
 		}
-		ui := relationDB.SysUserInfo{
-			UserID:       userID,
-			Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-			WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
-		}
+
 		if wxUid.UnionID != "" {
 			ui.WechatUnionID = sql.NullString{Valid: true, String: wxUid.UnionID}
 		}
@@ -156,7 +170,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 				ui.UserName = utils.AnyToNullString(in.Info.UserName)
 			}
 		}
-		err = l.FillUserInfo(&ui, tx)
+		err = l.FillUserInfo(ui, tx)
 		return err
 	})
 
