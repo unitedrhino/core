@@ -42,6 +42,7 @@ func (l *CreateLogic) Create(req *types.AreaInfo) (*types.AreaWithID, error) {
 		UseBy:           req.UseBy,
 		AreaImg:         req.AreaImg,
 		IsUpdateAreaImg: req.IsUpdateAreaImg,
+		IsSysCreated:    req.IsSysCreated,
 	}
 	resp, err := l.svcCtx.AreaM.AreaInfoCreate(l.ctx, dmReq)
 	if er := errors.Fmt(err); er != nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
@@ -52,7 +53,7 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 	if err != nil {
 		return nil, err
 	}
-	if ti.DefaultProjectID == in.ProjectID {
+	if ti.DefaultProjectID == in.ProjectID || po.IsSysCreated == def.True {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("默认项目禁止删除")
 	}
 

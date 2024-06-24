@@ -125,6 +125,7 @@ type AreaInfo struct {
 	DeviceCount     int64       `json:"deviceCount,optional"`         //设备数量统计
 	UseBy           string      `json:"useBy,optional"`               //用途: commonSpace default
 	IsLeaf          int64       `json:"isLeaf,optional"`              //是否是子节点（只读）
+	IsSysCreated    int64       `json:"isSysCreated,optional"`        //是否是系统创建的,系统创建的只有管理员可以删除
 	AreaIDPath      []int64     `json:"areaIDPath,optional"`          //项目区域ids（只读）
 	AreaNamePath    []string    `json:"areaNamePath,optional"`        //（只读）
 	AreaImg         string      `json:"areaImg,optional"`
@@ -612,6 +613,7 @@ type ProjectInfo struct {
 	AdminUserID        int64     `json:"adminUserID,string,optional"` // 管理员用户id（读写）
 	Position           *Point    `json:"position,optional"`           //项目定位
 	ProjectImg         string    `json:"projectImg,optional"`
+	IsSysCreated       int64     `json:"isSysCreated,optional"` //是否是系统创建的,系统创建的只有管理员可以删除
 	IsUpdateProjectImg bool      `json:"isUpdateProjectImg,optional"`
 	Desc               *string   `json:"desc,optional"`                    //项目备注（读写）
 	AreaCount          int64     `json:"areaCount,optional"`               //项目下的区域统计(只读)

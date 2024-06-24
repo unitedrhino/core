@@ -71,6 +71,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		Desc:         utils.ToEmptyString(in.Desc),
 		IsLeaf:       def.True,
 		UseBy:        in.UseBy,
+		IsSysCreated: in.IsSysCreated,
 	}
 	if in.IsUpdateAreaImg && in.AreaImg != "" {
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", areaID, oss.GetFileNameWithPath(in.AreaImg)))

@@ -7311,6 +7311,11 @@
           "format": "int64",
           "description": "是否是子节点（只读）"
         },
+        "isSysCreated": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否是系统创建的,系统创建的只有管理员可以删除"
+        },
         "areaIDPath": {
           "type": "array",
           "items": {
@@ -9132,6 +9137,11 @@
         },
         "projectImg": {
           "type": "string"
+        },
+        "isSysCreated": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否是系统创建的,系统创建的只有管理员可以删除"
         },
         "isUpdateProjectImg": {
           "type": "boolean",

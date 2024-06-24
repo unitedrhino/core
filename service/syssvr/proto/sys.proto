@@ -705,8 +705,11 @@ message ProjectInfo {
   int64 ppsm =10;//w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
   google.protobuf.StringValue desc = 8; //项目备注（读写）
   int64 areaCount =9;//项目下的区域统计(只读)
+  int64 userCount =17;//项目下用户统计
   string projectImg =15;//项目图片
   bool isUpdateProjectImg =16;//是否更新项目的图片
+  int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
+
 }
 
 
@@ -760,6 +763,7 @@ message AreaInfo {
   string areaImg =15;//区域图片
   bool isUpdateAreaImg =16;//是否更新区域的图片
   google.protobuf.Int64Value deviceCount=17;
+  int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
 }
 
 

@@ -49,12 +49,11 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if err != nil {
 		return nil, err
 	}
-	if ti.DefaultAreaID == in.AreaID {
+	if ti.DefaultAreaID == in.AreaID || area.IsSysCreated == def.True {
 		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("默认区域禁止删除")
 	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
-
 		areaPo, err = checkArea(l.ctx, tx, in.AreaID)
 		if err != nil {
 			return errors.Fmt(err).WithMsg("检查区域出错")

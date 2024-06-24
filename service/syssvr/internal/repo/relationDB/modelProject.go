@@ -14,11 +14,12 @@ type SysProjectInfo struct {
 	ProjectName string            `gorm:"column:project_name;type:varchar(100);NOT NULL"` // 项目名称
 	//Region      string            `gorm:"column:region;type:varchar(100);NOT NULL"`      // 项目省市区县
 	//Address     string            `gorm:"column:address;type:varchar(512);NOT NULL"`     // 项目详细地址
-	AreaCount int64        `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
-	Position  stores.Point `gorm:"column:position;NOT NULL"`                         // 项目地址
-	Area      float32      `gorm:"column:area;default:0"`
-	Ppsm      int64        `gorm:"column:ppsm;type:bigint;default:0"`      //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
-	Desc      string       `gorm:"column:desc;type:varchar(100);NOT NULL"` // 项目备注
+	AreaCount    int64        `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
+	Position     stores.Point `gorm:"column:position;NOT NULL"`                         // 项目地址
+	Area         float32      `gorm:"column:area;default:0"`
+	Ppsm         int64        `gorm:"column:ppsm;type:bigint;default:0"`                    //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
+	Desc         string       `gorm:"column:desc;type:varchar(100);NOT NULL"`               // 项目备注
+	IsSysCreated int64        `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"` //是否是系统创建的,系统创建的只有管理员可以删除
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0"`
 }
@@ -56,9 +57,10 @@ type SysAreaInfo struct {
 	Desc            string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                  // 区域备注
 	LowerLevelCount int64             `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计
 	DeviceCount     int64             `gorm:"column:device_count;type:bigint;default:0;NOT NULL"`
-	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`      //是否是叶子节点
-	UseBy           string            `gorm:"column:use_by;type:varchar(100);default:''"`         //用途
-	ChildrenAreaIDs []int64           `gorm:"column:children_area_ids;type:json;serializer:json"` //所有的子区域的id列表
+	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`        //是否是叶子节点
+	UseBy           string            `gorm:"column:use_by;type:varchar(100);default:''"`           //用途
+	ChildrenAreaIDs []int64           `gorm:"column:children_area_ids;type:json;serializer:json"`   //所有的子区域的id列表
+	IsSysCreated    int64             `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"` //是否是系统创建的,系统创建的只有管理员可以删除
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 	Children    []*SysAreaInfo     `gorm:"foreignKey:ParentAreaID;references:AreaID"`

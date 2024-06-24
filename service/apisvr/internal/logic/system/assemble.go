@@ -16,6 +16,7 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		ProjectImg:    pb.ProjectImg,
 		Desc:          utils.ToNullString(pb.Desc),
 		Position:      logic.ToSysPointApi(pb.Position),
+		IsSysCreated:  pb.IsSysCreated,
 		AreaCount:     pb.AreaCount,
 		AdminUserInfo: utils.Copy[types.UserCore](ui),
 		Area:          utils.ToNullFloat32(pb.Area),
