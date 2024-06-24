@@ -56,14 +56,22 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	if si.IsFilterTenant == def.True && uc.TenantCode != def.TenantCodeDefault {
 		conn = conn.Where("tenant_code=?", uc.TenantCode)
 	}
-	if si.IsFilterProject == def.True && uc.ProjectID != def.NotClassified {
-		conn = conn.Where("project_id=?", uc.ProjectID)
+	if si.IsFilterProject == def.True {
+		if uc.ProjectID > def.NotClassified {
+			conn = conn.Where("project_id=?", uc.ProjectID)
+			if si.IsFilterArea == def.True && !uc.IsAdmin {
+				_, areas := ctxs.GetAreaIDs(uc.ProjectID, uc.ProjectAuth)
+				conn = conn.Where("area_id = ?", areas)
+			}
+		} else if !uc.IsAdmin {
+			conn = conn.Where("project_id in ?", utils.SetToSlice(uc.ProjectAuth))
+			if si.IsFilterArea == def.True {
+				conn = conn.Where("area_id in ?", ctxs.GetAllAreaIDs(uc.ProjectAuth))
+			}
+		}
 	}
 	if si.IsSoftDelete == def.True {
 		conn = conn.Where("deleted_time= 0")
-	}
-	if si.IsFilterArea == def.True {
-		//todo
 	}
 	//var columns = "*"
 	switch si.Type {
