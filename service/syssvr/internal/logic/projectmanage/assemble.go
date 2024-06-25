@@ -21,15 +21,16 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		}
 	}
 	pb := &sys.ProjectInfo{
-		CreatedTime: po.CreatedTime.Unix(),
-		ProjectID:   int64(po.ProjectID),
-		ProjectName: po.ProjectName,
-		AdminUserID: po.AdminUserID,
-		Ppsm:        po.Ppsm,
-		Area:        &wrapperspb.FloatValue{Value: po.Area},
-		Desc:        utils.ToRpcNullString(po.Desc),
-		Position:    logic.ToSysPoint(po.Position),
-		AreaCount:   po.AreaCount,
+		CreatedTime:  po.CreatedTime.Unix(),
+		ProjectID:    int64(po.ProjectID),
+		ProjectName:  po.ProjectName,
+		AdminUserID:  po.AdminUserID,
+		IsSysCreated: po.IsSysCreated,
+		Ppsm:         po.Ppsm,
+		Area:         &wrapperspb.FloatValue{Value: po.Area},
+		Desc:         utils.ToRpcNullString(po.Desc),
+		Position:     logic.ToSysPoint(po.Position),
+		AreaCount:    po.AreaCount,
 	}
 	return pb
 }

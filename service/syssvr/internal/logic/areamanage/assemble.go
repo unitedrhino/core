@@ -56,6 +56,7 @@ func transPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 		Position:        logic.ToSysPoint(po.Position),
 		Desc:            utils.ToRpcNullString(po.Desc),
 		IsLeaf:          po.IsLeaf,
+		IsSysCreated:    po.IsSysCreated,
 		LowerLevelCount: po.LowerLevelCount,
 		ChildrenAreaIDs: po.ChildrenAreaIDs,
 		UseBy:           po.UseBy,
