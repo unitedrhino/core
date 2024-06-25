@@ -53,13 +53,11 @@ func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		Account:      claim.Account,
 	}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, claim.RoleCodes...) || ret.IsSuperAdmin
-	if !ret.IsAdmin {
-		projectAuth, err := cache.GetProjectAuth(l.ctx, ret.UserID, ret.RoleIDs)
-		if err != nil {
-			return nil, err
-		}
-		ret.ProjectAuth = projectAuth
+	projectAuth, err := cache.GetProjectAuth(l.ctx, ret.UserID, ret.RoleIDs)
+	if err != nil {
+		return nil, err
 	}
+	ret.ProjectAuth = projectAuth
 
 	return &ret, nil
 }

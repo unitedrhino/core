@@ -733,6 +733,7 @@ message ProjectProfileIndexResp{
 message ProjectInfoIndexReq {
   PageInfo page = 1; //进行数据分页（不传默认2000相当于全部）
   string projectName = 2; //过滤条件: 项目名称
+  bool isGetAll =4;//是否获取所有(管理员获取所有)
   repeated int64 projectIDs = 3; //过滤条件: 过滤项目id列表
 }
 

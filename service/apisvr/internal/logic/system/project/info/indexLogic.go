@@ -33,6 +33,7 @@ func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectI
 		Page:        logic.ToSysPageRpc(req.Page),
 		ProjectName: req.ProjectName,
 		ProjectIDs:  req.ProjectIDs,
+		IsGetAll:    req.IsGetAll,
 	}
 	dmResp, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, dmReq)
 	if err != nil {

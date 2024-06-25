@@ -40,7 +40,9 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 		ProjectIDs:  in.ProjectIDs,
 		ProjectName: in.ProjectName,
 	}
-
+	if in.IsGetAll && uc.IsAdmin {
+		l.ctx = ctxs.WithAllProject(l.ctx)
+	}
 	total, err = l.PiDB.CountByFilter(l.ctx, filter)
 	if err != nil {
 		return nil, err

@@ -9184,6 +9184,11 @@
           "type": "string",
           "description": "过滤项目名称"
         },
+        "isGetAll": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "是否获取所有(管理员获取所有)"
+        },
         "projectIDs": {
           "type": "array",
           "items": {

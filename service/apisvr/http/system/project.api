@@ -74,6 +74,7 @@ type (
     ProjectInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`            //进行数据分页（不传默认2000相当于全部）
         ProjectName string `json:"projectName,optional"` //过滤项目名称
+        IsGetAll bool   `json:"isGetAll,optional"`//是否获取所有(管理员获取所有)
         ProjectIDs []int64 `json:"projectIDs,optional"`  //过滤项目id列表
     }
 
