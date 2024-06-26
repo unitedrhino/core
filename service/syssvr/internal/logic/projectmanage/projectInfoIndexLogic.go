@@ -37,8 +37,9 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 	)
 	uc.ProjectID = 0 //获取全部项目
 	filter := relationDB.ProjectInfoFilter{
-		ProjectIDs:  in.ProjectIDs,
-		ProjectName: in.ProjectName,
+		ProjectIDs:   in.ProjectIDs,
+		ProjectName:  in.ProjectName,
+		WithTopAreas: in.WithTopAreas,
 	}
 	if in.IsGetAll && uc.IsAdmin {
 		l.ctx = ctxs.WithAllProject(l.ctx)
