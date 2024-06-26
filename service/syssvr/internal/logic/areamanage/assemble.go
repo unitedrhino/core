@@ -59,6 +59,7 @@ func transPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 		IsSysCreated:    po.IsSysCreated,
 		LowerLevelCount: po.LowerLevelCount,
 		ChildrenAreaIDs: po.ChildrenAreaIDs,
+		DeviceCount:     utils.ToRpcNullInt64(po.DeviceCount),
 		UseBy:           po.UseBy,
 		AreaImg:         po.AreaImg,
 	}
