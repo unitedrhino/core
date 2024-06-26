@@ -284,6 +284,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 							AreaIDPath:   areaIDPath,
 							AreaNamePath: areaNamePath,
 							AreaName:     area.AreaName,
+							AreaImg:      area.AreaImg,
 							IsLeaf:       def.True,
 							IsSysCreated: area.IsSysCreated,
 						}

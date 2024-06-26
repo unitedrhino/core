@@ -126,6 +126,7 @@ type SysTenantConfigRegisterAutoCreateProject struct {
 }
 type SysTenantConfigRegisterAutoCreateArea struct {
 	AreaName     string `json:"areaName"`
+	AreaImg      string `json:"areaImg"`
 	IsSysCreated int64  `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
 }
 type SysTenantEmail struct {

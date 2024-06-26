@@ -107,7 +107,7 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 		po.UseBy = pb.UseBy
 	}
 	if pb.IsUpdateAreaImg && pb.AreaImg != "" {
-		if po.AreaImg != "" {
+		if po.AreaImg != "" && !oss.IsCommonFile(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, po.AreaImg) {
 			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, po.AreaImg, common.OptionKv{})
 			if err != nil {
 				l.Errorf("Delete file err path:%v,err:%v", po.AreaImg, err)
