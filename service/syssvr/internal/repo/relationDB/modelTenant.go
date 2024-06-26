@@ -110,14 +110,24 @@ func (m *SysTenantAppMenu) TableName() string {
 
 // 租户下的邮箱配置
 type SysTenantConfig struct {
-	ID              int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode      stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	RegisterRoleID  int64             `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
-	CheckUserDelete int64             `gorm:"column:check_user_delete;type:BIGINT;default:2"`                 // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	ID                        int64                                       `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode                stores.TenantCode                           `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	RegisterRoleID            int64                                       `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
+	CheckUserDelete           int64                                       `gorm:"column:check_user_delete;type:BIGINT;default:2"`                 // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	RegisterAutoCreateProject []*SysTenantConfigRegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
+type SysTenantConfigRegisterAutoCreateProject struct {
+	ProjectName  string                                   `json:"projectName"`
+	IsSysCreated int64                                    `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
+	Areas        []*SysTenantConfigRegisterAutoCreateArea `json:"areas"`
+}
+type SysTenantConfigRegisterAutoCreateArea struct {
+	AreaName     string `json:"areaName"`
+	IsSysCreated int64  `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
+}
 type SysTenantEmail struct {
 	From     string `gorm:"column:from;type:VARCHAR(50);default:'';NOT NULL"`     // 发件人  你自己要发邮件的邮箱
 	Host     string `gorm:"column:host;type:VARCHAR(50);default:'';NOT NULL"`     // 服务器地址 例如 smtp.qq.com  请前往QQ或者你要发邮件的邮箱查看其smtp协议

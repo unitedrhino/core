@@ -12,6 +12,7 @@ import (
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/users"
 	"gitee.com/i-Things/share/utils"
+	"github.com/spf13/cast"
 	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -227,6 +228,7 @@ func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB
 }
 
 func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, tx *gorm.DB) error {
+	ctx = ctxs.WithRoot(ctx)
 	uc := ctxs.GetUserCtx(ctx)
 	err := tx.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
@@ -246,6 +248,53 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		})
 		if err != nil {
 			return err
+		}
+		if len(cfg.RegisterAutoCreateProject) > 0 {
+			piDb := relationDB.NewProjectInfoRepo(tx)
+			for _, rap := range cfg.RegisterAutoCreateProject {
+				po := &relationDB.SysProjectInfo{
+					ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
+					ProjectName: rap.ProjectName,
+					//CompanyName: utils.ToEmptyString(in.CompanyName),
+					AdminUserID:  in.UserID,
+					IsSysCreated: rap.IsSysCreated,
+					Desc:         "自动创建",
+				}
+				err = piDb.Insert(ctx, po)
+				if err != nil {
+					logx.WithContext(ctx).Errorf("%s.Insert err=%+v", utils.FuncName(), err)
+					return err
+				}
+				err = relationDB.NewDataProjectRepo(tx).Insert(ctx, &relationDB.SysDataProject{
+					ProjectID:  int64(po.ProjectID),
+					TargetType: def.TargetUser,
+					TargetID:   po.AdminUserID,
+					AuthType:   def.AuthAdmin,
+				})
+				if rap.Areas != nil {
+					aiRepo := relationDB.NewAreaInfoRepo(tx)
+					for _, area := range rap.Areas {
+						var areaID = svcCtx.AreaID.GetSnowflakeId()
+						var areaIDPath string = cast.ToString(areaID) + "-"
+						var areaNamePath = area.AreaName + "-"
+						areaPo := &relationDB.SysAreaInfo{
+							AreaID:       stores.AreaID(areaID),
+							ParentAreaID: 1,            //创建时必填
+							ProjectID:    po.ProjectID, //创建时必填
+							AreaIDPath:   areaIDPath,
+							AreaNamePath: areaNamePath,
+							AreaName:     area.AreaName,
+							IsLeaf:       def.True,
+							IsSysCreated: area.IsSysCreated,
+						}
+						err = aiRepo.Insert(ctx, areaPo)
+						if err != nil {
+							logx.WithContext(ctx).Errorf("%s.Insert err=%+v", utils.FuncName(), err)
+							return err
+						}
+					}
+				}
+			}
 		}
 		return err
 	})
