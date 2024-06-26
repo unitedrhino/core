@@ -709,7 +709,7 @@ message ProjectInfo {
   string projectImg =15;//项目图片
   bool isUpdateProjectImg =16;//是否更新项目的图片
   int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
-
+  repeated AreaInfo areas =19;//
 }
 
 
@@ -735,6 +735,7 @@ message ProjectInfoIndexReq {
   string projectName = 2; //过滤条件: 项目名称
   bool isGetAll =4;//是否获取所有(管理员获取所有)
   repeated int64 projectIDs = 3; //过滤条件: 过滤项目id列表
+  bool withTopAreas =5;  //同时返回顶层的区域列表
 }
 
 message ProjectInfoIndexResp {

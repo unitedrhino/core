@@ -65,6 +65,9 @@ func transPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 	}
 }
 func AreaInfosToPb(ctx context.Context, svcCtx *svc.ServiceContext, pos []*relationDB.SysAreaInfo) (ret []*sys.AreaInfo) {
+	if pos == nil {
+		return nil
+	}
 	for _, po := range pos {
 		ret = append(ret, transPoToPb(ctx, po, svcCtx))
 	}

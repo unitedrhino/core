@@ -30,10 +30,11 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 
 func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectInfoIndexResp, err error) {
 	dmReq := &sys.ProjectInfoIndexReq{
-		Page:        logic.ToSysPageRpc(req.Page),
-		ProjectName: req.ProjectName,
-		ProjectIDs:  req.ProjectIDs,
-		IsGetAll:    req.IsGetAll,
+		Page:         logic.ToSysPageRpc(req.Page),
+		ProjectName:  req.ProjectName,
+		ProjectIDs:   req.ProjectIDs,
+		IsGetAll:     req.IsGetAll,
+		WithTopAreas: req.WithTopAreas,
 	}
 	dmResp, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, dmReq)
 	if err != nil {

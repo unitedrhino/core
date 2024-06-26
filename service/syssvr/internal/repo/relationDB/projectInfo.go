@@ -17,9 +17,10 @@ func NewProjectInfoRepo(in any) *ProjectInfoRepo {
 }
 
 type ProjectInfoFilter struct {
-	ProjectIDs  []int64
-	ProjectName string
-	AdminUserID int64
+	ProjectIDs   []int64
+	ProjectName  string
+	AdminUserID  int64
+	WithTopAreas bool `json:"withTopAreas,optional"` //同时返回顶层的区域列表
 }
 
 func (p ProjectInfoRepo) fmtFilter(ctx context.Context, f ProjectInfoFilter) *gorm.DB {
@@ -32,6 +33,9 @@ func (p ProjectInfoRepo) fmtFilter(ctx context.Context, f ProjectInfoFilter) *go
 	}
 	if f.AdminUserID != 0 {
 		db = db.Where("admin_user_id = ?", f.AdminUserID)
+	}
+	if f.WithTopAreas {
+		db = db.Preload("Areas", "parent_area_id = 1")
 	}
 
 	return db

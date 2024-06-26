@@ -3,6 +3,7 @@ package projectmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
+	areamanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/areamanage"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -31,6 +32,7 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		Desc:         utils.ToRpcNullString(po.Desc),
 		Position:     logic.ToSysPoint(po.Position),
 		AreaCount:    po.AreaCount,
+		Areas:        areamanagelogic.AreaInfosToPb(ctx, svcCtx, po.Areas),
 	}
 	return pb
 }

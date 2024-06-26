@@ -2,6 +2,7 @@ package system
 
 import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic"
+	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/area/info"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/utils"
@@ -20,6 +21,7 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		AreaCount:     pb.AreaCount,
 		AdminUserInfo: utils.Copy[types.UserCore](ui),
 		Area:          utils.ToNullFloat32(pb.Area),
+		Areas:         info.ToAreaInfosTypes(pb.Areas),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {

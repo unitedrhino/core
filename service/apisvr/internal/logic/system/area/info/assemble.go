@@ -37,6 +37,9 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 	return api
 }
 func ToAreaInfosTypes(in []*sys.AreaInfo) (ret []*types.AreaInfo) {
+	if in == nil {
+		return nil
+	}
 	for _, v := range in {
 		ret = append(ret, ToAreaInfoTypes(v))
 	}

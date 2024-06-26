@@ -9169,6 +9169,12 @@
         "adminUserInfo": {
           "$ref": "#/definitions/UserCore",
           "description": "管理员信息"
+        },
+        "areas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AreaInfo"
+          }
         }
       },
       "title": "ProjectInfo"
@@ -9196,6 +9202,11 @@
             "format": "int64"
           },
           "description": "过滤项目id列表"
+        },
+        "withTopAreas": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时返回顶层的区域列表"
         }
       },
       "title": "ProjectInfoIndexReq"
