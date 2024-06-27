@@ -151,7 +151,7 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	} else if si.OrderBy != "" {
 		conn = conn.Order(si.OrderBy)
 	}
-	if si.IsFilterProject == def.True {
+	if si.IsFilterProject == def.FilterTrue || (si.IsFilterProject == def.FilterNoAdmin && !uc.IsAdmin) {
 		conn = stores.GenProjectAuthScope(l.ctx, conn)
 		if si.IsFilterArea == def.True {
 			conn = stores.GenAreaAuthScope(l.ctx, conn)

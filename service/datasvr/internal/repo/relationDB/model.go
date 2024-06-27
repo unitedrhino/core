@@ -45,7 +45,7 @@ type DataExample struct {
 type DataStatisticsInfo struct {
 	ID              int64                     `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                   // 编号
 	IsFilterTenant  int64                     `gorm:"column:is_filter_tenant;type:BIGINT;default:1;NOT NULL"`             //是否要过滤租户
-	IsFilterProject int64                     `gorm:"column:is_filter_project;type:BIGINT;default:1;NOT NULL"`            //是否要过滤项目
+	IsFilterProject int64                     `gorm:"column:is_filter_project;type:BIGINT;default:1;NOT NULL"`            //是否要过滤项目1 是 2 否 3 admin不过滤
 	IsFilterArea    int64                     `gorm:"column:is_filter_area;type:BIGINT;default:1;NOT NULL"`               //是否要过滤区域
 	IsSoftDelete    int64                     `gorm:"column:is_soft_delete;type:BIGINT;default:1;NOT NULL"`               //是否是软删除,是的话会默认加过滤
 	Code            string                    `gorm:"column:code;type:VARCHAR(120);not null;uniqueIndex:key"`             //查询的code
