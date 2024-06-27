@@ -9,6 +9,7 @@ import (
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
+	"gorm.io/gorm"
 	"strings"
 	"time"
 
@@ -36,25 +37,116 @@ func (l *ReadLogic) Read(req *types.StaticsticsInfoReadReq) (resp *types.Statics
 	return l.Handle(req)
 }
 
+var (
+	ColFmtMap = map[string]string{
+		"dayFmt":   "date(%v)",
+		"hourFmt":  "DATE_FORMAT(%v, '%%Y-%%m-%%d %%H:00:00')",
+		"mouthFmt": "DATE_FORMAT(%v, '%%Y-%%m')",
+		"yearFmt":  "Year(%v)",
+	}
+)
+
+func ColFmt(old string, isToHump bool, as bool) string {
+	f, col, found := strings.Cut(old, ":")
+	newCol := col
+	if col == "" {
+		newCol = f
+	}
+	if isToHump {
+		newCol = utils.CamelCaseToUdnderscore(newCol)
+	}
+	newCol = stores.Col(newCol)
+	if !found {
+		return newCol
+	}
+	fu := ColFmtMap[f]
+	if fu != "" {
+		if as {
+			return fmt.Sprintf(fu+" as %v", newCol, col)
+		}
+		return fmt.Sprintf(fu, newCol)
+	}
+	return old
+}
+
+func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any) *gorm.DB {
+	f, ok := si.Filter[k]
+	if !ok {
+		col, fu, found := strings.Cut(k, ":")
+		newCol := col
+		if si.IsToHump == def.True {
+			newCol = utils.CamelCaseToUdnderscore(newCol)
+		}
+		newCol = stores.Col(newCol)
+		if found {
+			switch fu {
+			case "in":
+				v = strings.Split(cast.ToString(v), ",")
+				conn = conn.Where(fmt.Sprintf("%s in ?", newCol), v)
+				return conn
+			}
+		}
+		switch val := v.(type) {
+		case string:
+			conn = conn.Where(fmt.Sprintf("%s like ?", newCol), "%"+val+"%")
+		default:
+			conn = conn.Where(fmt.Sprintf("%s = ?", newCol), v)
+		}
+		return conn
+		//return nil, errors.Parameter.WithMsgf("过滤的key未定义:%s", k)
+	} else {
+		var args []interface{}
+		for i := int64(0); i < f.ValNum; i++ {
+			switch f.Type {
+			case "date":
+				v = utils.FmtDateStr(cast.ToString(v))
+			case "array": //数组类型
+				v = strings.Split(cast.ToString(v), ",")
+			}
+			args = append(args, v)
+		}
+		conn = conn.Where(f.Sql, args...)
+	}
+	return conn
+}
+
 func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.StaticsticsInfoReadResp, err error) {
 	db := relationDB.NewStatisticsInfoRepo(l.ctx)
 	si, err := db.FindOneByFilter(l.ctx, relationDB.StatisticsInfoFilter{Code: req.Code})
 	if err != nil {
 		return nil, err
 	}
+	var (
+		columns []string
+		groups  []string
+	)
+	if req.Columns != "" {
+		columns = strings.Split(req.Columns, ",")
+	}
+	if req.GroupBy != "" {
+		groups = strings.Split(req.GroupBy, ",")
+	}
 
-	if si.IsToHump == def.True {
-		if req.GroupBy != "" {
-			req.GroupBy = utils.CamelCaseToUdnderscore(req.GroupBy)
-		}
-		if req.Columns != "" {
-			req.Columns = utils.CamelCaseToUdnderscore(req.Columns)
-		}
+	for i, c := range columns {
+		columns[i] = ColFmt(c, si.IsToHump == def.True, true)
+	}
+	for i, c := range groups {
+		groups[i] = ColFmt(c, si.IsToHump == def.True, false)
 	}
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	conn := stores.GetTenantConn(l.ctx)
 	if si.IsFilterTenant == def.True && uc.TenantCode != def.TenantCodeDefault {
 		conn = conn.Where("tenant_code=?", uc.TenantCode)
+	}
+	if req.Page != nil {
+		conn = utils.Copy[def.PageInfo](req.Page).ToGorm(conn)
+	}
+	if len(req.OrderBy) != 0 {
+		for _, v := range req.OrderBy {
+			conn = conn.Order(fmt.Sprintf("%s %s", v.Column, v.Sort))
+		}
+	} else if si.OrderBy != "" {
+		conn = conn.Order(si.OrderBy)
 	}
 	if si.IsFilterProject == def.True {
 		if uc.ProjectID > def.NotClassified {
@@ -81,80 +173,33 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		si.Table = "tb"
 		conn = conn.Table(fmt.Sprintf("(%s)as tb", si.Sql))
 	}
-	if si.OrderBy != "" {
-		conn = conn.Order(si.OrderBy)
-	}
+
 	//填充过滤条件
 	for k, v := range req.Filter {
-		f, ok := si.Filter[k]
-		if !ok {
-			switch v.(type) {
-			case string:
-				conn = conn.Where(fmt.Sprintf("%s like ?", utils.CamelCaseToUdnderscore(k)), "%"+v.(string)+"%")
-			default:
-				conn = conn.Where(fmt.Sprintf("%s = ?", utils.CamelCaseToUdnderscore(k)), v)
-			}
-			//return nil, errors.Parameter.WithMsgf("过滤的key未定义:%s", k)
-		} else {
-			var args []interface{}
-			for i := int64(0); i < f.ValNum; i++ {
-				switch f.Type {
-				case "date":
-					v = utils.FmtDateStr(cast.ToString(v))
-				case "array": //数组类型
-					v = strings.Split(cast.ToString(v), ",")
-				}
-				args = append(args, v)
-			}
-			conn = conn.Where(f.Sql, args...)
-		}
+		conn = FilterFmt(conn, si, k, v)
+	}
 
-	}
-	var (
-		columns []string
-	)
-	if req.Columns != "" {
-		columns = strings.Split(req.Columns, ",")
-	}
 	if len(req.Aggregations) > 0 {
-
-		//column := req.Columns
-		//if column == "" {
-		//	column = fmt.Sprintf("%s.*", si.Table)
-		//} else {
-		//	columns := strings.Split(column, ",")
-		//	for i, v := range columns {
-		//		columns[i] = fmt.Sprintf("%s.%s", si.Table, v)
-		//	}
-		//	column = strings.Join(columns, ",")
-		//}
 		for _, agg := range req.Aggregations {
-			as := agg.AsName
-			if as == "" {
-				as = agg.Column
+			newCol := agg.Column
+			if si.IsToHump == def.True {
+				newCol = utils.CamelCaseToUdnderscore(newCol)
 			}
 			if val := si.ArgColumns[agg.Column]; val != "" {
-				column := fmt.Sprintf("%s(%s) as %s", agg.Func, val, as)
+				column := fmt.Sprintf("%s(%s) as %s", agg.Func, val, agg.Column)
 				columns = append(columns, column)
 			} else if agg.Column == "total" {
-				column := fmt.Sprintf("%s(1) as %s", agg.Func, as)
+				column := fmt.Sprintf("%s(1) as %s", agg.Func, agg.Column)
 				columns = append(columns, column)
 			} else {
-				column := fmt.Sprintf("%s(%s) as %s", agg.Func, agg.Column, agg.Column)
+				column := fmt.Sprintf("%s(%s) as %s", agg.Func, newCol, agg.Column)
 				columns = append(columns, column)
 			}
 		}
-		//if req.GroupBy != "" {
-		//	conn = conn.Select(fmt.Sprintf("%s(%s) as %s,%s",
-		//		req.ArgFunc, utils.CamelCaseToUdnderscore(req.ArgColumn), req.ArgFunc, column))
-		//} else {
-		//	conn = conn.Select(fmt.Sprintf("%s(%s) as %s,%s",
-		//		req.ArgFunc, utils.CamelCaseToUdnderscore(req.ArgColumn), req.ArgFunc, column))
-		//}
 	}
 	conn = conn.Select(strings.Join(columns, ","))
-	if req.GroupBy != "" {
-		conn = conn.Group(utils.CamelCaseToUdnderscore(req.GroupBy))
+	if len(groups) != 0 {
+		conn = conn.Group(strings.Join(groups, ","))
 	}
 	var ret = []map[string]any{}
 	err = conn.Find(&ret).Error
@@ -174,9 +219,13 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 			if _, ok := omitSet[k]; ok { //忽略的字段
 				continue
 			}
-			switch v.(type) {
+			switch val := v.(type) {
 			case time.Time:
-				r[utils.UderscoreToLowerCamelCase(k)] = v.(time.Time).Unix()
+				if k == "date" {
+					r[k] = utils.ToTimeStr(val)
+					continue
+				}
+				r[utils.UderscoreToLowerCamelCase(k)] = val.Unix()
 			default:
 				k2 := utils.UderscoreToLowerCamelCase(k)
 				if utils.SliceIn(k2, "areaID", "projectID") {

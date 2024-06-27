@@ -17,6 +17,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: datastaticsticsinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: datastaticsticsinfo.ReadHandler(serverCtx),
 				},

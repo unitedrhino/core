@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"gitee.com/i-Things/share/stores"
-	"time"
 )
 
 // 示例
@@ -71,23 +70,4 @@ type FilterKeywords struct {
 	Sql    string `json:"sql"`
 	ValNum int64  `json:"valNum"` //问号的数量
 	Type   string `json:"type"`   //time:时间类型时间戳 date: 日期类型的字符串
-}
-
-// 设备功耗
-type DataDmDevicePower struct {
-	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // 编号
-	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`     // 租户编码
-	ProjectID  stores.ProjectID  `gorm:"column:project_id;type:bigint;NOT NULL"`           // 所属项目ID(雪花ID)
-	AreaID     stores.AreaID     `gorm:"column:area_id;type:bigint;NOT NULL"`              // 区域ID(雪花ID)
-	AreaIDPath string            `gorm:"column:area_id_path;type:varchar(100);NOT NULL"`
-	ProductID  string            `gorm:"column:product_id;type:varchar(100);uniqueIndex:product_id_deviceName;NOT NULL"`  // 产品id
-	DeviceName string            `gorm:"column:device_name;uniqueIndex:product_id_deviceName;type:varchar(100);NOT NULL"` // 设备名称
-	Date       time.Time         `gorm:"column:date;NOT NULL;uniqueIndex:product_id_deviceName"`                          //统计的日期
-	CategoryID int64             `gorm:"column:category_id;type:bigint;default:1"`                                        // 产品品类
-	Power      int64             `gorm:"column:power;type:bigint;default:0"`                                              //功耗:单位 w
-	stores.OnlyTime
-}
-
-func (m *DataDmDevicePower) TableName() string {
-	return "data_dm_device_power"
 }

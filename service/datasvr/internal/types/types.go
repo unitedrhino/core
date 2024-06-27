@@ -4,15 +4,44 @@ package types
 type Aggregation struct {
 	Func   string `json:"argFunc,optional"`
 	Column string `json:"column,optional"`
-	AsName string `json:"asName,optional"`
+}
+
+type Column struct {
+	Column   string `json:"column"`   //导出的列
+	ShowName string `json:"showName"` //展示的名字
+}
+
+type OrderBy struct {
+	Column string `json:"column"`
+	Sort   string `json:"sort"` //排序方式： aes:从小到大,  desc:从大到小
+}
+
+type PageInfo struct {
+	Page int64 `json:"page,optional" form:"page,optional"` // 页码
+	Size int64 `json:"size,optional" form:"size,optional"` // 每页大小
+}
+
+type StaticsticsInfoExportReq struct {
+	Columns []Column `json:"columns"`
+	Format  string   `json:"format"` //默认xslx
+}
+
+type StaticsticsInfoIndexReq struct {
+	Finds []*StaticsticsInfoReadReq `json:"finds"`
+}
+
+type StaticsticsInfoIndexResp struct {
+	Lists [][]map[string]interface{} `json:"list"`
 }
 
 type StaticsticsInfoReadReq struct {
 	Code         string                 `json:"code"`
+	Page         *PageInfo              `json:"page,optional"`
 	Filter       map[string]interface{} `json:"filter,optional"`
 	Aggregations []Aggregation          `json:"aggregations,optional"`
 	GroupBy      string                 `json:"groupBy,optional"`
 	Columns      string                 `json:"columns,optional"`
+	OrderBy      []OrderBy              `json:"orderBy,optional"`
 }
 
 type StaticsticsInfoReadResp struct {

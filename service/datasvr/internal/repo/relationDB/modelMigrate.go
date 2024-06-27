@@ -23,7 +23,6 @@ func Migrate(c conf.Database) (err error) {
 		}
 		err = db.AutoMigrate(
 			&DataStatisticsInfo{},
-			&DataDmDevicePower{},
 		)
 		if err != nil {
 			return

@@ -75,5 +75,5 @@ cd timed/timedjobsvr && goctl rpc protoc  proto/timedjob.proto --go_out=./ --go-
 # api网关接口代理模块-apisvr
 
 ```shell
-cd datasvr && goctl api go -api http/data.api  -dir ./  --style=goZero -ws && cd ..
+cd datasvr && goctl api go -api http/data.api  -dir ./  --style=goZero -ws  && goctl api swagger -filename swagger.json -api http/data.api -dir ./http  && cd ..
 ```

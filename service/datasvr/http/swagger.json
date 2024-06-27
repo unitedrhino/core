@@ -1,0 +1,287 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/data/staticstics/info/index": {
+      "post": {
+        "summary": "批量获取统计数据",
+        "operationId": "postApiV1DataStaticsticsInfoIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/StaticsticsInfoIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StaticsticsInfoIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/info",
+          "dataStaticsticsInfo"
+        ]
+      }
+    },
+    "/api/v1/data/staticstics/info/read": {
+      "post": {
+        "summary": "获取统计数据",
+        "operationId": "postApiV1DataStaticsticsInfoRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/StaticsticsInfoReadResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StaticsticsInfoReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/info",
+          "dataStaticsticsInfo"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Aggregation": {
+      "type": "object",
+      "properties": {
+        "argFunc": {
+          "type": "string"
+        },
+        "column": {
+          "type": "string"
+        }
+      },
+      "title": "Aggregation"
+    },
+    "Column": {
+      "type": "object",
+      "properties": {
+        "column": {
+          "type": "string",
+          "description": "导出的列"
+        },
+        "showName": {
+          "type": "string",
+          "description": "展示的名字"
+        }
+      },
+      "title": "Column",
+      "required": [
+        "column",
+        "showName"
+      ]
+    },
+    "OrderBy": {
+      "type": "object",
+      "properties": {
+        "column": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "string",
+          "description": "排序方式： aes:从小到大,  desc:从大到小"
+        }
+      },
+      "title": "OrderBy",
+      "required": [
+        "column",
+        "sort"
+      ]
+    },
+    "PageInfo": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        }
+      },
+      "title": "PageInfo"
+    },
+    "StaticsticsInfoExportReq": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Column"
+          }
+        },
+        "format": {
+          "type": "string",
+          "description": "默认xslx"
+        }
+      },
+      "title": "StaticsticsInfoExportReq",
+      "required": [
+        "columns",
+        "format"
+      ]
+    },
+    "StaticsticsInfoIndexReq": {
+      "type": "object",
+      "properties": {
+        "finds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StaticsticsInfoReadReq"
+          }
+        }
+      },
+      "title": "StaticsticsInfoIndexReq",
+      "required": [
+        "finds"
+      ]
+    },
+    "StaticsticsInfoIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "invalid",
+              "format": "UNKNOWN"
+            }
+          }
+        }
+      },
+      "title": "StaticsticsInfoIndexResp",
+      "required": [
+        "list"
+      ]
+    },
+    "StaticsticsInfoReadReq": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "page": {
+          "$ref": "#/definitions/PageInfo"
+        },
+        "filter": {
+          "type": "object"
+        },
+        "aggregations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Aggregation"
+          }
+        },
+        "groupBy": {
+          "type": "string"
+        },
+        "columns": {
+          "type": "string"
+        },
+        "orderBy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderBy"
+          }
+        }
+      },
+      "title": "StaticsticsInfoReadReq",
+      "required": [
+        "code"
+      ]
+    },
+    "StaticsticsInfoReadResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/map[string]interface"
+          },
+          "description": "如果返回的是个列表"
+        },
+        "one": {
+          "type": "object",
+          "description": "如果只返回一个数"
+        }
+      },
+      "title": "StaticsticsInfoReadResp",
+      "required": [
+        "list",
+        "one"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

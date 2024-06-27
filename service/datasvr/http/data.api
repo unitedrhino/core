@@ -9,16 +9,24 @@ service data {
 	@doc "获取统计数据"
 	@handler read
 	post /read (StaticsticsInfoReadReq) returns (StaticsticsInfoReadResp)
+
+	@doc "批量获取统计数据"
+	@handler index
+	post /index (StaticsticsInfoIndexReq) returns (StaticsticsInfoIndexResp)
 }
 
 type (
-	StaticsticsInfoExportReq{
+	PageInfo {
+		Page int64 `json:"page,optional" form:"page,optional"` // 页码
+		Size int64 `json:"size,optional" form:"size,optional"` // 每页大小
+	}
+	StaticsticsInfoExportReq {
 		Columns []Column `json:"columns"`
-		Format string `json:"format"`//默认xslx
+		Format  string   `json:"format"` //默认xslx
 	}
 	Column {
-		Column string  `json:"column"`//导出的列
-		ShowName string  `json:"showName"`//展示的名字
+		Column   string `json:"column"` //导出的列
+		ShowName string `json:"showName"` //展示的名字
 	}
 	// StaticsticsInfoIndexReq {
 	//  Reqs []*StaticsticsInfo `json:"reqs"`
@@ -30,14 +38,25 @@ type (
 	Aggregation {
 		Func   string `json:"argFunc,optional"`
 		Column string `json:"column,optional"`
-		AsName string `json:"asName,optional"`
 	}
 	StaticsticsInfoReadReq {
 		Code         string                 `json:"code"`
+		Page         *PageInfo              `json:"page,optional"`
 		Filter       map[string]interface{} `json:"filter,optional"`
 		Aggregations []Aggregation          `json:"aggregations,optional"`
 		GroupBy      string                 `json:"groupBy,optional"`
 		Columns      string                 `json:"columns,optional"`
+		OrderBy      []OrderBy              `json:"orderBy,optional"`
+	}
+	OrderBy {
+		Column string `json:"column"`
+		Sort   string `json:"sort"` //排序方式： aes:从小到大,  desc:从大到小
+	}
+	StaticsticsInfoIndexReq {
+		Finds []*StaticsticsInfoReadReq `json:"finds"`
+	}
+	StaticsticsInfoIndexResp {
+		Lists [][]map[string]interface{} `json:"list"`
 	}
 )
 
