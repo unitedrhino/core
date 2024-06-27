@@ -34,7 +34,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			err     error
 			isOpen  bool
 		)
-		authHeader := r.Header.Get("Authorization")
+		authHeader := ctxs.GetHandle(r, "Authorization")
 		// 检查"Authorization"字段是否存在并且以"Bearer "为前缀
 		if strings.HasPrefix(authHeader, "Bearer ") {
 			isOpen = true
@@ -78,17 +78,6 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 	}
 }
 
-func getHandle(r *http.Request, keys ...string) string {
-	var val string
-	for _, v := range keys {
-		val = r.Header.Get(v)
-		if val != "" {
-			return val
-		}
-	}
-	return val
-}
-
 func (m *CheckTokenWareMiddleware) OpenAuth(r *http.Request, token string) (*ctxs.UserCtx, error) {
 	strIP, _ := utils.GetIP(r)
 	resp, err := m.TenantRpc.TenantOpenCheckToken(r.Context(), &sys.TenantOpenCheckTokenReq{
@@ -111,7 +100,7 @@ func (m *CheckTokenWareMiddleware) OpenAuth(r *http.Request, token string) (*ctx
 func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Request) (*ctxs.UserCtx, error) {
 	strIP, _ := utils.GetIP(r)
 
-	strToken := getHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
+	strToken := ctxs.GetHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
 	if strToken == "" {
 		logx.WithContext(r.Context()).Errorf("%s.CheckTokenWare ip=%s not find token",
 			utils.FuncName(), strIP)
