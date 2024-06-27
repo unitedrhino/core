@@ -84,6 +84,9 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 				v = strings.Split(cast.ToString(v), ",")
 				conn = conn.Where(fmt.Sprintf("%s in ?", newCol), v)
 				return conn
+			case "subChildren":
+				conn = conn.Where(fmt.Sprintf("%s like ?", newCol), cast.ToString(v)+"%")
+				return conn
 			}
 		}
 		switch val := v.(type) {
@@ -149,17 +152,9 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		conn = conn.Order(si.OrderBy)
 	}
 	if si.IsFilterProject == def.True {
-		if uc.ProjectID > def.NotClassified {
-			conn = conn.Where("project_id=?", uc.ProjectID)
-			if si.IsFilterArea == def.True && !uc.IsAdmin {
-				_, areas := ctxs.GetAreaIDs(uc.ProjectID, uc.ProjectAuth)
-				conn = conn.Where("area_id = ?", areas)
-			}
-		} else if !uc.IsAdmin {
-			conn = conn.Where("project_id in ?", utils.SetToSlice(uc.ProjectAuth))
-			if si.IsFilterArea == def.True {
-				conn = conn.Where("area_id in ?", ctxs.GetAllAreaIDs(uc.ProjectAuth))
-			}
+		conn = stores.GenProjectAuthScope(l.ctx, conn)
+		if si.IsFilterArea == def.True {
+			conn = stores.GenAreaAuthScope(l.ctx, conn)
 		}
 	}
 	if si.IsSoftDelete == def.True {
