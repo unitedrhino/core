@@ -2,14 +2,14 @@ package logic
 
 import (
 	"gitee.com/i-Things/core/service/viewsvr/internal/types"
-	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 )
 
-func ToPageInfo(info *types.PageInfo) *def.PageInfo {
+func ToPageInfo(info *types.PageInfo) *stores.PageInfo {
 	if info == nil {
 		return nil
 	}
-	return &def.PageInfo{
+	return &stores.PageInfo{
 		Page: info.Page,
 		Size: info.Size,
 	}
