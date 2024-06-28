@@ -21,6 +21,7 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		AreaCount:     pb.AreaCount,
 		AdminUserInfo: utils.Copy[types.UserCore](ui),
 		Area:          utils.ToNullFloat32(pb.Area),
+		Ppsm:          pb.Ppsm,
 		Areas:         info.ToAreaInfosTypes(pb.Areas),
 	}
 }
