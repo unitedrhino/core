@@ -80,7 +80,7 @@ func (p UserMessageRepo) FindOneByFilter(ctx context.Context, f UserMessageFilte
 	return &result, nil
 }
 
-func (p UserMessageRepo) FindByFilter(ctx context.Context, f UserMessageFilter, page *def.PageInfo) ([]*SysUserMessage, error) {
+func (p UserMessageRepo) FindByFilter(ctx context.Context, f UserMessageFilter, page *stores.PageInfo) ([]*SysUserMessage, error) {
 	var results []*SysUserMessage
 	db := p.fmtFilter(ctx, f).Model(&SysUserMessage{})
 	db = page.ToGorm(db)

@@ -4,6 +4,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/i-Things/share/utils"
 )
 
 func ToTagsMap(tags []*types.Tag) map[string]string {
@@ -28,23 +29,11 @@ func ToTagsType(tags map[string]string) (retTag []*types.Tag) {
 }
 
 func ToSysPageRpc(in *types.PageInfo) *sys.PageInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.PageInfo{
-		Page: in.Page,
-		Size: in.Size,
-	}
+	return utils.Copy[sys.PageInfo](in)
 }
 
 func ToTimedJobPageRpc(in *types.PageInfo) *timedjob.PageInfo {
-	if in == nil {
-		return nil
-	}
-	return &timedjob.PageInfo{
-		Page: in.Page,
-		Size: in.Size,
-	}
+	return utils.Copy[timedjob.PageInfo](in)
 }
 
 func ToSysPointRpc(in *types.Point) *sys.Point {

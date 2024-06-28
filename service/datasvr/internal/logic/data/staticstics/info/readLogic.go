@@ -142,7 +142,7 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		conn = conn.Where("tenant_code=?", uc.TenantCode)
 	}
 	if req.Page != nil {
-		conn = utils.Copy[def.PageInfo](req.Page).ToGorm(conn)
+		conn = utils.Copy[stores.PageInfo](req.Page).ToGorm(conn)
 	}
 	if len(req.OrderBy) != 0 {
 		for _, v := range req.OrderBy {

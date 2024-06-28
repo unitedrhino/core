@@ -68,7 +68,7 @@ func (p TenantAppRepo) FindOneByFilter(ctx context.Context, f TenantAppFilter) (
 	}
 	return &result, nil
 }
-func (p TenantAppRepo) FindByFilter(ctx context.Context, f TenantAppFilter, page *def.PageInfo) ([]*SysTenantApp, error) {
+func (p TenantAppRepo) FindByFilter(ctx context.Context, f TenantAppFilter, page *stores.PageInfo) ([]*SysTenantApp, error) {
 	var results []*SysTenantApp
 	db := p.fmtFilter(ctx, f).Model(&SysTenantApp{})
 	db = page.ToGorm(db)

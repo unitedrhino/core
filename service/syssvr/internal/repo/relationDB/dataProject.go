@@ -81,7 +81,7 @@ func (g DataProjectRepo) FindOneByFilter(ctx context.Context, f DataProjectFilte
 	}
 	return &result, nil
 }
-func (p DataProjectRepo) FindByFilter(ctx context.Context, f DataProjectFilter, page *def.PageInfo) ([]*SysDataProject, error) {
+func (p DataProjectRepo) FindByFilter(ctx context.Context, f DataProjectFilter, page *stores.PageInfo) ([]*SysDataProject, error) {
 	var results []*SysDataProject
 	db := p.fmtFilter(ctx, f).Model(&SysDataProject{})
 	db = page.ToGorm(db)

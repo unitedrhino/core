@@ -124,7 +124,7 @@ func (p UserInfoRepo) FindOneByFilter(ctx context.Context, f UserInfoFilter) (*S
 	}
 	return &result, nil
 }
-func (p UserInfoRepo) FindByFilter(ctx context.Context, f UserInfoFilter, page *def.PageInfo) ([]*SysUserInfo, error) {
+func (p UserInfoRepo) FindByFilter(ctx context.Context, f UserInfoFilter, page *stores.PageInfo) ([]*SysUserInfo, error) {
 	var results []*SysUserInfo
 	db := p.fmtFilter(ctx, f).Model(&SysUserInfo{})
 	db = page.ToGorm(db)

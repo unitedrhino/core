@@ -32,8 +32,8 @@ func TimingTaskCheck(svcCtx *svc.ServiceContext) {
 		js, err := jobDB.FindByFilter(ctx, relationDB.TaskFilter{WithGroup: true,
 			Status: []int64{def.StatusWaitStop, def.StatusWaitDelete, def.StatusWaitRun},
 			Types:  []int64{domain.TaskTypeTiming}},
-			&def.PageInfo{
-				Orders: []def.OrderBy{{Filed: "priority", Sort: def.OrderDesc}},
+			&stores.PageInfo{
+				Orders: []stores.OrderBy{{Filed: "priority", Sort: stores.OrderDesc}},
 			})
 		if err != nil {
 			return err

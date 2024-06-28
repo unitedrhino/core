@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -56,7 +55,7 @@ func (p TaskLogRepo) FindOneByFilter(ctx context.Context, f TaskLogFilter) (*Tim
 	}
 	return &result, nil
 }
-func (p TaskLogRepo) FindByFilter(ctx context.Context, f TaskLogFilter, page *def.PageInfo) ([]*TimedTaskLog, error) {
+func (p TaskLogRepo) FindByFilter(ctx context.Context, f TaskLogFilter, page *stores.PageInfo) ([]*TimedTaskLog, error) {
 	var results []*TimedTaskLog
 	db := p.fmtFilter(ctx, f).Model(&TimedTaskLog{})
 	db = page.ToGorm(db)

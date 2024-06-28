@@ -81,7 +81,7 @@ func (g DataAreaRepo) FindOneByFilter(ctx context.Context, f DataAreaFilter) (*S
 	}
 	return &result, nil
 }
-func (p DataAreaRepo) FindByFilter(ctx context.Context, f DataAreaFilter, page *def.PageInfo) ([]*SysDataArea, error) {
+func (p DataAreaRepo) FindByFilter(ctx context.Context, f DataAreaFilter, page *stores.PageInfo) ([]*SysDataArea, error) {
 	var results []*SysDataArea
 	db := p.fmtFilter(ctx, f).Model(&SysDataArea{})
 	db = page.ToGorm(db)

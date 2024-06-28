@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -57,7 +56,7 @@ func (p RoleApiRepo) FindOneByFilter(ctx context.Context, f RoleAccessFilter) (*
 	}
 	return &result, nil
 }
-func (p RoleApiRepo) FindByFilter(ctx context.Context, f RoleAccessFilter, page *def.PageInfo) ([]*SysRoleAccess, error) {
+func (p RoleApiRepo) FindByFilter(ctx context.Context, f RoleAccessFilter, page *stores.PageInfo) ([]*SysRoleAccess, error) {
 	var results []*SysRoleAccess
 	db := p.fmtFilter(ctx, f).Model(&SysRoleAccess{})
 	db = page.ToGorm(db)

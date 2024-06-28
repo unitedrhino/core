@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -56,7 +55,7 @@ func (g ProjectInfoRepo) FindOneByFilter(ctx context.Context, f ProjectInfoFilte
 	}
 	return &result, nil
 }
-func (p ProjectInfoRepo) FindByFilter(ctx context.Context, f ProjectInfoFilter, page *def.PageInfo) ([]*SysProjectInfo, error) {
+func (p ProjectInfoRepo) FindByFilter(ctx context.Context, f ProjectInfoFilter, page *stores.PageInfo) ([]*SysProjectInfo, error) {
 	//ctxs.ClearMetaProjectID(ctx) //默认情况下只返回当前项目,需要清除当前项目
 	var results []*SysProjectInfo
 	db := p.fmtFilter(ctx, f).Model(&SysProjectInfo{})

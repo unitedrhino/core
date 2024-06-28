@@ -592,13 +592,19 @@ type OpsWorkOrderIndexResp struct {
 	List  []*OpsWorkOrder `json:"list"`  //菜单列表
 }
 
+type OrderBy struct {
+	Filed string `json:"filed,optional"` ////排序的字段名
+	Sort  int64  `json:"sort,optional"`  //排序方式：0 从小到大, 1 从大到小
+}
+
 type Oss struct {
 	Host string `json:"host"` //oss访问前缀
 }
 
 type PageInfo struct {
-	Page int64 `json:"page,optional" form:"page,optional"` // 页码
-	Size int64 `json:"size,optional" form:"size,optional"` // 每页大小
+	Page   int64      `json:"page,optional" form:"page,optional"` // 页码
+	Size   int64      `json:"size,optional" form:"size,optional"` // 每页大小
+	Orders []*OrderBy `json:"orders,optional"`                    //排序
 }
 
 type Point struct {

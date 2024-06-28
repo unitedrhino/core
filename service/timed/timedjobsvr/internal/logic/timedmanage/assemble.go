@@ -3,7 +3,7 @@ package timedmanagelogic
 import (
 	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
-	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/stores"
 )
 
 func ToTaskGroupPo(in *timedjob.TaskGroup) *relationDB.TimedTaskGroup {
@@ -83,29 +83,29 @@ func ToTaskInfoPo(in *timedjob.TaskInfo) *relationDB.TimedTaskInfo {
 	}
 }
 
-func ToPageInfo(info *timedjob.PageInfo, defaultOrders ...def.OrderBy) *def.PageInfo {
+func ToPageInfo(info *timedjob.PageInfo, defaultOrders ...stores.OrderBy) *stores.PageInfo {
 	if info == nil {
 		return nil
 	}
 
 	var orders = defaultOrders
 	if infoOrders := info.GetOrders(); len(infoOrders) > 0 {
-		orders = make([]def.OrderBy, 0, len(infoOrders))
+		orders = make([]stores.OrderBy, 0, len(infoOrders))
 		for _, infoOd := range infoOrders {
 			if infoOd.GetFiled() != "" {
-				orders = append(orders, def.OrderBy{infoOd.GetFiled(), infoOd.GetSort()})
+				orders = append(orders, stores.OrderBy{infoOd.GetFiled(), infoOd.GetSort()})
 			}
 		}
 	}
 
-	return &def.PageInfo{
+	return &stores.PageInfo{
 		Page:   info.GetPage(),
 		Size:   info.GetSize(),
 		Orders: orders,
 	}
 }
 
-func ToPageInfoWithDefault(info *timedjob.PageInfo, defau *def.PageInfo) *def.PageInfo {
+func ToPageInfoWithDefault(info *timedjob.PageInfo, defau *stores.PageInfo) *stores.PageInfo {
 	if page := ToPageInfo(info); page == nil {
 		return defau
 	} else {

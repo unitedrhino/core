@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -55,7 +54,7 @@ func (p UserProfileRepo) FindOneByFilter(ctx context.Context, f UserProfileFilte
 	}
 	return &result, nil
 }
-func (p UserProfileRepo) FindByFilter(ctx context.Context, f UserProfileFilter, page *def.PageInfo) ([]*SysUserProfile, error) {
+func (p UserProfileRepo) FindByFilter(ctx context.Context, f UserProfileFilter, page *stores.PageInfo) ([]*SysUserProfile, error) {
 	var results []*SysUserProfile
 	db := p.fmtFilter(ctx, f).Model(&SysUserProfile{})
 	db = page.ToGorm(db)

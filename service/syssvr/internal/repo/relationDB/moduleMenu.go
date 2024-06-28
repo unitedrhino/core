@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 )
@@ -53,7 +52,7 @@ func (p MenuInfoRepo) FindOneByFilter(ctx context.Context, f MenuInfoFilter) (*S
 	}
 	return &result, nil
 }
-func (p MenuInfoRepo) FindByFilter(ctx context.Context, f MenuInfoFilter, page *def.PageInfo) ([]*SysModuleMenu, error) {
+func (p MenuInfoRepo) FindByFilter(ctx context.Context, f MenuInfoFilter, page *stores.PageInfo) ([]*SysModuleMenu, error) {
 	var results []*SysModuleMenu
 	db := p.fmtFilter(ctx, f).Model(&SysModuleMenu{})
 	db = page.ToGorm(db).Order(stores.Col("order"))

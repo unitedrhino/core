@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -49,7 +48,7 @@ func (p TaskGroupRepo) FindOneByFilter(ctx context.Context, f TaskGroupFilter) (
 	}
 	return &result, nil
 }
-func (p TaskGroupRepo) FindByFilter(ctx context.Context, f TaskGroupFilter, page *def.PageInfo) ([]*TimedTaskGroup, error) {
+func (p TaskGroupRepo) FindByFilter(ctx context.Context, f TaskGroupFilter, page *stores.PageInfo) ([]*TimedTaskGroup, error) {
 	var results []*TimedTaskGroup
 	db := p.fmtFilter(ctx, f).Model(&TimedTaskGroup{})
 	db = page.ToGorm(db)

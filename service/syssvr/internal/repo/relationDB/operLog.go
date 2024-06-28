@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 )
@@ -49,7 +48,7 @@ func (p OperLogRepo) FindOneByFilter(ctx context.Context, f OperLogFilter) (*Sys
 	}
 	return &result, nil
 }
-func (p OperLogRepo) FindByFilter(ctx context.Context, f OperLogFilter, page *def.PageInfo) ([]*SysOperLog, error) {
+func (p OperLogRepo) FindByFilter(ctx context.Context, f OperLogFilter, page *stores.PageInfo) ([]*SysOperLog, error) {
 	var results []*SysOperLog
 	db := p.fmtFilter(ctx, f).Model(&SysOperLog{})
 	db = page.ToGorm(db)

@@ -3,34 +3,33 @@ package logic
 import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 )
 
-func ToPageInfo(info *sys.PageInfo, defaultOrders ...def.OrderBy) *def.PageInfo {
+func ToPageInfo(info *sys.PageInfo, defaultOrders ...stores.OrderBy) *stores.PageInfo {
 	if info == nil {
 		return nil
 	}
 
 	var orders = defaultOrders
 	if infoOrders := info.GetOrders(); len(infoOrders) > 0 {
-		orders = make([]def.OrderBy, 0, len(infoOrders))
+		orders = make([]stores.OrderBy, 0, len(infoOrders))
 		for _, infoOd := range infoOrders {
 			if infoOd.GetFiled() != "" {
-				orders = append(orders, def.OrderBy{utils.CamelCaseToUdnderscore(infoOd.GetFiled()), infoOd.GetSort()})
+				orders = append(orders, stores.OrderBy{utils.CamelCaseToUdnderscore(infoOd.GetFiled()), infoOd.GetSort()})
 			}
 		}
 	}
 
-	return &def.PageInfo{
+	return &stores.PageInfo{
 		Page:   info.GetPage(),
 		Size:   info.GetSize(),
 		Orders: orders,
 	}
 }
 
-func ToPageInfoWithDefault(info *sys.PageInfo, defau *def.PageInfo) *def.PageInfo {
+func ToPageInfoWithDefault(info *sys.PageInfo, defau *stores.PageInfo) *stores.PageInfo {
 	if page := ToPageInfo(info); page == nil {
 		return defau
 	} else {

@@ -2,7 +2,6 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -57,7 +56,7 @@ func (p NotifyTemplateRepo) FindOneByFilter(ctx context.Context, f NotifyTemplat
 	}
 	return &result, nil
 }
-func (p NotifyTemplateRepo) FindByFilter(ctx context.Context, f NotifyTemplateFilter, page *def.PageInfo) ([]*SysNotifyTemplate, error) {
+func (p NotifyTemplateRepo) FindByFilter(ctx context.Context, f NotifyTemplateFilter, page *stores.PageInfo) ([]*SysNotifyTemplate, error) {
 	var results []*SysNotifyTemplate
 	db := p.fmtFilter(ctx, f).Model(&SysNotifyTemplate{})
 	db = page.ToGorm(db)
