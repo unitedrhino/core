@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/stores"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -33,7 +34,10 @@ func (l *OperLogIndexLogic) OperLogIndex(in *sys.OperLogIndexReq) (*sys.OperLogI
 		OperUserName: in.OperUserName,
 		BusinessType: in.BusinessType,
 	}
-	resp, err := l.OlDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
+	resp, err := l.OlDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Filed: "createdTime",
+		Sort:  2,
+	}))
 	if err != nil {
 		return nil, err
 	}

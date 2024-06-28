@@ -3,6 +3,7 @@ package timedmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
+	"gitee.com/i-Things/share/stores"
 
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
@@ -34,7 +35,10 @@ func (l *TaskLogIndexLogic) TaskLogIndex(in *timedjob.TaskLogIndexReq) (*timedjo
 	if err != nil {
 		return nil, err
 	}
-	pos, err := db.FindByFilter(l.ctx, f, ToPageInfo(in.Page))
+	pos, err := db.FindByFilter(l.ctx, f, ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Filed: "createdTime",
+		Sort:  2,
+	}))
 	if err != nil {
 		return nil, err
 	}

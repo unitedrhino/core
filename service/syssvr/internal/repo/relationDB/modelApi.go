@@ -22,7 +22,7 @@ func (m *SysAccessInfo) TableName() string {
 // 接口管理
 type SysApiInfo struct {
 	ID           int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`          // 编号
-	AccessCode   string `gorm:"column:api_scope_code;type:VARCHAR(50);NOT NULL"`           // 范围编码
+	AccessCode   string `gorm:"column:access_code;type:VARCHAR(50);NOT NULL"`              // 范围编码
 	Method       string `gorm:"column:method;uniqueIndex:route;type:VARCHAR(50);NOT NULL"` // 请求方式（1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
 	Route        string `gorm:"column:route;uniqueIndex:route;type:VARCHAR(100);NOT NULL"` // 路由
 	Name         string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                    // 请求名称
