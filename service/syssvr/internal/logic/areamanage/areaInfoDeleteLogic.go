@@ -37,6 +37,9 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if err != nil {
 		return nil, err
 	}
+	if area.DeviceCount > 0 {
+		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("区域下有设备禁止删除")
+	}
 	list := l.svcCtx.Slot.Get(l.ctx, "areaInfo", "delete")
 	err = list.Request(l.ctx, area, nil)
 	if err != nil {
