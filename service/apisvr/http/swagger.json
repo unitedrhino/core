@@ -7317,18 +7317,11 @@
           "description": "是否是系统创建的,系统创建的只有管理员可以删除"
         },
         "areaIDPath": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "type": "string",
           "description": "项目区域ids（只读）"
         },
         "areaNamePath": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
+          "type": "string",
           "description": "（只读）"
         },
         "areaImg": {

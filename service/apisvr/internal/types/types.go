@@ -126,8 +126,8 @@ type AreaInfo struct {
 	UseBy           string      `json:"useBy,optional"`               //用途: commonSpace default
 	IsLeaf          int64       `json:"isLeaf,optional"`              //是否是子节点（只读）
 	IsSysCreated    int64       `json:"isSysCreated,optional"`        //是否是系统创建的,系统创建的只有管理员可以删除
-	AreaIDPath      []int64     `json:"areaIDPath,optional"`          //项目区域ids（只读）
-	AreaNamePath    []string    `json:"areaNamePath,optional"`        //（只读）
+	AreaIDPath      string      `json:"areaIDPath,optional"`          //项目区域ids（只读）
+	AreaNamePath    string      `json:"areaNamePath,optional"`        //（只读）
 	AreaImg         string      `json:"areaImg,optional"`
 	IsUpdateAreaImg bool        `json:"isUpdateAreaImg,optional"`
 	Children        []*AreaInfo `json:"children,optional"` //下级项目区域列表（只读）
