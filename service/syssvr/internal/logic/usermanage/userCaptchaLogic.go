@@ -32,6 +32,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		codeID = utils.Random(20, 1)
 		code   = utils.Random(6, 0)
 	)
+	//todo 防盗刷也需要做下处理
 	//code = "123456" //todo debug
 	if utils.SliceIn(in.Type, def.CaptchaTypePhone, def.CaptchaTypeEmail) && in.Account == "" {
 		return nil, errors.Parameter.AddMsg("account需要填写")
@@ -51,10 +52,18 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 	switch in.Type {
 	case def.CaptchaTypeImage:
 	case def.CaptchaTypePhone:
+		var imgAuth bool
 		if uc == nil {
 			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, in.Use, in.CodeID, in.Code)
 			if account == "" {
 				return nil, errors.Captcha
+			}
+			imgAuth = true
+		}
+		switch in.Use {
+		case def.CaptchaUseLogin, def.CaptchaUseRegister, def.CaptchaUseForgetPwd:
+			if imgAuth == false {
+				return nil, errors.Captcha.AddMsg("需要先填写图形验证码")
 			}
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
