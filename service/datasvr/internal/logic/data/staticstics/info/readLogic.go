@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/datasvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
@@ -80,6 +81,19 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 		newCol = stores.Col(newCol)
 		if found {
 			switch fu {
+			case "jsonEq":
+				col1, obj, ok := strings.Cut(col, ".")
+				if !ok {
+					conn.AddError(errors.Parameter.AddMsg("jsonEq的格式为xxx.xxx:jsonEq"))
+					return conn
+				}
+				if si.IsToHump == def.True {
+					obj = utils.CamelCaseToUdnderscore(obj)
+					col1 = utils.CamelCaseToUdnderscore(col1)
+				}
+				col1 = stores.Col(col1)
+				conn = conn.Where(fmt.Sprintf("json_extract(%s,'$.%s')=?", col1, obj), v)
+				return conn
 			case "in":
 				v = strings.Split(cast.ToString(v), ",")
 				conn = conn.Where(fmt.Sprintf("%s in ?", newCol), v)
