@@ -46,6 +46,7 @@ service DataManage {
   rpc userAreaApplyDeal(UserAreaApplyDealReq)returns(Empty);//处理区域权限申请
 }
 
+
 //通知管理
 service NotifyManage {
   //站内信
@@ -245,7 +246,13 @@ service TenantManage {
   rpc tenantOpenCheckToken(TenantOpenCheckTokenReq) returns(TenantOpenCheckTokenResp);
 
   rpc tenantOpenWebHook(WithCode)returns(TenantOpenWebHook);
-  
+
+
+  rpc tenantAgreementIndex(TenantAgreementIndexReq) returns(TenantAgreementIndexResp); //获取协议列表
+  rpc tenantAgreementUpdate(TenantAgreement) returns(Empty); //更新协议
+  rpc tenantAgreementCreate(TenantAgreement) returns(WithID); //创建协议
+  rpc tenantAgreementRead(WithIDCode) returns(TenantAgreement); //获取协议详情
+  rpc tenantAgreementDelete(WithID) returns(Empty); //删除协议
 }
 
 //运营
@@ -425,6 +432,24 @@ message NotifyConfigTemplate{
   string type =3;
   int64 templateID =4;
 }
+
+message TenantAgreement{
+  int64 id =1;
+  string code =2;//协议编码
+  string name =3;//协议名称
+  string title =4;
+  string content = 5;
+}
+
+message TenantAgreementIndexReq{
+  PageInfo page =1;
+}
+
+message TenantAgreementIndexResp{
+  repeated TenantAgreement list =1;
+  int64 total= 2;
+}
+
 
 message TenantOpenCheckTokenReq{
   string token = 1;

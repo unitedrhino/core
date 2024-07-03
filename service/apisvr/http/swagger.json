@@ -5061,6 +5061,210 @@
         ]
       }
     },
+    "/api/v1/system/tenant/agreement/create": {
+      "post": {
+        "summary": "添加协议",
+        "operationId": "postApiV1SystemTenantAgreementCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithID"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantAgreement"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/agreement",
+          "systemTenantAgreement"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/agreement/delete": {
+      "post": {
+        "summary": "删除协议",
+        "operationId": "postApiV1SystemTenantAgreementDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/agreement",
+          "systemTenantAgreement"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/agreement/index": {
+      "post": {
+        "summary": "获取协议列表",
+        "operationId": "postApiV1SystemTenantAgreementIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantAgreementIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantAgreementIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/agreement",
+          "systemTenantAgreement"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/agreement/read": {
+      "post": {
+        "summary": "获取协议详情",
+        "operationId": "postApiV1SystemTenantAgreementRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantAgreement"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithIDOrCode"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/agreement",
+          "systemTenantAgreement"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/agreement/update": {
+      "post": {
+        "summary": "更新协议",
+        "operationId": "postApiV1SystemTenantAgreementUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantAgreement"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/agreement",
+          "systemTenantAgreement"
+        ]
+      }
+    },
     "/api/v1/system/tenant/app/create": {
       "post": {
         "summary": "更新租户应用",
@@ -9991,6 +10195,65 @@
         }
       },
       "title": "TenantAccessInfoTreeResp",
+      "required": [
+        "list",
+        "total"
+      ]
+    },
+    "TenantAgreement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编号"
+        },
+        "code": {
+          "type": "string",
+          "description": " 编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 协议名称"
+        },
+        "title": {
+          "type": "string",
+          "description": "协议标题"
+        },
+        "content": {
+          "type": "string",
+          "description": "协议内容(只有详情会返回)"
+        }
+      },
+      "title": "TenantAgreement"
+    },
+    "TenantAgreementIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息"
+        }
+      },
+      "title": "TenantAgreementIndexReq"
+    },
+    "TenantAgreementIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantAgreement"
+          },
+          "description": " 列表数据"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 列表总记录数"
+        }
+      },
+      "title": "TenantAgreementIndexResp",
       "required": [
         "list",
         "total"

@@ -137,6 +137,9 @@ type (
 	TenantAccessIndexReq          = sys.TenantAccessIndexReq
 	TenantAccessIndexResp         = sys.TenantAccessIndexResp
 	TenantAccessMultiUpdateReq    = sys.TenantAccessMultiUpdateReq
+	TenantAgreement               = sys.TenantAgreement
+	TenantAgreementIndexReq       = sys.TenantAgreementIndexReq
+	TenantAgreementIndexResp      = sys.TenantAgreementIndexResp
 	TenantAppIndexReq             = sys.TenantAppIndexReq
 	TenantAppIndexResp            = sys.TenantAppIndexResp
 	TenantAppInfo                 = sys.TenantAppInfo
@@ -229,6 +232,11 @@ type (
 		TenantAppMenuDelete(ctx context.Context, in *WithAppCodeID, opts ...grpc.CallOption) (*Empty, error)
 		TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 		TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
+		TenantAgreementIndex(ctx context.Context, in *TenantAgreementIndexReq, opts ...grpc.CallOption) (*TenantAgreementIndexResp, error)
+		TenantAgreementUpdate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*Empty, error)
+		TenantAgreementCreate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*WithID, error)
+		TenantAgreementRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*TenantAgreement, error)
+		TenantAgreementDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	}
 
 	defaultTenantManage struct {
@@ -451,4 +459,49 @@ func (m *defaultTenantManage) TenantOpenWebHook(ctx context.Context, in *WithCod
 
 func (d *directTenantManage) TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error) {
 	return d.svr.TenantOpenWebHook(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAgreementIndex(ctx context.Context, in *TenantAgreementIndexReq, opts ...grpc.CallOption) (*TenantAgreementIndexResp, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAgreementIndex(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAgreementIndex(ctx context.Context, in *TenantAgreementIndexReq, opts ...grpc.CallOption) (*TenantAgreementIndexResp, error) {
+	return d.svr.TenantAgreementIndex(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAgreementUpdate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAgreementUpdate(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAgreementUpdate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.TenantAgreementUpdate(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAgreementCreate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*WithID, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAgreementCreate(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAgreementCreate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.TenantAgreementCreate(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAgreementRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*TenantAgreement, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAgreementRead(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAgreementRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*TenantAgreement, error) {
+	return d.svr.TenantAgreementRead(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAgreementDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAgreementDelete(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAgreementDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.TenantAgreementDelete(ctx, in)
 }

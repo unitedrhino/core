@@ -36,6 +36,7 @@ import (
 	systemrolemenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/menu"
 	systemrolemodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/module"
 	systemtenantaccessinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/access/info"
+	systemtenantagreement "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/agreement"
 	systemtenantapp "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app"
 	systemtenantappmenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/menu"
 	systemtenantappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app/module"
@@ -970,6 +971,40 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/tenant/access/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemtenantagreement.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemtenantagreement.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantagreement.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemtenantagreement.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemtenantagreement.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/agreement"),
 	)
 
 	server.AddRoutes(

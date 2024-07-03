@@ -159,21 +159,13 @@ func (m *SysTenantConfig) TableName() string {
 	return "sys_tenant_config"
 }
 
-type SysTenantAgreementConfig struct {
-	ID   int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
-	Code string `gorm:"column:code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
-	Name string `gorm:"column:name;type:VARCHAR(50);NOT NULL"`
-	Desc string `gorm:"column:desc;type:VARCHAR(500);"` // 备注
-	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
-}
-
 type SysTenantAgreement struct {
-	ID            int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
-	TenantCode    stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
-	AgreementCode string            `gorm:"column:code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`        // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
-	Title         string            `gorm:"column:title;type:VARCHAR(50);"`
-	Content       string            `gorm:"column:content;type:VARCHAR(50);"`
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
+	Code       string            `gorm:"column:code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`        // 协议编码
+	Name       string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //协议名称
+	Title      string            `gorm:"column:title;type:VARCHAR(50);"`
+	Content    string            `gorm:"column:content;type:text;"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }

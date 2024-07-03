@@ -832,6 +832,23 @@ type TenantAccessInfoTreeResp struct {
 	Total int64              `json:"total"`
 }
 
+type TenantAgreement struct {
+	ID      int64  `json:"id,optional"`      // 编号
+	Code    string `json:"code,optional"`    // 编号
+	Name    string `json:"name,optional"`    // 协议名称
+	Title   string `json:"title,optional"`   //协议标题
+	Content string `json:"content,optional"` //协议内容(只有详情会返回)
+}
+
+type TenantAgreementIndexReq struct {
+	Page *PageInfo `json:"page,optional"` // 分页信息
+}
+
+type TenantAgreementIndexResp struct {
+	List  []*TenantAgreement `json:"list"`  // 列表数据
+	Total int64              `json:"total"` // 列表总记录数
+}
+
 type TenantAppCreateReq struct {
 	Code    string             `json:"code,optional"` // 应用编号
 	AppCode string             `json:"appCode"`

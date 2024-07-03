@@ -65,6 +65,51 @@ service api {
 }
 
 
+@server (
+    group: system/tenant/agreement
+    prefix: /api/v1/system/tenant/agreement
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+
+service api {
+    @doc "添加协议"
+    @handler create
+    post /create (TenantAgreement) returns (WithID)
+
+    @doc "获取协议列表"
+    @handler index
+    post /index (TenantAgreementIndexReq) returns (TenantAgreementIndexResp)
+
+    @doc "获取协议详情"
+    @handler read
+    post /read (WithIDOrCode) returns (TenantAgreement)
+
+    @doc "更新协议"
+    @handler update
+    post /update (TenantAgreement) returns ()
+
+    @doc "删除协议"
+    @handler delete
+    post /delete (WithID) returns ()
+}
+
+type (
+    TenantAgreement{
+        ID int64 `json:"id,optional"`                                      // 编号
+        Code string `json:"code,optional"`                               // 编号
+        Name string `json:"name,optional"`                                 // 协议名称
+        Title string `json:"title,optional"`//协议标题
+        Content string `json:"content,optional"`//协议内容(只有详情会返回)
+    }
+    TenantAgreementIndexReq{
+        Page *PageInfo `json:"page,optional"`                   // 分页信息
+    }
+    TenantAgreementIndexResp{
+        List []*TenantAgreement `json:"list"`            // 列表数据
+        Total int64 `json:"total"`                    // 列表总记录数
+    }
+)
+
 type(
     TenantAccessInfo{
         Code string `json:"code"`                     // 租户编号

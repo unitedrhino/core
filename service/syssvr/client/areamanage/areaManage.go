@@ -137,6 +137,9 @@ type (
 	TenantAccessIndexReq          = sys.TenantAccessIndexReq
 	TenantAccessIndexResp         = sys.TenantAccessIndexResp
 	TenantAccessMultiUpdateReq    = sys.TenantAccessMultiUpdateReq
+	TenantAgreement               = sys.TenantAgreement
+	TenantAgreementIndexReq       = sys.TenantAgreementIndexReq
+	TenantAgreementIndexResp      = sys.TenantAgreementIndexResp
 	TenantAppIndexReq             = sys.TenantAppIndexReq
 	TenantAppIndexResp            = sys.TenantAppIndexResp
 	TenantAppInfo                 = sys.TenantAppInfo

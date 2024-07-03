@@ -131,3 +131,28 @@ func (s *TenantManageServer) TenantOpenWebHook(ctx context.Context, in *sys.With
 	l := tenantmanagelogic.NewTenantOpenWebHookLogic(ctx, s.svcCtx)
 	return l.TenantOpenWebHook(in)
 }
+
+func (s *TenantManageServer) TenantAgreementIndex(ctx context.Context, in *sys.TenantAgreementIndexReq) (*sys.TenantAgreementIndexResp, error) {
+	l := tenantmanagelogic.NewTenantAgreementIndexLogic(ctx, s.svcCtx)
+	return l.TenantAgreementIndex(in)
+}
+
+func (s *TenantManageServer) TenantAgreementUpdate(ctx context.Context, in *sys.TenantAgreement) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantAgreementUpdateLogic(ctx, s.svcCtx)
+	return l.TenantAgreementUpdate(in)
+}
+
+func (s *TenantManageServer) TenantAgreementCreate(ctx context.Context, in *sys.TenantAgreement) (*sys.WithID, error) {
+	l := tenantmanagelogic.NewTenantAgreementCreateLogic(ctx, s.svcCtx)
+	return l.TenantAgreementCreate(in)
+}
+
+func (s *TenantManageServer) TenantAgreementRead(ctx context.Context, in *sys.WithIDCode) (*sys.TenantAgreement, error) {
+	l := tenantmanagelogic.NewTenantAgreementReadLogic(ctx, s.svcCtx)
+	return l.TenantAgreementRead(in)
+}
+
+func (s *TenantManageServer) TenantAgreementDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantAgreementDeleteLogic(ctx, s.svcCtx)
+	return l.TenantAgreementDelete(in)
+}

@@ -5292,6 +5292,11 @@ const (
 	TenantManage_TenantAppMenuDelete_FullMethodName        = "/sys.TenantManage/tenantAppMenuDelete"
 	TenantManage_TenantOpenCheckToken_FullMethodName       = "/sys.TenantManage/tenantOpenCheckToken"
 	TenantManage_TenantOpenWebHook_FullMethodName          = "/sys.TenantManage/tenantOpenWebHook"
+	TenantManage_TenantAgreementIndex_FullMethodName       = "/sys.TenantManage/tenantAgreementIndex"
+	TenantManage_TenantAgreementUpdate_FullMethodName      = "/sys.TenantManage/tenantAgreementUpdate"
+	TenantManage_TenantAgreementCreate_FullMethodName      = "/sys.TenantManage/tenantAgreementCreate"
+	TenantManage_TenantAgreementRead_FullMethodName        = "/sys.TenantManage/tenantAgreementRead"
+	TenantManage_TenantAgreementDelete_FullMethodName      = "/sys.TenantManage/tenantAgreementDelete"
 )
 
 // TenantManageClient is the client API for TenantManage service.
@@ -5324,6 +5329,11 @@ type TenantManageClient interface {
 	TenantAppMenuDelete(ctx context.Context, in *WithAppCodeID, opts ...grpc.CallOption) (*Empty, error)
 	TenantOpenCheckToken(ctx context.Context, in *TenantOpenCheckTokenReq, opts ...grpc.CallOption) (*TenantOpenCheckTokenResp, error)
 	TenantOpenWebHook(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantOpenWebHook, error)
+	TenantAgreementIndex(ctx context.Context, in *TenantAgreementIndexReq, opts ...grpc.CallOption) (*TenantAgreementIndexResp, error)
+	TenantAgreementUpdate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*Empty, error)
+	TenantAgreementCreate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*WithID, error)
+	TenantAgreementRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*TenantAgreement, error)
+	TenantAgreementDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type tenantManageClient struct {
@@ -5523,6 +5533,51 @@ func (c *tenantManageClient) TenantOpenWebHook(ctx context.Context, in *WithCode
 	return out, nil
 }
 
+func (c *tenantManageClient) TenantAgreementIndex(ctx context.Context, in *TenantAgreementIndexReq, opts ...grpc.CallOption) (*TenantAgreementIndexResp, error) {
+	out := new(TenantAgreementIndexResp)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAgreementIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAgreementUpdate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAgreementUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAgreementCreate(ctx context.Context, in *TenantAgreement, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAgreementCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAgreementRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*TenantAgreement, error) {
+	out := new(TenantAgreement)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAgreementRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAgreementDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAgreementDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TenantManageServer is the server API for TenantManage service.
 // All implementations must embed UnimplementedTenantManageServer
 // for forward compatibility
@@ -5553,6 +5608,11 @@ type TenantManageServer interface {
 	TenantAppMenuDelete(context.Context, *WithAppCodeID) (*Empty, error)
 	TenantOpenCheckToken(context.Context, *TenantOpenCheckTokenReq) (*TenantOpenCheckTokenResp, error)
 	TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error)
+	TenantAgreementIndex(context.Context, *TenantAgreementIndexReq) (*TenantAgreementIndexResp, error)
+	TenantAgreementUpdate(context.Context, *TenantAgreement) (*Empty, error)
+	TenantAgreementCreate(context.Context, *TenantAgreement) (*WithID, error)
+	TenantAgreementRead(context.Context, *WithIDCode) (*TenantAgreement, error)
+	TenantAgreementDelete(context.Context, *WithID) (*Empty, error)
 	mustEmbedUnimplementedTenantManageServer()
 }
 
@@ -5622,6 +5682,21 @@ func (UnimplementedTenantManageServer) TenantOpenCheckToken(context.Context, *Te
 }
 func (UnimplementedTenantManageServer) TenantOpenWebHook(context.Context, *WithCode) (*TenantOpenWebHook, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantOpenWebHook not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAgreementIndex(context.Context, *TenantAgreementIndexReq) (*TenantAgreementIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAgreementIndex not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAgreementUpdate(context.Context, *TenantAgreement) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAgreementUpdate not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAgreementCreate(context.Context, *TenantAgreement) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAgreementCreate not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAgreementRead(context.Context, *WithIDCode) (*TenantAgreement, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAgreementRead not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAgreementDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAgreementDelete not implemented")
 }
 func (UnimplementedTenantManageServer) mustEmbedUnimplementedTenantManageServer() {}
 
@@ -6014,6 +6089,96 @@ func _TenantManage_TenantOpenWebHook_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TenantManage_TenantAgreementIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantAgreementIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAgreementIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAgreementIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAgreementIndex(ctx, req.(*TenantAgreementIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantAgreementUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantAgreement)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAgreementUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAgreementUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAgreementUpdate(ctx, req.(*TenantAgreement))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantAgreementCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantAgreement)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAgreementCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAgreementCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAgreementCreate(ctx, req.(*TenantAgreement))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantAgreementRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithIDCode)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAgreementRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAgreementRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAgreementRead(ctx, req.(*WithIDCode))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantAgreementDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAgreementDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAgreementDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAgreementDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TenantManage_ServiceDesc is the grpc.ServiceDesc for TenantManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -6104,6 +6269,26 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantOpenWebHook",
 			Handler:    _TenantManage_TenantOpenWebHook_Handler,
+		},
+		{
+			MethodName: "tenantAgreementIndex",
+			Handler:    _TenantManage_TenantAgreementIndex_Handler,
+		},
+		{
+			MethodName: "tenantAgreementUpdate",
+			Handler:    _TenantManage_TenantAgreementUpdate_Handler,
+		},
+		{
+			MethodName: "tenantAgreementCreate",
+			Handler:    _TenantManage_TenantAgreementCreate_Handler,
+		},
+		{
+			MethodName: "tenantAgreementRead",
+			Handler:    _TenantManage_TenantAgreementRead_Handler,
+		},
+		{
+			MethodName: "tenantAgreementDelete",
+			Handler:    _TenantManage_TenantAgreementDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
