@@ -15,12 +15,12 @@ func NewApiInfoRepo(in any) *ApiInfoRepo {
 }
 
 type ApiInfoFilter struct {
-	ApiIDs       []int64
-	Route        string
-	Method       string
-	Name         string
-	AccessCode   string
-	IsAuthTenant int64
+	ApiIDs     []int64
+	Route      string
+	Method     string
+	Name       string
+	AccessCode string
+	AuthType   int64
 }
 
 func (p ApiInfoRepo) fmtFilter(ctx context.Context, f ApiInfoFilter) *gorm.DB {
@@ -28,8 +28,8 @@ func (p ApiInfoRepo) fmtFilter(ctx context.Context, f ApiInfoFilter) *gorm.DB {
 	if f.ApiIDs != nil {
 		db = db.Where("id in ?", f.ApiIDs)
 	}
-	if f.IsAuthTenant != 0 {
-		db = db.Where("is_auth_tenant =?", f.IsAuthTenant)
+	if f.AuthType != 0 {
+		db = db.Where("auth_type =?", f.AuthType)
 	}
 	if f.Route != "" {
 		db = db.Where("route like ?", "%"+f.Route+"%")

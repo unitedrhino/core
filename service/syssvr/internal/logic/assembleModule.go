@@ -33,7 +33,7 @@ func ToApiInfoPo(in *sys.ApiInfo) *relationDB.SysApiInfo {
 		Method:       in.Method,
 		Name:         in.Name,
 		BusinessType: in.BusinessType,
-		IsAuthTenant: in.IsAuthTenant,
+		AuthType:     in.AuthType,
 		Desc:         in.Desc,
 	}
 }
@@ -61,7 +61,7 @@ func ToApiInfoPb(in *relationDB.SysApiInfo) *sys.ApiInfo {
 		Method:       in.Method,
 		Name:         in.Name,
 		BusinessType: in.BusinessType,
-		IsAuthTenant: in.IsAuthTenant,
+		AuthType:     in.AuthType,
 		Desc:         in.Desc,
 	}
 }

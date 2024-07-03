@@ -27,12 +27,12 @@ func NewApiInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ApiI
 
 func (l *ApiInfoIndexLogic) ApiInfoIndex(in *sys.ApiInfoIndexReq) (*sys.ApiInfoIndexResp, error) {
 	f := relationDB.ApiInfoFilter{
-		ApiIDs:       in.ApiIDs,
-		Route:        in.Route,
-		Method:       in.Method,
-		Name:         in.Name,
-		AccessCode:   in.AccessCode,
-		IsAuthTenant: in.IsAuthTenant,
+		ApiIDs:     in.ApiIDs,
+		Route:      in.Route,
+		Method:     in.Method,
+		Name:       in.Name,
+		AccessCode: in.AccessCode,
+		AuthType:   in.AuthType,
 	}
 	pos, err := relationDB.NewApiInfoRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	if err != nil {

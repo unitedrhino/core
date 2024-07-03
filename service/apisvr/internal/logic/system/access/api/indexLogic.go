@@ -27,12 +27,12 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 
 func (l *IndexLogic) Index(req *types.ApiInfoIndexReq) (resp *types.ApiInfoIndexResp, err error) {
 	rst, err := l.svcCtx.AccessRpc.ApiInfoIndex(l.ctx, &sys.ApiInfoIndexReq{
-		Page:         logic.ToSysPageRpc(req.Page),
-		Route:        req.Route,
-		Method:       req.Method,
-		Name:         req.Name,
-		AccessCode:   req.AccessCode,
-		IsAuthTenant: req.IsAuthTenant,
+		Page:       logic.ToSysPageRpc(req.Page),
+		Route:      req.Route,
+		Method:     req.Method,
+		Name:       req.Name,
+		AccessCode: req.AccessCode,
+		AuthType:   req.AuthType,
 	})
 	if err != nil {
 		return nil, err

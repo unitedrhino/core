@@ -16,7 +16,7 @@ func ToApiInfoPb(in *types.ApiInfo) *sys.ApiInfo {
 		Method:       in.Method,
 		Name:         in.Name,
 		BusinessType: in.BusinessType,
-		IsAuthTenant: in.IsAuthTenant,
+		AuthType:     in.AuthType,
 		Desc:         in.Desc,
 	}
 }
@@ -39,7 +39,7 @@ func ToApiInfoTypes(in *sys.ApiInfo) *types.ApiInfo {
 		Method:       in.Method,
 		Name:         in.Name,
 		BusinessType: in.BusinessType,
-		IsAuthTenant: in.IsAuthTenant,
+		AuthType:     in.AuthType,
 		Desc:         in.Desc,
 	}
 }

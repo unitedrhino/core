@@ -7007,12 +7007,11 @@
           "maximum": 5,
           "minimum": 1
         },
-        "isAuthTenant": {
+        "authType": {
           "type": "integer",
           "format": "int64",
-          "description": " 是否可以授权给普通租户",
-          "maximum": 2,
-          "minimum": 1
+          "description": "  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)",
+          "maximum": 3
         },
         "desc": {
           "type": "string",
@@ -7047,11 +7046,11 @@
           "type": "string",
           "description": " 应用编号"
         },
-        "isAuthTenant": {
+        "authType": {
           "type": "integer",
           "format": "int64",
-          "description": " 是否可以授权给普通租户",
-          "maximum": 2
+          "description": "  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)",
+          "maximum": 3
         }
       },
       "title": "ApiInfoIndexReq"

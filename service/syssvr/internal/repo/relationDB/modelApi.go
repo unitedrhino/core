@@ -26,9 +26,9 @@ type SysApiInfo struct {
 	Method       string `gorm:"column:method;uniqueIndex:route;type:VARCHAR(50);NOT NULL"` // 请求方式（1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
 	Route        string `gorm:"column:route;uniqueIndex:route;type:VARCHAR(100);NOT NULL"` // 路由
 	Name         string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                    // 请求名称
-	BusinessType int64  `gorm:"column:business_type;type:BIGINT;NOT NULL"`                 // 业务类型（1新增 2修改 3删除 4查询 5其它）
+	BusinessType int64  `gorm:"column:business_type;type:BIGINT;NOT NULL"`                 // 业务类型（1(add)新增 2修改(modify) 3删除(delete) 4查询(find) 5其它(other)
 	Desc         string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                    // 备注
-	IsAuthTenant int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 是否可以授权给普通租户
+	AuthType     int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:route"`
 }

@@ -1534,7 +1534,7 @@ message ApiInfoIndexReq{
   string route = 2; // 接口路由
   string method = 3; // 接口请求方式: POST GET
   string name = 4;  // 接口名称
-  int64 IsAuthTenant = 5;//是否可以授权给普通租户
+  int64 authType = 5;// 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
   repeated int64 apiIDs = 6;//API列表数据
   string accessCode =7;
 }
@@ -1546,7 +1546,7 @@ message ApiInfo{
   string method = 3;        // 接口请求方式: POST GET
   string name = 5;         // 接口名称
   int64  businessType = 6; // 业务类型（1新增 2修改 3删除 4查询 5其它)
-  int64 IsAuthTenant = 8;//是否可以授权给普通租户
+  int64 authType = 8;// // 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
   string desc = 9;//描述
 }
 

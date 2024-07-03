@@ -43,17 +43,17 @@ type ApiInfo struct {
 	Method       string `json:"method,optional"`                   // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
 	Name         string `json:"name,optional"`                     // 接口名称
 	BusinessType int64  `json:"businessType,optional,range=[1:5]"` // 业务类型（1新增 2修改 3删除 4查询 5其它)
-	IsAuthTenant int64  `json:"isAuthTenant,optional,range=[1:2]"` // 是否可以授权给普通租户
+	AuthType     int64  `json:"authType,optional,range=[0:3]"`     //  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
 	Desc         string `json:"desc,optional"`                     // 备注
 }
 
 type ApiInfoIndexReq struct {
-	Page         *PageInfo `json:"page,optional"`                     // 分页信息,只获取一个则不填
-	Route        string    `json:"route,optional"`                    // 接口路由
-	Method       string    `json:"method,optional"`                   // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
-	Name         string    `json:"name,optional"`                     // 接口名称
-	AccessCode   string    `json:"accessCode,optional"`               // 应用编号
-	IsAuthTenant int64     `json:"isAuthTenant,optional,range=[0:2]"` // 是否可以授权给普通租户
+	Page       *PageInfo `json:"page,optional"`                 // 分页信息,只获取一个则不填
+	Route      string    `json:"route,optional"`                // 接口路由
+	Method     string    `json:"method,optional"`               // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
+	Name       string    `json:"name,optional"`                 // 接口名称
+	AccessCode string    `json:"accessCode,optional"`           // 应用编号
+	AuthType   int64     `json:"authType,optional,range=[0:3]"` //  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
 }
 
 type ApiInfoIndexResp struct {
