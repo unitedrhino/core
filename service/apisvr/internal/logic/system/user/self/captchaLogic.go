@@ -28,7 +28,7 @@ func NewCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CaptchaLo
 
 func (l *CaptchaLogic) Captcha(req *types.UserCaptchaReq) (resp *types.UserCaptchaResp, err error) {
 	l.Infof("%s req=%v", utils.FuncName(), req)
-	ret, err := l.svcCtx.UserRpc.UserCaptcha(l.ctx, &sys.UserCaptchaReq{Account: req.Account, Type: req.Type, Use: req.Use})
+	ret, err := l.svcCtx.UserRpc.UserCaptcha(l.ctx, &sys.UserCaptchaReq{Account: req.Account, Type: req.Type, Use: req.Use, Code: req.Code, CodeID: req.CodeID})
 	if err != nil {
 		l.Errorf("%s UserCaptcha err=%+v", utils.FuncName(), err)
 		return nil, err

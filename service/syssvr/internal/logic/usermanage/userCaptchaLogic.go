@@ -53,7 +53,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 	case def.CaptchaTypeImage:
 	case def.CaptchaTypePhone:
 		var imgAuth bool
-		if uc == nil {
+		if in.Code != "" {
 			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, in.Use, in.CodeID, in.Code)
 			if account == "" {
 				return nil, errors.Captcha
