@@ -92,7 +92,7 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 		if len(cols) > 1 {
 			switch fu {
 			case "jsonEq":
-				col1, obj, ok := strings.Cut(newCol, ".")
+				col1, obj, ok := strings.Cut(cols[0], ".")
 				if !ok {
 					conn.AddError(errors.Parameter.AddMsg("jsonEq的格式为xxx.xxx:jsonEq"))
 					return conn
