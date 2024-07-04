@@ -28,15 +28,13 @@ func NewCheckTokenWareMiddleware(UserRpc user.UserManage, AuthRpc role.RoleManag
 
 func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logx.WithContext(r.Context()).Infof("%s.Lifecycle.Before", utils.FuncName())
-
 		var (
 			userCtx  *ctxs.UserCtx
 			err      error
 			isOpen   bool
 			token    string
 			strIP, _ = utils.GetIP(r)
-			authType string
+			authType = "user"
 		)
 		authHeader := ctxs.GetHandle(r, "Authorization")
 		// 检查"Authorization"字段是否存在并且以"Bearer "为前缀
@@ -44,7 +42,6 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			authType = "open"
 			token = strings.TrimPrefix(authHeader, "Bearer ")
 		} else {
-
 			token = ctxs.GetHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
 			if token == "" {
 				logx.WithContext(r.Context()).Errorf("%s.CheckTokenWare ip=%s not find token",
@@ -52,14 +49,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 				result.HttpErr(w, r, http.StatusUnauthorized, errors.NotLogin.AddMsg("用户请求失败"))
 				return
 			}
-			//如果是用户请求
-			//校验 Jwt Token
-			userCtx, err = m.UserAuth(w, r)
-			if err != nil {
-				logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
-				result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("用户请求失败"))
-				return
-			}
+			authType = "user"
 		}
 		userCtx, err = m.Auth(r.Context(), w, token, strIP, authType)
 		if err != nil {
@@ -85,7 +75,6 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		}
 
 		next(w, r)
-		logx.WithContext(r.Context()).Infof("%s.Lifecycle.After", utils.FuncName())
 	}
 }
 
@@ -124,7 +113,7 @@ func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWrit
 		w.Header().Set("Access-Control-Expose-Headers", ctxs.UserSetTokenKey)
 		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)
 	}
-	logx.WithContext(ctx).Infof("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
+	logx.WithContext(ctx).Debugf("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
 		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
 	return &ctxs.UserCtx{
 		IsOpen:       authType == "open",
@@ -164,7 +153,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		w.Header().Set("Access-Control-Expose-Headers", ctxs.UserSetTokenKey)
 		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)
 	}
-	logx.WithContext(r.Context()).Infof("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
+	logx.WithContext(r.Context()).Debugf("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
 		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
 	return &ctxs.UserCtx{
 		IsOpen:       false,
