@@ -9260,7 +9260,7 @@
     "OrderBy": {
       "type": "object",
       "properties": {
-        "filed": {
+        "field": {
           "type": "string",
           "description": "排序的字段名"
         },

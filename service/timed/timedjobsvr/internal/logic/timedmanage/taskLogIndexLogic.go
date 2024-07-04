@@ -36,7 +36,7 @@ func (l *TaskLogIndexLogic) TaskLogIndex(in *timedjob.TaskLogIndexReq) (*timedjo
 		return nil, err
 	}
 	pos, err := db.FindByFilter(l.ctx, f, ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
-		Filed: "createdTime",
+		Field: "createdTime",
 		Sort:  2,
 	}))
 	if err != nil {

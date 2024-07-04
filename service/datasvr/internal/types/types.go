@@ -12,13 +12,14 @@ type Column struct {
 }
 
 type OrderBy struct {
-	Column string `json:"column"`
-	Sort   string `json:"sort"` //排序方式： aes:从小到大,  desc:从大到小
+	Field string `json:"field,optional"` ////排序的字段名
+	Sort  int64  `json:"sort,optional"`  //排序方式：0 从小到大, 1 从大到小
 }
 
 type PageInfo struct {
-	Page int64 `json:"page,optional" form:"page,optional"` // 页码
-	Size int64 `json:"size,optional" form:"size,optional"` // 每页大小
+	Page   int64      `json:"page,optional" form:"page,optional"` // 页码
+	Size   int64      `json:"size,optional" form:"size,optional"` // 每页大小
+	Orders []*OrderBy `json:"orders,optional"`                    //排序
 }
 
 type StaticsticsInfoExportReq struct {
@@ -41,7 +42,6 @@ type StaticsticsInfoReadReq struct {
 	Aggregations []Aggregation          `json:"aggregations,optional"`
 	GroupBy      string                 `json:"groupBy,optional"`
 	Columns      string                 `json:"columns,optional"`
-	OrderBy      []OrderBy              `json:"orderBy,optional"`
 }
 
 type StaticsticsInfoReadResp struct {

@@ -7,26 +7,8 @@ import (
 	"gitee.com/i-Things/share/utils"
 )
 
-func ToPageInfo(info *sys.PageInfo, defaultOrders ...stores.OrderBy) *stores.PageInfo {
-	if info == nil {
-		return nil
-	}
-
-	var orders = defaultOrders
-	if infoOrders := info.GetOrders(); len(infoOrders) > 0 {
-		orders = make([]stores.OrderBy, 0, len(infoOrders))
-		for _, infoOd := range infoOrders {
-			if infoOd.GetFiled() != "" {
-				orders = append(orders, stores.OrderBy{utils.CamelCaseToUdnderscore(infoOd.GetFiled()), infoOd.GetSort()})
-			}
-		}
-	}
-
-	return &stores.PageInfo{
-		Page:   info.GetPage(),
-		Size:   info.GetSize(),
-		Orders: orders,
-	}
+func ToPageInfo(info *sys.PageInfo) *stores.PageInfo {
+	return utils.Copy[stores.PageInfo](info)
 }
 
 func ToPageInfoWithDefault(info *sys.PageInfo, defau *stores.PageInfo) *stores.PageInfo {

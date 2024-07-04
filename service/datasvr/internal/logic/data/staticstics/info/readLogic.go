@@ -73,16 +73,26 @@ func ColFmt(old string, isToHump bool, as bool) string {
 func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any) *gorm.DB {
 	f, ok := si.Filter[k]
 	if !ok {
-		col, fu, found := strings.Cut(k, ":")
-		newCol := col
-		if si.IsToHump == def.True {
-			newCol = utils.CamelCaseToUdnderscore(newCol)
+		cols := strings.Split(k, ":")
+		var fu string
+		newCol := cols[0]
+		if len(cols) == 3 {
+			newCol = ColFmt(strings.Join(cols[:2], ":"), si.IsToHump == def.True, false)
+			fu = cols[2]
+		} else {
+			if len(cols) == 2 {
+				fu = cols[1]
+			}
+			if si.IsToHump == def.True {
+				newCol = utils.CamelCaseToUdnderscore(newCol)
+			}
+			newCol = stores.Col(newCol)
 		}
-		newCol = stores.Col(newCol)
-		if found {
+
+		if len(cols) > 1 {
 			switch fu {
 			case "jsonEq":
-				col1, obj, ok := strings.Cut(col, ".")
+				col1, obj, ok := strings.Cut(newCol, ".")
 				if !ok {
 					conn.AddError(errors.Parameter.AddMsg("jsonEq的格式为xxx.xxx:jsonEq"))
 					return conn
@@ -158,11 +168,8 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	if req.Page != nil {
 		conn = utils.Copy[stores.PageInfo](req.Page).ToGorm(conn)
 	}
-	if len(req.OrderBy) != 0 {
-		for _, v := range req.OrderBy {
-			conn = conn.Order(fmt.Sprintf("%s %s", v.Column, v.Sort))
-		}
-	} else if si.OrderBy != "" {
+
+	if (req.Page == nil || len(req.Page.Orders) == 0) && si.OrderBy != "" {
 		conn = conn.Order(si.OrderBy)
 	}
 	if si.IsFilterProject == def.FilterTrue || (si.IsFilterProject == def.FilterNoAdmin && !uc.IsAdmin) {

@@ -688,7 +688,7 @@ message PageInfo {
     repeated OrderBy orders = 3;
     message OrderBy {
         //排序的字段名
-        string filed = 1;
+        string field = 1;
         //排序方式：0 aes, 1 desc
         int64 sort = 2;
     }

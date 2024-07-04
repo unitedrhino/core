@@ -134,19 +134,17 @@
     "OrderBy": {
       "type": "object",
       "properties": {
-        "column": {
-          "type": "string"
+        "filed": {
+          "type": "string",
+          "description": "排序的字段名"
         },
         "sort": {
-          "type": "string",
-          "description": "排序方式： aes:从小到大,  desc:从大到小"
+          "type": "integer",
+          "format": "int64",
+          "description": "排序方式：0 从小到大, 1 从大到小"
         }
       },
-      "title": "OrderBy",
-      "required": [
-        "column",
-        "sort"
-      ]
+      "title": "OrderBy"
     },
     "PageInfo": {
       "type": "object",
@@ -160,6 +158,13 @@
           "type": "integer",
           "format": "int64",
           "description": " 每页大小"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderBy"
+          },
+          "description": "排序"
         }
       },
       "title": "PageInfo"
@@ -241,12 +246,6 @@
         },
         "columns": {
           "type": "string"
-        },
-        "orderBy": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/OrderBy"
-          }
         }
       },
       "title": "StaticsticsInfoReadReq",

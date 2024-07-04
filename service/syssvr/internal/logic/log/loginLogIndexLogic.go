@@ -38,7 +38,7 @@ func (l *LoginLogIndexLogic) LoginLogIndex(in *sys.LoginLogIndexReq) (*sys.Login
 		},
 	}
 	resp, err := l.LlDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
-		Filed: "createdTime",
+		Field: "createdTime",
 		Sort:  2,
 	}))
 	if err != nil {

@@ -43,7 +43,7 @@ func QueueTaskCheck(svcCtx *svc.ServiceContext) {
 			Status: []int64{def.StatusWaitStop, def.StatusWaitDelete, def.StatusWaitRun},
 			Types:  []int64{domain.TaskTypeQueue}},
 			&stores.PageInfo{
-				Orders: []stores.OrderBy{{Filed: "priority", Sort: stores.OrderDesc}},
+				Orders: []stores.OrderBy{{Field: "priority", Sort: stores.OrderDesc}},
 			})
 		if err != nil {
 			return err
