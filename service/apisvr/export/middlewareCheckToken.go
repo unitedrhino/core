@@ -1,6 +1,7 @@
 package export
 
 import (
+	"context"
 	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/i-Things/core/service/syssvr/client/usermanage"
@@ -30,22 +31,27 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		logx.WithContext(r.Context()).Infof("%s.Lifecycle.Before", utils.FuncName())
 
 		var (
-			userCtx *ctxs.UserCtx
-			err     error
-			isOpen  bool
+			userCtx  *ctxs.UserCtx
+			err      error
+			isOpen   bool
+			token    string
+			strIP, _ = utils.GetIP(r)
+			authType string
 		)
 		authHeader := ctxs.GetHandle(r, "Authorization")
 		// 检查"Authorization"字段是否存在并且以"Bearer "为前缀
 		if strings.HasPrefix(authHeader, "Bearer ") {
-			isOpen = true
-			tokenString := strings.TrimPrefix(authHeader, "Bearer ")
-			userCtx, err = m.OpenAuth(r, tokenString)
-			if err != nil {
-				logx.WithContext(r.Context()).Errorf("%s.OpenAuth error=%s", utils.FuncName(), err)
-				result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("开放认证失败"))
+			authType = "open"
+			token = strings.TrimPrefix(authHeader, "Bearer ")
+		} else {
+
+			token = ctxs.GetHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
+			if token == "" {
+				logx.WithContext(r.Context()).Errorf("%s.CheckTokenWare ip=%s not find token",
+					utils.FuncName(), strIP)
+				result.HttpErr(w, r, http.StatusUnauthorized, errors.NotLogin.AddMsg("用户请求失败"))
 				return
 			}
-		} else {
 			//如果是用户请求
 			//校验 Jwt Token
 			userCtx, err = m.UserAuth(w, r)
@@ -55,7 +61,12 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 				return
 			}
 		}
-
+		userCtx, err = m.Auth(r.Context(), w, token, strIP, authType)
+		if err != nil {
+			logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
+			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("认证失败"))
+			return
+		}
 		//注入 用户信息 到 ctx
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
@@ -93,7 +104,39 @@ func (m *CheckTokenWareMiddleware) OpenAuth(r *http.Request, token string) (*ctx
 		UserID:     resp.UserID,
 		IsAdmin:    resp.IsAdmin == def.True,
 		IsAllData:  true,
-		UserName:   resp.UserName,
+		Account:    resp.UserName,
+	}, nil
+}
+func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWriter, strToken string, strIP string, authType string) (*ctxs.UserCtx, error) {
+	resp, err := m.UserRpc.UserCheckToken(ctx, &user.UserCheckTokenReq{
+		Ip:       strIP,
+		Token:    strToken,
+		AuthType: authType,
+	})
+	if err != nil {
+		er := errors.Fmt(err)
+		logx.WithContext(ctx).Errorf("%s.CheckTokenWare ip=%s token=%s return=%s",
+			utils.FuncName(), strIP, strToken, err)
+		return nil, er
+	}
+
+	if resp.Token != "" {
+		w.Header().Set("Access-Control-Expose-Headers", ctxs.UserSetTokenKey)
+		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)
+	}
+	logx.WithContext(ctx).Infof("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
+		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
+	return &ctxs.UserCtx{
+		IsOpen:       authType == "open",
+		TenantCode:   resp.TenantCode,
+		UserID:       resp.UserID,
+		RoleIDs:      resp.RoleIDs,
+		RoleCodes:    resp.RoleCodes,
+		IsAdmin:      resp.IsAdmin || resp.IsSuperAdmin,
+		IsSuperAdmin: resp.IsSuperAdmin,
+		IsAllData:    resp.IsAllData == def.True,
+		Account:      resp.Account,
+		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
 	}, nil
 }
 
@@ -132,7 +175,6 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		IsAdmin:      resp.IsAdmin || resp.IsSuperAdmin,
 		IsSuperAdmin: resp.IsSuperAdmin,
 		IsAllData:    resp.IsAllData == def.True,
-		UserName:     resp.UserName,
 		Account:      resp.Account,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
 	}, nil

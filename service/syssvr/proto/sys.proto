@@ -1065,6 +1065,7 @@ message UserCheckTokenReq{
   string token = 1;
   string ip = 2;
   string appCode = 3;
+  string authType =4; //user(普通用户),open(开放第三方认证)
 }
 
 message UserCheckTokenResp{
@@ -1076,7 +1077,6 @@ message UserCheckTokenResp{
   string tenantCode = 6;//租户编码
   bool isAdmin = 7;//是否是管理员
   bool isSuperAdmin = 8;//是否是超级管理员(可以跨租户)
-  string userName = 9;//用户名
   string account = 10 ;//账号
   map<int64,ProjectAuth> projectAuth = 11;
 }
