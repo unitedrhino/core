@@ -108,6 +108,9 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 				v = strings.Split(cast.ToString(v), ",")
 				conn = conn.Where(fmt.Sprintf("%s in ?", newCol), v)
 				return conn
+			case "eq":
+				conn = conn.Where(fmt.Sprintf("%s = ?", newCol), v)
+				return conn
 			case "subChildren":
 				conn = conn.Where(fmt.Sprintf("%s like ?", newCol), cast.ToString(v)+"%")
 				return conn
