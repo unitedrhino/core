@@ -2,7 +2,6 @@ package workOrder
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -25,10 +24,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.OpsWorkOrderIndexReq) (resp *types.OpsWorkOrderIndexResp, err error) {
-	ret, err := l.svcCtx.Ops.OpsWorkOrderIndex(l.ctx, &sys.OpsWorkOrderIndexReq{
-		Page:   logic.ToSysPageRpc(req.Page),
-		Status: req.Status,
-	})
+	ret, err := l.svcCtx.Ops.OpsWorkOrderIndex(l.ctx, utils.Copy[sys.OpsWorkOrderIndexReq](req))
 	if err != nil {
 		return nil, err
 	}
