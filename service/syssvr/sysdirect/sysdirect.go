@@ -11,6 +11,7 @@ import (
 	datamanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/datamanage"
 	logServer "gitee.com/i-Things/core/service/syssvr/internal/server/log"
 	modulemanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/modulemanage"
+	opsServer "gitee.com/i-Things/core/service/syssvr/internal/server/ops"
 	projectmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/projectmanage"
 	rolemanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/rolemanage"
 	tenantmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/tenantmanage"
@@ -72,6 +73,7 @@ func Run(svcCtx *svc.ServiceContext) {
 		sys.RegisterAreaManageServer(grpcServer, areamanageServer.NewAreaManageServer(svcCtx))
 		sys.RegisterTenantManageServer(grpcServer, tenantmanageServer.NewTenantManageServer(svcCtx))
 		sys.RegisterDataManageServer(grpcServer, datamanageServer.NewDataManageServer(svcCtx))
+		sys.RegisterOpsServer(grpcServer, opsServer.NewOpsServer(svcCtx))
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}
