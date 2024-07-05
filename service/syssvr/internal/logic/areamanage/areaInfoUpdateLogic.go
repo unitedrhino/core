@@ -106,7 +106,7 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 	if pb.UseBy != "" {
 		po.UseBy = pb.UseBy
 	}
-	if pb.IsUpdateAreaImg && pb.AreaImg != "" {
+	if pb.IsUpdateAreaImg {
 		if po.AreaImg != "" && !oss.IsCommonFile(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, po.AreaImg) {
 			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, po.AreaImg, common.OptionKv{})
 			if err != nil {
@@ -114,11 +114,15 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 			}
 		}
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, fmt.Sprintf("%d/%s", pb.AreaID, oss.GetFileNameWithPath(pb.AreaImg)))
-		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(pb.AreaImg, nwePath)
-		if err != nil {
-			l.Error(err)
+		if pb.AreaImg != "" {
+			path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(pb.AreaImg, nwePath)
+			if err != nil {
+				l.Error(err)
+			} else {
+				po.AreaImg = path
+			}
 		} else {
-			po.AreaImg = path
+			po.AreaImg = ""
 		}
 
 	}
