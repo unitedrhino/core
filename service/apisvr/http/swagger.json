@@ -9230,8 +9230,7 @@
           "description": "工单类型: deviceMaintenance:设备维修工单"
         },
         "areaID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "区域ID过滤"
         },
         "number": {
