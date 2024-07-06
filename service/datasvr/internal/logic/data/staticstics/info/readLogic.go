@@ -176,11 +176,9 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		conn = conn.Order(si.OrderBy)
 	}
 	if si.IsFilterProject == def.True {
-		if !(uc.IsAdmin && uc.ProjectID <= def.NotClassified) {
-			conn = stores.GenProjectAuthScope(l.ctx, conn)
-			if si.IsFilterArea == def.True {
-				conn = stores.GenAreaAuthScope(l.ctx, conn)
-			}
+		conn = stores.GenProjectAuthScope(l.ctx, conn)
+		if si.IsFilterArea == def.True {
+			conn = stores.GenAreaAuthScope(l.ctx, conn)
 		}
 	}
 	if si.IsSoftDelete == def.True {
