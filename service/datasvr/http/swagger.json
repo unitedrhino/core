@@ -229,11 +229,6 @@
         "code": {
           "type": "string"
         },
-        "isAllProject": {
-          "type": "boolean",
-          "format": "boolean",
-          "description": "获取全部项目的数据"
-        },
         "page": {
           "$ref": "#/definitions/PageInfo"
         },
