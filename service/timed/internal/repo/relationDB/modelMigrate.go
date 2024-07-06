@@ -82,36 +82,36 @@ var (
 		//	Status:    def.StatusRunning,
 		//	Priority:  3,
 		//},
-		{
-			GroupCode: def.TimedIThingsQueueGroupCode,
-			Type:      domain.TaskTypeDelay, //定义一个延时任务
-			Name:      "流服务数据初始化(自动添加docker到数据库)",
-			Code:      "VidInfoInitDatabase",
-			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.VidInfoInitDatabase),
-			CronExpr:  "",
-			Status:    def.StatusWaitRun,
-			Priority:  3,
-		},
+		//{
+		//	GroupCode: def.TimedIThingsQueueGroupCode,
+		//	Type:      domain.TaskTypeDelay, //定义一个延时任务
+		//	Name:      "流服务数据初始化(自动添加docker到数据库)",
+		//	Code:      "VidInfoInitDatabase",
+		//	Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.VidInfoInitDatabase),
+		//	CronExpr:  "",
+		//	Status:    def.StatusWaitRun,
+		//	Priority:  3,
+		//},
 		{
 			GroupCode: def.TimedIThingsQueueGroupCode,
 			Type:      domain.TaskTypeTiming,
 			Name:      "timedJob服务缓存及日志清理",
 			Code:      "timedJobClean",
 			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.TimedJobClean),
-			CronExpr:  "1 1 * * ?",
+			CronExpr:  "1 1 * * *",
 			Status:    def.StatusWaitRun,
 			Priority:  3,
 		},
-		{
-			GroupCode: def.TimedIThingsQueueGroupCode,
-			Type:      domain.TaskTypeTiming,
-			Name:      "流服务状态更新",
-			Code:      "VidInfoCheckStatus",
-			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.VidInfoCheckStatus),
-			CronExpr:  "@every 30s",
-			Status:    def.StatusWaitRun,
-			Priority:  1, //低优先级任务
-		},
+		//{
+		//	GroupCode: def.TimedIThingsQueueGroupCode,
+		//	Type:      domain.TaskTypeTiming,
+		//	Name:      "流服务状态更新",
+		//	Code:      "VidInfoCheckStatus",
+		//	Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.VidInfoCheckStatus),
+		//	CronExpr:  "@every 30s",
+		//	Status:    def.StatusWaitRun,
+		//	Priority:  1, //低优先级任务
+		//},
 	}
 	MigrateTimedTaskGroup = []TimedTaskGroup{
 		{

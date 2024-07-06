@@ -24,7 +24,7 @@ func NewEventServer(ctx context.Context, svcCtx *svc.ServiceContext) *Server {
 func (s *Server) DataClean() error {
 	s.Info("start data clean")
 	ctxs.GoNewCtx(s.ctx, func(ctx context.Context) {
-		err := relationDB.NewJobLogRepo(ctx).DeleteByFilter(ctx, relationDB.TaskLogFilter{CreatedTime: stores.CmpLt(time.Now().Add(time.Hour * 24 * 3))}) //只保留三天的日志
+		err := relationDB.NewJobLogRepo(ctx).DeleteByFilter(ctx, relationDB.TaskLogFilter{CreatedTime: stores.CmpLt(time.Now().Add(-time.Hour * 24 * 3))}) //只保留三天的日志
 		if err != nil {
 			logx.WithContext(ctx).Error(err)
 		}
