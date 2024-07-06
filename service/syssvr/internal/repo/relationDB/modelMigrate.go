@@ -63,6 +63,8 @@ func Migrate(c conf.Database) error {
 		&SysUserAreaApply{},
 		&SysUserProfile{},
 		&SysNotifyChannel{},
+		&SysProjectProfile{},
+		&SysAreaProfile{},
 	)
 	if err != nil {
 		return err
