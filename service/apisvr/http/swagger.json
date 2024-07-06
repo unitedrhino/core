@@ -1340,7 +1340,7 @@
     },
     "/api/v1/system/data/area/multi-delete": {
       "post": {
-        "summary": "授权区域权限",
+        "summary": "删除授权区域权限",
         "operationId": "postApiV1SystemDataAreaMulti-delete",
         "responses": {
           "200": {
@@ -1379,7 +1379,7 @@
     },
     "/api/v1/system/data/area/multi-update": {
       "post": {
-        "summary": "授权区域权限",
+        "summary": "更新授权区域权限",
         "operationId": "postApiV1SystemDataAreaMulti-update",
         "responses": {
           "200": {
@@ -9713,6 +9713,13 @@
           "format": "int64",
           "description": "按状态查找角色"
         },
+        "codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "角色编码过滤"
+        },
         "ids": {
           "type": "array",
           "items": {
@@ -11818,10 +11825,16 @@
           "items": {
             "type": "integer",
             "format": "int64"
-          }
+          },
+          "description": "查询拥有该区域权限的用户"
         },
         "roleCode": {
-          "type": "string"
+          "type": "string",
+          "description": "查询角色code"
+        },
+        "withRoles": {
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "UserInfoIndexReq"

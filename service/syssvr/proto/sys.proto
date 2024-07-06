@@ -1494,6 +1494,8 @@ message RoleInfoIndexReq{
   string name = 2;
   int64 status = 3;
   repeated int64 ids =4;//角色id列表
+  repeated   string codes =5;
+
 }
 
 message RoleInfoIndexResp{

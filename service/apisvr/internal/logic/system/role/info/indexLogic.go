@@ -32,6 +32,7 @@ func (l *IndexLogic) Index(req *types.RoleInfoIndexReq) (resp *types.RoleInfoInd
 		Name:   req.Name,
 		Status: req.Status,
 		Ids:    req.IDs,
+		Codes:  req.Codes,
 	})
 	if err != nil {
 		return nil, err

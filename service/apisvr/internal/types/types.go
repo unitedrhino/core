@@ -712,6 +712,7 @@ type RoleInfoIndexReq struct {
 	Page   *PageInfo `json:"page,optional"`    //分页信息,只获取一个则不填
 	Name   string    `json:"name,optional "`   //按名称查找角色
 	Status int64     `json:"status,optional "` //按状态查找角色
+	Codes  []string  `json:"codes,optional"`   //角色编码过滤
 	IDs    []int64   `json:"ids,optional"`
 }
 
@@ -1246,8 +1247,9 @@ type UserInfoIndexReq struct {
 	Email          string    `json:"email,optional"`    // 邮箱
 	Account        string    `json:"account,optional"`
 	UserIDs        []int64   `json:"userIDs,optional"`
-	HasAccessAreas []int64   `json:"hasAccessAreas,optional"`
-	RoleCode       string    `json:"roleCode,optional"`
+	HasAccessAreas []int64   `json:"hasAccessAreas,optional"` //查询拥有该区域权限的用户
+	RoleCode       string    `json:"roleCode,optional"`       //查询角色code
+	WithRoles      bool      `json:"withRoles,optional"`
 }
 
 type UserInfoIndexResp struct {

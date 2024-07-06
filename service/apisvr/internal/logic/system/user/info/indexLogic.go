@@ -66,10 +66,22 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 			i.Phone = Cover(i.Phone)
 			i.Email = Cover(i.Email)
 		}
-		userInfo = append(userInfo, user.UserInfoToApi(i, nil, nil))
+		var (
+			roles []*sys.RoleInfo
+		)
+		if req.WithRoles == true {
+			ret, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
+				UserID: i.UserID,
+			})
+			if err != nil {
+				return nil, err
+			}
+			roles = ret.List
+		}
+		userInfo = append(userInfo, user.UserInfoToApi(i, roles, nil))
 	}
 
-	return &types.UserInfoIndexResp{userInfo, total}, nil
+	return &types.UserInfoIndexResp{List: userInfo, Total: total}, nil
 }
 func Cover(in *wrapperspb.StringValue) *wrapperspb.StringValue {
 	if in == nil {

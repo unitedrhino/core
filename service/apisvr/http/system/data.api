@@ -39,11 +39,11 @@ service api {
 )
 
 service api {
-    @doc "授权区域权限"
+    @doc "更新授权区域权限"
     @handler multiUpdate
     post /multi-update (DataAreaMultiUpdateReq) returns ()
 
-    @doc "授权区域权限"
+    @doc "删除授权区域权限"
     @handler multiDelete
     post /multi-delete (DataAreaMultiDeleteReq) returns ()
 
