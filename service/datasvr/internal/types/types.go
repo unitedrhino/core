@@ -37,6 +37,7 @@ type StaticsticsInfoIndexResp struct {
 
 type StaticsticsInfoReadReq struct {
 	Code         string                 `json:"code"`
+	IsAllProject bool                   `json:"isAllProject,optional"` //获取全部项目的数据
 	Page         *PageInfo              `json:"page,optional"`
 	Filter       map[string]interface{} `json:"filter,optional"`
 	Aggregations []Aggregation          `json:"aggregations,optional"`

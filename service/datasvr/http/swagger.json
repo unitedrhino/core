@@ -134,7 +134,7 @@
     "OrderBy": {
       "type": "object",
       "properties": {
-        "filed": {
+        "field": {
           "type": "string",
           "description": "排序的字段名"
         },
@@ -228,6 +228,11 @@
       "properties": {
         "code": {
           "type": "string"
+        },
+        "isAllProject": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "获取全部项目的数据"
         },
         "page": {
           "$ref": "#/definitions/PageInfo"
