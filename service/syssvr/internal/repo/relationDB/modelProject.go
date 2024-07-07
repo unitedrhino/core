@@ -129,7 +129,7 @@ type SysDataProject struct {
 	TargetID   int64          `gorm:"column:target_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"` // 授权对象的id,角色id,用户id
 	AuthType   def.AuthType   `gorm:"column:auth_type;type:bigint;NOT NULL"`                   // 授权类型 1 管理员(可以修改本项目的状态,同时拥有所有区域权限)  2 读授权(可以对项目下的区域进行操作,但是不能修改项目) 2 读写授权(可以对项目下的区域进行操作,同时可以对项目进行修改)
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
 
 func (m *SysDataProject) TableName() string {

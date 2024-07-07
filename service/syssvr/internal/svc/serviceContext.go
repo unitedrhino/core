@@ -32,7 +32,7 @@ type ServiceContext struct {
 	PwdCheck     *cache.PwdCheck
 	Captcha      *cache.Captcha
 	Cm           *ClientsManage
-	ServerMsg    *eventBus.FastEvent
+	FastEvent    *eventBus.FastEvent
 	TenantCache  *caches.Cache[tenant.Info, string]
 	ProjectCache *caches.Cache[sys.ProjectInfo, int64]
 	UserCache    *caches.Cache[sys.UserInfo, int64]
@@ -79,7 +79,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	//	},
 	//})
 	return &ServiceContext{
-		ServerMsg: serverMsg,
+		FastEvent: serverMsg,
 		Captcha:   cache.NewCaptcha(store),
 		PwdCheck:  cache.NewPwdCheck(store),
 		Slot:      cache.NewSlot(),

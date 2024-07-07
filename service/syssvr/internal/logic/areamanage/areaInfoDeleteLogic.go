@@ -4,7 +4,9 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/domain/application"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 
@@ -40,11 +42,6 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if area.DeviceCount > 0 {
 		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("区域下有设备禁止删除")
 	}
-	list := l.svcCtx.Slot.Get(l.ctx, "areaInfo", "delete")
-	err = list.Request(l.ctx, area, nil)
-	if err != nil {
-		return nil, err
-	}
 	var (
 		areaPo *relationDB.SysAreaInfo
 	)
@@ -55,6 +52,7 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if ti.DefaultAreaID == in.AreaID || area.IsSysCreated == def.True {
 		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("默认区域禁止删除")
 	}
+	var areaIDs []int64
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 		areaPo, err = checkArea(l.ctx, tx, in.AreaID)
@@ -84,7 +82,6 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 		if err != nil {
 			return errors.Fmt(err).WithMsg("查询区域及子区域出错")
 		}
-		var areaIDs []int64
 		for _, area := range areas {
 			areaIDs = append(areaIDs, int64(area.AreaID))
 		}
@@ -104,6 +101,11 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	})
 	if err == nil {
 		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
+		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.SysAreaInfoDelete, application.IDs{IDs: areaIDs})
+		if err != nil {
+			l.Error(err)
+		}
+
 	}
 	return &sys.Empty{}, err
 }

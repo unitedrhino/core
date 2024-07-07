@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 
@@ -48,6 +49,10 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 	} else if po == nil {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("检查项目不存在")
 	}
+	uc := ctxs.GetUserCtx(l.ctx)
+	if uc != nil && (!uc.IsAdmin && uc.UserID != po.AdminUserID) { //只有管理员或项目负责人可以删除
+		return nil, errors.Permissions.WithMsg("只有管理员可以删除")
+	}
 
 	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
 	if err != nil {
@@ -62,7 +67,12 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		err = ProjectDelete(l.ctx, tx, in.ProjectID)
 		return err
 	})
-
+	if err != nil {
+		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.SysProjectInfoDelete, in.ProjectID)
+		if err != nil {
+			l.Error(err)
+		}
+	}
 	return &sys.Empty{}, err
 }
 
@@ -71,9 +81,17 @@ func ProjectDelete(ctx context.Context, tx *gorm.DB, id int64) error {
 	if err != nil {
 		return err
 	}
+	err = relationDB.NewProjectProfileRepo(tx).DeleteByFilter(ctx, relationDB.ProjectProfileFilter{ProjectID: id})
+	if err != nil {
+		return err
+	}
 	err = relationDB.NewAreaInfoRepo(tx).DeleteByFilter(ctx, relationDB.AreaInfoFilter{ProjectID: id})
 	if err != nil {
 		return errors.Fmt(err).WithMsg("删除区域及子区域出错")
+	}
+	err = relationDB.NewDataProjectRepo(tx).DeleteByFilter(ctx, relationDB.DataProjectFilter{ProjectID: id})
+	if err != nil {
+		return err
 	}
 	err = relationDB.NewDataAreaRepo(tx).DeleteByFilter(ctx, relationDB.DataAreaFilter{ProjectID: id})
 	if err != nil {

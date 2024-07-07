@@ -84,7 +84,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		return err
 	})
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)
-	err = l.svcCtx.ServerMsg.Publish(l.ctx, eventBus.CoreUserDelete, application.IDs{IDs: []int64{in.UserID}})
+	err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserDelete, application.IDs{IDs: []int64{in.UserID}})
 	if err != nil {
 		l.Errorf("Publish userDelete %v err:%v", in, err)
 	}

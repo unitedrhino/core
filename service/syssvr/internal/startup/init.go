@@ -31,7 +31,7 @@ func Init(svcCtx *svc.ServiceContext) {
 func InitCache(svcCtx *svc.ServiceContext) {
 	tenantCache, err := caches.NewCache(caches.CacheConfig[tenant.Info, string]{
 		KeyType:   eventBus.ServerCacheKeySysTenantInfo,
-		FastEvent: svcCtx.ServerMsg,
+		FastEvent: svcCtx.FastEvent,
 		GetData: func(ctx context.Context, key string) (*tenant.Info, error) {
 			db := relationDB.NewTenantInfoRepo(ctx)
 			if key == "" {
@@ -49,7 +49,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 
 	userCache, err := caches.NewCache(caches.CacheConfig[sys.UserInfo, int64]{
 		KeyType:   eventBus.ServerCacheKeySysUserInfo,
-		FastEvent: svcCtx.ServerMsg,
+		FastEvent: svcCtx.FastEvent,
 		GetData: func(ctx context.Context, key int64) (*sys.UserInfo, error) {
 			db := relationDB.NewUserInfoRepo(ctx)
 			if key == 0 {
@@ -66,7 +66,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 
 	projectCache, err := caches.NewCache(caches.CacheConfig[sys.ProjectInfo, int64]{
 		KeyType:   eventBus.ServerCacheKeySysProjectInfo,
-		FastEvent: svcCtx.ServerMsg,
+		FastEvent: svcCtx.FastEvent,
 		GetData: func(ctx context.Context, key int64) (*sys.ProjectInfo, error) {
 			db := relationDB.NewProjectInfoRepo(ctx)
 			if key == 0 {
