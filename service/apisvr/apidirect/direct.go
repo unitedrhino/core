@@ -46,7 +46,7 @@ func runApi(apiCtx ApiCtx) ApiCtx {
 		apiCtx.Server = server
 	}
 	handler.RegisterHandlers(server, ctx)
-	handler.RegisterWsHandlers(apiCtx.SvcCtx.Ws, ctx)
+	//handler.RegisterWsHandlers(apiCtx.SvcCtx.Ws, ctx)
 	startup.Init(ctx)
 	dataExport.Run(server)
 	return apiCtx
