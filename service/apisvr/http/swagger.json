@@ -1499,7 +1499,7 @@
     },
     "/api/v1/system/data/project/create": {
       "post": {
-        "summary": "批量更新授权项目权限",
+        "summary": "批量创建授权项目权限",
         "operationId": "postApiV1SystemDataProjectCreate",
         "responses": {
           "200": {
@@ -1538,7 +1538,7 @@
     },
     "/api/v1/system/data/project/delete": {
       "post": {
-        "summary": "批量更新授权项目权限",
+        "summary": "删除授权项目权限",
         "operationId": "postApiV1SystemDataProjectDelete",
         "responses": {
           "200": {

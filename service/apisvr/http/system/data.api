@@ -18,11 +18,11 @@ service api {
     @handler projectMultiUpdate
     post /multi-update (DataProjectMultiUpdateReq) returns ()
 
-    @doc "批量更新授权项目权限"
+    @doc "删除授权项目权限"
     @handler delete
     post /delete (DataProjectDeleteReq) returns ()
 
-    @doc "批量更新授权项目权限"
+    @doc "批量创建授权项目权限"
     @handler create
     post /create (DataProjectSaveReq) returns ()
 
