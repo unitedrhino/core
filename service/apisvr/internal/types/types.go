@@ -1247,8 +1247,8 @@ type UserInfoIndexReq struct {
 	Email          string    `json:"email,optional"`    // 邮箱
 	Account        string    `json:"account,optional"`
 	UserIDs        []int64   `json:"userIDs,optional"`
-	HasAccessAreas []int64   `json:"hasAccessAreas,optional"` //查询拥有该区域权限的用户
-	RoleCode       string    `json:"roleCode,optional"`       //查询角色code
+	HasAccessAreas []int64   `json:"hasAccessAreas,string,optional"` //查询拥有该区域权限的用户
+	RoleCode       string    `json:"roleCode,optional"`              //查询角色code
 	WithRoles      bool      `json:"withRoles,optional"`
 }
 

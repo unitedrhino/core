@@ -5999,7 +5999,7 @@
     },
     "/api/v1/system/user/info/delete": {
       "post": {
-        "summary": "刪除用戶",
+        "summary": "刪除用户",
         "operationId": "postApiV1SystemUserInfoDelete",
         "responses": {
           "200": {
@@ -6161,7 +6161,7 @@
     },
     "/api/v1/system/user/role/index": {
       "post": {
-        "summary": "获取用戶角色列表",
+        "summary": "获取用户角色列表",
         "operationId": "postApiV1SystemUserRoleIndex",
         "responses": {
           "200": {
@@ -6203,7 +6203,7 @@
     },
     "/api/v1/system/user/role/multi-update": {
       "post": {
-        "summary": "更新用戶的角色列表",
+        "summary": "更新用户的角色列表",
         "operationId": "postApiV1SystemUserRoleMulti-update",
         "responses": {
           "200": {
@@ -6536,7 +6536,7 @@
     },
     "/api/v1/system/user/self/login": {
       "post": {
-        "summary": "用戶登录",
+        "summary": "用户登录",
         "operationId": "postApiV1SystemUserSelfLogin",
         "responses": {
           "200": {
@@ -6920,7 +6920,7 @@
     },
     "/api/v1/system/user/self/register": {
       "post": {
-        "summary": "用戶注册",
+        "summary": "用户注册",
         "operationId": "postApiV1SystemUserSelfRegister",
         "responses": {
           "200": {
@@ -11823,8 +11823,7 @@
         "hasAccessAreas": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "description": "查询拥有该区域权限的用户"
         },

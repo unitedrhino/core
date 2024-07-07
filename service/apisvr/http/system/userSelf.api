@@ -77,11 +77,11 @@ service api {
 	@handler captcha
 	post /captcha (UserCaptchaReq) returns (UserCaptchaResp)
 
-	@doc "用戶登录"
+	@doc "用户登录"
 	@handler login
 	post /login (UserLoginReq) returns (UserLoginResp)
 
-	@doc "用戶注册"
+	@doc "用户注册"
 	@handler register
 	post /register (UserRegisterReq) returns ()
 	@doc "忘记密码"

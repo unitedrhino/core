@@ -13,10 +13,10 @@ info(
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
-    @doc "获取用戶角色列表"
+    @doc "获取用户角色列表"
     @handler roleIndex
     post /index (UserRoleIndexReq) returns (UserRoleIndexResp)
-    @doc "更新用戶的角色列表"
+    @doc "更新用户的角色列表"
     @handler roleMultiUpdate
     post /multi-update (UserRoleMultiUpdateReq) returns ()
 
