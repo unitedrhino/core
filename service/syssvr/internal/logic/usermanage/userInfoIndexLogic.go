@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -40,7 +41,10 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 	if in.Account != "" {
 		f.Accounts = []string{in.Account}
 	}
-	ucs, err := l.UiDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
+	ucs, err := l.UiDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Field: "createdTime",
+		Sort:  stores.OrderDesc,
+	}))
 	if err != nil {
 		return nil, err
 	}
