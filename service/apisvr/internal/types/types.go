@@ -1233,7 +1233,7 @@ type UserInfo struct {
 
 type UserInfoCreateReq struct {
 	Info    *UserInfo `json:"info"`
-	RoleIDs []int64   `json:"roleIDs,range=(0:120]"` //角色编号列表
+	RoleIDs []int64   `json:"roleIDs,optional,range=(0:120]"` //角色编号列表
 }
 
 type UserInfoDeleteReq struct {

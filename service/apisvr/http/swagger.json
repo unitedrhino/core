@@ -11777,8 +11777,7 @@
       },
       "title": "UserInfoCreateReq",
       "required": [
-        "info",
-        "roleIDs"
+        "info"
       ]
     },
     "UserInfoDeleteReq": {

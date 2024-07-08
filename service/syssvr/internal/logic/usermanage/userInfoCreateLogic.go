@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
@@ -46,6 +47,17 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 		if !utils.IsPhone(info.Phone.GetValue()) {
 			return 0, errors.Parameter.AddMsgf("手机号格式错误")
 		}
+	}
+	uc := ctxs.GetUserCtx(l.ctx)
+	if uc == nil {
+		return 0, errors.Permissions.WithMsg("无租户号")
+	}
+	if len(in.RoleIDs) == 0 { //填充默认角色
+		t, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
+		if err != nil {
+			return 0, err
+		}
+		in.RoleIDs = []int64{t.RegisterRoleID}
 	}
 	//校验密码强度
 	err = CheckPwd(l.svcCtx, info.Password)
