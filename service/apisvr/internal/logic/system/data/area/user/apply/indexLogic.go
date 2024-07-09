@@ -32,6 +32,7 @@ func (l *IndexLogic) Index(req *types.UserAreaApplyIndexReq) (resp *types.UserAr
 	ret, err := l.svcCtx.DataM.UserAreaApplyIndex(l.ctx, &sys.UserAreaApplyIndexReq{
 		Page:      logic.ToSysPageRpc(req.Page),
 		AuthTypes: req.AuthTypes,
+		AreaID:    req.AreaID,
 	})
 	if err != nil {
 		return nil, err

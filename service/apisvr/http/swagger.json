@@ -11406,6 +11406,10 @@
           },
           "description": "权限类型 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限"
         },
+        "areaID": {
+          "type": "string",
+          "description": "项目id"
+        },
         "withAreaInfo": {
           "type": "boolean",
           "format": "boolean",

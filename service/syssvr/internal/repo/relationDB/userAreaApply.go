@@ -27,6 +27,7 @@ type UserAreaApplyFilter struct {
 	AuthTypes []int64
 	IDs       []int64
 	AreaIDs   []int64
+	AreaID    int64
 }
 
 func (p UserAreaApplyRepo) fmtFilter(ctx context.Context, f UserAreaApplyFilter) *gorm.DB {
@@ -42,6 +43,9 @@ func (p UserAreaApplyRepo) fmtFilter(ctx context.Context, f UserAreaApplyFilter)
 	}
 	if len(f.AreaIDs) != 0 {
 		db = db.Where("area_id in ?", f.AreaIDs)
+	}
+	if f.AreaID != 0 {
+		db = db.Where("area_id = ?", f.AreaID)
 	}
 	return db
 }

@@ -1140,10 +1140,11 @@ type UserAreaApplyDealReq struct {
 }
 
 type UserAreaApplyIndexReq struct {
-	Page         *PageInfo `json:"page,optional"`         //进行数据分页（不传默认2000相当于全部）
-	AuthTypes    []int64   `json:"authTypes,optional"`    //权限类型 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
-	WithAreaInfo bool      `json:"withAreaInfo,optional"` //把区域信息附带上
-	WithUserInfo bool      `json:"withUserInfo,optional"` //把用户信息带上
+	Page         *PageInfo `json:"page,optional"`          //进行数据分页（不传默认2000相当于全部）
+	AuthTypes    []int64   `json:"authTypes,optional"`     //权限类型 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	AreaID       int64     `json:"areaID,string,optional"` //项目id
+	WithAreaInfo bool      `json:"withAreaInfo,optional"`  //把区域信息附带上
+	WithUserInfo bool      `json:"withUserInfo,optional"`  //把用户信息带上
 }
 
 type UserAreaApplyIndexResp struct {
