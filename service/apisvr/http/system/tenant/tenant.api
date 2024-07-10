@@ -80,10 +80,6 @@ service api {
     @handler index
     post /index (TenantAgreementIndexReq) returns (TenantAgreementIndexResp)
 
-    @doc "获取协议详情"
-    @handler read
-    post /read (WithIDOrCode) returns (TenantAgreement)
-
     @doc "更新协议"
     @handler update
     post /update (TenantAgreement) returns ()
@@ -91,6 +87,18 @@ service api {
     @doc "删除协议"
     @handler delete
     post /delete (WithID) returns ()
+}
+
+@server (
+    group: system/tenant/agreement
+    prefix: /api/v1/system/tenant/agreement
+    middleware:  InitCtxsWare
+)
+
+service api {
+    @doc "获取协议详情"
+    @handler read
+    post /read (WithIDOrCode) returns (TenantAgreement)
 }
 
 type (

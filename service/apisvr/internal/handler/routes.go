@@ -994,13 +994,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemtenantagreement.ReadHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemtenantagreement.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/tenant/agreement"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemtenantagreement.ReadHandler(serverCtx),
 				},
 			}...,
 		),
