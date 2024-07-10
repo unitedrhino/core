@@ -27,6 +27,9 @@ func NewUserSearchLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserSe
 }
 
 func (l *UserSearchLogic) UserSearch(req *types.UserSearchReq) (resp *types.UserSearchResp, err error) {
+	if req.Account == "" {
+		return nil, errors.NotFind
+	}
 	info, err := l.svcCtx.UserRpc.UserInfoIndex(l.ctx, &sys.UserInfoIndexReq{
 		Page: &sys.PageInfo{
 			Page: 1,
