@@ -9,7 +9,7 @@ import (
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
 	"gitee.com/i-Things/share/interceptors"
-	"github.com/zeromicro/go-zero/core/conf"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -30,7 +30,7 @@ var (
 func GetSvcCtx() *svc.ServiceContext {
 	svcOnce.Do(func() {
 		flag.Parse()
-		conf.MustLoad("etc/timedjob.yaml", &c)
+		utils.ConfMustLoad("etc/timedjob.yaml", &c)
 		svcCtx = svc.NewServiceContext(c)
 		startup.Init(svcCtx)
 		logx.Infof("enabled timedjobsvr")

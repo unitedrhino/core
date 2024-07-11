@@ -8,7 +8,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/datasvr/dataExport"
 	"gitee.com/i-Things/share/ctxs"
-	"github.com/zeromicro/go-zero/core/conf"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/rest"
 	"net/http"
 )
@@ -27,7 +27,7 @@ var (
 )
 
 func NewApi(apiCtx ApiCtx) ApiCtx {
-	conf.MustLoad("etc/api.yaml", &c)
+	utils.ConfMustLoad("etc/api.yaml", &c)
 	apiCtx = runApi(apiCtx)
 	return apiCtx
 }

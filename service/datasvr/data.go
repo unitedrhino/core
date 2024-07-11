@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 
 	"gitee.com/i-Things/core/service/datasvr/internal/config"
 	"gitee.com/i-Things/core/service/datasvr/internal/handler"
 	"gitee.com/i-Things/core/service/datasvr/internal/svc"
 
-	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 	logx.DisableStat()
 	var c config.Config
-	conf.MustLoad(*configFile, &c)
+	utils.ConfMustLoad(*configFile, &c)
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()

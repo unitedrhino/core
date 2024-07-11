@@ -47,12 +47,15 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 	}
 	if in.ProjectID == 0 {
 		in.ProjectID = uc.ProjectID
+	} else {
+		uc.ProjectID = in.ProjectID
 	}
 	if !uc.IsAdmin {
 		if uc.ProjectAuth == nil || uc.ProjectAuth[in.ProjectID] == nil || uc.ProjectAuth[in.ProjectID].AuthType != def.AuthAdmin {
 			return nil, errors.Permissions.AddMsg("只有项目管理员才能创建区域")
 		}
 	}
+
 	if in.ParentAreaID == 0 {
 		in.ParentAreaID = def.RootNode
 	}
