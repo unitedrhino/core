@@ -34,7 +34,6 @@ type Config struct {
 	Captcha              Captcha
 	OssConf              conf.OssConf              `json:",optional"`
 	Map                  conf.MapConf              `json:",optional"`
-	OpenAuth             conf.AuthConf             `json:",optional"`
 	WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
 	Event                conf.EventConf            //和things内部交互的设置
 }

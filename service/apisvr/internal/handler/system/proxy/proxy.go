@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/utils"
 	"io"
 	"net/http"
 	"net/http/httputil"
@@ -13,7 +14,7 @@ import (
 )
 
 func Handler(svcCtx *svc.ServiceContext) http.HandlerFunc {
-	dir := http.Dir(svcCtx.Config.Proxy.FileProxy.FrontDir)
+	dir := http.Dir(utils.GerRealPwd(svcCtx.Config.Proxy.FileProxy.FrontDir))
 	fileServer := http.FileServer(dir)
 	return func(w http.ResponseWriter, r *http.Request) {
 		header := w.Header()
@@ -55,7 +56,7 @@ func staticProxy(svcCtx *svc.ServiceContext, conf *conf.StaticProxyConf, w http.
 	proxy.ServeHTTP(w, r)
 }
 func defaultHandle(svcCtx *svc.ServiceContext, upath string, w http.ResponseWriter, r *http.Request, isDir bool) {
-	dir := http.Dir(svcCtx.Config.Proxy.FileProxy.FrontDir)
+	dir := http.Dir(utils.GerRealPwd(svcCtx.Config.Proxy.FileProxy.FrontDir))
 	var (
 		f   http.File
 		err error
