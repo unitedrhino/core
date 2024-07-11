@@ -4,12 +4,11 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/internal/svc"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
-
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -32,17 +31,22 @@ func NewDataProjectIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*sys.DataProjectIndexResp, error) {
 	var (
-		list  []*sys.DataProject
-		total int64
-		err   error
-		uc    = ctxs.GetUserCtx(l.ctx)
+		list      []*sys.DataProject
+		total     int64
+		err       error
+		uc        = ctxs.GetUserCtx(l.ctx)
+		projectID = uc.ProjectID
 	)
 	if !uc.IsAdmin && in.TargetType != def.TargetUser {
 		return nil, errors.Permissions.AddMsg("非管理员只能获取用户类型的")
 	}
-
+	if in.ProjectID != 0 {
+		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
+			projectID = in.ProjectID
+		}
+	}
 	filter := relationDB.DataProjectFilter{
-		ProjectID: uc.ProjectID,
+		ProjectID: projectID,
 		Target: &relationDB.Target{
 			Type: in.TargetType,
 			ID:   in.TargetID,
