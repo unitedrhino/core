@@ -56,6 +56,10 @@ func staticProxy(svcCtx *svc.ServiceContext, conf *conf.StaticProxyConf, w http.
 	proxy.ServeHTTP(w, r)
 }
 func defaultHandle(svcCtx *svc.ServiceContext, upath string, w http.ResponseWriter, r *http.Request, isDir bool) {
+	if !svcCtx.Config.Proxy.FileProxy.IsEnable {
+		http.NotFound(w, r)
+		return
+	}
 	dir := http.Dir(utils.GerRealPwd(svcCtx.Config.Proxy.FileProxy.FrontDir))
 	var (
 		f   http.File

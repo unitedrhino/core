@@ -10533,6 +10533,10 @@
         },
         "backgroundColour": {
           "type": "string"
+        },
+        "footer": {
+          "type": "string",
+          "description": "页尾"
         }
       },
       "title": "TenantCore",
@@ -10576,6 +10580,10 @@
         },
         "backgroundImg": {
           "type": "string"
+        },
+        "footer": {
+          "type": "string",
+          "description": "页尾"
         },
         "isUpdateBackgroundImg": {
           "type": "boolean",

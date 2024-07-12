@@ -26,6 +26,7 @@ type SysTenantOem struct {
 	LogoImg          string `gorm:"column:logo_img;type:VARCHAR(512);"`         //租户logo地址
 	Title            string `gorm:"column:title;type:VARCHAR(100);"`            //中文标题
 	TitleEn          string `gorm:"column:title_en;type:VARCHAR(100);"`         //英文标题
+	Footer           string `gorm:"column:footer;type:text;"`                   //页尾
 }
 
 func (m *SysTenantInfo) TableName() string {

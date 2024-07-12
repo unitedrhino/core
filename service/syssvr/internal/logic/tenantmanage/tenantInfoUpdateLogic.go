@@ -87,6 +87,9 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Empty
 		}
 		old.LogoImg = path
 	}
+	if in.Footer != "" {
+		old.Footer = in.Footer
+	}
 	if in.Title != "" {
 		old.Title = in.Title
 	}
