@@ -12,13 +12,11 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/view.yaml", "the config file")
-
 func main() {
 	flag.Parse()
 
 	var c config.Config
-	utils.ConfMustLoad(*configFile, &c)
+	utils.ConfMustLoad("etc/view.yaml", &c)
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()

@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 	logx.DisableStat()
 	var c config.Config
-	utils.ConfMustLoad(*configFile, &c)
+	utils.ConfMustLoad("etc/data.yaml", &c)
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
