@@ -40,6 +40,9 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 	if !uc.IsAdmin && in.TargetType != def.TargetUser {
 		return nil, errors.Permissions.AddMsg("非管理员只能获取用户类型的")
 	}
+	if uc.AllProject {
+		projectID = 0
+	}
 	if in.ProjectID != 0 {
 		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
 			projectID = in.ProjectID
