@@ -35,7 +35,7 @@ Proxy:
       Dest: http://127.0.0.1:9218
     - Router: /api/v1/sale/
       Dest: http://127.0.0.1:9283
-    - Router: /api/v1/oss/
+    - Router: /oss/
       DeletePrefix: true
       Dest: http://127.0.0.1:9000
     - Router: /iot
