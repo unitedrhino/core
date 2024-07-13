@@ -32,14 +32,20 @@ func (l *DataProjectDeleteLogic) DataProjectDelete(in *sys.DataProjectDeleteReq)
 		return nil, errors.Parameter.AddDetail(in.TargetID).WithMsg("TargetID参数必填")
 	}
 	uc := ctxs.GetUserCtx(l.ctx)
+	var (
+		projectID = uc.ProjectID
+	)
 
-	if in.ProjectID == 0 {
-		in.ProjectID = uc.ProjectID
+	if in.ProjectID != 0 {
+		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
+			projectID = in.ProjectID
+		}
 	}
-	if in.ProjectID == 0 {
+	if projectID == 0 {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("项目id参数必填")
 	}
-	project, err := relationDB.NewProjectInfoRepo(l.ctx).FindOne(l.ctx, in.ProjectID)
+
+	project, err := relationDB.NewProjectInfoRepo(l.ctx).FindOne(ctxs.WithRoot(l.ctx), in.ProjectID)
 	if err != nil {
 		return nil, err
 	}
