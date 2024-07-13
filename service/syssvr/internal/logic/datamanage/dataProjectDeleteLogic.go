@@ -43,7 +43,8 @@ func (l *DataProjectDeleteLogic) DataProjectDelete(in *sys.DataProjectDeleteReq)
 	if err != nil {
 		return nil, err
 	}
-	if !(uc.IsAdmin || uc.UserID == project.AdminUserID && in.TargetType != def.TargetRole) {
+	if !(uc.IsAdmin || (uc.UserID == project.AdminUserID && in.TargetType != def.TargetRole) ||
+		(in.TargetID == uc.UserID && in.TargetType == def.TargetUser && uc.UserID != project.AdminUserID)) {
 		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
 	}
 	err = relationDB.NewDataProjectRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DataProjectFilter{
