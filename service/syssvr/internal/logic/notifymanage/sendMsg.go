@@ -129,7 +129,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 				return relationDB.NewUserMessageRepo(tx).MultiInsert(ctx, umPos)
 			})
 			if err != nil {
-				return nil
+				return err
 			}
 		}
 	}
@@ -179,14 +179,17 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 				userIDs = append(userIDs, cast.ToString(v.DingTalkUserID.String))
 			}
 		}
-		_, err = cli.SendCorpConvMessage(&request.CorpConvMessage{
-			AgentId: cast.ToInt(channel.App.AppID),
-			UserIds: userIDs,
-			Msg:     clients.NewTextMessage(body),
-		})
-		if err != nil {
-			return err
+		if len(userIDs) > 0 {
+			_, err = cli.SendCorpConvMessage(&request.CorpConvMessage{
+				AgentId: cast.ToInt(channel.App.AppID),
+				UserIds: userIDs,
+				Msg:     clients.NewTextMessage(body),
+			})
+			if err != nil {
+				return err
+			}
 		}
+
 	case def.NotifyTypeEmail:
 		var accounts = cfg.Accounts
 		if len(users) != 0 {
