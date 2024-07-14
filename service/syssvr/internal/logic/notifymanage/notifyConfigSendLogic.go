@@ -29,6 +29,7 @@ func (l *NotifyConfigSendLogic) NotifyConfigSend(in *sys.NotifyConfigSendReq) (*
 		UserIDs:    in.UserIDs,
 		Accounts:   in.Accounts,
 		NotifyCode: in.NotifyCode,
+		TemplateID: in.TemplateID,
 		Type:       in.Type,
 		Params:     utils.ToStringMap(in.Params),
 		Str1:       in.Str1,

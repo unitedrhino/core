@@ -11,6 +11,8 @@ import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
+	"github.com/spf13/cast"
+	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
 	"text/template"
 )
@@ -20,6 +22,7 @@ type SendMsgConfig struct {
 	Accounts    []string
 	AccountType string
 	NotifyCode  string         //通知的code
+	TemplateID  int64          //指定模板
 	Type        def.NotifyType //通知类型
 	Params      map[string]any
 	Str1        string
@@ -28,30 +31,48 @@ type SendMsgConfig struct {
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
-	c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
-		NotifyCode: cfg.NotifyCode,
-		Type:       cfg.Type,
-	})
-	if err != nil {
-		if errors.Cmp(err, errors.NotFind) {
-			return errors.NotEnable
-		}
-		return err
-	}
 	var (
 		subject      string
 		body         string
 		signName     string
 		templateCode string
+		err          error
+		temp         *relationDB.SysNotifyTemplate
+		channel      *relationDB.SysNotifyChannel
+		config       *relationDB.SysNotifyConfig
 	)
-	if c.Template != nil {
-		subject = c.Template.Subject
-		body = c.Template.Body
-		signName = c.Template.SignName
-		templateCode = c.Template.TemplateCode
+	if cfg.TemplateID != 0 {
+		t, err := relationDB.NewNotifyTemplateRepo(ctx).FindOne(ctx, cfg.TemplateID)
+		if err != nil {
+			return err
+		}
+		temp = t
+		channel = t.Channel
+		config = t.Config
+	} else {
+		c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+			NotifyCode: cfg.NotifyCode,
+			Type:       cfg.Type,
+		})
+		if err != nil {
+			if errors.Cmp(err, errors.NotFind) {
+				return errors.NotEnable
+			}
+			return err
+		}
+		temp = c.Template
+		channel = c.Template.Channel
+		config = c.Config
+	}
+
+	if temp != nil {
+		subject = temp.Subject
+		body = temp.Body
+		signName = temp.SignName
+		templateCode = temp.TemplateCode
 	}
 	{
-		tmpl, err := template.New(c.Config.Code).Parse(body)
+		tmpl, err := template.New(config.Code).Parse(body)
 		if err != nil {
 			return errors.System.AddMsg("模版解析失败").AddDetail(err)
 		}
@@ -63,7 +84,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		body = buffer.String()
 	}
 	{
-		tmpl, err := template.New(c.Config.Code).Parse(subject)
+		tmpl, err := template.New(config.Code).Parse(subject)
 		if err != nil {
 			return errors.System.AddMsg("模版解析失败").AddDetail(err)
 		}
@@ -75,7 +96,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		subject = buffer.String()
 	}
 	var users []*relationDB.SysUserInfo
-	if c.Config.IsRecord == def.True { //需要记录到消息中心中
+	if config.IsRecord == def.True { //需要记录到消息中心中
 		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs})
 		if err != nil {
 			return err
@@ -84,7 +105,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
 				mi := relationDB.NewMessageInfoRepo(tx)
 				miPo := relationDB.SysMessageInfo{
-					Group:      c.Config.Group,
+					Group:      config.Group,
 					NotifyCode: cfg.NotifyCode,
 					Subject:    subject,
 					Body:       body,
@@ -135,7 +156,6 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			return err
 		}
 	case def.NotifyTypeDingWebhook:
-		channel := c.Template.Channel
 		if channel == nil || channel.WebHook == "" {
 			return errors.NotEnable.AddMsg("通道没有配置")
 		}
@@ -143,18 +163,30 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		_, err := cli.SendRobotMsg(clients.NewTextMessage(body))
 		return err
 	case def.NotifyTypeDingTalk:
-		channel := c.Template.Channel
 		if channel == nil || channel.App == nil {
 			return errors.NotEnable.AddMsg("通道没有配置")
 		}
-		//cli, err := clients.NewDingTalkClient(&conf.ThirdConf{
-		//	AppKey:    channel.DingTalk.AppKey,
-		//	AppSecret: channel.DingTalk.AppSecret,
-		//})
-		//if err != nil {
-		//	return err
-		//}
-		//cli.SendCorpConvMessage()
+		cli, err := clients.NewDingTalkClient(&conf.ThirdConf{
+			AppKey:    channel.App.AppKey,
+			AppSecret: channel.App.AppSecret,
+		})
+		if err != nil {
+			return err
+		}
+		var userIDs []string
+		for _, v := range users {
+			if v.DingTalkUserID.Valid {
+				userIDs = append(userIDs, cast.ToString(v.DingTalkUserID.String))
+			}
+		}
+		_, err = cli.SendCorpConvMessage(&request.CorpConvMessage{
+			AgentId: cast.ToInt(channel.App.AppID),
+			UserIds: userIDs,
+			Msg:     clients.NewTextMessage(body),
+		})
+		if err != nil {
+			return err
+		}
 	case def.NotifyTypeEmail:
 		var accounts = cfg.Accounts
 		if len(users) != 0 {
@@ -168,12 +200,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			return nil
 		}
 		err = utils.SenEmail(conf.Email{
-			From:     c.Template.Channel.Email.From,
-			Host:     c.Template.Channel.Email.Host,
-			Secret:   c.Template.Channel.Email.Secret,
-			Nickname: c.Template.Channel.Email.Nickname,
-			Port:     c.Template.Channel.Email.Port,
-			IsSSL:    c.Template.Channel.Email.IsSSL == def.True,
+			From:     temp.Channel.Email.From,
+			Host:     temp.Channel.Email.Host,
+			Secret:   temp.Channel.Email.Secret,
+			Nickname: temp.Channel.Email.Nickname,
+			Port:     temp.Channel.Email.Port,
+			IsSSL:    temp.Channel.Email.IsSSL == def.True,
 		}, accounts, subject,
 			body)
 	}

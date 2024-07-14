@@ -44,6 +44,7 @@ type SysNotifyTemplate struct {
 	Desc         string            `gorm:"column:desc;type:varchar(100)"`                        // 备注
 	ChannelID    int64             `gorm:"column:channel_id;type:BIGINT;"`
 	Channel      *SysNotifyChannel `gorm:"foreignKey:ID;references:ChannelID"`
+	Config       *SysNotifyConfig  `gorm:"foreignKey:Code;references:NotifyCode"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 }
