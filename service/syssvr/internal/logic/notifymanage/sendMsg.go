@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cast"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
+	"strings"
 	"text/template"
 )
 
@@ -181,9 +182,9 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		}
 		if len(userIDs) > 0 {
 			_, err = cli.SendCorpConvMessage(&request.CorpConvMessage{
-				AgentId: cast.ToInt(channel.App.AppID),
-				UserIds: userIDs,
-				Msg:     clients.NewTextMessage(body),
+				AgentId:    cast.ToInt(channel.App.AppID),
+				UserIdList: strings.Join(userIDs, ","),
+				Msg:        clients.NewTextMessage(body),
 			})
 			if err != nil {
 				return err
