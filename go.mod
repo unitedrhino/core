@@ -30,6 +30,7 @@ require (
 	github.com/silenceper/wechat/v2 v2.1.5
 	github.com/spf13/cast v1.5.0
 	github.com/zeromicro/go-zero v1.6.3
+	github.com/zhaoyunxing92/dingtalk/v2 v2.1.0
 	google.golang.org/grpc v1.62.1
 	google.golang.org/protobuf v1.33.0
 	gorm.io/gorm v1.25.1
@@ -174,7 +175,6 @@ require (
 	github.com/xuri/excelize/v2 v2.8.1 // indirect
 	github.com/xuri/nfp v0.0.0-20230919160717-d98342af3f05 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
-	github.com/zhaoyunxing92/dingtalk/v2 v2.1.0 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.12 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.12 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.12 // indirect
