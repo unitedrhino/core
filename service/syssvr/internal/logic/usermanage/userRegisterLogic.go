@@ -257,6 +257,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 					ProjectName: rap.ProjectName,
 					//CompanyName: utils.ToEmptyString(in.CompanyName),
 					AdminUserID:  in.UserID,
+					AreaCount:    int64(len(rap.Areas)),
 					IsSysCreated: rap.IsSysCreated,
 					Desc:         "自动创建",
 				}
