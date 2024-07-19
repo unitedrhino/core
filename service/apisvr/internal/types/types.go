@@ -217,8 +217,8 @@ type DataAreaMultiDeleteReq struct {
 type DataAreaMultiUpdateReq struct {
 	TargetID   int64       `json:"targetID,string"` //用户ID
 	TargetType string      `json:"targetType"`
-	ProjectID  int64       `json:"projectID,string"` //项目id
-	Areas      []*DataArea `json:"areas"`            //权限数据IDs
+	ProjectID  int64       `json:"projectID,string,optional"` //项目id
+	Areas      []*DataArea `json:"areas"`                     //权限数据IDs
 }
 
 type DataProject struct {

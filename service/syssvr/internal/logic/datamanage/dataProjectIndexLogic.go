@@ -31,25 +31,29 @@ func NewDataProjectIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*sys.DataProjectIndexResp, error) {
 	var (
-		list      []*sys.DataProject
-		total     int64
-		err       error
-		uc        = ctxs.GetUserCtx(l.ctx)
-		projectID = uc.ProjectID
+		list  []*sys.DataProject
+		total int64
+		err   error
 	)
+	uc := ctxs.GetUserCtx(l.ctx)
+	if in.ProjectID != 0 {
+		uc.ProjectID = in.ProjectID
+	} else {
+		in.ProjectID = uc.ProjectID
+	}
 	if !uc.IsAdmin && in.TargetType != def.TargetUser {
 		return nil, errors.Permissions.AddMsg("非管理员只能获取用户类型的")
 	}
 	if uc.AllProject {
-		projectID = 0
+		in.ProjectID = 0
 	}
 	if in.ProjectID != 0 {
 		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
-			projectID = in.ProjectID
+			in.ProjectID = in.ProjectID
 		}
 	}
 	filter := relationDB.DataProjectFilter{
-		ProjectID: projectID,
+		ProjectID: in.ProjectID,
 		Target: &relationDB.Target{
 			Type: in.TargetType,
 			ID:   in.TargetID,

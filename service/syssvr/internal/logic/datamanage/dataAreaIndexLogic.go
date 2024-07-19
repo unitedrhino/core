@@ -34,8 +34,11 @@ func (l *DataAreaIndexLogic) DataAreaIndex(in *sys.DataAreaIndexReq) (*sys.DataA
 		total int64
 		err   error
 	)
-	if in.ProjectID == 0 {
-		in.ProjectID = ctxs.GetUserCtx(l.ctx).ProjectID
+	uc := ctxs.GetUserCtx(l.ctx)
+	if in.ProjectID != 0 {
+		uc.ProjectID = in.ProjectID
+	} else {
+		in.ProjectID = uc.ProjectID
 	}
 	filter := relationDB.DataAreaFilter{
 		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},

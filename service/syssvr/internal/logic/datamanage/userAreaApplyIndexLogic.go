@@ -36,5 +36,4 @@ func (l *UserAreaApplyIndexLogic) UserAreaApplyIndex(in *sys.UserAreaApplyIndexR
 		return nil, err
 	}
 	return &sys.UserAreaApplyIndexResp{List: ToUserAreaApplyInfos(list), Total: total}, nil
-
 }

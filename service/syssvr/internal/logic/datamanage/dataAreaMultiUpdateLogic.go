@@ -36,8 +36,11 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 	if in.TargetID == 0 {
 		return nil, errors.Parameter.AddDetail(in.TargetID).WithMsg("TargetID参数必填")
 	}
-	if in.ProjectID == 0 {
-		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("项目id参数必填")
+	uc := ctxs.GetUserCtx(l.ctx)
+	if in.ProjectID != 0 {
+		uc.ProjectID = in.ProjectID
+	} else {
+		in.ProjectID = uc.ProjectID
 	}
 	project, err := l.UapDB.FindOne(l.ctx, in.TargetType, in.TargetID, in.ProjectID)
 	if err != nil {
@@ -45,7 +48,6 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 			return nil, err
 		}
 	}
-	uc := ctxs.GetUserCtx(l.ctx)
 	if !(uc.IsAdmin || uc.UserID == project.ProjectID) {
 		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
 	}
