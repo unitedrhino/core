@@ -2,6 +2,7 @@ package datamanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -51,6 +52,9 @@ func (l *DataProjectCreateLogic) DataProjectCreate(in *sys.DataProjectSaveReq) (
 	})
 	if err != nil && errors.Cmp(err, errors.Duplicate) {
 		return nil, err
+	}
+	if in.TargetType == def.TargetUser {
+		cache.ClearProjectAuth(in.TargetID)
 	}
 	return &sys.Empty{}, nil
 }

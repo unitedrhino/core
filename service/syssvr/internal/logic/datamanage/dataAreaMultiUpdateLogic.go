@@ -2,8 +2,8 @@ package datamanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/caches"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
@@ -48,7 +48,7 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 			return nil, err
 		}
 	}
-	if !(uc.IsAdmin || uc.UserID == project.ProjectID) {
+	if !(uc.IsAdmin || uc.ProjectID == project.ProjectID) {
 		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
 	}
 	//po, err := checkUser(l.ctx, in.TargetID)
@@ -70,11 +70,8 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 		l.UapDB.Insert(l.ctx, &relationDB.SysDataProject{TargetType: def.TargetUser, TargetID: in.TargetID, ProjectID: in.ProjectID})
 		//InitCacheUserAuthProject(l.ctx, in.TargetID)
 	}
-	//更新 用户数据权限 缓存
-	err = caches.SetUserAuthArea(l.ctx, in.TargetID, in.ProjectID, areas)
-	if err != nil {
-		return nil, errors.Database.AddDetail(in.TargetID).WithMsg("用户数据权限缓存失败")
+	if in.TargetType == def.TargetUser {
+		cache.ClearProjectAuth(in.TargetID)
 	}
-
 	return &sys.Empty{}, nil
 }

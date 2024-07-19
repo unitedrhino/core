@@ -2,6 +2,7 @@ package datamanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
@@ -55,5 +56,8 @@ func (l *DataProjectDeleteLogic) DataProjectDelete(in *sys.DataProjectDeleteReq)
 		ProjectID: in.GetProjectID(),
 		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
 	})
+	if in.TargetType == def.TargetUser {
+		cache.ClearProjectAuth(in.TargetID)
+	}
 	return &sys.Empty{}, err
 }
