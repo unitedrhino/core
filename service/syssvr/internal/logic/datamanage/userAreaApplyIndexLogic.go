@@ -26,7 +26,7 @@ func NewUserAreaApplyIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *UserAreaApplyIndexLogic) UserAreaApplyIndex(in *sys.UserAreaApplyIndexReq) (*sys.UserAreaApplyIndexResp, error) {
-	f := relationDB.UserAreaApplyFilter{AuthTypes: in.AuthTypes}
+	f := relationDB.UserAreaApplyFilter{AuthTypes: in.AuthTypes, AreaID: in.AreaID}
 	total, err := relationDB.NewUserAreaApplyRepo(l.ctx).CountByFilter(l.ctx, f)
 	if err != nil {
 		return nil, err
