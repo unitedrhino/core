@@ -140,6 +140,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 			ui = &relationDB.SysUserInfo{
 				UserID:       userID,
 				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
 			}
 		} else if !(ui.WechatUnionID.Valid || ui.WechatOpenID.Valid) {
@@ -147,6 +148,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 			ui = &relationDB.SysUserInfo{
 				UserID:       userID,
 				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
 			}
 		}
