@@ -3,6 +3,7 @@ package rolemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -27,6 +28,9 @@ func NewRoleInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ro
 }
 
 func (l *RoleInfoUpdateLogic) RoleInfoUpdate(in *sys.RoleInfo) (*sys.Empty, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	ro, err := l.RiDB.FindOne(l.ctx, in.Id)
 	if err != nil {
 		l.Logger.Error("RoleInfoModel.FindOne err , sql:%s", l.svcCtx)

@@ -3,6 +3,7 @@ package usermanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -25,6 +26,9 @@ func NewUserRoleMultiCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *UserRoleMultiCreateLogic) UserRoleMultiCreate(in *sys.UserRoleMultiUpdateReq) (*sys.Empty, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	if len(in.RoleCodes) != 0 {
 		rs, err := relationDB.NewRoleInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.RoleInfoFilter{
 			Codes: in.RoleCodes,

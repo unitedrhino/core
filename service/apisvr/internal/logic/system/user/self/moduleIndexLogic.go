@@ -30,7 +30,7 @@ func NewModuleIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Modul
 func (l *ModuleIndexLogic) ModuleIndex() (resp *types.ModuleInfoIndexResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
 	var moduleCodes []string
-	if !uc.IsAdmin {
+	if !uc.IsSuperAdmin {
 		codes, err := l.svcCtx.RoleRpc.RoleModuleIndex(l.ctx, &role.RoleModuleIndexReq{AppCode: uc.AppCode, Ids: uc.RoleIDs})
 		if err != nil {
 			return nil, err

@@ -3,6 +3,7 @@ package rolemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -28,6 +29,9 @@ func NewRoleInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ro
 }
 
 func (l *RoleInfoCreateLogic) RoleInfoCreate(in *sys.RoleInfo) (*sys.WithID, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	po := relationDB.SysRoleInfo{
 		Name:   in.Name,
 		Desc:   in.Desc,

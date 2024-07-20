@@ -30,7 +30,7 @@ func (l *AppIndexLogic) AppIndex() (resp *types.AppInfoIndexResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
 
 	var appCodes []string
-	if !uc.IsAdmin {
+	if !uc.IsSuperAdmin {
 		as, err := l.svcCtx.RoleRpc.RoleAppIndex(l.ctx, &sys.RoleAppIndexReq{Ids: uc.RoleIDs})
 		if err != nil {
 			return nil, err
