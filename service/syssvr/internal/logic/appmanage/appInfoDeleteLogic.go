@@ -3,6 +3,7 @@ package appmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 
@@ -27,6 +28,9 @@ func NewAppInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *App
 }
 
 func (l *AppInfoDeleteLogic) AppInfoDelete(in *sys.WithIDCode) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	f := relationDB.AppInfoFilter{ID: in.Id}
 	if in.Code != "" {
 		f.Codes = []string{in.Code}

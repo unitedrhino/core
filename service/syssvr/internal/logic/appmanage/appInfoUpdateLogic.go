@@ -3,6 +3,7 @@ package appmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -26,6 +27,9 @@ func NewAppInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *App
 }
 
 func (l *AppInfoUpdateLogic) AppInfoUpdate(in *sys.AppInfo) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	old, err := relationDB.NewAppInfoRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
@@ -35,6 +39,12 @@ func (l *AppInfoUpdateLogic) AppInfoUpdate(in *sys.AppInfo) (*sys.Empty, error) 
 	}
 	if in.Desc != nil {
 		old.Desc = in.Desc.GetValue()
+	}
+	if in.Type != "" {
+		old.Type = in.Type
+	}
+	if in.SubType != "" {
+		old.SubType = in.SubType
 	}
 	if in.MiniWx != nil {
 		old.MiniWx = utils.Copy[relationDB.SysTenantThird](in.MiniWx)
