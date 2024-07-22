@@ -151,12 +151,15 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			})
 			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), err)
 			if err == nil {
-				if ui.Mobile != "" {
-					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
-				}
 				if ui.OrgEmail != "" {
 					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+					uc.UserName = uc.Email
 				}
+				if ui.Mobile != "" {
+					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+					uc.UserName = uc.Phone
+				}
+
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
