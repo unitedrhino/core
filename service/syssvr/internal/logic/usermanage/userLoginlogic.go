@@ -15,6 +15,7 @@ import (
 	"gitee.com/i-Things/share/utils"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
 	"time"
 )
@@ -135,6 +136,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if ret.Code != 0 {
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
+
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
 		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
 			err = nil
@@ -143,6 +145,18 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				UserID:         userID,
 				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
 				NickName:       ret.UserInfo.Name,
+			}
+			ui, err := cli.MiniDing.GetUserDetail(&request.UserDetail{
+				UserId: ret.UserInfo.UserId,
+			})
+			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), err)
+			if err == nil {
+				if ui.Mobile != "" {
+					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+				}
+				if ui.OrgEmail != "" {
+					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+				}
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
