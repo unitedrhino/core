@@ -48,5 +48,8 @@ func (l *UserRoleMultiCreateLogic) UserRoleMultiCreate(in *sys.UserRoleMultiUpda
 		})
 	}
 	err := relationDB.NewUserRoleRepo(l.ctx).MultiInsert(l.ctx, datas)
+	if err == nil {
+		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
+	}
 	return &sys.Empty{}, err
 }

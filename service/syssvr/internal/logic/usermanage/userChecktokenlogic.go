@@ -141,17 +141,22 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	if (claim.ExpiresAt.Unix()-time.Now().Unix())*2 < l.svcCtx.Config.UserToken.AccessExpire {
 		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, time.Now().Unix()+l.svcCtx.Config.UserToken.AccessExpire)
 	}
+	ui, err := l.svcCtx.UserTokenInfo.GetData(l.ctx, claim.UserID)
+	if err != nil {
+		l.Errorf("%s UserTokenInfo.GetData fail err=%s", utils.FuncName(), err.Error())
+		return nil, err
+	}
 	ret := sys.UserCheckTokenResp{
 		Token:        token,
 		UserID:       claim.UserID,
-		RoleIDs:      claim.RoleIDs,
-		RoleCodes:    claim.RoleCodes,
-		IsAllData:    claim.IsAllData,
-		TenantCode:   claim.TenantCode,
-		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, claim.RoleCodes...),
-		Account:      claim.Account,
+		RoleIDs:      ui.RoleIDs,
+		RoleCodes:    ui.RoleCodes,
+		IsAllData:    ui.IsAllData,
+		TenantCode:   ui.TenantCode,
+		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, ui.RoleCodes...),
+		Account:      ui.Account,
 	}
-	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, claim.RoleCodes...) || ret.IsSuperAdmin
+	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, ui.RoleCodes...) || ret.IsSuperAdmin
 	projectAuth, err := cache.GetProjectAuth(l.ctx, ret.UserID, ret.RoleIDs)
 	if err != nil {
 		return nil, err

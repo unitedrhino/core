@@ -21,22 +21,23 @@ import (
 )
 
 type ServiceContext struct {
-	Config       config.Config
-	ProjectID    *utils.SnowFlake
-	AreaID       *utils.SnowFlake
-	UserID       *utils.SnowFlake
-	Casbin       *casbin.Enforcer
-	Slot         *cache.Slot
-	OssClient    *oss.Client
-	Store        kv.Store
-	PwdCheck     *cache.PwdCheck
-	Captcha      *cache.Captcha
-	Cm           *ClientsManage
-	FastEvent    *eventBus.FastEvent
-	TenantCache  *caches.Cache[tenant.Info, string]
-	ProjectCache *caches.Cache[sys.ProjectInfo, int64]
-	UserCache    *caches.Cache[sys.UserInfo, int64]
-	Sms          *clients.Sms
+	Config        config.Config
+	ProjectID     *utils.SnowFlake
+	AreaID        *utils.SnowFlake
+	UserID        *utils.SnowFlake
+	Casbin        *casbin.Enforcer
+	Slot          *cache.Slot
+	OssClient     *oss.Client
+	Store         kv.Store
+	PwdCheck      *cache.PwdCheck
+	Captcha       *cache.Captcha
+	Cm            *ClientsManage
+	FastEvent     *eventBus.FastEvent
+	UserTokenInfo *cache.UserToken
+	TenantCache   *caches.Cache[tenant.Info, string]
+	ProjectCache  *caches.Cache[sys.ProjectInfo, int64]
+	UserCache     *caches.Cache[sys.UserInfo, int64]
+	Sms           *clients.Sms
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -78,19 +79,22 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	//		"2": "333",
 	//	},
 	//})
+	userTokenInfo, err := cache.NewUserToken(serverMsg)
+	logx.Must(err)
 	return &ServiceContext{
-		FastEvent: serverMsg,
-		Captcha:   cache.NewCaptcha(store),
-		PwdCheck:  cache.NewPwdCheck(store),
-		Slot:      cache.NewSlot(),
-		Cm:        NewClients(c),
-		Config:    c,
-		ProjectID: ProjectID,
-		OssClient: ossClient,
-		AreaID:    AreaID,
-		UserID:    UserID,
-		Casbin:    ca,
-		Store:     store,
-		Sms:       sms,
+		FastEvent:     serverMsg,
+		Captcha:       cache.NewCaptcha(store),
+		PwdCheck:      cache.NewPwdCheck(store),
+		Slot:          cache.NewSlot(),
+		Cm:            NewClients(c),
+		Config:        c,
+		ProjectID:     ProjectID,
+		OssClient:     ossClient,
+		AreaID:        AreaID,
+		UserID:        UserID,
+		Casbin:        ca,
+		Store:         store,
+		Sms:           sms,
+		UserTokenInfo: userTokenInfo,
 	}
 }

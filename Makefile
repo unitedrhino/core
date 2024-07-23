@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 .PHOmakeNY: build
 
-build:build.clean mod cp.etc build.api  build.view  build.sys  build.timedjob build.timedscheduler
+build:build.clean mod cp.etc build.api   build.sys  build.timedjob build.timedscheduler
 
-buildback: build.clean mod cp.etc build.api  build.view
+buildback: build.clean mod cp.etc build.api
 
 
 buildone: buildback moduleupdate build.front
@@ -21,7 +21,7 @@ packbackzhou:  buildback  toremotezhou
 toremote:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 	@rsync -r -v ./cmd/* root@120.79.205.165:/root/git/iThings/core
-
+	ssh root@120.79.205.165 'cd /root/git/iThings/;./run.sh;sleep 1;'
 toremotezhou:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 	@rsync -r -v ./cmd/* root@139.159.188.223:/root/ithings/core

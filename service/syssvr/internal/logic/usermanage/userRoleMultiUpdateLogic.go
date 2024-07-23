@@ -30,5 +30,8 @@ func (l *UserRoleMultiUpdateLogic) UserRoleMultiUpdate(in *sys.UserRoleMultiUpda
 		return nil, err
 	}
 	err := relationDB.NewUserRoleRepo(l.ctx).MultiUpdate(l.ctx, in.UserID, in.RoleIDs)
+	if err == nil {
+		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
+	}
 	return &sys.Empty{}, err
 }
