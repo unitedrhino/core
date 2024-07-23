@@ -21,7 +21,7 @@ func init() {
 		Cost(func(key int64, value map[int64]*sys.ProjectAuth) uint32 {
 			return 1
 		}).
-		WithTTL(time.Minute).
+		WithTTL(time.Minute + time.Second*5).
 		Build()
 	logx.Must(err)
 	projectAuthCache = cache

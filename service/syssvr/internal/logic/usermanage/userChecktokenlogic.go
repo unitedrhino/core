@@ -56,7 +56,7 @@ func init() {
 		Cost(func(key string, value *sys.UserCheckTokenResp) uint32 {
 			return 1
 		}).
-		WithTTL(time.Minute * 10).
+		WithTTL(time.Minute * 1).
 		Build()
 	logx.Must(err)
 	openAuthCache = cache

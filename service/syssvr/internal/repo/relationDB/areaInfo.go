@@ -28,6 +28,7 @@ type AreaInfoFilter struct {
 	ParentAreaID int64
 	AreaIDs      []int64
 	AreaIDPath   string
+	IsLeaf       int64 //是否是叶子节点
 	*AreaInfoWith
 }
 
@@ -64,6 +65,9 @@ func (p AreaInfoRepo) fmtFilter(ctx context.Context, f AreaInfoFilter) *gorm.DB 
 	}
 	if f.AreaIDPath != "" {
 		db = db.Where("area_id_path like ?", f.AreaIDPath+"%")
+	}
+	if f.IsLeaf != 0 {
+		db = db.Where("is_leaf = ?", f.IsLeaf)
 	}
 	return db
 }
