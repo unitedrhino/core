@@ -72,4 +72,9 @@ type(
         Port     int64 `json:"port"`// 端口     请前往QQ或者你要发邮件的邮箱查看其smtp协议 大多为 465
         IsSSL    int64 `json:"isSsl"`// 是否SSL   是否开启SSL
     }
+    ThirdAppConfig {
+        AppID string `json:"appID"`
+        AppKey string `json:"appKey"`//微信小程序无需填写
+        AppSecret string `json:"appSecret"`
+    }
 )

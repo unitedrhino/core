@@ -17,11 +17,15 @@ service api {
     @handler index
     post /index (TenantAppIndexReq) returns (TenantAppIndexResp)
 
-    @doc "更新租户应用"
+    @doc "绑定租户应用"
     @handler create
-    post /create (TenantAppCreateReq) returns ()
+    post /create (TenantAppInfo) returns ()
 
-    @doc "删除租户应用"
+    @doc "更新租户应用"
+    @handler update
+    post /update (TenantAppInfo) returns ()
+
+    @doc "解绑租户应用"
     @handler delete
     post /delete (TenantAppWithIDOrCode) returns ()
 }
@@ -43,7 +47,7 @@ service api {
 
     @doc "批量新增租户应用模块"
     @handler multiCreate
-    post /multi-create (TenantAppCreateReq) returns ()
+    post /multi-create (TenantAppModuleMultiCreate) returns ()
 
     @doc "删除租户应用模块"
     @handler delete
@@ -141,11 +145,17 @@ type(
         List []*AppInfo `json:"list"`            // 租户列表数据
         Total int64 `json:"total"`                    // 租户列表总记录数
     }
-
-    TenantAppCreateReq {
+    TenantAppModuleMultiCreate{
         Code string `json:"code,optional"`                     // 应用编号
         AppCode string `json:"appCode"`
         Modules []*TenantAppModule `json:"modules"`
+    }
+    TenantAppInfo {
+        Code string `json:"code,optional"`                     // 应用编号
+        AppCode string `json:"appCode"`
+        Modules []*TenantAppModule `json:"modules"`
+        MiniDing *ThirdAppConfig `json:"miniDing,optional"`//钉钉小程序
+        MiniWx *ThirdAppConfig `json:"miniWx,optional"`//微信小程序
     }
 
     TenantAppModule{

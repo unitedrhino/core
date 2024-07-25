@@ -270,7 +270,7 @@ service ops{
 
 message ThirdAppConfig {
   string appID =1;
-  string appKey=2;
+  string appKey=2;//微信小程序无需填写
   string appSecret=3;
 }
 
@@ -1453,12 +1453,11 @@ message AppInfo{
   int64 id = 1;
   string name= 2;          // 应用名称
   string type=7;//应用类型 web:web页面  app:应用  mini:小程序
-  string subType=10;//子类型  wx:微信小程序  dingTalk:钉钉小程序
+  string subType=10;//子类型  wx:微信小程序  ding:钉钉小程序
   string code = 3;          // 应用编码
   google.protobuf.StringValue desc = 4;        // 应用描述
   string baseUrl = 5;      // 基础URL
   string logoUrl = 6;     // 应用logo地址
-  ThirdAppConfig miniDing =8;//钉钉小程序
   ThirdAppConfig miniWx =9;//微信小程序
 }
 
