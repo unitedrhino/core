@@ -7,33 +7,11 @@ import (
 )
 
 func ToAppInfoRpc(in *types.AppInfo) *sys.AppInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.AppInfo{
-		Id:      in.ID,
-		Name:    in.Name,
-		Type:    in.Type,
-		Code:    in.Code,
-		Desc:    utils.ToRpcNullString(in.Desc),
-		BaseUrl: in.BaseUrl,
-		LogoUrl: in.LogoUrl,
-	}
+	return utils.Copy[sys.AppInfo](in)
 }
 
 func ToAppInfoTypes(in *sys.AppInfo) *types.AppInfo {
-	if in == nil {
-		return nil
-	}
-	return &types.AppInfo{
-		ID:      in.Id,
-		Name:    in.Name,
-		Type:    in.Type,
-		Code:    in.Code,
-		Desc:    utils.ToNullString(in.Desc),
-		BaseUrl: in.BaseUrl,
-		LogoUrl: in.LogoUrl,
-	}
+	return utils.Copy[types.AppInfo](in)
 }
 
 func ToAppInfosTypes(in []*sys.AppInfo) []*types.AppInfo {

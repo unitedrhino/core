@@ -1035,6 +1035,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/index",
 					Handler: systemtenantapp.IndexHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemtenantapp.UpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/tenant/app"),

@@ -2,8 +2,8 @@ package module
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/tenant/app"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -25,11 +25,7 @@ func NewMultiCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Multi
 	}
 }
 
-func (l *MultiCreateLogic) MultiCreate(req *types.TenantAppCreateReq) error {
-	_, err := l.svcCtx.TenantRpc.TenantAppModuleMultiCreate(l.ctx, &sys.TenantAppInfo{
-		Code:    req.Code,
-		AppCode: req.AppCode,
-		Modules: app.ToTenantAppModulesPb(req.Modules),
-	})
+func (l *MultiCreateLogic) MultiCreate(req *types.TenantAppInfo) error {
+	_, err := l.svcCtx.TenantRpc.TenantAppModuleMultiCreate(l.ctx, utils.Copy[sys.TenantAppInfo](req))
 	return err
 }

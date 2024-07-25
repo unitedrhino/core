@@ -62,7 +62,7 @@ type (
         Desc *string `json:"desc,optional"`                       // 备注
         BaseUrl string `json:"baseUrl,optional"`                               // 应用编号
         LogoUrl string `json:"logoUrl,optional"`
-        MiniWx *ThirdAppConfig `json:"miniWx,optional"`//微信小程序
+        MiniWx *ThirdAppConfig `json:"miniWx,optional.omitempty"`//微信小程序
     }
     MenuInfo  {
         ID int64 `json:"id,optional"`                                  // 编号

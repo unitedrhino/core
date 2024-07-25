@@ -34,10 +34,10 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 		return &types.TenantAppIndexResp{}, nil
 	}
 	appCodes := make([]string, 0)
-	codeIDMap := make(map[string]int64)
+	codeIDMap := make(map[string]*sys.TenantAppInfo)
 	for _, v := range ret.List {
 		appCodes = append(appCodes, v.AppCode)
-		codeIDMap[v.AppCode] = v.Id
+		codeIDMap[v.AppCode] = v
 	}
 	apps, err := l.svcCtx.AppRpc.AppInfoIndex(l.ctx, &sys.AppInfoIndexReq{
 		Codes: appCodes,
@@ -45,10 +45,22 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 	if err != nil {
 		return nil, err
 	}
+	var retList []*types.TenantApp
 	for _, v := range apps.List {
-		v.Id = codeIDMap[v.Code] //修正为关联的id
+		ta := codeIDMap[v.Code]
+		v.Id = ta.Id //修正为关联的id
+		if ta.MiniWx != nil && ta.MiniWx.AppID != "" {
+			v.MiniWx = ta.MiniWx
+		}
+		val := utils.Copy[types.TenantApp](v)
+		if ta.MiniDing != nil && ta.MiniDing.AppID != "" {
+			val.MiniDing.AppID = ta.MiniDing.AppID
+			val.MiniDing.AppSecret = ta.MiniDing.AppSecret
+			val.MiniDing.AppKey = ta.MiniDing.AppKey
+		}
+		retList = append(retList, val)
 	}
 	return &types.TenantAppIndexResp{
-		List: utils.CopySlice[types.AppInfo](apps.List),
+		List: retList,
 	}, nil
 }

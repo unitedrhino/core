@@ -1036,6 +1036,11 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/index",
 					Handler: systemtenantapp.IndexHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemtenantapp.UpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/tenant/app"),

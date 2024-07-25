@@ -66,13 +66,15 @@ type AppDeleteReq struct {
 }
 
 type AppInfo struct {
-	ID      int64   `json:"id,optional"`      // 接口编号
-	Code    string  `json:"code"`             // 应用编号
-	Type    string  `json:"type"`             //应用类型 web:web页面  app:应用  mini:小程序
-	Name    string  `json:"name,optional"`    // 接口名称
-	Desc    *string `json:"desc,optional"`    // 备注
-	BaseUrl string  `json:"baseUrl,optional"` // 应用编号
-	LogoUrl string  `json:"logoUrl,optional"`
+	ID      int64           `json:"id,optional"`      // 接口编号
+	Code    string          `json:"code"`             // 应用编号
+	Type    string          `json:"type"`             //应用类型 web:web页面  app:应用  mini:小程序
+	SubType string          `json:"subType"`          //子类型  wx:微信小程序  ding:钉钉小程序
+	Name    string          `json:"name,optional"`    // 接口名称
+	Desc    *string         `json:"desc,optional"`    // 备注
+	BaseUrl string          `json:"baseUrl,optional"` // 应用编号
+	LogoUrl string          `json:"logoUrl,optional"`
+	MiniWx  *ThirdAppConfig `json:"miniWx,optional.omitempty"` //微信小程序
 }
 
 type AppInfoIndexReq struct {
@@ -852,10 +854,9 @@ type TenantAgreementIndexResp struct {
 	Total int64              `json:"total"` // 列表总记录数
 }
 
-type TenantAppCreateReq struct {
-	Code    string             `json:"code,optional"` // 应用编号
-	AppCode string             `json:"appCode"`
-	Modules []*TenantAppModule `json:"modules"`
+type TenantApp struct {
+	AppInfo
+	MiniDing *ThirdAppConfig `json:"miniDing,optional"` //钉钉小程序
 }
 
 type TenantAppIndexReq struct {
@@ -863,8 +864,16 @@ type TenantAppIndexReq struct {
 }
 
 type TenantAppIndexResp struct {
-	List  []*AppInfo `json:"list"`  // 租户列表数据
-	Total int64      `json:"total"` // 租户列表总记录数
+	List  []*TenantApp `json:"list"`  // 租户列表数据
+	Total int64        `json:"total"` // 租户列表总记录数
+}
+
+type TenantAppInfo struct {
+	Code     string             `json:"code,optional"` // 应用编号
+	AppCode  string             `json:"appCode"`
+	Modules  []*TenantAppModule `json:"modules"`
+	MiniDing *ThirdAppConfig    `json:"miniDing,optional"` //钉钉小程序
+	MiniWx   *ThirdAppConfig    `json:"miniWx,optional"`   //微信小程序
 }
 
 type TenantAppMenu struct {
@@ -890,6 +899,12 @@ type TenantAppModule struct {
 	Code    string  `json:"code"` // 应用编号
 	MenuIDs []int64 `json:"menuIDs,optional"`
 	ApiIDs  []int64 `json:"apiIDs,optional"`
+}
+
+type TenantAppModuleMultiCreate struct {
+	Code    string             `json:"code,optional"` // 应用编号
+	AppCode string             `json:"appCode"`
+	Modules []*TenantAppModule `json:"modules"`
 }
 
 type TenantAppWithIDOrCode struct {
@@ -981,6 +996,12 @@ type ThirdApp struct {
 	AppID     string `json:"appID,optional"`
 	AppKey    string `json:"appKey,optional"`
 	AppSecret string `json:"appSecret,optional"`
+}
+
+type ThirdAppConfig struct {
+	AppID     string `json:"appID"`
+	AppKey    string `json:"appKey"` //微信小程序无需填写
+	AppSecret string `json:"appSecret"`
 }
 
 type ThirdEmailConfig struct {
