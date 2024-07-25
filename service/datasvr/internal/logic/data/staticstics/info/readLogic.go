@@ -3,9 +3,12 @@ package info
 import (
 	"context"
 	"fmt"
+	"gitee.com/i-Things/core/service/datasvr/internal/domain"
 	"gitee.com/i-Things/core/service/datasvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/sysExport"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/domain/slot"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
@@ -165,6 +168,20 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	}
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	conn := stores.GetTenantConn(l.ctx)
+	if si.FilterSlotCode != "" {
+		sl, err := l.svcCtx.Slot.GetData(l.ctx, sysExport.GenSlotCacheKey(slot.CodeDataFilter, si.FilterSlotCode))
+		if err != nil {
+			return nil, err
+		}
+		var f domain.DateFilterSlotResp
+		err = sl.Request(l.ctx, domain.DateFilterSlotReq{Code: si.Code}, &f)
+		if err != nil {
+			return nil, err
+		}
+		if f.Where != "" {
+			conn = conn.Where(f.Where)
+		}
+	}
 	if si.IsFilterTenant == def.True && uc.TenantCode != def.TenantCodeDefault {
 		conn = conn.Where("tenant_code=?", uc.TenantCode)
 	}

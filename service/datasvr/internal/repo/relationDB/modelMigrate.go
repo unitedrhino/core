@@ -11,9 +11,9 @@ import (
 var once sync.Once
 
 func Migrate(c conf.Database) (err error) {
-	if c.IsInitTable == false {
-		return
-	}
+	//if c.IsInitTable == false {
+	//	return
+	//}
 	once.Do(func() {
 		db := stores.GetCommonConn(context.TODO())
 		var needInitColumn bool

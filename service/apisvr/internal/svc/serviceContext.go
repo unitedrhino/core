@@ -40,18 +40,18 @@ import (
 )
 
 type SvrClient struct {
-	TenantRpc tenant.TenantManage
-	UserRpc   user.UserManage
-	RoleRpc   role.RoleManage
-	AppRpc    app.AppManage
-	ModuleRpc module.ModuleManage
-	LogRpc    log.Log
-	ProjectM  projectmanage.ProjectManage
-	AreaM     areamanage.AreaManage
-	DictM     dictmanage.DictManage
-	NotifyM   notifymanage.NotifyManage
-	Common    common.Common
-
+	TenantRpc      tenant.TenantManage
+	UserRpc        user.UserManage
+	RoleRpc        role.RoleManage
+	AppRpc         app.AppManage
+	ModuleRpc      module.ModuleManage
+	LogRpc         log.Log
+	ProjectM       projectmanage.ProjectManage
+	AreaM          areamanage.AreaManage
+	DictM          dictmanage.DictManage
+	NotifyM        notifymanage.NotifyManage
+	Common         common.Common
+	Slot           sysExport.SlotCacheT
 	AccessRpc      accessmanage.AccessManage
 	DataM          datamanage.DataManage
 	Timedscheduler timedscheduler.Timedscheduler
@@ -149,7 +149,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			timedJob = timedjobdirect.NewTimedJob(c.TimedJobRpc.RunProxy)
 		}
 	}
-
+	Slot, err := sysExport.NewSlotCache(sysCommon)
+	logx.Must(err)
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
 		logx.Errorf("NewOss err err:%v", err)
@@ -178,6 +179,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			UserRpc:        ur,
 			RoleRpc:        ro,
 			ModuleRpc:      me,
+			Slot:           Slot,
 			LogRpc:         lo,
 			AccessRpc:      accessM,
 			NotifyM:        NotifyM,

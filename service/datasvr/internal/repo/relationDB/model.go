@@ -58,12 +58,16 @@ type DataStatisticsInfo struct {
 	Sql             string                    `gorm:"column:sql;type:VARCHAR(2000);default:''"`                           //sql类型的sql内容
 	OrderBy         string                    `gorm:"column:order_by;type:VARCHAR(120);default:'created_time desc'"`      //排序
 	Filter          map[string]FilterKeywords `gorm:"column:filter;type:json;serializer:json;NOT NULL;default:'{}'"`
+	FilterSlotCode  string                    `gorm:"column:filter_slot_code;type:VARCHAR(120);default:''"` //第三方过滤插槽code
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:key"`
 }
 
 func (m *DataStatisticsInfo) TableName() string {
 	return "data_statistics_info"
+}
+
+type FilterSlot struct {
 }
 
 type FilterKeywords struct {
