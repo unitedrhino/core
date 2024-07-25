@@ -142,13 +142,17 @@ type(
         Code string `json:"code,optional"`                     // 应用编号
     }
     TenantAppIndexResp{
-        List []*AppInfo `json:"list"`            // 租户列表数据
+        List []*TenantApp `json:"list"`            // 租户列表数据
         Total int64 `json:"total"`                    // 租户列表总记录数
     }
     TenantAppModuleMultiCreate{
         Code string `json:"code,optional"`                     // 应用编号
         AppCode string `json:"appCode"`
         Modules []*TenantAppModule `json:"modules"`
+    }
+    TenantApp {
+        AppInfo
+        MiniDing *ThirdAppConfig `json:"miniDing,optional"`//钉钉小程序
     }
     TenantAppInfo {
         Code string `json:"code,optional"`                     // 应用编号
