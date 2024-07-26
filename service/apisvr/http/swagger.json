@@ -4938,6 +4938,210 @@
         ]
       }
     },
+    "/api/v1/system/slot/info/create": {
+      "post": {
+        "summary": "新增项目",
+        "operationId": "postApiV1SystemSlotInfoCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithID"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SlotInfo"
+            }
+          }
+        ],
+        "tags": [
+          "system/slot/info",
+          "systemSlotInfo"
+        ]
+      }
+    },
+    "/api/v1/system/slot/info/delete": {
+      "post": {
+        "summary": "删除项目",
+        "operationId": "postApiV1SystemSlotInfoDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/slot/info",
+          "systemSlotInfo"
+        ]
+      }
+    },
+    "/api/v1/system/slot/info/index": {
+      "post": {
+        "summary": "获取项目列表",
+        "operationId": "postApiV1SystemSlotInfoIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/SlotInfoIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SlotInfoIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/slot/info",
+          "systemSlotInfo"
+        ]
+      }
+    },
+    "/api/v1/system/slot/info/read": {
+      "post": {
+        "summary": "获取项目详情",
+        "operationId": "postApiV1SystemSlotInfoRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/SlotInfo"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/slot/info",
+          "systemSlotInfo"
+        ]
+      }
+    },
+    "/api/v1/system/slot/info/update": {
+      "post": {
+        "summary": "更新项目",
+        "operationId": "postApiV1SystemSlotInfoUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SlotInfo"
+            }
+          }
+        ],
+        "tags": [
+          "system/slot/info",
+          "systemSlotInfo"
+        ]
+      }
+    },
     "/api/v1/system/tenant/access/info/index": {
       "post": {
         "summary": "获取租户操作权限树",
@@ -9952,6 +10156,110 @@
         }
       },
       "title": "SendOption"
+    },
+    "SlotInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "code": {
+          "type": "string",
+          "description": " 主编码"
+        },
+        "subCode": {
+          "type": "string",
+          "description": " 子编码"
+        },
+        "slotCode": {
+          "type": "string",
+          "description": "slot的编码"
+        },
+        "method": {
+          "type": "string",
+          "description": " 请求方式 GET  POST"
+        },
+        "uri": {
+          "type": "string",
+          "description": " 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg\u0026wefaef=gwegwe"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "访问的地址 host or host:port"
+        },
+        "body": {
+          "type": "string",
+          "description": " body 参数模板"
+        },
+        "handler": {
+          "type": "object",
+          "description": "http头 key是头的ID,value是头的值(暂时不需要做这个字段)"
+        },
+        "authType": {
+          "type": "string",
+          "description": "鉴权类型 core"
+        },
+        "desc": {
+          "type": "string",
+          "description": "描述类型"
+        }
+      },
+      "title": "SlotInfo",
+      "required": [
+        "code",
+        "subCode",
+        "slotCode",
+        "method",
+        "uri",
+        "hosts",
+        "body",
+        "handler",
+        "authType",
+        "desc"
+      ]
+    },
+    "SlotInfoIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": "进行数据分页（不传默认2000相当于全部）"
+        },
+        "code": {
+          "type": "string",
+          "description": "主编码"
+        },
+        "subCode": {
+          "type": "string",
+          "description": "子编码"
+        }
+      },
+      "title": "SlotInfoIndexReq"
+    },
+    "SlotInfoIndexResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "拥有的总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SlotInfo"
+          },
+          "description": "项目列表"
+        }
+      },
+      "title": "SlotInfoIndexResp",
+      "required": [
+        "list"
+      ]
     },
     "SysLogLoginIndexReq": {
       "type": "object",

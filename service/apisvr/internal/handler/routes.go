@@ -35,6 +35,7 @@ import (
 	systemroleinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/info"
 	systemrolemenu "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/menu"
 	systemrolemodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/role/module"
+	systemslotinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/slot/info"
 	systemtenantaccessinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/access/info"
 	systemtenantagreement "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/agreement"
 	systemtenantapp "gitee.com/i-Things/core/service/apisvr/internal/handler/system/tenant/app"
@@ -947,6 +948,40 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/role/module"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemslotinfo.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemslotinfo.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemslotinfo.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemslotinfo.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemslotinfo.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/slot/info"),
 	)
 
 	server.AddRoutes(

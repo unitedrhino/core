@@ -161,8 +161,13 @@ service DictManage{
 
 service Common {
   rpc config(Empty) returns(configResp); //添加菜单
-  rpc slotInfoIndex(SlotInfoIndexReq) returns(SlotInfoIndexResp);//获取插槽列表
   rpc QRCodeRead(QRCodeReadReq)returns(QRCodeReadResp);
+
+  rpc slotInfoIndex(SlotInfoIndexReq) returns(SlotInfoIndexResp);//获取插槽列表
+  rpc slotInfoCreate(SlotInfo) returns(WithID); //添加角色
+  rpc slotInfoUpdate(SlotInfo) returns(Empty); //更新角色
+  rpc slotInfoDelete(WithID) returns(Empty); //删除角色
+  rpc slotInfoRead(WithID) returns(SlotInfo);   //获取详情接口
 }
 
 service Log {
@@ -855,14 +860,17 @@ message AreaInfoIndexResp {
 
 
 message SlotInfo{
-  string  code =1;  // 鉴权的编码
-  string  slotCode =2;  //slot的编码
-  string  method =3;  // 请求方式 GET  POST
-  string  uri =4;  // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
-  repeated string  hosts =6;  //访问的地址 host or host:port
-  string  body =7;  // body 参数模板
-  map<string,string>  handler =8;  //http头
-  string  authType =9;  //鉴权类型 core
+  int64 id =1;
+  string  code =2;  // 主编码
+  string subCode =3;// 子编码
+  string  slotCode =4;  //slot的编码
+  string  method =5;  // 请求方式 GET  POST
+  string  uri =6;  // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
+  repeated string  hosts =7;  //访问的地址 host or host:port
+  string  body =8;  // body 参数模板
+  map<string,string>  handler =9;  //http头
+  string  authType =10;  //鉴权类型 core
+  string desc = 11;//描述类型
 }
 
 
@@ -879,16 +887,17 @@ message QRCodeReadResp{
 message SlotInfoIndexReq{
   string code =1;
   string subCode =2;
+  PageInfo page       = 3;  // 分页信息 只获取一个则不填
 }
 
 message SlotInfoIndexResp{
   repeated SlotInfo slots=1;
+  int64 total = 2;
 }
 
 message AuthApiInfo{
   string route = 1;
   string method = 2;//大写 http 方法
-
 }
 
 message RoleAccessMultiUpdateReq{

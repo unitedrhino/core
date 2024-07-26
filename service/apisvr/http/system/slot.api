@@ -1,0 +1,58 @@
+info(
+    title: "插槽管理模块"
+    desc: "插槽管理模块"
+    author: "杨磊"
+    email: "603785348@qq.com"
+    version: "v1"
+)
+
+@server(
+    group: system/slot/info
+    prefix: /api/v1/system/slot/info
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+service api {
+    @doc "新增项目"
+    @handler create
+    post /create (SlotInfo) returns (WithID)
+    @doc "更新项目"
+    @handler update
+    post /update (SlotInfo) returns ()
+    @doc "删除项目"
+    @handler delete
+    post /delete (WithID) returns ()
+    @doc "获取项目详情"
+    @handler read
+    post /read (WithID) returns (SlotInfo)
+    @doc "获取项目列表"
+    @handler index
+    post /index (SlotInfoIndexReq) returns (SlotInfoIndexResp)
+
+}
+
+type (
+
+    SlotInfoIndexReq  {
+        Page *PageInfo `json:"page,optional"`            //进行数据分页（不传默认2000相当于全部）
+        Code string `json:"code,optional"` //主编码
+        SubCode string `json:"subCode,optional"` //子编码
+    }
+
+    SlotInfoIndexResp  {
+        Total int64 `json:"total,optional"`  //拥有的总数
+        List []*SlotInfo `json:"list"`    //项目列表
+    }
+    SlotInfo{
+      ID int64 `json:"id,optional"`
+      Code string `json:"code"`  // 主编码
+      SubCode string `json:"subCode"`// 子编码
+      SlotCode string `json:"slotCode"`  //slot的编码
+      Method string `json:"method"`  // 请求方式 GET  POST
+      Uri string `json:"uri"`  // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
+      Hosts []string `json:"hosts"`  //访问的地址 host or host:port
+      Body string `json:"body"`  // body 参数模板
+      Handler map[string]string  `json:"handler"`  //http头 key是头的ID,value是头的值(暂时不需要做这个字段)
+      AuthType string `json:"authType"`  //鉴权类型 core
+      Desc string `json:"desc"`//描述类型
+    }
+)

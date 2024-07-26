@@ -4188,9 +4188,13 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Common_Config_FullMethodName        = "/sys.Common/config"
-	Common_SlotInfoIndex_FullMethodName = "/sys.Common/slotInfoIndex"
-	Common_QRCodeRead_FullMethodName    = "/sys.Common/QRCodeRead"
+	Common_Config_FullMethodName         = "/sys.Common/config"
+	Common_QRCodeRead_FullMethodName     = "/sys.Common/QRCodeRead"
+	Common_SlotInfoIndex_FullMethodName  = "/sys.Common/slotInfoIndex"
+	Common_SlotInfoCreate_FullMethodName = "/sys.Common/slotInfoCreate"
+	Common_SlotInfoUpdate_FullMethodName = "/sys.Common/slotInfoUpdate"
+	Common_SlotInfoDelete_FullMethodName = "/sys.Common/slotInfoDelete"
+	Common_SlotInfoRead_FullMethodName   = "/sys.Common/slotInfoRead"
 )
 
 // CommonClient is the client API for Common service.
@@ -4198,8 +4202,12 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommonClient interface {
 	Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
-	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 	QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
+	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
+	SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
+	SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
+	SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
 }
 
 type commonClient struct {
@@ -4219,6 +4227,15 @@ func (c *commonClient) Config(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return out, nil
 }
 
+func (c *commonClient) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	out := new(QRCodeReadResp)
+	err := c.cc.Invoke(ctx, Common_QRCodeRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *commonClient) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {
 	out := new(SlotInfoIndexResp)
 	err := c.cc.Invoke(ctx, Common_SlotInfoIndex_FullMethodName, in, out, opts...)
@@ -4228,9 +4245,36 @@ func (c *commonClient) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, 
 	return out, nil
 }
 
-func (c *commonClient) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
-	out := new(QRCodeReadResp)
-	err := c.cc.Invoke(ctx, Common_QRCodeRead_FullMethodName, in, out, opts...)
+func (c *commonClient) SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, Common_SlotInfoCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Common_SlotInfoUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Common_SlotInfoDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error) {
+	out := new(SlotInfo)
+	err := c.cc.Invoke(ctx, Common_SlotInfoRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -4242,8 +4286,12 @@ func (c *commonClient) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts .
 // for forward compatibility
 type CommonServer interface {
 	Config(context.Context, *Empty) (*ConfigResp, error)
-	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
 	QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error)
+	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
+	SlotInfoCreate(context.Context, *SlotInfo) (*WithID, error)
+	SlotInfoUpdate(context.Context, *SlotInfo) (*Empty, error)
+	SlotInfoDelete(context.Context, *WithID) (*Empty, error)
+	SlotInfoRead(context.Context, *WithID) (*SlotInfo, error)
 	mustEmbedUnimplementedCommonServer()
 }
 
@@ -4254,11 +4302,23 @@ type UnimplementedCommonServer struct {
 func (UnimplementedCommonServer) Config(context.Context, *Empty) (*ConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Config not implemented")
 }
+func (UnimplementedCommonServer) QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QRCodeRead not implemented")
+}
 func (UnimplementedCommonServer) SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoIndex not implemented")
 }
-func (UnimplementedCommonServer) QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method QRCodeRead not implemented")
+func (UnimplementedCommonServer) SlotInfoCreate(context.Context, *SlotInfo) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoCreate not implemented")
+}
+func (UnimplementedCommonServer) SlotInfoUpdate(context.Context, *SlotInfo) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoUpdate not implemented")
+}
+func (UnimplementedCommonServer) SlotInfoDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoDelete not implemented")
+}
+func (UnimplementedCommonServer) SlotInfoRead(context.Context, *WithID) (*SlotInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoRead not implemented")
 }
 func (UnimplementedCommonServer) mustEmbedUnimplementedCommonServer() {}
 
@@ -4291,24 +4351,6 @@ func _Common_Config_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Common_SlotInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SlotInfoIndexReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CommonServer).SlotInfoIndex(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Common_SlotInfoIndex_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CommonServer).SlotInfoIndex(ctx, req.(*SlotInfoIndexReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Common_QRCodeRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QRCodeReadReq)
 	if err := dec(in); err != nil {
@@ -4327,6 +4369,96 @@ func _Common_QRCodeRead_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Common_SlotInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SlotInfoIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoIndex(ctx, req.(*SlotInfoIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_SlotInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SlotInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoCreate(ctx, req.(*SlotInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_SlotInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SlotInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoUpdate(ctx, req.(*SlotInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_SlotInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_SlotInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoRead(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Common_ServiceDesc is the grpc.ServiceDesc for Common service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4339,12 +4471,28 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Common_Config_Handler,
 		},
 		{
+			MethodName: "QRCodeRead",
+			Handler:    _Common_QRCodeRead_Handler,
+		},
+		{
 			MethodName: "slotInfoIndex",
 			Handler:    _Common_SlotInfoIndex_Handler,
 		},
 		{
-			MethodName: "QRCodeRead",
-			Handler:    _Common_QRCodeRead_Handler,
+			MethodName: "slotInfoCreate",
+			Handler:    _Common_SlotInfoCreate_Handler,
+		},
+		{
+			MethodName: "slotInfoUpdate",
+			Handler:    _Common_SlotInfoUpdate_Handler,
+		},
+		{
+			MethodName: "slotInfoDelete",
+			Handler:    _Common_SlotInfoDelete_Handler,
+		},
+		{
+			MethodName: "slotInfoRead",
+			Handler:    _Common_SlotInfoRead_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

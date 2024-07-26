@@ -27,12 +27,32 @@ func (s *CommonServer) Config(ctx context.Context, in *sys.Empty) (*sys.ConfigRe
 	return l.Config(in)
 }
 
+func (s *CommonServer) QRCodeRead(ctx context.Context, in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
+	l := commonlogic.NewQRCodeReadLogic(ctx, s.svcCtx)
+	return l.QRCodeRead(in)
+}
+
 func (s *CommonServer) SlotInfoIndex(ctx context.Context, in *sys.SlotInfoIndexReq) (*sys.SlotInfoIndexResp, error) {
 	l := commonlogic.NewSlotInfoIndexLogic(ctx, s.svcCtx)
 	return l.SlotInfoIndex(in)
 }
 
-func (s *CommonServer) QRCodeRead(ctx context.Context, in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
-	l := commonlogic.NewQRCodeReadLogic(ctx, s.svcCtx)
-	return l.QRCodeRead(in)
+func (s *CommonServer) SlotInfoCreate(ctx context.Context, in *sys.SlotInfo) (*sys.WithID, error) {
+	l := commonlogic.NewSlotInfoCreateLogic(ctx, s.svcCtx)
+	return l.SlotInfoCreate(in)
+}
+
+func (s *CommonServer) SlotInfoUpdate(ctx context.Context, in *sys.SlotInfo) (*sys.Empty, error) {
+	l := commonlogic.NewSlotInfoUpdateLogic(ctx, s.svcCtx)
+	return l.SlotInfoUpdate(in)
+}
+
+func (s *CommonServer) SlotInfoDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := commonlogic.NewSlotInfoDeleteLogic(ctx, s.svcCtx)
+	return l.SlotInfoDelete(in)
+}
+
+func (s *CommonServer) SlotInfoRead(ctx context.Context, in *sys.WithID) (*sys.SlotInfo, error) {
+	l := commonlogic.NewSlotInfoReadLogic(ctx, s.svcCtx)
+	return l.SlotInfoRead(in)
 }

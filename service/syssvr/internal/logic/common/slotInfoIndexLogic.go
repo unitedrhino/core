@@ -2,7 +2,9 @@ package commonlogic
 
 import (
 	"context"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -26,9 +28,20 @@ func NewSlotInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Slo
 }
 
 func (l *SlotInfoIndexLogic) SlotInfoIndex(in *sys.SlotInfoIndexReq) (*sys.SlotInfoIndexResp, error) {
-	ret := l.svcCtx.Slot.Get(l.ctx, in.Code, in.SubCode)
-	if ret == nil {
-		return &sys.SlotInfoIndexResp{}, errors.NotFind
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
 	}
-	return &sys.SlotInfoIndexResp{Slots: utils.CopySlice[sys.SlotInfo](ret)}, nil
+	f := relationDB.SlotInfoFilter{
+		Code: in.Code, SubCode: in.SubCode}
+	total, err := relationDB.NewSlotInfoRepo(l.ctx).CountByFilter(l.ctx, f)
+	if err != nil {
+		return nil, err
+	}
+
+	list, err := relationDB.NewSlotInfoRepo(l.ctx).FindByFilter(l.ctx, f, utils.Copy[stores.PageInfo](in.Page))
+	if err != nil {
+		return nil, err
+	}
+
+	return &sys.SlotInfoIndexResp{Slots: utils.CopySlice[sys.SlotInfo](list), Total: total}, nil
 }

@@ -18,6 +18,7 @@ import "system/app.api" //应用相关功能
 import "system/common.api" //系统配置相关功能
 import "system/project.api" //项目管理相关功能
 import "system/area.api" //区域管理相关功能
+import "system/slot.api" //插槽管理相关功能
 import "system/job.api" //区域管理相关功能
 import "system/tenant.api" //租户管理相关功能
 import "system/userSelf.api" //用户相关功能

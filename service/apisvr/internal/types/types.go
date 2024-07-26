@@ -761,6 +761,31 @@ type SendOption struct {
 	RetryInterval  int64 `json:"retryInterval,optional"`  //重试间隔
 }
 
+type SlotInfo struct {
+	ID       int64             `json:"id,optional"`
+	Code     string            `json:"code"`     // 主编码
+	SubCode  string            `json:"subCode"`  // 子编码
+	SlotCode string            `json:"slotCode"` //slot的编码
+	Method   string            `json:"method"`   // 请求方式 GET  POST
+	Uri      string            `json:"uri"`      // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
+	Hosts    []string          `json:"hosts"`    //访问的地址 host or host:port
+	Body     string            `json:"body"`     // body 参数模板
+	Handler  map[string]string `json:"handler"`  //http头 key是头的ID,value是头的值(暂时不需要做这个字段)
+	AuthType string            `json:"authType"` //鉴权类型 core
+	Desc     string            `json:"desc"`     //描述类型
+}
+
+type SlotInfoIndexReq struct {
+	Page    *PageInfo `json:"page,optional"`    //进行数据分页（不传默认2000相当于全部）
+	Code    string    `json:"code,optional"`    //主编码
+	SubCode string    `json:"subCode,optional"` //子编码
+}
+
+type SlotInfoIndexResp struct {
+	Total int64       `json:"total,optional"` //拥有的总数
+	List  []*SlotInfo `json:"list"`           //项目列表
+}
+
 type SysLogLoginIndexReq struct {
 	Page          *PageInfo `json:"page,optional"`          //分页信息,只获取一个则不填
 	IpAddr        string    `json:"ipAddr,optional"`        //按ip地址查找

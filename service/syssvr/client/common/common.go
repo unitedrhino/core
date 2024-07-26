@@ -207,8 +207,12 @@ type (
 
 	Common interface {
 		Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
-		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 		QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
+		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
+		SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
+		SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
+		SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
 	}
 
 	defaultCommon struct {
@@ -243,6 +247,15 @@ func (d *directCommon) Config(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return d.svr.Config(ctx, in)
 }
 
+func (m *defaultCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.QRCodeRead(ctx, in, opts...)
+}
+
+func (d *directCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	return d.svr.QRCodeRead(ctx, in)
+}
+
 func (m *defaultCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {
 	client := sys.NewCommonClient(m.cli.Conn())
 	return client.SlotInfoIndex(ctx, in, opts...)
@@ -252,11 +265,38 @@ func (d *directCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, 
 	return d.svr.SlotInfoIndex(ctx, in)
 }
 
-func (m *defaultCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+func (m *defaultCommon) SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error) {
 	client := sys.NewCommonClient(m.cli.Conn())
-	return client.QRCodeRead(ctx, in, opts...)
+	return client.SlotInfoCreate(ctx, in, opts...)
 }
 
-func (d *directCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
-	return d.svr.QRCodeRead(ctx, in)
+func (d *directCommon) SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.SlotInfoCreate(ctx, in)
+}
+
+func (m *defaultCommon) SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.SlotInfoUpdate(ctx, in, opts...)
+}
+
+func (d *directCommon) SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.SlotInfoUpdate(ctx, in)
+}
+
+func (m *defaultCommon) SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.SlotInfoDelete(ctx, in, opts...)
+}
+
+func (d *directCommon) SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.SlotInfoDelete(ctx, in)
+}
+
+func (m *defaultCommon) SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.SlotInfoRead(ctx, in, opts...)
+}
+
+func (d *directCommon) SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error) {
+	return d.svr.SlotInfoRead(ctx, in)
 }
