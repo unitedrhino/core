@@ -117,6 +117,12 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 			case "subChildren":
 				conn = conn.Where(fmt.Sprintf("%s like ?", newCol), cast.ToString(v)+"%")
 				return conn
+			default:
+				cmp := stores.GetCmp(fu, v)
+				if cmp != nil {
+					conn = cmp.Where(conn, newCol)
+					return conn
+				}
 			}
 		}
 		switch val := v.(type) {
@@ -221,10 +227,7 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 			if si.IsToHump == def.True {
 				newCol = utils.CamelCaseToUdnderscore(newCol)
 			}
-			if val := si.ArgColumns[agg.Column]; val != "" {
-				column := fmt.Sprintf("%s(%s) as %s", agg.Func, val, agg.Column)
-				columns = append(columns, column)
-			} else if agg.Column == "total" {
+			if agg.Column == "total" {
 				column := fmt.Sprintf("%s(1) as %s", agg.Func, agg.Column)
 				columns = append(columns, column)
 			} else {

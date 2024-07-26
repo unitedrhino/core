@@ -43,20 +43,18 @@ type DataExample struct {
 //}
 
 type DataStatisticsInfo struct {
-	ID              int64                     `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                   // 编号
-	IsFilterTenant  int64                     `gorm:"column:is_filter_tenant;type:BIGINT;default:1;NOT NULL"`             //是否要过滤租户
-	IsFilterProject int64                     `gorm:"column:is_filter_project;type:BIGINT;default:1;NOT NULL"`            //是否要过滤项目1 是 2 否
-	IsFilterArea    int64                     `gorm:"column:is_filter_area;type:BIGINT;default:1;NOT NULL"`               //是否要过滤区域
-	IsSoftDelete    int64                     `gorm:"column:is_soft_delete;type:BIGINT;default:1;NOT NULL"`               //是否是软删除,是的话会默认加过滤
-	Code            string                    `gorm:"column:code;type:VARCHAR(120);not null;uniqueIndex:key"`             //查询的code
-	Type            string                    `gorm:"column:type;type:VARCHAR(120);not null"`                             //查询的类别: sql:sql模板替换查询   table: 直接查表
-	Table           string                    `gorm:"column:table;type:VARCHAR(120);default:''"`                          //table类型查询的表名
-	Columns         string                    `gorm:"column:columns;type:VARCHAR(512);default:''"`                        //查询的字段列表,table类型需要
-	ArgColumns      map[string]string         `gorm:"column:arg_columns;type:json;serializer:json;NOT NULL;default:'{}'"` //特殊聚合字段
-	Omits           string                    `gorm:"column:omits;type:VARCHAR(120);default:''"`                          //忽略的字段列表,table类型需要
-	IsToHump        int64                     `gorm:"column:is_to_hump;type:BIGINT;default:1;NOT NULL"`                   //是否转换为驼峰,入参转换为下划线
-	Sql             string                    `gorm:"column:sql;type:VARCHAR(2000);default:''"`                           //sql类型的sql内容
-	OrderBy         string                    `gorm:"column:order_by;type:VARCHAR(120);default:'created_time desc'"`      //排序
+	ID              int64                     `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`              // 编号
+	IsFilterTenant  int64                     `gorm:"column:is_filter_tenant;type:BIGINT;default:1;NOT NULL"`        //是否要过滤租户
+	IsFilterProject int64                     `gorm:"column:is_filter_project;type:BIGINT;default:1;NOT NULL"`       //是否要过滤项目1 是 2 否
+	IsFilterArea    int64                     `gorm:"column:is_filter_area;type:BIGINT;default:1;NOT NULL"`          //是否要过滤区域
+	IsSoftDelete    int64                     `gorm:"column:is_soft_delete;type:BIGINT;default:1;NOT NULL"`          //是否是软删除,是的话会默认加过滤
+	Code            string                    `gorm:"column:code;type:VARCHAR(120);not null;uniqueIndex:key"`        //查询的code
+	Type            string                    `gorm:"column:type;type:VARCHAR(120);not null"`                        //查询的类别: sql:sql模板替换查询   table: 直接查表
+	Table           string                    `gorm:"column:table;type:VARCHAR(120);default:''"`                     //table类型查询的表名
+	Omits           string                    `gorm:"column:omits;type:VARCHAR(120);default:''"`                     //忽略的字段列表,table类型需要
+	IsToHump        int64                     `gorm:"column:is_to_hump;type:BIGINT;default:1;NOT NULL"`              //是否转换为驼峰,入参转换为下划线
+	Sql             string                    `gorm:"column:sql;type:VARCHAR(2000);default:''"`                      //sql类型的sql内容
+	OrderBy         string                    `gorm:"column:order_by;type:VARCHAR(120);default:'created_time desc'"` //排序
 	Filter          map[string]FilterKeywords `gorm:"column:filter;type:json;serializer:json;NOT NULL;default:'{}'"`
 	FilterSlotCode  string                    `gorm:"column:filter_slot_code;type:VARCHAR(120);default:''"` //第三方过滤插槽code
 	stores.NoDelTime
@@ -65,9 +63,6 @@ type DataStatisticsInfo struct {
 
 func (m *DataStatisticsInfo) TableName() string {
 	return "data_statistics_info"
-}
-
-type FilterSlot struct {
 }
 
 type FilterKeywords struct {
