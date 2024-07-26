@@ -11,6 +11,38 @@ type Column struct {
 	ShowName string `json:"showName"` //展示的名字
 }
 
+type DataStatisticsManage struct {
+	ID              int64                     `json:"id,optional"`     // 编号
+	IsFilterTenant  int64                     `json:"isFilterTenant"`  //是否要过滤租户默认为过滤
+	IsFilterProject int64                     `json:"isFilterProject"` //是否要过滤项目1 是 2 否  默认为否
+	IsFilterArea    int64                     `json:"isFilterArea"`    //是否要过滤区域 默认为否
+	IsSoftDelete    int64                     `json:"isSoftDelete"`    //是否是软删除,是的话会默认加过滤 ,默认为是
+	Code            string                    `json:"code"`            //查询的code
+	Type            string                    `json:"type"`            //查询的类别: sql:sql模板替换查询   table: 直接查表
+	Table           string                    `json:"table"`           //table类型查询的表名
+	Omits           string                    `json:"omits"`           //忽略的字段列表,table类型需要
+	IsToHump        int64                     `json:"isToHump"`        //是否转换为驼峰,入参转换为下划线
+	Sql             string                    `json:"sql"`             //sql类型的sql内容
+	OrderBy         string                    `json:"orderBy"`         //默认排序 aaa desc
+	Filter          map[string]FilterKeywords `json:"filter"`          //结构体类型,key是需要定制过滤的列,或关键字,value是{"sql":"aaa=?","valNum":3(问号的数量),"type":"time"(time:时间类型时间戳 date: 日期类型的字符串,可选,需要格式化才需要填)}
+	FilterSlotCode  string                    `json:"filterSlotCode"`  //第三方过滤插槽code
+}
+
+type DataStatisticsManageIndexReq struct {
+	Page *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+}
+
+type DataStatisticsManageIndexResp struct {
+	List  []*DataStatisticsManage `json:"list"`  // 列表数据
+	Total int64                   `json:"total"` // 总记录数
+}
+
+type FilterKeywords struct {
+	Sql    string `json:"sql"`
+	ValNum int64  `json:"valNum"` //问号的数量
+	Type   string `json:"type"`   //time:时间类型时间戳 date: 日期类型的字符串
+}
+
 type OrderBy struct {
 	Field string `json:"field,optional"` ////排序的字段名
 	Sort  int64  `json:"sort,optional"`  //排序方式：0 从小到大, 1 从大到小
@@ -47,4 +79,8 @@ type StaticsticsInfoReadReq struct {
 type StaticsticsInfoReadResp struct {
 	List []map[string]interface{} `json:"list"` //如果返回的是个列表
 	One  interface{}              `json:"one"`  //如果只返回一个数
+}
+
+type WithID struct {
+	ID int64 `json:"id,optional"` // id
 }

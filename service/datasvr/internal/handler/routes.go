@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	datastaticsticsinfo "gitee.com/i-Things/core/service/datasvr/internal/handler/data/staticstics/info"
+	datastaticsticsmanage "gitee.com/i-Things/core/service/datasvr/internal/handler/data/staticstics/manage"
 	"gitee.com/i-Things/core/service/datasvr/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -28,5 +29,39 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/data/staticstics/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: datastaticsticsmanage.CreateHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: datastaticsticsmanage.DeleteHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: datastaticsticsmanage.IndexHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: datastaticsticsmanage.ReadHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: datastaticsticsmanage.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/data/staticstics/manage"),
 	)
 }

@@ -98,6 +98,210 @@
           "dataStaticsticsInfo"
         ]
       }
+    },
+    "/api/v1/data/staticstics/manage/create": {
+      "post": {
+        "summary": "添加数据统计配置",
+        "operationId": "postApiV1DataStaticsticsManageCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithID"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataStatisticsManage"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/manage",
+          "dataStaticsticsManage"
+        ]
+      }
+    },
+    "/api/v1/data/staticstics/manage/delete": {
+      "post": {
+        "summary": "删除数据统计配置",
+        "operationId": "postApiV1DataStaticsticsManageDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/manage",
+          "dataStaticsticsManage"
+        ]
+      }
+    },
+    "/api/v1/data/staticstics/manage/index": {
+      "post": {
+        "summary": "获取数据统计配置列表",
+        "operationId": "postApiV1DataStaticsticsManageIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DataStatisticsManageIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataStatisticsManageIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/manage",
+          "dataStaticsticsManage"
+        ]
+      }
+    },
+    "/api/v1/data/staticstics/manage/read": {
+      "post": {
+        "summary": "获取数据统计配置详情",
+        "operationId": "postApiV1DataStaticsticsManageRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DataStatisticsManage"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/manage",
+          "dataStaticsticsManage"
+        ]
+      }
+    },
+    "/api/v1/data/staticstics/manage/update": {
+      "post": {
+        "summary": "更新数据统计配置",
+        "operationId": "postApiV1DataStaticsticsManageUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataStatisticsManage"
+            }
+          }
+        ],
+        "tags": [
+          "data/staticstics/manage",
+          "dataStaticsticsManage"
+        ]
+      }
     }
   },
   "definitions": {
@@ -129,6 +333,144 @@
       "required": [
         "column",
         "showName"
+      ]
+    },
+    "DataStatisticsManage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编号"
+        },
+        "isFilterTenant": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否要过滤租户默认为过滤"
+        },
+        "isFilterProject": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否要过滤项目1 是 2 否  默认为否"
+        },
+        "isFilterArea": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否要过滤区域 默认为否"
+        },
+        "isSoftDelete": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否是软删除,是的话会默认加过滤 ,默认为是"
+        },
+        "code": {
+          "type": "string",
+          "description": "查询的code"
+        },
+        "type": {
+          "type": "string",
+          "description": "查询的类别: sql:sql模板替换查询   table: 直接查表"
+        },
+        "table": {
+          "type": "string",
+          "description": "table类型查询的表名"
+        },
+        "omits": {
+          "type": "string",
+          "description": "忽略的字段列表,table类型需要"
+        },
+        "isToHump": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否转换为驼峰,入参转换为下划线"
+        },
+        "sql": {
+          "type": "string",
+          "description": "sql类型的sql内容"
+        },
+        "orderBy": {
+          "type": "string",
+          "description": "默认排序 aaa desc"
+        },
+        "filter": {
+          "type": "object",
+          "description": "结构体类型,key是需要定制过滤的列,或关键字,value是{\"sql\":\"aaa=?\",\"valNum\":3(问号的数量),\"type\":\"time\"(time:时间类型时间戳 date: 日期类型的字符串,可选,需要格式化才需要填)}"
+        },
+        "filterSlotCode": {
+          "type": "string",
+          "description": "第三方过滤插槽code"
+        }
+      },
+      "title": "DataStatisticsManage",
+      "required": [
+        "isFilterTenant",
+        "isFilterProject",
+        "isFilterArea",
+        "isSoftDelete",
+        "code",
+        "type",
+        "table",
+        "omits",
+        "isToHump",
+        "sql",
+        "orderBy",
+        "filter",
+        "filterSlotCode"
+      ]
+    },
+    "DataStatisticsManageIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息,只获取一个则不填"
+        }
+      },
+      "title": "DataStatisticsManageIndexReq"
+    },
+    "DataStatisticsManageIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DataStatisticsManage"
+          },
+          "description": " 列表数据"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 总记录数"
+        }
+      },
+      "title": "DataStatisticsManageIndexResp",
+      "required": [
+        "list",
+        "total"
+      ]
+    },
+    "FilterKeywords": {
+      "type": "object",
+      "properties": {
+        "sql": {
+          "type": "string"
+        },
+        "valNum": {
+          "type": "integer",
+          "format": "int64",
+          "description": "问号的数量"
+        },
+        "type": {
+          "type": "string",
+          "description": "time:时间类型时间戳 date: 日期类型的字符串"
+        }
+      },
+      "title": "FilterKeywords",
+      "required": [
+        "sql",
+        "valNum",
+        "type"
       ]
     },
     "OrderBy": {
@@ -273,6 +615,17 @@
         "list",
         "one"
       ]
+    },
+    "WithID": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " id"
+        }
+      },
+      "title": "WithID"
     }
   },
   "securityDefinitions": {
