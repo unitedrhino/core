@@ -6010,6 +6010,87 @@
         ]
       }
     },
+    "/api/v1/system/tenant/config/read": {
+      "post": {
+        "summary": "获取租户配置",
+        "operationId": "postApiV1SystemTenantConfigRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantConfig"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithCode"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/config",
+          "systemTenantConfig"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/config/update": {
+      "post": {
+        "summary": "更新租户配置",
+        "operationId": "postApiV1SystemTenantConfigUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantConfig"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/config",
+          "systemTenantConfig"
+        ]
+      }
+    },
     "/api/v1/system/tenant/core/read": {
       "post": {
         "summary": "获取租户信息",
@@ -11066,6 +11147,86 @@
         }
       },
       "title": "TenantAppWithIDOrCode"
+    },
+    "TenantConfig": {
+      "type": "object",
+      "properties": {
+        "tenantCode": {
+          "type": "string",
+          "description": " 租户编码"
+        },
+        "registerRoleID": {
+          "type": "integer",
+          "format": "int64",
+          "description": "注册分配的角色id"
+        },
+        "checkUserDelete": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)"
+        },
+        "registerAutoCreateProject": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantConfigRegisterAutoCreateProject"
+          },
+          "description": "注册自动创建项目和区域"
+        }
+      },
+      "title": "TenantConfig",
+      "required": [
+        "tenantCode",
+        "registerRoleID",
+        "checkUserDelete",
+        "registerAutoCreateProject"
+      ]
+    },
+    "TenantConfigRegisterAutoCreateArea": {
+      "type": "object",
+      "properties": {
+        "areaName": {
+          "type": "string"
+        },
+        "areaImg": {
+          "type": "string"
+        },
+        "isSysCreated": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否是系统创建的,系统创建的只有管理员可以删除"
+        }
+      },
+      "title": "TenantConfigRegisterAutoCreateArea",
+      "required": [
+        "areaName",
+        "areaImg",
+        "isSysCreated"
+      ]
+    },
+    "TenantConfigRegisterAutoCreateProject": {
+      "type": "object",
+      "properties": {
+        "projectName": {
+          "type": "string"
+        },
+        "isSysCreated": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否是系统创建的,系统创建的只有管理员可以删除"
+        },
+        "areas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantConfigRegisterAutoCreateArea"
+          }
+        }
+      },
+      "title": "TenantConfigRegisterAutoCreateProject",
+      "required": [
+        "projectName",
+        "isSysCreated",
+        "areas"
+      ]
     },
     "TenantCore": {
       "type": "object",

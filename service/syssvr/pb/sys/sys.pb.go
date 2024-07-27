@@ -2989,6 +2989,219 @@ func (x *TenantInfoIndexResp) GetTotal() int64 {
 	return 0
 }
 
+type TenantConfig struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id                        int64                                    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                      string                                   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	TenantCode                string                                   `protobuf:"bytes,3,opt,name=tenantCode,proto3" json:"tenantCode,omitempty"`                               //租户编码
+	RegisterRoleID            int64                                    `protobuf:"varint,4,opt,name=registerRoleID,proto3" json:"registerRoleID,omitempty"`                      //注册分配的角色id
+	CheckUserDelete           int64                                    `protobuf:"varint,5,opt,name=checkUserDelete,proto3" json:"checkUserDelete,omitempty"`                    //1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `protobuf:"bytes,6,rep,name=registerAutoCreateProject,proto3" json:"registerAutoCreateProject,omitempty"` //注册自动创建项目
+}
+
+func (x *TenantConfig) Reset() {
+	*x = TenantConfig{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_sys_proto_msgTypes[41]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TenantConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TenantConfig) ProtoMessage() {}
+
+func (x *TenantConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sys_proto_msgTypes[41]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TenantConfig.ProtoReflect.Descriptor instead.
+func (*TenantConfig) Descriptor() ([]byte, []int) {
+	return file_proto_sys_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *TenantConfig) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *TenantConfig) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *TenantConfig) GetTenantCode() string {
+	if x != nil {
+		return x.TenantCode
+	}
+	return ""
+}
+
+func (x *TenantConfig) GetRegisterRoleID() int64 {
+	if x != nil {
+		return x.RegisterRoleID
+	}
+	return 0
+}
+
+func (x *TenantConfig) GetCheckUserDelete() int64 {
+	if x != nil {
+		return x.CheckUserDelete
+	}
+	return 0
+}
+
+func (x *TenantConfig) GetRegisterAutoCreateProject() []*TenantConfigRegisterAutoCreateProject {
+	if x != nil {
+		return x.RegisterAutoCreateProject
+	}
+	return nil
+}
+
+type TenantConfigRegisterAutoCreateProject struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ProjectName  string                                `protobuf:"bytes,1,opt,name=projectName,proto3" json:"projectName,omitempty"`
+	IsSysCreated string                                `protobuf:"bytes,2,opt,name=isSysCreated,proto3" json:"isSysCreated,omitempty"` //是否是系统创建的,系统创建的只有管理员可以删除
+	Areas        []*TenantConfigRegisterAutoCreateArea `protobuf:"bytes,3,rep,name=areas,proto3" json:"areas,omitempty"`
+}
+
+func (x *TenantConfigRegisterAutoCreateProject) Reset() {
+	*x = TenantConfigRegisterAutoCreateProject{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_sys_proto_msgTypes[42]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TenantConfigRegisterAutoCreateProject) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TenantConfigRegisterAutoCreateProject) ProtoMessage() {}
+
+func (x *TenantConfigRegisterAutoCreateProject) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sys_proto_msgTypes[42]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TenantConfigRegisterAutoCreateProject.ProtoReflect.Descriptor instead.
+func (*TenantConfigRegisterAutoCreateProject) Descriptor() ([]byte, []int) {
+	return file_proto_sys_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *TenantConfigRegisterAutoCreateProject) GetProjectName() string {
+	if x != nil {
+		return x.ProjectName
+	}
+	return ""
+}
+
+func (x *TenantConfigRegisterAutoCreateProject) GetIsSysCreated() string {
+	if x != nil {
+		return x.IsSysCreated
+	}
+	return ""
+}
+
+func (x *TenantConfigRegisterAutoCreateProject) GetAreas() []*TenantConfigRegisterAutoCreateArea {
+	if x != nil {
+		return x.Areas
+	}
+	return nil
+}
+
+type TenantConfigRegisterAutoCreateArea struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AreaName     string `protobuf:"bytes,1,opt,name=areaName,proto3" json:"areaName,omitempty"`
+	AreaImg      string `protobuf:"bytes,2,opt,name=areaImg,proto3" json:"areaImg,omitempty"`
+	IsSysCreated int64  `protobuf:"varint,3,opt,name=isSysCreated,proto3" json:"isSysCreated,omitempty"` //是否是系统创建的,系统创建的只有管理员可以删除
+}
+
+func (x *TenantConfigRegisterAutoCreateArea) Reset() {
+	*x = TenantConfigRegisterAutoCreateArea{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_sys_proto_msgTypes[43]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TenantConfigRegisterAutoCreateArea) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TenantConfigRegisterAutoCreateArea) ProtoMessage() {}
+
+func (x *TenantConfigRegisterAutoCreateArea) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sys_proto_msgTypes[43]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TenantConfigRegisterAutoCreateArea.ProtoReflect.Descriptor instead.
+func (*TenantConfigRegisterAutoCreateArea) Descriptor() ([]byte, []int) {
+	return file_proto_sys_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *TenantConfigRegisterAutoCreateArea) GetAreaName() string {
+	if x != nil {
+		return x.AreaName
+	}
+	return ""
+}
+
+func (x *TenantConfigRegisterAutoCreateArea) GetAreaImg() string {
+	if x != nil {
+		return x.AreaImg
+	}
+	return ""
+}
+
+func (x *TenantConfigRegisterAutoCreateArea) GetIsSysCreated() int64 {
+	if x != nil {
+		return x.IsSysCreated
+	}
+	return 0
+}
+
 type TenantAccessMultiUpdateReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3001,7 +3214,7 @@ type TenantAccessMultiUpdateReq struct {
 func (x *TenantAccessMultiUpdateReq) Reset() {
 	*x = TenantAccessMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[41]
+		mi := &file_proto_sys_proto_msgTypes[44]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3014,7 +3227,7 @@ func (x *TenantAccessMultiUpdateReq) String() string {
 func (*TenantAccessMultiUpdateReq) ProtoMessage() {}
 
 func (x *TenantAccessMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[41]
+	mi := &file_proto_sys_proto_msgTypes[44]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3027,7 +3240,7 @@ func (x *TenantAccessMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAccessMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*TenantAccessMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{41}
+	return file_proto_sys_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *TenantAccessMultiUpdateReq) GetCode() string {
@@ -3055,7 +3268,7 @@ type TenantAccessIndexReq struct {
 func (x *TenantAccessIndexReq) Reset() {
 	*x = TenantAccessIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[42]
+		mi := &file_proto_sys_proto_msgTypes[45]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3068,7 +3281,7 @@ func (x *TenantAccessIndexReq) String() string {
 func (*TenantAccessIndexReq) ProtoMessage() {}
 
 func (x *TenantAccessIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[42]
+	mi := &file_proto_sys_proto_msgTypes[45]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3081,7 +3294,7 @@ func (x *TenantAccessIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAccessIndexReq.ProtoReflect.Descriptor instead.
 func (*TenantAccessIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{42}
+	return file_proto_sys_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *TenantAccessIndexReq) GetCode() string {
@@ -3102,7 +3315,7 @@ type TenantAccessIndexResp struct {
 func (x *TenantAccessIndexResp) Reset() {
 	*x = TenantAccessIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[43]
+		mi := &file_proto_sys_proto_msgTypes[46]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3115,7 +3328,7 @@ func (x *TenantAccessIndexResp) String() string {
 func (*TenantAccessIndexResp) ProtoMessage() {}
 
 func (x *TenantAccessIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[43]
+	mi := &file_proto_sys_proto_msgTypes[46]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3128,7 +3341,7 @@ func (x *TenantAccessIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAccessIndexResp.ProtoReflect.Descriptor instead.
 func (*TenantAccessIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{43}
+	return file_proto_sys_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *TenantAccessIndexResp) GetAccessCodes() []string {
@@ -3154,7 +3367,7 @@ type TenantAppInfo struct {
 func (x *TenantAppInfo) Reset() {
 	*x = TenantAppInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[44]
+		mi := &file_proto_sys_proto_msgTypes[47]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3167,7 +3380,7 @@ func (x *TenantAppInfo) String() string {
 func (*TenantAppInfo) ProtoMessage() {}
 
 func (x *TenantAppInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[44]
+	mi := &file_proto_sys_proto_msgTypes[47]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3180,7 +3393,7 @@ func (x *TenantAppInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppInfo.ProtoReflect.Descriptor instead.
 func (*TenantAppInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{44}
+	return file_proto_sys_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *TenantAppInfo) GetId() int64 {
@@ -3238,7 +3451,7 @@ type TenantAppWithIDOrCode struct {
 func (x *TenantAppWithIDOrCode) Reset() {
 	*x = TenantAppWithIDOrCode{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[45]
+		mi := &file_proto_sys_proto_msgTypes[48]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3251,7 +3464,7 @@ func (x *TenantAppWithIDOrCode) String() string {
 func (*TenantAppWithIDOrCode) ProtoMessage() {}
 
 func (x *TenantAppWithIDOrCode) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[45]
+	mi := &file_proto_sys_proto_msgTypes[48]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3264,7 +3477,7 @@ func (x *TenantAppWithIDOrCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppWithIDOrCode.ProtoReflect.Descriptor instead.
 func (*TenantAppWithIDOrCode) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{45}
+	return file_proto_sys_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *TenantAppWithIDOrCode) GetCode() string {
@@ -3300,7 +3513,7 @@ type TenantAppModule struct {
 func (x *TenantAppModule) Reset() {
 	*x = TenantAppModule{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[46]
+		mi := &file_proto_sys_proto_msgTypes[49]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3313,7 +3526,7 @@ func (x *TenantAppModule) String() string {
 func (*TenantAppModule) ProtoMessage() {}
 
 func (x *TenantAppModule) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[46]
+	mi := &file_proto_sys_proto_msgTypes[49]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3326,7 +3539,7 @@ func (x *TenantAppModule) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppModule.ProtoReflect.Descriptor instead.
 func (*TenantAppModule) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{46}
+	return file_proto_sys_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *TenantAppModule) GetCode() string {
@@ -3359,7 +3572,7 @@ type TenantAppIndexReq struct {
 func (x *TenantAppIndexReq) Reset() {
 	*x = TenantAppIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[47]
+		mi := &file_proto_sys_proto_msgTypes[50]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3372,7 +3585,7 @@ func (x *TenantAppIndexReq) String() string {
 func (*TenantAppIndexReq) ProtoMessage() {}
 
 func (x *TenantAppIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[47]
+	mi := &file_proto_sys_proto_msgTypes[50]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3385,7 +3598,7 @@ func (x *TenantAppIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppIndexReq.ProtoReflect.Descriptor instead.
 func (*TenantAppIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{47}
+	return file_proto_sys_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *TenantAppIndexReq) GetPage() *PageInfo {
@@ -3442,7 +3655,7 @@ type TenantAppIndexResp struct {
 func (x *TenantAppIndexResp) Reset() {
 	*x = TenantAppIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[48]
+		mi := &file_proto_sys_proto_msgTypes[51]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3455,7 +3668,7 @@ func (x *TenantAppIndexResp) String() string {
 func (*TenantAppIndexResp) ProtoMessage() {}
 
 func (x *TenantAppIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[48]
+	mi := &file_proto_sys_proto_msgTypes[51]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3468,7 +3681,7 @@ func (x *TenantAppIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppIndexResp.ProtoReflect.Descriptor instead.
 func (*TenantAppIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{48}
+	return file_proto_sys_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *TenantAppIndexResp) GetTotal() int64 {
@@ -3497,7 +3710,7 @@ type TenantAppMultiUpdateReq struct {
 func (x *TenantAppMultiUpdateReq) Reset() {
 	*x = TenantAppMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[49]
+		mi := &file_proto_sys_proto_msgTypes[52]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3510,7 +3723,7 @@ func (x *TenantAppMultiUpdateReq) String() string {
 func (*TenantAppMultiUpdateReq) ProtoMessage() {}
 
 func (x *TenantAppMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[49]
+	mi := &file_proto_sys_proto_msgTypes[52]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3523,7 +3736,7 @@ func (x *TenantAppMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*TenantAppMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{49}
+	return file_proto_sys_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *TenantAppMultiUpdateReq) GetCode() string {
@@ -3554,7 +3767,7 @@ type TenantModuleIndexReq struct {
 func (x *TenantModuleIndexReq) Reset() {
 	*x = TenantModuleIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[50]
+		mi := &file_proto_sys_proto_msgTypes[53]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3567,7 +3780,7 @@ func (x *TenantModuleIndexReq) String() string {
 func (*TenantModuleIndexReq) ProtoMessage() {}
 
 func (x *TenantModuleIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[50]
+	mi := &file_proto_sys_proto_msgTypes[53]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3580,7 +3793,7 @@ func (x *TenantModuleIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantModuleIndexReq.ProtoReflect.Descriptor instead.
 func (*TenantModuleIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{50}
+	return file_proto_sys_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *TenantModuleIndexReq) GetPage() *PageInfo {
@@ -3622,7 +3835,7 @@ type TenantModuleIndexResp struct {
 func (x *TenantModuleIndexResp) Reset() {
 	*x = TenantModuleIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[51]
+		mi := &file_proto_sys_proto_msgTypes[54]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3635,7 +3848,7 @@ func (x *TenantModuleIndexResp) String() string {
 func (*TenantModuleIndexResp) ProtoMessage() {}
 
 func (x *TenantModuleIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[51]
+	mi := &file_proto_sys_proto_msgTypes[54]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3648,7 +3861,7 @@ func (x *TenantModuleIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantModuleIndexResp.ProtoReflect.Descriptor instead.
 func (*TenantModuleIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{51}
+	return file_proto_sys_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *TenantModuleIndexResp) GetList() []*ModuleInfo {
@@ -3674,7 +3887,7 @@ type TenantAppMenuIndexReq struct {
 func (x *TenantAppMenuIndexReq) Reset() {
 	*x = TenantAppMenuIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[52]
+		mi := &file_proto_sys_proto_msgTypes[55]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3687,7 +3900,7 @@ func (x *TenantAppMenuIndexReq) String() string {
 func (*TenantAppMenuIndexReq) ProtoMessage() {}
 
 func (x *TenantAppMenuIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[52]
+	mi := &file_proto_sys_proto_msgTypes[55]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3700,7 +3913,7 @@ func (x *TenantAppMenuIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppMenuIndexReq.ProtoReflect.Descriptor instead.
 func (*TenantAppMenuIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{52}
+	return file_proto_sys_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *TenantAppMenuIndexReq) GetPage() *PageInfo {
@@ -3756,7 +3969,7 @@ type TenantAppMenuIndexResp struct {
 func (x *TenantAppMenuIndexResp) Reset() {
 	*x = TenantAppMenuIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[53]
+		mi := &file_proto_sys_proto_msgTypes[56]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3769,7 +3982,7 @@ func (x *TenantAppMenuIndexResp) String() string {
 func (*TenantAppMenuIndexResp) ProtoMessage() {}
 
 func (x *TenantAppMenuIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[53]
+	mi := &file_proto_sys_proto_msgTypes[56]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3782,7 +3995,7 @@ func (x *TenantAppMenuIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppMenuIndexResp.ProtoReflect.Descriptor instead.
 func (*TenantAppMenuIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{53}
+	return file_proto_sys_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *TenantAppMenuIndexResp) GetList() []*TenantAppMenu {
@@ -3807,7 +4020,7 @@ type TenantAppMenu struct {
 func (x *TenantAppMenu) Reset() {
 	*x = TenantAppMenu{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[54]
+		mi := &file_proto_sys_proto_msgTypes[57]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3820,7 +4033,7 @@ func (x *TenantAppMenu) String() string {
 func (*TenantAppMenu) ProtoMessage() {}
 
 func (x *TenantAppMenu) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[54]
+	mi := &file_proto_sys_proto_msgTypes[57]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3833,7 +4046,7 @@ func (x *TenantAppMenu) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantAppMenu.ProtoReflect.Descriptor instead.
 func (*TenantAppMenu) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{54}
+	return file_proto_sys_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *TenantAppMenu) GetTemplateID() int64 {
@@ -3885,7 +4098,7 @@ type TenantModuleCreateReq struct {
 func (x *TenantModuleCreateReq) Reset() {
 	*x = TenantModuleCreateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[55]
+		mi := &file_proto_sys_proto_msgTypes[58]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3898,7 +4111,7 @@ func (x *TenantModuleCreateReq) String() string {
 func (*TenantModuleCreateReq) ProtoMessage() {}
 
 func (x *TenantModuleCreateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[55]
+	mi := &file_proto_sys_proto_msgTypes[58]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3911,7 +4124,7 @@ func (x *TenantModuleCreateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantModuleCreateReq.ProtoReflect.Descriptor instead.
 func (*TenantModuleCreateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{55}
+	return file_proto_sys_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *TenantModuleCreateReq) GetCode() string {
@@ -3956,7 +4169,7 @@ type TenantModuleWithIDOrCode struct {
 func (x *TenantModuleWithIDOrCode) Reset() {
 	*x = TenantModuleWithIDOrCode{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[56]
+		mi := &file_proto_sys_proto_msgTypes[59]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3969,7 +4182,7 @@ func (x *TenantModuleWithIDOrCode) String() string {
 func (*TenantModuleWithIDOrCode) ProtoMessage() {}
 
 func (x *TenantModuleWithIDOrCode) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[56]
+	mi := &file_proto_sys_proto_msgTypes[59]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3982,7 +4195,7 @@ func (x *TenantModuleWithIDOrCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TenantModuleWithIDOrCode.ProtoReflect.Descriptor instead.
 func (*TenantModuleWithIDOrCode) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{56}
+	return file_proto_sys_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *TenantModuleWithIDOrCode) GetCode() string {
@@ -4025,7 +4238,7 @@ type Point struct {
 func (x *Point) Reset() {
 	*x = Point{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[57]
+		mi := &file_proto_sys_proto_msgTypes[60]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4038,7 +4251,7 @@ func (x *Point) String() string {
 func (*Point) ProtoMessage() {}
 
 func (x *Point) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[57]
+	mi := &file_proto_sys_proto_msgTypes[60]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4051,7 +4264,7 @@ func (x *Point) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Point.ProtoReflect.Descriptor instead.
 func (*Point) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{57}
+	return file_proto_sys_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *Point) GetLongitude() float64 {
@@ -4077,7 +4290,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[58]
+		mi := &file_proto_sys_proto_msgTypes[61]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4090,7 +4303,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[58]
+	mi := &file_proto_sys_proto_msgTypes[61]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4103,7 +4316,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{58}
+	return file_proto_sys_proto_rawDescGZIP(), []int{61}
 }
 
 type PageInfo struct {
@@ -4120,7 +4333,7 @@ type PageInfo struct {
 func (x *PageInfo) Reset() {
 	*x = PageInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[59]
+		mi := &file_proto_sys_proto_msgTypes[62]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4133,7 +4346,7 @@ func (x *PageInfo) String() string {
 func (*PageInfo) ProtoMessage() {}
 
 func (x *PageInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[59]
+	mi := &file_proto_sys_proto_msgTypes[62]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4146,7 +4359,7 @@ func (x *PageInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageInfo.ProtoReflect.Descriptor instead.
 func (*PageInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{59}
+	return file_proto_sys_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *PageInfo) GetPage() int64 {
@@ -4181,7 +4394,7 @@ type WithID struct {
 func (x *WithID) Reset() {
 	*x = WithID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[60]
+		mi := &file_proto_sys_proto_msgTypes[63]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4194,7 +4407,7 @@ func (x *WithID) String() string {
 func (*WithID) ProtoMessage() {}
 
 func (x *WithID) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[60]
+	mi := &file_proto_sys_proto_msgTypes[63]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4207,7 +4420,7 @@ func (x *WithID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithID.ProtoReflect.Descriptor instead.
 func (*WithID) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{60}
+	return file_proto_sys_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *WithID) GetId() int64 {
@@ -4229,7 +4442,7 @@ type WithIDCode struct {
 func (x *WithIDCode) Reset() {
 	*x = WithIDCode{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[61]
+		mi := &file_proto_sys_proto_msgTypes[64]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4242,7 +4455,7 @@ func (x *WithIDCode) String() string {
 func (*WithIDCode) ProtoMessage() {}
 
 func (x *WithIDCode) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[61]
+	mi := &file_proto_sys_proto_msgTypes[64]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4255,7 +4468,7 @@ func (x *WithIDCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithIDCode.ProtoReflect.Descriptor instead.
 func (*WithIDCode) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{61}
+	return file_proto_sys_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *WithIDCode) GetId() int64 {
@@ -4283,7 +4496,7 @@ type WithCode struct {
 func (x *WithCode) Reset() {
 	*x = WithCode{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[62]
+		mi := &file_proto_sys_proto_msgTypes[65]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4296,7 +4509,7 @@ func (x *WithCode) String() string {
 func (*WithCode) ProtoMessage() {}
 
 func (x *WithCode) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[62]
+	mi := &file_proto_sys_proto_msgTypes[65]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4309,7 +4522,7 @@ func (x *WithCode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithCode.ProtoReflect.Descriptor instead.
 func (*WithCode) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{62}
+	return file_proto_sys_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *WithCode) GetCode() string {
@@ -4332,7 +4545,7 @@ type WithAppCodeID struct {
 func (x *WithAppCodeID) Reset() {
 	*x = WithAppCodeID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[63]
+		mi := &file_proto_sys_proto_msgTypes[66]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4345,7 +4558,7 @@ func (x *WithAppCodeID) String() string {
 func (*WithAppCodeID) ProtoMessage() {}
 
 func (x *WithAppCodeID) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[63]
+	mi := &file_proto_sys_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4358,7 +4571,7 @@ func (x *WithAppCodeID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WithAppCodeID.ProtoReflect.Descriptor instead.
 func (*WithAppCodeID) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{63}
+	return file_proto_sys_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *WithAppCodeID) GetId() int64 {
@@ -4393,7 +4606,7 @@ type ProjectWithID struct {
 func (x *ProjectWithID) Reset() {
 	*x = ProjectWithID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[64]
+		mi := &file_proto_sys_proto_msgTypes[67]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4406,7 +4619,7 @@ func (x *ProjectWithID) String() string {
 func (*ProjectWithID) ProtoMessage() {}
 
 func (x *ProjectWithID) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[64]
+	mi := &file_proto_sys_proto_msgTypes[67]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4419,7 +4632,7 @@ func (x *ProjectWithID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectWithID.ProtoReflect.Descriptor instead.
 func (*ProjectWithID) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{64}
+	return file_proto_sys_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *ProjectWithID) GetProjectID() int64 {
@@ -4454,7 +4667,7 @@ type ProjectInfo struct {
 func (x *ProjectInfo) Reset() {
 	*x = ProjectInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[65]
+		mi := &file_proto_sys_proto_msgTypes[68]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4467,7 +4680,7 @@ func (x *ProjectInfo) String() string {
 func (*ProjectInfo) ProtoMessage() {}
 
 func (x *ProjectInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[65]
+	mi := &file_proto_sys_proto_msgTypes[68]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4480,7 +4693,7 @@ func (x *ProjectInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectInfo.ProtoReflect.Descriptor instead.
 func (*ProjectInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{65}
+	return file_proto_sys_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *ProjectInfo) GetCreatedTime() int64 {
@@ -4593,7 +4806,7 @@ type ProjectProfile struct {
 func (x *ProjectProfile) Reset() {
 	*x = ProjectProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[66]
+		mi := &file_proto_sys_proto_msgTypes[69]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4606,7 +4819,7 @@ func (x *ProjectProfile) String() string {
 func (*ProjectProfile) ProtoMessage() {}
 
 func (x *ProjectProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[66]
+	mi := &file_proto_sys_proto_msgTypes[69]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4619,7 +4832,7 @@ func (x *ProjectProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectProfile.ProtoReflect.Descriptor instead.
 func (*ProjectProfile) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{66}
+	return file_proto_sys_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *ProjectProfile) GetCode() string {
@@ -4647,7 +4860,7 @@ type ProjectProfileReadReq struct {
 func (x *ProjectProfileReadReq) Reset() {
 	*x = ProjectProfileReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[67]
+		mi := &file_proto_sys_proto_msgTypes[70]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4660,7 +4873,7 @@ func (x *ProjectProfileReadReq) String() string {
 func (*ProjectProfileReadReq) ProtoMessage() {}
 
 func (x *ProjectProfileReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[67]
+	mi := &file_proto_sys_proto_msgTypes[70]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4673,7 +4886,7 @@ func (x *ProjectProfileReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectProfileReadReq.ProtoReflect.Descriptor instead.
 func (*ProjectProfileReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{67}
+	return file_proto_sys_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *ProjectProfileReadReq) GetCode() string {
@@ -4694,7 +4907,7 @@ type ProjectProfileIndexReq struct {
 func (x *ProjectProfileIndexReq) Reset() {
 	*x = ProjectProfileIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[68]
+		mi := &file_proto_sys_proto_msgTypes[71]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4707,7 +4920,7 @@ func (x *ProjectProfileIndexReq) String() string {
 func (*ProjectProfileIndexReq) ProtoMessage() {}
 
 func (x *ProjectProfileIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[68]
+	mi := &file_proto_sys_proto_msgTypes[71]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4720,7 +4933,7 @@ func (x *ProjectProfileIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectProfileIndexReq.ProtoReflect.Descriptor instead.
 func (*ProjectProfileIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{68}
+	return file_proto_sys_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *ProjectProfileIndexReq) GetCodes() []string {
@@ -4741,7 +4954,7 @@ type ProjectProfileIndexResp struct {
 func (x *ProjectProfileIndexResp) Reset() {
 	*x = ProjectProfileIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[69]
+		mi := &file_proto_sys_proto_msgTypes[72]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4754,7 +4967,7 @@ func (x *ProjectProfileIndexResp) String() string {
 func (*ProjectProfileIndexResp) ProtoMessage() {}
 
 func (x *ProjectProfileIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[69]
+	mi := &file_proto_sys_proto_msgTypes[72]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4767,7 +4980,7 @@ func (x *ProjectProfileIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectProfileIndexResp.ProtoReflect.Descriptor instead.
 func (*ProjectProfileIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{69}
+	return file_proto_sys_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *ProjectProfileIndexResp) GetProfiles() []*ProjectProfile {
@@ -4792,7 +5005,7 @@ type ProjectInfoIndexReq struct {
 func (x *ProjectInfoIndexReq) Reset() {
 	*x = ProjectInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[70]
+		mi := &file_proto_sys_proto_msgTypes[73]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4805,7 +5018,7 @@ func (x *ProjectInfoIndexReq) String() string {
 func (*ProjectInfoIndexReq) ProtoMessage() {}
 
 func (x *ProjectInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[70]
+	mi := &file_proto_sys_proto_msgTypes[73]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4818,7 +5031,7 @@ func (x *ProjectInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*ProjectInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{70}
+	return file_proto_sys_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *ProjectInfoIndexReq) GetPage() *PageInfo {
@@ -4868,7 +5081,7 @@ type ProjectInfoIndexResp struct {
 func (x *ProjectInfoIndexResp) Reset() {
 	*x = ProjectInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[71]
+		mi := &file_proto_sys_proto_msgTypes[74]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4881,7 +5094,7 @@ func (x *ProjectInfoIndexResp) String() string {
 func (*ProjectInfoIndexResp) ProtoMessage() {}
 
 func (x *ProjectInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[71]
+	mi := &file_proto_sys_proto_msgTypes[74]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4894,7 +5107,7 @@ func (x *ProjectInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*ProjectInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{71}
+	return file_proto_sys_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *ProjectInfoIndexResp) GetTotal() int64 {
@@ -4939,7 +5152,7 @@ type AreaInfo struct {
 func (x *AreaInfo) Reset() {
 	*x = AreaInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[72]
+		mi := &file_proto_sys_proto_msgTypes[75]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4952,7 +5165,7 @@ func (x *AreaInfo) String() string {
 func (*AreaInfo) ProtoMessage() {}
 
 func (x *AreaInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[72]
+	mi := &file_proto_sys_proto_msgTypes[75]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4965,7 +5178,7 @@ func (x *AreaInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaInfo.ProtoReflect.Descriptor instead.
 func (*AreaInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{72}
+	return file_proto_sys_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *AreaInfo) GetCreatedTime() int64 {
@@ -5105,7 +5318,7 @@ type AreaWithID struct {
 func (x *AreaWithID) Reset() {
 	*x = AreaWithID{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[73]
+		mi := &file_proto_sys_proto_msgTypes[76]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5118,7 +5331,7 @@ func (x *AreaWithID) String() string {
 func (*AreaWithID) ProtoMessage() {}
 
 func (x *AreaWithID) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[73]
+	mi := &file_proto_sys_proto_msgTypes[76]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5131,7 +5344,7 @@ func (x *AreaWithID) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaWithID.ProtoReflect.Descriptor instead.
 func (*AreaWithID) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{73}
+	return file_proto_sys_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *AreaWithID) GetAreaID() int64 {
@@ -5154,7 +5367,7 @@ type AreaProfile struct {
 func (x *AreaProfile) Reset() {
 	*x = AreaProfile{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[74]
+		mi := &file_proto_sys_proto_msgTypes[77]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5167,7 +5380,7 @@ func (x *AreaProfile) String() string {
 func (*AreaProfile) ProtoMessage() {}
 
 func (x *AreaProfile) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[74]
+	mi := &file_proto_sys_proto_msgTypes[77]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5180,7 +5393,7 @@ func (x *AreaProfile) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaProfile.ProtoReflect.Descriptor instead.
 func (*AreaProfile) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{74}
+	return file_proto_sys_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *AreaProfile) GetAreaID() int64 {
@@ -5216,7 +5429,7 @@ type AreaProfileReadReq struct {
 func (x *AreaProfileReadReq) Reset() {
 	*x = AreaProfileReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[75]
+		mi := &file_proto_sys_proto_msgTypes[78]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5229,7 +5442,7 @@ func (x *AreaProfileReadReq) String() string {
 func (*AreaProfileReadReq) ProtoMessage() {}
 
 func (x *AreaProfileReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[75]
+	mi := &file_proto_sys_proto_msgTypes[78]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5242,7 +5455,7 @@ func (x *AreaProfileReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaProfileReadReq.ProtoReflect.Descriptor instead.
 func (*AreaProfileReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{75}
+	return file_proto_sys_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *AreaProfileReadReq) GetAreaID() int64 {
@@ -5271,7 +5484,7 @@ type AreaProfileIndexReq struct {
 func (x *AreaProfileIndexReq) Reset() {
 	*x = AreaProfileIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[76]
+		mi := &file_proto_sys_proto_msgTypes[79]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5284,7 +5497,7 @@ func (x *AreaProfileIndexReq) String() string {
 func (*AreaProfileIndexReq) ProtoMessage() {}
 
 func (x *AreaProfileIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[76]
+	mi := &file_proto_sys_proto_msgTypes[79]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5297,7 +5510,7 @@ func (x *AreaProfileIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaProfileIndexReq.ProtoReflect.Descriptor instead.
 func (*AreaProfileIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{76}
+	return file_proto_sys_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *AreaProfileIndexReq) GetAreaID() int64 {
@@ -5325,7 +5538,7 @@ type AreaProfileIndexResp struct {
 func (x *AreaProfileIndexResp) Reset() {
 	*x = AreaProfileIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[77]
+		mi := &file_proto_sys_proto_msgTypes[80]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5338,7 +5551,7 @@ func (x *AreaProfileIndexResp) String() string {
 func (*AreaProfileIndexResp) ProtoMessage() {}
 
 func (x *AreaProfileIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[77]
+	mi := &file_proto_sys_proto_msgTypes[80]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5351,7 +5564,7 @@ func (x *AreaProfileIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaProfileIndexResp.ProtoReflect.Descriptor instead.
 func (*AreaProfileIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{77}
+	return file_proto_sys_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *AreaProfileIndexResp) GetProfiles() []*AreaProfile {
@@ -5374,7 +5587,7 @@ type AreaInfoReadReq struct {
 func (x *AreaInfoReadReq) Reset() {
 	*x = AreaInfoReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[78]
+		mi := &file_proto_sys_proto_msgTypes[81]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5387,7 +5600,7 @@ func (x *AreaInfoReadReq) String() string {
 func (*AreaInfoReadReq) ProtoMessage() {}
 
 func (x *AreaInfoReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[78]
+	mi := &file_proto_sys_proto_msgTypes[81]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5400,7 +5613,7 @@ func (x *AreaInfoReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaInfoReadReq.ProtoReflect.Descriptor instead.
 func (*AreaInfoReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{78}
+	return file_proto_sys_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *AreaInfoReadReq) GetProjectID() int64 {
@@ -5440,7 +5653,7 @@ type AreaInfoIndexReq struct {
 func (x *AreaInfoIndexReq) Reset() {
 	*x = AreaInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[79]
+		mi := &file_proto_sys_proto_msgTypes[82]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5453,7 +5666,7 @@ func (x *AreaInfoIndexReq) String() string {
 func (*AreaInfoIndexReq) ProtoMessage() {}
 
 func (x *AreaInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[79]
+	mi := &file_proto_sys_proto_msgTypes[82]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5466,7 +5679,7 @@ func (x *AreaInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*AreaInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{79}
+	return file_proto_sys_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *AreaInfoIndexReq) GetPage() *PageInfo {
@@ -5523,7 +5736,7 @@ type AreaInfoIndexResp struct {
 func (x *AreaInfoIndexResp) Reset() {
 	*x = AreaInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[80]
+		mi := &file_proto_sys_proto_msgTypes[83]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5536,7 +5749,7 @@ func (x *AreaInfoIndexResp) String() string {
 func (*AreaInfoIndexResp) ProtoMessage() {}
 
 func (x *AreaInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[80]
+	mi := &file_proto_sys_proto_msgTypes[83]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5549,7 +5762,7 @@ func (x *AreaInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AreaInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*AreaInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{80}
+	return file_proto_sys_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *AreaInfoIndexResp) GetTotal() int64 {
@@ -5587,7 +5800,7 @@ type SlotInfo struct {
 func (x *SlotInfo) Reset() {
 	*x = SlotInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[81]
+		mi := &file_proto_sys_proto_msgTypes[84]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5600,7 +5813,7 @@ func (x *SlotInfo) String() string {
 func (*SlotInfo) ProtoMessage() {}
 
 func (x *SlotInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[81]
+	mi := &file_proto_sys_proto_msgTypes[84]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5613,7 +5826,7 @@ func (x *SlotInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlotInfo.ProtoReflect.Descriptor instead.
 func (*SlotInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{81}
+	return file_proto_sys_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *SlotInfo) GetId() int64 {
@@ -5706,7 +5919,7 @@ type QRCodeReadReq struct {
 func (x *QRCodeReadReq) Reset() {
 	*x = QRCodeReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[82]
+		mi := &file_proto_sys_proto_msgTypes[85]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5719,7 +5932,7 @@ func (x *QRCodeReadReq) String() string {
 func (*QRCodeReadReq) ProtoMessage() {}
 
 func (x *QRCodeReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[82]
+	mi := &file_proto_sys_proto_msgTypes[85]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5732,7 +5945,7 @@ func (x *QRCodeReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QRCodeReadReq.ProtoReflect.Descriptor instead.
 func (*QRCodeReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{82}
+	return file_proto_sys_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *QRCodeReadReq) GetPage() string {
@@ -5767,7 +5980,7 @@ type QRCodeReadResp struct {
 func (x *QRCodeReadResp) Reset() {
 	*x = QRCodeReadResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[83]
+		mi := &file_proto_sys_proto_msgTypes[86]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5780,7 +5993,7 @@ func (x *QRCodeReadResp) String() string {
 func (*QRCodeReadResp) ProtoMessage() {}
 
 func (x *QRCodeReadResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[83]
+	mi := &file_proto_sys_proto_msgTypes[86]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5793,7 +6006,7 @@ func (x *QRCodeReadResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QRCodeReadResp.ProtoReflect.Descriptor instead.
 func (*QRCodeReadResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{83}
+	return file_proto_sys_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *QRCodeReadResp) GetBuffer() []byte {
@@ -5816,7 +6029,7 @@ type SlotInfoIndexReq struct {
 func (x *SlotInfoIndexReq) Reset() {
 	*x = SlotInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[84]
+		mi := &file_proto_sys_proto_msgTypes[87]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5829,7 +6042,7 @@ func (x *SlotInfoIndexReq) String() string {
 func (*SlotInfoIndexReq) ProtoMessage() {}
 
 func (x *SlotInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[84]
+	mi := &file_proto_sys_proto_msgTypes[87]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5842,7 +6055,7 @@ func (x *SlotInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlotInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*SlotInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{84}
+	return file_proto_sys_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *SlotInfoIndexReq) GetCode() string {
@@ -5878,7 +6091,7 @@ type SlotInfoIndexResp struct {
 func (x *SlotInfoIndexResp) Reset() {
 	*x = SlotInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[85]
+		mi := &file_proto_sys_proto_msgTypes[88]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5891,7 +6104,7 @@ func (x *SlotInfoIndexResp) String() string {
 func (*SlotInfoIndexResp) ProtoMessage() {}
 
 func (x *SlotInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[85]
+	mi := &file_proto_sys_proto_msgTypes[88]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5904,7 +6117,7 @@ func (x *SlotInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlotInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*SlotInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{85}
+	return file_proto_sys_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *SlotInfoIndexResp) GetSlots() []*SlotInfo {
@@ -5933,7 +6146,7 @@ type AuthApiInfo struct {
 func (x *AuthApiInfo) Reset() {
 	*x = AuthApiInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[86]
+		mi := &file_proto_sys_proto_msgTypes[89]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5946,7 +6159,7 @@ func (x *AuthApiInfo) String() string {
 func (*AuthApiInfo) ProtoMessage() {}
 
 func (x *AuthApiInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[86]
+	mi := &file_proto_sys_proto_msgTypes[89]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5959,7 +6172,7 @@ func (x *AuthApiInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthApiInfo.ProtoReflect.Descriptor instead.
 func (*AuthApiInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{86}
+	return file_proto_sys_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *AuthApiInfo) GetRoute() string {
@@ -5988,7 +6201,7 @@ type RoleAccessMultiUpdateReq struct {
 func (x *RoleAccessMultiUpdateReq) Reset() {
 	*x = RoleAccessMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[87]
+		mi := &file_proto_sys_proto_msgTypes[90]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6001,7 +6214,7 @@ func (x *RoleAccessMultiUpdateReq) String() string {
 func (*RoleAccessMultiUpdateReq) ProtoMessage() {}
 
 func (x *RoleAccessMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[87]
+	mi := &file_proto_sys_proto_msgTypes[90]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6014,7 +6227,7 @@ func (x *RoleAccessMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAccessMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*RoleAccessMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{87}
+	return file_proto_sys_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *RoleAccessMultiUpdateReq) GetId() int64 {
@@ -6043,7 +6256,7 @@ type RoleAccessIndexReq struct {
 func (x *RoleAccessIndexReq) Reset() {
 	*x = RoleAccessIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[88]
+		mi := &file_proto_sys_proto_msgTypes[91]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6056,7 +6269,7 @@ func (x *RoleAccessIndexReq) String() string {
 func (*RoleAccessIndexReq) ProtoMessage() {}
 
 func (x *RoleAccessIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[88]
+	mi := &file_proto_sys_proto_msgTypes[91]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6069,7 +6282,7 @@ func (x *RoleAccessIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAccessIndexReq.ProtoReflect.Descriptor instead.
 func (*RoleAccessIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{88}
+	return file_proto_sys_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *RoleAccessIndexReq) GetIds() []int64 {
@@ -6098,7 +6311,7 @@ type RoleAccessIndexResp struct {
 func (x *RoleAccessIndexResp) Reset() {
 	*x = RoleAccessIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[89]
+		mi := &file_proto_sys_proto_msgTypes[92]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6111,7 +6324,7 @@ func (x *RoleAccessIndexResp) String() string {
 func (*RoleAccessIndexResp) ProtoMessage() {}
 
 func (x *RoleAccessIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[89]
+	mi := &file_proto_sys_proto_msgTypes[92]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6124,7 +6337,7 @@ func (x *RoleAccessIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAccessIndexResp.ProtoReflect.Descriptor instead.
 func (*RoleAccessIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{89}
+	return file_proto_sys_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *RoleAccessIndexResp) GetTotal() int64 {
@@ -6155,7 +6368,7 @@ type RoleMenuIndexReq struct {
 func (x *RoleMenuIndexReq) Reset() {
 	*x = RoleMenuIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[90]
+		mi := &file_proto_sys_proto_msgTypes[93]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6168,7 +6381,7 @@ func (x *RoleMenuIndexReq) String() string {
 func (*RoleMenuIndexReq) ProtoMessage() {}
 
 func (x *RoleMenuIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[90]
+	mi := &file_proto_sys_proto_msgTypes[93]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6181,7 +6394,7 @@ func (x *RoleMenuIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleMenuIndexReq.ProtoReflect.Descriptor instead.
 func (*RoleMenuIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{90}
+	return file_proto_sys_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *RoleMenuIndexReq) GetIds() []int64 {
@@ -6224,7 +6437,7 @@ type RoleMenuIndexResp struct {
 func (x *RoleMenuIndexResp) Reset() {
 	*x = RoleMenuIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[91]
+		mi := &file_proto_sys_proto_msgTypes[94]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6237,7 +6450,7 @@ func (x *RoleMenuIndexResp) String() string {
 func (*RoleMenuIndexResp) ProtoMessage() {}
 
 func (x *RoleMenuIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[91]
+	mi := &file_proto_sys_proto_msgTypes[94]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6250,7 +6463,7 @@ func (x *RoleMenuIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleMenuIndexResp.ProtoReflect.Descriptor instead.
 func (*RoleMenuIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{91}
+	return file_proto_sys_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *RoleMenuIndexResp) GetTotal() int64 {
@@ -6279,7 +6492,7 @@ type RoleAppIndexReq struct {
 func (x *RoleAppIndexReq) Reset() {
 	*x = RoleAppIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[92]
+		mi := &file_proto_sys_proto_msgTypes[95]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6292,7 +6505,7 @@ func (x *RoleAppIndexReq) String() string {
 func (*RoleAppIndexReq) ProtoMessage() {}
 
 func (x *RoleAppIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[92]
+	mi := &file_proto_sys_proto_msgTypes[95]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6305,7 +6518,7 @@ func (x *RoleAppIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAppIndexReq.ProtoReflect.Descriptor instead.
 func (*RoleAppIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{92}
+	return file_proto_sys_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *RoleAppIndexReq) GetIds() []int64 {
@@ -6334,7 +6547,7 @@ type RoleAppIndexResp struct {
 func (x *RoleAppIndexResp) Reset() {
 	*x = RoleAppIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[93]
+		mi := &file_proto_sys_proto_msgTypes[96]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6347,7 +6560,7 @@ func (x *RoleAppIndexResp) String() string {
 func (*RoleAppIndexResp) ProtoMessage() {}
 
 func (x *RoleAppIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[93]
+	mi := &file_proto_sys_proto_msgTypes[96]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6360,7 +6573,7 @@ func (x *RoleAppIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAppIndexResp.ProtoReflect.Descriptor instead.
 func (*RoleAppIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{93}
+	return file_proto_sys_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *RoleAppIndexResp) GetTotal() int64 {
@@ -6390,7 +6603,7 @@ type RoleModuleIndexReq struct {
 func (x *RoleModuleIndexReq) Reset() {
 	*x = RoleModuleIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[94]
+		mi := &file_proto_sys_proto_msgTypes[97]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6403,7 +6616,7 @@ func (x *RoleModuleIndexReq) String() string {
 func (*RoleModuleIndexReq) ProtoMessage() {}
 
 func (x *RoleModuleIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[94]
+	mi := &file_proto_sys_proto_msgTypes[97]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6416,7 +6629,7 @@ func (x *RoleModuleIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleModuleIndexReq.ProtoReflect.Descriptor instead.
 func (*RoleModuleIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{94}
+	return file_proto_sys_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *RoleModuleIndexReq) GetIds() []int64 {
@@ -6452,7 +6665,7 @@ type RoleModuleIndexResp struct {
 func (x *RoleModuleIndexResp) Reset() {
 	*x = RoleModuleIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[95]
+		mi := &file_proto_sys_proto_msgTypes[98]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6465,7 +6678,7 @@ func (x *RoleModuleIndexResp) String() string {
 func (*RoleModuleIndexResp) ProtoMessage() {}
 
 func (x *RoleModuleIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[95]
+	mi := &file_proto_sys_proto_msgTypes[98]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6478,7 +6691,7 @@ func (x *RoleModuleIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleModuleIndexResp.ProtoReflect.Descriptor instead.
 func (*RoleModuleIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{95}
+	return file_proto_sys_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *RoleModuleIndexResp) GetTotal() int64 {
@@ -6507,7 +6720,7 @@ type DateRange struct {
 func (x *DateRange) Reset() {
 	*x = DateRange{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[96]
+		mi := &file_proto_sys_proto_msgTypes[99]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6520,7 +6733,7 @@ func (x *DateRange) String() string {
 func (*DateRange) ProtoMessage() {}
 
 func (x *DateRange) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[96]
+	mi := &file_proto_sys_proto_msgTypes[99]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6533,7 +6746,7 @@ func (x *DateRange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DateRange.ProtoReflect.Descriptor instead.
 func (*DateRange) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{96}
+	return file_proto_sys_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *DateRange) GetStart() string {
@@ -6565,7 +6778,7 @@ type LoginLogIndexReq struct {
 func (x *LoginLogIndexReq) Reset() {
 	*x = LoginLogIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[97]
+		mi := &file_proto_sys_proto_msgTypes[100]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6578,7 +6791,7 @@ func (x *LoginLogIndexReq) String() string {
 func (*LoginLogIndexReq) ProtoMessage() {}
 
 func (x *LoginLogIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[97]
+	mi := &file_proto_sys_proto_msgTypes[100]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6591,7 +6804,7 @@ func (x *LoginLogIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginLogIndexReq.ProtoReflect.Descriptor instead.
 func (*LoginLogIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{97}
+	return file_proto_sys_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *LoginLogIndexReq) GetPage() *PageInfo {
@@ -6649,7 +6862,7 @@ type LoginLogInfo struct {
 func (x *LoginLogInfo) Reset() {
 	*x = LoginLogInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[98]
+		mi := &file_proto_sys_proto_msgTypes[101]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6662,7 +6875,7 @@ func (x *LoginLogInfo) String() string {
 func (*LoginLogInfo) ProtoMessage() {}
 
 func (x *LoginLogInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[98]
+	mi := &file_proto_sys_proto_msgTypes[101]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6675,7 +6888,7 @@ func (x *LoginLogInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginLogInfo.ProtoReflect.Descriptor instead.
 func (*LoginLogInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{98}
+	return file_proto_sys_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *LoginLogInfo) GetUserID() int64 {
@@ -6760,7 +6973,7 @@ type LoginLogIndexResp struct {
 func (x *LoginLogIndexResp) Reset() {
 	*x = LoginLogIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[99]
+		mi := &file_proto_sys_proto_msgTypes[102]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6773,7 +6986,7 @@ func (x *LoginLogIndexResp) String() string {
 func (*LoginLogIndexResp) ProtoMessage() {}
 
 func (x *LoginLogIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[99]
+	mi := &file_proto_sys_proto_msgTypes[102]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6786,7 +6999,7 @@ func (x *LoginLogIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginLogIndexResp.ProtoReflect.Descriptor instead.
 func (*LoginLogIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{99}
+	return file_proto_sys_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *LoginLogIndexResp) GetList() []*LoginLogInfo {
@@ -6818,7 +7031,7 @@ type OperLogIndexReq struct {
 func (x *OperLogIndexReq) Reset() {
 	*x = OperLogIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[100]
+		mi := &file_proto_sys_proto_msgTypes[103]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6831,7 +7044,7 @@ func (x *OperLogIndexReq) String() string {
 func (*OperLogIndexReq) ProtoMessage() {}
 
 func (x *OperLogIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[100]
+	mi := &file_proto_sys_proto_msgTypes[103]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6844,7 +7057,7 @@ func (x *OperLogIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperLogIndexReq.ProtoReflect.Descriptor instead.
 func (*OperLogIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{100}
+	return file_proto_sys_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *OperLogIndexReq) GetPage() *PageInfo {
@@ -6905,7 +7118,7 @@ type OperLogInfo struct {
 func (x *OperLogInfo) Reset() {
 	*x = OperLogInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[101]
+		mi := &file_proto_sys_proto_msgTypes[104]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -6918,7 +7131,7 @@ func (x *OperLogInfo) String() string {
 func (*OperLogInfo) ProtoMessage() {}
 
 func (x *OperLogInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[101]
+	mi := &file_proto_sys_proto_msgTypes[104]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6931,7 +7144,7 @@ func (x *OperLogInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperLogInfo.ProtoReflect.Descriptor instead.
 func (*OperLogInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{101}
+	return file_proto_sys_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *OperLogInfo) GetUserID() int64 {
@@ -7037,7 +7250,7 @@ type OperLogIndexResp struct {
 func (x *OperLogIndexResp) Reset() {
 	*x = OperLogIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[102]
+		mi := &file_proto_sys_proto_msgTypes[105]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7050,7 +7263,7 @@ func (x *OperLogIndexResp) String() string {
 func (*OperLogIndexResp) ProtoMessage() {}
 
 func (x *OperLogIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[102]
+	mi := &file_proto_sys_proto_msgTypes[105]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7063,7 +7276,7 @@ func (x *OperLogIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperLogIndexResp.ProtoReflect.Descriptor instead.
 func (*OperLogIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{102}
+	return file_proto_sys_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *OperLogIndexResp) GetList() []*OperLogInfo {
@@ -7099,7 +7312,7 @@ type LoginLogCreateReq struct {
 func (x *LoginLogCreateReq) Reset() {
 	*x = LoginLogCreateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[103]
+		mi := &file_proto_sys_proto_msgTypes[106]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7112,7 +7325,7 @@ func (x *LoginLogCreateReq) String() string {
 func (*LoginLogCreateReq) ProtoMessage() {}
 
 func (x *LoginLogCreateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[103]
+	mi := &file_proto_sys_proto_msgTypes[106]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7125,7 +7338,7 @@ func (x *LoginLogCreateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginLogCreateReq.ProtoReflect.Descriptor instead.
 func (*LoginLogCreateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{103}
+	return file_proto_sys_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *LoginLogCreateReq) GetUserID() int64 {
@@ -7214,7 +7427,7 @@ type OperLogCreateReq struct {
 func (x *OperLogCreateReq) Reset() {
 	*x = OperLogCreateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[104]
+		mi := &file_proto_sys_proto_msgTypes[107]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7227,7 +7440,7 @@ func (x *OperLogCreateReq) String() string {
 func (*OperLogCreateReq) ProtoMessage() {}
 
 func (x *OperLogCreateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[104]
+	mi := &file_proto_sys_proto_msgTypes[107]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7240,7 +7453,7 @@ func (x *OperLogCreateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OperLogCreateReq.ProtoReflect.Descriptor instead.
 func (*OperLogCreateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{104}
+	return file_proto_sys_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *OperLogCreateReq) GetUserID() int64 {
@@ -7367,7 +7580,7 @@ type UserInfo struct {
 func (x *UserInfo) Reset() {
 	*x = UserInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[105]
+		mi := &file_proto_sys_proto_msgTypes[108]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7380,7 +7593,7 @@ func (x *UserInfo) String() string {
 func (*UserInfo) ProtoMessage() {}
 
 func (x *UserInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[105]
+	mi := &file_proto_sys_proto_msgTypes[108]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7393,7 +7606,7 @@ func (x *UserInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfo.ProtoReflect.Descriptor instead.
 func (*UserInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{105}
+	return file_proto_sys_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *UserInfo) GetTenantCode() string {
@@ -7561,7 +7774,7 @@ type UserCreateResp struct {
 func (x *UserCreateResp) Reset() {
 	*x = UserCreateResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[106]
+		mi := &file_proto_sys_proto_msgTypes[109]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7574,7 +7787,7 @@ func (x *UserCreateResp) String() string {
 func (*UserCreateResp) ProtoMessage() {}
 
 func (x *UserCreateResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[106]
+	mi := &file_proto_sys_proto_msgTypes[109]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7587,7 +7800,7 @@ func (x *UserCreateResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCreateResp.ProtoReflect.Descriptor instead.
 func (*UserCreateResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{106}
+	return file_proto_sys_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *UserCreateResp) GetUserID() int64 {
@@ -7611,7 +7824,7 @@ type UserCheckTokenReq struct {
 func (x *UserCheckTokenReq) Reset() {
 	*x = UserCheckTokenReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[107]
+		mi := &file_proto_sys_proto_msgTypes[110]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7624,7 +7837,7 @@ func (x *UserCheckTokenReq) String() string {
 func (*UserCheckTokenReq) ProtoMessage() {}
 
 func (x *UserCheckTokenReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[107]
+	mi := &file_proto_sys_proto_msgTypes[110]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7637,7 +7850,7 @@ func (x *UserCheckTokenReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCheckTokenReq.ProtoReflect.Descriptor instead.
 func (*UserCheckTokenReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{107}
+	return file_proto_sys_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *UserCheckTokenReq) GetToken() string {
@@ -7688,7 +7901,7 @@ type UserCheckTokenResp struct {
 func (x *UserCheckTokenResp) Reset() {
 	*x = UserCheckTokenResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[108]
+		mi := &file_proto_sys_proto_msgTypes[111]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7701,7 +7914,7 @@ func (x *UserCheckTokenResp) String() string {
 func (*UserCheckTokenResp) ProtoMessage() {}
 
 func (x *UserCheckTokenResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[108]
+	mi := &file_proto_sys_proto_msgTypes[111]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7714,7 +7927,7 @@ func (x *UserCheckTokenResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCheckTokenResp.ProtoReflect.Descriptor instead.
 func (*UserCheckTokenResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{108}
+	return file_proto_sys_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *UserCheckTokenResp) GetToken() string {
@@ -7802,7 +8015,7 @@ type ProjectAuth struct {
 func (x *ProjectAuth) Reset() {
 	*x = ProjectAuth{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[109]
+		mi := &file_proto_sys_proto_msgTypes[112]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7815,7 +8028,7 @@ func (x *ProjectAuth) String() string {
 func (*ProjectAuth) ProtoMessage() {}
 
 func (x *ProjectAuth) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[109]
+	mi := &file_proto_sys_proto_msgTypes[112]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7828,7 +8041,7 @@ func (x *ProjectAuth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProjectAuth.ProtoReflect.Descriptor instead.
 func (*ProjectAuth) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{109}
+	return file_proto_sys_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *ProjectAuth) GetArea() map[int64]int64 {
@@ -7857,7 +8070,7 @@ type RoleAppMultiUpdateReq struct {
 func (x *RoleAppMultiUpdateReq) Reset() {
 	*x = RoleAppMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[110]
+		mi := &file_proto_sys_proto_msgTypes[113]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7870,7 +8083,7 @@ func (x *RoleAppMultiUpdateReq) String() string {
 func (*RoleAppMultiUpdateReq) ProtoMessage() {}
 
 func (x *RoleAppMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[110]
+	mi := &file_proto_sys_proto_msgTypes[113]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7883,7 +8096,7 @@ func (x *RoleAppMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAppMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*RoleAppMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{110}
+	return file_proto_sys_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *RoleAppMultiUpdateReq) GetId() int64 {
@@ -7913,7 +8126,7 @@ type RoleModuleMultiUpdateReq struct {
 func (x *RoleModuleMultiUpdateReq) Reset() {
 	*x = RoleModuleMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[111]
+		mi := &file_proto_sys_proto_msgTypes[114]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7926,7 +8139,7 @@ func (x *RoleModuleMultiUpdateReq) String() string {
 func (*RoleModuleMultiUpdateReq) ProtoMessage() {}
 
 func (x *RoleModuleMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[111]
+	mi := &file_proto_sys_proto_msgTypes[114]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7939,7 +8152,7 @@ func (x *RoleModuleMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleModuleMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*RoleModuleMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{111}
+	return file_proto_sys_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *RoleModuleMultiUpdateReq) GetId() int64 {
@@ -7977,7 +8190,7 @@ type RoleMenuMultiUpdateReq struct {
 func (x *RoleMenuMultiUpdateReq) Reset() {
 	*x = RoleMenuMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[112]
+		mi := &file_proto_sys_proto_msgTypes[115]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -7990,7 +8203,7 @@ func (x *RoleMenuMultiUpdateReq) String() string {
 func (*RoleMenuMultiUpdateReq) ProtoMessage() {}
 
 func (x *RoleMenuMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[112]
+	mi := &file_proto_sys_proto_msgTypes[115]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8003,7 +8216,7 @@ func (x *RoleMenuMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleMenuMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*RoleMenuMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{112}
+	return file_proto_sys_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *RoleMenuMultiUpdateReq) GetId() int64 {
@@ -8047,7 +8260,7 @@ type RoleApiAuthReq struct {
 func (x *RoleApiAuthReq) Reset() {
 	*x = RoleApiAuthReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[113]
+		mi := &file_proto_sys_proto_msgTypes[116]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8060,7 +8273,7 @@ func (x *RoleApiAuthReq) String() string {
 func (*RoleApiAuthReq) ProtoMessage() {}
 
 func (x *RoleApiAuthReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[113]
+	mi := &file_proto_sys_proto_msgTypes[116]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8073,7 +8286,7 @@ func (x *RoleApiAuthReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleApiAuthReq.ProtoReflect.Descriptor instead.
 func (*RoleApiAuthReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{113}
+	return file_proto_sys_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *RoleApiAuthReq) GetRoleID() int64 {
@@ -8109,7 +8322,7 @@ type UserInfoCreateReq struct {
 func (x *UserInfoCreateReq) Reset() {
 	*x = UserInfoCreateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[114]
+		mi := &file_proto_sys_proto_msgTypes[117]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8122,7 +8335,7 @@ func (x *UserInfoCreateReq) String() string {
 func (*UserInfoCreateReq) ProtoMessage() {}
 
 func (x *UserInfoCreateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[114]
+	mi := &file_proto_sys_proto_msgTypes[117]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8135,7 +8348,7 @@ func (x *UserInfoCreateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoCreateReq.ProtoReflect.Descriptor instead.
 func (*UserInfoCreateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{114}
+	return file_proto_sys_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *UserInfoCreateReq) GetInfo() *UserInfo {
@@ -8170,7 +8383,7 @@ type UserInfoIndexReq struct {
 func (x *UserInfoIndexReq) Reset() {
 	*x = UserInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[115]
+		mi := &file_proto_sys_proto_msgTypes[118]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8183,7 +8396,7 @@ func (x *UserInfoIndexReq) String() string {
 func (*UserInfoIndexReq) ProtoMessage() {}
 
 func (x *UserInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[115]
+	mi := &file_proto_sys_proto_msgTypes[118]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8196,7 +8409,7 @@ func (x *UserInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*UserInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{115}
+	return file_proto_sys_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *UserInfoIndexReq) GetPage() *PageInfo {
@@ -8267,7 +8480,7 @@ type UserInfoIndexResp struct {
 func (x *UserInfoIndexResp) Reset() {
 	*x = UserInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[116]
+		mi := &file_proto_sys_proto_msgTypes[119]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8280,7 +8493,7 @@ func (x *UserInfoIndexResp) String() string {
 func (*UserInfoIndexResp) ProtoMessage() {}
 
 func (x *UserInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[116]
+	mi := &file_proto_sys_proto_msgTypes[119]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8293,7 +8506,7 @@ func (x *UserInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*UserInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{116}
+	return file_proto_sys_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *UserInfoIndexResp) GetList() []*UserInfo {
@@ -8322,7 +8535,7 @@ type UserInfoUpdateReq struct {
 func (x *UserInfoUpdateReq) Reset() {
 	*x = UserInfoUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[117]
+		mi := &file_proto_sys_proto_msgTypes[120]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8335,7 +8548,7 @@ func (x *UserInfoUpdateReq) String() string {
 func (*UserInfoUpdateReq) ProtoMessage() {}
 
 func (x *UserInfoUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[117]
+	mi := &file_proto_sys_proto_msgTypes[120]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8348,7 +8561,7 @@ func (x *UserInfoUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoUpdateReq.ProtoReflect.Descriptor instead.
 func (*UserInfoUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{117}
+	return file_proto_sys_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *UserInfoUpdateReq) GetInfo() *UserInfo {
@@ -8376,7 +8589,7 @@ type UserInfoReadReq struct {
 func (x *UserInfoReadReq) Reset() {
 	*x = UserInfoReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[118]
+		mi := &file_proto_sys_proto_msgTypes[121]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8389,7 +8602,7 @@ func (x *UserInfoReadReq) String() string {
 func (*UserInfoReadReq) ProtoMessage() {}
 
 func (x *UserInfoReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[118]
+	mi := &file_proto_sys_proto_msgTypes[121]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8402,7 +8615,7 @@ func (x *UserInfoReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoReadReq.ProtoReflect.Descriptor instead.
 func (*UserInfoReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{118}
+	return file_proto_sys_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *UserInfoReadReq) GetUserID() int64 {
@@ -8423,7 +8636,7 @@ type UserInfoDeleteReq struct {
 func (x *UserInfoDeleteReq) Reset() {
 	*x = UserInfoDeleteReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[119]
+		mi := &file_proto_sys_proto_msgTypes[122]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8436,7 +8649,7 @@ func (x *UserInfoDeleteReq) String() string {
 func (*UserInfoDeleteReq) ProtoMessage() {}
 
 func (x *UserInfoDeleteReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[119]
+	mi := &file_proto_sys_proto_msgTypes[122]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8449,7 +8662,7 @@ func (x *UserInfoDeleteReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoDeleteReq.ProtoReflect.Descriptor instead.
 func (*UserInfoDeleteReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{119}
+	return file_proto_sys_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *UserInfoDeleteReq) GetUserID() int64 {
@@ -8472,7 +8685,7 @@ type JwtToken struct {
 func (x *JwtToken) Reset() {
 	*x = JwtToken{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[120]
+		mi := &file_proto_sys_proto_msgTypes[123]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8485,7 +8698,7 @@ func (x *JwtToken) String() string {
 func (*JwtToken) ProtoMessage() {}
 
 func (x *JwtToken) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[120]
+	mi := &file_proto_sys_proto_msgTypes[123]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8498,7 +8711,7 @@ func (x *JwtToken) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JwtToken.ProtoReflect.Descriptor instead.
 func (*JwtToken) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{120}
+	return file_proto_sys_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *JwtToken) GetAccessToken() string {
@@ -8537,7 +8750,7 @@ type UserCaptchaReq struct {
 func (x *UserCaptchaReq) Reset() {
 	*x = UserCaptchaReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[121]
+		mi := &file_proto_sys_proto_msgTypes[124]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8550,7 +8763,7 @@ func (x *UserCaptchaReq) String() string {
 func (*UserCaptchaReq) ProtoMessage() {}
 
 func (x *UserCaptchaReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[121]
+	mi := &file_proto_sys_proto_msgTypes[124]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8563,7 +8776,7 @@ func (x *UserCaptchaReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCaptchaReq.ProtoReflect.Descriptor instead.
 func (*UserCaptchaReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{121}
+	return file_proto_sys_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *UserCaptchaReq) GetAccount() string {
@@ -8614,7 +8827,7 @@ type UserCaptchaResp struct {
 func (x *UserCaptchaResp) Reset() {
 	*x = UserCaptchaResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[122]
+		mi := &file_proto_sys_proto_msgTypes[125]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8627,7 +8840,7 @@ func (x *UserCaptchaResp) String() string {
 func (*UserCaptchaResp) ProtoMessage() {}
 
 func (x *UserCaptchaResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[122]
+	mi := &file_proto_sys_proto_msgTypes[125]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8640,7 +8853,7 @@ func (x *UserCaptchaResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCaptchaResp.ProtoReflect.Descriptor instead.
 func (*UserCaptchaResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{122}
+	return file_proto_sys_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *UserCaptchaResp) GetCodeID() string {
@@ -8679,7 +8892,7 @@ type UserForgetPwdReq struct {
 func (x *UserForgetPwdReq) Reset() {
 	*x = UserForgetPwdReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[123]
+		mi := &file_proto_sys_proto_msgTypes[126]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8692,7 +8905,7 @@ func (x *UserForgetPwdReq) String() string {
 func (*UserForgetPwdReq) ProtoMessage() {}
 
 func (x *UserForgetPwdReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[123]
+	mi := &file_proto_sys_proto_msgTypes[126]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8705,7 +8918,7 @@ func (x *UserForgetPwdReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserForgetPwdReq.ProtoReflect.Descriptor instead.
 func (*UserForgetPwdReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{123}
+	return file_proto_sys_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *UserForgetPwdReq) GetAccount() string {
@@ -8755,7 +8968,7 @@ type UserCodeToUserIDReq struct {
 func (x *UserCodeToUserIDReq) Reset() {
 	*x = UserCodeToUserIDReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[124]
+		mi := &file_proto_sys_proto_msgTypes[127]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8768,7 +8981,7 @@ func (x *UserCodeToUserIDReq) String() string {
 func (*UserCodeToUserIDReq) ProtoMessage() {}
 
 func (x *UserCodeToUserIDReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[124]
+	mi := &file_proto_sys_proto_msgTypes[127]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8781,7 +8994,7 @@ func (x *UserCodeToUserIDReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCodeToUserIDReq.ProtoReflect.Descriptor instead.
 func (*UserCodeToUserIDReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{124}
+	return file_proto_sys_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *UserCodeToUserIDReq) GetLoginType() string {
@@ -8810,7 +9023,7 @@ type UserCodeToUserIDResp struct {
 func (x *UserCodeToUserIDResp) Reset() {
 	*x = UserCodeToUserIDResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[125]
+		mi := &file_proto_sys_proto_msgTypes[128]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8823,7 +9036,7 @@ func (x *UserCodeToUserIDResp) String() string {
 func (*UserCodeToUserIDResp) ProtoMessage() {}
 
 func (x *UserCodeToUserIDResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[125]
+	mi := &file_proto_sys_proto_msgTypes[128]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8836,7 +9049,7 @@ func (x *UserCodeToUserIDResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserCodeToUserIDResp.ProtoReflect.Descriptor instead.
 func (*UserCodeToUserIDResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{125}
+	return file_proto_sys_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *UserCodeToUserIDResp) GetOpenID() string {
@@ -8867,7 +9080,7 @@ type UserChangePwdReq struct {
 func (x *UserChangePwdReq) Reset() {
 	*x = UserChangePwdReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[126]
+		mi := &file_proto_sys_proto_msgTypes[129]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8880,7 +9093,7 @@ func (x *UserChangePwdReq) String() string {
 func (*UserChangePwdReq) ProtoMessage() {}
 
 func (x *UserChangePwdReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[126]
+	mi := &file_proto_sys_proto_msgTypes[129]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8893,7 +9106,7 @@ func (x *UserChangePwdReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserChangePwdReq.ProtoReflect.Descriptor instead.
 func (*UserChangePwdReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{126}
+	return file_proto_sys_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *UserChangePwdReq) GetType() string {
@@ -8941,7 +9154,7 @@ type UserLoginReq struct {
 func (x *UserLoginReq) Reset() {
 	*x = UserLoginReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[127]
+		mi := &file_proto_sys_proto_msgTypes[130]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -8954,7 +9167,7 @@ func (x *UserLoginReq) String() string {
 func (*UserLoginReq) ProtoMessage() {}
 
 func (x *UserLoginReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[127]
+	mi := &file_proto_sys_proto_msgTypes[130]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8967,7 +9180,7 @@ func (x *UserLoginReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserLoginReq.ProtoReflect.Descriptor instead.
 func (*UserLoginReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{127}
+	return file_proto_sys_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *UserLoginReq) GetAccount() string {
@@ -9031,7 +9244,7 @@ type UserLoginResp struct {
 func (x *UserLoginResp) Reset() {
 	*x = UserLoginResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[128]
+		mi := &file_proto_sys_proto_msgTypes[131]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9044,7 +9257,7 @@ func (x *UserLoginResp) String() string {
 func (*UserLoginResp) ProtoMessage() {}
 
 func (x *UserLoginResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[128]
+	mi := &file_proto_sys_proto_msgTypes[131]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9057,7 +9270,7 @@ func (x *UserLoginResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserLoginResp.ProtoReflect.Descriptor instead.
 func (*UserLoginResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{128}
+	return file_proto_sys_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *UserLoginResp) GetInfo() *UserInfo {
@@ -9092,7 +9305,7 @@ type UserRegisterReq struct {
 func (x *UserRegisterReq) Reset() {
 	*x = UserRegisterReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[129]
+		mi := &file_proto_sys_proto_msgTypes[132]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9105,7 +9318,7 @@ func (x *UserRegisterReq) String() string {
 func (*UserRegisterReq) ProtoMessage() {}
 
 func (x *UserRegisterReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[129]
+	mi := &file_proto_sys_proto_msgTypes[132]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9118,7 +9331,7 @@ func (x *UserRegisterReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRegisterReq.ProtoReflect.Descriptor instead.
 func (*UserRegisterReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{129}
+	return file_proto_sys_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *UserRegisterReq) GetRegType() string {
@@ -9181,7 +9394,7 @@ type UserRegisterResp struct {
 func (x *UserRegisterResp) Reset() {
 	*x = UserRegisterResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[130]
+		mi := &file_proto_sys_proto_msgTypes[133]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9194,7 +9407,7 @@ func (x *UserRegisterResp) String() string {
 func (*UserRegisterResp) ProtoMessage() {}
 
 func (x *UserRegisterResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[130]
+	mi := &file_proto_sys_proto_msgTypes[133]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9207,7 +9420,7 @@ func (x *UserRegisterResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRegisterResp.ProtoReflect.Descriptor instead.
 func (*UserRegisterResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{130}
+	return file_proto_sys_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *UserRegisterResp) GetUserID() int64 {
@@ -9228,7 +9441,7 @@ type UserRoleIndexReq struct {
 func (x *UserRoleIndexReq) Reset() {
 	*x = UserRoleIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[131]
+		mi := &file_proto_sys_proto_msgTypes[134]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9241,7 +9454,7 @@ func (x *UserRoleIndexReq) String() string {
 func (*UserRoleIndexReq) ProtoMessage() {}
 
 func (x *UserRoleIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[131]
+	mi := &file_proto_sys_proto_msgTypes[134]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9254,7 +9467,7 @@ func (x *UserRoleIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRoleIndexReq.ProtoReflect.Descriptor instead.
 func (*UserRoleIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{131}
+	return file_proto_sys_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *UserRoleIndexReq) GetUserID() int64 {
@@ -9276,7 +9489,7 @@ type UserRoleIndexResp struct {
 func (x *UserRoleIndexResp) Reset() {
 	*x = UserRoleIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[132]
+		mi := &file_proto_sys_proto_msgTypes[135]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9289,7 +9502,7 @@ func (x *UserRoleIndexResp) String() string {
 func (*UserRoleIndexResp) ProtoMessage() {}
 
 func (x *UserRoleIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[132]
+	mi := &file_proto_sys_proto_msgTypes[135]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9302,7 +9515,7 @@ func (x *UserRoleIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRoleIndexResp.ProtoReflect.Descriptor instead.
 func (*UserRoleIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{132}
+	return file_proto_sys_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *UserRoleIndexResp) GetTotal() int64 {
@@ -9332,7 +9545,7 @@ type UserRoleMultiUpdateReq struct {
 func (x *UserRoleMultiUpdateReq) Reset() {
 	*x = UserRoleMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[133]
+		mi := &file_proto_sys_proto_msgTypes[136]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9345,7 +9558,7 @@ func (x *UserRoleMultiUpdateReq) String() string {
 func (*UserRoleMultiUpdateReq) ProtoMessage() {}
 
 func (x *UserRoleMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[133]
+	mi := &file_proto_sys_proto_msgTypes[136]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9358,7 +9571,7 @@ func (x *UserRoleMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserRoleMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*UserRoleMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{133}
+	return file_proto_sys_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *UserRoleMultiUpdateReq) GetUserID() int64 {
@@ -9395,7 +9608,7 @@ type DataProject struct {
 func (x *DataProject) Reset() {
 	*x = DataProject{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[134]
+		mi := &file_proto_sys_proto_msgTypes[137]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9408,7 +9621,7 @@ func (x *DataProject) String() string {
 func (*DataProject) ProtoMessage() {}
 
 func (x *DataProject) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[134]
+	mi := &file_proto_sys_proto_msgTypes[137]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9421,7 +9634,7 @@ func (x *DataProject) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataProject.ProtoReflect.Descriptor instead.
 func (*DataProject) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{134}
+	return file_proto_sys_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *DataProject) GetProjectID() int64 {
@@ -9458,7 +9671,7 @@ type DataProjectDeleteReq struct {
 func (x *DataProjectDeleteReq) Reset() {
 	*x = DataProjectDeleteReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[135]
+		mi := &file_proto_sys_proto_msgTypes[138]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9471,7 +9684,7 @@ func (x *DataProjectDeleteReq) String() string {
 func (*DataProjectDeleteReq) ProtoMessage() {}
 
 func (x *DataProjectDeleteReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[135]
+	mi := &file_proto_sys_proto_msgTypes[138]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9484,7 +9697,7 @@ func (x *DataProjectDeleteReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataProjectDeleteReq.ProtoReflect.Descriptor instead.
 func (*DataProjectDeleteReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{135}
+	return file_proto_sys_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *DataProjectDeleteReq) GetTargetID() int64 {
@@ -9522,7 +9735,7 @@ type DataProjectSaveReq struct {
 func (x *DataProjectSaveReq) Reset() {
 	*x = DataProjectSaveReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[136]
+		mi := &file_proto_sys_proto_msgTypes[139]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9535,7 +9748,7 @@ func (x *DataProjectSaveReq) String() string {
 func (*DataProjectSaveReq) ProtoMessage() {}
 
 func (x *DataProjectSaveReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[136]
+	mi := &file_proto_sys_proto_msgTypes[139]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9548,7 +9761,7 @@ func (x *DataProjectSaveReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataProjectSaveReq.ProtoReflect.Descriptor instead.
 func (*DataProjectSaveReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{136}
+	return file_proto_sys_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *DataProjectSaveReq) GetTargetID() int64 {
@@ -9592,7 +9805,7 @@ type DataProjectMultiUpdateReq struct {
 func (x *DataProjectMultiUpdateReq) Reset() {
 	*x = DataProjectMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[137]
+		mi := &file_proto_sys_proto_msgTypes[140]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9605,7 +9818,7 @@ func (x *DataProjectMultiUpdateReq) String() string {
 func (*DataProjectMultiUpdateReq) ProtoMessage() {}
 
 func (x *DataProjectMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[137]
+	mi := &file_proto_sys_proto_msgTypes[140]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9618,7 +9831,7 @@ func (x *DataProjectMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataProjectMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*DataProjectMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{137}
+	return file_proto_sys_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *DataProjectMultiUpdateReq) GetTargetID() int64 {
@@ -9656,7 +9869,7 @@ type DataProjectIndexReq struct {
 func (x *DataProjectIndexReq) Reset() {
 	*x = DataProjectIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[138]
+		mi := &file_proto_sys_proto_msgTypes[141]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9669,7 +9882,7 @@ func (x *DataProjectIndexReq) String() string {
 func (*DataProjectIndexReq) ProtoMessage() {}
 
 func (x *DataProjectIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[138]
+	mi := &file_proto_sys_proto_msgTypes[141]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9682,7 +9895,7 @@ func (x *DataProjectIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataProjectIndexReq.ProtoReflect.Descriptor instead.
 func (*DataProjectIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{138}
+	return file_proto_sys_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *DataProjectIndexReq) GetPage() *PageInfo {
@@ -9725,7 +9938,7 @@ type DataProjectIndexResp struct {
 func (x *DataProjectIndexResp) Reset() {
 	*x = DataProjectIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[139]
+		mi := &file_proto_sys_proto_msgTypes[142]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9738,7 +9951,7 @@ func (x *DataProjectIndexResp) String() string {
 func (*DataProjectIndexResp) ProtoMessage() {}
 
 func (x *DataProjectIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[139]
+	mi := &file_proto_sys_proto_msgTypes[142]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9751,7 +9964,7 @@ func (x *DataProjectIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataProjectIndexResp.ProtoReflect.Descriptor instead.
 func (*DataProjectIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{139}
+	return file_proto_sys_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *DataProjectIndexResp) GetTotal() int64 {
@@ -9780,7 +9993,7 @@ type DataArea struct {
 func (x *DataArea) Reset() {
 	*x = DataArea{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[140]
+		mi := &file_proto_sys_proto_msgTypes[143]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9793,7 +10006,7 @@ func (x *DataArea) String() string {
 func (*DataArea) ProtoMessage() {}
 
 func (x *DataArea) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[140]
+	mi := &file_proto_sys_proto_msgTypes[143]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9806,7 +10019,7 @@ func (x *DataArea) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataArea.ProtoReflect.Descriptor instead.
 func (*DataArea) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{140}
+	return file_proto_sys_proto_rawDescGZIP(), []int{143}
 }
 
 func (x *DataArea) GetAreaID() int64 {
@@ -9837,7 +10050,7 @@ type DataAreaMultiUpdateReq struct {
 func (x *DataAreaMultiUpdateReq) Reset() {
 	*x = DataAreaMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[141]
+		mi := &file_proto_sys_proto_msgTypes[144]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9850,7 +10063,7 @@ func (x *DataAreaMultiUpdateReq) String() string {
 func (*DataAreaMultiUpdateReq) ProtoMessage() {}
 
 func (x *DataAreaMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[141]
+	mi := &file_proto_sys_proto_msgTypes[144]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9863,7 +10076,7 @@ func (x *DataAreaMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataAreaMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*DataAreaMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{141}
+	return file_proto_sys_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *DataAreaMultiUpdateReq) GetTargetID() int64 {
@@ -9908,7 +10121,7 @@ type DataAreaIndexReq struct {
 func (x *DataAreaIndexReq) Reset() {
 	*x = DataAreaIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[142]
+		mi := &file_proto_sys_proto_msgTypes[145]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9921,7 +10134,7 @@ func (x *DataAreaIndexReq) String() string {
 func (*DataAreaIndexReq) ProtoMessage() {}
 
 func (x *DataAreaIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[142]
+	mi := &file_proto_sys_proto_msgTypes[145]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9934,7 +10147,7 @@ func (x *DataAreaIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataAreaIndexReq.ProtoReflect.Descriptor instead.
 func (*DataAreaIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{142}
+	return file_proto_sys_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *DataAreaIndexReq) GetPage() *PageInfo {
@@ -9977,7 +10190,7 @@ type DataAreaIndexResp struct {
 func (x *DataAreaIndexResp) Reset() {
 	*x = DataAreaIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[143]
+		mi := &file_proto_sys_proto_msgTypes[146]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9990,7 +10203,7 @@ func (x *DataAreaIndexResp) String() string {
 func (*DataAreaIndexResp) ProtoMessage() {}
 
 func (x *DataAreaIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[143]
+	mi := &file_proto_sys_proto_msgTypes[146]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10003,7 +10216,7 @@ func (x *DataAreaIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataAreaIndexResp.ProtoReflect.Descriptor instead.
 func (*DataAreaIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{143}
+	return file_proto_sys_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *DataAreaIndexResp) GetTotal() int64 {
@@ -10034,7 +10247,7 @@ type DataAreaMultiDeleteReq struct {
 func (x *DataAreaMultiDeleteReq) Reset() {
 	*x = DataAreaMultiDeleteReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[144]
+		mi := &file_proto_sys_proto_msgTypes[147]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10047,7 +10260,7 @@ func (x *DataAreaMultiDeleteReq) String() string {
 func (*DataAreaMultiDeleteReq) ProtoMessage() {}
 
 func (x *DataAreaMultiDeleteReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[144]
+	mi := &file_proto_sys_proto_msgTypes[147]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10060,7 +10273,7 @@ func (x *DataAreaMultiDeleteReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DataAreaMultiDeleteReq.ProtoReflect.Descriptor instead.
 func (*DataAreaMultiDeleteReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{144}
+	return file_proto_sys_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *DataAreaMultiDeleteReq) GetProjectID() int64 {
@@ -10103,7 +10316,7 @@ type UserAreaApplyCreateReq struct {
 func (x *UserAreaApplyCreateReq) Reset() {
 	*x = UserAreaApplyCreateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[145]
+		mi := &file_proto_sys_proto_msgTypes[148]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10116,7 +10329,7 @@ func (x *UserAreaApplyCreateReq) String() string {
 func (*UserAreaApplyCreateReq) ProtoMessage() {}
 
 func (x *UserAreaApplyCreateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[145]
+	mi := &file_proto_sys_proto_msgTypes[148]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10129,7 +10342,7 @@ func (x *UserAreaApplyCreateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAreaApplyCreateReq.ProtoReflect.Descriptor instead.
 func (*UserAreaApplyCreateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{145}
+	return file_proto_sys_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *UserAreaApplyCreateReq) GetAreaID() int64 {
@@ -10159,7 +10372,7 @@ type UserAreaApplyIndexReq struct {
 func (x *UserAreaApplyIndexReq) Reset() {
 	*x = UserAreaApplyIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[146]
+		mi := &file_proto_sys_proto_msgTypes[149]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10172,7 +10385,7 @@ func (x *UserAreaApplyIndexReq) String() string {
 func (*UserAreaApplyIndexReq) ProtoMessage() {}
 
 func (x *UserAreaApplyIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[146]
+	mi := &file_proto_sys_proto_msgTypes[149]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10185,7 +10398,7 @@ func (x *UserAreaApplyIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAreaApplyIndexReq.ProtoReflect.Descriptor instead.
 func (*UserAreaApplyIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{146}
+	return file_proto_sys_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *UserAreaApplyIndexReq) GetPage() *PageInfo {
@@ -10224,7 +10437,7 @@ type UserAreaApplyInfo struct {
 func (x *UserAreaApplyInfo) Reset() {
 	*x = UserAreaApplyInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[147]
+		mi := &file_proto_sys_proto_msgTypes[150]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10237,7 +10450,7 @@ func (x *UserAreaApplyInfo) String() string {
 func (*UserAreaApplyInfo) ProtoMessage() {}
 
 func (x *UserAreaApplyInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[147]
+	mi := &file_proto_sys_proto_msgTypes[150]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10250,7 +10463,7 @@ func (x *UserAreaApplyInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAreaApplyInfo.ProtoReflect.Descriptor instead.
 func (*UserAreaApplyInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{147}
+	return file_proto_sys_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *UserAreaApplyInfo) GetId() int64 {
@@ -10300,7 +10513,7 @@ type UserAreaApplyIndexResp struct {
 func (x *UserAreaApplyIndexResp) Reset() {
 	*x = UserAreaApplyIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[148]
+		mi := &file_proto_sys_proto_msgTypes[151]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10313,7 +10526,7 @@ func (x *UserAreaApplyIndexResp) String() string {
 func (*UserAreaApplyIndexResp) ProtoMessage() {}
 
 func (x *UserAreaApplyIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[148]
+	mi := &file_proto_sys_proto_msgTypes[151]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10326,7 +10539,7 @@ func (x *UserAreaApplyIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAreaApplyIndexResp.ProtoReflect.Descriptor instead.
 func (*UserAreaApplyIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{148}
+	return file_proto_sys_proto_rawDescGZIP(), []int{151}
 }
 
 func (x *UserAreaApplyIndexResp) GetTotal() int64 {
@@ -10355,7 +10568,7 @@ type UserAreaApplyDealReq struct {
 func (x *UserAreaApplyDealReq) Reset() {
 	*x = UserAreaApplyDealReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[149]
+		mi := &file_proto_sys_proto_msgTypes[152]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10368,7 +10581,7 @@ func (x *UserAreaApplyDealReq) String() string {
 func (*UserAreaApplyDealReq) ProtoMessage() {}
 
 func (x *UserAreaApplyDealReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[149]
+	mi := &file_proto_sys_proto_msgTypes[152]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10381,7 +10594,7 @@ func (x *UserAreaApplyDealReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserAreaApplyDealReq.ProtoReflect.Descriptor instead.
 func (*UserAreaApplyDealReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{149}
+	return file_proto_sys_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *UserAreaApplyDealReq) GetIsApprove() bool {
@@ -10417,7 +10630,7 @@ type DictInfo struct {
 func (x *DictInfo) Reset() {
 	*x = DictInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[150]
+		mi := &file_proto_sys_proto_msgTypes[153]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10430,7 +10643,7 @@ func (x *DictInfo) String() string {
 func (*DictInfo) ProtoMessage() {}
 
 func (x *DictInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[150]
+	mi := &file_proto_sys_proto_msgTypes[153]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10443,7 +10656,7 @@ func (x *DictInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictInfo.ProtoReflect.Descriptor instead.
 func (*DictInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{150}
+	return file_proto_sys_proto_rawDescGZIP(), []int{153}
 }
 
 func (x *DictInfo) GetId() int64 {
@@ -10522,7 +10735,7 @@ type DictInfoReadReq struct {
 func (x *DictInfoReadReq) Reset() {
 	*x = DictInfoReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[151]
+		mi := &file_proto_sys_proto_msgTypes[154]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10535,7 +10748,7 @@ func (x *DictInfoReadReq) String() string {
 func (*DictInfoReadReq) ProtoMessage() {}
 
 func (x *DictInfoReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[151]
+	mi := &file_proto_sys_proto_msgTypes[154]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10548,7 +10761,7 @@ func (x *DictInfoReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictInfoReadReq.ProtoReflect.Descriptor instead.
 func (*DictInfoReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{151}
+	return file_proto_sys_proto_rawDescGZIP(), []int{154}
 }
 
 func (x *DictInfoReadReq) GetId() int64 {
@@ -10588,7 +10801,7 @@ type DictInfoIndexReq struct {
 func (x *DictInfoIndexReq) Reset() {
 	*x = DictInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[152]
+		mi := &file_proto_sys_proto_msgTypes[155]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10601,7 +10814,7 @@ func (x *DictInfoIndexReq) String() string {
 func (*DictInfoIndexReq) ProtoMessage() {}
 
 func (x *DictInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[152]
+	mi := &file_proto_sys_proto_msgTypes[155]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10614,7 +10827,7 @@ func (x *DictInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*DictInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{152}
+	return file_proto_sys_proto_rawDescGZIP(), []int{155}
 }
 
 func (x *DictInfoIndexReq) GetPage() *PageInfo {
@@ -10671,7 +10884,7 @@ type DictInfoIndexResp struct {
 func (x *DictInfoIndexResp) Reset() {
 	*x = DictInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[153]
+		mi := &file_proto_sys_proto_msgTypes[156]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10684,7 +10897,7 @@ func (x *DictInfoIndexResp) String() string {
 func (*DictInfoIndexResp) ProtoMessage() {}
 
 func (x *DictInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[153]
+	mi := &file_proto_sys_proto_msgTypes[156]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10697,7 +10910,7 @@ func (x *DictInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*DictInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{153}
+	return file_proto_sys_proto_rawDescGZIP(), []int{156}
 }
 
 func (x *DictInfoIndexResp) GetList() []*DictInfo {
@@ -10733,7 +10946,7 @@ type DictDetail struct {
 func (x *DictDetail) Reset() {
 	*x = DictDetail{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[154]
+		mi := &file_proto_sys_proto_msgTypes[157]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10746,7 +10959,7 @@ func (x *DictDetail) String() string {
 func (*DictDetail) ProtoMessage() {}
 
 func (x *DictDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[154]
+	mi := &file_proto_sys_proto_msgTypes[157]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10759,7 +10972,7 @@ func (x *DictDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictDetail.ProtoReflect.Descriptor instead.
 func (*DictDetail) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{154}
+	return file_proto_sys_proto_rawDescGZIP(), []int{157}
 }
 
 func (x *DictDetail) GetId() int64 {
@@ -10837,7 +11050,7 @@ type DictDetailIndexReq struct {
 func (x *DictDetailIndexReq) Reset() {
 	*x = DictDetailIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[155]
+		mi := &file_proto_sys_proto_msgTypes[158]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10850,7 +11063,7 @@ func (x *DictDetailIndexReq) String() string {
 func (*DictDetailIndexReq) ProtoMessage() {}
 
 func (x *DictDetailIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[155]
+	mi := &file_proto_sys_proto_msgTypes[158]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10863,7 +11076,7 @@ func (x *DictDetailIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictDetailIndexReq.ProtoReflect.Descriptor instead.
 func (*DictDetailIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{155}
+	return file_proto_sys_proto_rawDescGZIP(), []int{158}
 }
 
 func (x *DictDetailIndexReq) GetPage() *PageInfo {
@@ -10892,7 +11105,7 @@ type DictDetailIndexResp struct {
 func (x *DictDetailIndexResp) Reset() {
 	*x = DictDetailIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[156]
+		mi := &file_proto_sys_proto_msgTypes[159]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10905,7 +11118,7 @@ func (x *DictDetailIndexResp) String() string {
 func (*DictDetailIndexResp) ProtoMessage() {}
 
 func (x *DictDetailIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[156]
+	mi := &file_proto_sys_proto_msgTypes[159]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10918,7 +11131,7 @@ func (x *DictDetailIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DictDetailIndexResp.ProtoReflect.Descriptor instead.
 func (*DictDetailIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{156}
+	return file_proto_sys_proto_rawDescGZIP(), []int{159}
 }
 
 func (x *DictDetailIndexResp) GetList() []*DictDetail {
@@ -10958,7 +11171,7 @@ type ModuleInfo struct {
 func (x *ModuleInfo) Reset() {
 	*x = ModuleInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[157]
+		mi := &file_proto_sys_proto_msgTypes[160]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -10971,7 +11184,7 @@ func (x *ModuleInfo) String() string {
 func (*ModuleInfo) ProtoMessage() {}
 
 func (x *ModuleInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[157]
+	mi := &file_proto_sys_proto_msgTypes[160]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10984,7 +11197,7 @@ func (x *ModuleInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModuleInfo.ProtoReflect.Descriptor instead.
 func (*ModuleInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{157}
+	return file_proto_sys_proto_rawDescGZIP(), []int{160}
 }
 
 func (x *ModuleInfo) GetId() int64 {
@@ -11094,7 +11307,7 @@ type ModuleInfoIndexReq struct {
 func (x *ModuleInfoIndexReq) Reset() {
 	*x = ModuleInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[158]
+		mi := &file_proto_sys_proto_msgTypes[161]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11107,7 +11320,7 @@ func (x *ModuleInfoIndexReq) String() string {
 func (*ModuleInfoIndexReq) ProtoMessage() {}
 
 func (x *ModuleInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[158]
+	mi := &file_proto_sys_proto_msgTypes[161]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11120,7 +11333,7 @@ func (x *ModuleInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModuleInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*ModuleInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{158}
+	return file_proto_sys_proto_rawDescGZIP(), []int{161}
 }
 
 func (x *ModuleInfoIndexReq) GetPage() *PageInfo {
@@ -11177,7 +11390,7 @@ type ModuleInfoIndexResp struct {
 func (x *ModuleInfoIndexResp) Reset() {
 	*x = ModuleInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[159]
+		mi := &file_proto_sys_proto_msgTypes[162]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11190,7 +11403,7 @@ func (x *ModuleInfoIndexResp) String() string {
 func (*ModuleInfoIndexResp) ProtoMessage() {}
 
 func (x *ModuleInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[159]
+	mi := &file_proto_sys_proto_msgTypes[162]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11203,7 +11416,7 @@ func (x *ModuleInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModuleInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*ModuleInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{159}
+	return file_proto_sys_proto_rawDescGZIP(), []int{162}
 }
 
 func (x *ModuleInfoIndexResp) GetList() []*ModuleInfo {
@@ -11232,7 +11445,7 @@ type AppPolicyReadReq struct {
 func (x *AppPolicyReadReq) Reset() {
 	*x = AppPolicyReadReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[160]
+		mi := &file_proto_sys_proto_msgTypes[163]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11245,7 +11458,7 @@ func (x *AppPolicyReadReq) String() string {
 func (*AppPolicyReadReq) ProtoMessage() {}
 
 func (x *AppPolicyReadReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[160]
+	mi := &file_proto_sys_proto_msgTypes[163]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11258,7 +11471,7 @@ func (x *AppPolicyReadReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppPolicyReadReq.ProtoReflect.Descriptor instead.
 func (*AppPolicyReadReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{160}
+	return file_proto_sys_proto_rawDescGZIP(), []int{163}
 }
 
 func (x *AppPolicyReadReq) GetAppCode() string {
@@ -11291,7 +11504,7 @@ type AppPolicy struct {
 func (x *AppPolicy) Reset() {
 	*x = AppPolicy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[161]
+		mi := &file_proto_sys_proto_msgTypes[164]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11304,7 +11517,7 @@ func (x *AppPolicy) String() string {
 func (*AppPolicy) ProtoMessage() {}
 
 func (x *AppPolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[161]
+	mi := &file_proto_sys_proto_msgTypes[164]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11317,7 +11530,7 @@ func (x *AppPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppPolicy.ProtoReflect.Descriptor instead.
 func (*AppPolicy) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{161}
+	return file_proto_sys_proto_rawDescGZIP(), []int{164}
 }
 
 func (x *AppPolicy) GetId() int64 {
@@ -11381,7 +11594,7 @@ type AppInfo struct {
 func (x *AppInfo) Reset() {
 	*x = AppInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[162]
+		mi := &file_proto_sys_proto_msgTypes[165]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11394,7 +11607,7 @@ func (x *AppInfo) String() string {
 func (*AppInfo) ProtoMessage() {}
 
 func (x *AppInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[162]
+	mi := &file_proto_sys_proto_msgTypes[165]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11407,7 +11620,7 @@ func (x *AppInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppInfo.ProtoReflect.Descriptor instead.
 func (*AppInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{162}
+	return file_proto_sys_proto_rawDescGZIP(), []int{165}
 }
 
 func (x *AppInfo) GetId() int64 {
@@ -11487,7 +11700,7 @@ type AppInfoIndexReq struct {
 func (x *AppInfoIndexReq) Reset() {
 	*x = AppInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[163]
+		mi := &file_proto_sys_proto_msgTypes[166]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11500,7 +11713,7 @@ func (x *AppInfoIndexReq) String() string {
 func (*AppInfoIndexReq) ProtoMessage() {}
 
 func (x *AppInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[163]
+	mi := &file_proto_sys_proto_msgTypes[166]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11513,7 +11726,7 @@ func (x *AppInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*AppInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{163}
+	return file_proto_sys_proto_rawDescGZIP(), []int{166}
 }
 
 func (x *AppInfoIndexReq) GetPage() *PageInfo {
@@ -11556,7 +11769,7 @@ type AppInfoIndexResp struct {
 func (x *AppInfoIndexResp) Reset() {
 	*x = AppInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[164]
+		mi := &file_proto_sys_proto_msgTypes[167]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11569,7 +11782,7 @@ func (x *AppInfoIndexResp) String() string {
 func (*AppInfoIndexResp) ProtoMessage() {}
 
 func (x *AppInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[164]
+	mi := &file_proto_sys_proto_msgTypes[167]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11582,7 +11795,7 @@ func (x *AppInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*AppInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{164}
+	return file_proto_sys_proto_rawDescGZIP(), []int{167}
 }
 
 func (x *AppInfoIndexResp) GetList() []*AppInfo {
@@ -11611,7 +11824,7 @@ type AppModuleMultiUpdateReq struct {
 func (x *AppModuleMultiUpdateReq) Reset() {
 	*x = AppModuleMultiUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[165]
+		mi := &file_proto_sys_proto_msgTypes[168]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11624,7 +11837,7 @@ func (x *AppModuleMultiUpdateReq) String() string {
 func (*AppModuleMultiUpdateReq) ProtoMessage() {}
 
 func (x *AppModuleMultiUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[165]
+	mi := &file_proto_sys_proto_msgTypes[168]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11637,7 +11850,7 @@ func (x *AppModuleMultiUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppModuleMultiUpdateReq.ProtoReflect.Descriptor instead.
 func (*AppModuleMultiUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{165}
+	return file_proto_sys_proto_rawDescGZIP(), []int{168}
 }
 
 func (x *AppModuleMultiUpdateReq) GetCode() string {
@@ -11665,7 +11878,7 @@ type AppModuleIndexReq struct {
 func (x *AppModuleIndexReq) Reset() {
 	*x = AppModuleIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[166]
+		mi := &file_proto_sys_proto_msgTypes[169]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11678,7 +11891,7 @@ func (x *AppModuleIndexReq) String() string {
 func (*AppModuleIndexReq) ProtoMessage() {}
 
 func (x *AppModuleIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[166]
+	mi := &file_proto_sys_proto_msgTypes[169]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11691,7 +11904,7 @@ func (x *AppModuleIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppModuleIndexReq.ProtoReflect.Descriptor instead.
 func (*AppModuleIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{166}
+	return file_proto_sys_proto_rawDescGZIP(), []int{169}
 }
 
 func (x *AppModuleIndexReq) GetCode() string {
@@ -11712,7 +11925,7 @@ type AppModuleIndexResp struct {
 func (x *AppModuleIndexResp) Reset() {
 	*x = AppModuleIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[167]
+		mi := &file_proto_sys_proto_msgTypes[170]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11725,7 +11938,7 @@ func (x *AppModuleIndexResp) String() string {
 func (*AppModuleIndexResp) ProtoMessage() {}
 
 func (x *AppModuleIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[167]
+	mi := &file_proto_sys_proto_msgTypes[170]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11738,7 +11951,7 @@ func (x *AppModuleIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AppModuleIndexResp.ProtoReflect.Descriptor instead.
 func (*AppModuleIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{167}
+	return file_proto_sys_proto_rawDescGZIP(), []int{170}
 }
 
 func (x *AppModuleIndexResp) GetModuleCodes() []string {
@@ -11763,7 +11976,7 @@ type RoleInfoIndexReq struct {
 func (x *RoleInfoIndexReq) Reset() {
 	*x = RoleInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[168]
+		mi := &file_proto_sys_proto_msgTypes[171]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11776,7 +11989,7 @@ func (x *RoleInfoIndexReq) String() string {
 func (*RoleInfoIndexReq) ProtoMessage() {}
 
 func (x *RoleInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[168]
+	mi := &file_proto_sys_proto_msgTypes[171]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11789,7 +12002,7 @@ func (x *RoleInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*RoleInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{168}
+	return file_proto_sys_proto_rawDescGZIP(), []int{171}
 }
 
 func (x *RoleInfoIndexReq) GetPage() *PageInfo {
@@ -11839,7 +12052,7 @@ type RoleInfoIndexResp struct {
 func (x *RoleInfoIndexResp) Reset() {
 	*x = RoleInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[169]
+		mi := &file_proto_sys_proto_msgTypes[172]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11852,7 +12065,7 @@ func (x *RoleInfoIndexResp) String() string {
 func (*RoleInfoIndexResp) ProtoMessage() {}
 
 func (x *RoleInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[169]
+	mi := &file_proto_sys_proto_msgTypes[172]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11865,7 +12078,7 @@ func (x *RoleInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*RoleInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{169}
+	return file_proto_sys_proto_rawDescGZIP(), []int{172}
 }
 
 func (x *RoleInfoIndexResp) GetList() []*RoleInfo {
@@ -11898,7 +12111,7 @@ type RoleInfo struct {
 func (x *RoleInfo) Reset() {
 	*x = RoleInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[170]
+		mi := &file_proto_sys_proto_msgTypes[173]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11911,7 +12124,7 @@ func (x *RoleInfo) String() string {
 func (*RoleInfo) ProtoMessage() {}
 
 func (x *RoleInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[170]
+	mi := &file_proto_sys_proto_msgTypes[173]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11924,7 +12137,7 @@ func (x *RoleInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleInfo.ProtoReflect.Descriptor instead.
 func (*RoleInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{170}
+	return file_proto_sys_proto_rawDescGZIP(), []int{173}
 }
 
 func (x *RoleInfo) GetId() int64 {
@@ -11981,7 +12194,7 @@ type RoleAppUpdateReq struct {
 func (x *RoleAppUpdateReq) Reset() {
 	*x = RoleAppUpdateReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[171]
+		mi := &file_proto_sys_proto_msgTypes[174]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -11994,7 +12207,7 @@ func (x *RoleAppUpdateReq) String() string {
 func (*RoleAppUpdateReq) ProtoMessage() {}
 
 func (x *RoleAppUpdateReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[171]
+	mi := &file_proto_sys_proto_msgTypes[174]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12007,7 +12220,7 @@ func (x *RoleAppUpdateReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoleAppUpdateReq.ProtoReflect.Descriptor instead.
 func (*RoleAppUpdateReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{171}
+	return file_proto_sys_proto_rawDescGZIP(), []int{174}
 }
 
 func (x *RoleAppUpdateReq) GetId() int64 {
@@ -12037,7 +12250,7 @@ type MenuInfoIndexReq struct {
 func (x *MenuInfoIndexReq) Reset() {
 	*x = MenuInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[172]
+		mi := &file_proto_sys_proto_msgTypes[175]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12050,7 +12263,7 @@ func (x *MenuInfoIndexReq) String() string {
 func (*MenuInfoIndexReq) ProtoMessage() {}
 
 func (x *MenuInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[172]
+	mi := &file_proto_sys_proto_msgTypes[175]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12063,7 +12276,7 @@ func (x *MenuInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MenuInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*MenuInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{172}
+	return file_proto_sys_proto_rawDescGZIP(), []int{175}
 }
 
 func (x *MenuInfoIndexReq) GetModuleCode() string {
@@ -12111,7 +12324,7 @@ type MenuInfo struct {
 func (x *MenuInfo) Reset() {
 	*x = MenuInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[173]
+		mi := &file_proto_sys_proto_msgTypes[176]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12124,7 +12337,7 @@ func (x *MenuInfo) String() string {
 func (*MenuInfo) ProtoMessage() {}
 
 func (x *MenuInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[173]
+	mi := &file_proto_sys_proto_msgTypes[176]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12137,7 +12350,7 @@ func (x *MenuInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MenuInfo.ProtoReflect.Descriptor instead.
 func (*MenuInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{173}
+	return file_proto_sys_proto_rawDescGZIP(), []int{176}
 }
 
 func (x *MenuInfo) GetModuleCode() string {
@@ -12249,7 +12462,7 @@ type MenuInfoIndexResp struct {
 func (x *MenuInfoIndexResp) Reset() {
 	*x = MenuInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[174]
+		mi := &file_proto_sys_proto_msgTypes[177]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12262,7 +12475,7 @@ func (x *MenuInfoIndexResp) String() string {
 func (*MenuInfoIndexResp) ProtoMessage() {}
 
 func (x *MenuInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[174]
+	mi := &file_proto_sys_proto_msgTypes[177]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12275,7 +12488,7 @@ func (x *MenuInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MenuInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*MenuInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{174}
+	return file_proto_sys_proto_rawDescGZIP(), []int{177}
 }
 
 func (x *MenuInfoIndexResp) GetList() []*MenuInfo {
@@ -12298,7 +12511,7 @@ type Map struct {
 func (x *Map) Reset() {
 	*x = Map{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[175]
+		mi := &file_proto_sys_proto_msgTypes[178]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12311,7 +12524,7 @@ func (x *Map) String() string {
 func (*Map) ProtoMessage() {}
 
 func (x *Map) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[175]
+	mi := &file_proto_sys_proto_msgTypes[178]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12324,7 +12537,7 @@ func (x *Map) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Map.ProtoReflect.Descriptor instead.
 func (*Map) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{175}
+	return file_proto_sys_proto_rawDescGZIP(), []int{178}
 }
 
 func (x *Map) GetMode() string {
@@ -12359,7 +12572,7 @@ type ConfigResp struct {
 func (x *ConfigResp) Reset() {
 	*x = ConfigResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[176]
+		mi := &file_proto_sys_proto_msgTypes[179]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12372,7 +12585,7 @@ func (x *ConfigResp) String() string {
 func (*ConfigResp) ProtoMessage() {}
 
 func (x *ConfigResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[176]
+	mi := &file_proto_sys_proto_msgTypes[179]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12385,7 +12598,7 @@ func (x *ConfigResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigResp.ProtoReflect.Descriptor instead.
 func (*ConfigResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{176}
+	return file_proto_sys_proto_rawDescGZIP(), []int{179}
 }
 
 func (x *ConfigResp) GetMap() *Map {
@@ -12412,7 +12625,7 @@ type ApiInfoIndexReq struct {
 func (x *ApiInfoIndexReq) Reset() {
 	*x = ApiInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[177]
+		mi := &file_proto_sys_proto_msgTypes[180]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12425,7 +12638,7 @@ func (x *ApiInfoIndexReq) String() string {
 func (*ApiInfoIndexReq) ProtoMessage() {}
 
 func (x *ApiInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[177]
+	mi := &file_proto_sys_proto_msgTypes[180]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12438,7 +12651,7 @@ func (x *ApiInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*ApiInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{177}
+	return file_proto_sys_proto_rawDescGZIP(), []int{180}
 }
 
 func (x *ApiInfoIndexReq) GetPage() *PageInfo {
@@ -12508,7 +12721,7 @@ type ApiInfo struct {
 func (x *ApiInfo) Reset() {
 	*x = ApiInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[178]
+		mi := &file_proto_sys_proto_msgTypes[181]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12521,7 +12734,7 @@ func (x *ApiInfo) String() string {
 func (*ApiInfo) ProtoMessage() {}
 
 func (x *ApiInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[178]
+	mi := &file_proto_sys_proto_msgTypes[181]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12534,7 +12747,7 @@ func (x *ApiInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiInfo.ProtoReflect.Descriptor instead.
 func (*ApiInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{178}
+	return file_proto_sys_proto_rawDescGZIP(), []int{181}
 }
 
 func (x *ApiInfo) GetAccessCode() string {
@@ -12605,7 +12818,7 @@ type ApiInfoIndexResp struct {
 func (x *ApiInfoIndexResp) Reset() {
 	*x = ApiInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[179]
+		mi := &file_proto_sys_proto_msgTypes[182]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12618,7 +12831,7 @@ func (x *ApiInfoIndexResp) String() string {
 func (*ApiInfoIndexResp) ProtoMessage() {}
 
 func (x *ApiInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[179]
+	mi := &file_proto_sys_proto_msgTypes[182]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12631,7 +12844,7 @@ func (x *ApiInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*ApiInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{179}
+	return file_proto_sys_proto_rawDescGZIP(), []int{182}
 }
 
 func (x *ApiInfoIndexResp) GetList() []*ApiInfo {
@@ -12660,7 +12873,7 @@ type AccessInfoMultiImportReq struct {
 func (x *AccessInfoMultiImportReq) Reset() {
 	*x = AccessInfoMultiImportReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[180]
+		mi := &file_proto_sys_proto_msgTypes[183]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12673,7 +12886,7 @@ func (x *AccessInfoMultiImportReq) String() string {
 func (*AccessInfoMultiImportReq) ProtoMessage() {}
 
 func (x *AccessInfoMultiImportReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[180]
+	mi := &file_proto_sys_proto_msgTypes[183]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12686,7 +12899,7 @@ func (x *AccessInfoMultiImportReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccessInfoMultiImportReq.ProtoReflect.Descriptor instead.
 func (*AccessInfoMultiImportReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{180}
+	return file_proto_sys_proto_rawDescGZIP(), []int{183}
 }
 
 func (x *AccessInfoMultiImportReq) GetModule() string {
@@ -12717,7 +12930,7 @@ type AccessInfoMultiImportResp struct {
 func (x *AccessInfoMultiImportResp) Reset() {
 	*x = AccessInfoMultiImportResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[181]
+		mi := &file_proto_sys_proto_msgTypes[184]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12730,7 +12943,7 @@ func (x *AccessInfoMultiImportResp) String() string {
 func (*AccessInfoMultiImportResp) ProtoMessage() {}
 
 func (x *AccessInfoMultiImportResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[181]
+	mi := &file_proto_sys_proto_msgTypes[184]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12743,7 +12956,7 @@ func (x *AccessInfoMultiImportResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccessInfoMultiImportResp.ProtoReflect.Descriptor instead.
 func (*AccessInfoMultiImportResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{181}
+	return file_proto_sys_proto_rawDescGZIP(), []int{184}
 }
 
 func (x *AccessInfoMultiImportResp) GetTotal() int64 {
@@ -12792,7 +13005,7 @@ type AccessInfoIndexReq struct {
 func (x *AccessInfoIndexReq) Reset() {
 	*x = AccessInfoIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[182]
+		mi := &file_proto_sys_proto_msgTypes[185]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12805,7 +13018,7 @@ func (x *AccessInfoIndexReq) String() string {
 func (*AccessInfoIndexReq) ProtoMessage() {}
 
 func (x *AccessInfoIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[182]
+	mi := &file_proto_sys_proto_msgTypes[185]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12818,7 +13031,7 @@ func (x *AccessInfoIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccessInfoIndexReq.ProtoReflect.Descriptor instead.
 func (*AccessInfoIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{182}
+	return file_proto_sys_proto_rawDescGZIP(), []int{185}
 }
 
 func (x *AccessInfoIndexReq) GetPage() *PageInfo {
@@ -12895,7 +13108,7 @@ type AccessInfo struct {
 func (x *AccessInfo) Reset() {
 	*x = AccessInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[183]
+		mi := &file_proto_sys_proto_msgTypes[186]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -12908,7 +13121,7 @@ func (x *AccessInfo) String() string {
 func (*AccessInfo) ProtoMessage() {}
 
 func (x *AccessInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[183]
+	mi := &file_proto_sys_proto_msgTypes[186]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12921,7 +13134,7 @@ func (x *AccessInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccessInfo.ProtoReflect.Descriptor instead.
 func (*AccessInfo) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{183}
+	return file_proto_sys_proto_rawDescGZIP(), []int{186}
 }
 
 func (x *AccessInfo) GetId() int64 {
@@ -12992,7 +13205,7 @@ type AccessInfoIndexResp struct {
 func (x *AccessInfoIndexResp) Reset() {
 	*x = AccessInfoIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[184]
+		mi := &file_proto_sys_proto_msgTypes[187]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13005,7 +13218,7 @@ func (x *AccessInfoIndexResp) String() string {
 func (*AccessInfoIndexResp) ProtoMessage() {}
 
 func (x *AccessInfoIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[184]
+	mi := &file_proto_sys_proto_msgTypes[187]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13018,7 +13231,7 @@ func (x *AccessInfoIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AccessInfoIndexResp.ProtoReflect.Descriptor instead.
 func (*AccessInfoIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{184}
+	return file_proto_sys_proto_rawDescGZIP(), []int{187}
 }
 
 func (x *AccessInfoIndexResp) GetList() []*AccessInfo {
@@ -13056,7 +13269,7 @@ type OpsWorkOrder struct {
 func (x *OpsWorkOrder) Reset() {
 	*x = OpsWorkOrder{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[185]
+		mi := &file_proto_sys_proto_msgTypes[188]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13069,7 +13282,7 @@ func (x *OpsWorkOrder) String() string {
 func (*OpsWorkOrder) ProtoMessage() {}
 
 func (x *OpsWorkOrder) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[185]
+	mi := &file_proto_sys_proto_msgTypes[188]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13082,7 +13295,7 @@ func (x *OpsWorkOrder) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsWorkOrder.ProtoReflect.Descriptor instead.
 func (*OpsWorkOrder) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{185}
+	return file_proto_sys_proto_rawDescGZIP(), []int{188}
 }
 
 func (x *OpsWorkOrder) GetId() int64 {
@@ -13177,7 +13390,7 @@ type OpsWorkOrderIndexReq struct {
 func (x *OpsWorkOrderIndexReq) Reset() {
 	*x = OpsWorkOrderIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[186]
+		mi := &file_proto_sys_proto_msgTypes[189]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13190,7 +13403,7 @@ func (x *OpsWorkOrderIndexReq) String() string {
 func (*OpsWorkOrderIndexReq) ProtoMessage() {}
 
 func (x *OpsWorkOrderIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[186]
+	mi := &file_proto_sys_proto_msgTypes[189]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13203,7 +13416,7 @@ func (x *OpsWorkOrderIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsWorkOrderIndexReq.ProtoReflect.Descriptor instead.
 func (*OpsWorkOrderIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{186}
+	return file_proto_sys_proto_rawDescGZIP(), []int{189}
 }
 
 func (x *OpsWorkOrderIndexReq) GetPage() *PageInfo {
@@ -13253,7 +13466,7 @@ type OpsWorkOrderIndexResp struct {
 func (x *OpsWorkOrderIndexResp) Reset() {
 	*x = OpsWorkOrderIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[187]
+		mi := &file_proto_sys_proto_msgTypes[190]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13266,7 +13479,7 @@ func (x *OpsWorkOrderIndexResp) String() string {
 func (*OpsWorkOrderIndexResp) ProtoMessage() {}
 
 func (x *OpsWorkOrderIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[187]
+	mi := &file_proto_sys_proto_msgTypes[190]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13279,7 +13492,7 @@ func (x *OpsWorkOrderIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsWorkOrderIndexResp.ProtoReflect.Descriptor instead.
 func (*OpsWorkOrderIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{187}
+	return file_proto_sys_proto_rawDescGZIP(), []int{190}
 }
 
 func (x *OpsWorkOrderIndexResp) GetList() []*OpsWorkOrder {
@@ -13313,7 +13526,7 @@ type OpsFeedback struct {
 func (x *OpsFeedback) Reset() {
 	*x = OpsFeedback{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[188]
+		mi := &file_proto_sys_proto_msgTypes[191]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13326,7 +13539,7 @@ func (x *OpsFeedback) String() string {
 func (*OpsFeedback) ProtoMessage() {}
 
 func (x *OpsFeedback) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[188]
+	mi := &file_proto_sys_proto_msgTypes[191]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13339,7 +13552,7 @@ func (x *OpsFeedback) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsFeedback.ProtoReflect.Descriptor instead.
 func (*OpsFeedback) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{188}
+	return file_proto_sys_proto_rawDescGZIP(), []int{191}
 }
 
 func (x *OpsFeedback) GetId() int64 {
@@ -13405,7 +13618,7 @@ type OpsFeedbackIndexReq struct {
 func (x *OpsFeedbackIndexReq) Reset() {
 	*x = OpsFeedbackIndexReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[189]
+		mi := &file_proto_sys_proto_msgTypes[192]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13418,7 +13631,7 @@ func (x *OpsFeedbackIndexReq) String() string {
 func (*OpsFeedbackIndexReq) ProtoMessage() {}
 
 func (x *OpsFeedbackIndexReq) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[189]
+	mi := &file_proto_sys_proto_msgTypes[192]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13431,7 +13644,7 @@ func (x *OpsFeedbackIndexReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsFeedbackIndexReq.ProtoReflect.Descriptor instead.
 func (*OpsFeedbackIndexReq) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{189}
+	return file_proto_sys_proto_rawDescGZIP(), []int{192}
 }
 
 func (x *OpsFeedbackIndexReq) GetPage() *PageInfo {
@@ -13474,7 +13687,7 @@ type OpsFeedbackIndexResp struct {
 func (x *OpsFeedbackIndexResp) Reset() {
 	*x = OpsFeedbackIndexResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[190]
+		mi := &file_proto_sys_proto_msgTypes[193]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13487,7 +13700,7 @@ func (x *OpsFeedbackIndexResp) String() string {
 func (*OpsFeedbackIndexResp) ProtoMessage() {}
 
 func (x *OpsFeedbackIndexResp) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[190]
+	mi := &file_proto_sys_proto_msgTypes[193]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13500,7 +13713,7 @@ func (x *OpsFeedbackIndexResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OpsFeedbackIndexResp.ProtoReflect.Descriptor instead.
 func (*OpsFeedbackIndexResp) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{190}
+	return file_proto_sys_proto_rawDescGZIP(), []int{193}
 }
 
 func (x *OpsFeedbackIndexResp) GetList() []*OpsFeedback {
@@ -13531,7 +13744,7 @@ type PageInfo_OrderBy struct {
 func (x *PageInfo_OrderBy) Reset() {
 	*x = PageInfo_OrderBy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_sys_proto_msgTypes[194]
+		mi := &file_proto_sys_proto_msgTypes[197]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -13544,7 +13757,7 @@ func (x *PageInfo_OrderBy) String() string {
 func (*PageInfo_OrderBy) ProtoMessage() {}
 
 func (x *PageInfo_OrderBy) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_sys_proto_msgTypes[194]
+	mi := &file_proto_sys_proto_msgTypes[197]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13557,7 +13770,7 @@ func (x *PageInfo_OrderBy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PageInfo_OrderBy.ProtoReflect.Descriptor instead.
 func (*PageInfo_OrderBy) Descriptor() ([]byte, []int) {
-	return file_proto_sys_proto_rawDescGZIP(), []int{59, 0}
+	return file_proto_sys_proto_rawDescGZIP(), []int{62, 0}
 }
 
 func (x *PageInfo_OrderBy) GetField() string {
@@ -13942,6 +14155,42 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x03, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74,
 	0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f,
 	0x74, 0x61, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x74, 0x6f, 0x74, 0x61, 0x6c,
+	0x22, 0x8e, 0x02, 0x0a, 0x0c, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43,
+	0x6f, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x26, 0x0a, 0x0e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65,
+	0x72, 0x52, 0x6f, 0x6c, 0x65, 0x49, 0x44, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0e, 0x72,
+	0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x52, 0x6f, 0x6c, 0x65, 0x49, 0x44, 0x12, 0x28, 0x0a,
+	0x0f, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x55, 0x73, 0x65, 0x72, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0f, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x55, 0x73, 0x65,
+	0x72, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x68, 0x0a, 0x19, 0x72, 0x65, 0x67, 0x69, 0x73,
+	0x74, 0x65, 0x72, 0x41, 0x75, 0x74, 0x6f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x50, 0x72, 0x6f,
+	0x6a, 0x65, 0x63, 0x74, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x73, 0x79, 0x73,
+	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x67,
+	0x69, 0x73, 0x74, 0x65, 0x72, 0x41, 0x75, 0x74, 0x6f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x50,
+	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x19, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72,
+	0x41, 0x75, 0x74, 0x6f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63,
+	0x74, 0x22, 0xac, 0x01, 0x0a, 0x25, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x41, 0x75, 0x74, 0x6f, 0x43, 0x72,
+	0x65, 0x61, 0x74, 0x65, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x20, 0x0a, 0x0b, 0x70,
+	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x0b, 0x70, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x22, 0x0a,
+	0x0c, 0x69, 0x73, 0x53, 0x79, 0x73, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x0c, 0x69, 0x73, 0x53, 0x79, 0x73, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x64, 0x12, 0x3d, 0x0a, 0x05, 0x61, 0x72, 0x65, 0x61, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x27, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e,
+	0x66, 0x69, 0x67, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x41, 0x75, 0x74, 0x6f, 0x43,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x72, 0x65, 0x61, 0x52, 0x05, 0x61, 0x72, 0x65, 0x61, 0x73,
+	0x22, 0x7e, 0x0a, 0x22, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x41, 0x75, 0x74, 0x6f, 0x43, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x41, 0x72, 0x65, 0x61, 0x12, 0x1a, 0x0a, 0x08, 0x61, 0x72, 0x65, 0x61, 0x4e, 0x61,
+	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x61, 0x72, 0x65, 0x61, 0x4e, 0x61,
+	0x6d, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x72, 0x65, 0x61, 0x49, 0x6d, 0x67, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x72, 0x65, 0x61, 0x49, 0x6d, 0x67, 0x12, 0x22, 0x0a, 0x0c,
+	0x69, 0x73, 0x53, 0x79, 0x73, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x0c, 0x69, 0x73, 0x53, 0x79, 0x73, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64,
 	0x22, 0x52, 0x0a, 0x1a, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73,
 	0x4d, 0x75, 0x6c, 0x74, 0x69, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x12, 0x12,
 	0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x6f,
@@ -15646,7 +15895,7 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x18, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x41, 0x72, 0x65, 0x61,
 	0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a,
 	0x19, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x41, 0x72, 0x65, 0x61, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c,
-	0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x32, 0xf1, 0x0c, 0x0a, 0x0c, 0x54,
+	0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x32, 0xdc, 0x0d, 0x0a, 0x0c, 0x54,
 	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x12, 0x39, 0x0a, 0x10, 0x74,
 	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12,
 	0x18, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f,
@@ -15665,112 +15914,119 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x17, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f,
 	0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x18, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54,
 	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65,
-	0x73, 0x70, 0x12, 0x46, 0x0a, 0x17, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65,
-	0x73, 0x73, 0x4d, 0x75, 0x6c, 0x74, 0x69, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x1f, 0x2e,
-	0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73,
-	0x4d, 0x75, 0x6c, 0x74, 0x69, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x0a,
-	0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4a, 0x0a, 0x11, 0x74, 0x65,
-	0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12,
-	0x19, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65,
-	0x73, 0x73, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x73, 0x79, 0x73,
+	0x73, 0x70, 0x12, 0x33, 0x0a, 0x12, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x11, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54,
+	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x1a, 0x0a, 0x2e, 0x73, 0x79,
+	0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x34, 0x0a, 0x10, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x61, 0x64, 0x12, 0x0d, 0x2e, 0x73, 0x79,
+	0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x11, 0x2e, 0x73, 0x79, 0x73,
+	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x46, 0x0a,
+	0x17, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x4d, 0x75, 0x6c,
+	0x74, 0x69, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x1f, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54,
+	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x4d, 0x75, 0x6c, 0x74, 0x69,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4a, 0x0a, 0x11, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41,
+	0x63, 0x63, 0x65, 0x73, 0x73, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x19, 0x2e, 0x73, 0x79, 0x73,
 	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x49, 0x6e, 0x64,
-	0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x41, 0x0a, 0x0e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74,
-	0x41, 0x70, 0x70, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x16, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54,
-	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71,
-	0x1a, 0x17, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70,
-	0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x31, 0x0a, 0x0f, 0x74, 0x65, 0x6e,
-	0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73,
-	0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e, 0x66, 0x6f,
-	0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x31, 0x0a, 0x0f,
-	0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12,
-	0x12, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49,
-	0x6e, 0x66, 0x6f, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12,
-	0x39, 0x0a, 0x0f, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x12, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41,
-	0x70, 0x70, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x4f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x0a,
-	0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x3c, 0x0a, 0x1a, 0x74, 0x65,
-	0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x4d, 0x75, 0x6c,
-	0x74, 0x69, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54,
-	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x0a, 0x2e, 0x73,
-	0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x3f, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61,
-	0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x43, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x12, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f,
-	0x64, 0x75, 0x6c, 0x65, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x0a, 0x2e,
-	0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4d, 0x0a, 0x14, 0x74, 0x65, 0x6e,
-	0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x6e, 0x64, 0x65,
-	0x78, 0x12, 0x19, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f,
-	0x64, 0x75, 0x6c, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x73,
-	0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49,
-	0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x42, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61,
-	0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x12, 0x1d, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f,
-	0x64, 0x75, 0x6c, 0x65, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x4f, 0x72, 0x43, 0x6f, 0x64, 0x65,
-	0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x36, 0x0a, 0x13,
-	0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x43, 0x72, 0x65,
+	0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61,
+	0x6e, 0x74, 0x41, 0x63, 0x63, 0x65, 0x73, 0x73, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x41, 0x0a, 0x0e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e,
+	0x64, 0x65, 0x78, 0x12, 0x16, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74,
+	0x41, 0x70, 0x70, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x17, 0x2e, 0x73, 0x79,
+	0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e, 0x64, 0x65, 0x78,
+	0x52, 0x65, 0x73, 0x70, 0x12, 0x31, 0x0a, 0x0f, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70,
+	0x70, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65,
+	0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x0a, 0x2e, 0x73, 0x79,
+	0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x31, 0x0a, 0x0f, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x74, 0x41, 0x70, 0x70, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73,
+	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x0a,
+	0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x39, 0x0a, 0x0f, 0x74, 0x65,
+	0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x1a, 0x2e,
+	0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x57, 0x69, 0x74,
+	0x68, 0x49, 0x44, 0x4f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x3c, 0x0a, 0x1a, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41,
+	0x70, 0x70, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x4d, 0x75, 0x6c, 0x74, 0x69, 0x43, 0x72, 0x65,
 	0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74,
-	0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x1a, 0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69,
-	0x74, 0x68, 0x49, 0x44, 0x12, 0x4d, 0x0a, 0x12, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70,
-	0x70, 0x4d, 0x65, 0x6e, 0x75, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1a, 0x2e, 0x73, 0x79, 0x73,
-	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x49, 0x6e,
-	0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e,
-	0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52,
-	0x65, 0x73, 0x70, 0x12, 0x35, 0x0a, 0x13, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70,
-	0x4d, 0x65, 0x6e, 0x75, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73,
-	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x1a, 0x0a,
-	0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x35, 0x0a, 0x13, 0x74, 0x65,
-	0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x41, 0x70, 0x70, 0x43,
-	0x6f, 0x64, 0x65, 0x49, 0x44, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74,
-	0x79, 0x12, 0x53, 0x0a, 0x14, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x43,
-	0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1c, 0x2e, 0x73, 0x79, 0x73, 0x2e,
-	0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54,
-	0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x1d, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65,
-	0x6e, 0x61, 0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f, 0x6b,
-	0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x3a, 0x0a, 0x11, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74,
-	0x4f, 0x70, 0x65, 0x6e, 0x57, 0x65, 0x62, 0x48, 0x6f, 0x6f, 0x6b, 0x12, 0x0d, 0x2e, 0x73, 0x79,
-	0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x16, 0x2e, 0x73, 0x79, 0x73,
-	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x57, 0x65, 0x62, 0x48, 0x6f,
-	0x6f, 0x6b, 0x12, 0x53, 0x0a, 0x14, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65,
-	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1c, 0x2e, 0x73, 0x79, 0x73,
-	0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74,
-	0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1d, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54,
-	0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x6e,
-	0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x39, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e,
-	0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x12, 0x14, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72,
-	0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70,
-	0x74, 0x79, 0x12, 0x3a, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65,
-	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x73, 0x79,
+	0x41, 0x70, 0x70, 0x49, 0x6e, 0x66, 0x6f, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d,
+	0x70, 0x74, 0x79, 0x12, 0x3f, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70,
+	0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x1a, 0x2e, 0x73,
+	0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x43,
+	0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45,
+	0x6d, 0x70, 0x74, 0x79, 0x12, 0x4d, 0x0a, 0x14, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70,
+	0x70, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x19, 0x2e, 0x73,
+	0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49,
+	0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65,
+	0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52,
+	0x65, 0x73, 0x70, 0x12, 0x42, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70,
+	0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x1d, 0x2e, 0x73,
+	0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4d, 0x6f, 0x64, 0x75, 0x6c, 0x65, 0x57,
+	0x69, 0x74, 0x68, 0x49, 0x44, 0x4f, 0x72, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x0a, 0x2e, 0x73, 0x79,
+	0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x36, 0x0a, 0x13, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x12,
+	0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65,
+	0x6e, 0x75, 0x1a, 0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x12,
+	0x4d, 0x0a, 0x12, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75,
+	0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61,
+	0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65,
+	0x71, 0x1a, 0x1b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70,
+	0x70, 0x4d, 0x65, 0x6e, 0x75, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x35,
+	0x0a, 0x13, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61,
+	0x6e, 0x74, 0x41, 0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x35, 0x0a, 0x13, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41,
+	0x70, 0x70, 0x4d, 0x65, 0x6e, 0x75, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x12, 0x2e, 0x73,
+	0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x41, 0x70, 0x70, 0x43, 0x6f, 0x64, 0x65, 0x49, 0x44,
+	0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x53, 0x0a, 0x14,
+	0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54,
+	0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1c, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e,
+	0x74, 0x4f, 0x70, 0x65, 0x6e, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52,
+	0x65, 0x71, 0x1a, 0x1d, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4f,
+	0x70, 0x65, 0x6e, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x3a, 0x0a, 0x11, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x57,
+	0x65, 0x62, 0x48, 0x6f, 0x6f, 0x6b, 0x12, 0x0d, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74,
+	0x68, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x16, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61,
+	0x6e, 0x74, 0x4f, 0x70, 0x65, 0x6e, 0x57, 0x65, 0x62, 0x48, 0x6f, 0x6f, 0x6b, 0x12, 0x53, 0x0a,
+	0x14, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74,
+	0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x1c, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61,
+	0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x6e, 0x64, 0x65, 0x78,
+	0x52, 0x65, 0x71, 0x1a, 0x1d, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74,
+	0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65,
+	0x73, 0x70, 0x12, 0x39, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65,
+	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x73, 0x79,
 	0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e,
-	0x74, 0x1a, 0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x12, 0x3c,
-	0x0a, 0x13, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e,
-	0x74, 0x52, 0x65, 0x61, 0x64, 0x12, 0x0f, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68,
-	0x49, 0x44, 0x43, 0x6f, 0x64, 0x65, 0x1a, 0x14, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e,
-	0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x30, 0x0a, 0x15,
-	0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68,
-	0x49, 0x44, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0xb9,
-	0x02, 0x0a, 0x03, 0x6f, 0x70, 0x73, 0x12, 0x34, 0x0a, 0x12, 0x6f, 0x70, 0x73, 0x57, 0x6f, 0x72,
-	0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x11, 0x2e, 0x73,
-	0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x1a,
-	0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x12, 0x33, 0x0a, 0x12,
-	0x6f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x12, 0x11, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b,
-	0x4f, 0x72, 0x64, 0x65, 0x72, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74,
-	0x79, 0x12, 0x4a, 0x0a, 0x11, 0x6f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65,
-	0x72, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x19, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73,
-	0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65,
-	0x71, 0x1a, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f,
-	0x72, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x32, 0x0a,
-	0x11, 0x6f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x43, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x12, 0x10, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64,
-	0x62, 0x61, 0x63, 0x6b, 0x1a, 0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49,
-	0x44, 0x12, 0x47, 0x0a, 0x10, 0x6f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b,
-	0x49, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x18, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x46,
-	0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a,
-	0x19, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63,
-	0x6b, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x42, 0x08, 0x5a, 0x06, 0x70, 0x62,
-	0x2f, 0x73, 0x79, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x3a, 0x0a,
+	0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x14, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e,
+	0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x1a, 0x0b, 0x2e, 0x73,
+	0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x12, 0x3c, 0x0a, 0x13, 0x74, 0x65, 0x6e,
+	0x61, 0x6e, 0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x61, 0x64,
+	0x12, 0x0f, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x43, 0x6f, 0x64,
+	0x65, 0x1a, 0x14, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x54, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x41, 0x67,
+	0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x30, 0x0a, 0x15, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x74, 0x41, 0x67, 0x72, 0x65, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x12, 0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x1a, 0x0a, 0x2e,
+	0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0xb9, 0x02, 0x0a, 0x03, 0x6f, 0x70,
+	0x73, 0x12, 0x34, 0x0a, 0x12, 0x6f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65,
+	0x72, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x11, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70,
+	0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x1a, 0x0b, 0x2e, 0x73, 0x79, 0x73,
+	0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x12, 0x33, 0x0a, 0x12, 0x6f, 0x70, 0x73, 0x57, 0x6f,
+	0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x12, 0x11, 0x2e,
+	0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72,
+	0x1a, 0x0a, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4a, 0x0a, 0x11,
+	0x6f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x64, 0x65,
+	0x78, 0x12, 0x19, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f,
+	0x72, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x73,
+	0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x57, 0x6f, 0x72, 0x6b, 0x4f, 0x72, 0x64, 0x65, 0x72, 0x49,
+	0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x73, 0x70, 0x12, 0x32, 0x0a, 0x11, 0x6f, 0x70, 0x73, 0x46,
+	0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x10, 0x2e,
+	0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x1a,
+	0x0b, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x57, 0x69, 0x74, 0x68, 0x49, 0x44, 0x12, 0x47, 0x0a, 0x10,
+	0x6f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x49, 0x6e, 0x64, 0x65, 0x78,
+	0x12, 0x18, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x4f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61,
+	0x63, 0x6b, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x73, 0x79, 0x73,
+	0x2e, 0x4f, 0x70, 0x73, 0x46, 0x65, 0x65, 0x64, 0x62, 0x61, 0x63, 0x6b, 0x49, 0x6e, 0x64, 0x65,
+	0x78, 0x52, 0x65, 0x73, 0x70, 0x42, 0x08, 0x5a, 0x06, 0x70, 0x62, 0x2f, 0x73, 0x79, 0x73, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -15785,656 +16041,665 @@ func file_proto_sys_proto_rawDescGZIP() []byte {
 	return file_proto_sys_proto_rawDescData
 }
 
-var file_proto_sys_proto_msgTypes = make([]protoimpl.MessageInfo, 200)
+var file_proto_sys_proto_msgTypes = make([]protoimpl.MessageInfo, 203)
 var file_proto_sys_proto_goTypes = []interface{}{
-	(*ThirdAppConfig)(nil),                // 0: sys.ThirdAppConfig
-	(*IDList)(nil),                        // 1: sys.IDList
-	(*NotifyConfig)(nil),                  // 2: sys.NotifyConfig
-	(*NotifyConfigIndexReq)(nil),          // 3: sys.NotifyConfigIndexReq
-	(*NotifyConfigIndexResp)(nil),         // 4: sys.NotifyConfigIndexResp
-	(*NotifyTemplate)(nil),                // 5: sys.NotifyTemplate
-	(*NotifyChannel)(nil),                 // 6: sys.NotifyChannel
-	(*NotifyChannelIndexReq)(nil),         // 7: sys.NotifyChannelIndexReq
-	(*NotifyChannelIndexResp)(nil),        // 8: sys.NotifyChannelIndexResp
-	(*ThirdEmail)(nil),                    // 9: sys.ThirdEmail
-	(*ThirdApp)(nil),                      // 10: sys.ThirdApp
-	(*ThirdSms)(nil),                      // 11: sys.ThirdSms
-	(*NotifyTemplateIndexReq)(nil),        // 12: sys.NotifyTemplateIndexReq
-	(*NotifyTemplateIndexResp)(nil),       // 13: sys.NotifyTemplateIndexResp
-	(*MessageInfoIndexReq)(nil),           // 14: sys.MessageInfoIndexReq
-	(*MessageInfoIndexResp)(nil),          // 15: sys.MessageInfoIndexResp
-	(*MessageInfoSendReq)(nil),            // 16: sys.MessageInfoSendReq
-	(*MessageInfo)(nil),                   // 17: sys.MessageInfo
-	(*NotifyConfigTemplateDeleteReq)(nil), // 18: sys.NotifyConfigTemplateDeleteReq
-	(*NotifyConfigTemplateIndexReq)(nil),  // 19: sys.NotifyConfigTemplateIndexReq
-	(*NotifyConfigTemplateIndexResp)(nil), // 20: sys.NotifyConfigTemplateIndexResp
-	(*NotifyConfigTemplate)(nil),          // 21: sys.NotifyConfigTemplate
-	(*TenantAgreement)(nil),               // 22: sys.TenantAgreement
-	(*TenantAgreementIndexReq)(nil),       // 23: sys.TenantAgreementIndexReq
-	(*TenantAgreementIndexResp)(nil),      // 24: sys.TenantAgreementIndexResp
-	(*TenantOpenCheckTokenReq)(nil),       // 25: sys.TenantOpenCheckTokenReq
-	(*TenantOpenCheckTokenResp)(nil),      // 26: sys.TenantOpenCheckTokenResp
-	(*TenantOpenWebHook)(nil),             // 27: sys.TenantOpenWebHook
-	(*UserProfile)(nil),                   // 28: sys.UserProfile
-	(*UserProfileIndexReq)(nil),           // 29: sys.UserProfileIndexReq
-	(*UserProfileIndexResp)(nil),          // 30: sys.UserProfileIndexResp
-	(*UserMessage)(nil),                   // 31: sys.UserMessage
-	(*UserMessageIndexReq)(nil),           // 32: sys.UserMessageIndexReq
-	(*UserMessageStatisticsResp)(nil),     // 33: sys.UserMessageStatisticsResp
-	(*UserMessageStatistics)(nil),         // 34: sys.UserMessageStatistics
-	(*UserMessageIndexResp)(nil),          // 35: sys.UserMessageIndexResp
-	(*NotifyConfigSendReq)(nil),           // 36: sys.NotifyConfigSendReq
-	(*TenantInfoCreateReq)(nil),           // 37: sys.TenantInfoCreateReq
-	(*TenantInfo)(nil),                    // 38: sys.TenantInfo
-	(*TenantInfoIndexReq)(nil),            // 39: sys.TenantInfoIndexReq
-	(*TenantInfoIndexResp)(nil),           // 40: sys.TenantInfoIndexResp
-	(*TenantAccessMultiUpdateReq)(nil),    // 41: sys.TenantAccessMultiUpdateReq
-	(*TenantAccessIndexReq)(nil),          // 42: sys.TenantAccessIndexReq
-	(*TenantAccessIndexResp)(nil),         // 43: sys.TenantAccessIndexResp
-	(*TenantAppInfo)(nil),                 // 44: sys.TenantAppInfo
-	(*TenantAppWithIDOrCode)(nil),         // 45: sys.TenantAppWithIDOrCode
-	(*TenantAppModule)(nil),               // 46: sys.TenantAppModule
-	(*TenantAppIndexReq)(nil),             // 47: sys.TenantAppIndexReq
-	(*TenantAppIndexResp)(nil),            // 48: sys.TenantAppIndexResp
-	(*TenantAppMultiUpdateReq)(nil),       // 49: sys.TenantAppMultiUpdateReq
-	(*TenantModuleIndexReq)(nil),          // 50: sys.TenantModuleIndexReq
-	(*TenantModuleIndexResp)(nil),         // 51: sys.TenantModuleIndexResp
-	(*TenantAppMenuIndexReq)(nil),         // 52: sys.TenantAppMenuIndexReq
-	(*TenantAppMenuIndexResp)(nil),        // 53: sys.TenantAppMenuIndexResp
-	(*TenantAppMenu)(nil),                 // 54: sys.TenantAppMenu
-	(*TenantModuleCreateReq)(nil),         // 55: sys.TenantModuleCreateReq
-	(*TenantModuleWithIDOrCode)(nil),      // 56: sys.TenantModuleWithIDOrCode
-	(*Point)(nil),                         // 57: sys.Point
-	(*Empty)(nil),                         // 58: sys.Empty
-	(*PageInfo)(nil),                      // 59: sys.PageInfo
-	(*WithID)(nil),                        // 60: sys.WithID
-	(*WithIDCode)(nil),                    // 61: sys.WithIDCode
-	(*WithCode)(nil),                      // 62: sys.WithCode
-	(*WithAppCodeID)(nil),                 // 63: sys.WithAppCodeID
-	(*ProjectWithID)(nil),                 // 64: sys.ProjectWithID
-	(*ProjectInfo)(nil),                   // 65: sys.ProjectInfo
-	(*ProjectProfile)(nil),                // 66: sys.ProjectProfile
-	(*ProjectProfileReadReq)(nil),         // 67: sys.ProjectProfileReadReq
-	(*ProjectProfileIndexReq)(nil),        // 68: sys.ProjectProfileIndexReq
-	(*ProjectProfileIndexResp)(nil),       // 69: sys.ProjectProfileIndexResp
-	(*ProjectInfoIndexReq)(nil),           // 70: sys.ProjectInfoIndexReq
-	(*ProjectInfoIndexResp)(nil),          // 71: sys.ProjectInfoIndexResp
-	(*AreaInfo)(nil),                      // 72: sys.AreaInfo
-	(*AreaWithID)(nil),                    // 73: sys.AreaWithID
-	(*AreaProfile)(nil),                   // 74: sys.AreaProfile
-	(*AreaProfileReadReq)(nil),            // 75: sys.AreaProfileReadReq
-	(*AreaProfileIndexReq)(nil),           // 76: sys.AreaProfileIndexReq
-	(*AreaProfileIndexResp)(nil),          // 77: sys.AreaProfileIndexResp
-	(*AreaInfoReadReq)(nil),               // 78: sys.AreaInfoReadReq
-	(*AreaInfoIndexReq)(nil),              // 79: sys.AreaInfoIndexReq
-	(*AreaInfoIndexResp)(nil),             // 80: sys.AreaInfoIndexResp
-	(*SlotInfo)(nil),                      // 81: sys.SlotInfo
-	(*QRCodeReadReq)(nil),                 // 82: sys.QRCodeReadReq
-	(*QRCodeReadResp)(nil),                // 83: sys.QRCodeReadResp
-	(*SlotInfoIndexReq)(nil),              // 84: sys.SlotInfoIndexReq
-	(*SlotInfoIndexResp)(nil),             // 85: sys.SlotInfoIndexResp
-	(*AuthApiInfo)(nil),                   // 86: sys.AuthApiInfo
-	(*RoleAccessMultiUpdateReq)(nil),      // 87: sys.RoleAccessMultiUpdateReq
-	(*RoleAccessIndexReq)(nil),            // 88: sys.RoleAccessIndexReq
-	(*RoleAccessIndexResp)(nil),           // 89: sys.RoleAccessIndexResp
-	(*RoleMenuIndexReq)(nil),              // 90: sys.RoleMenuIndexReq
-	(*RoleMenuIndexResp)(nil),             // 91: sys.RoleMenuIndexResp
-	(*RoleAppIndexReq)(nil),               // 92: sys.RoleAppIndexReq
-	(*RoleAppIndexResp)(nil),              // 93: sys.RoleAppIndexResp
-	(*RoleModuleIndexReq)(nil),            // 94: sys.RoleModuleIndexReq
-	(*RoleModuleIndexResp)(nil),           // 95: sys.RoleModuleIndexResp
-	(*DateRange)(nil),                     // 96: sys.DateRange
-	(*LoginLogIndexReq)(nil),              // 97: sys.LoginLogIndexReq
-	(*LoginLogInfo)(nil),                  // 98: sys.LoginLogInfo
-	(*LoginLogIndexResp)(nil),             // 99: sys.LoginLogIndexResp
-	(*OperLogIndexReq)(nil),               // 100: sys.OperLogIndexReq
-	(*OperLogInfo)(nil),                   // 101: sys.OperLogInfo
-	(*OperLogIndexResp)(nil),              // 102: sys.OperLogIndexResp
-	(*LoginLogCreateReq)(nil),             // 103: sys.LoginLogCreateReq
-	(*OperLogCreateReq)(nil),              // 104: sys.OperLogCreateReq
-	(*UserInfo)(nil),                      // 105: sys.UserInfo
-	(*UserCreateResp)(nil),                // 106: sys.UserCreateResp
-	(*UserCheckTokenReq)(nil),             // 107: sys.UserCheckTokenReq
-	(*UserCheckTokenResp)(nil),            // 108: sys.UserCheckTokenResp
-	(*ProjectAuth)(nil),                   // 109: sys.ProjectAuth
-	(*RoleAppMultiUpdateReq)(nil),         // 110: sys.RoleAppMultiUpdateReq
-	(*RoleModuleMultiUpdateReq)(nil),      // 111: sys.RoleModuleMultiUpdateReq
-	(*RoleMenuMultiUpdateReq)(nil),        // 112: sys.RoleMenuMultiUpdateReq
-	(*RoleApiAuthReq)(nil),                // 113: sys.RoleApiAuthReq
-	(*UserInfoCreateReq)(nil),             // 114: sys.UserInfoCreateReq
-	(*UserInfoIndexReq)(nil),              // 115: sys.UserInfoIndexReq
-	(*UserInfoIndexResp)(nil),             // 116: sys.UserInfoIndexResp
-	(*UserInfoUpdateReq)(nil),             // 117: sys.userInfoUpdateReq
-	(*UserInfoReadReq)(nil),               // 118: sys.UserInfoReadReq
-	(*UserInfoDeleteReq)(nil),             // 119: sys.UserInfoDeleteReq
-	(*JwtToken)(nil),                      // 120: sys.JwtToken
-	(*UserCaptchaReq)(nil),                // 121: sys.UserCaptchaReq
-	(*UserCaptchaResp)(nil),               // 122: sys.UserCaptchaResp
-	(*UserForgetPwdReq)(nil),              // 123: sys.UserForgetPwdReq
-	(*UserCodeToUserIDReq)(nil),           // 124: sys.UserCodeToUserIDReq
-	(*UserCodeToUserIDResp)(nil),          // 125: sys.UserCodeToUserIDResp
-	(*UserChangePwdReq)(nil),              // 126: sys.UserChangePwdReq
-	(*UserLoginReq)(nil),                  // 127: sys.UserLoginReq
-	(*UserLoginResp)(nil),                 // 128: sys.UserLoginResp
-	(*UserRegisterReq)(nil),               // 129: sys.UserRegisterReq
-	(*UserRegisterResp)(nil),              // 130: sys.UserRegisterResp
-	(*UserRoleIndexReq)(nil),              // 131: sys.UserRoleIndexReq
-	(*UserRoleIndexResp)(nil),             // 132: sys.UserRoleIndexResp
-	(*UserRoleMultiUpdateReq)(nil),        // 133: sys.UserRoleMultiUpdateReq
-	(*DataProject)(nil),                   // 134: sys.DataProject
-	(*DataProjectDeleteReq)(nil),          // 135: sys.DataProjectDeleteReq
-	(*DataProjectSaveReq)(nil),            // 136: sys.DataProjectSaveReq
-	(*DataProjectMultiUpdateReq)(nil),     // 137: sys.DataProjectMultiUpdateReq
-	(*DataProjectIndexReq)(nil),           // 138: sys.DataProjectIndexReq
-	(*DataProjectIndexResp)(nil),          // 139: sys.DataProjectIndexResp
-	(*DataArea)(nil),                      // 140: sys.DataArea
-	(*DataAreaMultiUpdateReq)(nil),        // 141: sys.DataAreaMultiUpdateReq
-	(*DataAreaIndexReq)(nil),              // 142: sys.DataAreaIndexReq
-	(*DataAreaIndexResp)(nil),             // 143: sys.DataAreaIndexResp
-	(*DataAreaMultiDeleteReq)(nil),        // 144: sys.DataAreaMultiDeleteReq
-	(*UserAreaApplyCreateReq)(nil),        // 145: sys.UserAreaApplyCreateReq
-	(*UserAreaApplyIndexReq)(nil),         // 146: sys.UserAreaApplyIndexReq
-	(*UserAreaApplyInfo)(nil),             // 147: sys.UserAreaApplyInfo
-	(*UserAreaApplyIndexResp)(nil),        // 148: sys.UserAreaApplyIndexResp
-	(*UserAreaApplyDealReq)(nil),          // 149: sys.UserAreaApplyDealReq
-	(*DictInfo)(nil),                      // 150: sys.DictInfo
-	(*DictInfoReadReq)(nil),               // 151: sys.DictInfoReadReq
-	(*DictInfoIndexReq)(nil),              // 152: sys.DictInfoIndexReq
-	(*DictInfoIndexResp)(nil),             // 153: sys.DictInfoIndexResp
-	(*DictDetail)(nil),                    // 154: sys.DictDetail
-	(*DictDetailIndexReq)(nil),            // 155: sys.DictDetailIndexReq
-	(*DictDetailIndexResp)(nil),           // 156: sys.DictDetailIndexResp
-	(*ModuleInfo)(nil),                    // 157: sys.ModuleInfo
-	(*ModuleInfoIndexReq)(nil),            // 158: sys.ModuleInfoIndexReq
-	(*ModuleInfoIndexResp)(nil),           // 159: sys.ModuleInfoIndexResp
-	(*AppPolicyReadReq)(nil),              // 160: sys.AppPolicyReadReq
-	(*AppPolicy)(nil),                     // 161: sys.AppPolicy
-	(*AppInfo)(nil),                       // 162: sys.AppInfo
-	(*AppInfoIndexReq)(nil),               // 163: sys.AppInfoIndexReq
-	(*AppInfoIndexResp)(nil),              // 164: sys.AppInfoIndexResp
-	(*AppModuleMultiUpdateReq)(nil),       // 165: sys.AppModuleMultiUpdateReq
-	(*AppModuleIndexReq)(nil),             // 166: sys.AppModuleIndexReq
-	(*AppModuleIndexResp)(nil),            // 167: sys.AppModuleIndexResp
-	(*RoleInfoIndexReq)(nil),              // 168: sys.RoleInfoIndexReq
-	(*RoleInfoIndexResp)(nil),             // 169: sys.RoleInfoIndexResp
-	(*RoleInfo)(nil),                      // 170: sys.RoleInfo
-	(*RoleAppUpdateReq)(nil),              // 171: sys.RoleAppUpdateReq
-	(*MenuInfoIndexReq)(nil),              // 172: sys.MenuInfoIndexReq
-	(*MenuInfo)(nil),                      // 173: sys.MenuInfo
-	(*MenuInfoIndexResp)(nil),             // 174: sys.MenuInfoIndexResp
-	(*Map)(nil),                           // 175: sys.Map
-	(*ConfigResp)(nil),                    // 176: sys.configResp
-	(*ApiInfoIndexReq)(nil),               // 177: sys.ApiInfoIndexReq
-	(*ApiInfo)(nil),                       // 178: sys.ApiInfo
-	(*ApiInfoIndexResp)(nil),              // 179: sys.ApiInfoIndexResp
-	(*AccessInfoMultiImportReq)(nil),      // 180: sys.AccessInfoMultiImportReq
-	(*AccessInfoMultiImportResp)(nil),     // 181: sys.AccessInfoMultiImportResp
-	(*AccessInfoIndexReq)(nil),            // 182: sys.AccessInfoIndexReq
-	(*AccessInfo)(nil),                    // 183: sys.AccessInfo
-	(*AccessInfoIndexResp)(nil),           // 184: sys.AccessInfoIndexResp
-	(*OpsWorkOrder)(nil),                  // 185: sys.OpsWorkOrder
-	(*OpsWorkOrderIndexReq)(nil),          // 186: sys.OpsWorkOrderIndexReq
-	(*OpsWorkOrderIndexResp)(nil),         // 187: sys.OpsWorkOrderIndexResp
-	(*OpsFeedback)(nil),                   // 188: sys.OpsFeedback
-	(*OpsFeedbackIndexReq)(nil),           // 189: sys.OpsFeedbackIndexReq
-	(*OpsFeedbackIndexResp)(nil),          // 190: sys.OpsFeedbackIndexResp
-	nil,                                   // 191: sys.NotifyConfig.ParamsEntry
-	nil,                                   // 192: sys.TenantOpenWebHook.HandlerEntry
-	nil,                                   // 193: sys.NotifyConfigSendReq.ParamsEntry
-	(*PageInfo_OrderBy)(nil),              // 194: sys.PageInfo.OrderBy
-	nil,                                   // 195: sys.SlotInfo.HandlerEntry
-	nil,                                   // 196: sys.UserCheckTokenResp.ProjectAuthEntry
-	nil,                                   // 197: sys.ProjectAuth.AreaEntry
-	nil,                                   // 198: sys.UserRegisterReq.ExpandEntry
-	nil,                                   // 199: sys.OpsWorkOrder.ParamsEntry
-	(*wrapperspb.StringValue)(nil),        // 200: google.protobuf.StringValue
-	(*wrapperspb.FloatValue)(nil),         // 201: google.protobuf.FloatValue
-	(*wrapperspb.Int64Value)(nil),         // 202: google.protobuf.Int64Value
+	(*ThirdAppConfig)(nil),                        // 0: sys.ThirdAppConfig
+	(*IDList)(nil),                                // 1: sys.IDList
+	(*NotifyConfig)(nil),                          // 2: sys.NotifyConfig
+	(*NotifyConfigIndexReq)(nil),                  // 3: sys.NotifyConfigIndexReq
+	(*NotifyConfigIndexResp)(nil),                 // 4: sys.NotifyConfigIndexResp
+	(*NotifyTemplate)(nil),                        // 5: sys.NotifyTemplate
+	(*NotifyChannel)(nil),                         // 6: sys.NotifyChannel
+	(*NotifyChannelIndexReq)(nil),                 // 7: sys.NotifyChannelIndexReq
+	(*NotifyChannelIndexResp)(nil),                // 8: sys.NotifyChannelIndexResp
+	(*ThirdEmail)(nil),                            // 9: sys.ThirdEmail
+	(*ThirdApp)(nil),                              // 10: sys.ThirdApp
+	(*ThirdSms)(nil),                              // 11: sys.ThirdSms
+	(*NotifyTemplateIndexReq)(nil),                // 12: sys.NotifyTemplateIndexReq
+	(*NotifyTemplateIndexResp)(nil),               // 13: sys.NotifyTemplateIndexResp
+	(*MessageInfoIndexReq)(nil),                   // 14: sys.MessageInfoIndexReq
+	(*MessageInfoIndexResp)(nil),                  // 15: sys.MessageInfoIndexResp
+	(*MessageInfoSendReq)(nil),                    // 16: sys.MessageInfoSendReq
+	(*MessageInfo)(nil),                           // 17: sys.MessageInfo
+	(*NotifyConfigTemplateDeleteReq)(nil),         // 18: sys.NotifyConfigTemplateDeleteReq
+	(*NotifyConfigTemplateIndexReq)(nil),          // 19: sys.NotifyConfigTemplateIndexReq
+	(*NotifyConfigTemplateIndexResp)(nil),         // 20: sys.NotifyConfigTemplateIndexResp
+	(*NotifyConfigTemplate)(nil),                  // 21: sys.NotifyConfigTemplate
+	(*TenantAgreement)(nil),                       // 22: sys.TenantAgreement
+	(*TenantAgreementIndexReq)(nil),               // 23: sys.TenantAgreementIndexReq
+	(*TenantAgreementIndexResp)(nil),              // 24: sys.TenantAgreementIndexResp
+	(*TenantOpenCheckTokenReq)(nil),               // 25: sys.TenantOpenCheckTokenReq
+	(*TenantOpenCheckTokenResp)(nil),              // 26: sys.TenantOpenCheckTokenResp
+	(*TenantOpenWebHook)(nil),                     // 27: sys.TenantOpenWebHook
+	(*UserProfile)(nil),                           // 28: sys.UserProfile
+	(*UserProfileIndexReq)(nil),                   // 29: sys.UserProfileIndexReq
+	(*UserProfileIndexResp)(nil),                  // 30: sys.UserProfileIndexResp
+	(*UserMessage)(nil),                           // 31: sys.UserMessage
+	(*UserMessageIndexReq)(nil),                   // 32: sys.UserMessageIndexReq
+	(*UserMessageStatisticsResp)(nil),             // 33: sys.UserMessageStatisticsResp
+	(*UserMessageStatistics)(nil),                 // 34: sys.UserMessageStatistics
+	(*UserMessageIndexResp)(nil),                  // 35: sys.UserMessageIndexResp
+	(*NotifyConfigSendReq)(nil),                   // 36: sys.NotifyConfigSendReq
+	(*TenantInfoCreateReq)(nil),                   // 37: sys.TenantInfoCreateReq
+	(*TenantInfo)(nil),                            // 38: sys.TenantInfo
+	(*TenantInfoIndexReq)(nil),                    // 39: sys.TenantInfoIndexReq
+	(*TenantInfoIndexResp)(nil),                   // 40: sys.TenantInfoIndexResp
+	(*TenantConfig)(nil),                          // 41: sys.TenantConfig
+	(*TenantConfigRegisterAutoCreateProject)(nil), // 42: sys.TenantConfigRegisterAutoCreateProject
+	(*TenantConfigRegisterAutoCreateArea)(nil),    // 43: sys.TenantConfigRegisterAutoCreateArea
+	(*TenantAccessMultiUpdateReq)(nil),            // 44: sys.TenantAccessMultiUpdateReq
+	(*TenantAccessIndexReq)(nil),                  // 45: sys.TenantAccessIndexReq
+	(*TenantAccessIndexResp)(nil),                 // 46: sys.TenantAccessIndexResp
+	(*TenantAppInfo)(nil),                         // 47: sys.TenantAppInfo
+	(*TenantAppWithIDOrCode)(nil),                 // 48: sys.TenantAppWithIDOrCode
+	(*TenantAppModule)(nil),                       // 49: sys.TenantAppModule
+	(*TenantAppIndexReq)(nil),                     // 50: sys.TenantAppIndexReq
+	(*TenantAppIndexResp)(nil),                    // 51: sys.TenantAppIndexResp
+	(*TenantAppMultiUpdateReq)(nil),               // 52: sys.TenantAppMultiUpdateReq
+	(*TenantModuleIndexReq)(nil),                  // 53: sys.TenantModuleIndexReq
+	(*TenantModuleIndexResp)(nil),                 // 54: sys.TenantModuleIndexResp
+	(*TenantAppMenuIndexReq)(nil),                 // 55: sys.TenantAppMenuIndexReq
+	(*TenantAppMenuIndexResp)(nil),                // 56: sys.TenantAppMenuIndexResp
+	(*TenantAppMenu)(nil),                         // 57: sys.TenantAppMenu
+	(*TenantModuleCreateReq)(nil),                 // 58: sys.TenantModuleCreateReq
+	(*TenantModuleWithIDOrCode)(nil),              // 59: sys.TenantModuleWithIDOrCode
+	(*Point)(nil),                                 // 60: sys.Point
+	(*Empty)(nil),                                 // 61: sys.Empty
+	(*PageInfo)(nil),                              // 62: sys.PageInfo
+	(*WithID)(nil),                                // 63: sys.WithID
+	(*WithIDCode)(nil),                            // 64: sys.WithIDCode
+	(*WithCode)(nil),                              // 65: sys.WithCode
+	(*WithAppCodeID)(nil),                         // 66: sys.WithAppCodeID
+	(*ProjectWithID)(nil),                         // 67: sys.ProjectWithID
+	(*ProjectInfo)(nil),                           // 68: sys.ProjectInfo
+	(*ProjectProfile)(nil),                        // 69: sys.ProjectProfile
+	(*ProjectProfileReadReq)(nil),                 // 70: sys.ProjectProfileReadReq
+	(*ProjectProfileIndexReq)(nil),                // 71: sys.ProjectProfileIndexReq
+	(*ProjectProfileIndexResp)(nil),               // 72: sys.ProjectProfileIndexResp
+	(*ProjectInfoIndexReq)(nil),                   // 73: sys.ProjectInfoIndexReq
+	(*ProjectInfoIndexResp)(nil),                  // 74: sys.ProjectInfoIndexResp
+	(*AreaInfo)(nil),                              // 75: sys.AreaInfo
+	(*AreaWithID)(nil),                            // 76: sys.AreaWithID
+	(*AreaProfile)(nil),                           // 77: sys.AreaProfile
+	(*AreaProfileReadReq)(nil),                    // 78: sys.AreaProfileReadReq
+	(*AreaProfileIndexReq)(nil),                   // 79: sys.AreaProfileIndexReq
+	(*AreaProfileIndexResp)(nil),                  // 80: sys.AreaProfileIndexResp
+	(*AreaInfoReadReq)(nil),                       // 81: sys.AreaInfoReadReq
+	(*AreaInfoIndexReq)(nil),                      // 82: sys.AreaInfoIndexReq
+	(*AreaInfoIndexResp)(nil),                     // 83: sys.AreaInfoIndexResp
+	(*SlotInfo)(nil),                              // 84: sys.SlotInfo
+	(*QRCodeReadReq)(nil),                         // 85: sys.QRCodeReadReq
+	(*QRCodeReadResp)(nil),                        // 86: sys.QRCodeReadResp
+	(*SlotInfoIndexReq)(nil),                      // 87: sys.SlotInfoIndexReq
+	(*SlotInfoIndexResp)(nil),                     // 88: sys.SlotInfoIndexResp
+	(*AuthApiInfo)(nil),                           // 89: sys.AuthApiInfo
+	(*RoleAccessMultiUpdateReq)(nil),              // 90: sys.RoleAccessMultiUpdateReq
+	(*RoleAccessIndexReq)(nil),                    // 91: sys.RoleAccessIndexReq
+	(*RoleAccessIndexResp)(nil),                   // 92: sys.RoleAccessIndexResp
+	(*RoleMenuIndexReq)(nil),                      // 93: sys.RoleMenuIndexReq
+	(*RoleMenuIndexResp)(nil),                     // 94: sys.RoleMenuIndexResp
+	(*RoleAppIndexReq)(nil),                       // 95: sys.RoleAppIndexReq
+	(*RoleAppIndexResp)(nil),                      // 96: sys.RoleAppIndexResp
+	(*RoleModuleIndexReq)(nil),                    // 97: sys.RoleModuleIndexReq
+	(*RoleModuleIndexResp)(nil),                   // 98: sys.RoleModuleIndexResp
+	(*DateRange)(nil),                             // 99: sys.DateRange
+	(*LoginLogIndexReq)(nil),                      // 100: sys.LoginLogIndexReq
+	(*LoginLogInfo)(nil),                          // 101: sys.LoginLogInfo
+	(*LoginLogIndexResp)(nil),                     // 102: sys.LoginLogIndexResp
+	(*OperLogIndexReq)(nil),                       // 103: sys.OperLogIndexReq
+	(*OperLogInfo)(nil),                           // 104: sys.OperLogInfo
+	(*OperLogIndexResp)(nil),                      // 105: sys.OperLogIndexResp
+	(*LoginLogCreateReq)(nil),                     // 106: sys.LoginLogCreateReq
+	(*OperLogCreateReq)(nil),                      // 107: sys.OperLogCreateReq
+	(*UserInfo)(nil),                              // 108: sys.UserInfo
+	(*UserCreateResp)(nil),                        // 109: sys.UserCreateResp
+	(*UserCheckTokenReq)(nil),                     // 110: sys.UserCheckTokenReq
+	(*UserCheckTokenResp)(nil),                    // 111: sys.UserCheckTokenResp
+	(*ProjectAuth)(nil),                           // 112: sys.ProjectAuth
+	(*RoleAppMultiUpdateReq)(nil),                 // 113: sys.RoleAppMultiUpdateReq
+	(*RoleModuleMultiUpdateReq)(nil),              // 114: sys.RoleModuleMultiUpdateReq
+	(*RoleMenuMultiUpdateReq)(nil),                // 115: sys.RoleMenuMultiUpdateReq
+	(*RoleApiAuthReq)(nil),                        // 116: sys.RoleApiAuthReq
+	(*UserInfoCreateReq)(nil),                     // 117: sys.UserInfoCreateReq
+	(*UserInfoIndexReq)(nil),                      // 118: sys.UserInfoIndexReq
+	(*UserInfoIndexResp)(nil),                     // 119: sys.UserInfoIndexResp
+	(*UserInfoUpdateReq)(nil),                     // 120: sys.userInfoUpdateReq
+	(*UserInfoReadReq)(nil),                       // 121: sys.UserInfoReadReq
+	(*UserInfoDeleteReq)(nil),                     // 122: sys.UserInfoDeleteReq
+	(*JwtToken)(nil),                              // 123: sys.JwtToken
+	(*UserCaptchaReq)(nil),                        // 124: sys.UserCaptchaReq
+	(*UserCaptchaResp)(nil),                       // 125: sys.UserCaptchaResp
+	(*UserForgetPwdReq)(nil),                      // 126: sys.UserForgetPwdReq
+	(*UserCodeToUserIDReq)(nil),                   // 127: sys.UserCodeToUserIDReq
+	(*UserCodeToUserIDResp)(nil),                  // 128: sys.UserCodeToUserIDResp
+	(*UserChangePwdReq)(nil),                      // 129: sys.UserChangePwdReq
+	(*UserLoginReq)(nil),                          // 130: sys.UserLoginReq
+	(*UserLoginResp)(nil),                         // 131: sys.UserLoginResp
+	(*UserRegisterReq)(nil),                       // 132: sys.UserRegisterReq
+	(*UserRegisterResp)(nil),                      // 133: sys.UserRegisterResp
+	(*UserRoleIndexReq)(nil),                      // 134: sys.UserRoleIndexReq
+	(*UserRoleIndexResp)(nil),                     // 135: sys.UserRoleIndexResp
+	(*UserRoleMultiUpdateReq)(nil),                // 136: sys.UserRoleMultiUpdateReq
+	(*DataProject)(nil),                           // 137: sys.DataProject
+	(*DataProjectDeleteReq)(nil),                  // 138: sys.DataProjectDeleteReq
+	(*DataProjectSaveReq)(nil),                    // 139: sys.DataProjectSaveReq
+	(*DataProjectMultiUpdateReq)(nil),             // 140: sys.DataProjectMultiUpdateReq
+	(*DataProjectIndexReq)(nil),                   // 141: sys.DataProjectIndexReq
+	(*DataProjectIndexResp)(nil),                  // 142: sys.DataProjectIndexResp
+	(*DataArea)(nil),                              // 143: sys.DataArea
+	(*DataAreaMultiUpdateReq)(nil),                // 144: sys.DataAreaMultiUpdateReq
+	(*DataAreaIndexReq)(nil),                      // 145: sys.DataAreaIndexReq
+	(*DataAreaIndexResp)(nil),                     // 146: sys.DataAreaIndexResp
+	(*DataAreaMultiDeleteReq)(nil),                // 147: sys.DataAreaMultiDeleteReq
+	(*UserAreaApplyCreateReq)(nil),                // 148: sys.UserAreaApplyCreateReq
+	(*UserAreaApplyIndexReq)(nil),                 // 149: sys.UserAreaApplyIndexReq
+	(*UserAreaApplyInfo)(nil),                     // 150: sys.UserAreaApplyInfo
+	(*UserAreaApplyIndexResp)(nil),                // 151: sys.UserAreaApplyIndexResp
+	(*UserAreaApplyDealReq)(nil),                  // 152: sys.UserAreaApplyDealReq
+	(*DictInfo)(nil),                              // 153: sys.DictInfo
+	(*DictInfoReadReq)(nil),                       // 154: sys.DictInfoReadReq
+	(*DictInfoIndexReq)(nil),                      // 155: sys.DictInfoIndexReq
+	(*DictInfoIndexResp)(nil),                     // 156: sys.DictInfoIndexResp
+	(*DictDetail)(nil),                            // 157: sys.DictDetail
+	(*DictDetailIndexReq)(nil),                    // 158: sys.DictDetailIndexReq
+	(*DictDetailIndexResp)(nil),                   // 159: sys.DictDetailIndexResp
+	(*ModuleInfo)(nil),                            // 160: sys.ModuleInfo
+	(*ModuleInfoIndexReq)(nil),                    // 161: sys.ModuleInfoIndexReq
+	(*ModuleInfoIndexResp)(nil),                   // 162: sys.ModuleInfoIndexResp
+	(*AppPolicyReadReq)(nil),                      // 163: sys.AppPolicyReadReq
+	(*AppPolicy)(nil),                             // 164: sys.AppPolicy
+	(*AppInfo)(nil),                               // 165: sys.AppInfo
+	(*AppInfoIndexReq)(nil),                       // 166: sys.AppInfoIndexReq
+	(*AppInfoIndexResp)(nil),                      // 167: sys.AppInfoIndexResp
+	(*AppModuleMultiUpdateReq)(nil),               // 168: sys.AppModuleMultiUpdateReq
+	(*AppModuleIndexReq)(nil),                     // 169: sys.AppModuleIndexReq
+	(*AppModuleIndexResp)(nil),                    // 170: sys.AppModuleIndexResp
+	(*RoleInfoIndexReq)(nil),                      // 171: sys.RoleInfoIndexReq
+	(*RoleInfoIndexResp)(nil),                     // 172: sys.RoleInfoIndexResp
+	(*RoleInfo)(nil),                              // 173: sys.RoleInfo
+	(*RoleAppUpdateReq)(nil),                      // 174: sys.RoleAppUpdateReq
+	(*MenuInfoIndexReq)(nil),                      // 175: sys.MenuInfoIndexReq
+	(*MenuInfo)(nil),                              // 176: sys.MenuInfo
+	(*MenuInfoIndexResp)(nil),                     // 177: sys.MenuInfoIndexResp
+	(*Map)(nil),                                   // 178: sys.Map
+	(*ConfigResp)(nil),                            // 179: sys.configResp
+	(*ApiInfoIndexReq)(nil),                       // 180: sys.ApiInfoIndexReq
+	(*ApiInfo)(nil),                               // 181: sys.ApiInfo
+	(*ApiInfoIndexResp)(nil),                      // 182: sys.ApiInfoIndexResp
+	(*AccessInfoMultiImportReq)(nil),              // 183: sys.AccessInfoMultiImportReq
+	(*AccessInfoMultiImportResp)(nil),             // 184: sys.AccessInfoMultiImportResp
+	(*AccessInfoIndexReq)(nil),                    // 185: sys.AccessInfoIndexReq
+	(*AccessInfo)(nil),                            // 186: sys.AccessInfo
+	(*AccessInfoIndexResp)(nil),                   // 187: sys.AccessInfoIndexResp
+	(*OpsWorkOrder)(nil),                          // 188: sys.OpsWorkOrder
+	(*OpsWorkOrderIndexReq)(nil),                  // 189: sys.OpsWorkOrderIndexReq
+	(*OpsWorkOrderIndexResp)(nil),                 // 190: sys.OpsWorkOrderIndexResp
+	(*OpsFeedback)(nil),                           // 191: sys.OpsFeedback
+	(*OpsFeedbackIndexReq)(nil),                   // 192: sys.OpsFeedbackIndexReq
+	(*OpsFeedbackIndexResp)(nil),                  // 193: sys.OpsFeedbackIndexResp
+	nil,                                           // 194: sys.NotifyConfig.ParamsEntry
+	nil,                                           // 195: sys.TenantOpenWebHook.HandlerEntry
+	nil,                                           // 196: sys.NotifyConfigSendReq.ParamsEntry
+	(*PageInfo_OrderBy)(nil),                      // 197: sys.PageInfo.OrderBy
+	nil,                                           // 198: sys.SlotInfo.HandlerEntry
+	nil,                                           // 199: sys.UserCheckTokenResp.ProjectAuthEntry
+	nil,                                           // 200: sys.ProjectAuth.AreaEntry
+	nil,                                           // 201: sys.UserRegisterReq.ExpandEntry
+	nil,                                           // 202: sys.OpsWorkOrder.ParamsEntry
+	(*wrapperspb.StringValue)(nil),                // 203: google.protobuf.StringValue
+	(*wrapperspb.FloatValue)(nil),                 // 204: google.protobuf.FloatValue
+	(*wrapperspb.Int64Value)(nil),                 // 205: google.protobuf.Int64Value
 }
 var file_proto_sys_proto_depIdxs = []int32{
-	191, // 0: sys.NotifyConfig.params:type_name -> sys.NotifyConfig.ParamsEntry
-	59,  // 1: sys.NotifyConfigIndexReq.page:type_name -> sys.PageInfo
+	194, // 0: sys.NotifyConfig.params:type_name -> sys.NotifyConfig.ParamsEntry
+	62,  // 1: sys.NotifyConfigIndexReq.page:type_name -> sys.PageInfo
 	2,   // 2: sys.NotifyConfigIndexResp.list:type_name -> sys.NotifyConfig
 	6,   // 3: sys.NotifyTemplate.Channel:type_name -> sys.NotifyChannel
 	9,   // 4: sys.NotifyChannel.email:type_name -> sys.ThirdEmail
 	10,  // 5: sys.NotifyChannel.app:type_name -> sys.ThirdApp
 	11,  // 6: sys.NotifyChannel.sms:type_name -> sys.ThirdSms
-	59,  // 7: sys.NotifyChannelIndexReq.page:type_name -> sys.PageInfo
+	62,  // 7: sys.NotifyChannelIndexReq.page:type_name -> sys.PageInfo
 	6,   // 8: sys.NotifyChannelIndexResp.list:type_name -> sys.NotifyChannel
-	59,  // 9: sys.NotifyTemplateIndexReq.page:type_name -> sys.PageInfo
+	62,  // 9: sys.NotifyTemplateIndexReq.page:type_name -> sys.PageInfo
 	5,   // 10: sys.NotifyTemplateIndexResp.list:type_name -> sys.NotifyTemplate
-	59,  // 11: sys.MessageInfoIndexReq.page:type_name -> sys.PageInfo
+	62,  // 11: sys.MessageInfoIndexReq.page:type_name -> sys.PageInfo
 	17,  // 12: sys.MessageInfoIndexResp.list:type_name -> sys.MessageInfo
 	21,  // 13: sys.NotifyConfigTemplateIndexResp.list:type_name -> sys.NotifyConfigTemplate
-	59,  // 14: sys.TenantAgreementIndexReq.page:type_name -> sys.PageInfo
+	62,  // 14: sys.TenantAgreementIndexReq.page:type_name -> sys.PageInfo
 	22,  // 15: sys.TenantAgreementIndexResp.list:type_name -> sys.TenantAgreement
-	192, // 16: sys.TenantOpenWebHook.handler:type_name -> sys.TenantOpenWebHook.HandlerEntry
+	195, // 16: sys.TenantOpenWebHook.handler:type_name -> sys.TenantOpenWebHook.HandlerEntry
 	28,  // 17: sys.UserProfileIndexResp.profiles:type_name -> sys.UserProfile
 	17,  // 18: sys.UserMessage.message:type_name -> sys.MessageInfo
-	59,  // 19: sys.UserMessageIndexReq.page:type_name -> sys.PageInfo
+	62,  // 19: sys.UserMessageIndexReq.page:type_name -> sys.PageInfo
 	34,  // 20: sys.UserMessageStatisticsResp.list:type_name -> sys.UserMessageStatistics
 	31,  // 21: sys.UserMessageIndexResp.list:type_name -> sys.UserMessage
-	193, // 22: sys.NotifyConfigSendReq.params:type_name -> sys.NotifyConfigSendReq.ParamsEntry
+	196, // 22: sys.NotifyConfigSendReq.params:type_name -> sys.NotifyConfigSendReq.ParamsEntry
 	38,  // 23: sys.TenantInfoCreateReq.info:type_name -> sys.TenantInfo
-	105, // 24: sys.TenantInfoCreateReq.adminUserInfo:type_name -> sys.UserInfo
-	200, // 25: sys.TenantInfo.desc:type_name -> google.protobuf.StringValue
-	59,  // 26: sys.TenantInfoIndexReq.page:type_name -> sys.PageInfo
+	108, // 24: sys.TenantInfoCreateReq.adminUserInfo:type_name -> sys.UserInfo
+	203, // 25: sys.TenantInfo.desc:type_name -> google.protobuf.StringValue
+	62,  // 26: sys.TenantInfoIndexReq.page:type_name -> sys.PageInfo
 	38,  // 27: sys.TenantInfoIndexResp.list:type_name -> sys.TenantInfo
-	46,  // 28: sys.TenantAppInfo.modules:type_name -> sys.TenantAppModule
-	0,   // 29: sys.TenantAppInfo.miniDing:type_name -> sys.ThirdAppConfig
-	0,   // 30: sys.TenantAppInfo.miniWx:type_name -> sys.ThirdAppConfig
-	59,  // 31: sys.TenantAppIndexReq.page:type_name -> sys.PageInfo
-	44,  // 32: sys.TenantAppIndexResp.list:type_name -> sys.TenantAppInfo
-	59,  // 33: sys.TenantModuleIndexReq.page:type_name -> sys.PageInfo
-	157, // 34: sys.TenantModuleIndexResp.list:type_name -> sys.ModuleInfo
-	59,  // 35: sys.TenantAppMenuIndexReq.page:type_name -> sys.PageInfo
-	54,  // 36: sys.TenantAppMenuIndexResp.list:type_name -> sys.TenantAppMenu
-	173, // 37: sys.TenantAppMenu.info:type_name -> sys.MenuInfo
-	54,  // 38: sys.TenantAppMenu.children:type_name -> sys.TenantAppMenu
-	194, // 39: sys.PageInfo.orders:type_name -> sys.PageInfo.OrderBy
-	57,  // 40: sys.ProjectInfo.Position:type_name -> sys.Point
-	201, // 41: sys.ProjectInfo.area:type_name -> google.protobuf.FloatValue
-	200, // 42: sys.ProjectInfo.desc:type_name -> google.protobuf.StringValue
-	72,  // 43: sys.ProjectInfo.areas:type_name -> sys.AreaInfo
-	66,  // 44: sys.ProjectProfileIndexResp.profiles:type_name -> sys.ProjectProfile
-	59,  // 45: sys.ProjectInfoIndexReq.page:type_name -> sys.PageInfo
-	65,  // 46: sys.ProjectInfoIndexResp.list:type_name -> sys.ProjectInfo
-	57,  // 47: sys.AreaInfo.Position:type_name -> sys.Point
-	200, // 48: sys.AreaInfo.desc:type_name -> google.protobuf.StringValue
-	72,  // 49: sys.AreaInfo.children:type_name -> sys.AreaInfo
-	202, // 50: sys.AreaInfo.deviceCount:type_name -> google.protobuf.Int64Value
-	74,  // 51: sys.AreaProfileIndexResp.profiles:type_name -> sys.AreaProfile
-	59,  // 52: sys.AreaInfoIndexReq.page:type_name -> sys.PageInfo
-	72,  // 53: sys.AreaInfoIndexResp.list:type_name -> sys.AreaInfo
-	195, // 54: sys.SlotInfo.handler:type_name -> sys.SlotInfo.HandlerEntry
-	59,  // 55: sys.SlotInfoIndexReq.page:type_name -> sys.PageInfo
-	81,  // 56: sys.SlotInfoIndexResp.slots:type_name -> sys.SlotInfo
-	59,  // 57: sys.LoginLogIndexReq.page:type_name -> sys.PageInfo
-	96,  // 58: sys.LoginLogIndexReq.date:type_name -> sys.DateRange
-	98,  // 59: sys.LoginLogIndexResp.list:type_name -> sys.LoginLogInfo
-	59,  // 60: sys.OperLogIndexReq.page:type_name -> sys.PageInfo
-	101, // 61: sys.OperLogIndexResp.list:type_name -> sys.OperLogInfo
-	200, // 62: sys.UserInfo.email:type_name -> google.protobuf.StringValue
-	200, // 63: sys.UserInfo.phone:type_name -> google.protobuf.StringValue
-	196, // 64: sys.UserCheckTokenResp.projectAuth:type_name -> sys.UserCheckTokenResp.ProjectAuthEntry
-	197, // 65: sys.ProjectAuth.area:type_name -> sys.ProjectAuth.AreaEntry
-	105, // 66: sys.UserInfoCreateReq.info:type_name -> sys.UserInfo
-	59,  // 67: sys.UserInfoIndexReq.page:type_name -> sys.PageInfo
-	105, // 68: sys.UserInfoIndexResp.list:type_name -> sys.UserInfo
-	105, // 69: sys.userInfoUpdateReq.info:type_name -> sys.UserInfo
-	105, // 70: sys.UserLoginResp.info:type_name -> sys.UserInfo
-	120, // 71: sys.UserLoginResp.token:type_name -> sys.JwtToken
-	105, // 72: sys.UserRegisterReq.info:type_name -> sys.UserInfo
-	198, // 73: sys.UserRegisterReq.expand:type_name -> sys.UserRegisterReq.ExpandEntry
-	170, // 74: sys.UserRoleIndexResp.list:type_name -> sys.RoleInfo
-	134, // 75: sys.DataProjectMultiUpdateReq.projects:type_name -> sys.DataProject
-	59,  // 76: sys.DataProjectIndexReq.page:type_name -> sys.PageInfo
-	134, // 77: sys.DataProjectIndexResp.list:type_name -> sys.DataProject
-	140, // 78: sys.DataAreaMultiUpdateReq.areas:type_name -> sys.DataArea
-	59,  // 79: sys.DataAreaIndexReq.page:type_name -> sys.PageInfo
-	140, // 80: sys.DataAreaIndexResp.list:type_name -> sys.DataArea
-	59,  // 81: sys.UserAreaApplyIndexReq.page:type_name -> sys.PageInfo
-	147, // 82: sys.UserAreaApplyIndexResp.list:type_name -> sys.UserAreaApplyInfo
-	200, // 83: sys.DictInfo.desc:type_name -> google.protobuf.StringValue
-	200, // 84: sys.DictInfo.body:type_name -> google.protobuf.StringValue
-	150, // 85: sys.DictInfo.Children:type_name -> sys.DictInfo
-	154, // 86: sys.DictInfo.Details:type_name -> sys.DictDetail
-	59,  // 87: sys.DictInfoIndexReq.page:type_name -> sys.PageInfo
-	150, // 88: sys.DictInfoIndexResp.list:type_name -> sys.DictInfo
-	200, // 89: sys.DictDetail.desc:type_name -> google.protobuf.StringValue
-	200, // 90: sys.DictDetail.body:type_name -> google.protobuf.StringValue
-	59,  // 91: sys.DictDetailIndexReq.page:type_name -> sys.PageInfo
-	154, // 92: sys.DictDetailIndexResp.list:type_name -> sys.DictDetail
-	200, // 93: sys.ModuleInfo.desc:type_name -> google.protobuf.StringValue
-	200, // 94: sys.ModuleInfo.body:type_name -> google.protobuf.StringValue
-	59,  // 95: sys.ModuleInfoIndexReq.page:type_name -> sys.PageInfo
-	157, // 96: sys.ModuleInfoIndexResp.list:type_name -> sys.ModuleInfo
-	200, // 97: sys.AppInfo.desc:type_name -> google.protobuf.StringValue
-	0,   // 98: sys.AppInfo.miniWx:type_name -> sys.ThirdAppConfig
-	59,  // 99: sys.AppInfoIndexReq.page:type_name -> sys.PageInfo
-	162, // 100: sys.AppInfoIndexResp.list:type_name -> sys.AppInfo
-	59,  // 101: sys.RoleInfoIndexReq.page:type_name -> sys.PageInfo
-	170, // 102: sys.RoleInfoIndexResp.list:type_name -> sys.RoleInfo
-	200, // 103: sys.MenuInfo.body:type_name -> google.protobuf.StringValue
-	173, // 104: sys.MenuInfo.children:type_name -> sys.MenuInfo
-	173, // 105: sys.MenuInfoIndexResp.list:type_name -> sys.MenuInfo
-	175, // 106: sys.configResp.map:type_name -> sys.Map
-	59,  // 107: sys.ApiInfoIndexReq.page:type_name -> sys.PageInfo
-	178, // 108: sys.ApiInfoIndexResp.list:type_name -> sys.ApiInfo
-	59,  // 109: sys.AccessInfoIndexReq.page:type_name -> sys.PageInfo
-	178, // 110: sys.AccessInfo.Apis:type_name -> sys.ApiInfo
-	183, // 111: sys.AccessInfoIndexResp.list:type_name -> sys.AccessInfo
-	199, // 112: sys.OpsWorkOrder.params:type_name -> sys.OpsWorkOrder.ParamsEntry
-	59,  // 113: sys.OpsWorkOrderIndexReq.page:type_name -> sys.PageInfo
-	185, // 114: sys.OpsWorkOrderIndexResp.list:type_name -> sys.OpsWorkOrder
-	59,  // 115: sys.OpsFeedbackIndexReq.page:type_name -> sys.PageInfo
-	188, // 116: sys.OpsFeedbackIndexResp.list:type_name -> sys.OpsFeedback
-	109, // 117: sys.UserCheckTokenResp.ProjectAuthEntry.value:type_name -> sys.ProjectAuth
-	114, // 118: sys.UserManage.userInfoCreate:input_type -> sys.UserInfoCreateReq
-	115, // 119: sys.UserManage.userInfoIndex:input_type -> sys.UserInfoIndexReq
-	117, // 120: sys.UserManage.userInfoUpdate:input_type -> sys.userInfoUpdateReq
-	118, // 121: sys.UserManage.userInfoRead:input_type -> sys.UserInfoReadReq
-	119, // 122: sys.UserManage.userInfoDelete:input_type -> sys.UserInfoDeleteReq
-	127, // 123: sys.UserManage.userLogin:input_type -> sys.UserLoginReq
-	123, // 124: sys.UserManage.userForgetPwd:input_type -> sys.UserForgetPwdReq
-	121, // 125: sys.UserManage.userCaptcha:input_type -> sys.UserCaptchaReq
-	107, // 126: sys.UserManage.userCheckToken:input_type -> sys.UserCheckTokenReq
-	129, // 127: sys.UserManage.userRegister:input_type -> sys.UserRegisterReq
-	126, // 128: sys.UserManage.userChangePwd:input_type -> sys.UserChangePwdReq
-	124, // 129: sys.UserManage.userCodeToUserID:input_type -> sys.UserCodeToUserIDReq
-	131, // 130: sys.UserManage.userRoleIndex:input_type -> sys.UserRoleIndexReq
-	133, // 131: sys.UserManage.userRoleMultiUpdate:input_type -> sys.UserRoleMultiUpdateReq
-	133, // 132: sys.UserManage.userRoleMultiCreate:input_type -> sys.UserRoleMultiUpdateReq
-	145, // 133: sys.UserManage.userAreaApplyCreate:input_type -> sys.UserAreaApplyCreateReq
-	1,   // 134: sys.UserManage.userMessageMultiIsRead:input_type -> sys.IDList
-	32,  // 135: sys.UserManage.userMessageIndex:input_type -> sys.UserMessageIndexReq
-	58,  // 136: sys.UserManage.userMessageStatistics:input_type -> sys.Empty
-	62,  // 137: sys.UserManage.userProfileRead:input_type -> sys.WithCode
-	28,  // 138: sys.UserManage.userProfileUpdate:input_type -> sys.UserProfile
-	29,  // 139: sys.UserManage.userProfileIndex:input_type -> sys.UserProfileIndexReq
-	137, // 140: sys.DataManage.dataProjectMultiUpdate:input_type -> sys.DataProjectMultiUpdateReq
-	136, // 141: sys.DataManage.dataProjectCreate:input_type -> sys.DataProjectSaveReq
-	135, // 142: sys.DataManage.dataProjectDelete:input_type -> sys.DataProjectDeleteReq
-	138, // 143: sys.DataManage.dataProjectIndex:input_type -> sys.DataProjectIndexReq
-	141, // 144: sys.DataManage.dataAreaMultiUpdate:input_type -> sys.DataAreaMultiUpdateReq
-	142, // 145: sys.DataManage.dataAreaIndex:input_type -> sys.DataAreaIndexReq
-	144, // 146: sys.DataManage.dataAreaMultiDelete:input_type -> sys.DataAreaMultiDeleteReq
-	146, // 147: sys.DataManage.userAreaApplyIndex:input_type -> sys.UserAreaApplyIndexReq
-	149, // 148: sys.DataManage.userAreaApplyDeal:input_type -> sys.UserAreaApplyDealReq
-	16,  // 149: sys.NotifyManage.messageInfoSend:input_type -> sys.MessageInfoSendReq
-	14,  // 150: sys.NotifyManage.messageInfoIndex:input_type -> sys.MessageInfoIndexReq
-	17,  // 151: sys.NotifyManage.messageInfoUpdate:input_type -> sys.MessageInfo
-	60,  // 152: sys.NotifyManage.messageInfoDelete:input_type -> sys.WithID
-	61,  // 153: sys.NotifyManage.notifyConfigRead:input_type -> sys.WithIDCode
-	2,   // 154: sys.NotifyManage.notifyConfigCreate:input_type -> sys.NotifyConfig
-	2,   // 155: sys.NotifyManage.notifyConfigUpdate:input_type -> sys.NotifyConfig
-	3,   // 156: sys.NotifyManage.notifyConfigIndex:input_type -> sys.NotifyConfigIndexReq
-	60,  // 157: sys.NotifyManage.notifyConfigDelete:input_type -> sys.WithID
-	36,  // 158: sys.NotifyManage.notifyConfigSend:input_type -> sys.NotifyConfigSendReq
-	60,  // 159: sys.NotifyManage.notifyTemplateRead:input_type -> sys.WithID
-	5,   // 160: sys.NotifyManage.notifyTemplateCreate:input_type -> sys.NotifyTemplate
-	5,   // 161: sys.NotifyManage.notifyTemplateUpdate:input_type -> sys.NotifyTemplate
-	12,  // 162: sys.NotifyManage.notifyTemplateIndex:input_type -> sys.NotifyTemplateIndexReq
-	60,  // 163: sys.NotifyManage.notifyTemplateDelete:input_type -> sys.WithID
-	21,  // 164: sys.NotifyManage.notifyConfigTemplateUpdate:input_type -> sys.NotifyConfigTemplate
-	18,  // 165: sys.NotifyManage.notifyConfigTemplateDelete:input_type -> sys.NotifyConfigTemplateDeleteReq
-	19,  // 166: sys.NotifyManage.notifyConfigTemplateIndex:input_type -> sys.NotifyConfigTemplateIndexReq
-	60,  // 167: sys.NotifyManage.notifyChannelRead:input_type -> sys.WithID
-	6,   // 168: sys.NotifyManage.notifyChannelCreate:input_type -> sys.NotifyChannel
-	6,   // 169: sys.NotifyManage.notifyChannelUpdate:input_type -> sys.NotifyChannel
-	7,   // 170: sys.NotifyManage.notifyChannelIndex:input_type -> sys.NotifyChannelIndexReq
-	60,  // 171: sys.NotifyManage.notifyChannelDelete:input_type -> sys.WithID
-	178, // 172: sys.AccessManage.apiInfoCreate:input_type -> sys.ApiInfo
-	177, // 173: sys.AccessManage.apiInfoIndex:input_type -> sys.ApiInfoIndexReq
-	178, // 174: sys.AccessManage.apiInfoUpdate:input_type -> sys.ApiInfo
-	60,  // 175: sys.AccessManage.apiInfoDelete:input_type -> sys.WithID
-	180, // 176: sys.AccessManage.accessInfoMultiImport:input_type -> sys.AccessInfoMultiImportReq
-	183, // 177: sys.AccessManage.accessInfoCreate:input_type -> sys.AccessInfo
-	182, // 178: sys.AccessManage.accessInfoIndex:input_type -> sys.AccessInfoIndexReq
-	183, // 179: sys.AccessManage.accessInfoUpdate:input_type -> sys.AccessInfo
-	60,  // 180: sys.AccessManage.accessInfoDelete:input_type -> sys.WithID
-	170, // 181: sys.RoleManage.roleInfoCreate:input_type -> sys.RoleInfo
-	168, // 182: sys.RoleManage.roleInfoIndex:input_type -> sys.RoleInfoIndexReq
-	170, // 183: sys.RoleManage.roleInfoUpdate:input_type -> sys.RoleInfo
-	60,  // 184: sys.RoleManage.roleInfoDelete:input_type -> sys.WithID
-	90,  // 185: sys.RoleManage.roleMenuIndex:input_type -> sys.RoleMenuIndexReq
-	112, // 186: sys.RoleManage.roleMenuMultiUpdate:input_type -> sys.RoleMenuMultiUpdateReq
-	92,  // 187: sys.RoleManage.roleAppIndex:input_type -> sys.RoleAppIndexReq
-	110, // 188: sys.RoleManage.roleAppMultiUpdate:input_type -> sys.RoleAppMultiUpdateReq
-	94,  // 189: sys.RoleManage.roleModuleIndex:input_type -> sys.RoleModuleIndexReq
-	111, // 190: sys.RoleManage.roleModuleMultiUpdate:input_type -> sys.RoleModuleMultiUpdateReq
-	113, // 191: sys.RoleManage.roleApiAuth:input_type -> sys.RoleApiAuthReq
-	87,  // 192: sys.RoleManage.roleAccessMultiUpdate:input_type -> sys.RoleAccessMultiUpdateReq
-	88,  // 193: sys.RoleManage.roleAccessIndex:input_type -> sys.RoleAccessIndexReq
-	162, // 194: sys.AppManage.appInfoCreate:input_type -> sys.AppInfo
-	163, // 195: sys.AppManage.appInfoIndex:input_type -> sys.AppInfoIndexReq
-	162, // 196: sys.AppManage.appInfoUpdate:input_type -> sys.AppInfo
-	61,  // 197: sys.AppManage.appInfoDelete:input_type -> sys.WithIDCode
-	61,  // 198: sys.AppManage.appInfoRead:input_type -> sys.WithIDCode
-	166, // 199: sys.AppManage.appModuleIndex:input_type -> sys.AppModuleIndexReq
-	165, // 200: sys.AppManage.appModuleMultiUpdate:input_type -> sys.AppModuleMultiUpdateReq
-	160, // 201: sys.AppManage.appPolicyRead:input_type -> sys.AppPolicyReadReq
-	157, // 202: sys.ModuleManage.moduleInfoCreate:input_type -> sys.ModuleInfo
-	158, // 203: sys.ModuleManage.moduleInfoIndex:input_type -> sys.ModuleInfoIndexReq
-	157, // 204: sys.ModuleManage.moduleInfoUpdate:input_type -> sys.ModuleInfo
-	61,  // 205: sys.ModuleManage.moduleInfoDelete:input_type -> sys.WithIDCode
-	61,  // 206: sys.ModuleManage.moduleInfoRead:input_type -> sys.WithIDCode
-	173, // 207: sys.ModuleManage.moduleMenuCreate:input_type -> sys.MenuInfo
-	172, // 208: sys.ModuleManage.moduleMenuIndex:input_type -> sys.MenuInfoIndexReq
-	173, // 209: sys.ModuleManage.moduleMenuUpdate:input_type -> sys.MenuInfo
-	60,  // 210: sys.ModuleManage.moduleMenuDelete:input_type -> sys.WithID
-	150, // 211: sys.DictManage.dictInfoCreate:input_type -> sys.DictInfo
-	152, // 212: sys.DictManage.dictInfoIndex:input_type -> sys.DictInfoIndexReq
-	150, // 213: sys.DictManage.dictInfoUpdate:input_type -> sys.DictInfo
-	60,  // 214: sys.DictManage.dictInfoDelete:input_type -> sys.WithID
-	151, // 215: sys.DictManage.dictInfoRead:input_type -> sys.DictInfoReadReq
-	154, // 216: sys.DictManage.dictDetailCreate:input_type -> sys.DictDetail
-	155, // 217: sys.DictManage.dictDetailIndex:input_type -> sys.DictDetailIndexReq
-	154, // 218: sys.DictManage.dictDetailUpdate:input_type -> sys.DictDetail
-	60,  // 219: sys.DictManage.dictDetailDelete:input_type -> sys.WithID
-	58,  // 220: sys.Common.config:input_type -> sys.Empty
-	82,  // 221: sys.Common.QRCodeRead:input_type -> sys.QRCodeReadReq
-	84,  // 222: sys.Common.slotInfoIndex:input_type -> sys.SlotInfoIndexReq
-	81,  // 223: sys.Common.slotInfoCreate:input_type -> sys.SlotInfo
-	81,  // 224: sys.Common.slotInfoUpdate:input_type -> sys.SlotInfo
-	60,  // 225: sys.Common.slotInfoDelete:input_type -> sys.WithID
-	60,  // 226: sys.Common.slotInfoRead:input_type -> sys.WithID
-	97,  // 227: sys.Log.loginLogIndex:input_type -> sys.LoginLogIndexReq
-	100, // 228: sys.Log.operLogIndex:input_type -> sys.OperLogIndexReq
-	103, // 229: sys.Log.loginLogCreate:input_type -> sys.LoginLogCreateReq
-	104, // 230: sys.Log.operLogCreate:input_type -> sys.OperLogCreateReq
-	65,  // 231: sys.ProjectManage.projectInfoCreate:input_type -> sys.ProjectInfo
-	65,  // 232: sys.ProjectManage.projectInfoUpdate:input_type -> sys.ProjectInfo
-	64,  // 233: sys.ProjectManage.projectInfoDelete:input_type -> sys.ProjectWithID
-	64,  // 234: sys.ProjectManage.projectInfoRead:input_type -> sys.ProjectWithID
-	70,  // 235: sys.ProjectManage.projectInfoIndex:input_type -> sys.ProjectInfoIndexReq
-	67,  // 236: sys.ProjectManage.projectProfileRead:input_type -> sys.ProjectProfileReadReq
-	66,  // 237: sys.ProjectManage.projectProfileUpdate:input_type -> sys.ProjectProfile
-	68,  // 238: sys.ProjectManage.projectProfileIndex:input_type -> sys.ProjectProfileIndexReq
-	72,  // 239: sys.AreaManage.areaInfoCreate:input_type -> sys.AreaInfo
-	72,  // 240: sys.AreaManage.areaInfoUpdate:input_type -> sys.AreaInfo
-	73,  // 241: sys.AreaManage.areaInfoDelete:input_type -> sys.AreaWithID
-	78,  // 242: sys.AreaManage.areaInfoRead:input_type -> sys.AreaInfoReadReq
-	79,  // 243: sys.AreaManage.areaInfoIndex:input_type -> sys.AreaInfoIndexReq
-	75,  // 244: sys.AreaManage.areaProfileRead:input_type -> sys.AreaProfileReadReq
-	74,  // 245: sys.AreaManage.areaProfileUpdate:input_type -> sys.AreaProfile
-	76,  // 246: sys.AreaManage.areaProfileIndex:input_type -> sys.AreaProfileIndexReq
-	37,  // 247: sys.TenantManage.tenantInfoCreate:input_type -> sys.TenantInfoCreateReq
-	38,  // 248: sys.TenantManage.tenantInfoUpdate:input_type -> sys.TenantInfo
-	61,  // 249: sys.TenantManage.tenantInfoDelete:input_type -> sys.WithIDCode
-	61,  // 250: sys.TenantManage.tenantInfoRead:input_type -> sys.WithIDCode
-	39,  // 251: sys.TenantManage.tenantInfoIndex:input_type -> sys.TenantInfoIndexReq
-	41,  // 252: sys.TenantManage.tenantAccessMultiUpdate:input_type -> sys.TenantAccessMultiUpdateReq
-	42,  // 253: sys.TenantManage.tenantAccessIndex:input_type -> sys.TenantAccessIndexReq
-	47,  // 254: sys.TenantManage.tenantAppIndex:input_type -> sys.TenantAppIndexReq
-	44,  // 255: sys.TenantManage.tenantAppCreate:input_type -> sys.TenantAppInfo
-	44,  // 256: sys.TenantManage.tenantAppUpdate:input_type -> sys.TenantAppInfo
-	45,  // 257: sys.TenantManage.tenantAppDelete:input_type -> sys.TenantAppWithIDOrCode
-	44,  // 258: sys.TenantManage.tenantAppModuleMultiCreate:input_type -> sys.TenantAppInfo
-	55,  // 259: sys.TenantManage.tenantAppModuleCreate:input_type -> sys.TenantModuleCreateReq
-	50,  // 260: sys.TenantManage.tenantAppModuleIndex:input_type -> sys.TenantModuleIndexReq
-	56,  // 261: sys.TenantManage.tenantAppModuleDelete:input_type -> sys.TenantModuleWithIDOrCode
-	54,  // 262: sys.TenantManage.tenantAppMenuCreate:input_type -> sys.TenantAppMenu
-	52,  // 263: sys.TenantManage.tenantAppMenuIndex:input_type -> sys.TenantAppMenuIndexReq
-	54,  // 264: sys.TenantManage.tenantAppMenuUpdate:input_type -> sys.TenantAppMenu
-	63,  // 265: sys.TenantManage.tenantAppMenuDelete:input_type -> sys.WithAppCodeID
-	25,  // 266: sys.TenantManage.tenantOpenCheckToken:input_type -> sys.TenantOpenCheckTokenReq
-	62,  // 267: sys.TenantManage.tenantOpenWebHook:input_type -> sys.WithCode
-	23,  // 268: sys.TenantManage.tenantAgreementIndex:input_type -> sys.TenantAgreementIndexReq
-	22,  // 269: sys.TenantManage.tenantAgreementUpdate:input_type -> sys.TenantAgreement
-	22,  // 270: sys.TenantManage.tenantAgreementCreate:input_type -> sys.TenantAgreement
-	61,  // 271: sys.TenantManage.tenantAgreementRead:input_type -> sys.WithIDCode
-	60,  // 272: sys.TenantManage.tenantAgreementDelete:input_type -> sys.WithID
-	185, // 273: sys.ops.opsWorkOrderCreate:input_type -> sys.OpsWorkOrder
-	185, // 274: sys.ops.opsWorkOrderUpdate:input_type -> sys.OpsWorkOrder
-	186, // 275: sys.ops.opsWorkOrderIndex:input_type -> sys.OpsWorkOrderIndexReq
-	188, // 276: sys.ops.opsFeedbackCreate:input_type -> sys.OpsFeedback
-	189, // 277: sys.ops.opsFeedbackIndex:input_type -> sys.OpsFeedbackIndexReq
-	106, // 278: sys.UserManage.userInfoCreate:output_type -> sys.UserCreateResp
-	116, // 279: sys.UserManage.userInfoIndex:output_type -> sys.UserInfoIndexResp
-	58,  // 280: sys.UserManage.userInfoUpdate:output_type -> sys.Empty
-	105, // 281: sys.UserManage.userInfoRead:output_type -> sys.UserInfo
-	58,  // 282: sys.UserManage.userInfoDelete:output_type -> sys.Empty
-	128, // 283: sys.UserManage.userLogin:output_type -> sys.UserLoginResp
-	58,  // 284: sys.UserManage.userForgetPwd:output_type -> sys.Empty
-	122, // 285: sys.UserManage.userCaptcha:output_type -> sys.UserCaptchaResp
-	108, // 286: sys.UserManage.userCheckToken:output_type -> sys.UserCheckTokenResp
-	130, // 287: sys.UserManage.userRegister:output_type -> sys.UserRegisterResp
-	58,  // 288: sys.UserManage.userChangePwd:output_type -> sys.Empty
-	125, // 289: sys.UserManage.userCodeToUserID:output_type -> sys.UserCodeToUserIDResp
-	132, // 290: sys.UserManage.userRoleIndex:output_type -> sys.UserRoleIndexResp
-	58,  // 291: sys.UserManage.userRoleMultiUpdate:output_type -> sys.Empty
-	58,  // 292: sys.UserManage.userRoleMultiCreate:output_type -> sys.Empty
-	58,  // 293: sys.UserManage.userAreaApplyCreate:output_type -> sys.Empty
-	58,  // 294: sys.UserManage.userMessageMultiIsRead:output_type -> sys.Empty
-	35,  // 295: sys.UserManage.userMessageIndex:output_type -> sys.UserMessageIndexResp
-	33,  // 296: sys.UserManage.userMessageStatistics:output_type -> sys.UserMessageStatisticsResp
-	28,  // 297: sys.UserManage.userProfileRead:output_type -> sys.UserProfile
-	58,  // 298: sys.UserManage.userProfileUpdate:output_type -> sys.Empty
-	30,  // 299: sys.UserManage.userProfileIndex:output_type -> sys.UserProfileIndexResp
-	58,  // 300: sys.DataManage.dataProjectMultiUpdate:output_type -> sys.Empty
-	58,  // 301: sys.DataManage.dataProjectCreate:output_type -> sys.Empty
-	58,  // 302: sys.DataManage.dataProjectDelete:output_type -> sys.Empty
-	139, // 303: sys.DataManage.dataProjectIndex:output_type -> sys.DataProjectIndexResp
-	58,  // 304: sys.DataManage.dataAreaMultiUpdate:output_type -> sys.Empty
-	143, // 305: sys.DataManage.dataAreaIndex:output_type -> sys.DataAreaIndexResp
-	58,  // 306: sys.DataManage.dataAreaMultiDelete:output_type -> sys.Empty
-	148, // 307: sys.DataManage.userAreaApplyIndex:output_type -> sys.UserAreaApplyIndexResp
-	58,  // 308: sys.DataManage.userAreaApplyDeal:output_type -> sys.Empty
-	60,  // 309: sys.NotifyManage.messageInfoSend:output_type -> sys.WithID
-	15,  // 310: sys.NotifyManage.messageInfoIndex:output_type -> sys.MessageInfoIndexResp
-	58,  // 311: sys.NotifyManage.messageInfoUpdate:output_type -> sys.Empty
-	58,  // 312: sys.NotifyManage.messageInfoDelete:output_type -> sys.Empty
-	2,   // 313: sys.NotifyManage.notifyConfigRead:output_type -> sys.NotifyConfig
-	60,  // 314: sys.NotifyManage.notifyConfigCreate:output_type -> sys.WithID
-	58,  // 315: sys.NotifyManage.notifyConfigUpdate:output_type -> sys.Empty
-	4,   // 316: sys.NotifyManage.notifyConfigIndex:output_type -> sys.NotifyConfigIndexResp
-	58,  // 317: sys.NotifyManage.notifyConfigDelete:output_type -> sys.Empty
-	58,  // 318: sys.NotifyManage.notifyConfigSend:output_type -> sys.Empty
-	5,   // 319: sys.NotifyManage.notifyTemplateRead:output_type -> sys.NotifyTemplate
-	60,  // 320: sys.NotifyManage.notifyTemplateCreate:output_type -> sys.WithID
-	58,  // 321: sys.NotifyManage.notifyTemplateUpdate:output_type -> sys.Empty
-	13,  // 322: sys.NotifyManage.notifyTemplateIndex:output_type -> sys.NotifyTemplateIndexResp
-	58,  // 323: sys.NotifyManage.notifyTemplateDelete:output_type -> sys.Empty
-	58,  // 324: sys.NotifyManage.notifyConfigTemplateUpdate:output_type -> sys.Empty
-	58,  // 325: sys.NotifyManage.notifyConfigTemplateDelete:output_type -> sys.Empty
-	20,  // 326: sys.NotifyManage.notifyConfigTemplateIndex:output_type -> sys.NotifyConfigTemplateIndexResp
-	6,   // 327: sys.NotifyManage.notifyChannelRead:output_type -> sys.NotifyChannel
-	60,  // 328: sys.NotifyManage.notifyChannelCreate:output_type -> sys.WithID
-	58,  // 329: sys.NotifyManage.notifyChannelUpdate:output_type -> sys.Empty
-	8,   // 330: sys.NotifyManage.notifyChannelIndex:output_type -> sys.NotifyChannelIndexResp
-	58,  // 331: sys.NotifyManage.notifyChannelDelete:output_type -> sys.Empty
-	60,  // 332: sys.AccessManage.apiInfoCreate:output_type -> sys.WithID
-	179, // 333: sys.AccessManage.apiInfoIndex:output_type -> sys.ApiInfoIndexResp
-	58,  // 334: sys.AccessManage.apiInfoUpdate:output_type -> sys.Empty
-	58,  // 335: sys.AccessManage.apiInfoDelete:output_type -> sys.Empty
-	181, // 336: sys.AccessManage.accessInfoMultiImport:output_type -> sys.AccessInfoMultiImportResp
-	60,  // 337: sys.AccessManage.accessInfoCreate:output_type -> sys.WithID
-	184, // 338: sys.AccessManage.accessInfoIndex:output_type -> sys.AccessInfoIndexResp
-	58,  // 339: sys.AccessManage.accessInfoUpdate:output_type -> sys.Empty
-	58,  // 340: sys.AccessManage.accessInfoDelete:output_type -> sys.Empty
-	60,  // 341: sys.RoleManage.roleInfoCreate:output_type -> sys.WithID
-	169, // 342: sys.RoleManage.roleInfoIndex:output_type -> sys.RoleInfoIndexResp
-	58,  // 343: sys.RoleManage.roleInfoUpdate:output_type -> sys.Empty
-	58,  // 344: sys.RoleManage.roleInfoDelete:output_type -> sys.Empty
-	91,  // 345: sys.RoleManage.roleMenuIndex:output_type -> sys.RoleMenuIndexResp
-	58,  // 346: sys.RoleManage.roleMenuMultiUpdate:output_type -> sys.Empty
-	93,  // 347: sys.RoleManage.roleAppIndex:output_type -> sys.RoleAppIndexResp
-	58,  // 348: sys.RoleManage.roleAppMultiUpdate:output_type -> sys.Empty
-	95,  // 349: sys.RoleManage.roleModuleIndex:output_type -> sys.RoleModuleIndexResp
-	58,  // 350: sys.RoleManage.roleModuleMultiUpdate:output_type -> sys.Empty
-	58,  // 351: sys.RoleManage.roleApiAuth:output_type -> sys.Empty
-	58,  // 352: sys.RoleManage.roleAccessMultiUpdate:output_type -> sys.Empty
-	89,  // 353: sys.RoleManage.roleAccessIndex:output_type -> sys.RoleAccessIndexResp
-	60,  // 354: sys.AppManage.appInfoCreate:output_type -> sys.WithID
-	164, // 355: sys.AppManage.appInfoIndex:output_type -> sys.AppInfoIndexResp
-	58,  // 356: sys.AppManage.appInfoUpdate:output_type -> sys.Empty
-	58,  // 357: sys.AppManage.appInfoDelete:output_type -> sys.Empty
-	162, // 358: sys.AppManage.appInfoRead:output_type -> sys.AppInfo
-	167, // 359: sys.AppManage.appModuleIndex:output_type -> sys.AppModuleIndexResp
-	58,  // 360: sys.AppManage.appModuleMultiUpdate:output_type -> sys.Empty
-	161, // 361: sys.AppManage.appPolicyRead:output_type -> sys.AppPolicy
-	60,  // 362: sys.ModuleManage.moduleInfoCreate:output_type -> sys.WithID
-	159, // 363: sys.ModuleManage.moduleInfoIndex:output_type -> sys.ModuleInfoIndexResp
-	58,  // 364: sys.ModuleManage.moduleInfoUpdate:output_type -> sys.Empty
-	58,  // 365: sys.ModuleManage.moduleInfoDelete:output_type -> sys.Empty
-	157, // 366: sys.ModuleManage.moduleInfoRead:output_type -> sys.ModuleInfo
-	60,  // 367: sys.ModuleManage.moduleMenuCreate:output_type -> sys.WithID
-	174, // 368: sys.ModuleManage.moduleMenuIndex:output_type -> sys.MenuInfoIndexResp
-	58,  // 369: sys.ModuleManage.moduleMenuUpdate:output_type -> sys.Empty
-	58,  // 370: sys.ModuleManage.moduleMenuDelete:output_type -> sys.Empty
-	60,  // 371: sys.DictManage.dictInfoCreate:output_type -> sys.WithID
-	153, // 372: sys.DictManage.dictInfoIndex:output_type -> sys.DictInfoIndexResp
-	58,  // 373: sys.DictManage.dictInfoUpdate:output_type -> sys.Empty
-	58,  // 374: sys.DictManage.dictInfoDelete:output_type -> sys.Empty
-	150, // 375: sys.DictManage.dictInfoRead:output_type -> sys.DictInfo
-	60,  // 376: sys.DictManage.dictDetailCreate:output_type -> sys.WithID
-	156, // 377: sys.DictManage.dictDetailIndex:output_type -> sys.DictDetailIndexResp
-	58,  // 378: sys.DictManage.dictDetailUpdate:output_type -> sys.Empty
-	58,  // 379: sys.DictManage.dictDetailDelete:output_type -> sys.Empty
-	176, // 380: sys.Common.config:output_type -> sys.configResp
-	83,  // 381: sys.Common.QRCodeRead:output_type -> sys.QRCodeReadResp
-	85,  // 382: sys.Common.slotInfoIndex:output_type -> sys.SlotInfoIndexResp
-	60,  // 383: sys.Common.slotInfoCreate:output_type -> sys.WithID
-	58,  // 384: sys.Common.slotInfoUpdate:output_type -> sys.Empty
-	58,  // 385: sys.Common.slotInfoDelete:output_type -> sys.Empty
-	81,  // 386: sys.Common.slotInfoRead:output_type -> sys.SlotInfo
-	99,  // 387: sys.Log.loginLogIndex:output_type -> sys.LoginLogIndexResp
-	102, // 388: sys.Log.operLogIndex:output_type -> sys.OperLogIndexResp
-	58,  // 389: sys.Log.loginLogCreate:output_type -> sys.Empty
-	58,  // 390: sys.Log.operLogCreate:output_type -> sys.Empty
-	64,  // 391: sys.ProjectManage.projectInfoCreate:output_type -> sys.ProjectWithID
-	58,  // 392: sys.ProjectManage.projectInfoUpdate:output_type -> sys.Empty
-	58,  // 393: sys.ProjectManage.projectInfoDelete:output_type -> sys.Empty
-	65,  // 394: sys.ProjectManage.projectInfoRead:output_type -> sys.ProjectInfo
-	71,  // 395: sys.ProjectManage.projectInfoIndex:output_type -> sys.ProjectInfoIndexResp
-	66,  // 396: sys.ProjectManage.projectProfileRead:output_type -> sys.ProjectProfile
-	58,  // 397: sys.ProjectManage.projectProfileUpdate:output_type -> sys.Empty
-	69,  // 398: sys.ProjectManage.projectProfileIndex:output_type -> sys.ProjectProfileIndexResp
-	73,  // 399: sys.AreaManage.areaInfoCreate:output_type -> sys.AreaWithID
-	58,  // 400: sys.AreaManage.areaInfoUpdate:output_type -> sys.Empty
-	58,  // 401: sys.AreaManage.areaInfoDelete:output_type -> sys.Empty
-	72,  // 402: sys.AreaManage.areaInfoRead:output_type -> sys.AreaInfo
-	80,  // 403: sys.AreaManage.areaInfoIndex:output_type -> sys.AreaInfoIndexResp
-	74,  // 404: sys.AreaManage.areaProfileRead:output_type -> sys.AreaProfile
-	58,  // 405: sys.AreaManage.areaProfileUpdate:output_type -> sys.Empty
-	77,  // 406: sys.AreaManage.areaProfileIndex:output_type -> sys.AreaProfileIndexResp
-	60,  // 407: sys.TenantManage.tenantInfoCreate:output_type -> sys.WithID
-	58,  // 408: sys.TenantManage.tenantInfoUpdate:output_type -> sys.Empty
-	58,  // 409: sys.TenantManage.tenantInfoDelete:output_type -> sys.Empty
-	38,  // 410: sys.TenantManage.tenantInfoRead:output_type -> sys.TenantInfo
-	40,  // 411: sys.TenantManage.tenantInfoIndex:output_type -> sys.TenantInfoIndexResp
-	58,  // 412: sys.TenantManage.tenantAccessMultiUpdate:output_type -> sys.Empty
-	43,  // 413: sys.TenantManage.tenantAccessIndex:output_type -> sys.TenantAccessIndexResp
-	48,  // 414: sys.TenantManage.tenantAppIndex:output_type -> sys.TenantAppIndexResp
-	58,  // 415: sys.TenantManage.tenantAppCreate:output_type -> sys.Empty
-	58,  // 416: sys.TenantManage.tenantAppUpdate:output_type -> sys.Empty
-	58,  // 417: sys.TenantManage.tenantAppDelete:output_type -> sys.Empty
-	58,  // 418: sys.TenantManage.tenantAppModuleMultiCreate:output_type -> sys.Empty
-	58,  // 419: sys.TenantManage.tenantAppModuleCreate:output_type -> sys.Empty
-	51,  // 420: sys.TenantManage.tenantAppModuleIndex:output_type -> sys.TenantModuleIndexResp
-	58,  // 421: sys.TenantManage.tenantAppModuleDelete:output_type -> sys.Empty
-	60,  // 422: sys.TenantManage.tenantAppMenuCreate:output_type -> sys.WithID
-	53,  // 423: sys.TenantManage.tenantAppMenuIndex:output_type -> sys.TenantAppMenuIndexResp
-	58,  // 424: sys.TenantManage.tenantAppMenuUpdate:output_type -> sys.Empty
-	58,  // 425: sys.TenantManage.tenantAppMenuDelete:output_type -> sys.Empty
-	26,  // 426: sys.TenantManage.tenantOpenCheckToken:output_type -> sys.TenantOpenCheckTokenResp
-	27,  // 427: sys.TenantManage.tenantOpenWebHook:output_type -> sys.TenantOpenWebHook
-	24,  // 428: sys.TenantManage.tenantAgreementIndex:output_type -> sys.TenantAgreementIndexResp
-	58,  // 429: sys.TenantManage.tenantAgreementUpdate:output_type -> sys.Empty
-	60,  // 430: sys.TenantManage.tenantAgreementCreate:output_type -> sys.WithID
-	22,  // 431: sys.TenantManage.tenantAgreementRead:output_type -> sys.TenantAgreement
-	58,  // 432: sys.TenantManage.tenantAgreementDelete:output_type -> sys.Empty
-	60,  // 433: sys.ops.opsWorkOrderCreate:output_type -> sys.WithID
-	58,  // 434: sys.ops.opsWorkOrderUpdate:output_type -> sys.Empty
-	187, // 435: sys.ops.opsWorkOrderIndex:output_type -> sys.OpsWorkOrderIndexResp
-	60,  // 436: sys.ops.opsFeedbackCreate:output_type -> sys.WithID
-	190, // 437: sys.ops.opsFeedbackIndex:output_type -> sys.OpsFeedbackIndexResp
-	278, // [278:438] is the sub-list for method output_type
-	118, // [118:278] is the sub-list for method input_type
-	118, // [118:118] is the sub-list for extension type_name
-	118, // [118:118] is the sub-list for extension extendee
-	0,   // [0:118] is the sub-list for field type_name
+	42,  // 28: sys.TenantConfig.registerAutoCreateProject:type_name -> sys.TenantConfigRegisterAutoCreateProject
+	43,  // 29: sys.TenantConfigRegisterAutoCreateProject.areas:type_name -> sys.TenantConfigRegisterAutoCreateArea
+	49,  // 30: sys.TenantAppInfo.modules:type_name -> sys.TenantAppModule
+	0,   // 31: sys.TenantAppInfo.miniDing:type_name -> sys.ThirdAppConfig
+	0,   // 32: sys.TenantAppInfo.miniWx:type_name -> sys.ThirdAppConfig
+	62,  // 33: sys.TenantAppIndexReq.page:type_name -> sys.PageInfo
+	47,  // 34: sys.TenantAppIndexResp.list:type_name -> sys.TenantAppInfo
+	62,  // 35: sys.TenantModuleIndexReq.page:type_name -> sys.PageInfo
+	160, // 36: sys.TenantModuleIndexResp.list:type_name -> sys.ModuleInfo
+	62,  // 37: sys.TenantAppMenuIndexReq.page:type_name -> sys.PageInfo
+	57,  // 38: sys.TenantAppMenuIndexResp.list:type_name -> sys.TenantAppMenu
+	176, // 39: sys.TenantAppMenu.info:type_name -> sys.MenuInfo
+	57,  // 40: sys.TenantAppMenu.children:type_name -> sys.TenantAppMenu
+	197, // 41: sys.PageInfo.orders:type_name -> sys.PageInfo.OrderBy
+	60,  // 42: sys.ProjectInfo.Position:type_name -> sys.Point
+	204, // 43: sys.ProjectInfo.area:type_name -> google.protobuf.FloatValue
+	203, // 44: sys.ProjectInfo.desc:type_name -> google.protobuf.StringValue
+	75,  // 45: sys.ProjectInfo.areas:type_name -> sys.AreaInfo
+	69,  // 46: sys.ProjectProfileIndexResp.profiles:type_name -> sys.ProjectProfile
+	62,  // 47: sys.ProjectInfoIndexReq.page:type_name -> sys.PageInfo
+	68,  // 48: sys.ProjectInfoIndexResp.list:type_name -> sys.ProjectInfo
+	60,  // 49: sys.AreaInfo.Position:type_name -> sys.Point
+	203, // 50: sys.AreaInfo.desc:type_name -> google.protobuf.StringValue
+	75,  // 51: sys.AreaInfo.children:type_name -> sys.AreaInfo
+	205, // 52: sys.AreaInfo.deviceCount:type_name -> google.protobuf.Int64Value
+	77,  // 53: sys.AreaProfileIndexResp.profiles:type_name -> sys.AreaProfile
+	62,  // 54: sys.AreaInfoIndexReq.page:type_name -> sys.PageInfo
+	75,  // 55: sys.AreaInfoIndexResp.list:type_name -> sys.AreaInfo
+	198, // 56: sys.SlotInfo.handler:type_name -> sys.SlotInfo.HandlerEntry
+	62,  // 57: sys.SlotInfoIndexReq.page:type_name -> sys.PageInfo
+	84,  // 58: sys.SlotInfoIndexResp.slots:type_name -> sys.SlotInfo
+	62,  // 59: sys.LoginLogIndexReq.page:type_name -> sys.PageInfo
+	99,  // 60: sys.LoginLogIndexReq.date:type_name -> sys.DateRange
+	101, // 61: sys.LoginLogIndexResp.list:type_name -> sys.LoginLogInfo
+	62,  // 62: sys.OperLogIndexReq.page:type_name -> sys.PageInfo
+	104, // 63: sys.OperLogIndexResp.list:type_name -> sys.OperLogInfo
+	203, // 64: sys.UserInfo.email:type_name -> google.protobuf.StringValue
+	203, // 65: sys.UserInfo.phone:type_name -> google.protobuf.StringValue
+	199, // 66: sys.UserCheckTokenResp.projectAuth:type_name -> sys.UserCheckTokenResp.ProjectAuthEntry
+	200, // 67: sys.ProjectAuth.area:type_name -> sys.ProjectAuth.AreaEntry
+	108, // 68: sys.UserInfoCreateReq.info:type_name -> sys.UserInfo
+	62,  // 69: sys.UserInfoIndexReq.page:type_name -> sys.PageInfo
+	108, // 70: sys.UserInfoIndexResp.list:type_name -> sys.UserInfo
+	108, // 71: sys.userInfoUpdateReq.info:type_name -> sys.UserInfo
+	108, // 72: sys.UserLoginResp.info:type_name -> sys.UserInfo
+	123, // 73: sys.UserLoginResp.token:type_name -> sys.JwtToken
+	108, // 74: sys.UserRegisterReq.info:type_name -> sys.UserInfo
+	201, // 75: sys.UserRegisterReq.expand:type_name -> sys.UserRegisterReq.ExpandEntry
+	173, // 76: sys.UserRoleIndexResp.list:type_name -> sys.RoleInfo
+	137, // 77: sys.DataProjectMultiUpdateReq.projects:type_name -> sys.DataProject
+	62,  // 78: sys.DataProjectIndexReq.page:type_name -> sys.PageInfo
+	137, // 79: sys.DataProjectIndexResp.list:type_name -> sys.DataProject
+	143, // 80: sys.DataAreaMultiUpdateReq.areas:type_name -> sys.DataArea
+	62,  // 81: sys.DataAreaIndexReq.page:type_name -> sys.PageInfo
+	143, // 82: sys.DataAreaIndexResp.list:type_name -> sys.DataArea
+	62,  // 83: sys.UserAreaApplyIndexReq.page:type_name -> sys.PageInfo
+	150, // 84: sys.UserAreaApplyIndexResp.list:type_name -> sys.UserAreaApplyInfo
+	203, // 85: sys.DictInfo.desc:type_name -> google.protobuf.StringValue
+	203, // 86: sys.DictInfo.body:type_name -> google.protobuf.StringValue
+	153, // 87: sys.DictInfo.Children:type_name -> sys.DictInfo
+	157, // 88: sys.DictInfo.Details:type_name -> sys.DictDetail
+	62,  // 89: sys.DictInfoIndexReq.page:type_name -> sys.PageInfo
+	153, // 90: sys.DictInfoIndexResp.list:type_name -> sys.DictInfo
+	203, // 91: sys.DictDetail.desc:type_name -> google.protobuf.StringValue
+	203, // 92: sys.DictDetail.body:type_name -> google.protobuf.StringValue
+	62,  // 93: sys.DictDetailIndexReq.page:type_name -> sys.PageInfo
+	157, // 94: sys.DictDetailIndexResp.list:type_name -> sys.DictDetail
+	203, // 95: sys.ModuleInfo.desc:type_name -> google.protobuf.StringValue
+	203, // 96: sys.ModuleInfo.body:type_name -> google.protobuf.StringValue
+	62,  // 97: sys.ModuleInfoIndexReq.page:type_name -> sys.PageInfo
+	160, // 98: sys.ModuleInfoIndexResp.list:type_name -> sys.ModuleInfo
+	203, // 99: sys.AppInfo.desc:type_name -> google.protobuf.StringValue
+	0,   // 100: sys.AppInfo.miniWx:type_name -> sys.ThirdAppConfig
+	62,  // 101: sys.AppInfoIndexReq.page:type_name -> sys.PageInfo
+	165, // 102: sys.AppInfoIndexResp.list:type_name -> sys.AppInfo
+	62,  // 103: sys.RoleInfoIndexReq.page:type_name -> sys.PageInfo
+	173, // 104: sys.RoleInfoIndexResp.list:type_name -> sys.RoleInfo
+	203, // 105: sys.MenuInfo.body:type_name -> google.protobuf.StringValue
+	176, // 106: sys.MenuInfo.children:type_name -> sys.MenuInfo
+	176, // 107: sys.MenuInfoIndexResp.list:type_name -> sys.MenuInfo
+	178, // 108: sys.configResp.map:type_name -> sys.Map
+	62,  // 109: sys.ApiInfoIndexReq.page:type_name -> sys.PageInfo
+	181, // 110: sys.ApiInfoIndexResp.list:type_name -> sys.ApiInfo
+	62,  // 111: sys.AccessInfoIndexReq.page:type_name -> sys.PageInfo
+	181, // 112: sys.AccessInfo.Apis:type_name -> sys.ApiInfo
+	186, // 113: sys.AccessInfoIndexResp.list:type_name -> sys.AccessInfo
+	202, // 114: sys.OpsWorkOrder.params:type_name -> sys.OpsWorkOrder.ParamsEntry
+	62,  // 115: sys.OpsWorkOrderIndexReq.page:type_name -> sys.PageInfo
+	188, // 116: sys.OpsWorkOrderIndexResp.list:type_name -> sys.OpsWorkOrder
+	62,  // 117: sys.OpsFeedbackIndexReq.page:type_name -> sys.PageInfo
+	191, // 118: sys.OpsFeedbackIndexResp.list:type_name -> sys.OpsFeedback
+	112, // 119: sys.UserCheckTokenResp.ProjectAuthEntry.value:type_name -> sys.ProjectAuth
+	117, // 120: sys.UserManage.userInfoCreate:input_type -> sys.UserInfoCreateReq
+	118, // 121: sys.UserManage.userInfoIndex:input_type -> sys.UserInfoIndexReq
+	120, // 122: sys.UserManage.userInfoUpdate:input_type -> sys.userInfoUpdateReq
+	121, // 123: sys.UserManage.userInfoRead:input_type -> sys.UserInfoReadReq
+	122, // 124: sys.UserManage.userInfoDelete:input_type -> sys.UserInfoDeleteReq
+	130, // 125: sys.UserManage.userLogin:input_type -> sys.UserLoginReq
+	126, // 126: sys.UserManage.userForgetPwd:input_type -> sys.UserForgetPwdReq
+	124, // 127: sys.UserManage.userCaptcha:input_type -> sys.UserCaptchaReq
+	110, // 128: sys.UserManage.userCheckToken:input_type -> sys.UserCheckTokenReq
+	132, // 129: sys.UserManage.userRegister:input_type -> sys.UserRegisterReq
+	129, // 130: sys.UserManage.userChangePwd:input_type -> sys.UserChangePwdReq
+	127, // 131: sys.UserManage.userCodeToUserID:input_type -> sys.UserCodeToUserIDReq
+	134, // 132: sys.UserManage.userRoleIndex:input_type -> sys.UserRoleIndexReq
+	136, // 133: sys.UserManage.userRoleMultiUpdate:input_type -> sys.UserRoleMultiUpdateReq
+	136, // 134: sys.UserManage.userRoleMultiCreate:input_type -> sys.UserRoleMultiUpdateReq
+	148, // 135: sys.UserManage.userAreaApplyCreate:input_type -> sys.UserAreaApplyCreateReq
+	1,   // 136: sys.UserManage.userMessageMultiIsRead:input_type -> sys.IDList
+	32,  // 137: sys.UserManage.userMessageIndex:input_type -> sys.UserMessageIndexReq
+	61,  // 138: sys.UserManage.userMessageStatistics:input_type -> sys.Empty
+	65,  // 139: sys.UserManage.userProfileRead:input_type -> sys.WithCode
+	28,  // 140: sys.UserManage.userProfileUpdate:input_type -> sys.UserProfile
+	29,  // 141: sys.UserManage.userProfileIndex:input_type -> sys.UserProfileIndexReq
+	140, // 142: sys.DataManage.dataProjectMultiUpdate:input_type -> sys.DataProjectMultiUpdateReq
+	139, // 143: sys.DataManage.dataProjectCreate:input_type -> sys.DataProjectSaveReq
+	138, // 144: sys.DataManage.dataProjectDelete:input_type -> sys.DataProjectDeleteReq
+	141, // 145: sys.DataManage.dataProjectIndex:input_type -> sys.DataProjectIndexReq
+	144, // 146: sys.DataManage.dataAreaMultiUpdate:input_type -> sys.DataAreaMultiUpdateReq
+	145, // 147: sys.DataManage.dataAreaIndex:input_type -> sys.DataAreaIndexReq
+	147, // 148: sys.DataManage.dataAreaMultiDelete:input_type -> sys.DataAreaMultiDeleteReq
+	149, // 149: sys.DataManage.userAreaApplyIndex:input_type -> sys.UserAreaApplyIndexReq
+	152, // 150: sys.DataManage.userAreaApplyDeal:input_type -> sys.UserAreaApplyDealReq
+	16,  // 151: sys.NotifyManage.messageInfoSend:input_type -> sys.MessageInfoSendReq
+	14,  // 152: sys.NotifyManage.messageInfoIndex:input_type -> sys.MessageInfoIndexReq
+	17,  // 153: sys.NotifyManage.messageInfoUpdate:input_type -> sys.MessageInfo
+	63,  // 154: sys.NotifyManage.messageInfoDelete:input_type -> sys.WithID
+	64,  // 155: sys.NotifyManage.notifyConfigRead:input_type -> sys.WithIDCode
+	2,   // 156: sys.NotifyManage.notifyConfigCreate:input_type -> sys.NotifyConfig
+	2,   // 157: sys.NotifyManage.notifyConfigUpdate:input_type -> sys.NotifyConfig
+	3,   // 158: sys.NotifyManage.notifyConfigIndex:input_type -> sys.NotifyConfigIndexReq
+	63,  // 159: sys.NotifyManage.notifyConfigDelete:input_type -> sys.WithID
+	36,  // 160: sys.NotifyManage.notifyConfigSend:input_type -> sys.NotifyConfigSendReq
+	63,  // 161: sys.NotifyManage.notifyTemplateRead:input_type -> sys.WithID
+	5,   // 162: sys.NotifyManage.notifyTemplateCreate:input_type -> sys.NotifyTemplate
+	5,   // 163: sys.NotifyManage.notifyTemplateUpdate:input_type -> sys.NotifyTemplate
+	12,  // 164: sys.NotifyManage.notifyTemplateIndex:input_type -> sys.NotifyTemplateIndexReq
+	63,  // 165: sys.NotifyManage.notifyTemplateDelete:input_type -> sys.WithID
+	21,  // 166: sys.NotifyManage.notifyConfigTemplateUpdate:input_type -> sys.NotifyConfigTemplate
+	18,  // 167: sys.NotifyManage.notifyConfigTemplateDelete:input_type -> sys.NotifyConfigTemplateDeleteReq
+	19,  // 168: sys.NotifyManage.notifyConfigTemplateIndex:input_type -> sys.NotifyConfigTemplateIndexReq
+	63,  // 169: sys.NotifyManage.notifyChannelRead:input_type -> sys.WithID
+	6,   // 170: sys.NotifyManage.notifyChannelCreate:input_type -> sys.NotifyChannel
+	6,   // 171: sys.NotifyManage.notifyChannelUpdate:input_type -> sys.NotifyChannel
+	7,   // 172: sys.NotifyManage.notifyChannelIndex:input_type -> sys.NotifyChannelIndexReq
+	63,  // 173: sys.NotifyManage.notifyChannelDelete:input_type -> sys.WithID
+	181, // 174: sys.AccessManage.apiInfoCreate:input_type -> sys.ApiInfo
+	180, // 175: sys.AccessManage.apiInfoIndex:input_type -> sys.ApiInfoIndexReq
+	181, // 176: sys.AccessManage.apiInfoUpdate:input_type -> sys.ApiInfo
+	63,  // 177: sys.AccessManage.apiInfoDelete:input_type -> sys.WithID
+	183, // 178: sys.AccessManage.accessInfoMultiImport:input_type -> sys.AccessInfoMultiImportReq
+	186, // 179: sys.AccessManage.accessInfoCreate:input_type -> sys.AccessInfo
+	185, // 180: sys.AccessManage.accessInfoIndex:input_type -> sys.AccessInfoIndexReq
+	186, // 181: sys.AccessManage.accessInfoUpdate:input_type -> sys.AccessInfo
+	63,  // 182: sys.AccessManage.accessInfoDelete:input_type -> sys.WithID
+	173, // 183: sys.RoleManage.roleInfoCreate:input_type -> sys.RoleInfo
+	171, // 184: sys.RoleManage.roleInfoIndex:input_type -> sys.RoleInfoIndexReq
+	173, // 185: sys.RoleManage.roleInfoUpdate:input_type -> sys.RoleInfo
+	63,  // 186: sys.RoleManage.roleInfoDelete:input_type -> sys.WithID
+	93,  // 187: sys.RoleManage.roleMenuIndex:input_type -> sys.RoleMenuIndexReq
+	115, // 188: sys.RoleManage.roleMenuMultiUpdate:input_type -> sys.RoleMenuMultiUpdateReq
+	95,  // 189: sys.RoleManage.roleAppIndex:input_type -> sys.RoleAppIndexReq
+	113, // 190: sys.RoleManage.roleAppMultiUpdate:input_type -> sys.RoleAppMultiUpdateReq
+	97,  // 191: sys.RoleManage.roleModuleIndex:input_type -> sys.RoleModuleIndexReq
+	114, // 192: sys.RoleManage.roleModuleMultiUpdate:input_type -> sys.RoleModuleMultiUpdateReq
+	116, // 193: sys.RoleManage.roleApiAuth:input_type -> sys.RoleApiAuthReq
+	90,  // 194: sys.RoleManage.roleAccessMultiUpdate:input_type -> sys.RoleAccessMultiUpdateReq
+	91,  // 195: sys.RoleManage.roleAccessIndex:input_type -> sys.RoleAccessIndexReq
+	165, // 196: sys.AppManage.appInfoCreate:input_type -> sys.AppInfo
+	166, // 197: sys.AppManage.appInfoIndex:input_type -> sys.AppInfoIndexReq
+	165, // 198: sys.AppManage.appInfoUpdate:input_type -> sys.AppInfo
+	64,  // 199: sys.AppManage.appInfoDelete:input_type -> sys.WithIDCode
+	64,  // 200: sys.AppManage.appInfoRead:input_type -> sys.WithIDCode
+	169, // 201: sys.AppManage.appModuleIndex:input_type -> sys.AppModuleIndexReq
+	168, // 202: sys.AppManage.appModuleMultiUpdate:input_type -> sys.AppModuleMultiUpdateReq
+	163, // 203: sys.AppManage.appPolicyRead:input_type -> sys.AppPolicyReadReq
+	160, // 204: sys.ModuleManage.moduleInfoCreate:input_type -> sys.ModuleInfo
+	161, // 205: sys.ModuleManage.moduleInfoIndex:input_type -> sys.ModuleInfoIndexReq
+	160, // 206: sys.ModuleManage.moduleInfoUpdate:input_type -> sys.ModuleInfo
+	64,  // 207: sys.ModuleManage.moduleInfoDelete:input_type -> sys.WithIDCode
+	64,  // 208: sys.ModuleManage.moduleInfoRead:input_type -> sys.WithIDCode
+	176, // 209: sys.ModuleManage.moduleMenuCreate:input_type -> sys.MenuInfo
+	175, // 210: sys.ModuleManage.moduleMenuIndex:input_type -> sys.MenuInfoIndexReq
+	176, // 211: sys.ModuleManage.moduleMenuUpdate:input_type -> sys.MenuInfo
+	63,  // 212: sys.ModuleManage.moduleMenuDelete:input_type -> sys.WithID
+	153, // 213: sys.DictManage.dictInfoCreate:input_type -> sys.DictInfo
+	155, // 214: sys.DictManage.dictInfoIndex:input_type -> sys.DictInfoIndexReq
+	153, // 215: sys.DictManage.dictInfoUpdate:input_type -> sys.DictInfo
+	63,  // 216: sys.DictManage.dictInfoDelete:input_type -> sys.WithID
+	154, // 217: sys.DictManage.dictInfoRead:input_type -> sys.DictInfoReadReq
+	157, // 218: sys.DictManage.dictDetailCreate:input_type -> sys.DictDetail
+	158, // 219: sys.DictManage.dictDetailIndex:input_type -> sys.DictDetailIndexReq
+	157, // 220: sys.DictManage.dictDetailUpdate:input_type -> sys.DictDetail
+	63,  // 221: sys.DictManage.dictDetailDelete:input_type -> sys.WithID
+	61,  // 222: sys.Common.config:input_type -> sys.Empty
+	85,  // 223: sys.Common.QRCodeRead:input_type -> sys.QRCodeReadReq
+	87,  // 224: sys.Common.slotInfoIndex:input_type -> sys.SlotInfoIndexReq
+	84,  // 225: sys.Common.slotInfoCreate:input_type -> sys.SlotInfo
+	84,  // 226: sys.Common.slotInfoUpdate:input_type -> sys.SlotInfo
+	63,  // 227: sys.Common.slotInfoDelete:input_type -> sys.WithID
+	63,  // 228: sys.Common.slotInfoRead:input_type -> sys.WithID
+	100, // 229: sys.Log.loginLogIndex:input_type -> sys.LoginLogIndexReq
+	103, // 230: sys.Log.operLogIndex:input_type -> sys.OperLogIndexReq
+	106, // 231: sys.Log.loginLogCreate:input_type -> sys.LoginLogCreateReq
+	107, // 232: sys.Log.operLogCreate:input_type -> sys.OperLogCreateReq
+	68,  // 233: sys.ProjectManage.projectInfoCreate:input_type -> sys.ProjectInfo
+	68,  // 234: sys.ProjectManage.projectInfoUpdate:input_type -> sys.ProjectInfo
+	67,  // 235: sys.ProjectManage.projectInfoDelete:input_type -> sys.ProjectWithID
+	67,  // 236: sys.ProjectManage.projectInfoRead:input_type -> sys.ProjectWithID
+	73,  // 237: sys.ProjectManage.projectInfoIndex:input_type -> sys.ProjectInfoIndexReq
+	70,  // 238: sys.ProjectManage.projectProfileRead:input_type -> sys.ProjectProfileReadReq
+	69,  // 239: sys.ProjectManage.projectProfileUpdate:input_type -> sys.ProjectProfile
+	71,  // 240: sys.ProjectManage.projectProfileIndex:input_type -> sys.ProjectProfileIndexReq
+	75,  // 241: sys.AreaManage.areaInfoCreate:input_type -> sys.AreaInfo
+	75,  // 242: sys.AreaManage.areaInfoUpdate:input_type -> sys.AreaInfo
+	76,  // 243: sys.AreaManage.areaInfoDelete:input_type -> sys.AreaWithID
+	81,  // 244: sys.AreaManage.areaInfoRead:input_type -> sys.AreaInfoReadReq
+	82,  // 245: sys.AreaManage.areaInfoIndex:input_type -> sys.AreaInfoIndexReq
+	78,  // 246: sys.AreaManage.areaProfileRead:input_type -> sys.AreaProfileReadReq
+	77,  // 247: sys.AreaManage.areaProfileUpdate:input_type -> sys.AreaProfile
+	79,  // 248: sys.AreaManage.areaProfileIndex:input_type -> sys.AreaProfileIndexReq
+	37,  // 249: sys.TenantManage.tenantInfoCreate:input_type -> sys.TenantInfoCreateReq
+	38,  // 250: sys.TenantManage.tenantInfoUpdate:input_type -> sys.TenantInfo
+	64,  // 251: sys.TenantManage.tenantInfoDelete:input_type -> sys.WithIDCode
+	64,  // 252: sys.TenantManage.tenantInfoRead:input_type -> sys.WithIDCode
+	39,  // 253: sys.TenantManage.tenantInfoIndex:input_type -> sys.TenantInfoIndexReq
+	41,  // 254: sys.TenantManage.tenantConfigUpdate:input_type -> sys.TenantConfig
+	65,  // 255: sys.TenantManage.tenantConfigRead:input_type -> sys.WithCode
+	44,  // 256: sys.TenantManage.tenantAccessMultiUpdate:input_type -> sys.TenantAccessMultiUpdateReq
+	45,  // 257: sys.TenantManage.tenantAccessIndex:input_type -> sys.TenantAccessIndexReq
+	50,  // 258: sys.TenantManage.tenantAppIndex:input_type -> sys.TenantAppIndexReq
+	47,  // 259: sys.TenantManage.tenantAppCreate:input_type -> sys.TenantAppInfo
+	47,  // 260: sys.TenantManage.tenantAppUpdate:input_type -> sys.TenantAppInfo
+	48,  // 261: sys.TenantManage.tenantAppDelete:input_type -> sys.TenantAppWithIDOrCode
+	47,  // 262: sys.TenantManage.tenantAppModuleMultiCreate:input_type -> sys.TenantAppInfo
+	58,  // 263: sys.TenantManage.tenantAppModuleCreate:input_type -> sys.TenantModuleCreateReq
+	53,  // 264: sys.TenantManage.tenantAppModuleIndex:input_type -> sys.TenantModuleIndexReq
+	59,  // 265: sys.TenantManage.tenantAppModuleDelete:input_type -> sys.TenantModuleWithIDOrCode
+	57,  // 266: sys.TenantManage.tenantAppMenuCreate:input_type -> sys.TenantAppMenu
+	55,  // 267: sys.TenantManage.tenantAppMenuIndex:input_type -> sys.TenantAppMenuIndexReq
+	57,  // 268: sys.TenantManage.tenantAppMenuUpdate:input_type -> sys.TenantAppMenu
+	66,  // 269: sys.TenantManage.tenantAppMenuDelete:input_type -> sys.WithAppCodeID
+	25,  // 270: sys.TenantManage.tenantOpenCheckToken:input_type -> sys.TenantOpenCheckTokenReq
+	65,  // 271: sys.TenantManage.tenantOpenWebHook:input_type -> sys.WithCode
+	23,  // 272: sys.TenantManage.tenantAgreementIndex:input_type -> sys.TenantAgreementIndexReq
+	22,  // 273: sys.TenantManage.tenantAgreementUpdate:input_type -> sys.TenantAgreement
+	22,  // 274: sys.TenantManage.tenantAgreementCreate:input_type -> sys.TenantAgreement
+	64,  // 275: sys.TenantManage.tenantAgreementRead:input_type -> sys.WithIDCode
+	63,  // 276: sys.TenantManage.tenantAgreementDelete:input_type -> sys.WithID
+	188, // 277: sys.ops.opsWorkOrderCreate:input_type -> sys.OpsWorkOrder
+	188, // 278: sys.ops.opsWorkOrderUpdate:input_type -> sys.OpsWorkOrder
+	189, // 279: sys.ops.opsWorkOrderIndex:input_type -> sys.OpsWorkOrderIndexReq
+	191, // 280: sys.ops.opsFeedbackCreate:input_type -> sys.OpsFeedback
+	192, // 281: sys.ops.opsFeedbackIndex:input_type -> sys.OpsFeedbackIndexReq
+	109, // 282: sys.UserManage.userInfoCreate:output_type -> sys.UserCreateResp
+	119, // 283: sys.UserManage.userInfoIndex:output_type -> sys.UserInfoIndexResp
+	61,  // 284: sys.UserManage.userInfoUpdate:output_type -> sys.Empty
+	108, // 285: sys.UserManage.userInfoRead:output_type -> sys.UserInfo
+	61,  // 286: sys.UserManage.userInfoDelete:output_type -> sys.Empty
+	131, // 287: sys.UserManage.userLogin:output_type -> sys.UserLoginResp
+	61,  // 288: sys.UserManage.userForgetPwd:output_type -> sys.Empty
+	125, // 289: sys.UserManage.userCaptcha:output_type -> sys.UserCaptchaResp
+	111, // 290: sys.UserManage.userCheckToken:output_type -> sys.UserCheckTokenResp
+	133, // 291: sys.UserManage.userRegister:output_type -> sys.UserRegisterResp
+	61,  // 292: sys.UserManage.userChangePwd:output_type -> sys.Empty
+	128, // 293: sys.UserManage.userCodeToUserID:output_type -> sys.UserCodeToUserIDResp
+	135, // 294: sys.UserManage.userRoleIndex:output_type -> sys.UserRoleIndexResp
+	61,  // 295: sys.UserManage.userRoleMultiUpdate:output_type -> sys.Empty
+	61,  // 296: sys.UserManage.userRoleMultiCreate:output_type -> sys.Empty
+	61,  // 297: sys.UserManage.userAreaApplyCreate:output_type -> sys.Empty
+	61,  // 298: sys.UserManage.userMessageMultiIsRead:output_type -> sys.Empty
+	35,  // 299: sys.UserManage.userMessageIndex:output_type -> sys.UserMessageIndexResp
+	33,  // 300: sys.UserManage.userMessageStatistics:output_type -> sys.UserMessageStatisticsResp
+	28,  // 301: sys.UserManage.userProfileRead:output_type -> sys.UserProfile
+	61,  // 302: sys.UserManage.userProfileUpdate:output_type -> sys.Empty
+	30,  // 303: sys.UserManage.userProfileIndex:output_type -> sys.UserProfileIndexResp
+	61,  // 304: sys.DataManage.dataProjectMultiUpdate:output_type -> sys.Empty
+	61,  // 305: sys.DataManage.dataProjectCreate:output_type -> sys.Empty
+	61,  // 306: sys.DataManage.dataProjectDelete:output_type -> sys.Empty
+	142, // 307: sys.DataManage.dataProjectIndex:output_type -> sys.DataProjectIndexResp
+	61,  // 308: sys.DataManage.dataAreaMultiUpdate:output_type -> sys.Empty
+	146, // 309: sys.DataManage.dataAreaIndex:output_type -> sys.DataAreaIndexResp
+	61,  // 310: sys.DataManage.dataAreaMultiDelete:output_type -> sys.Empty
+	151, // 311: sys.DataManage.userAreaApplyIndex:output_type -> sys.UserAreaApplyIndexResp
+	61,  // 312: sys.DataManage.userAreaApplyDeal:output_type -> sys.Empty
+	63,  // 313: sys.NotifyManage.messageInfoSend:output_type -> sys.WithID
+	15,  // 314: sys.NotifyManage.messageInfoIndex:output_type -> sys.MessageInfoIndexResp
+	61,  // 315: sys.NotifyManage.messageInfoUpdate:output_type -> sys.Empty
+	61,  // 316: sys.NotifyManage.messageInfoDelete:output_type -> sys.Empty
+	2,   // 317: sys.NotifyManage.notifyConfigRead:output_type -> sys.NotifyConfig
+	63,  // 318: sys.NotifyManage.notifyConfigCreate:output_type -> sys.WithID
+	61,  // 319: sys.NotifyManage.notifyConfigUpdate:output_type -> sys.Empty
+	4,   // 320: sys.NotifyManage.notifyConfigIndex:output_type -> sys.NotifyConfigIndexResp
+	61,  // 321: sys.NotifyManage.notifyConfigDelete:output_type -> sys.Empty
+	61,  // 322: sys.NotifyManage.notifyConfigSend:output_type -> sys.Empty
+	5,   // 323: sys.NotifyManage.notifyTemplateRead:output_type -> sys.NotifyTemplate
+	63,  // 324: sys.NotifyManage.notifyTemplateCreate:output_type -> sys.WithID
+	61,  // 325: sys.NotifyManage.notifyTemplateUpdate:output_type -> sys.Empty
+	13,  // 326: sys.NotifyManage.notifyTemplateIndex:output_type -> sys.NotifyTemplateIndexResp
+	61,  // 327: sys.NotifyManage.notifyTemplateDelete:output_type -> sys.Empty
+	61,  // 328: sys.NotifyManage.notifyConfigTemplateUpdate:output_type -> sys.Empty
+	61,  // 329: sys.NotifyManage.notifyConfigTemplateDelete:output_type -> sys.Empty
+	20,  // 330: sys.NotifyManage.notifyConfigTemplateIndex:output_type -> sys.NotifyConfigTemplateIndexResp
+	6,   // 331: sys.NotifyManage.notifyChannelRead:output_type -> sys.NotifyChannel
+	63,  // 332: sys.NotifyManage.notifyChannelCreate:output_type -> sys.WithID
+	61,  // 333: sys.NotifyManage.notifyChannelUpdate:output_type -> sys.Empty
+	8,   // 334: sys.NotifyManage.notifyChannelIndex:output_type -> sys.NotifyChannelIndexResp
+	61,  // 335: sys.NotifyManage.notifyChannelDelete:output_type -> sys.Empty
+	63,  // 336: sys.AccessManage.apiInfoCreate:output_type -> sys.WithID
+	182, // 337: sys.AccessManage.apiInfoIndex:output_type -> sys.ApiInfoIndexResp
+	61,  // 338: sys.AccessManage.apiInfoUpdate:output_type -> sys.Empty
+	61,  // 339: sys.AccessManage.apiInfoDelete:output_type -> sys.Empty
+	184, // 340: sys.AccessManage.accessInfoMultiImport:output_type -> sys.AccessInfoMultiImportResp
+	63,  // 341: sys.AccessManage.accessInfoCreate:output_type -> sys.WithID
+	187, // 342: sys.AccessManage.accessInfoIndex:output_type -> sys.AccessInfoIndexResp
+	61,  // 343: sys.AccessManage.accessInfoUpdate:output_type -> sys.Empty
+	61,  // 344: sys.AccessManage.accessInfoDelete:output_type -> sys.Empty
+	63,  // 345: sys.RoleManage.roleInfoCreate:output_type -> sys.WithID
+	172, // 346: sys.RoleManage.roleInfoIndex:output_type -> sys.RoleInfoIndexResp
+	61,  // 347: sys.RoleManage.roleInfoUpdate:output_type -> sys.Empty
+	61,  // 348: sys.RoleManage.roleInfoDelete:output_type -> sys.Empty
+	94,  // 349: sys.RoleManage.roleMenuIndex:output_type -> sys.RoleMenuIndexResp
+	61,  // 350: sys.RoleManage.roleMenuMultiUpdate:output_type -> sys.Empty
+	96,  // 351: sys.RoleManage.roleAppIndex:output_type -> sys.RoleAppIndexResp
+	61,  // 352: sys.RoleManage.roleAppMultiUpdate:output_type -> sys.Empty
+	98,  // 353: sys.RoleManage.roleModuleIndex:output_type -> sys.RoleModuleIndexResp
+	61,  // 354: sys.RoleManage.roleModuleMultiUpdate:output_type -> sys.Empty
+	61,  // 355: sys.RoleManage.roleApiAuth:output_type -> sys.Empty
+	61,  // 356: sys.RoleManage.roleAccessMultiUpdate:output_type -> sys.Empty
+	92,  // 357: sys.RoleManage.roleAccessIndex:output_type -> sys.RoleAccessIndexResp
+	63,  // 358: sys.AppManage.appInfoCreate:output_type -> sys.WithID
+	167, // 359: sys.AppManage.appInfoIndex:output_type -> sys.AppInfoIndexResp
+	61,  // 360: sys.AppManage.appInfoUpdate:output_type -> sys.Empty
+	61,  // 361: sys.AppManage.appInfoDelete:output_type -> sys.Empty
+	165, // 362: sys.AppManage.appInfoRead:output_type -> sys.AppInfo
+	170, // 363: sys.AppManage.appModuleIndex:output_type -> sys.AppModuleIndexResp
+	61,  // 364: sys.AppManage.appModuleMultiUpdate:output_type -> sys.Empty
+	164, // 365: sys.AppManage.appPolicyRead:output_type -> sys.AppPolicy
+	63,  // 366: sys.ModuleManage.moduleInfoCreate:output_type -> sys.WithID
+	162, // 367: sys.ModuleManage.moduleInfoIndex:output_type -> sys.ModuleInfoIndexResp
+	61,  // 368: sys.ModuleManage.moduleInfoUpdate:output_type -> sys.Empty
+	61,  // 369: sys.ModuleManage.moduleInfoDelete:output_type -> sys.Empty
+	160, // 370: sys.ModuleManage.moduleInfoRead:output_type -> sys.ModuleInfo
+	63,  // 371: sys.ModuleManage.moduleMenuCreate:output_type -> sys.WithID
+	177, // 372: sys.ModuleManage.moduleMenuIndex:output_type -> sys.MenuInfoIndexResp
+	61,  // 373: sys.ModuleManage.moduleMenuUpdate:output_type -> sys.Empty
+	61,  // 374: sys.ModuleManage.moduleMenuDelete:output_type -> sys.Empty
+	63,  // 375: sys.DictManage.dictInfoCreate:output_type -> sys.WithID
+	156, // 376: sys.DictManage.dictInfoIndex:output_type -> sys.DictInfoIndexResp
+	61,  // 377: sys.DictManage.dictInfoUpdate:output_type -> sys.Empty
+	61,  // 378: sys.DictManage.dictInfoDelete:output_type -> sys.Empty
+	153, // 379: sys.DictManage.dictInfoRead:output_type -> sys.DictInfo
+	63,  // 380: sys.DictManage.dictDetailCreate:output_type -> sys.WithID
+	159, // 381: sys.DictManage.dictDetailIndex:output_type -> sys.DictDetailIndexResp
+	61,  // 382: sys.DictManage.dictDetailUpdate:output_type -> sys.Empty
+	61,  // 383: sys.DictManage.dictDetailDelete:output_type -> sys.Empty
+	179, // 384: sys.Common.config:output_type -> sys.configResp
+	86,  // 385: sys.Common.QRCodeRead:output_type -> sys.QRCodeReadResp
+	88,  // 386: sys.Common.slotInfoIndex:output_type -> sys.SlotInfoIndexResp
+	63,  // 387: sys.Common.slotInfoCreate:output_type -> sys.WithID
+	61,  // 388: sys.Common.slotInfoUpdate:output_type -> sys.Empty
+	61,  // 389: sys.Common.slotInfoDelete:output_type -> sys.Empty
+	84,  // 390: sys.Common.slotInfoRead:output_type -> sys.SlotInfo
+	102, // 391: sys.Log.loginLogIndex:output_type -> sys.LoginLogIndexResp
+	105, // 392: sys.Log.operLogIndex:output_type -> sys.OperLogIndexResp
+	61,  // 393: sys.Log.loginLogCreate:output_type -> sys.Empty
+	61,  // 394: sys.Log.operLogCreate:output_type -> sys.Empty
+	67,  // 395: sys.ProjectManage.projectInfoCreate:output_type -> sys.ProjectWithID
+	61,  // 396: sys.ProjectManage.projectInfoUpdate:output_type -> sys.Empty
+	61,  // 397: sys.ProjectManage.projectInfoDelete:output_type -> sys.Empty
+	68,  // 398: sys.ProjectManage.projectInfoRead:output_type -> sys.ProjectInfo
+	74,  // 399: sys.ProjectManage.projectInfoIndex:output_type -> sys.ProjectInfoIndexResp
+	69,  // 400: sys.ProjectManage.projectProfileRead:output_type -> sys.ProjectProfile
+	61,  // 401: sys.ProjectManage.projectProfileUpdate:output_type -> sys.Empty
+	72,  // 402: sys.ProjectManage.projectProfileIndex:output_type -> sys.ProjectProfileIndexResp
+	76,  // 403: sys.AreaManage.areaInfoCreate:output_type -> sys.AreaWithID
+	61,  // 404: sys.AreaManage.areaInfoUpdate:output_type -> sys.Empty
+	61,  // 405: sys.AreaManage.areaInfoDelete:output_type -> sys.Empty
+	75,  // 406: sys.AreaManage.areaInfoRead:output_type -> sys.AreaInfo
+	83,  // 407: sys.AreaManage.areaInfoIndex:output_type -> sys.AreaInfoIndexResp
+	77,  // 408: sys.AreaManage.areaProfileRead:output_type -> sys.AreaProfile
+	61,  // 409: sys.AreaManage.areaProfileUpdate:output_type -> sys.Empty
+	80,  // 410: sys.AreaManage.areaProfileIndex:output_type -> sys.AreaProfileIndexResp
+	63,  // 411: sys.TenantManage.tenantInfoCreate:output_type -> sys.WithID
+	61,  // 412: sys.TenantManage.tenantInfoUpdate:output_type -> sys.Empty
+	61,  // 413: sys.TenantManage.tenantInfoDelete:output_type -> sys.Empty
+	38,  // 414: sys.TenantManage.tenantInfoRead:output_type -> sys.TenantInfo
+	40,  // 415: sys.TenantManage.tenantInfoIndex:output_type -> sys.TenantInfoIndexResp
+	61,  // 416: sys.TenantManage.tenantConfigUpdate:output_type -> sys.Empty
+	41,  // 417: sys.TenantManage.tenantConfigRead:output_type -> sys.TenantConfig
+	61,  // 418: sys.TenantManage.tenantAccessMultiUpdate:output_type -> sys.Empty
+	46,  // 419: sys.TenantManage.tenantAccessIndex:output_type -> sys.TenantAccessIndexResp
+	51,  // 420: sys.TenantManage.tenantAppIndex:output_type -> sys.TenantAppIndexResp
+	61,  // 421: sys.TenantManage.tenantAppCreate:output_type -> sys.Empty
+	61,  // 422: sys.TenantManage.tenantAppUpdate:output_type -> sys.Empty
+	61,  // 423: sys.TenantManage.tenantAppDelete:output_type -> sys.Empty
+	61,  // 424: sys.TenantManage.tenantAppModuleMultiCreate:output_type -> sys.Empty
+	61,  // 425: sys.TenantManage.tenantAppModuleCreate:output_type -> sys.Empty
+	54,  // 426: sys.TenantManage.tenantAppModuleIndex:output_type -> sys.TenantModuleIndexResp
+	61,  // 427: sys.TenantManage.tenantAppModuleDelete:output_type -> sys.Empty
+	63,  // 428: sys.TenantManage.tenantAppMenuCreate:output_type -> sys.WithID
+	56,  // 429: sys.TenantManage.tenantAppMenuIndex:output_type -> sys.TenantAppMenuIndexResp
+	61,  // 430: sys.TenantManage.tenantAppMenuUpdate:output_type -> sys.Empty
+	61,  // 431: sys.TenantManage.tenantAppMenuDelete:output_type -> sys.Empty
+	26,  // 432: sys.TenantManage.tenantOpenCheckToken:output_type -> sys.TenantOpenCheckTokenResp
+	27,  // 433: sys.TenantManage.tenantOpenWebHook:output_type -> sys.TenantOpenWebHook
+	24,  // 434: sys.TenantManage.tenantAgreementIndex:output_type -> sys.TenantAgreementIndexResp
+	61,  // 435: sys.TenantManage.tenantAgreementUpdate:output_type -> sys.Empty
+	63,  // 436: sys.TenantManage.tenantAgreementCreate:output_type -> sys.WithID
+	22,  // 437: sys.TenantManage.tenantAgreementRead:output_type -> sys.TenantAgreement
+	61,  // 438: sys.TenantManage.tenantAgreementDelete:output_type -> sys.Empty
+	63,  // 439: sys.ops.opsWorkOrderCreate:output_type -> sys.WithID
+	61,  // 440: sys.ops.opsWorkOrderUpdate:output_type -> sys.Empty
+	190, // 441: sys.ops.opsWorkOrderIndex:output_type -> sys.OpsWorkOrderIndexResp
+	63,  // 442: sys.ops.opsFeedbackCreate:output_type -> sys.WithID
+	193, // 443: sys.ops.opsFeedbackIndex:output_type -> sys.OpsFeedbackIndexResp
+	282, // [282:444] is the sub-list for method output_type
+	120, // [120:282] is the sub-list for method input_type
+	120, // [120:120] is the sub-list for extension type_name
+	120, // [120:120] is the sub-list for extension extendee
+	0,   // [0:120] is the sub-list for field type_name
 }
 
 func init() { file_proto_sys_proto_init() }
@@ -16936,7 +17201,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAccessMultiUpdateReq); i {
+			switch v := v.(*TenantConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -16948,7 +17213,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAccessIndexReq); i {
+			switch v := v.(*TenantConfigRegisterAutoCreateProject); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -16960,7 +17225,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAccessIndexResp); i {
+			switch v := v.(*TenantConfigRegisterAutoCreateArea); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -16972,7 +17237,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppInfo); i {
+			switch v := v.(*TenantAccessMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -16984,7 +17249,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppWithIDOrCode); i {
+			switch v := v.(*TenantAccessIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -16996,7 +17261,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppModule); i {
+			switch v := v.(*TenantAccessIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17008,7 +17273,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppIndexReq); i {
+			switch v := v.(*TenantAppInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17020,7 +17285,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppIndexResp); i {
+			switch v := v.(*TenantAppWithIDOrCode); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17032,7 +17297,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppMultiUpdateReq); i {
+			switch v := v.(*TenantAppModule); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17044,7 +17309,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantModuleIndexReq); i {
+			switch v := v.(*TenantAppIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17056,7 +17321,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[51].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantModuleIndexResp); i {
+			switch v := v.(*TenantAppIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17068,7 +17333,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[52].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppMenuIndexReq); i {
+			switch v := v.(*TenantAppMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17080,7 +17345,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[53].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppMenuIndexResp); i {
+			switch v := v.(*TenantModuleIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17092,7 +17357,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[54].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantAppMenu); i {
+			switch v := v.(*TenantModuleIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17104,7 +17369,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[55].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantModuleCreateReq); i {
+			switch v := v.(*TenantAppMenuIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17116,7 +17381,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[56].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TenantModuleWithIDOrCode); i {
+			switch v := v.(*TenantAppMenuIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17128,7 +17393,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[57].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Point); i {
+			switch v := v.(*TenantAppMenu); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17140,7 +17405,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[58].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Empty); i {
+			switch v := v.(*TenantModuleCreateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17152,7 +17417,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[59].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PageInfo); i {
+			switch v := v.(*TenantModuleWithIDOrCode); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17164,7 +17429,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[60].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WithID); i {
+			switch v := v.(*Point); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17176,7 +17441,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[61].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WithIDCode); i {
+			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17188,7 +17453,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[62].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WithCode); i {
+			switch v := v.(*PageInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17200,7 +17465,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[63].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WithAppCodeID); i {
+			switch v := v.(*WithID); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17212,7 +17477,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[64].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectWithID); i {
+			switch v := v.(*WithIDCode); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17224,7 +17489,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectInfo); i {
+			switch v := v.(*WithCode); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17236,7 +17501,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectProfile); i {
+			switch v := v.(*WithAppCodeID); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17248,7 +17513,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[67].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectProfileReadReq); i {
+			switch v := v.(*ProjectWithID); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17260,7 +17525,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[68].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectProfileIndexReq); i {
+			switch v := v.(*ProjectInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17272,7 +17537,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectProfileIndexResp); i {
+			switch v := v.(*ProjectProfile); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17284,7 +17549,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectInfoIndexReq); i {
+			switch v := v.(*ProjectProfileReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17296,7 +17561,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectInfoIndexResp); i {
+			switch v := v.(*ProjectProfileIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17308,7 +17573,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[72].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaInfo); i {
+			switch v := v.(*ProjectProfileIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17320,7 +17585,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[73].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaWithID); i {
+			switch v := v.(*ProjectInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17332,7 +17597,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[74].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaProfile); i {
+			switch v := v.(*ProjectInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17344,7 +17609,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[75].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaProfileReadReq); i {
+			switch v := v.(*AreaInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17356,7 +17621,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[76].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaProfileIndexReq); i {
+			switch v := v.(*AreaWithID); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17368,7 +17633,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[77].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaProfileIndexResp); i {
+			switch v := v.(*AreaProfile); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17380,7 +17645,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[78].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaInfoReadReq); i {
+			switch v := v.(*AreaProfileReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17392,7 +17657,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[79].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaInfoIndexReq); i {
+			switch v := v.(*AreaProfileIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17404,7 +17669,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[80].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AreaInfoIndexResp); i {
+			switch v := v.(*AreaProfileIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17416,7 +17681,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[81].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SlotInfo); i {
+			switch v := v.(*AreaInfoReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17428,7 +17693,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[82].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QRCodeReadReq); i {
+			switch v := v.(*AreaInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17440,7 +17705,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[83].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QRCodeReadResp); i {
+			switch v := v.(*AreaInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17452,7 +17717,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[84].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SlotInfoIndexReq); i {
+			switch v := v.(*SlotInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17464,7 +17729,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[85].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SlotInfoIndexResp); i {
+			switch v := v.(*QRCodeReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17476,7 +17741,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[86].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AuthApiInfo); i {
+			switch v := v.(*QRCodeReadResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17488,7 +17753,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[87].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAccessMultiUpdateReq); i {
+			switch v := v.(*SlotInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17500,7 +17765,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[88].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAccessIndexReq); i {
+			switch v := v.(*SlotInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17512,7 +17777,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[89].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAccessIndexResp); i {
+			switch v := v.(*AuthApiInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17524,7 +17789,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[90].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleMenuIndexReq); i {
+			switch v := v.(*RoleAccessMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17536,7 +17801,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[91].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleMenuIndexResp); i {
+			switch v := v.(*RoleAccessIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17548,7 +17813,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[92].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAppIndexReq); i {
+			switch v := v.(*RoleAccessIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17560,7 +17825,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[93].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAppIndexResp); i {
+			switch v := v.(*RoleMenuIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17572,7 +17837,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[94].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleModuleIndexReq); i {
+			switch v := v.(*RoleMenuIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17584,7 +17849,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[95].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleModuleIndexResp); i {
+			switch v := v.(*RoleAppIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17596,7 +17861,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[96].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DateRange); i {
+			switch v := v.(*RoleAppIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17608,7 +17873,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[97].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginLogIndexReq); i {
+			switch v := v.(*RoleModuleIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17620,7 +17885,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[98].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginLogInfo); i {
+			switch v := v.(*RoleModuleIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17632,7 +17897,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[99].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginLogIndexResp); i {
+			switch v := v.(*DateRange); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17644,7 +17909,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[100].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OperLogIndexReq); i {
+			switch v := v.(*LoginLogIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17656,7 +17921,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[101].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OperLogInfo); i {
+			switch v := v.(*LoginLogInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17668,7 +17933,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[102].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OperLogIndexResp); i {
+			switch v := v.(*LoginLogIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17680,7 +17945,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[103].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginLogCreateReq); i {
+			switch v := v.(*OperLogIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17692,7 +17957,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[104].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OperLogCreateReq); i {
+			switch v := v.(*OperLogInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17704,7 +17969,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[105].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfo); i {
+			switch v := v.(*OperLogIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17716,7 +17981,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[106].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCreateResp); i {
+			switch v := v.(*LoginLogCreateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17728,7 +17993,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[107].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCheckTokenReq); i {
+			switch v := v.(*OperLogCreateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17740,7 +18005,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[108].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCheckTokenResp); i {
+			switch v := v.(*UserInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17752,7 +18017,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[109].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ProjectAuth); i {
+			switch v := v.(*UserCreateResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17764,7 +18029,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[110].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAppMultiUpdateReq); i {
+			switch v := v.(*UserCheckTokenReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17776,7 +18041,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[111].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleModuleMultiUpdateReq); i {
+			switch v := v.(*UserCheckTokenResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17788,7 +18053,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[112].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleMenuMultiUpdateReq); i {
+			switch v := v.(*ProjectAuth); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17800,7 +18065,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[113].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleApiAuthReq); i {
+			switch v := v.(*RoleAppMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17812,7 +18077,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[114].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfoCreateReq); i {
+			switch v := v.(*RoleModuleMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17824,7 +18089,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[115].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfoIndexReq); i {
+			switch v := v.(*RoleMenuMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17836,7 +18101,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[116].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfoIndexResp); i {
+			switch v := v.(*RoleApiAuthReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17848,7 +18113,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[117].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfoUpdateReq); i {
+			switch v := v.(*UserInfoCreateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17860,7 +18125,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[118].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfoReadReq); i {
+			switch v := v.(*UserInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17872,7 +18137,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[119].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserInfoDeleteReq); i {
+			switch v := v.(*UserInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17884,7 +18149,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[120].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*JwtToken); i {
+			switch v := v.(*UserInfoUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17896,7 +18161,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[121].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCaptchaReq); i {
+			switch v := v.(*UserInfoReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17908,7 +18173,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[122].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCaptchaResp); i {
+			switch v := v.(*UserInfoDeleteReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17920,7 +18185,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[123].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserForgetPwdReq); i {
+			switch v := v.(*JwtToken); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17932,7 +18197,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[124].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCodeToUserIDReq); i {
+			switch v := v.(*UserCaptchaReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17944,7 +18209,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[125].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserCodeToUserIDResp); i {
+			switch v := v.(*UserCaptchaResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17956,7 +18221,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[126].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserChangePwdReq); i {
+			switch v := v.(*UserForgetPwdReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17968,7 +18233,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[127].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserLoginReq); i {
+			switch v := v.(*UserCodeToUserIDReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17980,7 +18245,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[128].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserLoginResp); i {
+			switch v := v.(*UserCodeToUserIDResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -17992,7 +18257,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[129].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserRegisterReq); i {
+			switch v := v.(*UserChangePwdReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18004,7 +18269,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[130].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserRegisterResp); i {
+			switch v := v.(*UserLoginReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18016,7 +18281,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[131].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserRoleIndexReq); i {
+			switch v := v.(*UserLoginResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18028,7 +18293,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[132].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserRoleIndexResp); i {
+			switch v := v.(*UserRegisterReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18040,7 +18305,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[133].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserRoleMultiUpdateReq); i {
+			switch v := v.(*UserRegisterResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18052,7 +18317,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[134].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataProject); i {
+			switch v := v.(*UserRoleIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18064,7 +18329,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[135].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataProjectDeleteReq); i {
+			switch v := v.(*UserRoleIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18076,7 +18341,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[136].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataProjectSaveReq); i {
+			switch v := v.(*UserRoleMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18088,7 +18353,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[137].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataProjectMultiUpdateReq); i {
+			switch v := v.(*DataProject); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18100,7 +18365,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[138].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataProjectIndexReq); i {
+			switch v := v.(*DataProjectDeleteReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18112,7 +18377,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[139].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataProjectIndexResp); i {
+			switch v := v.(*DataProjectSaveReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18124,7 +18389,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[140].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataArea); i {
+			switch v := v.(*DataProjectMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18136,7 +18401,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[141].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataAreaMultiUpdateReq); i {
+			switch v := v.(*DataProjectIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18148,7 +18413,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[142].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataAreaIndexReq); i {
+			switch v := v.(*DataProjectIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18160,7 +18425,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[143].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataAreaIndexResp); i {
+			switch v := v.(*DataArea); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18172,7 +18437,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[144].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DataAreaMultiDeleteReq); i {
+			switch v := v.(*DataAreaMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18184,7 +18449,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[145].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserAreaApplyCreateReq); i {
+			switch v := v.(*DataAreaIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18196,7 +18461,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[146].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserAreaApplyIndexReq); i {
+			switch v := v.(*DataAreaIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18208,7 +18473,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[147].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserAreaApplyInfo); i {
+			switch v := v.(*DataAreaMultiDeleteReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18220,7 +18485,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[148].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserAreaApplyIndexResp); i {
+			switch v := v.(*UserAreaApplyCreateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18232,7 +18497,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[149].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserAreaApplyDealReq); i {
+			switch v := v.(*UserAreaApplyIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18244,7 +18509,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[150].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictInfo); i {
+			switch v := v.(*UserAreaApplyInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18256,7 +18521,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[151].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictInfoReadReq); i {
+			switch v := v.(*UserAreaApplyIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18268,7 +18533,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[152].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictInfoIndexReq); i {
+			switch v := v.(*UserAreaApplyDealReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18280,7 +18545,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[153].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictInfoIndexResp); i {
+			switch v := v.(*DictInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18292,7 +18557,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[154].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictDetail); i {
+			switch v := v.(*DictInfoReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18304,7 +18569,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[155].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictDetailIndexReq); i {
+			switch v := v.(*DictInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18316,7 +18581,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[156].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DictDetailIndexResp); i {
+			switch v := v.(*DictInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18328,7 +18593,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[157].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ModuleInfo); i {
+			switch v := v.(*DictDetail); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18340,7 +18605,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[158].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ModuleInfoIndexReq); i {
+			switch v := v.(*DictDetailIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18352,7 +18617,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[159].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ModuleInfoIndexResp); i {
+			switch v := v.(*DictDetailIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18364,7 +18629,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[160].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppPolicyReadReq); i {
+			switch v := v.(*ModuleInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18376,7 +18641,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[161].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppPolicy); i {
+			switch v := v.(*ModuleInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18388,7 +18653,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[162].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppInfo); i {
+			switch v := v.(*ModuleInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18400,7 +18665,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[163].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppInfoIndexReq); i {
+			switch v := v.(*AppPolicyReadReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18412,7 +18677,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[164].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppInfoIndexResp); i {
+			switch v := v.(*AppPolicy); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18424,7 +18689,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[165].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppModuleMultiUpdateReq); i {
+			switch v := v.(*AppInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18436,7 +18701,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[166].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppModuleIndexReq); i {
+			switch v := v.(*AppInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18448,7 +18713,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[167].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AppModuleIndexResp); i {
+			switch v := v.(*AppInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18460,7 +18725,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[168].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleInfoIndexReq); i {
+			switch v := v.(*AppModuleMultiUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18472,7 +18737,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[169].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleInfoIndexResp); i {
+			switch v := v.(*AppModuleIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18484,7 +18749,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[170].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleInfo); i {
+			switch v := v.(*AppModuleIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18496,7 +18761,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[171].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoleAppUpdateReq); i {
+			switch v := v.(*RoleInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18508,7 +18773,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[172].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MenuInfoIndexReq); i {
+			switch v := v.(*RoleInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18520,7 +18785,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[173].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MenuInfo); i {
+			switch v := v.(*RoleInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18532,7 +18797,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[174].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MenuInfoIndexResp); i {
+			switch v := v.(*RoleAppUpdateReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18544,7 +18809,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[175].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Map); i {
+			switch v := v.(*MenuInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18556,7 +18821,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[176].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ConfigResp); i {
+			switch v := v.(*MenuInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18568,7 +18833,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[177].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ApiInfoIndexReq); i {
+			switch v := v.(*MenuInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18580,7 +18845,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[178].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ApiInfo); i {
+			switch v := v.(*Map); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18592,7 +18857,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[179].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ApiInfoIndexResp); i {
+			switch v := v.(*ConfigResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18604,7 +18869,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[180].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AccessInfoMultiImportReq); i {
+			switch v := v.(*ApiInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18616,7 +18881,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[181].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AccessInfoMultiImportResp); i {
+			switch v := v.(*ApiInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18628,7 +18893,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[182].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AccessInfoIndexReq); i {
+			switch v := v.(*ApiInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18640,7 +18905,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[183].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AccessInfo); i {
+			switch v := v.(*AccessInfoMultiImportReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18652,7 +18917,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[184].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AccessInfoIndexResp); i {
+			switch v := v.(*AccessInfoMultiImportResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18664,7 +18929,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[185].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OpsWorkOrder); i {
+			switch v := v.(*AccessInfoIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18676,7 +18941,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[186].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OpsWorkOrderIndexReq); i {
+			switch v := v.(*AccessInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18688,7 +18953,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[187].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OpsWorkOrderIndexResp); i {
+			switch v := v.(*AccessInfoIndexResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18700,7 +18965,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[188].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OpsFeedback); i {
+			switch v := v.(*OpsWorkOrder); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18712,7 +18977,7 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[189].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*OpsFeedbackIndexReq); i {
+			switch v := v.(*OpsWorkOrderIndexReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -18724,6 +18989,42 @@ func file_proto_sys_proto_init() {
 			}
 		}
 		file_proto_sys_proto_msgTypes[190].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OpsWorkOrderIndexResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_sys_proto_msgTypes[191].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OpsFeedback); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_sys_proto_msgTypes[192].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OpsFeedbackIndexReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_sys_proto_msgTypes[193].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*OpsFeedbackIndexResp); i {
 			case 0:
 				return &v.state
@@ -18735,7 +19036,7 @@ func file_proto_sys_proto_init() {
 				return nil
 			}
 		}
-		file_proto_sys_proto_msgTypes[194].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_sys_proto_msgTypes[197].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PageInfo_OrderBy); i {
 			case 0:
 				return &v.state
@@ -18754,7 +19055,7 @@ func file_proto_sys_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_sys_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   200,
+			NumMessages:   203,
 			NumExtensions: 0,
 			NumServices:   14,
 		},

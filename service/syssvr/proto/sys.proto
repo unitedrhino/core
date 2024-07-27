@@ -229,6 +229,9 @@ service TenantManage {
   //获取租户信息列表
   rpc tenantInfoIndex (TenantInfoIndexReq) returns (TenantInfoIndexResp);
 
+  rpc tenantConfigUpdate(TenantConfig)returns(Empty);
+  rpc tenantConfigRead(WithCode)returns(TenantConfig);
+
   rpc tenantAccessMultiUpdate(TenantAccessMultiUpdateReq) returns (Empty);  //更新角色API权限
   rpc tenantAccessIndex(TenantAccessIndexReq) returns (TenantAccessIndexResp); //获取角色API权限列表
 
@@ -577,8 +580,25 @@ message TenantInfoIndexResp{
   int64 total = 2;
 }
 
+message TenantConfig{
+  int64 id = 1;
+  string name = 2;
+  string tenantCode = 3;//租户编码
+  int64 registerRoleID=4;//注册分配的角色id
+  int64 checkUserDelete=5;//1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+  repeated  TenantConfigRegisterAutoCreateProject registerAutoCreateProject =6;//注册自动创建项目
+}
 
-
+message TenantConfigRegisterAutoCreateProject{
+    string projectName =1;
+    string isSysCreated =2; //是否是系统创建的,系统创建的只有管理员可以删除
+    repeated TenantConfigRegisterAutoCreateArea areas=3;
+}
+message TenantConfigRegisterAutoCreateArea{
+  string  areaName =1;
+  string  areaImg =2;
+  int64   isSysCreated = 3;//是否是系统创建的,系统创建的只有管理员可以删除
+}
 
 message TenantAccessMultiUpdateReq{
   string code = 1;

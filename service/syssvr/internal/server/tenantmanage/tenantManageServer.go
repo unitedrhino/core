@@ -52,6 +52,16 @@ func (s *TenantManageServer) TenantInfoIndex(ctx context.Context, in *sys.Tenant
 	return l.TenantInfoIndex(in)
 }
 
+func (s *TenantManageServer) TenantConfigUpdate(ctx context.Context, in *sys.TenantConfig) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantConfigUpdateLogic(ctx, s.svcCtx)
+	return l.TenantConfigUpdate(in)
+}
+
+func (s *TenantManageServer) TenantConfigRead(ctx context.Context, in *sys.WithCode) (*sys.TenantConfig, error) {
+	l := tenantmanagelogic.NewTenantConfigReadLogic(ctx, s.svcCtx)
+	return l.TenantConfigRead(in)
+}
+
 func (s *TenantManageServer) TenantAccessMultiUpdate(ctx context.Context, in *sys.TenantAccessMultiUpdateReq) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAccessMultiUpdateLogic(ctx, s.svcCtx)
 	return l.TenantAccessMultiUpdate(in)

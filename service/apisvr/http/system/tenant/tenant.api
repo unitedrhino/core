@@ -35,6 +35,21 @@ service api {
 }
 
 @server (
+    group: system/tenant/config
+    prefix: /api/v1/system/tenant/config
+    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+)
+
+service api {
+    @doc "更新租户配置"
+    @handler update
+    post /update (TenantConfig) returns ()
+    @doc "获取租户配置"
+    @handler read
+    post /read (WithCode) returns (TenantConfig)
+}
+
+@server (
     group: system/tenant/core
     prefix: /api/v1/system/tenant/core
     middleware:  InitCtxsWare
@@ -151,5 +166,20 @@ type (
         List []*TenantInfo `json:"list"`            // 租户列表数据
         Total int64 `json:"total"`                    // 租户列表总记录数
     }
-
+    TenantConfig{
+        TenantCode                string                                   `json:"tenantCode"`  // 租户编码
+        RegisterRoleID            int64                                    `json:"registerRoleID"`  //注册分配的角色id
+        CheckUserDelete           int64                                    `json:"checkUserDelete"`  //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+        RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject"` //注册自动创建项目和区域
+    }
+    TenantConfigRegisterAutoCreateProject  {
+        ProjectName  string                                   `json:"projectName"`
+        IsSysCreated int64                                    `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
+        Areas        []*TenantConfigRegisterAutoCreateArea `json:"areas"`
+    }
+    TenantConfigRegisterAutoCreateArea  {
+        AreaName     string `json:"areaName"`
+        AreaImg      string `json:"areaImg"`
+        IsSysCreated int64  `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
+    }
 )

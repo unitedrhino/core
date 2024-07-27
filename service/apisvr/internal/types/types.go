@@ -958,6 +958,25 @@ type TenantAppWithIDOrCode struct {
 	AppCode string `json:"appCode,optional"` // 应用编号
 }
 
+type TenantConfig struct {
+	TenantCode                string                                   `json:"tenantCode"`                // 租户编码
+	RegisterRoleID            int64                                    `json:"registerRoleID"`            //注册分配的角色id
+	CheckUserDelete           int64                                    `json:"checkUserDelete"`           //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject"` //注册自动创建项目和区域
+}
+
+type TenantConfigRegisterAutoCreateArea struct {
+	AreaName     string `json:"areaName"`
+	AreaImg      string `json:"areaImg"`
+	IsSysCreated int64  `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
+}
+
+type TenantConfigRegisterAutoCreateProject struct {
+	ProjectName  string                                `json:"projectName"`
+	IsSysCreated int64                                 `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
+	Areas        []*TenantConfigRegisterAutoCreateArea `json:"areas"`
+}
+
 type TenantCore struct {
 	Code             string  `json:"code"`          // 应用编号
 	Name             string  `json:"name,optional"` // 接口名称

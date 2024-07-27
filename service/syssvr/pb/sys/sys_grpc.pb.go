@@ -5461,6 +5461,8 @@ const (
 	TenantManage_TenantInfoDelete_FullMethodName           = "/sys.TenantManage/tenantInfoDelete"
 	TenantManage_TenantInfoRead_FullMethodName             = "/sys.TenantManage/tenantInfoRead"
 	TenantManage_TenantInfoIndex_FullMethodName            = "/sys.TenantManage/tenantInfoIndex"
+	TenantManage_TenantConfigUpdate_FullMethodName         = "/sys.TenantManage/tenantConfigUpdate"
+	TenantManage_TenantConfigRead_FullMethodName           = "/sys.TenantManage/tenantConfigRead"
 	TenantManage_TenantAccessMultiUpdate_FullMethodName    = "/sys.TenantManage/tenantAccessMultiUpdate"
 	TenantManage_TenantAccessIndex_FullMethodName          = "/sys.TenantManage/tenantAccessIndex"
 	TenantManage_TenantAppIndex_FullMethodName             = "/sys.TenantManage/tenantAppIndex"
@@ -5498,6 +5500,8 @@ type TenantManageClient interface {
 	TenantInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*TenantInfo, error)
 	// 获取租户信息列表
 	TenantInfoIndex(ctx context.Context, in *TenantInfoIndexReq, opts ...grpc.CallOption) (*TenantInfoIndexResp, error)
+	TenantConfigUpdate(ctx context.Context, in *TenantConfig, opts ...grpc.CallOption) (*Empty, error)
+	TenantConfigRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantConfig, error)
 	TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantAccessIndex(ctx context.Context, in *TenantAccessIndexReq, opts ...grpc.CallOption) (*TenantAccessIndexResp, error)
 	TenantAppIndex(ctx context.Context, in *TenantAppIndexReq, opts ...grpc.CallOption) (*TenantAppIndexResp, error)
@@ -5568,6 +5572,24 @@ func (c *tenantManageClient) TenantInfoRead(ctx context.Context, in *WithIDCode,
 func (c *tenantManageClient) TenantInfoIndex(ctx context.Context, in *TenantInfoIndexReq, opts ...grpc.CallOption) (*TenantInfoIndexResp, error) {
 	out := new(TenantInfoIndexResp)
 	err := c.cc.Invoke(ctx, TenantManage_TenantInfoIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantConfigUpdate(ctx context.Context, in *TenantConfig, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, TenantManage_TenantConfigUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantConfigRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantConfig, error) {
+	out := new(TenantConfig)
+	err := c.cc.Invoke(ctx, TenantManage_TenantConfigRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -5777,6 +5799,8 @@ type TenantManageServer interface {
 	TenantInfoRead(context.Context, *WithIDCode) (*TenantInfo, error)
 	// 获取租户信息列表
 	TenantInfoIndex(context.Context, *TenantInfoIndexReq) (*TenantInfoIndexResp, error)
+	TenantConfigUpdate(context.Context, *TenantConfig) (*Empty, error)
+	TenantConfigRead(context.Context, *WithCode) (*TenantConfig, error)
 	TenantAccessMultiUpdate(context.Context, *TenantAccessMultiUpdateReq) (*Empty, error)
 	TenantAccessIndex(context.Context, *TenantAccessIndexReq) (*TenantAccessIndexResp, error)
 	TenantAppIndex(context.Context, *TenantAppIndexReq) (*TenantAppIndexResp, error)
@@ -5819,6 +5843,12 @@ func (UnimplementedTenantManageServer) TenantInfoRead(context.Context, *WithIDCo
 }
 func (UnimplementedTenantManageServer) TenantInfoIndex(context.Context, *TenantInfoIndexReq) (*TenantInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantInfoIndex not implemented")
+}
+func (UnimplementedTenantManageServer) TenantConfigUpdate(context.Context, *TenantConfig) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantConfigUpdate not implemented")
+}
+func (UnimplementedTenantManageServer) TenantConfigRead(context.Context, *WithCode) (*TenantConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantConfigRead not implemented")
 }
 func (UnimplementedTenantManageServer) TenantAccessMultiUpdate(context.Context, *TenantAccessMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAccessMultiUpdate not implemented")
@@ -5982,6 +6012,42 @@ func _TenantManage_TenantInfoIndex_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TenantManageServer).TenantInfoIndex(ctx, req.(*TenantInfoIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantConfigUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantConfig)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantConfigUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantConfigUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantConfigUpdate(ctx, req.(*TenantConfig))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantConfigRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithCode)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantConfigRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantConfigRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantConfigRead(ctx, req.(*WithCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -6390,6 +6456,14 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantInfoIndex",
 			Handler:    _TenantManage_TenantInfoIndex_Handler,
+		},
+		{
+			MethodName: "tenantConfigUpdate",
+			Handler:    _TenantManage_TenantConfigUpdate_Handler,
+		},
+		{
+			MethodName: "tenantConfigRead",
+			Handler:    _TenantManage_TenantConfigRead_Handler,
 		},
 		{
 			MethodName: "tenantAccessMultiUpdate",

@@ -98,6 +98,10 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Empty
 		if err != nil {
 			return err
 		}
+		err = relationDB.NewTenantConfigRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: ti.Code})
+		if err != nil {
+			return err
+		}
 		err = caches.DelTenant(l.ctx, ti.Code)
 		if err != nil {
 			l.Error(err)
