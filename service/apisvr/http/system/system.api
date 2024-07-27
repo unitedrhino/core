@@ -57,7 +57,7 @@ type (
         ID int64 `json:"id,optional"`                                      // 接口编号
         Code string `json:"code"`                               // 应用编号
         Type string `json:"type"` //应用类型 web:web页面  app:应用  mini:小程序
-        SubType string `json:"subType"`//子类型  wx:微信小程序  ding:钉钉小程序
+        SubType string `json:"subType,optional"`//子类型  wx:微信小程序  ding:钉钉小程序
         Name string `json:"name,optional"`                                 // 接口名称
         Desc *string `json:"desc,optional"`                       // 备注
         BaseUrl string `json:"baseUrl,optional"`                               // 应用编号
@@ -147,22 +147,22 @@ type (
     }
     AccessGroupInfo  {
         ID string `json:"id,optional"`                               // id
-        Code string `json:"code,optional"`                               // 应用编号
-        name  string `json:"name,optional"`                               // 接口分组
+        Code string `json:"code,optional"`                               // 分组编码
+        name  string `json:"name,optional"`                               // 分组名称
         Children []*AccessInfo `json:"children,omitempty"`            // 列表数据
     }
     AccessModuleInfo{
         ID string `json:"id,optional"`                               // id
-        Code string `json:"code,optional"`                               // 应用编号
-        name  string `json:"name,optional"`                               // 接口分组
+        Code string `json:"code,optional"`                               // 编码
+        name  string `json:"name,optional"`                               // 模块名称
         Children []*AccessGroupInfo `json:"children,omitempty"`            // 列表数据
     }
     AccessInfo  {
-        ID int64 `json:"id,optional"`                                      // 接口编号
-        Code string `json:"code"`                               // 模块编号
+        ID int64 `json:"id,optional"`                                      // 编号
+        Code string `json:"code"`
         Module string `json:"module,optional"` //模块
         Group string `json:"group,optional"`                  // 分组
-        Name string `json:"name,optional"`                                 // 接口名称
+        Name string `json:"name,optional"`                                 // 名称
         IsNeedAuth int64 `json:"isNeedAuth,optional,range=[1:2]"`        // 是否需要认证（ 1需要 2不需要）
         Desc string `json:"desc,optional"`                       // 备注
         Apis []*ApiInfo `json:"apis,optional,omitempty"` //接口信息

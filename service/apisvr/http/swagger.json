@@ -7351,11 +7351,11 @@
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 分组编码"
         },
         "name": {
           "type": "string",
-          "description": " 接口分组"
+          "description": " 分组名称"
         },
         "children": {
           "type": "array",
@@ -7431,11 +7431,10 @@
         "id": {
           "type": "integer",
           "format": "int64",
-          "description": " 接口编号"
+          "description": " 编号"
         },
         "code": {
-          "type": "string",
-          "description": " 模块编号"
+          "type": "string"
         },
         "module": {
           "type": "string",
@@ -7447,7 +7446,7 @@
         },
         "name": {
           "type": "string",
-          "description": " 接口名称"
+          "description": " 名称"
         },
         "isNeedAuth": {
           "type": "integer",
@@ -7482,11 +7481,11 @@
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 编码"
         },
         "name": {
           "type": "string",
-          "description": " 接口分组"
+          "description": " 模块名称"
         },
         "children": {
           "type": "array",
@@ -7714,8 +7713,7 @@
       "title": "AppInfo",
       "required": [
         "code",
-        "type",
-        "subType"
+        "type"
       ]
     },
     "AppInfoIndexReq": {
