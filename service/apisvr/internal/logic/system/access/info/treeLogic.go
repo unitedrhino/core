@@ -36,6 +36,6 @@ func (l *TreeLogic) Tree(req *types.AccessIndexReq) (resp *types.AccessTreeResp,
 		return nil, err
 	}
 	return &types.AccessTreeResp{
-		List: ToAccessGroupInfoTypes(rst.List),
+		List: ToAccessModuleInfoTypes(rst.List),
 	}, nil
 }

@@ -42,6 +42,11 @@ func (s *AccessManageServer) ApiInfoDelete(ctx context.Context, in *sys.WithID) 
 	return l.ApiInfoDelete(in)
 }
 
+func (s *AccessManageServer) AccessInfoMultiImport(ctx context.Context, in *sys.AccessInfoMultiImportReq) (*sys.AccessInfoMultiImportResp, error) {
+	l := accessmanagelogic.NewAccessInfoMultiImportLogic(ctx, s.svcCtx)
+	return l.AccessInfoMultiImport(in)
+}
+
 func (s *AccessManageServer) AccessInfoCreate(ctx context.Context, in *sys.AccessInfo) (*sys.WithID, error) {
 	l := accessmanagelogic.NewAccessInfoCreateLogic(ctx, s.svcCtx)
 	return l.AccessInfoCreate(in)

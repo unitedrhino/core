@@ -5,4 +5,5 @@ const (
 	OptModify = 2 //修改
 	OptDel    = 3 //删除
 	OptQuery  = 4 //查询
+	OptOther  = 5 //其他
 )

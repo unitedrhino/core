@@ -17,6 +17,8 @@ type (
 	AccessInfo                    = sys.AccessInfo
 	AccessInfoIndexReq            = sys.AccessInfoIndexReq
 	AccessInfoIndexResp           = sys.AccessInfoIndexResp
+	AccessInfoMultiImportReq      = sys.AccessInfoMultiImportReq
+	AccessInfoMultiImportResp     = sys.AccessInfoMultiImportResp
 	ApiInfo                       = sys.ApiInfo
 	ApiInfoIndexReq               = sys.ApiInfoIndexReq
 	ApiInfoIndexResp              = sys.ApiInfoIndexResp

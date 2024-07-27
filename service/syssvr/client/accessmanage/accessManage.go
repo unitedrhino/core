@@ -17,6 +17,8 @@ type (
 	AccessInfo                    = sys.AccessInfo
 	AccessInfoIndexReq            = sys.AccessInfoIndexReq
 	AccessInfoIndexResp           = sys.AccessInfoIndexResp
+	AccessInfoMultiImportReq      = sys.AccessInfoMultiImportReq
+	AccessInfoMultiImportResp     = sys.AccessInfoMultiImportResp
 	ApiInfo                       = sys.ApiInfo
 	ApiInfoIndexReq               = sys.ApiInfoIndexReq
 	ApiInfoIndexResp              = sys.ApiInfoIndexResp
@@ -210,6 +212,7 @@ type (
 		ApiInfoIndex(ctx context.Context, in *ApiInfoIndexReq, opts ...grpc.CallOption) (*ApiInfoIndexResp, error)
 		ApiInfoUpdate(ctx context.Context, in *ApiInfo, opts ...grpc.CallOption) (*Empty, error)
 		ApiInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		AccessInfoMultiImport(ctx context.Context, in *AccessInfoMultiImportReq, opts ...grpc.CallOption) (*AccessInfoMultiImportResp, error)
 		AccessInfoCreate(ctx context.Context, in *AccessInfo, opts ...grpc.CallOption) (*WithID, error)
 		AccessInfoIndex(ctx context.Context, in *AccessInfoIndexReq, opts ...grpc.CallOption) (*AccessInfoIndexResp, error)
 		AccessInfoUpdate(ctx context.Context, in *AccessInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -273,6 +276,15 @@ func (m *defaultAccessManage) ApiInfoDelete(ctx context.Context, in *WithID, opt
 
 func (d *directAccessManage) ApiInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.ApiInfoDelete(ctx, in)
+}
+
+func (m *defaultAccessManage) AccessInfoMultiImport(ctx context.Context, in *AccessInfoMultiImportReq, opts ...grpc.CallOption) (*AccessInfoMultiImportResp, error) {
+	client := sys.NewAccessManageClient(m.cli.Conn())
+	return client.AccessInfoMultiImport(ctx, in, opts...)
+}
+
+func (d *directAccessManage) AccessInfoMultiImport(ctx context.Context, in *AccessInfoMultiImportReq, opts ...grpc.CallOption) (*AccessInfoMultiImportResp, error) {
+	return d.svr.AccessInfoMultiImport(ctx, in)
 }
 
 func (m *defaultAccessManage) AccessInfoCreate(ctx context.Context, in *AccessInfo, opts ...grpc.CallOption) (*WithID, error) {

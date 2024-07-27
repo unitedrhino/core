@@ -54,6 +54,6 @@ func (l *AccessTreeLogic) AccessTree() (resp *types.AccessTreeResp, err error) {
 		return nil, err
 	}
 	return &types.AccessTreeResp{
-		List: info.ToAccessGroupInfoTypes(ret.List),
+		List: info.ToAccessModuleInfoTypes(ret.List),
 	}, nil
 }

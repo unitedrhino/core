@@ -89,6 +89,7 @@ service AccessManage{
   rpc apiInfoUpdate(ApiInfo) returns(Empty);   //更新接口
   rpc apiInfoDelete(WithID) returns(Empty);   //删除接口
 
+  rpc accessInfoMultiImport(AccessInfoMultiImportReq) returns(AccessInfoMultiImportResp);   //添加接口
   rpc accessInfoCreate(AccessInfo) returns(WithID);   //添加接口
   rpc accessInfoIndex(AccessInfoIndexReq) returns(AccessInfoIndexResp); //获取接口列表
   rpc accessInfoUpdate(AccessInfo) returns(Empty);   //更新接口
@@ -1583,7 +1584,7 @@ message ApiInfo{
   string method = 3;        // 接口请求方式: POST GET
   string name = 5;         // 接口名称
   int64  businessType = 6; // 业务类型（1新增 2修改 3删除 4查询 5其它)
-  int64 authType = 8;// // 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
+  int64 authType = 8;// // 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(super) 只有超管可以操作(超管是跨租户的)
   string desc = 9;//描述
 }
 
@@ -1592,10 +1593,22 @@ message ApiInfoIndexResp{
   int64 total = 2;           // 接口列表总记录数
 }
 
+message AccessInfoMultiImportReq{
+  string module =1;//模块
+  string access =2;
+}
+message AccessInfoMultiImportResp{
+  int64 total=1;
+  int64 errCount=2;
+  int64 ignoreCount=3;
+  int64 succCount=4;
+}
+
 message AccessInfoIndexReq{
   PageInfo page = 1;// 分页信息
-  string group = 4; // 接口分组
-  string code =6;
+  string module =2;//模块
+  string group = 3; // 接口分组
+  string code =4;
   repeated string codes = 7;
   string name = 8;  // 接口名称
   int64 isNeedAuth = 9;//是否需要权限认证 1是 2否
@@ -1603,13 +1616,14 @@ message AccessInfoIndexReq{
 }
 
 message AccessInfo{
-  int64 id = 1;            // 接口编号
-  string code = 7;
-  string name = 5;         // 接口名称
-  string group = 4;        // 接口分组
-  int64 isNeedAuth = 8;//是否需要权限认证 1是 2否
-  string desc = 9;//描述
-  repeated ApiInfo Apis = 10;
+  int64 id = 1;// 编号
+  string module =2;//模块
+  string group = 3;// 分组
+  string code = 4;//编码
+  string name = 5;// 名称
+  int64 isNeedAuth = 6;//是否需要权限认证 1是 2否
+  string desc = 7;//描述
+  repeated ApiInfo Apis = 8;
 }
 
 message AccessInfoIndexResp{

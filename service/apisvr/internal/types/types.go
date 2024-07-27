@@ -10,6 +10,7 @@ type AccessGroupInfo struct {
 
 type AccessIndexReq struct {
 	Page       *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+	Module     string    `json:"module,optional"`                 //模块
 	Group      string    `json:"group,optional"`                  // 接口路由
 	Name       string    `json:"name,optional"`                   // 接口名称
 	Code       string    `json:"code,optional"`                   // 应用编号
@@ -25,6 +26,7 @@ type AccessIndexResp struct {
 type AccessInfo struct {
 	ID         int64      `json:"id,optional"`                     // 接口编号
 	Code       string     `json:"code"`                            // 模块编号
+	Module     string     `json:"module,optional"`                 //模块
 	Group      string     `json:"group,optional"`                  // 分组
 	Name       string     `json:"name,optional"`                   // 接口名称
 	IsNeedAuth int64      `json:"isNeedAuth,optional,range=[1:2]"` // 是否需要认证（ 1需要 2不需要）
@@ -32,8 +34,26 @@ type AccessInfo struct {
 	Apis       []*ApiInfo `json:"apis,optional,omitempty"`         //接口信息
 }
 
+type AccessModuleInfo struct {
+	ID       string             `json:"id,optional"`        // id
+	Code     string             `json:"code,optional"`      // 应用编号
+	Name     string             `json:"name,optional"`      // 接口分组
+	Children []*AccessGroupInfo `json:"children,omitempty"` // 列表数据
+}
+
+type AccessMultiImportReq struct {
+	Module string `form:"module,optional"` //模块
+}
+
+type AccessMultiImportResp struct {
+	Total       int64 `json:"total"`       //导入总接口数
+	ErrCount    int64 `json:"errCount"`    //失败数
+	IgnoreCount int64 `json:"ignoreCount"` //忽略数
+	SuccCount   int64 `json:"succCount"`   //成功数
+}
+
 type AccessTreeResp struct {
-	List []*AccessGroupInfo `json:"list"` // 接口列表数据
+	List []*AccessModuleInfo `json:"list"` // 接口列表数据
 }
 
 type ApiInfo struct {
@@ -43,7 +63,7 @@ type ApiInfo struct {
 	Method       string `json:"method,optional"`                   // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
 	Name         string `json:"name,optional"`                     // 接口名称
 	BusinessType int64  `json:"businessType,optional,range=[1:5]"` // 业务类型（1新增 2修改 3删除 4查询 5其它)
-	AuthType     int64  `json:"authType,optional,range=[0:3]"`     //  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
+	AuthType     int64  `json:"authType,optional,range=[0:3]"`     //  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(super) 只有超管可以操作(超管是跨租户的)
 	Desc         string `json:"desc,optional"`                     // 备注
 }
 
@@ -858,8 +878,8 @@ type TenantAccessInfo struct {
 }
 
 type TenantAccessInfoTreeResp struct {
-	List  []*AccessGroupInfo `json:"list"`
-	Total int64              `json:"total"`
+	List  []*AccessModuleInfo `json:"list"`
+	Total int64               `json:"total"`
 }
 
 type TenantAgreement struct {

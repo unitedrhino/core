@@ -35,7 +35,7 @@ func (l *TreeLogic) Tree(req *types.WithCode) (resp *types.TenantAccessInfoTreeR
 		return nil, err
 	}
 	return &types.TenantAccessInfoTreeResp{
-		List:  info.ToAccessGroupInfoTypes(ais.List),
+		List:  info.ToAccessModuleInfoTypes(ais.List),
 		Total: ais.Total,
 	}, nil
 }

@@ -27,6 +27,7 @@ func NewAccessInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 func (l *AccessInfoCreateLogic) AccessInfoCreate(in *sys.AccessInfo) (*sys.WithID, error) {
 	po := ToAccessPo(in)
 	po.ID = 0
+	po.Apis = nil
 	err := relationDB.NewAccessRepo(l.ctx).Insert(l.ctx, po)
 	if err != nil {
 		return nil, err

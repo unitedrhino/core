@@ -41,21 +41,39 @@ func ToAccessInfosTypes(in []*sys.AccessInfo) (ret []*types.AccessInfo) {
 	}
 	return
 }
-func ToAccessGroupInfoTypes(in []*sys.AccessInfo) (ret []*types.AccessGroupInfo) {
-	var retMap = map[string][]*types.AccessInfo{}
+func ToAccessModuleInfoTypes(in []*sys.AccessInfo) (ret []*types.AccessModuleInfo) {
+	var retMap = map[string]map[string][]*types.AccessInfo{}
 	for _, v := range in {
-		retMap[v.Group] = append(retMap[v.Group], ToAccessInfoTypes(v))
+		_, ok := retMap[v.Module]
+		if !ok {
+			retMap[v.Module] = map[string][]*types.AccessInfo{}
+		}
+
+		retMap[v.Module][v.Group] = append(retMap[v.Module][v.Group], ToAccessInfoTypes(v))
 	}
-	var retList []*types.AccessGroupInfo
-	var groupID int64
+	var retList []*types.AccessModuleInfo
+	var moduleID int64
+
 	for k, v := range retMap {
-		groupID++
-		code := fmt.Sprintf("group%d", groupID)
-		retList = append(retList, &types.AccessGroupInfo{
+		moduleID++
+		code := fmt.Sprintf("module%d", moduleID)
+		var groups []*types.AccessGroupInfo
+		var groupID int64
+		for gk, gv := range v {
+			groupID++
+			code := fmt.Sprintf("group%d", groupID)
+			groups = append(groups, &types.AccessGroupInfo{
+				ID:       code,
+				Code:     code,
+				Name:     gk,
+				Children: gv,
+			})
+		}
+		retList = append(retList, &types.AccessModuleInfo{
 			ID:       code,
 			Code:     code,
 			Name:     k,
-			Children: v,
+			Children: groups,
 		})
 	}
 	return retList

@@ -56,9 +56,27 @@ service api {
     @doc "删除访问权限信息"
     @handler delete
     post /delete (WithID) returns ()
+
+    @doc(
+        summary: "批量导入授权"
+        injectFormdataParam: "file"
+        isNeedAuth: "true"
+        authType: "admin"
+    )
+    @handler multiImport
+    post /multi-import (AccessMultiImportReq) returns (AccessMultiImportResp)
 }
 
 type (
+    AccessMultiImportReq {
+        Module string  `form:"module,optional"` //模块
+    }
+    AccessMultiImportResp {
+        Total int64 `json:"total"`                                 //导入总接口数
+        ErrCount int64  `json:"errCount"` //失败数
+        IgnoreCount int64  `json:"ignoreCount"` //忽略数
+        SuccCount int64  `json:"succCount"` //成功数
+    }
 
     ApiInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
@@ -77,6 +95,7 @@ type (
 
     AccessIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        Module string  `json:"module,optional"` //模块
         Group string `json:"group,optional"`                   // 接口路由
         Name string `json:"name,optional"`                     // 接口名称
         Code string `json:"code,optional"`                               // 应用编号
@@ -90,6 +109,6 @@ type (
         Total int64 `json:"total"`                    // 接口列表总记录数
     }
     AccessTreeResp  {
-        List []*AccessGroupInfo `json:"list"`            // 接口列表数据
+        List []*AccessModuleInfo `json:"list"`            // 接口列表数据
     }
 )

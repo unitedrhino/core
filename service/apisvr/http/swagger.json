@@ -300,6 +300,64 @@
         ]
       }
     },
+    "/api/v1/system/access/info/multi-import": {
+      "post": {
+        "summary": "批量导入授权",
+        "operationId": "postApiV1SystemAccessInfoMulti-import",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/AccessMultiImportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "module",
+            "description": "模块\r",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "module",
+            "description": "//模块",
+            "in": "formData",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "system/access/info",
+          "systemAccessInfo"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      }
+    },
     "/api/v1/system/access/info/tree": {
       "post": {
         "summary": "获取访问权限信息树结构",
@@ -7316,6 +7374,10 @@
           "$ref": "#/definitions/PageInfo",
           "description": " 分页信息,只获取一个则不填"
         },
+        "module": {
+          "type": "string",
+          "description": "模块"
+        },
         "group": {
           "type": "string",
           "description": " 接口路由"
@@ -7375,6 +7437,10 @@
           "type": "string",
           "description": " 模块编号"
         },
+        "module": {
+          "type": "string",
+          "description": "模块"
+        },
         "group": {
           "type": "string",
           "description": " 分组"
@@ -7407,13 +7473,80 @@
         "code"
       ]
     },
+    "AccessModuleInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " id"
+        },
+        "code": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 接口分组"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccessGroupInfo"
+          },
+          "description": " 列表数据"
+        }
+      },
+      "title": "AccessModuleInfo"
+    },
+    "AccessMultiImportReq": {
+      "type": "object",
+      "properties": {
+        "module": {
+          "type": "string",
+          "description": "模块"
+        }
+      },
+      "title": "AccessMultiImportReq"
+    },
+    "AccessMultiImportResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "导入总接口数"
+        },
+        "errCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "失败数"
+        },
+        "ignoreCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "忽略数"
+        },
+        "succCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "成功数"
+        }
+      },
+      "title": "AccessMultiImportResp",
+      "required": [
+        "total",
+        "errCount",
+        "ignoreCount",
+        "succCount"
+      ]
+    },
     "AccessTreeResp": {
       "type": "object",
       "properties": {
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AccessGroupInfo"
+            "$ref": "#/definitions/AccessModuleInfo"
           },
           "description": " 接口列表数据"
         }
@@ -7457,7 +7590,7 @@
         "authType": {
           "type": "integer",
           "format": "int64",
-          "description": "  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)",
+          "description": "  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(super) 只有超管可以操作(超管是跨租户的)",
           "maximum": 3
         },
         "desc": {
@@ -10553,7 +10686,7 @@
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AccessGroupInfo"
+            "$ref": "#/definitions/AccessModuleInfo"
           }
         },
         "total": {

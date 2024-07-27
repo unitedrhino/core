@@ -102,6 +102,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 				{
 					Method:  http.MethodPost,
+					Path:    "/multi-import",
+					Handler: systemaccessinfo.MultiImportHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/tree",
 					Handler: systemaccessinfo.TreeHandler(serverCtx),
 				},

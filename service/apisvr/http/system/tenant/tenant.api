@@ -124,7 +124,7 @@ type(
         AccessCodes []string `json:"accessCodes"`                               // 模块编号
     }
     TenantAccessInfoTreeResp{
-        List []*AccessGroupInfo `json:"list"`
+        List []*AccessModuleInfo `json:"list"`
         Total int64 `json:"total"`
     }
 )

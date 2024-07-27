@@ -2184,14 +2184,15 @@ var NotifyManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	AccessManage_ApiInfoCreate_FullMethodName    = "/sys.AccessManage/apiInfoCreate"
-	AccessManage_ApiInfoIndex_FullMethodName     = "/sys.AccessManage/apiInfoIndex"
-	AccessManage_ApiInfoUpdate_FullMethodName    = "/sys.AccessManage/apiInfoUpdate"
-	AccessManage_ApiInfoDelete_FullMethodName    = "/sys.AccessManage/apiInfoDelete"
-	AccessManage_AccessInfoCreate_FullMethodName = "/sys.AccessManage/accessInfoCreate"
-	AccessManage_AccessInfoIndex_FullMethodName  = "/sys.AccessManage/accessInfoIndex"
-	AccessManage_AccessInfoUpdate_FullMethodName = "/sys.AccessManage/accessInfoUpdate"
-	AccessManage_AccessInfoDelete_FullMethodName = "/sys.AccessManage/accessInfoDelete"
+	AccessManage_ApiInfoCreate_FullMethodName         = "/sys.AccessManage/apiInfoCreate"
+	AccessManage_ApiInfoIndex_FullMethodName          = "/sys.AccessManage/apiInfoIndex"
+	AccessManage_ApiInfoUpdate_FullMethodName         = "/sys.AccessManage/apiInfoUpdate"
+	AccessManage_ApiInfoDelete_FullMethodName         = "/sys.AccessManage/apiInfoDelete"
+	AccessManage_AccessInfoMultiImport_FullMethodName = "/sys.AccessManage/accessInfoMultiImport"
+	AccessManage_AccessInfoCreate_FullMethodName      = "/sys.AccessManage/accessInfoCreate"
+	AccessManage_AccessInfoIndex_FullMethodName       = "/sys.AccessManage/accessInfoIndex"
+	AccessManage_AccessInfoUpdate_FullMethodName      = "/sys.AccessManage/accessInfoUpdate"
+	AccessManage_AccessInfoDelete_FullMethodName      = "/sys.AccessManage/accessInfoDelete"
 )
 
 // AccessManageClient is the client API for AccessManage service.
@@ -2202,6 +2203,7 @@ type AccessManageClient interface {
 	ApiInfoIndex(ctx context.Context, in *ApiInfoIndexReq, opts ...grpc.CallOption) (*ApiInfoIndexResp, error)
 	ApiInfoUpdate(ctx context.Context, in *ApiInfo, opts ...grpc.CallOption) (*Empty, error)
 	ApiInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	AccessInfoMultiImport(ctx context.Context, in *AccessInfoMultiImportReq, opts ...grpc.CallOption) (*AccessInfoMultiImportResp, error)
 	AccessInfoCreate(ctx context.Context, in *AccessInfo, opts ...grpc.CallOption) (*WithID, error)
 	AccessInfoIndex(ctx context.Context, in *AccessInfoIndexReq, opts ...grpc.CallOption) (*AccessInfoIndexResp, error)
 	AccessInfoUpdate(ctx context.Context, in *AccessInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -2252,6 +2254,15 @@ func (c *accessManageClient) ApiInfoDelete(ctx context.Context, in *WithID, opts
 	return out, nil
 }
 
+func (c *accessManageClient) AccessInfoMultiImport(ctx context.Context, in *AccessInfoMultiImportReq, opts ...grpc.CallOption) (*AccessInfoMultiImportResp, error) {
+	out := new(AccessInfoMultiImportResp)
+	err := c.cc.Invoke(ctx, AccessManage_AccessInfoMultiImport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accessManageClient) AccessInfoCreate(ctx context.Context, in *AccessInfo, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
 	err := c.cc.Invoke(ctx, AccessManage_AccessInfoCreate_FullMethodName, in, out, opts...)
@@ -2296,6 +2307,7 @@ type AccessManageServer interface {
 	ApiInfoIndex(context.Context, *ApiInfoIndexReq) (*ApiInfoIndexResp, error)
 	ApiInfoUpdate(context.Context, *ApiInfo) (*Empty, error)
 	ApiInfoDelete(context.Context, *WithID) (*Empty, error)
+	AccessInfoMultiImport(context.Context, *AccessInfoMultiImportReq) (*AccessInfoMultiImportResp, error)
 	AccessInfoCreate(context.Context, *AccessInfo) (*WithID, error)
 	AccessInfoIndex(context.Context, *AccessInfoIndexReq) (*AccessInfoIndexResp, error)
 	AccessInfoUpdate(context.Context, *AccessInfo) (*Empty, error)
@@ -2318,6 +2330,9 @@ func (UnimplementedAccessManageServer) ApiInfoUpdate(context.Context, *ApiInfo) 
 }
 func (UnimplementedAccessManageServer) ApiInfoDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ApiInfoDelete not implemented")
+}
+func (UnimplementedAccessManageServer) AccessInfoMultiImport(context.Context, *AccessInfoMultiImportReq) (*AccessInfoMultiImportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AccessInfoMultiImport not implemented")
 }
 func (UnimplementedAccessManageServer) AccessInfoCreate(context.Context, *AccessInfo) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AccessInfoCreate not implemented")
@@ -2416,6 +2431,24 @@ func _AccessManage_ApiInfoDelete_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccessManage_AccessInfoMultiImport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AccessInfoMultiImportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccessManageServer).AccessInfoMultiImport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccessManage_AccessInfoMultiImport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccessManageServer).AccessInfoMultiImport(ctx, req.(*AccessInfoMultiImportReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccessManage_AccessInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AccessInfo)
 	if err := dec(in); err != nil {
@@ -2510,6 +2543,10 @@ var AccessManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "apiInfoDelete",
 			Handler:    _AccessManage_ApiInfoDelete_Handler,
+		},
+		{
+			MethodName: "accessInfoMultiImport",
+			Handler:    _AccessManage_AccessInfoMultiImport_Handler,
 		},
 		{
 			MethodName: "accessInfoCreate",
