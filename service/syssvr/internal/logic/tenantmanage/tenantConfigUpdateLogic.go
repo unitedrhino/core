@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -37,6 +38,19 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 	old, err := relationDB.NewTenantConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: in.TenantCode})
 	if err != nil {
 		return nil, err
+	}
+	for _, v := range in.RegisterAutoCreateProject {
+		for _, a := range v.Areas {
+			if a.IsUpdateAreaImg == true && a.AreaImg != "" {
+				nwePath := oss.GenCommonFilePath(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, oss.GetFileNameWithPath(a.AreaImg))
+				path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(a.AreaImg, nwePath)
+				if err != nil {
+					l.Error(err)
+				} else {
+					a.AreaImg = path
+				}
+			}
+		}
 	}
 	newPo := utils.Copy[relationDB.SysTenantConfig](in)
 	newPo.NoDelTime = old.NoDelTime

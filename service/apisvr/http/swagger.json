@@ -11177,8 +11177,7 @@
       "required": [
         "tenantCode",
         "registerRoleID",
-        "checkUserDelete",
-        "registerAutoCreateProject"
+        "checkUserDelete"
       ]
     },
     "TenantConfigRegisterAutoCreateArea": {
@@ -11190,6 +11189,10 @@
         "areaImg": {
           "type": "string"
         },
+        "isUpdateAreaImg": {
+          "type": "boolean",
+          "format": "boolean"
+        },
         "isSysCreated": {
           "type": "integer",
           "format": "int64",
@@ -11199,7 +11202,6 @@
       "title": "TenantConfigRegisterAutoCreateArea",
       "required": [
         "areaName",
-        "areaImg",
         "isSysCreated"
       ]
     },
@@ -11224,8 +11226,7 @@
       "title": "TenantConfigRegisterAutoCreateProject",
       "required": [
         "projectName",
-        "isSysCreated",
-        "areas"
+        "isSysCreated"
       ]
     },
     "TenantCore": {

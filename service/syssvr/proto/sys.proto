@@ -598,6 +598,7 @@ message TenantConfigRegisterAutoCreateArea{
   string  areaName =1;
   string  areaImg =2;
   int64   isSysCreated = 3;//是否是系统创建的,系统创建的只有管理员可以删除
+  bool isUpdateAreaImg=4;//是否更新区域图片
 }
 
 message TenantAccessMultiUpdateReq{
