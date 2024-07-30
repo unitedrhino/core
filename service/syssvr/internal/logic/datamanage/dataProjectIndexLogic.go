@@ -54,6 +54,7 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 	}
 	filter := relationDB.DataProjectFilter{
 		ProjectID: in.ProjectID,
+		AuthType:  in.AuthType,
 		Target: &relationDB.Target{
 			Type: in.TargetType,
 			ID:   in.TargetID,

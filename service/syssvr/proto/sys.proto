@@ -1305,6 +1305,7 @@ message DataProjectIndexReq {
     int64 projectID =2;//获取该项目实际获得的权限
     int64 targetID = 3;
     string targetType =4;//user:用户 role:角色
+    int64 authType =5;// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
 }
 
 message DataProjectIndexResp {
