@@ -31,6 +31,10 @@ Proxy:
       Dest: http://127.0.0.1:8000
     - Router: /api/v1/things/
       Dest: http://127.0.0.1:7788
+    - Router: /api/v1/video/
+      Dest: http://127.0.0.1:7800
+    - Router: /api/v1/media/
+      Dest: http://127.0.0.1:8088
     - Router: /api/v1/data/
       Dest: http://127.0.0.1:9218
     - Router: /api/v1/sale/
