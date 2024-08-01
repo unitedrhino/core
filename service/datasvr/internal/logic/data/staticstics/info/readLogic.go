@@ -115,7 +115,9 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 				conn = conn.Where(fmt.Sprintf("%s = ?", newCol), v)
 				return conn
 			case "subChildren":
-				conn = conn.Where(fmt.Sprintf("%s like ?", newCol), cast.ToString(v)+"%")
+				if len(cast.ToString(v)) > 0 {
+					conn = conn.Where(fmt.Sprintf("%s like ?", newCol), cast.ToString(v)+"%")
+				}
 				return conn
 			default:
 				cmp := stores.GetCmp(fu, v)
