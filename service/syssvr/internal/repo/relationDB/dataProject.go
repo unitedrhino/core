@@ -62,7 +62,7 @@ func (p DataProjectRepo) fmtFilter(ctx context.Context, f DataProjectFilter) *go
 		db = db.Where(scope(db))
 	}
 	if f.AuthType != 0 {
-		db = db.Where("user_id= ?", f.AuthType)
+		db = db.Where("auth_type= ?", f.AuthType)
 	}
 	return db
 }
