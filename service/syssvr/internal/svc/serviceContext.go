@@ -1,20 +1,17 @@
 package svc
 
 import (
-	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/config"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/caches"
-	cas "gitee.com/i-Things/share/casbin"
 	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/domain/tenant"
 	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/oss"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
-	"github.com/casbin/casbin/v2"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"os"
@@ -25,7 +22,6 @@ type ServiceContext struct {
 	ProjectID     *utils.SnowFlake
 	AreaID        *utils.SnowFlake
 	UserID        *utils.SnowFlake
-	Casbin        *casbin.Enforcer
 	Slot          *cache.Slot
 	OssClient     *oss.Client
 	Store         kv.Store
@@ -49,17 +45,11 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		os.Exit(-1)
 	}
 	// 自动迁移数据库
-	db := stores.GetCommonConn(context.Background())
 	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
 	ProjectID := utils.NewSnowFlake(nodeID)
 	AreaID := utils.NewSnowFlake(nodeID)
 	nodeId := utils.GetNodeID(c.CacheRedis, c.Name)
 	UserID := utils.NewSnowFlake(nodeId)
-	dbRaw, err := db.DB()
-	if err != nil {
-		logx.Error("sys failed to  database err: %v", err)
-	}
-	ca := cas.NewCasbinWithRedisWatcher(dbRaw, c.Database.DBType, c.CacheRedis[0].RedisConf)
 	store := kv.NewStore(c.CacheRedis)
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
@@ -92,7 +82,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		OssClient:     ossClient,
 		AreaID:        AreaID,
 		UserID:        UserID,
-		Casbin:        ca,
 		Store:         store,
 		Sms:           sms,
 		UserTokenInfo: userTokenInfo,
