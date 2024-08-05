@@ -5527,6 +5527,48 @@
         ]
       }
     },
+    "/api/v1/system/tenant/app/core/read": {
+      "post": {
+        "summary": "获取应用信息",
+        "operationId": "postApiV1SystemTenantAppCoreRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/AppCore"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithCode"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/app/core",
+          "systemTenantAppCore"
+        ]
+      }
+    },
     "/api/v1/system/tenant/app/create": {
       "post": {
         "summary": "绑定租户应用",
@@ -7737,6 +7779,48 @@
         "total"
       ]
     },
+    "AppCore": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编号"
+        },
+        "code": {
+          "type": "string",
+          "description": " 应用编码"
+        },
+        "type": {
+          "type": "string",
+          "description": "应用类型 web:web页面  app:应用  mini:小程序"
+        },
+        "subType": {
+          "type": "string",
+          "description": "子类型  wx:微信小程序  ding:钉钉小程序"
+        },
+        "name": {
+          "type": "string",
+          "description": " 应用名称"
+        },
+        "loginTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
+        },
+        "officialWx": {
+          "$ref": "#/definitions/ThirdAppCore",
+          "description": "微信公众号 只有web的有"
+        }
+      },
+      "title": "AppCore",
+      "required": [
+        "code",
+        "type"
+      ]
+    },
     "AppDeleteReq": {
       "type": "object",
       "properties": {
@@ -7757,11 +7841,11 @@
         "id": {
           "type": "integer",
           "format": "int64",
-          "description": " 接口编号"
+          "description": " 编号"
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 应用编码"
         },
         "type": {
           "type": "string",
@@ -7773,7 +7857,7 @@
         },
         "name": {
           "type": "string",
-          "description": " 接口名称"
+          "description": " 应用名称"
         },
         "desc": {
           "type": "string",
@@ -8754,8 +8838,11 @@
     "Map": {
       "type": "object",
       "properties": {
-        "mode，options=gaode": {
+        "mode": {
           "type": "string",
+          "enum": [
+            "gaode"
+          ],
           "description": "坐标系 默认百度坐标系"
         },
         "accessKey": {
@@ -8769,7 +8856,7 @@
       },
       "title": "Map",
       "required": [
-        "mode，options=gaode",
+        "mode",
         "accessKey",
         "accessSecret"
       ]
@@ -10844,11 +10931,11 @@
         "id": {
           "type": "integer",
           "format": "int64",
-          "description": " 接口编号"
+          "description": " 编号"
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 应用编码"
         },
         "type": {
           "type": "string",
@@ -10860,7 +10947,7 @@
         },
         "name": {
           "type": "string",
-          "description": " 接口名称"
+          "description": " 应用名称"
         },
         "desc": {
           "type": "string",
@@ -10880,6 +10967,17 @@
         "miniDing": {
           "$ref": "#/definitions/ThirdAppConfig",
           "description": "钉钉小程序"
+        },
+        "officialWx": {
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "微信公众号 只有web的需要填"
+        },
+        "loginTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
         }
       },
       "title": "TenantApp"
@@ -10939,6 +11037,17 @@
         "miniWx": {
           "$ref": "#/definitions/ThirdAppConfig",
           "description": "微信小程序"
+        },
+        "officialWx": {
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "微信公众号 只有web的需要填"
+        },
+        "loginTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
         }
       },
       "title": "TenantAppInfo",
@@ -11547,6 +11656,18 @@
         "appKey",
         "appSecret"
       ]
+    },
+    "ThirdAppCore": {
+      "type": "object",
+      "properties": {
+        "appID": {
+          "type": "string"
+        },
+        "appKey": {
+          "type": "string"
+        }
+      },
+      "title": "ThirdAppCore"
     },
     "ThirdEmailConfig": {
       "type": "object",

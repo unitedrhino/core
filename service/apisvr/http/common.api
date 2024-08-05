@@ -77,4 +77,8 @@ type(
         AppKey string `json:"appKey"`//微信小程序无需填写
         AppSecret string `json:"appSecret"`
     }
+    ThirdAppCore {
+        AppID string `json:"appID,optional,omitempty"`
+        AppKey string `json:"appKey,optional,omitempty"`
+    }
 )

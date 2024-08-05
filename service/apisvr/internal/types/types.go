@@ -81,16 +81,26 @@ type ApiInfoIndexResp struct {
 	Total int64      `json:"total"` // 接口列表总记录数
 }
 
+type AppCore struct {
+	ID         int64         `json:"id,optional"`         // 编号
+	Code       string        `json:"code"`                // 应用编码
+	Type       string        `json:"type"`                //应用类型 web:web页面  app:应用  mini:小程序
+	SubType    string        `json:"subType,optional"`    //子类型  wx:微信小程序  ding:钉钉小程序
+	Name       string        `json:"name,optional"`       // 应用名称
+	LoginTypes []string      `json:"loginTypes,optional"` //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	OfficialWx *ThirdAppCore `json:"officialWx,optional"` //微信公众号 只有web的有
+}
+
 type AppDeleteReq struct {
 	ID int64 `json:"id"` // 接口编号
 }
 
 type AppInfo struct {
-	ID      int64           `json:"id,optional"`      // 接口编号
-	Code    string          `json:"code"`             // 应用编号
+	ID      int64           `json:"id,optional"`      // 编号
+	Code    string          `json:"code"`             // 应用编码
 	Type    string          `json:"type"`             //应用类型 web:web页面  app:应用  mini:小程序
 	SubType string          `json:"subType,optional"` //子类型  wx:微信小程序  ding:钉钉小程序
-	Name    string          `json:"name,optional"`    // 接口名称
+	Name    string          `json:"name,optional"`    // 应用名称
 	Desc    *string         `json:"desc,optional"`    // 备注
 	BaseUrl string          `json:"baseUrl,optional"` // 应用编号
 	LogoUrl string          `json:"logoUrl,optional"`
@@ -356,7 +366,7 @@ type JwtToken struct {
 }
 
 type Map struct {
-	Mode         string `json:"mode，options=gaode"` //坐标系 默认百度坐标系
+	Mode         string `json:"mode,options=gaode"` //坐标系 默认百度坐标系
 	AccessKey    string `json:"accessKey"`          //设备地图key
 	AccessSecret string `json:"accessSecret"`       //地图秘钥
 }
@@ -901,7 +911,9 @@ type TenantAgreementIndexResp struct {
 
 type TenantApp struct {
 	AppInfo
-	MiniDing *ThirdAppConfig `json:"miniDing,optional"` //钉钉小程序
+	MiniDing   *ThirdAppConfig `json:"miniDing,optional"`   //钉钉小程序
+	OfficialWx *ThirdAppConfig `json:"officialWx,optional"` //微信公众号 只有web的需要填
+	LoginTypes []string        `json:"loginTypes,optional"` //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
 }
 
 type TenantAppIndexReq struct {
@@ -914,11 +926,13 @@ type TenantAppIndexResp struct {
 }
 
 type TenantAppInfo struct {
-	Code     string             `json:"code,optional"` // 应用编号
-	AppCode  string             `json:"appCode"`
-	Modules  []*TenantAppModule `json:"modules"`
-	MiniDing *ThirdAppConfig    `json:"miniDing,optional"` //钉钉小程序
-	MiniWx   *ThirdAppConfig    `json:"miniWx,optional"`   //微信小程序
+	Code       string             `json:"code,optional"` // 应用编号
+	AppCode    string             `json:"appCode"`
+	Modules    []*TenantAppModule `json:"modules"`
+	MiniDing   *ThirdAppConfig    `json:"miniDing,optional"`   //钉钉小程序
+	MiniWx     *ThirdAppConfig    `json:"miniWx,optional"`     //微信小程序
+	OfficialWx *ThirdAppConfig    `json:"officialWx,optional"` //微信公众号 只有web的需要填
+	LoginTypes []string           `json:"loginTypes,optional"` //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
 }
 
 type TenantAppMenu struct {
@@ -1067,6 +1081,11 @@ type ThirdAppConfig struct {
 	AppID     string `json:"appID"`
 	AppKey    string `json:"appKey"` //微信小程序无需填写
 	AppSecret string `json:"appSecret"`
+}
+
+type ThirdAppCore struct {
+	AppID  string `json:"appID,optional,omitempty"`
+	AppKey string `json:"appKey,optional,omitempty"`
 }
 
 type ThirdEmailConfig struct {

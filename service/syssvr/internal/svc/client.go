@@ -14,6 +14,7 @@ import (
 )
 
 type Clients struct {
+	WxOfficial  *clients.WxOfficialAccount
 	MiniProgram *clients.MiniProgram
 	MiniDing    *clients.DingTalk
 }
@@ -66,6 +67,13 @@ func (c *ClientsManage) GetClients(ctx context.Context, tenantCode string) (Clie
 	}
 	if cfg.MiniWx != nil && cfg.MiniWx.AppSecret != "" {
 		cli.MiniProgram, _ = clients.NewWxMiniProgram(ctx, &conf.ThirdConf{
+			AppID:     cfg.MiniWx.AppID,
+			AppKey:    cfg.MiniWx.AppKey,
+			AppSecret: cfg.MiniWx.AppSecret,
+		}, c.Config.CacheRedis)
+	}
+	if cfg.OfficialWx != nil && cfg.OfficialWx.AppSecret != "" {
+		cli.WxOfficial, _ = clients.NewWxOfficialAccount(ctx, &conf.ThirdConf{
 			AppID:     cfg.MiniWx.AppID,
 			AppKey:    cfg.MiniWx.AppKey,
 			AppSecret: cfg.MiniWx.AppSecret,

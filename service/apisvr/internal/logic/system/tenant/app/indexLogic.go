@@ -58,6 +58,7 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 			val.MiniDing.AppSecret = ta.MiniDing.AppSecret
 			val.MiniDing.AppKey = ta.MiniDing.AppKey
 		}
+		val.LoginTypes = ta.LoginTypes
 		retList = append(retList, val)
 	}
 	return &types.TenantAppIndexResp{

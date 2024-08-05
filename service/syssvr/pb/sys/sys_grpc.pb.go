@@ -5467,6 +5467,7 @@ const (
 	TenantManage_TenantAccessIndex_FullMethodName          = "/sys.TenantManage/tenantAccessIndex"
 	TenantManage_TenantAppIndex_FullMethodName             = "/sys.TenantManage/tenantAppIndex"
 	TenantManage_TenantAppCreate_FullMethodName            = "/sys.TenantManage/tenantAppCreate"
+	TenantManage_TenantAppRead_FullMethodName              = "/sys.TenantManage/tenantAppRead"
 	TenantManage_TenantAppUpdate_FullMethodName            = "/sys.TenantManage/tenantAppUpdate"
 	TenantManage_TenantAppDelete_FullMethodName            = "/sys.TenantManage/tenantAppDelete"
 	TenantManage_TenantAppModuleMultiCreate_FullMethodName = "/sys.TenantManage/tenantAppModuleMultiCreate"
@@ -5506,6 +5507,7 @@ type TenantManageClient interface {
 	TenantAccessIndex(ctx context.Context, in *TenantAccessIndexReq, opts ...grpc.CallOption) (*TenantAccessIndexResp, error)
 	TenantAppIndex(ctx context.Context, in *TenantAppIndexReq, opts ...grpc.CallOption) (*TenantAppIndexResp, error)
 	TenantAppCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
+	TenantAppRead(ctx context.Context, in *TenantAppWithIDOrCode, opts ...grpc.CallOption) (*TenantAppInfo, error)
 	TenantAppUpdate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
 	TenantAppDelete(ctx context.Context, in *TenantAppWithIDOrCode, opts ...grpc.CallOption) (*Empty, error)
 	TenantAppModuleMultiCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -5626,6 +5628,15 @@ func (c *tenantManageClient) TenantAppIndex(ctx context.Context, in *TenantAppIn
 func (c *tenantManageClient) TenantAppCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, TenantManage_TenantAppCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAppRead(ctx context.Context, in *TenantAppWithIDOrCode, opts ...grpc.CallOption) (*TenantAppInfo, error) {
+	out := new(TenantAppInfo)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAppRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -5805,6 +5816,7 @@ type TenantManageServer interface {
 	TenantAccessIndex(context.Context, *TenantAccessIndexReq) (*TenantAccessIndexResp, error)
 	TenantAppIndex(context.Context, *TenantAppIndexReq) (*TenantAppIndexResp, error)
 	TenantAppCreate(context.Context, *TenantAppInfo) (*Empty, error)
+	TenantAppRead(context.Context, *TenantAppWithIDOrCode) (*TenantAppInfo, error)
 	TenantAppUpdate(context.Context, *TenantAppInfo) (*Empty, error)
 	TenantAppDelete(context.Context, *TenantAppWithIDOrCode) (*Empty, error)
 	TenantAppModuleMultiCreate(context.Context, *TenantAppInfo) (*Empty, error)
@@ -5861,6 +5873,9 @@ func (UnimplementedTenantManageServer) TenantAppIndex(context.Context, *TenantAp
 }
 func (UnimplementedTenantManageServer) TenantAppCreate(context.Context, *TenantAppInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppCreate not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAppRead(context.Context, *TenantAppWithIDOrCode) (*TenantAppInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAppRead not implemented")
 }
 func (UnimplementedTenantManageServer) TenantAppUpdate(context.Context, *TenantAppInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAppUpdate not implemented")
@@ -6120,6 +6135,24 @@ func _TenantManage_TenantAppCreate_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(TenantManageServer).TenantAppCreate(ctx, req.(*TenantAppInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantAppRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantAppWithIDOrCode)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAppRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAppRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAppRead(ctx, req.(*TenantAppWithIDOrCode))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -6480,6 +6513,10 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantAppCreate",
 			Handler:    _TenantManage_TenantAppCreate_Handler,
+		},
+		{
+			MethodName: "tenantAppRead",
+			Handler:    _TenantManage_TenantAppRead_Handler,
 		},
 		{
 			MethodName: "tenantAppUpdate",

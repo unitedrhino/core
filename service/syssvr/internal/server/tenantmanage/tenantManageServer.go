@@ -82,6 +82,11 @@ func (s *TenantManageServer) TenantAppCreate(ctx context.Context, in *sys.Tenant
 	return l.TenantAppCreate(in)
 }
 
+func (s *TenantManageServer) TenantAppRead(ctx context.Context, in *sys.TenantAppWithIDOrCode) (*sys.TenantAppInfo, error) {
+	l := tenantmanagelogic.NewTenantAppReadLogic(ctx, s.svcCtx)
+	return l.TenantAppRead(in)
+}
+
 func (s *TenantManageServer) TenantAppUpdate(ctx context.Context, in *sys.TenantAppInfo) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAppUpdateLogic(ctx, s.svcCtx)
 	return l.TenantAppUpdate(in)

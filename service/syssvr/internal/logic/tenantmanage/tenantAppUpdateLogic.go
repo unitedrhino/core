@@ -36,6 +36,9 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.MiniDing != nil {
 		old.MiniDing = utils.Copy[relationDB.SysTenantThird](in.MiniDing)
 	}
+	if in.OfficialWx != nil {
+		old.OfficialWx = utils.Copy[relationDB.SysTenantThird](in.OfficialWx)
+	}
 	err = relationDB.NewTenantAppRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err
 }

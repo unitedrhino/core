@@ -7,6 +7,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/conf"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
@@ -89,6 +90,7 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCt
 
 func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserInfo, err error) {
 	switch in.LoginType {
+
 	case users.RegPwd:
 		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
 			return nil, errors.Captcha
@@ -146,6 +148,16 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
 		}
+	case users.RegWxOfficial:
+		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+		if er != nil || cli.WxOfficial == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		at, err := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 	case users.RegWxMiniP:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 		if er != nil || cli.MiniProgram == nil {
@@ -214,12 +226,20 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 			return nil, errors.Default.AddMsgf("%s %d 分钟", errors.AccountOrIpForbidden.Error(), forbiddenTime/60)
 		}
 	}
-	uc, err := l.GetUserInfo(in)
+	uc := ctxs.GetUserCtx(l.ctx)
+	cfg, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{AppCodes: []string{uc.AppCode}})
+	if err != nil {
+		return nil, err
+	}
+	if len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
+		return nil, errors.Parameter.WithMsgf("不支持的升级方式:%v", in.LoginType)
+	}
+	ui, err := l.GetUserInfo(in)
 	if err == nil {
-		if uc.Status != def.True {
+		if ui.Status != def.True {
 			return nil, errors.AccountDisable
 		}
-		return l.getRet(uc, list)
+		return l.getRet(ui, list)
 	}
 	if errors.Cmp(err, errors.NotFind) {
 		return nil, errors.UnRegister

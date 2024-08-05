@@ -237,6 +237,7 @@ service TenantManage {
 
   rpc tenantAppIndex(TenantAppIndexReq) returns (TenantAppIndexResp); //获取租户APP权限列表
   rpc tenantAppCreate(TenantAppInfo) returns(Empty); //添加角色
+  rpc tenantAppRead(TenantAppWithIDOrCode) returns(TenantAppInfo); //添加角色
   rpc tenantAppUpdate(TenantAppInfo) returns(Empty); //添加角色
   rpc tenantAppDelete(TenantAppWithIDOrCode) returns(Empty); //删除角色
 
@@ -622,6 +623,8 @@ message TenantAppInfo{
   repeated TenantAppModule modules = 3;//模块列表
   ThirdAppConfig miniDing =4;//钉钉小程序
   ThirdAppConfig miniWx =5;//微信小程序
+  ThirdAppConfig officialWx =7;//微信公众号 只有web的需要填
+  repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
 }
 
 message TenantAppWithIDOrCode{
