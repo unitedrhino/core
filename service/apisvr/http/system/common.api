@@ -73,7 +73,7 @@ type (
         ServerRecvTime int64 `json:"serverRecvTime,string"`
     }
     Map  {
-        Mode string `json:"mode，options=gaode"`              //坐标系 默认百度坐标系
+        Mode string `json:"mode,options=gaode"`              //坐标系 默认百度坐标系
         AccessKey    string `json:"accessKey"` //设备地图key
         AccessSecret string `json:"accessSecret"`//地图秘钥
     }
