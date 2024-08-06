@@ -7813,12 +7813,17 @@
         "officialWx": {
           "$ref": "#/definitions/ThirdAppCore",
           "description": "微信公众号 只有web的有"
+        },
+        "tenant": {
+          "$ref": "#/definitions/TenantCore",
+          "description": "租户信息"
         }
       },
       "title": "AppCore",
       "required": [
         "code",
-        "type"
+        "type",
+        "tenant"
       ]
     },
     "AppDeleteReq": {

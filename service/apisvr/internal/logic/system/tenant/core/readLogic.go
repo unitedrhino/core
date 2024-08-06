@@ -28,5 +28,4 @@ func NewReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ReadLogic {
 func (l *ReadLogic) Read(req *types.WithIDOrCode) (resp *types.TenantCore, err error) {
 	ret, err := l.svcCtx.TenantRpc.TenantInfoRead(ctxs.WithRoot(l.ctx), system.ToSysWithIDCode(req))
 	return system.ToTenantCoreTypes(ret), err
-
 }
