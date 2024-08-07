@@ -18,22 +18,23 @@ import (
 )
 
 type ServiceContext struct {
-	Config        config.Config
-	ProjectID     *utils.SnowFlake
-	AreaID        *utils.SnowFlake
-	UserID        *utils.SnowFlake
-	Slot          *cache.Slot
-	OssClient     *oss.Client
-	Store         kv.Store
-	PwdCheck      *cache.PwdCheck
-	Captcha       *cache.Captcha
-	Cm            *ClientsManage
-	FastEvent     *eventBus.FastEvent
-	UserTokenInfo *cache.UserToken
-	TenantCache   *caches.Cache[tenant.Info, string]
-	ProjectCache  *caches.Cache[sys.ProjectInfo, int64]
-	UserCache     *caches.Cache[sys.UserInfo, int64]
-	Sms           *clients.Sms
+	Config            config.Config
+	ProjectID         *utils.SnowFlake
+	AreaID            *utils.SnowFlake
+	UserID            *utils.SnowFlake
+	Slot              *cache.Slot
+	OssClient         *oss.Client
+	Store             kv.Store
+	PwdCheck          *cache.PwdCheck
+	Captcha           *cache.Captcha
+	Cm                *ClientsManage
+	FastEvent         *eventBus.FastEvent
+	UserTokenInfo     *cache.UserToken
+	TenantCache       *caches.Cache[tenant.Info, string]
+	TenantConfigCache *caches.Cache[sys.TenantConfig, string]
+	ProjectCache      *caches.Cache[sys.ProjectInfo, int64]
+	UserCache         *caches.Cache[sys.UserInfo, int64]
+	Sms               *clients.Sms
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

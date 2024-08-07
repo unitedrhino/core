@@ -974,9 +974,10 @@ type TenantAppWithIDOrCode struct {
 }
 
 type TenantConfig struct {
-	TenantCode                string                                   `json:"tenantCode"`                         // 租户编码
-	RegisterRoleID            int64                                    `json:"registerRoleID"`                     //注册分配的角色id
-	CheckUserDelete           int64                                    `json:"checkUserDelete"`                    //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	TenantCode                string                                   `json:"tenantCode,optional"`                // 租户编码
+	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`            //注册分配的角色id
+	WeatherKey                string                                   `json:"weatherKey,optional"`                //和风天气秘钥 参考: https://dev.qweather.com/
+	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`           //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"` //注册自动创建项目和区域
 }
 
@@ -1507,7 +1508,8 @@ type WeatherAir struct {
 }
 
 type WeatherReadReq struct {
-	Position Point `json:"position"`
+	Position  Point `json:"position,optional"`
+	ProjectID int64 `json:"projectID,optional,string"`
 }
 
 type WeatherReadResp struct {

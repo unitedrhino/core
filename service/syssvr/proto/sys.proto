@@ -163,6 +163,7 @@ service DictManage{
 service Common {
   rpc config(Empty) returns(configResp); //添加菜单
   rpc QRCodeRead(QRCodeReadReq)returns(QRCodeReadResp);
+  rpc WeatherRead(WeatherReadReq)returns(WeatherReadResp);
 
   rpc slotInfoIndex(SlotInfoIndexReq) returns(SlotInfoIndexResp);//获取插槽列表
   rpc slotInfoCreate(SlotInfo) returns(WithID); //添加角色
@@ -586,6 +587,7 @@ message TenantConfig{
   string name = 2;
   string tenantCode = 3;//租户编码
   int64 registerRoleID=4;//注册分配的角色id
+  string weatherKey =7;//和风天气秘钥 参考: https://dev.qweather.com/
   int64 checkUserDelete=5;//1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
   repeated  TenantConfigRegisterAutoCreateProject registerAutoCreateProject =6;//注册自动创建项目
 }
@@ -897,6 +899,44 @@ message SlotInfo{
   string  authType =10;  //鉴权类型 core
   string desc = 11;//描述类型
 }
+
+message WeatherAir  {
+    string aqi =1;
+    string level =2;
+    string category =3;
+    string primary =4;
+    string pm10 =5;
+    string pm2p5 =6;
+    string no2 =7;
+    string so2 =8;
+    string co =9;
+    string o3 =10;
+}
+
+message WeatherReadReq  {
+    Point position=1;
+    int64 ProjectID =2;
+}
+
+message WeatherReadResp  {
+    string obsTime=1;
+    string temp=2;
+    string feelsLike=3;
+    string icon=4;
+    string text=5;
+    string wind360=6;
+    string windDir=7;
+    string windScale=8;
+    string windSpeed=9;
+    string humidity=10;
+    string precip=11;
+    string pressure=12;
+    string vis=13;
+    string cloud=14;
+    string dew=15;
+    WeatherAir air=17;
+}
+
 
 
 message QRCodeReadReq{

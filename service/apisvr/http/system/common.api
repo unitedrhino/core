@@ -131,7 +131,8 @@ type (
         Air   WeatherAir     `json:"air"`
     }
     WeatherReadReq{
-        Position Point `json:"position"`
+        Position Point `json:"position,optional"`
+        ProjectID int64 `json:"projectID,optional,string"`
     }
 )
 

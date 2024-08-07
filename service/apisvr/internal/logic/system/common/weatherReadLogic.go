@@ -2,13 +2,10 @@ package common
 
 import (
 	"context"
-	"fmt"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/share/errors"
-	"github.com/parnurzeal/gorequest"
-	"time"
-
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -34,22 +31,6 @@ type respType[t any] struct {
 }
 
 func (l *WeatherReadLogic) WeatherRead(req *types.WeatherReadReq) (resp *types.WeatherReadResp, err error) {
-	var (
-		weather respType[types.WeatherReadResp]
-		air     respType[types.WeatherAir]
-		greq    = gorequest.New().Retry(3, time.Second*2)
-	)
-
-	_, _, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
-		req.Position.Longitude, req.Position.Latitude, key)).EndStruct(&weather)
-	if errs != nil {
-		return nil, errors.System.AddDetail(errs)
-	}
-	_, _, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",
-		req.Position.Longitude, req.Position.Latitude, key)).EndStruct(&air)
-	if errs != nil {
-		return nil, errors.System.AddDetail(errs)
-	}
-	weather.Now.Air = air.Now
-	return &weather.Now, nil
+	ret, err := l.svcCtx.Common.WeatherRead(l.ctx, utils.Copy[sys.WeatherReadReq](req))
+	return utils.Copy[types.WeatherReadResp](ret), err
 }

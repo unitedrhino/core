@@ -205,6 +205,9 @@ type (
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
+	WeatherAir                            = sys.WeatherAir
+	WeatherReadReq                        = sys.WeatherReadReq
+	WeatherReadResp                       = sys.WeatherReadResp
 	WithAppCodeID                         = sys.WithAppCodeID
 	WithCode                              = sys.WithCode
 	WithID                                = sys.WithID

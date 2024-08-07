@@ -50,5 +50,5 @@ func (l *TenantConfigReadLogic) TenantConfigRead(in *sys.WithCode) (*sys.TenantC
 			}
 		}
 	}
-	return utils.Copy[sys.TenantConfig](po), nil
+	return ToTenantConfigPb(l.ctx, l.svcCtx, po), nil
 }

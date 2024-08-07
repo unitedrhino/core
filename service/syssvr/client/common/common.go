@@ -205,6 +205,9 @@ type (
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
+	WeatherAir                            = sys.WeatherAir
+	WeatherReadReq                        = sys.WeatherReadReq
+	WeatherReadResp                       = sys.WeatherReadResp
 	WithAppCodeID                         = sys.WithAppCodeID
 	WithCode                              = sys.WithCode
 	WithID                                = sys.WithID
@@ -213,6 +216,7 @@ type (
 	Common interface {
 		Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
 		QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
+		WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error)
 		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 		SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
 		SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -259,6 +263,15 @@ func (m *defaultCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts 
 
 func (d *directCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
 	return d.svr.QRCodeRead(ctx, in)
+}
+
+func (m *defaultCommon) WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.WeatherRead(ctx, in, opts...)
+}
+
+func (d *directCommon) WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error) {
+	return d.svr.WeatherRead(ctx, in)
 }
 
 func (m *defaultCommon) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error) {

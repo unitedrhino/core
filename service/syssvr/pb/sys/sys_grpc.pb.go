@@ -4227,6 +4227,7 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 const (
 	Common_Config_FullMethodName         = "/sys.Common/config"
 	Common_QRCodeRead_FullMethodName     = "/sys.Common/QRCodeRead"
+	Common_WeatherRead_FullMethodName    = "/sys.Common/WeatherRead"
 	Common_SlotInfoIndex_FullMethodName  = "/sys.Common/slotInfoIndex"
 	Common_SlotInfoCreate_FullMethodName = "/sys.Common/slotInfoCreate"
 	Common_SlotInfoUpdate_FullMethodName = "/sys.Common/slotInfoUpdate"
@@ -4240,6 +4241,7 @@ const (
 type CommonClient interface {
 	Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
 	QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
+	WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error)
 	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 	SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
 	SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -4267,6 +4269,15 @@ func (c *commonClient) Config(ctx context.Context, in *Empty, opts ...grpc.CallO
 func (c *commonClient) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
 	out := new(QRCodeReadResp)
 	err := c.cc.Invoke(ctx, Common_QRCodeRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error) {
+	out := new(WeatherReadResp)
+	err := c.cc.Invoke(ctx, Common_WeatherRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -4324,6 +4335,7 @@ func (c *commonClient) SlotInfoRead(ctx context.Context, in *WithID, opts ...grp
 type CommonServer interface {
 	Config(context.Context, *Empty) (*ConfigResp, error)
 	QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error)
+	WeatherRead(context.Context, *WeatherReadReq) (*WeatherReadResp, error)
 	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
 	SlotInfoCreate(context.Context, *SlotInfo) (*WithID, error)
 	SlotInfoUpdate(context.Context, *SlotInfo) (*Empty, error)
@@ -4341,6 +4353,9 @@ func (UnimplementedCommonServer) Config(context.Context, *Empty) (*ConfigResp, e
 }
 func (UnimplementedCommonServer) QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QRCodeRead not implemented")
+}
+func (UnimplementedCommonServer) WeatherRead(context.Context, *WeatherReadReq) (*WeatherReadResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WeatherRead not implemented")
 }
 func (UnimplementedCommonServer) SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoIndex not implemented")
@@ -4402,6 +4417,24 @@ func _Common_QRCodeRead_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CommonServer).QRCodeRead(ctx, req.(*QRCodeReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_WeatherRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WeatherReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).WeatherRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_WeatherRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).WeatherRead(ctx, req.(*WeatherReadReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -4510,6 +4543,10 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QRCodeRead",
 			Handler:    _Common_QRCodeRead_Handler,
+		},
+		{
+			MethodName: "WeatherRead",
+			Handler:    _Common_WeatherRead_Handler,
 		},
 		{
 			MethodName: "slotInfoIndex",

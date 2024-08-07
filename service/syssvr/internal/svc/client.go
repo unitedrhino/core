@@ -30,23 +30,24 @@ func NewClients(c config.Config) *ClientsManage {
 	return &ClientsManage{Config: c}
 }
 
-func (c *ClientsManage) GetClients(ctx context.Context, tenantCode string) (Clients, error) {
+func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients, error) {
 	uc := ctxs.GetUserCtx(ctx)
-	if tenantCode == "" {
-		tenantCode = uc.TenantCode
+	if appCode == "" {
+		appCode = uc.AppCode
 	}
+	var tenantCode = uc.TenantCode
 	logx.WithContext(ctx).Error(utils.Fmt(uc))
-	val, ok := tc.Load(tenantCode + uc.AppCode)
+	val, ok := tc.Load(tenantCode + appCode)
 	if ok {
 		return val.(Clients), nil
 	}
 	//如果缓存里没有,需要查库
-	cfg, err := relationDB.NewTenantAppRepo(ctx).FindOneByFilter(ctx, relationDB.TenantAppFilter{TenantCode: tenantCode, AppCodes: []string{uc.AppCode}})
+	cfg, err := relationDB.NewTenantAppRepo(ctx).FindOneByFilter(ctx, relationDB.TenantAppFilter{TenantCode: tenantCode, AppCodes: []string{appCode}})
 	if err != nil {
 		if !errors.Cmp(err, errors.NotFind) {
 			return Clients{}, err
 		}
-		cfg2, err := relationDB.NewAppInfoRepo(ctx).FindOneByFilter(ctx, relationDB.AppInfoFilter{Code: uc.AppCode})
+		cfg2, err := relationDB.NewAppInfoRepo(ctx).FindOneByFilter(ctx, relationDB.AppInfoFilter{Code: appCode})
 		if err != nil {
 			return Clients{}, err
 		}

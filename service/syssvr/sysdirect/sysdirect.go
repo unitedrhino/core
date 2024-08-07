@@ -17,7 +17,6 @@ import (
 	rolemanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/rolemanage"
 	tenantmanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/tenantmanage"
 	usermanageServer "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
-
 	"gitee.com/i-Things/core/service/syssvr/internal/startup"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -81,6 +80,15 @@ func Run(svcCtx *svc.ServiceContext) {
 	})
 	defer s.Stop()
 	s.AddUnaryInterceptors(interceptors.Ctxs, interceptors.Error)
+	//notifymanageServer.NewNotifyManageServer(svcCtx).NotifyConfigSend(ctxs.SetUserCtx(context.Background(), &ctxs.UserCtx{
+	//	TenantCode: def.TenantCodeDefault,
+	//}), &sys.NotifyConfigSendReq{
+	//	UserIDs:    nil,
+	//	Accounts:   []string{"17052709767"},
+	//	NotifyCode: "ruleDeviceAlarm",
+	//	Type:       "wxMini",
+	//	Params:     map[string]string{"111": "111"},
+	//})
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

@@ -31,7 +31,7 @@ func (l *NotifyChannelCreateLogic) NotifyChannelCreate(in *sys.NotifyChannel) (*
 	po := utils.Copy[relationDB.SysNotifyChannel](in)
 	po.ID = 0
 	if !utils.SliceIn(po.Type, def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk,
-		def.NotifyTypeDingWebhook, def.NotifyTypeWx, def.NotifyTypeMessage, def.NotifyTypeWxEWebhook) {
+		def.NotifyTypeDingWebhook, def.NotifyTypeWxMini, def.NotifyTypeMessage, def.NotifyTypeWxEWebhook) {
 		return nil, errors.Parameter.AddMsg("type not support")
 	}
 	err := relationDB.NewNotifyChannelRepo(l.ctx).Insert(l.ctx, po)

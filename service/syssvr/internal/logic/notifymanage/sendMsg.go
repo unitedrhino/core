@@ -11,6 +11,7 @@ import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
+	"github.com/silenceper/wechat/v2/miniprogram/subscribe"
 	"github.com/spf13/cast"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
@@ -98,7 +99,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 	}
 	var users []*relationDB.SysUserInfo
 	if config.IsRecord == def.True { //需要记录到消息中心中
-		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs})
+		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs, Accounts: cfg.Accounts})
 		if err != nil {
 			return err
 		}
@@ -189,6 +190,36 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			if err != nil {
 				return err
 			}
+		}
+	case def.NotifyTypeWxMini:
+		if channel == nil {
+			return errors.Parameter.AddMsg("没有配置微信小程序")
+		}
+		cli, err := svcCtx.Cm.GetClients(ctx, channel.AppCode)
+		if err != nil {
+			return err
+		}
+		if cli.MiniProgram == nil {
+			return errors.Parameter.AddMsg("没有配置微信小程序")
+		}
+		var userIDs []string
+		for _, v := range users {
+			if v.WechatOpenID.Valid {
+				userIDs = append(userIDs, cast.ToString(v.WechatOpenID.String))
+			}
+		}
+		if len(userIDs) > 0 {
+			for _, user := range userIDs {
+				err = cli.MiniProgram.GetSubscribe().Send(&subscribe.Message{
+					ToUser:     user,
+					TemplateID: templateCode,
+					Data:       map[string]*subscribe.DataItem{},
+				})
+				if err != nil {
+					return err
+				}
+			}
+
 		}
 
 	case def.NotifyTypeEmail:

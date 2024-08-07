@@ -11274,6 +11274,10 @@
           "format": "int64",
           "description": "注册分配的角色id"
         },
+        "weatherKey": {
+          "type": "string",
+          "description": "和风天气秘钥 参考: https:dev.qweather.com/"
+        },
         "checkUserDelete": {
           "type": "integer",
           "format": "int64",
@@ -11287,12 +11291,7 @@
           "description": "注册自动创建项目和区域"
         }
       },
-      "title": "TenantConfig",
-      "required": [
-        "tenantCode",
-        "registerRoleID",
-        "checkUserDelete"
-      ]
+      "title": "TenantConfig"
     },
     "TenantConfigRegisterAutoCreateArea": {
       "type": "object",
@@ -13262,12 +13261,12 @@
       "properties": {
         "position": {
           "$ref": "#/definitions/Point"
+        },
+        "projectID": {
+          "type": "string"
         }
       },
-      "title": "WeatherReadReq",
-      "required": [
-        "position"
-      ]
+      "title": "WeatherReadReq"
     },
     "WeatherReadResp": {
       "type": "object",

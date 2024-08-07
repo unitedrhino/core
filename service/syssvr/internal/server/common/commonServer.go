@@ -32,6 +32,11 @@ func (s *CommonServer) QRCodeRead(ctx context.Context, in *sys.QRCodeReadReq) (*
 	return l.QRCodeRead(in)
 }
 
+func (s *CommonServer) WeatherRead(ctx context.Context, in *sys.WeatherReadReq) (*sys.WeatherReadResp, error) {
+	l := commonlogic.NewWeatherReadLogic(ctx, s.svcCtx)
+	return l.WeatherRead(in)
+}
+
 func (s *CommonServer) SlotInfoIndex(ctx context.Context, in *sys.SlotInfoIndexReq) (*sys.SlotInfoIndexResp, error) {
 	l := commonlogic.NewSlotInfoIndexLogic(ctx, s.svcCtx)
 	return l.SlotInfoIndex(in)
