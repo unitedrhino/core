@@ -10,6 +10,7 @@ type SysAccessInfo struct {
 	Code       string `gorm:"column:code;type:VARCHAR(100);uniqueIndex:app_route;NOT NULL"` // 请求名称
 	Group      string `gorm:"column:group;type:VARCHAR(100);NOT NULL"`                      // 接口组
 	IsNeedAuth int64  `gorm:"column:is_need_auth;type:BIGINT;default:1;NOT NULL"`           // 是否需要认证（1是 2否）
+	AuthType   int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`         // 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	Desc       string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                       // 备注
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:app_route"`
@@ -29,7 +30,7 @@ type SysApiInfo struct {
 	Name         string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                    // 请求名称
 	BusinessType int64  `gorm:"column:business_type;type:BIGINT;NOT NULL"`                 // 业务类型（1(add)新增 2修改(modify) 3删除(delete) 4查询(find) 5其它(other)
 	Desc         string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                    // 备注
-	AuthType     int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
+	//AuthType     int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:route"`
 }

@@ -1637,7 +1637,7 @@ message ApiInfoIndexReq{
   string route = 2; // 接口路由
   string method = 3; // 接口请求方式: POST GET
   string name = 4;  // 接口名称
-  int64 authType = 5;// 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
+  int64 authType = 5;// 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
   repeated int64 apiIDs = 6;//API列表数据
   string accessCode =7;
 }
@@ -1648,8 +1648,8 @@ message ApiInfo{
   string route = 2;        // 接口路由
   string method = 3;        // 接口请求方式: POST GET
   string name = 5;         // 接口名称
-  int64  businessType = 6; // 业务类型（1新增 2修改 3删除 4查询 5其它)
-  int64 authType = 8;// // 1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(super) 只有超管可以操作(超管是跨租户的)
+//  int64  businessType = 6; // 业务类型（1新增 2修改 3删除 4查询 5其它)
+//  int64 authType = 8;// 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
   string desc = 9;//描述
 }
 
@@ -1677,7 +1677,8 @@ message AccessInfoIndexReq{
   repeated string codes = 7;
   string name = 8;  // 接口名称
   int64 isNeedAuth = 9;//是否需要权限认证 1是 2否
-  bool WithApis =10;
+  repeated int64 authTypes = 10;// 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
+  bool WithApis =11;
 }
 
 message AccessInfo{
@@ -1687,8 +1688,9 @@ message AccessInfo{
   string code = 4;//编码
   string name = 5;// 名称
   int64 isNeedAuth = 6;//是否需要权限认证 1是 2否
-  string desc = 7;//描述
-  repeated ApiInfo Apis = 8;
+  int64 authType = 7;// 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
+  string desc = 8;//描述
+  repeated ApiInfo Apis = 9;
 }
 
 message AccessInfoIndexResp{

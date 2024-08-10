@@ -9,27 +9,47 @@ info(
 @server (
 	group: system/tenant/info
 	prefix: /api/v1/system/tenant/info
+    accessCodePrefix: "systemTenantManage"
+    accessNamePrefix: "租户管理"
+    accessGroup: "租户管理"
+    defaultAuthType: "supper"
+    defaultNeedAuth: "true"
 	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
-    @doc "添加租户"
+    @doc(
+        summary: "添加租户"
+    )
     @handler create
     post /create (TenantInfoCreateReq) returns (WithID)
 
-    @doc "获取租户列表"
+    @doc(
+        summary: "获取租户列表"
+    )
     @handler index
     post /index (TenantInfoIndexReq) returns (TenantInfoIndexResp)
-
-    @doc "获取租户详情"
+    @doc(
+        summary: "获取租户详情"
+        authType: "admin"
+        accessCode: "systemTenantManageReadOne"
+        accessName: "获取租户信息"
+    )
     @handler read
     post /read (WithIDOrCode) returns (TenantInfo)
 
-    @doc "更新租户"
+    @doc(
+        summary: "更新租户"
+        authType: "admin"
+        accessCode: "systemTenantManageUpdateOne"
+        accessName: "更新租户信息"
+    )
     @handler update
     post /update (TenantInfo) returns ()
 
-    @doc "删除租户"
+    @doc(
+        summary: "删除租户"
+    )
     @handler delete
     post /delete (WithIDOrCode) returns ()
 }
@@ -37,14 +57,26 @@ service api {
 @server (
     group: system/tenant/config
     prefix: /api/v1/system/tenant/config
+    accessNamePrefix: "租户配置"
+    accessGroup: "租户管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
-    @doc "更新租户配置"
+    @doc(
+        summary: "更新租户配置"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (TenantConfig) returns ()
-    @doc "获取租户配置"
+    @doc(
+        summary: "获取租户配置"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler read
     post /read (WithCode) returns (TenantConfig)
 }
@@ -52,6 +84,9 @@ service api {
 @server (
     group: system/tenant/core
     prefix: /api/v1/system/tenant/core
+    accessCodePrefix: "systemTenantCore"
+    accessNamePrefix: "租户配置"
+    accessGroup: "租户管理"
     middleware:  InitCtxsWare
 )
 service api {
@@ -64,6 +99,11 @@ service api {
 @server (
     group: system/tenant/access/info
     prefix: /api/v1/system/tenant/access/info
+    accessCodePrefix: "systemTenantAccess"
+    accessNamePrefix: "租户授权"
+    accessGroup: "租户管理"
+    defaultNeedAuth: "true"
+    defaultAuthType: "admin"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
@@ -71,10 +111,12 @@ service api {
     @doc "获取租户操作权限树"
     @handler tree
     post /tree (WithCode) returns (TenantAccessInfoTreeResp)
-    @doc "获取租户操作权限树"
+    @doc "获取租户操作权限列表"
     @handler index
     post /index (WithCode) returns (TenantAccessInfo)
-    @doc "批量更新租户操作权限"
+    @doc(
+        summary: "批量更新租户操作权限"
+    )
     @handler multiUpdate
     post /multi-update (TenantAccessInfo) returns ()
 }
@@ -83,11 +125,17 @@ service api {
 @server (
     group: system/tenant/agreement
     prefix: /api/v1/system/tenant/agreement
+    accessNamePrefix: "租户协议"
+    accessGroup: "租户协议"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
-    @doc "添加协议"
+    @doc(
+        summary: "添加协议"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (TenantAgreement) returns (WithID)
 
@@ -95,11 +143,19 @@ service api {
     @handler index
     post /index (TenantAgreementIndexReq) returns (TenantAgreementIndexResp)
 
-    @doc "更新协议"
+    @doc(
+        summary: "更新协议"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (TenantAgreement) returns ()
 
-    @doc "删除协议"
+    @doc(
+        summary: "删除协议"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithID) returns ()
 }

@@ -10,6 +10,9 @@ info(
 @server(
     group: system/data/project
     prefix: /api/v1/system/data/project
+    accessCodePrefix: "systemDataManage"
+    accessNamePrefix: "项目权限"
+    accessGroup: "数据权限"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
@@ -35,6 +38,9 @@ service api {
 @server(
     group: system/data/area
     prefix: /api/v1/system/data/area
+    accessCodePrefix: "systemDataManage"
+    accessNamePrefix: "区域权限"
+    accessGroup: "数据权限"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
@@ -55,6 +61,9 @@ service api {
 @server(
     group: system/data/area/user/apply
     prefix: /api/v1/system/data/area/user/apply
+    accessCodePrefix: "systemDataManage"
+    accessNamePrefix: "区域授权"
+    accessGroup: "数据权限"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 

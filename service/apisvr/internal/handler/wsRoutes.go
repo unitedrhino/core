@@ -9,7 +9,6 @@ import (
 	systemaccessinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/access/info"
 	systemappinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/info"
 	systemappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/module"
-	systemapppolicy "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/policy"
 	systemareainfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/area/info"
 	systemareaprofile "gitee.com/i-Things/core/service/apisvr/internal/handler/system/area/profile"
 	systemcommon "gitee.com/i-Things/core/service/apisvr/internal/handler/system/common"
@@ -174,20 +173,6 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/app/module"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemapppolicy.ReadHandler(serverCtx),
-				},
-			}...,
-		),
-		ws.WithPrefix("/api/v1/system/app/policy"),
 	)
 
 	server.AddRoutes(

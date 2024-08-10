@@ -7,10 +7,17 @@ info(
 @server(
     group: system/module/menu
     prefix: /api/v1/system/module/menu
+    accessCodePrefix: "systemModuleMenu"
+    accessNamePrefix: "模块菜单"
+    accessGroup: "模块管理"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
-    @doc "添加菜单"
+    @doc(
+        summary: "添加菜单"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (MenuInfo) returns (WithID)
 
@@ -18,11 +25,19 @@ service api {
     @handler index
     post /index (MenuInfoIndexReq) returns (MenuInfoIndexResp)
 
-    @doc "更新菜单"
+    @doc(
+        summary: "更新菜单"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (MenuInfo) returns ()
 
-    @doc "删除菜单"
+    @doc(
+        summary: "删除菜单"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithID) returns ()
 }

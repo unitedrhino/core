@@ -7,6 +7,8 @@ info(
 @server(
     group: system/ops/feedback
     prefix: /api/v1/system/ops
+    accessNamePrefix: "帮助与反馈"
+    accessGroup: "运营管理"
     middleware:  CheckTokenWare,InitCtxsWare,CheckApiWare, DataAuthWare, TeardownWare
 )
 service api {

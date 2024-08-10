@@ -9,6 +9,11 @@ info(
 @server (
 	group: system/log
 	prefix: /api/v1/system/log
+    accessCodePrefix: "systemLog"
+    accessNamePrefix: "系统日志"
+    accessGroup: "系统日志"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
 	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 

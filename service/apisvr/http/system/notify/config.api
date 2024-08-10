@@ -9,32 +9,59 @@ info(
 @server (
     group: system/notify/config
     prefix: /api/v1/system/notify/config
+    accessCodePrefix: "systemNotifyConfig"
+    accessNamePrefix: "通知配置"
+    accessGroup: "通知配置"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
-    @doc "添加通知配置"
+    @doc(
+        summary: "添加通知配置"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (NotifyConfig) returns (WithID)
 
-    @doc "获取通知列表"
+    @doc(
+        summary: "获取通知列表"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler index
     post /index (NotifyConfigIndexReq) returns (NotifyConfigIndexResp)
 
-    @doc "获取通知列表树"
+    @doc(
+        summary: "获取通知列表树"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler tree
     post /tree (NotifyConfigIndexReq) returns (NotifyConfigTreeResp)
 
 
-    @doc "获取通知详情"
+    @doc(
+        summary: "获取通知详情"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler read
     post /read (WithIDOrCode) returns (NotifyConfig)
 
-    @doc "更新通知配置"
+    @doc(
+        summary: "更新通知配置"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (NotifyConfig) returns ()
 
-    @doc "删除通知配置"
+    @doc(
+        summary: "删除通知配置"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithID) returns ()
 
@@ -44,17 +71,32 @@ service api {
 @server (
     group: system/notify/config/template
     prefix: /api/v1/system/notify/config/template
+    accessCodePrefix: "systemNotifyTemplate"
+    accessNamePrefix: "通知模版"
+    accessGroup: "通知管理"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 
 service api {
-    @doc "获取通知绑定模版列表"
+    @doc(
+        summary: "获取通知绑定模版列表"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler index
     post /index (NotifyConfigTemplateIndexReq) returns (NotifyConfigTemplateIndexResp)
-    @doc "更新通知绑定模版"
+    @doc(
+        summary: "更新通知绑定模版"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (NotifyConfigTemplate) returns ()
-    @doc "删除通知绑定模版"
+    @doc(
+        summary: "删除通知绑定模版"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (NotifyConfigTemplateDeleteReq) returns ()
 }

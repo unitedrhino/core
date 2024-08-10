@@ -56,6 +56,7 @@ func (l *AccessInfoMultiImportLogic) AccessInfoMultiImport(in *sys.AccessInfoMul
 				Code:       acc.Code,
 				Group:      acc.Group,
 				IsNeedAuth: acc.IsNeedAuth,
+				AuthType:   access.GetAuthType(acc.AuthType),
 				Desc:       acc.Desc,
 			}
 			err = acDB.Insert(l.ctx, old)
@@ -83,7 +84,6 @@ func (l *AccessInfoMultiImportLogic) AccessInfoMultiImport(in *sys.AccessInfoMul
 					Name:         api.Name,
 					BusinessType: api.GetBusinessType(),
 					Desc:         api.Desc,
-					AuthType:     api.GetAuthType(),
 				})
 				if err != nil {
 					errCount++

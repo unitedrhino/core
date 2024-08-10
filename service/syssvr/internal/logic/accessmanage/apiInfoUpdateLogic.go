@@ -33,9 +33,9 @@ func (l *ApiInfoUpdateLogic) ApiInfoUpdate(in *sys.ApiInfo) (*sys.Empty, error) 
 	old.Method = in.Method
 	old.Route = in.Route
 	old.Name = in.Name
-	old.BusinessType = in.BusinessType
+	//old.BusinessType = in.BusinessType
 	old.Desc = in.Desc
-	old.AuthType = in.AuthType
+	//old.AuthType = in.AuthType
 	err = relationDB.NewApiInfoRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err
 }

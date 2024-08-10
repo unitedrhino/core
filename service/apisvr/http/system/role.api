@@ -7,6 +7,11 @@ info(
 @server(
     group: system/role/info
     prefix: /api/v1/system/role/info
+    accessCodePrefix: "systemRoleManage"
+    accessNamePrefix: "角色管理"
+    accessGroup: "角色管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
@@ -31,6 +36,11 @@ service api {
 @server(
     group: system/role/app
     prefix: /api/v1/system/role/app
+    accessCodePrefix: "systemRoleManage"
+    accessNamePrefix: "角色应用"
+    accessGroup: "角色管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
@@ -47,6 +57,11 @@ service api {
 @server(
     group: system/role/access
     prefix: /api/v1/system/role/access
+    accessCodePrefix: "systemRoleManage"
+    accessNamePrefix: "角色授权"
+    accessGroup: "角色管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
@@ -64,6 +79,11 @@ service api {
 @server(
     group: system/role/menu
     prefix: /api/v1/system/role/menu
+    accessCodePrefix: "systemRoleManage"
+    accessNamePrefix: "角色菜单"
+    accessGroup: "角色管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
@@ -79,6 +99,11 @@ service api {
 @server(
     group: system/role/module
     prefix: /api/v1/system/role/module
+    accessCodePrefix: "systemRoleManage"
+    accessNamePrefix: "角色模块"
+    accessGroup: "角色管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {

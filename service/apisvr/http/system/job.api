@@ -11,6 +11,11 @@ info(
 @server(
     group: system/job/task
     prefix: /api/v1/system/job/task
+    accessCodePrefix: "systemJobManage"
+    accessNamePrefix: "任务管理"
+    accessGroup: "任务管理"
+    defaultAuthType: "supper"
+    defaultNeedAuth: "true"
     middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
 )
 service api {
