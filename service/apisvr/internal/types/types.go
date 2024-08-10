@@ -15,7 +15,7 @@ type AccessIndexReq struct {
 	Name       string    `json:"name,optional"`                   // 接口名称
 	Code       string    `json:"code,optional"`                   // 应用编号
 	IsNeedAuth int64     `json:"isNeedAuth,optional,range=[0:2]"` // 是否需要权限认证 1是 2否
-	AuthTypes  []int64   `json:"authType,optional,range=[0:3]"`   //  1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
+	AuthTypes  []int64   `json:"authTypes,optional,range=[0:3]"`  //  1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	WithApis   bool      `json:"withApis,optional"`
 }
 

@@ -260,7 +260,7 @@
     },
     "/api/v1/system/access/info/index": {
       "post": {
-        "summary": "获取访问权限信息",
+        "summary": "获取访问权限信息列表",
         "operationId": "postApiV1SystemAccessInfoIndex",
         "responses": {
           "200": {
@@ -7478,7 +7478,7 @@
           "description": " 是否需要权限认证 1是 2否",
           "maximum": 2
         },
-        "authType": {
+        "authTypes": {
           "type": "array",
           "items": {
             "type": "integer",

@@ -81,7 +81,7 @@
           "accessCode": "systemAccessManageFind",
           "method": "POST",
           "route": "/api/v1/system/access/info/index",
-          "name": "获取访问权限信息",
+          "name": "获取访问权限信息列表",
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
