@@ -32,6 +32,7 @@ func ToAccessInfoTypes(in *sys.AccessInfo) *types.AccessInfo {
 		Module:     in.Module,
 		Group:      in.Group,
 		IsNeedAuth: in.IsNeedAuth,
+		AuthType:   in.AuthType,
 		Desc:       in.Desc,
 		Apis:       api.ToApiInfosTypes(in.Apis),
 	}
