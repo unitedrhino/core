@@ -2,8 +2,12 @@ package rolemanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/domain/access"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -22,41 +26,33 @@ func NewRoleApiAuthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RoleA
 	}
 }
 
-func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.Empty, error) {
-	return &sys.Empty{}, nil
-
-	//todo 待实现
-	//uc := ctxs.GetUserCtx(l.ctx)
-	//api, err := relationDB.NewRoleApiRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.RoleApiFilter{
-	//	AppCode:   uc.AppCode,
-	//	Route:     in.Path,
-	//	Method:    in.Method,
-	//	WithRoles: true,
-	//})
-	//if err != nil && !errors.Cmp(err, errors.NotFind) {
-	//	return nil, err
+func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuthResp, error) {
+	uc := ctxs.GetUserCtx(l.ctx)
+	//if uc.IsAdmin {
+	//	return &sys.RoleApiAuthResp{}, nil
 	//}
-	//
-	//if errors.Cmp(err, errors.NotFind) { //如果没有找到,可能是不需要鉴权的接口,需要去模块接口里查询
-	//	api, err := relationDB.NewApiInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.ApiInfoFilter{
-	//		Route:  in.Path,
-	//		Method: in.Method,
-	//	})
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	if api.IsNeedAuth == def.True { //需要鉴权的接口,但是没有查询到,说明这个租户没有权限
-	//		return nil, errors.Permissions.AddDetail("权限不足")
-	//	}
-	//	return &sys.Empty{}, nil
-	//}
-	//if uc.IsAdmin { //如果是租户管理员,则有权限
-	//	return &sys.Empty{}, nil
-	//}
-	//for _, v := range api.Roles {
-	//	if v.RoleID == in.RoleID {
-	//		return &sys.Empty{}, nil
-	//	}
-	//}
-	return nil, errors.Permissions.AddDetail("权限不足")
+	api, err := relationDB.NewApiInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.ApiInfoFilter{
+		Route:  in.Path,
+		Method: in.Method,
+	})
+	if err != nil {
+		if errors.Cmp(err, errors.NotFind) {
+			return nil, errors.Permissions
+		}
+		return nil, err
+	}
+	if api.Access == nil {
+		return nil, errors.Permissions
+	}
+	if api.Access.AuthType == access.AuthTypeSupper && uc.TenantCode != def.TenantCodeDefault {
+		return nil, errors.Permissions.AddDetail("只有租户管理员才能操作")
+	}
+	_, err = relationDB.NewRoleAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.RoleAccessFilter{RoleIDs: uc.RoleIDs, AccessCodes: []string{api.AccessCode}})
+	if err != nil {
+		if errors.Cmp(err, errors.NotFind) {
+			return nil, errors.Permissions
+		}
+		return nil, err
+	}
+	return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, errors.Permissions.AddMsg("无权限")
 }

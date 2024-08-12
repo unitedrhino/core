@@ -9,7 +9,7 @@ info(
     prefix: /api/v1/system/ops
     accessNamePrefix: "工单管理"
     accessGroup: "运营管理"
-    middleware:  CheckTokenWare,InitCtxsWare,CheckApiWare, DataAuthWare, TeardownWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "添加工单"

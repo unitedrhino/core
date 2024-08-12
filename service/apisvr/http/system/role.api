@@ -12,7 +12,7 @@ info(
     accessGroup: "角色管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "添加角色"
@@ -41,7 +41,7 @@ service api {
     accessGroup: "角色管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "更新APP权限"
@@ -62,7 +62,7 @@ service api {
     accessGroup: "角色管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "更新操作权限"
@@ -84,7 +84,7 @@ service api {
     accessGroup: "角色管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "更新角色对应菜单列表"
@@ -104,7 +104,7 @@ service api {
     accessGroup: "角色管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "更新角色对应模块列表"

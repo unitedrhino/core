@@ -34,7 +34,7 @@ func (p RoleApiRepo) fmtFilter(ctx context.Context, f RoleAccessFilter) *gorm.DB
 		db = db.Where("tenant_code =?", f.TenantCode)
 	}
 	if len(f.AccessCodes) != 0 {
-		db = db.Where("api_scope_code =?", f.AccessCodes)
+		db = db.Where("access_code =?", f.AccessCodes)
 	}
 	if len(f.RoleIDs) != 0 {
 		db = db.Where("role_id in ?", f.RoleIDs)

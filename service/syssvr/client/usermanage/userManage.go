@@ -120,6 +120,7 @@ type (
 	RoleAccessIndexResp                   = sys.RoleAccessIndexResp
 	RoleAccessMultiUpdateReq              = sys.RoleAccessMultiUpdateReq
 	RoleApiAuthReq                        = sys.RoleApiAuthReq
+	RoleApiAuthResp                       = sys.RoleApiAuthResp
 	RoleAppIndexReq                       = sys.RoleAppIndexReq
 	RoleAppIndexResp                      = sys.RoleAppIndexResp
 	RoleAppMultiUpdateReq                 = sys.RoleAppMultiUpdateReq

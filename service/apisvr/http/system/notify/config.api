@@ -12,7 +12,7 @@ info(
     accessCodePrefix: "systemNotifyConfig"
     accessNamePrefix: "通知配置"
     accessGroup: "通知配置"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -74,7 +74,7 @@ service api {
     accessCodePrefix: "systemNotifyTemplate"
     accessNamePrefix: "通知模版"
     accessGroup: "通知管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

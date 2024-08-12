@@ -10,7 +10,7 @@ info(
     accessCodePrefix: "systemDictManage"
     accessNamePrefix: "字典管理"
     accessGroup: "字典管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc(

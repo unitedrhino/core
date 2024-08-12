@@ -10,7 +10,7 @@ info(
     accessCodePrefix: "systemModuleMenu"
     accessNamePrefix: "模块菜单"
     accessGroup: "模块管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc(

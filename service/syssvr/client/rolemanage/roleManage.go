@@ -120,6 +120,7 @@ type (
 	RoleAccessIndexResp                   = sys.RoleAccessIndexResp
 	RoleAccessMultiUpdateReq              = sys.RoleAccessMultiUpdateReq
 	RoleApiAuthReq                        = sys.RoleApiAuthReq
+	RoleApiAuthResp                       = sys.RoleApiAuthResp
 	RoleAppIndexReq                       = sys.RoleAppIndexReq
 	RoleAppIndexResp                      = sys.RoleAppIndexResp
 	RoleAppMultiUpdateReq                 = sys.RoleAppMultiUpdateReq
@@ -224,7 +225,7 @@ type (
 		RoleAppMultiUpdate(ctx context.Context, in *RoleAppMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		RoleModuleIndex(ctx context.Context, in *RoleModuleIndexReq, opts ...grpc.CallOption) (*RoleModuleIndexResp, error)
 		RoleModuleMultiUpdate(ctx context.Context, in *RoleModuleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
-		RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*Empty, error)
+		RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*RoleApiAuthResp, error)
 		RoleAccessMultiUpdate(ctx context.Context, in *RoleAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		RoleAccessIndex(ctx context.Context, in *RoleAccessIndexReq, opts ...grpc.CallOption) (*RoleAccessIndexResp, error)
 	}
@@ -342,12 +343,12 @@ func (d *directRoleManage) RoleModuleMultiUpdate(ctx context.Context, in *RoleMo
 	return d.svr.RoleModuleMultiUpdate(ctx, in)
 }
 
-func (m *defaultRoleManage) RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*Empty, error) {
+func (m *defaultRoleManage) RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*RoleApiAuthResp, error) {
 	client := sys.NewRoleManageClient(m.cli.Conn())
 	return client.RoleApiAuth(ctx, in, opts...)
 }
 
-func (d *directRoleManage) RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*Empty, error) {
+func (d *directRoleManage) RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*RoleApiAuthResp, error) {
 	return d.svr.RoleApiAuth(ctx, in)
 }
 

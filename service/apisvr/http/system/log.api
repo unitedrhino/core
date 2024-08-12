@@ -14,7 +14,7 @@ info(
     accessGroup: "系统日志"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+	middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

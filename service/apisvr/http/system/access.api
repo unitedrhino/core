@@ -14,7 +14,7 @@ info(
     accessGroup: "授权管理"
     defaultAuthType: "supper"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -43,7 +43,7 @@ service api {
     accessGroup: "授权管理"
     defaultAuthType: "supper"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

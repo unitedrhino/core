@@ -21,10 +21,14 @@ type ApiInfoFilter struct {
 	Name       string
 	AccessCode string
 	AuthType   int64
+	WithAccess bool
 }
 
 func (p ApiInfoRepo) fmtFilter(ctx context.Context, f ApiInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	if f.WithAccess {
+		db = db.Preload("Access")
+	}
 	if f.ApiIDs != nil {
 		db = db.Where("id in ?", f.ApiIDs)
 	}

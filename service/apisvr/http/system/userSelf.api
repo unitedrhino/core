@@ -14,7 +14,7 @@ info(
 	accessGroup: "用户管理"
 	defaultAuthType: "all"
 	defaultNeedAuth: "false"
-	middleware:  CheckTokenWare, DataAuthWare,InitCtxsWare, TeardownWare
+	middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
 	@doc "获取用户应用列表"

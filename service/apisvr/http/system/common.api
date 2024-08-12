@@ -8,7 +8,7 @@ info(
 @server (
     group: system/common
     prefix: /api/v1/system/common
-    middleware:  CheckTokenWare,CheckApiWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取系统配置"

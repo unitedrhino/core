@@ -13,7 +13,7 @@ info(
     accessCodePrefix: "systemDataManage"
     accessNamePrefix: "项目权限"
     accessGroup: "数据权限"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -41,7 +41,7 @@ service api {
     accessCodePrefix: "systemDataManage"
     accessNamePrefix: "区域权限"
     accessGroup: "数据权限"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -64,7 +64,7 @@ service api {
     accessCodePrefix: "systemDataManage"
     accessNamePrefix: "区域授权"
     accessGroup: "数据权限"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

@@ -14,7 +14,7 @@ info(
     accessGroup: "项目管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "新增项目"
@@ -49,7 +49,7 @@ service api {
     accessCodePrefix: "systemProjectManage"
     accessNamePrefix: "项目配置"
     accessGroup: "项目管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取项目配置详情"

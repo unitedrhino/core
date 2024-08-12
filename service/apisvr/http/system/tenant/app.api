@@ -14,7 +14,7 @@ info(
     accessGroup: "租户管理"
     defaultNeedAuth: "true"
     defaultAuthType: "supper"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -67,7 +67,7 @@ service api {
     accessNamePrefix: "租户模块"
     accessGroup: "租户管理"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -112,7 +112,7 @@ service api {
     accessNamePrefix: "租户管理"
     accessGroup: "租户管理"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

@@ -72,7 +72,7 @@ func (s *RoleManageServer) RoleModuleMultiUpdate(ctx context.Context, in *sys.Ro
 	return l.RoleModuleMultiUpdate(in)
 }
 
-func (s *RoleManageServer) RoleApiAuth(ctx context.Context, in *sys.RoleApiAuthReq) (*sys.Empty, error) {
+func (s *RoleManageServer) RoleApiAuth(ctx context.Context, in *sys.RoleApiAuthReq) (*sys.RoleApiAuthResp, error) {
 	l := rolemanagelogic.NewRoleApiAuthLogic(ctx, s.svcCtx)
 	return l.RoleApiAuth(in)
 }

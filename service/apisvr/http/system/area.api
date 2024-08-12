@@ -14,7 +14,7 @@ info(
     accessGroup: "区域管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "新增项目区域"
@@ -48,7 +48,7 @@ service api {
     accessCodePrefix: "systemAreaManage"
     accessNamePrefix: "区域管理"
     accessGroup: "区域管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取区域配置详情"

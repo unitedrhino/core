@@ -12,7 +12,7 @@ info(
     accessCodePrefix: "systemNotifyTemplate"
     accessNamePrefix: "通知模版"
     accessGroup: "通知管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

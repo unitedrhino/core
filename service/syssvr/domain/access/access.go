@@ -2,6 +2,14 @@ package access
 
 import "gitee.com/i-Things/core/service/syssvr/domain/log"
 
+type AuthType = int64
+
+const (
+	AuthTypeAll    = 1
+	AuthTypeAdmin  = 2
+	AuthTypeSupper = 3
+)
+
 type Access struct {
 	Access map[string]*AccessInfo //授权组
 }
@@ -27,10 +35,12 @@ type ApiInfo struct {
 	AuthType     string `json:"authType"`     //1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 }
 
-func GetAuthType(authType string) int64 {
+func GetAuthType(authType string) AuthType {
 	switch authType {
-	case "supper", "supperAdmin":
+	case "admin":
 		return 2
+	case "supper", "supperAdmin":
+		return 3
 	default:
 		return 1
 	}

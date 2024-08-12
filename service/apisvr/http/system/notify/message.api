@@ -11,7 +11,7 @@ info(
     prefix: /api/v1/system/notify/message/info
     accessNamePrefix: "通知消息"
     accessGroup: "消息管理"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

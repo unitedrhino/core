@@ -14,7 +14,7 @@ info(
     accessGroup: "应用管理"
     defaultAuthType: "supper"
     defaultNeedAuth: "true"
-	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+	middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -47,7 +47,7 @@ service api {
     accessGroup: "应用管理"
     defaultAuthType: "supper"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "更新APP权限"

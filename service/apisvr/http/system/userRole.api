@@ -15,7 +15,7 @@ info(
     accessGroup: "用户管理"
     defaultAuthType: "admin"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取用户角色列表"

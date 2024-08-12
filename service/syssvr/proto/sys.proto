@@ -112,7 +112,7 @@ service RoleManage {
   rpc roleModuleMultiUpdate(RoleModuleMultiUpdateReq) returns (Empty);  //更新角色API权限
 
 
-  rpc roleApiAuth(RoleApiAuthReq) returns(Empty);   //角色API鉴权
+  rpc roleApiAuth(RoleApiAuthReq) returns(RoleApiAuthResp);   //角色API鉴权
   rpc roleAccessMultiUpdate(RoleAccessMultiUpdateReq) returns (Empty);  //更新角色API权限
   rpc roleAccessIndex(RoleAccessIndexReq) returns (RoleAccessIndexResp); //获取角色API权限列表
 }
@@ -1185,9 +1185,13 @@ message RoleMenuMultiUpdateReq{
 }
 
 message RoleApiAuthReq{
-  int64 roleID = 1;
-  string path = 2;
-  string method = 3;
+  string path = 1;
+  string method = 2;
+}
+
+message RoleApiAuthResp{
+  int64  businessType = 1; // 业务类型（1新增 2修改 3删除 4查询 5其它)
+  string name =2;//操作名
 }
 
 message UserInfoCreateReq{
@@ -1648,7 +1652,7 @@ message ApiInfo{
   string route = 2;        // 接口路由
   string method = 3;        // 接口请求方式: POST GET
   string name = 5;         // 接口名称
-//  int64  businessType = 6; // 业务类型（1新增 2修改 3删除 4查询 5其它)
+  int64  businessType = 6; // 业务类型（1新增 2修改 3删除 4查询 5其它)
 //  int64 authType = 8;// 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
   string desc = 9;//描述
 }

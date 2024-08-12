@@ -14,7 +14,7 @@ info(
     accessGroup: "拓展管理"
     defaultAuthType: "supper"
     defaultNeedAuth: "true"
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "新增插槽"
