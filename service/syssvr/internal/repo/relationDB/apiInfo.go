@@ -36,7 +36,7 @@ func (p ApiInfoRepo) fmtFilter(ctx context.Context, f ApiInfoFilter) *gorm.DB {
 		db = db.Where("auth_type =?", f.AuthType)
 	}
 	if f.Route != "" {
-		db = db.Where("route like ?", "%"+f.Route+"%")
+		db = db.Where("route = ?", f.Route)
 	}
 	if f.AccessCode != "" {
 		db = db.Where("access_code =?", f.AccessCode)

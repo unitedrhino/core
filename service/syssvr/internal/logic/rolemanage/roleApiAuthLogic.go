@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/core/service/syssvr/sysExport"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
@@ -31,10 +32,11 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	//if uc.IsAdmin {
 	//	return &sys.RoleApiAuthResp{}, nil
 	//}
-	api, err := relationDB.NewApiInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.ApiInfoFilter{
-		Route:  in.Path,
-		Method: in.Method,
-	})
+	//api, err := relationDB.NewApiInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.ApiInfoFilter{
+	//	Route:  in.Path,
+	//	Method: in.Method,
+	//})
+	api, err := l.svcCtx.ApiCache.GetData(l.ctx, sysExport.GenApiCacheKey(in.Method, in.Path))
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {
 			return nil, errors.Permissions
@@ -47,6 +49,17 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	if api.Access.AuthType == access.AuthTypeSupper && uc.TenantCode != def.TenantCodeDefault {
 		return nil, errors.Permissions.AddDetail("只有租户管理员才能操作")
 	}
+	ras, err := l.svcCtx.RoleAccessCache.GetData(l.ctx, api.AccessCode)
+	if err != nil {
+		return nil, err
+	}
+	for _, roleID := range uc.RoleIDs {
+		if _, ok := (*ras)[roleID]; ok {
+			return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, errors.Permissions.AddMsg("无权限")
+		}
+	}
+	return nil, errors.Permissions
+
 	_, err = relationDB.NewRoleAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.RoleAccessFilter{RoleIDs: uc.RoleIDs, AccessCodes: []string{api.AccessCode}})
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {

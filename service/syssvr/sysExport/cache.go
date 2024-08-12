@@ -107,3 +107,7 @@ func GenWebhookCacheKey(ctx context.Context, code string) string {
 	tenantCode := ctxs.GetUserCtxNoNil(ctx).TenantCode
 	return fmt.Sprintf("%s:%s", tenantCode, code)
 }
+
+func GenApiCacheKey(method, route string) string {
+	return fmt.Sprintf("%s:%s", method, route)
+}
