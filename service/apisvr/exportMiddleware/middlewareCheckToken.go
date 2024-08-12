@@ -34,7 +34,7 @@ type CheckTokenWareMiddleware struct {
 }
 
 var respPool sync.Pool
-var bufferSize = 1024
+var bufferSize = 512
 
 func init() {
 	respPool.New = func() interface{} {
@@ -80,23 +80,22 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		//注入 用户信息 到 ctx
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
+		var apiRet *sys.RoleApiAuthResp
 		if !isOpen {
 			////校验 Casbin Rule
 			req := user.RoleApiAuthReq{
 				Path:   r.URL.Path,
 				Method: r.Method,
 			}
-			ret, err := m.AuthRpc.RoleApiAuth(r.Context(), &req)
+			apiRet, err = m.AuthRpc.RoleApiAuth(r.Context(), &req)
 			if err != nil {
 				logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
 				//http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
 				clients.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
 				//return
-			} else if ret.BusinessType != log.OptQuery {
-				m.OperationLogRecord(r.Context(), r, ret)
 			}
 		}
-		next(w, r)
+		m.OperationLogRecord(next, w, r, apiRet)
 	}
 }
 
@@ -192,34 +191,50 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 }
 
 // 接口操作日志记录
-func (m *CheckTokenWareMiddleware) OperationLogRecord(ctx context.Context, r *http.Request, apiInfo *sys.RoleApiAuthResp) {
-	ctx = ctxs.CopyCtx(ctx)
+func (m *CheckTokenWareMiddleware) OperationLogRecord(next http.HandlerFunc, w http.ResponseWriter, r *http.Request, apiInfo *sys.RoleApiAuthResp) {
+	ctx := ctxs.CopyCtx(r.Context())
 	useCtx := ctxs.GetUserCtx(ctx)
-	if useCtx.IsOpen || useCtx.UserID == 0 {
+	if useCtx.IsOpen || useCtx.UserID == 0 || apiInfo == nil || apiInfo.BusinessType == log.OptQuery {
+		next(w, r)
 		return
 	}
-	reqBody, _ := io.ReadAll(r.Body)                //读取 reqBody
-	r.Body = io.NopCloser(bytes.NewReader(reqBody)) //重建 reqBody
-	if strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") {
-		if len(reqBody) > bufferSize {
-			// 截断
-			newBody := respPool.Get().([]byte)
-			copy(newBody, reqBody)
-			defer respPool.Put(newBody)
+	var reqBodyStr string
+	if r.Body != nil {
+		reqBody, _ := io.ReadAll(r.Body)                //读取 reqBody
+		r.Body = io.NopCloser(bytes.NewReader(reqBody)) //重建 reqBody
+		if strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") {
+			if len(reqBody) > bufferSize {
+				// 截断
+				newBody := respPool.Get().([]byte)
+				copy(newBody, reqBody)
+				defer respPool.Put(newBody)
+			}
 		}
+		var reqLen = len(reqBody)
+		if reqLen > bufferSize {
+			reqLen = bufferSize
+		}
+		reqBodyStr = string(reqBody[:reqLen])
 	}
-	reqBodyStr := string(reqBody)
 
 	respStatusCode := http.StatusOK
 	respStatusMsg := ""
 	respBodyStr := ""
+	r = result.NeedResp(r)
+	next(w, r)
+	resp := result.GetResp(r)
+	if resp != nil {
+		respStatusCode = resp.StatusCode
+		respStatusMsg = resp.Status
+		if resp.Body != nil {
+			respBody, _ := io.ReadAll(resp.Body) //读取 respBody
+			var respLen = len(respBody)
+			if respLen > bufferSize {
+				respLen = bufferSize
+			}
+			respBodyStr = string(respBody[:respLen])
+		}
 
-	if r.Response != nil {
-		respStatusCode = r.Response.StatusCode
-		respStatusMsg = r.Response.Status
-		respBody, _ := io.ReadAll(r.Response.Body)                //读取 respBody
-		r.Response.Body = io.NopCloser(bytes.NewReader(respBody)) //重建 respBody
-		respBodyStr = string(respBody)
 	}
 
 	uri := "https://"

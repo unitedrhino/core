@@ -37,7 +37,7 @@ func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Empty
 	//OperName，BusinessType 用Route查接口管理表获得
 
 	err := l.OlDB.Insert(l.ctx, &relationDB.SysOperLog{
-		AppCode:      in.AppCode,
+		AppCode:      uc.AppCode,
 		OperUserID:   uc.UserID,
 		OperUserName: uc.Account,
 		OperName:     in.OperName,

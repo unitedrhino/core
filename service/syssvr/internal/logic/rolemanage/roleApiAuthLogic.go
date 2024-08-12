@@ -3,7 +3,6 @@ package rolemanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/domain/access"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/core/service/syssvr/sysExport"
@@ -46,6 +45,9 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	if api.Access == nil {
 		return nil, errors.Permissions
 	}
+	if api.Access.IsNeedAuth != def.True {
+		return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, nil
+	}
 	if api.Access.AuthType == access.AuthTypeSupper && uc.TenantCode != def.TenantCodeDefault {
 		return nil, errors.Permissions.AddDetail("只有租户管理员才能操作")
 	}
@@ -55,17 +57,8 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	}
 	for _, roleID := range uc.RoleIDs {
 		if _, ok := (*ras)[roleID]; ok {
-			return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, errors.Permissions.AddMsg("无权限")
+			return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, nil
 		}
 	}
 	return nil, errors.Permissions
-
-	_, err = relationDB.NewRoleAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.RoleAccessFilter{RoleIDs: uc.RoleIDs, AccessCodes: []string{api.AccessCode}})
-	if err != nil {
-		if errors.Cmp(err, errors.NotFind) {
-			return nil, errors.Permissions
-		}
-		return nil, err
-	}
-	return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, errors.Permissions.AddMsg("无权限")
 }
