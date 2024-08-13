@@ -37,8 +37,8 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	//})
 	api, err := l.svcCtx.ApiCache.GetData(l.ctx, sysExport.GenApiCacheKey(in.Method, in.Path))
 	if err != nil {
-		if errors.Cmp(err, errors.NotFind) {
-			return nil, errors.Permissions
+		if errors.Cmp(err, errors.NotFind) { //没有导入的不校验
+			return &sys.RoleApiAuthResp{}, nil
 		}
 		return nil, err
 	}
