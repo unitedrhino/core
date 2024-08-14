@@ -51,6 +51,9 @@ service api {
     @doc "debug"
     @handler debugGet
     get /debug() returns (DebugResp)
+    @doc "debugTencent"
+    @handler debugGetTencent
+    get /debug-tencent() returns ()
 }
 
 type (

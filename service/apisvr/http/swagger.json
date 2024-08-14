@@ -1146,6 +1146,35 @@
         ]
       }
     },
+    "/api/v1/system/common/debug-tencent": {
+      "get": {
+        "summary": "debugTencent",
+        "operationId": "getApiV1SystemCommonDebug-tencent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
     "/api/v1/system/common/ntp/read": {
       "post": {
         "summary": "ntp",

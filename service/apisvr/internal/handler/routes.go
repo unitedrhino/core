@@ -286,6 +286,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemcommon.DebugGetHandler(serverCtx),
 				},
 				{
+					Method:  http.MethodGet,
+					Path:    "/debug-tencent",
+					Handler: systemcommon.DebugGetTencentHandler(serverCtx),
+				},
+				{
 					Method:  http.MethodPost,
 					Path:    "/ntp/read",
 					Handler: systemcommon.NtpReadHandler(serverCtx),
