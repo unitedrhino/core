@@ -283,6 +283,12 @@ type DateRange struct {
 	End   string `json:"end,optional"`   //结束时间 格式：yyyy-mm-dd
 }
 
+type DebugResp struct {
+	RequestUri string            `json:"requestUri"`
+	Headers    map[string]string `json:"headers"`
+	Body       string            `json:"body,omitempty"`
+}
+
 type DeviceCore struct {
 	ProductID  string `json:"productID"`  //产品ID
 	DeviceName string `json:"deviceName"` //设备名称

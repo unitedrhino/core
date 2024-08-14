@@ -14,7 +14,6 @@ require (
 	gitee.com/i-Things/share v0.1.9
 	github.com/Masterminds/squirrel v1.20.1
 	github.com/alibabacloud-go/tea v1.2.1
-	github.com/casbin/casbin/v2 v2.68.0
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079
 	github.com/gogf/gf/v2 v2.3.3
@@ -38,7 +37,6 @@ require (
 
 require (
 	gitee.com/asktop_golib/util v0.1.6 // indirect
-	github.com/Blank-Xu/sql-adapter v0.0.0-20210714092925-0bdd0d548758 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4 // indirect
@@ -55,7 +53,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bradfitz/gomemcache v0.0.0-20220106215444-fb4bf637b56d // indirect
 	github.com/carlmjohnson/versioninfo v0.22.4 // indirect
-	github.com/casbin/redis-watcher/v2 v2.5.0 // indirect
+	github.com/casbin/casbin/v2 v2.68.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/clbanning/mxj/v2 v2.5.5 // indirect
@@ -102,7 +100,6 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grokify/html-strip-tags-go v0.0.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0 // indirect
-	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.3 // indirect

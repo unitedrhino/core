@@ -1084,6 +1084,68 @@
         ]
       }
     },
+    "/api/v1/system/common/debug": {
+      "get": {
+        "summary": "debug",
+        "operationId": "getApiV1SystemCommonDebug",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DebugResp"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      },
+      "post": {
+        "summary": "debug",
+        "operationId": "postApiV1SystemCommonDebug",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DebugResp"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
     "/api/v1/system/common/ntp/read": {
       "post": {
         "summary": "ntp",
@@ -8500,6 +8562,25 @@
         }
       },
       "title": "DateRange"
+    },
+    "DebugResp": {
+      "type": "object",
+      "properties": {
+        "requestUri": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object"
+        },
+        "body": {
+          "type": "string"
+        }
+      },
+      "title": "DebugResp",
+      "required": [
+        "requestUri",
+        "headers"
+      ]
     },
     "DeviceCore": {
       "type": "object",

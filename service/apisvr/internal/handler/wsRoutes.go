@@ -278,6 +278,16 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/debug",
+					Handler: systemcommon.DebugPostHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/debug",
+					Handler: systemcommon.DebugGetHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/ntp/read",
 					Handler: systemcommon.NtpReadHandler(serverCtx),
 				},
