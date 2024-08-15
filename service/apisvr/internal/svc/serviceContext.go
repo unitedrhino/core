@@ -1,9 +1,8 @@
 package svc
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/export"
+	"gitee.com/i-Things/core/service/apisvr/exportMiddleware"
 	"gitee.com/i-Things/core/service/apisvr/internal/config"
-	"gitee.com/i-Things/core/service/apisvr/internal/middleware"
 	"gitee.com/i-Things/core/service/syssvr/client/accessmanage"
 	app "gitee.com/i-Things/core/service/syssvr/client/appmanage"
 	"gitee.com/i-Things/core/service/syssvr/client/areamanage"
@@ -66,9 +65,6 @@ type ServiceContext struct {
 	UserCache sysExport.UserCacheT
 
 	CheckTokenWare rest.Middleware
-	DataAuthWare   rest.Middleware
-	TeardownWare   rest.Middleware
-	CheckApiWare   rest.Middleware
 	InitCtxsWare   rest.Middleware
 	Captcha        *verify.Captcha
 	OssClient      *oss.Client
@@ -162,10 +158,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
 		Config:         c,
-		CheckTokenWare: export.NewCheckTokenWareMiddleware(ur, ro, tenantM).Handle,
-		DataAuthWare:   middleware.NewDataAuthWareMiddleware(c).Handle,
-		TeardownWare:   middleware.NewTeardownWareMiddleware(c, lo).Handle,
-		CheckApiWare:   middleware.NewCheckApiWareMiddleware().Handle,
+		CheckTokenWare: exportMiddleware.NewCheckTokenWareMiddleware(ur, ro, tenantM, lo).Handle,
 		InitCtxsWare:   ctxs.InitMiddleware,
 		UserCache:      userCache,
 		Captcha:        captcha,

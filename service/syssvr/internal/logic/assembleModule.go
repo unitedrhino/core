@@ -22,22 +22,6 @@ func ToModuleInfosPb(in []*relationDB.SysModuleInfo) (ret []*sys.ModuleInfo) {
 	return
 }
 
-func ToApiInfoPo(in *sys.ApiInfo) *relationDB.SysApiInfo {
-	if in == nil {
-		return nil
-	}
-	return &relationDB.SysApiInfo{
-		ID:           in.Id,
-		AccessCode:   in.AccessCode,
-		Route:        in.Route,
-		Method:       in.Method,
-		Name:         in.Name,
-		BusinessType: in.BusinessType,
-		AuthType:     in.AuthType,
-		Desc:         in.Desc,
-	}
-}
-
 //func ToTenantApiInfoPo(in *sys.TenantApiInfo) *relationDB.SysTenantAppApi {
 //	if in == nil || in.Info == nil {
 //		return nil
@@ -49,22 +33,6 @@ func ToApiInfoPo(in *sys.ApiInfo) *relationDB.SysApiInfo {
 //		SysModuleApi: *ToApiInfoPo(in.Info),
 //	}
 //}
-
-func ToApiInfoPb(in *relationDB.SysApiInfo) *sys.ApiInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.ApiInfo{
-		Id:           in.ID,
-		AccessCode:   in.AccessCode,
-		Route:        in.Route,
-		Method:       in.Method,
-		Name:         in.Name,
-		BusinessType: in.BusinessType,
-		AuthType:     in.AuthType,
-		Desc:         in.Desc,
-	}
-}
 
 func ToMenuInfoPo(in *sys.MenuInfo) *relationDB.SysModuleMenu {
 	if in == nil {

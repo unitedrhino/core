@@ -139,7 +139,7 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	var token string
 
 	if (claim.ExpiresAt.Unix()-time.Now().Unix())*2 < l.svcCtx.Config.UserToken.AccessExpire {
-		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, time.Now().Unix()+l.svcCtx.Config.UserToken.AccessExpire)
+		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, l.svcCtx.Config.UserToken.AccessExpire)
 	}
 	ui, err := l.svcCtx.UserTokenInfo.GetData(l.ctx, claim.UserID)
 	if err != nil {

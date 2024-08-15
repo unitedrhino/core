@@ -1,10 +1,11 @@
 package svc
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/export"
+	"gitee.com/i-Things/core/service/apisvr/exportMiddleware"
 	"gitee.com/i-Things/core/service/datasvr/internal/config"
 	"gitee.com/i-Things/core/service/datasvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/client/common"
+	"gitee.com/i-Things/core/service/syssvr/client/log"
 	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/i-Things/core/service/syssvr/client/usermanage"
@@ -31,11 +32,12 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	ur = user.NewUserManage(zrpc.MustNewClient(c.SysRpc.Conf))
 	ro = role.NewRoleManage(zrpc.MustNewClient(c.SysRpc.Conf))
 	tm := tenant.NewTenantManage(zrpc.MustNewClient(c.SysRpc.Conf))
+	lo := log.NewLog(zrpc.MustNewClient(c.SysRpc.Conf))
 	Slot, err := sysExport.NewSlotCache(common.NewCommon(zrpc.MustNewClient(c.SysRpc.Conf)))
 	logx.Must(err)
 	return &ServiceContext{
 		Config:         c,
-		CheckTokenWare: export.NewCheckTokenWareMiddleware(ur, ro, tm).Handle,
+		CheckTokenWare: exportMiddleware.NewCheckTokenWareMiddleware(ur, ro, tm, lo).Handle,
 		InitCtxsWare:   ctxs.InitMiddleware,
 		Slot:           Slot,
 	}

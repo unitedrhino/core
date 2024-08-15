@@ -15,6 +15,7 @@ import (
 	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
+	"strings"
 	"time"
 )
 
@@ -106,4 +107,47 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		svcCtx.ProjectCache = projectCache
 	}
 
+	{
+		c, err := caches.NewCache(caches.CacheConfig[relationDB.SysApiInfo, string]{
+			KeyType:   eventBus.ServerCacheKeySysAccessApi,
+			FastEvent: svcCtx.FastEvent,
+			GetData: func(ctx context.Context, key string) (*relationDB.SysApiInfo, error) {
+				method, path, _ := strings.Cut(key, ":")
+				db := relationDB.NewApiInfoRepo(ctx)
+				pi, err := db.FindOneByFilter(ctx, relationDB.ApiInfoFilter{
+					Route:      path,
+					Method:     method,
+					WithAccess: true,
+				})
+				return pi, err
+			},
+			ExpireTime: 20 * time.Minute,
+		})
+		logx.Must(err)
+		svcCtx.ApiCache = c
+	}
+
+	{
+		c, err := caches.NewCache(caches.CacheConfig[map[int64]struct{}, string]{
+			KeyType:   eventBus.ServerCacheKeySysRoleAccess,
+			FastEvent: svcCtx.FastEvent,
+			GetData: func(ctx context.Context, key string) (*map[int64]struct{}, error) {
+				db := relationDB.NewRoleAccessRepo(ctx)
+				pi, err := db.FindByFilter(ctx, relationDB.RoleAccessFilter{
+					AccessCodes: []string{key},
+				}, nil)
+				if err != nil {
+					return nil, err
+				}
+				var ret = make(map[int64]struct{})
+				for _, v := range pi {
+					ret[v.RoleID] = struct{}{}
+				}
+				return &ret, err
+			},
+			ExpireTime: 20 * time.Minute,
+		})
+		logx.Must(err)
+		svcCtx.RoleAccessCache = c
+	}
 }

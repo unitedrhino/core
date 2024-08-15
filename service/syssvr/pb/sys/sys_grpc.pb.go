@@ -2599,7 +2599,7 @@ type RoleManageClient interface {
 	RoleAppMultiUpdate(ctx context.Context, in *RoleAppMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	RoleModuleIndex(ctx context.Context, in *RoleModuleIndexReq, opts ...grpc.CallOption) (*RoleModuleIndexResp, error)
 	RoleModuleMultiUpdate(ctx context.Context, in *RoleModuleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
-	RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*Empty, error)
+	RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*RoleApiAuthResp, error)
 	RoleAccessMultiUpdate(ctx context.Context, in *RoleAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	RoleAccessIndex(ctx context.Context, in *RoleAccessIndexReq, opts ...grpc.CallOption) (*RoleAccessIndexResp, error)
 }
@@ -2702,8 +2702,8 @@ func (c *roleManageClient) RoleModuleMultiUpdate(ctx context.Context, in *RoleMo
 	return out, nil
 }
 
-func (c *roleManageClient) RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *roleManageClient) RoleApiAuth(ctx context.Context, in *RoleApiAuthReq, opts ...grpc.CallOption) (*RoleApiAuthResp, error) {
+	out := new(RoleApiAuthResp)
 	err := c.cc.Invoke(ctx, RoleManage_RoleApiAuth_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -2743,7 +2743,7 @@ type RoleManageServer interface {
 	RoleAppMultiUpdate(context.Context, *RoleAppMultiUpdateReq) (*Empty, error)
 	RoleModuleIndex(context.Context, *RoleModuleIndexReq) (*RoleModuleIndexResp, error)
 	RoleModuleMultiUpdate(context.Context, *RoleModuleMultiUpdateReq) (*Empty, error)
-	RoleApiAuth(context.Context, *RoleApiAuthReq) (*Empty, error)
+	RoleApiAuth(context.Context, *RoleApiAuthReq) (*RoleApiAuthResp, error)
 	RoleAccessMultiUpdate(context.Context, *RoleAccessMultiUpdateReq) (*Empty, error)
 	RoleAccessIndex(context.Context, *RoleAccessIndexReq) (*RoleAccessIndexResp, error)
 	mustEmbedUnimplementedRoleManageServer()
@@ -2783,7 +2783,7 @@ func (UnimplementedRoleManageServer) RoleModuleIndex(context.Context, *RoleModul
 func (UnimplementedRoleManageServer) RoleModuleMultiUpdate(context.Context, *RoleModuleMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleModuleMultiUpdate not implemented")
 }
-func (UnimplementedRoleManageServer) RoleApiAuth(context.Context, *RoleApiAuthReq) (*Empty, error) {
+func (UnimplementedRoleManageServer) RoleApiAuth(context.Context, *RoleApiAuthReq) (*RoleApiAuthResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleApiAuth not implemented")
 }
 func (UnimplementedRoleManageServer) RoleAccessMultiUpdate(context.Context, *RoleAccessMultiUpdateReq) (*Empty, error) {

@@ -9,27 +9,50 @@ info(
 @server (
     group: system/notify/template
     prefix: /api/v1/system/notify/template
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemNotifyTemplate"
+    accessNamePrefix: "通知模版"
+    accessGroup: "通知管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
-    @doc "添加通知模版"
+    @doc(
+        summary: "添加通知模版"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (NotifyTemplate) returns (WithID)
 
-    @doc "获取通知模版列表"
+    @doc(
+        summary: "获取通知模版列表"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler index
     post /index (NotifyTemplateIndexReq) returns (NotifyTemplateIndexResp)
 
-    @doc "获取通知模版详情"
+    @doc(
+        summary: "获取通知模版详情"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler read
     post /read (WithID) returns (NotifyTemplate)
 
-    @doc "更新通知模版"
+    @doc(
+        summary: "更新通知模版"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (NotifyTemplate) returns ()
 
-    @doc "删除通知模版"
+    @doc(
+        summary: "删除通知模版"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithID) returns ()
 

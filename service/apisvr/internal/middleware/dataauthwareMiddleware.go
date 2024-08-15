@@ -1,17 +1,10 @@
 package middleware
 
 import (
-	"bytes"
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/config"
 	"gitee.com/i-Things/share/caches"
-	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/result"
-	"gitee.com/i-Things/share/utils"
-	"github.com/zeromicro/go-zero/rest/httpx"
-	"io"
 	"net/http"
 )
 
@@ -33,72 +26,8 @@ type DataAuthParam struct {
 
 func (m *DataAuthWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-
-		userCtx := ctxs.GetUserCtxOrNil(ctx)
-		//没有用户态or拥有所有数据权限，则不校验数据权限
-		if userCtx == nil || userCtx.IsAllData == true || true {
-			next(w, r)
-			return
-		}
-
-		//读出Body 暂存
-		body, err := io.ReadAll(r.Body)
-		if err != nil {
-			result.HttpErr(w, r, http.StatusInternalServerError, err)
-			return
-		}
-		//写回Body 给 httpx.Parse 读
-		r.Body = io.NopCloser(bytes.NewBuffer(body))
-
-		//httpx.Parse 读
-		var param DataAuthParam
-		//zeromicro/go-zero@v1.5.0/core/mapping/unmarshaler.go:84 要求接收者是结构体
-		err = httpx.Parse(r, &param)
-		if err != nil {
-			result.HttpErr(w, r, http.StatusInternalServerError, err)
-			return
-		}
-
-		//其他人 要校验数据权限
-		{ //检查项目权限
-			dataType := def.AuthDataTypeProject
-			reqIDs := param.ProjectIDs
-			//全局项目ID
-			mdProjectID := ctxs.GetUserCtx(ctx).ProjectID
-			if mdProjectID != 0 {
-				reqIDs = append(reqIDs, utils.ToString(mdProjectID))
-			}
-			//参数项目ID
-			if param.ProjectID != "" {
-				reqIDs = append(reqIDs, param.ProjectID)
-			}
-			//校验项目权限
-			if code := m.check(ctx, dataType, reqIDs); code != http.StatusOK {
-				err := errors.Permissions.AddMsgf("%v不足", def.AuthDataTypeFieldTextMap[dataType])
-				result.HttpErr(w, r, code, err)
-				return
-			}
-		}
-		{ //检查区域权限
-			dataType := def.AuthDataTypeArea
-			reqIDs := param.AreaIDs
-			//参数项目ID
-			if param.AreaID != "" {
-				reqIDs = append(reqIDs, param.AreaID)
-			}
-			//校验区域权限
-			if code := m.check(ctx, dataType, reqIDs); code != http.StatusOK {
-				err := errors.Permissions.AddMsgf("%v不足", def.AuthDataTypeFieldTextMap[dataType])
-				result.HttpErr(w, r, code, err)
-				return
-			}
-		}
-
-		//写回Body 恢复原状
-		r.Body = io.NopCloser(bytes.NewBuffer(body))
-
 		next(w, r)
+		return
 	}
 }
 

@@ -7,18 +7,26 @@ info(
 @server(
     group: system/ops/workOrder
     prefix: /api/v1/system/ops
-    middleware:  CheckTokenWare,InitCtxsWare,CheckApiWare, DataAuthWare, TeardownWare
+    accessNamePrefix: "工单管理"
+    accessGroup: "运营管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "添加工单"
     @handler create
     post /work-order/create (OpsWorkOrder) returns (WithID)
 
-    @doc "获取工单列表"
+    @doc(
+        summary: "获取工单列表"
+        isNeedAuth: "true"
+    )
     @handler index
     post /work-order/index (OpsWorkOrderIndexReq) returns (OpsWorkOrderIndexResp)
 
-    @doc "更新工单"
+    @doc(
+        summary: "更新工单"
+        isNeedAuth: "true"
+    )
     @handler update
     post /work-order/update (OpsWorkOrder) returns ()
 

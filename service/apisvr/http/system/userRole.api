@@ -10,7 +10,12 @@ info(
 @server (
     group: system/user/role
     prefix: /api/v1/system/user/role
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemUserManage"
+    accessNamePrefix: "用户信息"
+    accessGroup: "用户管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取用户角色列表"

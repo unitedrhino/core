@@ -9,7 +9,12 @@ info(
 @server(
     group: system/project/info
     prefix: /api/v1/system/project/info
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemProjectManage"
+    accessNamePrefix: "项目管理"
+    accessGroup: "项目管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "新增项目"
@@ -21,10 +26,18 @@ service api {
     @doc "删除项目"
     @handler delete
     post /delete (ProjectWithID) returns ()
-    @doc "获取项目详情"
+    @doc(
+        summary: "获取项目详情"
+        authType: "all"
+        isNeedAuth: "false"
+    )
     @handler read
     post /read (ProjectWithID) returns (ProjectInfo)
-    @doc "获取项目列表"
+    @doc(
+        summary: "获取项目列表"
+        authType: "all"
+        isNeedAuth: "false"
+    )
     @handler index
     post /index (ProjectInfoIndexReq) returns (ProjectInfoIndexResp)
 
@@ -33,13 +46,20 @@ service api {
 @server(
     group: system/project/profile
     prefix: /api/v1/system/project/profile
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemProjectManage"
+    accessNamePrefix: "项目配置"
+    accessGroup: "项目管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取项目配置详情"
     @handler profileRead
     post /read (WithCode) returns (ProjectProfile)
-    @doc "更新项目配置"
+    @doc(
+        summary: "更新项目配置"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler profileUpdate
     post /update (ProjectProfile) returns ()
     @doc "获取项目配置列表"

@@ -260,7 +260,7 @@
     },
     "/api/v1/system/access/info/index": {
       "post": {
-        "summary": "获取访问权限信息",
+        "summary": "获取访问权限信息列表",
         "operationId": "postApiV1SystemAccessInfoIndex",
         "responses": {
           "200": {
@@ -711,6 +711,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "    AppPolicyReadReq{\r,        AppCode string `json:\"appCode\"`\r,        Code string `json:\"code\"`\r,    }\r,    AppPolicy{\r,     ID int64 `json:\"id,optional\"`\r,     AppCode string `json:\"appCode,optional\"`\r,     Code string           `json:\"code,optional\"`\r,     Name string           `json:\"name,optional\"`\r,     Subject string `json:\"subject,optional\"`\r,     Body string `json:\"body,optional\"`\r,    }\r",
             "in": "body",
             "required": true,
             "schema": {
@@ -721,48 +722,6 @@
         "tags": [
           "system/app/module",
           "systemAppModule"
-        ]
-      }
-    },
-    "/api/v1/system/app/policy/read": {
-      "post": {
-        "summary": "获取应用协议",
-        "operationId": "postApiV1SystemAppPolicyRead",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                },
-                "data": {
-                  "$ref": "#/definitions/AppPolicy"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AppPolicyReadReq"
-            }
-          }
-        ],
-        "tags": [
-          "system/app/policy",
-          "systemAppPolicy"
         ]
       }
     },
@@ -1114,6 +1073,97 @@
                 },
                 "data": {
                   "$ref": "#/definitions/ConfigResp"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
+    "/api/v1/system/common/debug": {
+      "get": {
+        "summary": "debug",
+        "operationId": "getApiV1SystemCommonDebug",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DebugResp"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      },
+      "post": {
+        "summary": "debug",
+        "operationId": "postApiV1SystemCommonDebug",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DebugResp"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
+    "/api/v1/system/common/debug-tencent": {
+      "get": {
+        "summary": "debugTencent",
+        "operationId": "getApiV1SystemCommonDebug-tencent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
                 }
               }
             }
@@ -4998,7 +5048,7 @@
     },
     "/api/v1/system/slot/info/create": {
       "post": {
-        "summary": "新增项目",
+        "summary": "新增插槽",
         "operationId": "postApiV1SystemSlotInfoCreate",
         "responses": {
           "200": {
@@ -5040,7 +5090,7 @@
     },
     "/api/v1/system/slot/info/delete": {
       "post": {
-        "summary": "删除项目",
+        "summary": "删除插槽",
         "operationId": "postApiV1SystemSlotInfoDelete",
         "responses": {
           "200": {
@@ -5079,7 +5129,7 @@
     },
     "/api/v1/system/slot/info/index": {
       "post": {
-        "summary": "获取项目列表",
+        "summary": "获取插槽列表",
         "operationId": "postApiV1SystemSlotInfoIndex",
         "responses": {
           "200": {
@@ -5121,7 +5171,7 @@
     },
     "/api/v1/system/slot/info/read": {
       "post": {
-        "summary": "获取项目详情",
+        "summary": "获取插槽详情",
         "operationId": "postApiV1SystemSlotInfoRead",
         "responses": {
           "200": {
@@ -5163,7 +5213,7 @@
     },
     "/api/v1/system/slot/info/update": {
       "post": {
-        "summary": "更新项目",
+        "summary": "更新插槽",
         "operationId": "postApiV1SystemSlotInfoUpdate",
         "responses": {
           "200": {
@@ -5202,7 +5252,7 @@
     },
     "/api/v1/system/tenant/access/info/index": {
       "post": {
-        "summary": "获取租户操作权限树",
+        "summary": "获取租户操作权限列表",
         "operationId": "postApiV1SystemTenantAccessInfoIndex",
         "responses": {
           "200": {
@@ -7519,6 +7569,15 @@
           "description": " 是否需要权限认证 1是 2否",
           "maximum": 2
         },
+        "authTypes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": "  1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)",
+          "maximum": 3
+        },
         "withApis": {
           "type": "boolean",
           "format": "boolean"
@@ -7577,6 +7636,12 @@
           "description": " 是否需要认证（ 1需要 2不需要）",
           "maximum": 2,
           "minimum": 1
+        },
+        "authType": {
+          "type": "integer",
+          "format": "int64",
+          "description": "   1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)",
+          "maximum": 3
         },
         "desc": {
           "type": "string",
@@ -7702,19 +7767,6 @@
           "type": "string",
           "description": " 接口名称"
         },
-        "businessType": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 业务类型（1新增 2修改 3删除 4查询 5其它)",
-          "maximum": 5,
-          "minimum": 1
-        },
-        "authType": {
-          "type": "integer",
-          "format": "int64",
-          "description": "  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(super) 只有超管可以操作(超管是跨租户的)",
-          "maximum": 3
-        },
         "desc": {
           "type": "string",
           "description": " 备注"
@@ -7751,7 +7803,7 @@
         "authType": {
           "type": "integer",
           "format": "int64",
-          "description": "  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)",
+          "description": "  1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)",
           "maximum": 3
         }
       },
@@ -7974,47 +8026,6 @@
       "required": [
         "code",
         "moduleCodes"
-      ]
-    },
-    "AppPolicy": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "appCode": {
-          "type": "string"
-        },
-        "code": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "subject": {
-          "type": "string"
-        },
-        "body": {
-          "type": "string"
-        }
-      },
-      "title": "AppPolicy"
-    },
-    "AppPolicyReadReq": {
-      "type": "object",
-      "properties": {
-        "appCode": {
-          "type": "string"
-        },
-        "code": {
-          "type": "string"
-        }
-      },
-      "title": "AppPolicyReadReq",
-      "required": [
-        "appCode",
-        "code"
       ]
     },
     "AreaInfo": {
@@ -8580,6 +8591,25 @@
         }
       },
       "title": "DateRange"
+    },
+    "DebugResp": {
+      "type": "object",
+      "properties": {
+        "requestUri": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "object"
+        },
+        "body": {
+          "type": "string"
+        }
+      },
+      "title": "DebugResp",
+      "required": [
+        "requestUri",
+        "headers"
+      ]
     },
     "DeviceCore": {
       "type": "object",

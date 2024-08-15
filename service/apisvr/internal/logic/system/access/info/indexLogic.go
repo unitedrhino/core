@@ -33,6 +33,7 @@ func (l *IndexLogic) Index(req *types.AccessIndexReq) (resp *types.AccessIndexRe
 		Name:       req.Name,
 		IsNeedAuth: req.IsNeedAuth,
 		WithApis:   req.WithApis,
+		AuthTypes:  req.AuthTypes,
 	})
 	if err != nil {
 		return nil, err

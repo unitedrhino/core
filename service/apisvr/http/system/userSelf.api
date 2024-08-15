@@ -9,7 +9,12 @@ info(
 @server (
 	group: system/user/self
 	prefix: /api/v1/system/user/self
-	middleware:  CheckTokenWare, DataAuthWare,InitCtxsWare, TeardownWare
+	accessCode: "systemUserSelf"
+	accessName: "用户基础操作"
+	accessGroup: "用户管理"
+	defaultAuthType: "all"
+	defaultNeedAuth: "false"
+	middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
 	@doc "获取用户应用列表"

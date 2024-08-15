@@ -9,7 +9,12 @@ info(
 @server (
 	group: system/app/info
 	prefix: /api/v1/system/app/info
-	middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemAppManage"
+    accessNamePrefix: "应用管理"
+    accessGroup: "应用管理"
+    defaultAuthType: "supper"
+    defaultNeedAuth: "true"
+	middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
@@ -37,7 +42,12 @@ service api {
 @server(
     group: system/app/module
     prefix: /api/v1/system/app/module
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemAppManage"
+    accessNamePrefix: "应用模块"
+    accessGroup: "应用管理"
+    defaultAuthType: "supper"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "更新APP权限"
@@ -49,31 +59,21 @@ service api {
     post /index (AppModuleIndexReq) returns (AppModuleIndexResp)
 }
 
-@server(
-    group: system/app/policy
-    prefix: /api/v1/system/app/policy
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
-)
-service api {
-    @doc "获取应用协议"
-    @handler read
-    post /read (AppPolicyReadReq) returns (AppPolicy)
 
-}
 
 type (
-    AppPolicyReadReq{
-        AppCode string `json:"appCode"`
-        Code string `json:"code"`
-    }
-    AppPolicy{
-     ID int64 `json:"id,optional"`
-     AppCode string `json:"appCode,optional"`
-     Code string           `json:"code,optional"`//
-     Name string           `json:"name,optional"`//
-     Subject string `json:"subject,optional"`
-     Body string `json:"body,optional"`
-    }
+//    AppPolicyReadReq{
+//        AppCode string `json:"appCode"`
+//        Code string `json:"code"`
+//    }
+//    AppPolicy{
+//     ID int64 `json:"id,optional"`
+//     AppCode string `json:"appCode,optional"`
+//     Code string           `json:"code,optional"`//
+//     Name string           `json:"name,optional"`//
+//     Subject string `json:"subject,optional"`
+//     Body string `json:"body,optional"`
+//    }
 
     AppModuleMultiUpdateReq{
         Code string `json:"code"`                     // 应用编号

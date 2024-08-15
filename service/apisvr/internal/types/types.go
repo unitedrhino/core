@@ -15,6 +15,7 @@ type AccessIndexReq struct {
 	Name       string    `json:"name,optional"`                   // 接口名称
 	Code       string    `json:"code,optional"`                   // 应用编号
 	IsNeedAuth int64     `json:"isNeedAuth,optional,range=[0:2]"` // 是否需要权限认证 1是 2否
+	AuthTypes  []int64   `json:"authTypes,optional,range=[0:3]"`  //  1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	WithApis   bool      `json:"withApis,optional"`
 }
 
@@ -30,6 +31,7 @@ type AccessInfo struct {
 	Group      string     `json:"group,optional"`                  // 分组
 	Name       string     `json:"name,optional"`                   // 名称
 	IsNeedAuth int64      `json:"isNeedAuth,optional,range=[1:2]"` // 是否需要认证（ 1需要 2不需要）
+	AuthType   int64      `json:"authType,optional,range=[0:3]"`   //   1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	Desc       string     `json:"desc,optional"`                   // 备注
 	Apis       []*ApiInfo `json:"apis,optional,omitempty"`         //接口信息
 }
@@ -57,14 +59,12 @@ type AccessTreeResp struct {
 }
 
 type ApiInfo struct {
-	ID           int64  `json:"id,optional"`                       // 接口编号
-	AccessCode   string `json:"accessCode"`                        // 模块编号
-	Route        string `json:"route,optional"`                    // 接口路由
-	Method       string `json:"method,optional"`                   // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
-	Name         string `json:"name,optional"`                     // 接口名称
-	BusinessType int64  `json:"businessType,optional,range=[1:5]"` // 业务类型（1新增 2修改 3删除 4查询 5其它)
-	AuthType     int64  `json:"authType,optional,range=[0:3]"`     //  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(super) 只有超管可以操作(超管是跨租户的)
-	Desc         string `json:"desc,optional"`                     // 备注
+	ID         int64  `json:"id,optional"`     // 接口编号
+	AccessCode string `json:"accessCode"`      // 模块编号
+	Route      string `json:"route,optional"`  // 接口路由
+	Method     string `json:"method,optional"` // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
+	Name       string `json:"name,optional"`   // 接口名称
+	Desc       string `json:"desc,optional"`   // 备注
 }
 
 type ApiInfoIndexReq struct {
@@ -73,7 +73,7 @@ type ApiInfoIndexReq struct {
 	Method     string    `json:"method,optional"`               // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
 	Name       string    `json:"name,optional"`                 // 接口名称
 	AccessCode string    `json:"accessCode,optional"`           // 应用编号
-	AuthType   int64     `json:"authType,optional,range=[0:3]"` //  1(all) 全部人可以操作 2(admin) 只有管理员可以操作 3(superAdmin) 只有超管可以操作(超管是跨租户的)
+	AuthType   int64     `json:"authType,optional,range=[0:3]"` //  1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 }
 
 type ApiInfoIndexResp struct {
@@ -130,20 +130,6 @@ type AppModuleIndexResp struct {
 type AppModuleMultiUpdateReq struct {
 	Code        string   `json:"code"`        // 应用编号
 	ModuleCodes []string `json:"moduleCodes"` //App列表数据
-}
-
-type AppPolicy struct {
-	ID      int64  `json:"id,optional"`
-	AppCode string `json:"appCode,optional"`
-	Code    string `json:"code,optional"` //
-	Name    string `json:"name,optional"` //
-	Subject string `json:"subject,optional"`
-	Body    string `json:"body,optional"`
-}
-
-type AppPolicyReadReq struct {
-	AppCode string `json:"appCode"`
-	Code    string `json:"code"`
 }
 
 type AreaInfo struct {
@@ -295,6 +281,12 @@ type DataProjectSaveReq struct {
 type DateRange struct {
 	Start string `json:"start,optional"` //开始时间 格式：yyyy-mm-dd
 	End   string `json:"end,optional"`   //结束时间 格式：yyyy-mm-dd
+}
+
+type DebugResp struct {
+	RequestUri string            `json:"requestUri"`
+	Headers    map[string]string `json:"headers"`
+	Body       string            `json:"body,omitempty"`
 }
 
 type DeviceCore struct {

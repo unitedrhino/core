@@ -8,7 +8,6 @@ import (
 	systemaccessinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/access/info"
 	systemappinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/info"
 	systemappmodule "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/module"
-	systemapppolicy "gitee.com/i-Things/core/service/apisvr/internal/handler/system/app/policy"
 	systemareainfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/area/info"
 	systemareaprofile "gitee.com/i-Things/core/service/apisvr/internal/handler/system/area/profile"
 	systemcommon "gitee.com/i-Things/core/service/apisvr/internal/handler/system/common"
@@ -56,7 +55,7 @@ import (
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -85,7 +84,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -124,7 +123,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -158,7 +157,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -177,21 +176,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
-			[]rest.Route{
-				{
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemapppolicy.ReadHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/app/policy"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -225,7 +210,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -249,7 +234,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -292,6 +277,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
+					Path:    "/debug",
+					Handler: systemcommon.DebugPostHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/debug",
+					Handler: systemcommon.DebugGetHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/debug-tencent",
+					Handler: systemcommon.DebugGetTencentHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
 					Path:    "/ntp/read",
 					Handler: systemcommon.NtpReadHandler(serverCtx),
 				},
@@ -302,7 +302,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -326,7 +326,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -345,7 +345,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -374,7 +374,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -403,7 +403,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -437,7 +437,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -511,7 +511,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -530,7 +530,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -564,7 +564,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -593,7 +593,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -627,7 +627,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -666,7 +666,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -690,7 +690,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -719,7 +719,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -753,7 +753,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -772,7 +772,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.TeardownWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -796,7 +796,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -830,7 +830,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -854,7 +854,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -873,7 +873,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -892,7 +892,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -921,7 +921,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -940,7 +940,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -959,7 +959,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -993,7 +993,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1017,7 +1017,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1060,7 +1060,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1103,7 +1103,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1132,7 +1132,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1161,7 +1161,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1194,7 +1194,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1228,7 +1228,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1262,7 +1262,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.CheckApiWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -1281,7 +1281,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.DataAuthWare, serverCtx.InitCtxsWare, serverCtx.TeardownWare},
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,

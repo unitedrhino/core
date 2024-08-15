@@ -9,23 +9,42 @@ info(
 @server (
     group: system/tenant/app
     prefix: /api/v1/system/tenant/app
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemTenantManage"
+    accessNamePrefix: "租户应用"
+    accessGroup: "租户管理"
+    defaultNeedAuth: "true"
+    defaultAuthType: "supper"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
-    @doc "获取租户应用列表"
+    @doc(
+        summary: "获取租户应用列表"
+        authType: "admin"
+        accessCode: "systemTenantManageApp"
+        accessName: "租户获取应用信息"
+    )
     @handler index
     post /index (TenantAppIndexReq) returns (TenantAppIndexResp)
 
-    @doc "绑定租户应用"
+    @doc(
+        summary: "绑定租户应用"
+        authType: "supper"
+    )
     @handler create
     post /create (TenantAppInfo) returns ()
 
-    @doc "更新租户应用"
+    @doc(
+        summary: "更新租户应用"
+        authType: "supper"
+    )
     @handler update
     post /update (TenantAppInfo) returns ()
 
-    @doc "解绑租户应用"
+    @doc(
+        summary: "解绑租户应用"
+        authType: "supper"
+    )
     @handler delete
     post /delete (TenantAppWithIDOrCode) returns ()
 }
@@ -44,23 +63,44 @@ service api {
 @server (
     group: system/tenant/app/module
     prefix: /api/v1/system/tenant/app/module
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemTenantManage"
+    accessNamePrefix: "租户模块"
+    accessGroup: "租户管理"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
-    @doc "获取租户应用模块列表"
+    @doc(
+        summary: "获取租户应用模块列表"
+        authType: "admin"
+        accessCode: "systemTenantManageApp"
+        accessName: "租户获取应用信息"
+    )
     @handler index
     post /index (TenantModuleIndexReq) returns (TenantModuleIndexResp)
 
-    @doc "新增租户应用模块"
+    @doc(
+        summary: "新增租户应用模块"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (TenantModuleCreateReq) returns ()
 
-    @doc "批量新增租户应用模块"
+    @doc(
+        summary: "批量新增租户应用模块"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler multiCreate
     post /multi-create (TenantAppModuleMultiCreate) returns ()
 
-    @doc "删除租户应用模块"
+    @doc(
+        summary: "删除租户应用模块"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (TenantModuleWithIDOrCode) returns ()
 }
@@ -68,23 +108,44 @@ service api {
 @server (
     group: system/tenant/app/menu
     prefix: /api/v1/system/tenant/app/menu
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemTenantManage"
+    accessNamePrefix: "租户管理"
+    accessGroup: "租户管理"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
-    @doc "获取租户应用菜单列表"
+    @doc(
+        summary: "获取租户应用菜单列表"
+        authType: "admin"
+        accessCode: "systemTenantManageApp"
+        accessName: "租户获取应用信息"
+    )
     @handler index
     post /index (TenantAppMenuIndexReq) returns (TenantAppMenuIndexResp)
 
-    @doc "创建租户应用菜单"
+    @doc(
+        summary: "创建租户应用菜单"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (TenantAppMenu) returns (WithID)
 
-    @doc "更新租户应用菜单"
+    @doc(
+        summary: "更新租户应用菜单"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (TenantAppMenu) returns (WithID)
 
-    @doc "删除租户应用菜单"
+    @doc(
+        summary: "删除租户应用菜单"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithAppCodeID) returns ()
 }

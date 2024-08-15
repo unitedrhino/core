@@ -3,6 +3,7 @@ package accessmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/sysExport"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -33,9 +34,12 @@ func (l *ApiInfoUpdateLogic) ApiInfoUpdate(in *sys.ApiInfo) (*sys.Empty, error) 
 	old.Method = in.Method
 	old.Route = in.Route
 	old.Name = in.Name
-	old.BusinessType = in.BusinessType
+	//old.BusinessType = in.BusinessType
 	old.Desc = in.Desc
-	old.AuthType = in.AuthType
+	//old.AuthType = in.AuthType
 	err = relationDB.NewApiInfoRepo(l.ctx).Update(l.ctx, old)
+	if err == nil {
+		l.svcCtx.ApiCache.SetData(l.ctx, sysExport.GenApiCacheKey(old.Method, old.Route), nil)
+	}
 	return &sys.Empty{}, err
 }

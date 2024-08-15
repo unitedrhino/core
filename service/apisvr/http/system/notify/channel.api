@@ -10,27 +10,50 @@ info(
 @server (
     group: system/notify/channel
     prefix: /api/v1/system/notify/channel
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemNotifyChannel"
+    accessNamePrefix: "通知通道"
+    accessGroup: "通知管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {
-    @doc "添加通知通道"
+    @doc(
+        summary: "添加通知通道"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (NotifyChannel) returns (WithID)
 
-    @doc "获取通知通道列表"
+    @doc(
+        summary: "获取通知通道列表"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler index
     post /index (NotifyChannelIndexReq) returns (NotifyChannelIndexResp)
 
-    @doc "获取通知通道详情"
+    @doc(
+        summary: "获取通知通道详情"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler read
     post /read (WithID) returns (NotifyChannel)
 
-    @doc "更新通知通道"
+    @doc(
+        summary: "更新通知通道"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (NotifyChannel) returns ()
 
-    @doc "删除通知通道"
+    @doc(
+        summary: "删除通知通道"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithID) returns ()
 

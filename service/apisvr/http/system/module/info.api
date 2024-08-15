@@ -7,10 +7,17 @@ info(
 @server(
     group: system/module/info
     prefix: /api/v1/system/module/info
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemModuleInfo"
+    accessNamePrefix: "模块信息"
+    accessGroup: "模块管理"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
-    @doc "添加模块"
+    @doc(
+        summary: "添加模块"
+        authType: "supper"
+    )
     @handler create
     post /create (ModuleInfo) returns (WithID)
 
@@ -18,7 +25,10 @@ service api {
     @handler index
     post /index (ModuleInfoIndexReq) returns (ModuleInfoIndexResp)
 
-    @doc "更新模块"
+    @doc(
+        summary: "更新模块"
+        authType: "supper"
+    )
     @handler update
     post /update (ModuleInfo) returns ()
 
@@ -26,10 +36,14 @@ service api {
     @handler read
     post /read (WithIDOrCode) returns (ModuleInfo)
 
-    @doc "删除模块"
+    @doc(
+        summary: "删除模块"
+        authType: "supper"
+    )
     @handler delete
     post /delete (WithIDOrCode) returns ()
 }
+
 type (
 
     ModuleInfoIndexReq  {

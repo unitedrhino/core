@@ -9,22 +9,27 @@ info(
 @server(
     group: system/slot/info
     prefix: /api/v1/system/slot/info
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemSlotManage"
+    accessNamePrefix: "插槽管理"
+    accessGroup: "拓展管理"
+    defaultAuthType: "supper"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
-    @doc "新增项目"
+    @doc "新增插槽"
     @handler create
     post /create (SlotInfo) returns (WithID)
-    @doc "更新项目"
+    @doc "更新插槽"
     @handler update
     post /update (SlotInfo) returns ()
-    @doc "删除项目"
+    @doc "删除插槽"
     @handler delete
     post /delete (WithID) returns ()
-    @doc "获取项目详情"
+    @doc "获取插槽详情"
     @handler read
     post /read (WithID) returns (SlotInfo)
-    @doc "获取项目列表"
+    @doc "获取插槽列表"
     @handler index
     post /index (SlotInfoIndexReq) returns (SlotInfoIndexResp)
 

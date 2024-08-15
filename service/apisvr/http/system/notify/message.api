@@ -9,7 +9,9 @@ info(
 @server (
     group: system/notify/message/info
     prefix: /api/v1/system/notify/message/info
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessNamePrefix: "通知消息"
+    accessGroup: "消息管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 
 service api {

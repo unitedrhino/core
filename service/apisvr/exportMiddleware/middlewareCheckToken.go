@@ -1,29 +1,49 @@
-package export
+package exportMiddleware
 
 import (
+	"bytes"
 	"context"
+	"fmt"
+	operLog "gitee.com/i-Things/core/service/syssvr/client/log"
 	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/i-Things/core/service/syssvr/client/usermanage"
+	"gitee.com/i-Things/core/service/syssvr/domain/log"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/result"
 	"gitee.com/i-Things/share/utils"
+	"github.com/gogf/gf/v2/encoding/gcharset"
+	"github.com/gogf/gf/v2/encoding/gjson"
+	"github.com/gogf/gf/v2/frame/g"
 	"github.com/zeromicro/go-zero/core/logx"
+	"io"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 type CheckTokenWareMiddleware struct {
 	UserRpc   user.UserManage
 	AuthRpc   role.RoleManage
 	TenantRpc tenant.TenantManage
+	LogRpc    operLog.Log
 }
 
-func NewCheckTokenWareMiddleware(UserRpc user.UserManage, AuthRpc role.RoleManage, TenantRpc tenant.TenantManage) *CheckTokenWareMiddleware {
-	return &CheckTokenWareMiddleware{UserRpc: UserRpc, AuthRpc: AuthRpc, TenantRpc: TenantRpc}
+var respPool sync.Pool
+var bufferSize = 512
+
+func init() {
+	respPool.New = func() interface{} {
+		return make([]byte, bufferSize)
+	}
+}
+
+func NewCheckTokenWareMiddleware(UserRpc user.UserManage, AuthRpc role.RoleManage, TenantRpc tenant.TenantManage, LogRpc operLog.Log) *CheckTokenWareMiddleware {
+	return &CheckTokenWareMiddleware{UserRpc: UserRpc, AuthRpc: AuthRpc, TenantRpc: TenantRpc, LogRpc: LogRpc}
 }
 
 func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
@@ -60,21 +80,22 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		//注入 用户信息 到 ctx
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
+		var apiRet *sys.RoleApiAuthResp
 		if !isOpen {
 			////校验 Casbin Rule
-			_, err = m.AuthRpc.RoleApiAuth(r.Context(), &user.RoleApiAuthReq{
-				//RoleID: userCtx.RoleID, todo
+			req := user.RoleApiAuthReq{
 				Path:   r.URL.Path,
 				Method: r.Method,
-			})
+			}
+			apiRet, err = m.AuthRpc.RoleApiAuth(r.Context(), &req)
 			if err != nil {
 				logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
 				//http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
+				clients.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
 				//return
 			}
 		}
-
-		next(w, r)
+		m.OperationLogRecord(next, w, r, apiRet)
 	}
 }
 
@@ -167,4 +188,113 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		Account:      resp.Account,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
 	}, nil
+}
+
+// 接口操作日志记录
+func (m *CheckTokenWareMiddleware) OperationLogRecord(next http.HandlerFunc, w http.ResponseWriter, r *http.Request, apiInfo *sys.RoleApiAuthResp) {
+	ctx := ctxs.CopyCtx(r.Context())
+	useCtx := ctxs.GetUserCtx(ctx)
+	if useCtx.IsOpen || useCtx.UserID == 0 || apiInfo == nil || apiInfo.BusinessType == 0 || apiInfo.BusinessType == log.OptQuery {
+		next(w, r)
+		return
+	}
+	var reqBodyStr string
+	if r.Body != nil {
+		reqBody, _ := io.ReadAll(r.Body)                //读取 reqBody
+		r.Body = io.NopCloser(bytes.NewReader(reqBody)) //重建 reqBody
+		if strings.Contains(r.Header.Get("Content-Type"), "multipart/form-data") {
+			if len(reqBody) > bufferSize {
+				// 截断
+				newBody := respPool.Get().([]byte)
+				copy(newBody, reqBody)
+				defer respPool.Put(newBody)
+			}
+		}
+		var reqLen = len(reqBody)
+		if reqLen > bufferSize {
+			reqLen = bufferSize
+		}
+		reqBodyStr = string(reqBody[:reqLen])
+	}
+
+	respStatusCode := http.StatusOK
+	respStatusMsg := ""
+	respBodyStr := ""
+	r = result.NeedResp(r)
+	next(w, r)
+	resp := result.GetResp(r)
+	if resp != nil {
+		respStatusCode = resp.StatusCode
+		respStatusMsg = resp.Status
+		if resp.Body != nil {
+			respBody, _ := io.ReadAll(resp.Body) //读取 respBody
+			var respLen = len(respBody)
+			if respLen > bufferSize {
+				respLen = bufferSize
+			}
+			respBodyStr = string(respBody[:respLen])
+		}
+
+	}
+
+	uri := "https://"
+	if !strings.Contains(r.Proto, "HTTPS") {
+		uri = "http://"
+	}
+
+	ipAddr, err := utils.GetIP(r)
+	if err != nil {
+		logx.WithContext(ctx).Errorf("%s.GetIP is error : %s req:%v",
+			utils.FuncName(), err.Error(), utils.Fmt(r))
+		ipAddr = "0.0.0.0"
+	}
+	utils.Go(ctx, func() {
+		_, err = m.LogRpc.OperLogCreate(ctx, &user.OperLogCreateReq{
+			Uri:          uri + r.Host + r.RequestURI,
+			Route:        r.RequestURI,
+			OperName:     apiInfo.Name,
+			BusinessType: apiInfo.BusinessType,
+			OperIpAddr:   ipAddr,
+			OperLocation: m.GetCityByIp(ipAddr),
+			Code:         int64(respStatusCode),
+			Msg:          respStatusMsg,
+			Req:          reqBodyStr,
+			Resp:         respBodyStr,
+			AppCode:      ctxs.GetUserCtx(r.Context()).AppCode,
+		})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.OperationLogRecord is error : %s",
+				utils.FuncName(), err.Error())
+		}
+		return
+	})
+
+}
+
+// 获取ip所属城市
+func (m *CheckTokenWareMiddleware) GetCityByIp(ip string) string {
+	if ip == "" {
+		return ""
+	}
+	if ip == "[::1]" || ip == "127.0.0.1" {
+		return "内网IP"
+	}
+
+	url := "http://whois.pconline.com.cn/ipJson.jsp?json=true&ip=" + ip
+	bytes := g.Client().GetBytes(context.TODO(), url)
+	src := string(bytes)
+	srcCharset := "GBK"
+
+	tmp, _ := gcharset.ToUTF8(srcCharset, src)
+	json, err := gjson.DecodeToJson(tmp)
+	if err != nil {
+		return ""
+	}
+
+	if json.Get("code").Int() == 0 {
+		city := fmt.Sprintf("%s %s", json.Get("pro").String(), json.Get("city").String())
+		return city
+	} else {
+		return ""
+	}
 }

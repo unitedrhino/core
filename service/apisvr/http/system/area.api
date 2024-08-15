@@ -9,7 +9,12 @@ info(
 @server(
     group: system/area/info
     prefix: /api/v1/system/area/info
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemAreaManage"
+    accessNamePrefix: "区域管理"
+    accessGroup: "区域管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "新增项目区域"
@@ -21,10 +26,18 @@ service api {
     @doc "删除项目区域"
     @handler delete
     post /delete (AreaWithID) returns ()
-    @doc "获取项目区域详情"
+    @doc(
+        summary: "获取项目区域详情"
+        authType: "all"
+        isNeedAuth: "false"
+    )
     @handler read
     post /read (AreaInfoReadReq) returns (AreaInfo)
-    @doc "获取项目区域列表"
+    @doc(
+        summary: "获取项目区域列表"
+        authType: "all"
+        isNeedAuth: "false"
+    )
     @handler index
     post /index (AreaInfoIndexReq) returns (AreaInfoIndexResp)
 }
@@ -32,13 +45,20 @@ service api {
 @server(
     group: system/area/profile
     prefix: /api/v1/system/area/profile
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemAreaManage"
+    accessNamePrefix: "区域管理"
+    accessGroup: "区域管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
     @doc "获取区域配置详情"
     @handler profileRead
     post /read (AreaProfileReadReq) returns (AreaProfile)
-    @doc "更新区域配置"
+    @doc(
+        summary: "更新区域配置"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
     @handler profileUpdate
     post /update (AreaProfile) returns ()
     @doc "获取区域配置列表"

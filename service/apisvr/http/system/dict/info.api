@@ -7,10 +7,17 @@ info(
 @server(
     group: system/dict/info
     prefix: /api/v1/system/dict/info
-    middleware:  CheckTokenWare,CheckApiWare, DataAuthWare,InitCtxsWare
+    accessCodePrefix: "systemDictManage"
+    accessNamePrefix: "字典管理"
+    accessGroup: "字典管理"
+    middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
-    @doc "添加字典信息"
+    @doc(
+        summary: "添加字典信息"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler create
     post /create (DictInfo) returns (WithID)
 
@@ -18,7 +25,11 @@ service api {
     @handler index
     post /index (DictInfoIndexReq) returns (DictInfoIndexResp)
 
-    @doc "更新字典信息"
+    @doc(
+        summary: "更新字典信息"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler update
     post /update (DictInfo) returns ()
 
@@ -26,7 +37,11 @@ service api {
     @handler read
     post /read (DictInfoReadReq) returns (DictInfo)
 
-    @doc "删除字典信息"
+    @doc(
+        summary: "删除字典信息"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
     @handler delete
     post /delete (WithID) returns ()
 }

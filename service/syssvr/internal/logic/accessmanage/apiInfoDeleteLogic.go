@@ -3,6 +3,7 @@ package accessmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/core/service/syssvr/sysExport"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -25,6 +26,14 @@ func NewApiInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Api
 }
 
 func (l *ApiInfoDeleteLogic) ApiInfoDelete(in *sys.WithID) (*sys.Empty, error) {
-	err := relationDB.NewApiInfoRepo(l.ctx).Delete(l.ctx, in.Id)
+	db := relationDB.NewApiInfoRepo(l.ctx)
+	old, err := db.FindOne(l.ctx, in.Id)
+	if err != nil {
+		return &sys.Empty{}, err
+	}
+	err = relationDB.NewApiInfoRepo(l.ctx).Delete(l.ctx, in.Id)
+	if err == nil {
+		l.svcCtx.ApiCache.SetData(l.ctx, sysExport.GenApiCacheKey(old.Method, old.Route), nil)
+	}
 	return &sys.Empty{}, err
 }
