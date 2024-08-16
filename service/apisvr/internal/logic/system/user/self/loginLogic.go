@@ -2,15 +2,12 @@ package self
 
 import (
 	"context"
-	"fmt"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
+	"gitee.com/i-Things/share/tools"
 	"gitee.com/i-Things/share/utils"
-	"github.com/gogf/gf/v2/encoding/gcharset"
-	"github.com/gogf/gf/v2/encoding/gjson"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/mssola/user_agent"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
@@ -30,31 +27,6 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
-	}
-}
-
-// GetCityByIp 获取ip所属城市
-func GetCityByIp(ip string) string {
-	if ip == "" {
-		return ""
-	}
-	if ip == "[::1]" || ip == "127.0.0.1" {
-		return "内网IP"
-	}
-	url := "http://whois.pconline.com.cn/ipJson.jsp?json=true&ip=" + ip
-	bytes := g.Client().GetBytes(context.TODO(), url)
-	src := string(bytes)
-	srcCharset := "GBK"
-	tmp, _ := gcharset.ToUTF8(srcCharset, src)
-	json, err := gjson.DecodeToJson(tmp)
-	if err != nil {
-		return ""
-	}
-	if json.Get("code").Int() == 0 {
-		city := fmt.Sprintf("%s %s", json.Get("pro").String(), json.Get("city").String())
-		return city
-	} else {
-		return ""
 	}
 }
 
@@ -83,11 +55,11 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 			AppCode:       uc.AppCode,
 			UserName:      req.Account, //todo 这里也要调整
 			IpAddr:        ctxs.GetUserCtx(l.ctx).IP,
-			LoginLocation: GetCityByIp(ctxs.GetUserCtx(l.ctx).IP),
+			LoginLocation: tools.GetCityByIp(ctxs.GetUserCtx(l.ctx).IP),
 			Browser:       browser,
 			Os:            os,
 			Msg:           er.Error(),
-			Code:          400,
+			Code:          er.Code,
 		})
 		return nil, er
 	}
@@ -98,11 +70,11 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		UserID:        uResp.Info.UserID,
 		UserName:      uResp.Info.UserName,
 		IpAddr:        ctxs.GetUserCtx(l.ctx).IP,
-		LoginLocation: GetCityByIp(ctxs.GetUserCtx(l.ctx).IP),
+		LoginLocation: tools.GetCityByIp(ctxs.GetUserCtx(l.ctx).IP),
 		Browser:       browser,
 		Os:            os,
 		Msg:           "登录成功",
-		Code:          200,
+		Code:          errors.OK.GetCode(),
 	})
 	l.Error(err)
 	info, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{

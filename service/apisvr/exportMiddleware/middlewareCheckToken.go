@@ -15,10 +15,8 @@ import (
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/result"
+	"gitee.com/i-Things/share/tools"
 	"gitee.com/i-Things/share/utils"
-	"github.com/gogf/gf/v2/encoding/gcharset"
-	"github.com/gogf/gf/v2/encoding/gjson"
-	"github.com/gogf/gf/v2/frame/g"
 	"github.com/zeromicro/go-zero/core/logx"
 	"io"
 	"net/http"
@@ -255,7 +253,7 @@ func (m *CheckTokenWareMiddleware) OperationLogRecord(next http.HandlerFunc, w h
 			OperName:     apiInfo.Name,
 			BusinessType: apiInfo.BusinessType,
 			OperIpAddr:   ipAddr,
-			OperLocation: m.GetCityByIp(ipAddr),
+			OperLocation: tools.GetCityByIp(ipAddr),
 			Code:         int64(respStatusCode),
 			Msg:          respStatusMsg,
 			Req:          reqBodyStr,
@@ -269,32 +267,4 @@ func (m *CheckTokenWareMiddleware) OperationLogRecord(next http.HandlerFunc, w h
 		return
 	})
 
-}
-
-// 获取ip所属城市
-func (m *CheckTokenWareMiddleware) GetCityByIp(ip string) string {
-	if ip == "" {
-		return ""
-	}
-	if ip == "[::1]" || ip == "127.0.0.1" {
-		return "内网IP"
-	}
-
-	url := "http://whois.pconline.com.cn/ipJson.jsp?json=true&ip=" + ip
-	bytes := g.Client().GetBytes(context.TODO(), url)
-	src := string(bytes)
-	srcCharset := "GBK"
-
-	tmp, _ := gcharset.ToUTF8(srcCharset, src)
-	json, err := gjson.DecodeToJson(tmp)
-	if err != nil {
-		return ""
-	}
-
-	if json.Get("code").Int() == 0 {
-		city := fmt.Sprintf("%s %s", json.Get("pro").String(), json.Get("city").String())
-		return city
-	} else {
-		return ""
-	}
 }
