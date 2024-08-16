@@ -3,6 +3,9 @@ package loglogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
+	"sync"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -17,7 +20,13 @@ type LoginLogCreateLogic struct {
 	LlDB *relationDB.LoginLogRepo
 }
 
+var asyncLoginInsert *stores.AsyncInsert[relationDB.SysLoginLog]
+var loginOnce sync.Once
+
 func NewLoginLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogCreateLogic {
+	loginOnce.Do(func() {
+		asyncLoginInsert = stores.NewAsyncInsert[relationDB.SysLoginLog]()
+	})
 	return &LoginLogCreateLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
@@ -27,7 +36,9 @@ func NewLoginLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Lo
 }
 
 func (l *LoginLogCreateLogic) LoginLogCreate(in *sys.LoginLogCreateReq) (*sys.Empty, error) {
-	err := l.LlDB.Insert(l.ctx, &relationDB.SysLoginLog{
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	asyncLoginInsert.AsyncInsert(&relationDB.SysLoginLog{
+		TenantCode:    stores.TenantCode(uc.TenantCode),
 		AppCode:       in.AppCode,
 		UserID:        in.UserID,
 		UserName:      in.UserName,
@@ -38,8 +49,5 @@ func (l *LoginLogCreateLogic) LoginLogCreate(in *sys.LoginLogCreateReq) (*sys.Em
 		Code:          in.Code,
 		Msg:           in.Msg,
 	})
-	if err != nil {
-		return nil, err
-	}
 	return &sys.Empty{}, nil
 }

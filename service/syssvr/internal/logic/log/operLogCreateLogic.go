@@ -7,6 +7,8 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
+	"sync"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -20,7 +22,13 @@ type OperLogCreateLogic struct {
 	AiDB *relationDB.ApiInfoRepo
 }
 
+var asyncOperInsert *stores.AsyncInsert[relationDB.SysOperLog]
+var operOnce sync.Once
+
 func NewOperLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OperLogCreateLogic {
+	operOnce.Do(func() {
+		asyncOperInsert = stores.NewAsyncInsert[relationDB.SysOperLog]()
+	})
 	return &OperLogCreateLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
@@ -32,11 +40,10 @@ func NewOperLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ope
 }
 
 func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Empty, error) {
-	//OperUserName 用uid查用户表获得
-	uc := ctxs.GetUserCtx(l.ctx)
 	//OperName，BusinessType 用Route查接口管理表获得
-
-	err := l.OlDB.Insert(l.ctx, &relationDB.SysOperLog{
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	asyncOperInsert.AsyncInsert(&relationDB.SysOperLog{
+		TenantCode:   stores.TenantCode(uc.TenantCode),
 		AppCode:      uc.AppCode,
 		OperUserID:   uc.UserID,
 		OperUserName: uc.Account,
@@ -50,9 +57,5 @@ func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Empty
 		Code:         in.Code,
 		Msg:          in.Msg,
 	})
-	if err != nil {
-		return nil, err
-	}
-
 	return &sys.Empty{}, nil
 }
