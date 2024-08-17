@@ -18,23 +18,23 @@ info(
 )
 
 service api {
-    @doc "添加接口"
+    @doc "添加应用"
     @handler create
     post /create (AppInfo) returns (WithIDOrCode)
 
-    @doc "获取接口列表"
+    @doc "获取应用列表"
     @handler index
     post /index (AppInfoIndexReq) returns (AppInfoIndexResp)
 
-    @doc "获取接口详情"
+    @doc "获取应用详情"
     @handler read
     post /read (WithIDOrCode) returns (AppInfo)
 
-    @doc "更新接口"
+    @doc "更新应用"
     @handler update
     post /update (AppInfo) returns ()
 
-    @doc "删除接口"
+    @doc "删除应用"
     @handler delete
     post /delete (WithIDOrCode) returns ()
 }

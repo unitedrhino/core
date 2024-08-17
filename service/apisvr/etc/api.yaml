@@ -31,6 +31,8 @@ Proxy:
       Dest: http://127.0.0.1:8000
     - Router: /api/v1/things/
       Dest: http://127.0.0.1:7788
+    - Router: /api/v1/protocol/cloud/tencent/
+      Dest: http://127.0.0.1:9363
     - Router: /api/v1/video/
       Dest: http://127.0.0.1:7800
     - Router: /api/v1/media/

@@ -100,7 +100,7 @@ type AppInfo struct {
 	ID      int64           `json:"id,optional"`      // 编号
 	Code    string          `json:"code"`             // 应用编码
 	Type    string          `json:"type"`             //应用类型 web:web页面  app:应用  mini:小程序
-	SubType string          `json:"subType,optional"` //子类型  wx:微信小程序  ding:钉钉小程序
+	SubType string          `json:"subType,optional"` //子类型  小程序(wx:微信小程序  ding:钉钉小程序) app(android,ios)
 	Name    string          `json:"name,optional"`    // 应用名称
 	Desc    *string         `json:"desc,optional"`    // 备注
 	BaseUrl string          `json:"baseUrl,optional"` // 应用编号
