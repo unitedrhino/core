@@ -10,11 +10,11 @@ import (
 	user "gitee.com/i-Things/core/service/syssvr/client/usermanage"
 	"gitee.com/i-Things/core/service/syssvr/domain/log"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/clients"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/result"
+	"gitee.com/i-Things/share/systems"
 	"gitee.com/i-Things/share/tools"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -89,7 +89,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			if err != nil {
 				logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
 				//http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
-				clients.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
+				systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
 				//return
 			}
 		}

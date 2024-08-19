@@ -6,7 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/caches"
-	"gitee.com/i-Things/share/clients"
+	"gitee.com/i-Things/share/clients/smsClient"
 	"gitee.com/i-Things/share/domain/tenant"
 	"gitee.com/i-Things/share/eventBus"
 	"gitee.com/i-Things/share/oss"
@@ -36,7 +36,7 @@ type ServiceContext struct {
 	UserCache         *caches.Cache[sys.UserInfo, int64]
 	ApiCache          *caches.Cache[relationDB.SysApiInfo, string]
 	RoleAccessCache   *caches.Cache[map[int64]struct{}, string]
-	Sms               *clients.Sms
+	Sms               *smsClient.Sms
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -60,7 +60,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name, nodeID)
 	logx.Must(err)
-	sms, err := clients.NewSms(c.Sms)
+	sms, err := smsClient.NewSms(c.Sms)
 	logx.Must(err)
 	userTokenInfo, err := cache.NewUserToken(serverMsg)
 	logx.Must(err)

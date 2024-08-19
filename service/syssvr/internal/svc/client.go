@@ -4,7 +4,8 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/config"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/clients"
+	"gitee.com/i-Things/share/clients/dingClient"
+	"gitee.com/i-Things/share/clients/wxClient"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
@@ -14,9 +15,9 @@ import (
 )
 
 type Clients struct {
-	WxOfficial  *clients.WxOfficialAccount
-	MiniProgram *clients.MiniProgram
-	MiniDing    *clients.DingTalk
+	WxOfficial  *wxClient.WxOfficialAccount
+	MiniProgram *wxClient.MiniProgram
+	MiniDing    *dingClient.DingTalk
 }
 type ClientsManage struct {
 	Config config.Config
@@ -57,7 +58,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 	}
 	var cli Clients
 	if cfg.MiniDing != nil && cfg.MiniDing.AppSecret != "" {
-		cli.MiniDing, err = clients.NewDingTalkClient(&conf.ThirdConf{
+		cli.MiniDing, err = dingClient.NewDingTalkClient(&conf.ThirdConf{
 			AppID:     cfg.MiniDing.AppID,
 			AppKey:    cfg.MiniDing.AppKey,
 			AppSecret: cfg.MiniDing.AppSecret,
@@ -67,14 +68,14 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		}
 	}
 	if cfg.MiniWx != nil && cfg.MiniWx.AppSecret != "" {
-		cli.MiniProgram, _ = clients.NewWxMiniProgram(ctx, &conf.ThirdConf{
+		cli.MiniProgram, _ = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
 			AppID:     cfg.MiniWx.AppID,
 			AppKey:    cfg.MiniWx.AppKey,
 			AppSecret: cfg.MiniWx.AppSecret,
 		}, c.Config.CacheRedis)
 	}
 	if cfg.OfficialWx != nil && cfg.OfficialWx.AppSecret != "" {
-		cli.WxOfficial, _ = clients.NewWxOfficialAccount(ctx, &conf.ThirdConf{
+		cli.WxOfficial, _ = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
 			AppID:     cfg.MiniWx.AppID,
 			AppKey:    cfg.MiniWx.AppKey,
 			AppSecret: cfg.MiniWx.AppSecret,

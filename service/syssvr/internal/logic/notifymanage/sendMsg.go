@@ -5,7 +5,8 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/share/clients"
+	"gitee.com/i-Things/share/clients/dingClient"
+	"gitee.com/i-Things/share/clients/smsClient"
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
@@ -148,7 +149,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if len(accounts) == 0 {
 			return nil
 		}
-		err = svcCtx.Sms.SendSms(ctx, clients.SendSmsParam{
+		err = svcCtx.Sms.SendSms(ctx, smsClient.SendSmsParam{
 			PhoneNumbers:  accounts,
 			SignName:      signName,
 			TemplateCode:  templateCode,
@@ -161,14 +162,14 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if channel == nil || channel.WebHook == "" {
 			return errors.NotEnable.AddMsg("通道没有配置")
 		}
-		cli := clients.NewDingRobotClient(channel.WebHook)
-		_, err := cli.SendRobotMsg(clients.NewTextMessage(body))
+		cli := dingClient.NewDingRobotClient(channel.WebHook)
+		_, err := cli.SendRobotMsg(dingClient.NewTextMessage(body))
 		return err
 	case def.NotifyTypeDingTalk:
 		if channel == nil || channel.App == nil {
 			return errors.NotEnable.AddMsg("通道没有配置")
 		}
-		cli, err := clients.NewDingTalkClient(&conf.ThirdConf{
+		cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
 			AppKey:    channel.App.AppKey,
 			AppSecret: channel.App.AppSecret,
 		})
@@ -185,7 +186,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			_, err = cli.SendCorpConvMessage(&request.CorpConvMessage{
 				AgentId:    cast.ToInt(channel.App.AppID),
 				UserIdList: strings.Join(userIDs, ","),
-				Msg:        clients.NewTextMessage(body),
+				Msg:        dingClient.NewTextMessage(body),
 			})
 			if err != nil {
 				return err

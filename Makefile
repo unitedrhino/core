@@ -67,28 +67,28 @@ cp.etc:
 
 build.api:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -o ./cmd/coresvr ./service/apisvr
+	@go build -ldflags="-s -w" -o ./cmd/coresvr ./service/apisvr
 
 build.view:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -o ./cmd/viewsvr ./service/viewsvr
+	@go build -ldflags="-s -w" -o ./cmd/viewsvr ./service/viewsvr
 
 build.data:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -o ./cmd/datasvr ./service/datasvr
+	@go build -ldflags="-s -w" -o ./cmd/datasvr ./service/datasvr
 
 
 build.sys:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build  -o ./cmd/syssvr ./service/syssvr
+	@go build -ldflags="-s -w"  -o ./cmd/syssvr ./service/syssvr
 
 build.timedjob:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build  -o ./cmd/timedjobsvr ./service/timed/timedjobsvr
+	@go build -ldflags="-s -w"  -o ./cmd/timedjobsvr ./service/timed/timedjobsvr
 
 build.timedscheduler:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build  -o ./cmd/timedschedulersvr ./service/timed/timedschedulersvr
+	@go build -ldflags="-s -w"  -o ./cmd/timedschedulersvr ./service/timed/timedschedulersvr
 
 
 run.api:
