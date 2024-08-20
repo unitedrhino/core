@@ -30,14 +30,17 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if err != nil {
 		return nil, err
 	}
-	if in.MiniWx != nil {
-		old.MiniWx = utils.Copy[relationDB.SysTenantThird](in.MiniWx)
+	if in.WxMini != nil {
+		old.WxMini = utils.Copy[relationDB.SysTenantThird](in.WxMini)
 	}
-	if in.MiniDing != nil {
-		old.MiniDing = utils.Copy[relationDB.SysTenantThird](in.MiniDing)
+	if in.DingMini != nil {
+		old.DingMini = utils.Copy[relationDB.SysTenantThird](in.DingMini)
 	}
-	if in.OfficialWx != nil {
-		old.OfficialWx = utils.Copy[relationDB.SysTenantThird](in.OfficialWx)
+	if in.WxOpen != nil {
+		old.WxOpen = utils.Copy[relationDB.SysTenantThird](in.WxOpen)
+	}
+	if in.LoginTypes != nil {
+		old.LoginTypes = in.LoginTypes
 	}
 	err = relationDB.NewTenantAppRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err

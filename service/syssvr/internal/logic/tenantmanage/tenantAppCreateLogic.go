@@ -41,8 +41,9 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empt
 		err := relationDB.NewTenantAppRepo(tx).Insert(l.ctx, &relationDB.SysTenantApp{
 			TenantCode: stores.TenantCode(in.Code),
 			AppCode:    in.AppCode,
-			MiniWx:     utils.Copy[relationDB.SysTenantThird](in.MiniWx),
-			MiniDing:   utils.Copy[relationDB.SysTenantThird](in.MiniDing),
+			WxMini:     utils.Copy[relationDB.SysTenantThird](in.WxMini),
+			WxOpen:     utils.Copy[relationDB.SysTenantThird](in.WxOpen),
+			DingMini:   utils.Copy[relationDB.SysTenantThird](in.DingMini),
 		})
 		if err != nil {
 			return err

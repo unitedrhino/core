@@ -224,9 +224,10 @@ type(
     }
     TenantApp {
         AppInfo
-        MiniDing *ThirdAppConfig `json:"miniDing,optional"`//钉钉小程序
-        OfficialWx *ThirdAppConfig `json:"officialWx,optional"`//微信公众号 只有web的需要填
-        LoginTypes []string `json:"loginTypes,optional"`//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+        DingMini *ThirdAppConfig `json:"dingMini,optional"`//钉钉小程序
+        WxOpen *ThirdAppConfig `json:"wxOpen,optional"`//微信开放 web app需要填写
+        WxMini *ThirdAppConfig `json:"wxMini,optional"`
+        LoginTypes []string `json:"loginTypes,optional"`//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
     }
     AppCore{
         ID int64 `json:"id,optional"`                                      // 编号
@@ -234,17 +235,17 @@ type(
         Type string `json:"type"` //应用类型 web:web页面  app:应用  mini:小程序
         SubType string `json:"subType,optional"`//子类型  wx:微信小程序  ding:钉钉小程序
         Name string `json:"name,optional"`                                 // 应用名称
-        LoginTypes []string `json:"loginTypes,optional"`//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
-        OfficialWx *ThirdAppCore `json:"officialWx,optional"`//微信公众号 只有web的有
+        LoginTypes []string `json:"loginTypes,optional"`//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+        WxOpen *ThirdAppCore `json:"wxOpen,optional"`//微信开放 web app有
         Tenant *TenantCore `json:"tenant"` //租户信息
     }
     TenantAppInfo {
         Code string `json:"code,optional"`                     // 应用编号
         AppCode string `json:"appCode"`
         Modules []*TenantAppModule `json:"modules"`
-        MiniDing *ThirdAppConfig `json:"miniDing,optional"`//钉钉小程序
-        MiniWx *ThirdAppConfig `json:"miniWx,optional"`//微信小程序
-        OfficialWx *ThirdAppConfig `json:"officialWx,optional"`//微信公众号 只有web的需要填
+        DingMini *ThirdAppConfig `json:"dingMini,optional"`//钉钉小程序
+        WxOpen *ThirdAppConfig `json:"wxOpen,optional"`//微信开放 web app需要填写
+        WxMini *ThirdAppConfig `json:"wxMini,optional"`
         LoginTypes []string `json:"loginTypes,optional"`//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
     }
 

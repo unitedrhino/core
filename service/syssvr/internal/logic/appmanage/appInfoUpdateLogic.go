@@ -3,11 +3,9 @@ package appmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
-
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -45,9 +43,6 @@ func (l *AppInfoUpdateLogic) AppInfoUpdate(in *sys.AppInfo) (*sys.Empty, error) 
 	}
 	if in.SubType != "" {
 		old.SubType = in.SubType
-	}
-	if in.MiniWx != nil {
-		old.MiniWx = utils.Copy[relationDB.SysTenantThird](in.MiniWx)
 	}
 	err = relationDB.NewAppInfoRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err

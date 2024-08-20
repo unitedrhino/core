@@ -104,10 +104,10 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 	case users.RegDingApp:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if er != nil || cli.MiniDing == nil {
+		if er != nil || cli.DingMini == nil {
 			return nil, errors.System.AddDetail(err)
 		}
-		ret, er := cli.MiniDing.GetUserInfoByCode(in.Code)
+		ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
@@ -124,7 +124,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
 				NickName:       ret.UserInfo.Name,
 			}
-			ui, err := cli.MiniDing.GetUserDetail(&request.UserDetail{
+			ui, err := cli.DingMini.GetUserDetail(&request.UserDetail{
 				UserId: ret.UserInfo.UserId,
 			})
 			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), err)
@@ -148,7 +148,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
 		}
-	case users.RegWxOfficial:
+	case users.RegWxOpen:
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 		if er != nil || cli.WxOfficial == nil {
 			return nil, errors.System.AddDetail(er)

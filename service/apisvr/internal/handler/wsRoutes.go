@@ -59,21 +59,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加接口
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemaccessapi.CreateHandler(serverCtx),
 				},
 				{
+					// 删除接口
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemaccessapi.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取接口列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemaccessapi.IndexHandler(serverCtx),
 				},
 				{
+					// 更新接口
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemaccessapi.UpdateHandler(serverCtx),
@@ -88,31 +92,37 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加访问权限信息
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemaccessinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除访问权限信息
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemaccessinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取访问权限信息列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemaccessinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 批量导入授权
 					Method:  http.MethodPost,
 					Path:    "/multi-import",
 					Handler: systemaccessinfo.MultiImportHandler(serverCtx),
 				},
 				{
+					// 获取访问权限信息树结构
 					Method:  http.MethodPost,
 					Path:    "/tree",
 					Handler: systemaccessinfo.TreeHandler(serverCtx),
 				},
 				{
+					// 更新访问权限信息
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemaccessinfo.UpdateHandler(serverCtx),
@@ -127,26 +137,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加应用
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemappinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除应用
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemappinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取应用列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemappinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取应用详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemappinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新应用
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemappinfo.UpdateHandler(serverCtx),
@@ -161,11 +176,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取APP权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemappmodule.IndexHandler(serverCtx),
 				},
 				{
+					// 更新APP权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemappmodule.MultiUpdateHandler(serverCtx),
@@ -180,26 +197,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 新增项目区域
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemareainfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除项目区域
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemareainfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取项目区域列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemareainfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取项目区域详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemareainfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新项目区域
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemareainfo.UpdateHandler(serverCtx),
@@ -214,16 +236,19 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取区域配置列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemareaprofile.ProfileIndexHandler(serverCtx),
 				},
 				{
+					// 获取区域配置详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemareaprofile.ProfileReadHandler(serverCtx),
 				},
 				{
+					// 更新区域配置
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemareaprofile.ProfileUpdateHandler(serverCtx),
@@ -238,31 +263,37 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取系统配置
 					Method:  http.MethodPost,
 					Path:    "/config",
 					Handler: systemcommon.ConfigHandler(serverCtx),
 				},
 				{
+					// 获取小程序二维码
 					Method:  http.MethodPost,
 					Path:    "/qr-code/read",
 					Handler: systemcommon.QRCodeReadReqHandler(serverCtx),
 				},
 				{
+					// 文件直传
 					Method:  http.MethodPost,
 					Path:    "/upload-file",
 					Handler: systemcommon.UploadFileHandler(serverCtx),
 				},
 				{
+					// 获取文件上传地址
 					Method:  http.MethodPost,
 					Path:    "/upload-url/create",
 					Handler: systemcommon.UploadUrlCreateHandler(serverCtx),
 				},
 				{
+					// 获取天气情况
 					Method:  http.MethodPost,
 					Path:    "/weather/read",
 					Handler: systemcommon.WeatherReadHandler(serverCtx),
 				},
 				{
+					// websocket连接
 					Method:  http.MethodGet,
 					Path:    "/websocket/connect",
 					Handler: systemcommon.WebsocketConnectHandler(serverCtx),
@@ -277,21 +308,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// debug
 					Method:  http.MethodPost,
 					Path:    "/debug",
 					Handler: systemcommon.DebugPostHandler(serverCtx),
 				},
 				{
+					// debug
 					Method:  http.MethodGet,
 					Path:    "/debug",
 					Handler: systemcommon.DebugGetHandler(serverCtx),
 				},
 				{
+					// debugTencent
 					Method:  http.MethodGet,
 					Path:    "/debug-tencent",
 					Handler: systemcommon.DebugGetTencentHandler(serverCtx),
 				},
 				{
+					// ntp
 					Method:  http.MethodPost,
 					Path:    "/ntp/read",
 					Handler: systemcommon.NtpReadHandler(serverCtx),
@@ -306,16 +341,19 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取区域权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemdataarea.IndexHandler(serverCtx),
 				},
 				{
+					// 删除授权区域权限
 					Method:  http.MethodPost,
 					Path:    "/multi-delete",
 					Handler: systemdataarea.MultiDeleteHandler(serverCtx),
 				},
 				{
+					// 更新授权区域权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemdataarea.MultiUpdateHandler(serverCtx),
@@ -330,11 +368,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 授权区域权限
 					Method:  http.MethodPost,
 					Path:    "/deal",
 					Handler: systemdataareauserapply.DealHandler(serverCtx),
 				},
 				{
+					// 获取区域权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemdataareauserapply.IndexHandler(serverCtx),
@@ -349,21 +389,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 批量创建授权项目权限
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemdataproject.CreateHandler(serverCtx),
 				},
 				{
+					// 删除授权项目权限
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemdataproject.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取项目权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemdataproject.ProjectIndexHandler(serverCtx),
 				},
 				{
+					// 批量更新授权项目权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemdataproject.ProjectMultiUpdateHandler(serverCtx),
@@ -378,21 +422,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加字典信息
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemdictdetail.CreateHandler(serverCtx),
 				},
 				{
+					// 删除字典信息
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemdictdetail.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取字典信息列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemdictdetail.IndexHandler(serverCtx),
 				},
 				{
+					// 更新字典信息
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemdictdetail.UpdateHandler(serverCtx),
@@ -407,26 +455,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加字典信息
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemdictinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除字典信息
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemdictinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取字典信息列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemdictinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取字典信息详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemdictinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新字典信息
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemdictinfo.UpdateHandler(serverCtx),
@@ -501,6 +554,7 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemjobtask.LogIndexHandler(serverCtx),
 				},
 				{
+					// 发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param
 					Method:  http.MethodPost,
 					Path:    "/send",
 					Handler: systemjobtask.SendHandler(serverCtx),
@@ -515,11 +569,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取登录日志列表
 					Method:  http.MethodPost,
 					Path:    "/login/index",
 					Handler: systemlog.LoginIndexHandler(serverCtx),
 				},
 				{
+					// 获取操作日志列表
 					Method:  http.MethodPost,
 					Path:    "/oper/index",
 					Handler: systemlog.OperIndexHandler(serverCtx),
@@ -534,26 +590,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加模块
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemmoduleinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除模块
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemmoduleinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取模块列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemmoduleinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取模块详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemmoduleinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新模块
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemmoduleinfo.UpdateHandler(serverCtx),
@@ -568,21 +629,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加菜单
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemmodulemenu.CreateHandler(serverCtx),
 				},
 				{
+					// 删除菜单
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemmodulemenu.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取菜单列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemmodulemenu.IndexHandler(serverCtx),
 				},
 				{
+					// 更新菜单
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemmodulemenu.UpdateHandler(serverCtx),
@@ -597,26 +662,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加通知通道
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemnotifychannel.CreateHandler(serverCtx),
 				},
 				{
+					// 删除通知通道
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemnotifychannel.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取通知通道列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemnotifychannel.IndexHandler(serverCtx),
 				},
 				{
+					// 获取通知通道详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemnotifychannel.ReadHandler(serverCtx),
 				},
 				{
+					// 更新通知通道
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemnotifychannel.UpdateHandler(serverCtx),
@@ -631,31 +701,37 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加通知配置
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemnotifyconfig.CreateHandler(serverCtx),
 				},
 				{
+					// 删除通知配置
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemnotifyconfig.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取通知列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemnotifyconfig.IndexHandler(serverCtx),
 				},
 				{
+					// 获取通知详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemnotifyconfig.ReadHandler(serverCtx),
 				},
 				{
+					// 获取通知列表树
 					Method:  http.MethodPost,
 					Path:    "/tree",
 					Handler: systemnotifyconfig.TreeHandler(serverCtx),
 				},
 				{
+					// 更新通知配置
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemnotifyconfig.UpdateHandler(serverCtx),
@@ -670,16 +746,19 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 删除通知绑定模版
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemnotifyconfigtemplate.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取通知绑定模版列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemnotifyconfigtemplate.IndexHandler(serverCtx),
 				},
 				{
+					// 更新通知绑定模版
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemnotifyconfigtemplate.UpdateHandler(serverCtx),
@@ -694,21 +773,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 删除消息
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemnotifymessageinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取消息列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemnotifymessageinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 发送消息
 					Method:  http.MethodPost,
 					Path:    "/send",
 					Handler: systemnotifymessageinfo.SendHandler(serverCtx),
 				},
 				{
+					// 更新消息
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemnotifymessageinfo.UpdateHandler(serverCtx),
@@ -723,26 +806,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加通知模版
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemnotifytemplate.CreateHandler(serverCtx),
 				},
 				{
+					// 删除通知模版
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemnotifytemplate.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取通知模版列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemnotifytemplate.IndexHandler(serverCtx),
 				},
 				{
+					// 获取通知模版详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemnotifytemplate.ReadHandler(serverCtx),
 				},
 				{
+					// 更新通知模版
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemnotifytemplate.UpdateHandler(serverCtx),
@@ -757,11 +845,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加帮助与反馈
 					Method:  http.MethodPost,
 					Path:    "/feedback/create",
 					Handler: systemopsfeedback.CreateHandler(serverCtx),
 				},
 				{
+					// 获取帮助与反馈
 					Method:  http.MethodPost,
 					Path:    "/feedback/index",
 					Handler: systemopsfeedback.IndexHandler(serverCtx),
@@ -776,16 +866,19 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加工单
 					Method:  http.MethodPost,
 					Path:    "/work-order/create",
 					Handler: systemopsworkOrder.CreateHandler(serverCtx),
 				},
 				{
+					// 获取工单列表
 					Method:  http.MethodPost,
 					Path:    "/work-order/index",
 					Handler: systemopsworkOrder.IndexHandler(serverCtx),
 				},
 				{
+					// 更新工单
 					Method:  http.MethodPost,
 					Path:    "/work-order/update",
 					Handler: systemopsworkOrder.UpdateHandler(serverCtx),
@@ -800,26 +893,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 新增项目
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemprojectinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除项目
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemprojectinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取项目列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemprojectinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取项目详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemprojectinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新项目
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemprojectinfo.UpdateHandler(serverCtx),
@@ -834,16 +932,19 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取项目配置列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemprojectprofile.ProfileIndexHandler(serverCtx),
 				},
 				{
+					// 获取项目配置详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemprojectprofile.ProfileReadHandler(serverCtx),
 				},
 				{
+					// 更新项目配置
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemprojectprofile.ProfileUpdateHandler(serverCtx),
@@ -858,11 +959,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取操作权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemroleaccess.IndexHandler(serverCtx),
 				},
 				{
+					// 更新操作权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemroleaccess.MultiUpdateHandler(serverCtx),
@@ -877,11 +980,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取APP权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemroleapp.IndexHandler(serverCtx),
 				},
 				{
+					// 更新APP权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemroleapp.MultiUpdateHandler(serverCtx),
@@ -896,21 +1001,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加角色
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemroleinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除角色
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemroleinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取角色列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemroleinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 更新角色
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemroleinfo.UpdateHandler(serverCtx),
@@ -925,11 +1034,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取角色对应菜单列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemrolemenu.IndexHandler(serverCtx),
 				},
 				{
+					// 更新角色对应菜单列表
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemrolemenu.MulitUpdateHandler(serverCtx),
@@ -944,11 +1055,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取角色对应模块列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemrolemodule.IndexHandler(serverCtx),
 				},
 				{
+					// 更新角色对应模块列表
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemrolemodule.MulitUpdateHandler(serverCtx),
@@ -963,26 +1076,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 新增插槽
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemslotinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除插槽
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemslotinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取插槽列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemslotinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取插槽详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemslotinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新插槽
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemslotinfo.UpdateHandler(serverCtx),
@@ -997,16 +1115,19 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取租户操作权限列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemtenantaccessinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 批量更新租户操作权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemtenantaccessinfo.MultiUpdateHandler(serverCtx),
 				},
 				{
+					// 获取租户操作权限树
 					Method:  http.MethodPost,
 					Path:    "/tree",
 					Handler: systemtenantaccessinfo.TreeHandler(serverCtx),
@@ -1021,21 +1142,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加协议
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemtenantagreement.CreateHandler(serverCtx),
 				},
 				{
+					// 删除协议
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemtenantagreement.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取协议列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemtenantagreement.IndexHandler(serverCtx),
 				},
 				{
+					// 更新协议
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemtenantagreement.UpdateHandler(serverCtx),
@@ -1050,6 +1175,7 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取协议详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemtenantagreement.ReadHandler(serverCtx),
@@ -1064,21 +1190,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 绑定租户应用
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemtenantapp.CreateHandler(serverCtx),
 				},
 				{
+					// 解绑租户应用
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemtenantapp.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取租户应用列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemtenantapp.IndexHandler(serverCtx),
 				},
 				{
+					// 更新租户应用
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemtenantapp.UpdateHandler(serverCtx),
@@ -1093,6 +1223,7 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取应用信息
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemtenantappcore.ReadHandler(serverCtx),
@@ -1107,21 +1238,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 创建租户应用菜单
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemtenantappmenu.CreateHandler(serverCtx),
 				},
 				{
+					// 删除租户应用菜单
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemtenantappmenu.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取租户应用菜单列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemtenantappmenu.IndexHandler(serverCtx),
 				},
 				{
+					// 更新租户应用菜单
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemtenantappmenu.UpdateHandler(serverCtx),
@@ -1136,21 +1271,25 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 新增租户应用模块
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemtenantappmodule.CreateHandler(serverCtx),
 				},
 				{
+					// 删除租户应用模块
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemtenantappmodule.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取租户应用模块列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemtenantappmodule.IndexHandler(serverCtx),
 				},
 				{
+					// 批量新增租户应用模块
 					Method:  http.MethodPost,
 					Path:    "/multi-create",
 					Handler: systemtenantappmodule.MultiCreateHandler(serverCtx),
@@ -1165,11 +1304,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取租户配置
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemtenantconfig.ReadHandler(serverCtx),
 				},
 				{
+					// 更新租户配置
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemtenantconfig.UpdateHandler(serverCtx),
@@ -1184,6 +1325,7 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取租户信息
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemtenantcore.ReadHandler(serverCtx),
@@ -1198,26 +1340,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 添加租户
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemtenantinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 删除租户
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemtenantinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 获取租户列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemtenantinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取租户详情
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemtenantinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新租户
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemtenantinfo.UpdateHandler(serverCtx),
@@ -1232,26 +1379,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 创建用户信息
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemuserinfo.CreateHandler(serverCtx),
 				},
 				{
+					// 刪除用户
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemuserinfo.DeleteHandler(serverCtx),
 				},
 				{
+					// 查询用户信息列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemuserinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 获取用户信息
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemuserinfo.ReadHandler(serverCtx),
 				},
 				{
+					// 更新用户基本数据
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemuserinfo.UpdateHandler(serverCtx),
@@ -1266,11 +1418,13 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取用户角色列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemuserrole.RoleIndexHandler(serverCtx),
 				},
 				{
+					// 更新用户的角色列表
 					Method:  http.MethodPost,
 					Path:    "/multi-update",
 					Handler: systemuserrole.RoleMultiUpdateHandler(serverCtx),
@@ -1285,81 +1439,97 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取用户授权树
 					Method:  http.MethodPost,
 					Path:    "/access/tree",
 					Handler: systemuserself.AccessTreeHandler(serverCtx),
 				},
 				{
+					// 获取用户应用列表
 					Method:  http.MethodPost,
 					Path:    "/app/index",
 					Handler: systemuserself.AppIndexHandler(serverCtx),
 				},
 				{
+					// 申请用户区域权限
 					Method:  http.MethodPost,
 					Path:    "/area/apply/create",
 					Handler: systemuserself.AreaApplyCreateHandler(serverCtx),
 				},
 				{
+					// 注销用户
 					Method:  http.MethodPost,
 					Path:    "/cancel",
 					Handler: systemuserself.CancelHandler(serverCtx),
 				},
 				{
+					// 更新用户密码
 					Method:  http.MethodPost,
 					Path:    "/change-pwd",
 					Handler: systemuserself.ChangePwdHandler(serverCtx),
 				},
 				{
+					// 获取用户菜单列表
 					Method:  http.MethodPost,
 					Path:    "/menu/index",
 					Handler: systemuserself.MenuIndexHandler(serverCtx),
 				},
 				{
+					// 用户消息列表
 					Method:  http.MethodPost,
 					Path:    "/message/index",
 					Handler: systemuserself.MessageIndexHandler(serverCtx),
 				},
 				{
+					// 用户消息批量已读
 					Method:  http.MethodPost,
 					Path:    "/message/multi-is-read",
 					Handler: systemuserself.MessageMultiIsReadHandler(serverCtx),
 				},
 				{
+					// 用户消息统计
 					Method:  http.MethodPost,
 					Path:    "/message/statistics",
 					Handler: systemuserself.MessageStatisticsHandler(serverCtx),
 				},
 				{
+					// 获取用户模块列表
 					Method:  http.MethodPost,
 					Path:    "/module/index",
 					Handler: systemuserself.ModuleIndexHandler(serverCtx),
 				},
 				{
+					// 获取用户配置列表
 					Method:  http.MethodPost,
 					Path:    "/profile/index",
 					Handler: systemuserself.ProfileIndexHandler(serverCtx),
 				},
 				{
+					// 获取用户配置详情
 					Method:  http.MethodPost,
 					Path:    "/profile/read",
 					Handler: systemuserself.ProfileReadHandler(serverCtx),
 				},
 				{
+					// 更新用户配置
 					Method:  http.MethodPost,
 					Path:    "/profile/update",
 					Handler: systemuserself.ProfileUpdateHandler(serverCtx),
 				},
 				{
+					// 获取用户信息
 					Method:  http.MethodPost,
 					Path:    "/read",
 					Handler: systemuserself.ReadHandler(serverCtx),
 				},
 				{
+					// 更新用户基本数据
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemuserself.UpdateHandler(serverCtx),
 				},
 				{
+					// 精准搜索用户
 					Method:  http.MethodPost,
 					Path:    "/user/search",
 					Handler: systemuserself.UserSearchHandler(serverCtx),
@@ -1374,26 +1544,31 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 获取用户应用详情
 					Method:  http.MethodPost,
 					Path:    "/app/read",
 					Handler: systemuserself.AppReadHandler(serverCtx),
 				},
 				{
+					// 获取验证码
 					Method:  http.MethodPost,
 					Path:    "/captcha",
 					Handler: systemuserself.CaptchaHandler(serverCtx),
 				},
 				{
+					// 忘记密码
 					Method:  http.MethodPost,
 					Path:    "/forget-pwd",
 					Handler: systemuserself.ForgetPwdHandler(serverCtx),
 				},
 				{
+					// 用户登录
 					Method:  http.MethodPost,
 					Path:    "/login",
 					Handler: systemuserself.LoginHandler(serverCtx),
 				},
 				{
+					// 用户注册
 					Method:  http.MethodPost,
 					Path:    "/register",
 					Handler: systemuserself.RegisterHandler(serverCtx),

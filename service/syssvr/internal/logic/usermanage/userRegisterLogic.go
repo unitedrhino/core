@@ -182,10 +182,10 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 
 func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
 	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if err != nil || cli.MiniDing == nil {
+	if err != nil || cli.DingMini == nil {
 		return nil, errors.System.AddDetail(err)
 	}
-	ret, err := cli.MiniDing.GetUserInfoByCode(in.Code)
+	ret, err := cli.DingMini.GetUserInfoByCode(in.Code)
 	if err != nil {
 		l.Errorf("%v.Code2SessionContext err:%v", err)
 		if ret.Code != 0 {

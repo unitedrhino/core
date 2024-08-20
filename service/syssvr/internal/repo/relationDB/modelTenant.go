@@ -78,9 +78,9 @@ type SysTenantApp struct {
 	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
 	AppCode    string            `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
-	MiniDing   *SysTenantThird   `gorm:"embedded;embeddedPrefix:mini_ding_"`                             //钉钉企业应用接入
-	MiniWx     *SysTenantThird   `gorm:"embedded;embeddedPrefix:mini_wx_"`                               //微信小程序接入
-	OfficialWx *SysTenantThird   `gorm:"embedded;embeddedPrefix:official_wx"`                            //微信公众号接入
+	DingMini   *SysTenantThird   `gorm:"embedded;embeddedPrefix:ding_mini_"`                             //钉钉企业应用接入
+	WxMini     *SysTenantThird   `gorm:"embedded;embeddedPrefix:wx_mini_"`                               //微信小程序接入
+	WxOpen     *SysTenantThird   `gorm:"embedded;embeddedPrefix:wx_open_"`                               //微信公众号接入
 	LoginTypes []users.RegType   `gorm:"column:login_types;type:json;serializer:json"`                   //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`

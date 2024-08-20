@@ -17,7 +17,7 @@ import (
 type Clients struct {
 	WxOfficial  *wxClient.WxOfficialAccount
 	MiniProgram *wxClient.MiniProgram
-	MiniDing    *dingClient.DingTalk
+	DingMini    *dingClient.DingTalk
 }
 type ClientsManage struct {
 	Config config.Config
@@ -48,37 +48,30 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		if !errors.Cmp(err, errors.NotFind) {
 			return Clients{}, err
 		}
-		cfg2, err := relationDB.NewAppInfoRepo(ctx).FindOneByFilter(ctx, relationDB.AppInfoFilter{Code: appCode})
-		if err != nil {
-			return Clients{}, err
-		}
-		cfg = &relationDB.SysTenantApp{
-			MiniWx: cfg2.MiniWx,
-		}
 	}
 	var cli Clients
-	if cfg.MiniDing != nil && cfg.MiniDing.AppSecret != "" {
-		cli.MiniDing, err = dingClient.NewDingTalkClient(&conf.ThirdConf{
-			AppID:     cfg.MiniDing.AppID,
-			AppKey:    cfg.MiniDing.AppKey,
-			AppSecret: cfg.MiniDing.AppSecret,
+	if cfg.DingMini != nil && cfg.DingMini.AppSecret != "" {
+		cli.DingMini, err = dingClient.NewDingTalkClient(&conf.ThirdConf{
+			AppID:     cfg.DingMini.AppID,
+			AppKey:    cfg.DingMini.AppKey,
+			AppSecret: cfg.DingMini.AppSecret,
 		})
 		if err != nil {
 			return Clients{}, err
 		}
 	}
-	if cfg.MiniWx != nil && cfg.MiniWx.AppSecret != "" {
+	if cfg.WxMini != nil && cfg.WxMini.AppSecret != "" {
 		cli.MiniProgram, _ = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
-			AppID:     cfg.MiniWx.AppID,
-			AppKey:    cfg.MiniWx.AppKey,
-			AppSecret: cfg.MiniWx.AppSecret,
+			AppID:     cfg.WxMini.AppID,
+			AppKey:    cfg.WxMini.AppKey,
+			AppSecret: cfg.WxMini.AppSecret,
 		}, c.Config.CacheRedis)
 	}
-	if cfg.OfficialWx != nil && cfg.OfficialWx.AppSecret != "" {
+	if cfg.WxOpen != nil && cfg.WxOpen.AppSecret != "" {
 		cli.WxOfficial, _ = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
-			AppID:     cfg.MiniWx.AppID,
-			AppKey:    cfg.MiniWx.AppKey,
-			AppSecret: cfg.MiniWx.AppSecret,
+			AppID:     cfg.WxMini.AppID,
+			AppKey:    cfg.WxMini.AppKey,
+			AppSecret: cfg.WxMini.AppSecret,
 		}, c.Config.CacheRedis)
 	}
 	tc.Store(tenantCode, cli)

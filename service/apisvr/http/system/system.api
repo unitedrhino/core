@@ -60,9 +60,6 @@ type (
         SubType string `json:"subType,optional"`//子类型  小程序(wx:微信小程序  ding:钉钉小程序) app(android,ios)
         Name string `json:"name,optional"`                                 // 应用名称
         Desc *string `json:"desc,optional"`                       // 备注
-        BaseUrl string `json:"baseUrl,optional"`                               // 应用编号
-        LogoUrl string `json:"logoUrl,optional"`
-        MiniWx *ThirdAppConfig `json:"miniWx,optional.omitempty"`//微信小程序
     }
     MenuInfo  {
         ID int64 `json:"id,optional"`                                  // 编号

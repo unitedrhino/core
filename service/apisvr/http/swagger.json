@@ -7860,11 +7860,11 @@
           "items": {
             "type": "string"
           },
-          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
+          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOpen\": 微信开放平台登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
         },
-        "officialWx": {
+        "wxOpen": {
           "$ref": "#/definitions/ThirdAppCore",
-          "description": "微信公众号 只有web的有"
+          "description": "微信开放 web app有"
         },
         "tenant": {
           "$ref": "#/definitions/TenantCore",
@@ -7919,17 +7919,6 @@
         "desc": {
           "type": "string",
           "description": " 备注"
-        },
-        "baseUrl": {
-          "type": "string",
-          "description": " 应用编号"
-        },
-        "logoUrl": {
-          "type": "string"
-        },
-        "miniWx": {
-          "$ref": "#/definitions/ThirdAppConfig",
-          "description": "微信小程序"
         }
       },
       "title": "AppInfo",
@@ -10988,31 +10977,23 @@
           "type": "string",
           "description": " 备注"
         },
-        "baseUrl": {
-          "type": "string",
-          "description": " 应用编号"
-        },
-        "logoUrl": {
-          "type": "string"
-        },
-        "miniWx": {
-          "$ref": "#/definitions/ThirdAppConfig",
-          "description": "微信小程序"
-        },
-        "miniDing": {
+        "dingMini": {
           "$ref": "#/definitions/ThirdAppConfig",
           "description": "钉钉小程序"
         },
-        "officialWx": {
+        "wxOpen": {
           "$ref": "#/definitions/ThirdAppConfig",
-          "description": "微信公众号 只有web的需要填"
+          "description": "微信开放 web app需要填写"
+        },
+        "wxMini": {
+          "$ref": "#/definitions/ThirdAppConfig"
         },
         "loginTypes": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
+          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOpen\": 微信开放平台登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
         }
       },
       "title": "TenantApp"
@@ -11065,17 +11046,16 @@
             "$ref": "#/definitions/TenantAppModule"
           }
         },
-        "miniDing": {
+        "dingMini": {
           "$ref": "#/definitions/ThirdAppConfig",
           "description": "钉钉小程序"
         },
-        "miniWx": {
+        "wxOpen": {
           "$ref": "#/definitions/ThirdAppConfig",
-          "description": "微信小程序"
+          "description": "微信开放 web app需要填写"
         },
-        "officialWx": {
-          "$ref": "#/definitions/ThirdAppConfig",
-          "description": "微信公众号 只有web的需要填"
+        "wxMini": {
+          "$ref": "#/definitions/ThirdAppConfig"
         },
         "loginTypes": {
           "type": "array",
