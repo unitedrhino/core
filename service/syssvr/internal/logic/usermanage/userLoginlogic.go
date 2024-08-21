@@ -124,11 +124,11 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
 				NickName:       ret.UserInfo.Name,
 			}
-			ui, err := cli.DingMini.GetUserDetail(&request.UserDetail{
+			ui, er := cli.DingMini.GetUserDetail(&request.UserDetail{
 				UserId: ret.UserInfo.UserId,
 			})
-			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), err)
-			if err == nil {
+			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), er)
+			if er == nil {
 				if ui.OrgEmail != "" {
 					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
 					uc.UserName = uc.Email
@@ -153,9 +153,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if er != nil || cli.WxOfficial == nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		at, err := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
-		if err != nil {
-			return nil, errors.System.AddDetail(err)
+		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 	case users.RegWxMiniP:
