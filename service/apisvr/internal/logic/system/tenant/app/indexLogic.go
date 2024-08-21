@@ -51,19 +51,13 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 		v.Id = ta.Id //修正为关联的id
 		val := utils.Copy[types.TenantApp](v)
 		if ta.WxMini != nil && ta.WxMini.AppID != "" {
-			val.WxMini.AppID = ta.WxMini.AppID
-			val.WxMini.AppSecret = ta.WxMini.AppSecret
-			val.WxMini.AppKey = ta.WxMini.AppKey
+			val.WxMini = utils.Copy[types.ThirdAppConfig](ta.WxMini)
 		}
 		if ta.DingMini != nil && ta.DingMini.AppID != "" {
-			val.DingMini.AppID = ta.DingMini.AppID
-			val.DingMini.AppSecret = ta.DingMini.AppSecret
-			val.DingMini.AppKey = ta.DingMini.AppKey
+			val.DingMini = utils.Copy[types.ThirdAppConfig](ta.DingMini)
 		}
 		if ta.WxOpen != nil && ta.WxOpen.AppID != "" {
-			val.WxOpen.AppID = ta.WxOpen.AppID
-			val.WxOpen.AppSecret = ta.WxOpen.AppSecret
-			val.WxOpen.AppKey = ta.WxOpen.AppKey
+			val.WxOpen = utils.Copy[types.ThirdAppConfig](ta.WxOpen)
 		}
 		val.LoginTypes = ta.LoginTypes
 		retList = append(retList, val)
