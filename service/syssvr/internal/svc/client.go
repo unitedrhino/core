@@ -69,9 +69,9 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 	}
 	if cfg.WxOpen != nil && cfg.WxOpen.AppSecret != "" {
 		cli.WxOfficial, _ = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
-			AppID:     cfg.WxMini.AppID,
-			AppKey:    cfg.WxMini.AppKey,
-			AppSecret: cfg.WxMini.AppSecret,
+			AppID:     cfg.WxOpen.AppID,
+			AppKey:    cfg.WxOpen.AppKey,
+			AppSecret: cfg.WxOpen.AppSecret,
 		}, c.Config.CacheRedis)
 	}
 	tc.Store(tenantCode, cli)
