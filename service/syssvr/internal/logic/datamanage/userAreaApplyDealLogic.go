@@ -3,6 +3,7 @@ package datamanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
@@ -33,10 +34,12 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 		err := relationDB.NewUserAreaApplyRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.UserAreaApplyFilter{IDs: in.Ids})
 		return &sys.Empty{}, err
 	}
+	uc := ctxs.GetUserCtx(l.ctx)
 	db := stores.GetTenantConn(l.ctx)
 	err := db.Transaction(func(tx *gorm.DB) error {
 		uaa := relationDB.NewUserAreaApplyRepo(tx)
 		ua := relationDB.NewDataAreaRepo(tx)
+		dp := relationDB.NewDataProjectRepo(tx)
 		uaas, err := uaa.FindByFilter(l.ctx, relationDB.UserAreaApplyFilter{IDs: in.Ids}, nil)
 		if err != nil {
 			return err
@@ -45,6 +48,7 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 			return errors.Parameter.AddMsgf("未查询到授权的id")
 		}
 		var uas []*relationDB.SysDataArea
+		var authUserIDs []int64
 		for _, v := range uaas {
 			uas = append(uas, &relationDB.SysDataArea{
 				TargetType: def.TargetUser,
@@ -53,6 +57,32 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 				AreaID:     int64(v.AreaID),
 				AuthType:   v.AuthType,
 			})
+			authUserIDs = append(authUserIDs, v.UserID)
+		}
+		authd, err := dp.FindByFilter(l.ctx, relationDB.DataProjectFilter{TargetType: def.TargetUser, TargetIDs: authUserIDs}, nil)
+		if err != nil {
+			return err
+		}
+		var authSet map[int64]struct{}
+		for _, v := range authd {
+			authSet[v.TargetID] = struct{}{}
+		}
+		var needAuthUser []*relationDB.SysDataProject
+		for _, v := range authUserIDs {
+			if _, ok := authSet[v]; !ok {
+				needAuthUser = append(needAuthUser, &relationDB.SysDataProject{
+					ProjectID:  uc.ProjectID,
+					TargetType: def.TargetUser,
+					TargetID:   v,
+					AuthType:   def.AuthRead,
+				})
+			}
+		}
+		if len(needAuthUser) != 0 {
+			err = dp.MultiInsert(l.ctx, needAuthUser)
+			if err != nil {
+				return err
+			}
 		}
 		err = ua.MultiInsert(l.ctx, uas)
 		if err != nil {

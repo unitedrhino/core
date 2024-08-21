@@ -30,10 +30,12 @@ type Target struct {
 }
 
 type DataProjectFilter struct {
-	ProjectID int64
-	Targets   []*Target
-	AuthType  def.AuthType
-	Target    *Target
+	ProjectID  int64
+	Targets    []*Target
+	AuthType   def.AuthType
+	Target     *Target
+	TargetType def.TargetType
+	TargetIDs  []int64
 }
 
 func (p DataProjectRepo) fmtFilter(ctx context.Context, f DataProjectFilter) *gorm.DB {
@@ -47,6 +49,12 @@ func (p DataProjectRepo) fmtFilter(ctx context.Context, f DataProjectFilter) *go
 		} else {
 			db = db.Where("target_type = ?", f.Target.Type)
 		}
+	}
+	if len(f.TargetIDs) != 0 {
+		db = db.Where("target_id in (?)", f.TargetIDs)
+	}
+	if f.TargetType != "" {
+		db = db.Where("target_type = ?", f.TargetType)
 	}
 	if len(f.Targets) != 0 {
 		scope := func(db *gorm.DB) *gorm.DB {

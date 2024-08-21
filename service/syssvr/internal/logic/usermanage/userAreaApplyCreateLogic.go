@@ -28,17 +28,18 @@ func NewUserAreaApplyCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *UserAreaApplyCreateLogic) UserAreaApplyCreate(in *sys.UserAreaApplyCreateReq) (*sys.Empty, error) {
-	_, err := relationDB.NewAreaInfoRepo(l.ctx).FindOne(ctxs.WithAllArea(l.ctx), in.AreaID, nil)
+	ai, err := relationDB.NewAreaInfoRepo(l.ctx).FindOne(ctxs.WithAdmin(l.ctx), in.AreaID, nil)
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {
 			return nil, errors.Parameter.AddMsgf("区域不存在")
 		}
 		return nil, err
 	}
-	err = relationDB.NewUserAreaApplyRepo(l.ctx).Insert(ctxs.WithRoot(l.ctx), &relationDB.SysUserAreaApply{
-		UserID:   ctxs.GetUserCtx(l.ctx).UserID,
-		AreaID:   stores.AreaID(in.AreaID),
-		AuthType: in.AuthType,
+	err = relationDB.NewUserAreaApplyRepo(l.ctx).Insert(ctxs.WithAdmin(l.ctx), &relationDB.SysUserAreaApply{
+		ProjectID: ai.ProjectID,
+		UserID:    ctxs.GetUserCtx(l.ctx).UserID,
+		AreaID:    stores.AreaID(in.AreaID),
+		AuthType:  in.AuthType,
 	})
 	if err != nil {
 		if errors.Cmp(err, errors.Duplicate) {
