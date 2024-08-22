@@ -76,7 +76,6 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		Msg:           "登录成功",
 		Code:          errors.OK.GetCode(),
 	})
-	l.Error(err)
 	info, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
 		UserID: uResp.Info.UserID,
 	})
