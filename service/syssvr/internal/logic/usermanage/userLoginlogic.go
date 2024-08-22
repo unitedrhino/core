@@ -256,6 +256,7 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 	}
 	return nil, err
 }
+
 func GetAccount(ui *relationDB.SysUserInfo) string {
 	var account = ui.UserName.String
 	if account == "" {
