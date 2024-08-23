@@ -3,7 +3,6 @@ package usermanagelogic
 import (
 	"context"
 	notifymanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/notifymanage"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
@@ -68,13 +67,6 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
-			count, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
-			if err != nil {
-				return nil, err
-			}
-			if count == 0 && in.Use == def.CaptchaUseLogin {
-				return nil, errors.UnRegister
-			}
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
 		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
@@ -96,13 +88,6 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
-			count, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
-			if err != nil {
-				return nil, err
-			}
-			if count == 0 && in.Use == def.CaptchaUseLogin {
-				return nil, errors.UnRegister
-			}
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
 		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
