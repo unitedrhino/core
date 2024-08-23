@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 
@@ -81,5 +82,15 @@ func (l *TenantAppDeleteLogic) TenantAppDelete(in *sys.TenantAppWithIDOrCode) (*
 		}
 		return nil
 	})
+	if err == nil {
+		ctx := l.ctx
+		if in.Code != "" {
+			ctx = ctxs.BindTenantCode(l.ctx, in.Code, def.RootNode)
+		}
+		err := l.svcCtx.Cm.ClearClients(ctx, in.AppCode)
+		if err != nil {
+			l.Error(err)
+		}
+	}
 	return &sys.Empty{}, err
 }

@@ -84,14 +84,15 @@ type ApiInfoIndexResp struct {
 }
 
 type AppCore struct {
-	ID         int64         `json:"id,optional"`         // 编号
-	Code       string        `json:"code"`                // 应用编码
-	Type       string        `json:"type"`                //应用类型 web:web页面  app:应用  mini:小程序
-	SubType    string        `json:"subType,optional"`    //子类型  wx:微信小程序  ding:钉钉小程序
-	Name       string        `json:"name,optional"`       // 应用名称
-	LoginTypes []string      `json:"loginTypes,optional"` //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
-	WxOpen     *ThirdAppCore `json:"wxOpen,optional"`     //微信开放 web app有
-	Tenant     *TenantCore   `json:"tenant"`              //租户信息
+	ID             int64         `json:"id,optional"`             // 编号
+	Code           string        `json:"code"`                    // 应用编码
+	Type           string        `json:"type"`                    //应用类型 web:web页面  app:应用  mini:小程序
+	SubType        string        `json:"subType,optional"`        //子类型  wx:微信小程序  ding:钉钉小程序
+	Name           string        `json:"name,optional"`           // 应用名称
+	LoginTypes     []string      `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	WxOpen         *ThirdAppCore `json:"wxOpen,optional"`         //微信开放 web app有
+	IsAutoRegister int64         `json:"isAutoRegister,optional"` //登录未注册是否自动注册
+	Tenant         *TenantCore   `json:"tenant"`                  //租户信息
 }
 
 type AppDeleteReq struct {
@@ -919,13 +920,14 @@ type TenantAppIndexResp struct {
 }
 
 type TenantAppInfo struct {
-	Code       string             `json:"code,optional"` // 应用编号
-	AppCode    string             `json:"appCode"`
-	Modules    []*TenantAppModule `json:"modules"`
-	DingMini   *ThirdAppConfig    `json:"dingMini,optional"` //钉钉小程序
-	WxOpen     *ThirdAppConfig    `json:"wxOpen,optional"`   //微信开放 web app需要填写
-	WxMini     *ThirdAppConfig    `json:"wxMini,optional"`
-	LoginTypes []string           `json:"loginTypes,optional"` //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	Code           string             `json:"code,optional"` // 应用编号
+	AppCode        string             `json:"appCode"`
+	Modules        []*TenantAppModule `json:"modules"`
+	DingMini       *ThirdAppConfig    `json:"dingMini,optional"` //钉钉小程序
+	WxOpen         *ThirdAppConfig    `json:"wxOpen,optional"`   //微信开放 web app需要填写
+	WxMini         *ThirdAppConfig    `json:"wxMini,optional"`
+	LoginTypes     []string           `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	IsAutoRegister int64              `json:"isAutoRegister,optional"` //登录未注册是否自动注册
 }
 
 type TenantAppMenu struct {

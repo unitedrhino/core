@@ -627,6 +627,7 @@ message TenantAppInfo{
   ThirdAppConfig wxMini =5;//微信小程序
   ThirdAppConfig wxOpen =7;//微信开放 web app需要填写
   repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+  int64 isAutoRegister =9;//登录未注册是否自动注册
 }
 
 message TenantAppWithIDOrCode{

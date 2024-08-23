@@ -89,8 +89,14 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCt
 }
 
 func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserInfo, err error) {
+	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+	if er != nil {
+		return nil, errors.System.AddDetail(err)
+	}
+	if utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
+		return nil, errors.NotSupportLogin
+	}
 	switch in.LoginType {
-
 	case users.RegPwd:
 		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
 			return nil, errors.Captcha
@@ -103,8 +109,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, err
 		}
 	case users.RegDingApp:
-		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if er != nil || cli.DingMini == nil {
+		if cli.DingMini == nil {
 			return nil, errors.System.AddDetail(err)
 		}
 		ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
@@ -116,7 +121,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
-		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
@@ -146,11 +151,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				return nil, err
 			}
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
 		}
 	case users.RegWxOpen:
-		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if er != nil || cli.WxOfficial == nil {
+		if cli.WxOfficial == nil {
 			return nil, errors.System.AddDetail(er)
 		}
 		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
@@ -159,8 +162,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 	case users.RegWxMiniP:
-		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if er != nil || cli.MiniProgram == nil {
+		if cli.MiniProgram == nil {
 			return nil, errors.System.AddDetail(er)
 		}
 		auth := cli.MiniProgram.GetAuth()
@@ -178,7 +180,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, errors.Captcha
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
-		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
@@ -196,7 +198,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, errors.Captcha
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
-		if errors.Cmp(err, errors.NotFind) { //未注册,自动注册
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{

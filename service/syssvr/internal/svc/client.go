@@ -18,6 +18,7 @@ type Clients struct {
 	WxOfficial  *wxClient.WxOfficialAccount
 	MiniProgram *wxClient.MiniProgram
 	DingMini    *dingClient.DingTalk
+	Config      *relationDB.SysTenantApp
 }
 type ClientsManage struct {
 	Config config.Config
@@ -29,6 +30,17 @@ var (
 
 func NewClients(c config.Config) *ClientsManage {
 	return &ClientsManage{Config: c}
+}
+
+func (c *ClientsManage) ClearClients(ctx context.Context, appCode string) error {
+	uc := ctxs.GetUserCtx(ctx)
+	if appCode == "" {
+		appCode = uc.AppCode
+	}
+	var tenantCode = uc.TenantCode
+	logx.WithContext(ctx).Error(utils.Fmt(uc))
+	tc.Delete(tenantCode + appCode)
+	return nil
 }
 
 func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients, error) {
@@ -50,6 +62,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		}
 	}
 	var cli Clients
+	cli.Config = cfg
 	if cfg.DingMini != nil && cfg.DingMini.AppSecret != "" {
 		cli.DingMini, err = dingClient.NewDingTalkClient(&conf.ThirdConf{
 			AppID:     cfg.DingMini.AppID,
@@ -61,18 +74,24 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		}
 	}
 	if cfg.WxMini != nil && cfg.WxMini.AppSecret != "" {
-		cli.MiniProgram, _ = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
+		cli.MiniProgram, err = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
 			AppID:     cfg.WxMini.AppID,
 			AppKey:    cfg.WxMini.AppKey,
 			AppSecret: cfg.WxMini.AppSecret,
 		}, c.Config.CacheRedis)
+		if err != nil {
+			return Clients{}, err
+		}
 	}
 	if cfg.WxOpen != nil && cfg.WxOpen.AppSecret != "" {
-		cli.WxOfficial, _ = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
+		cli.WxOfficial, err = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
 			AppID:     cfg.WxOpen.AppID,
 			AppKey:    cfg.WxOpen.AppKey,
 			AppSecret: cfg.WxOpen.AppSecret,
 		}, c.Config.CacheRedis)
+		if err != nil {
+			return Clients{}, err
+		}
 	}
 	tc.Store(tenantCode, cli)
 	return cli, nil

@@ -3,6 +3,9 @@ package tenantmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
+	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -26,6 +29,10 @@ func NewTenantAppUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 }
 
 func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empty, error) {
+	uc := ctxs.GetUserCtx(l.ctx)
+	if in.Code != "" && uc.TenantCode != def.TenantCodeDefault {
+		return nil, errors.Permissions
+	}
 	old, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: []string{in.AppCode}})
 	if err != nil {
 		return nil, err
@@ -43,5 +50,15 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 		old.LoginTypes = in.LoginTypes
 	}
 	err = relationDB.NewTenantAppRepo(l.ctx).Update(l.ctx, old)
+	if err == nil {
+		ctx := l.ctx
+		if in.Code != "" {
+			ctx = ctxs.BindTenantCode(l.ctx, in.Code, def.RootNode)
+		}
+		err := l.svcCtx.Cm.ClearClients(ctx, in.AppCode)
+		if err != nil {
+			l.Error(err)
+		}
+	}
 	return &sys.Empty{}, err
 }
