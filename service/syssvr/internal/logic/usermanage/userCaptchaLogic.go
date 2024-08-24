@@ -36,16 +36,6 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 	if utils.SliceIn(in.Type, def.CaptchaTypePhone, def.CaptchaTypeEmail) && in.Account == "" {
 		return nil, errors.Parameter.AddMsg("account需要填写")
 	}
-	//{
-	//	err := messagemanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, messagemanagelogic.SendMsgConfig{
-	//		UserIDs:    []int64{1740358057038188544},
-	//		NotifyCode: def.NotifyCodeDeviceAlarm,
-	//		Type:       def.NotifyTypeEmail,
-	//		Params:     map[string]any{"leve": "通知", "body": "xx设备电压过低"},
-	//		Str1:       "产品IDxxx", Str2: "设备IDxxx", Str3: "告警级别:warn",
-	//	})
-	//	fmt.Println(err)
-	//}
 
 	uc := ctxs.GetUserCtx(l.ctx)
 	switch in.Type {

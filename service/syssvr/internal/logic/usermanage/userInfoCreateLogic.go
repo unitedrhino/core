@@ -34,19 +34,31 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 	info := in.Info
 	var userID int64
 	//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
-	err := CheckUserName(info.UserName)
-	if err != nil {
-		return 0, err
+	if info.UserName != "" {
+		err := CheckUserName(info.UserName)
+		if err != nil && !utils.SliceIn(info.UserName, info.Email.GetValue(), info.Phone.GetValue()) {
+			return 0, err
+		}
+	}
+
+	if info.Phone.GetValue() != "" {
+		if !utils.IsPhone(info.Phone.GetValue()) {
+			return 0, errors.Parameter.AddMsgf("手机号格式错误")
+		}
+		if info.UserName == "" {
+			info.UserName = info.Phone.GetValue()
+		}
 	}
 	if info.Email.GetValue() != "" {
 		if !utils.IsEmail(info.Email.GetValue()) {
 			return 0, errors.Parameter.AddMsgf("邮箱格式错误")
 		}
-	}
-	if info.Phone.GetValue() != "" {
-		if !utils.IsPhone(info.Phone.GetValue()) {
-			return 0, errors.Parameter.AddMsgf("手机号格式错误")
+		if info.UserName == "" {
+			info.UserName = info.Email.GetValue()
 		}
+	}
+	if info.UserName == "" {
+		return 0, errors.Parameter.AddMsgf("用户名,手机号和邮箱至少要填一个")
 	}
 	uc := ctxs.GetUserCtx(l.ctx)
 	if uc == nil {
@@ -60,7 +72,7 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 		in.RoleIDs = []int64{t.RegisterRoleID}
 	}
 	//校验密码强度
-	err = CheckPwd(l.svcCtx, info.Password)
+	err := CheckPwd(l.svcCtx, info.Password)
 	if info.Role == 0 {
 		info.Role = in.RoleIDs[0]
 	} else if !utils.SliceIn(info.Role, in.RoleIDs...) {
