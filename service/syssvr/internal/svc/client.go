@@ -9,8 +9,6 @@ import (
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/utils"
-	"github.com/zeromicro/go-zero/core/logx"
 	"sync"
 )
 
@@ -38,7 +36,6 @@ func (c *ClientsManage) ClearClients(ctx context.Context, appCode string) error 
 		appCode = uc.AppCode
 	}
 	var tenantCode = uc.TenantCode
-	logx.WithContext(ctx).Error(utils.Fmt(uc))
 	tc.Delete(tenantCode + appCode)
 	return nil
 }
@@ -49,7 +46,6 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		appCode = uc.AppCode
 	}
 	var tenantCode = uc.TenantCode
-	logx.WithContext(ctx).Error(utils.Fmt(uc))
 	val, ok := tc.Load(tenantCode + appCode)
 	if ok {
 		return val.(Clients), nil
