@@ -3,11 +3,9 @@ package tenantmanagelogic
 import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
-
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -40,7 +38,5 @@ func (l *TenantAppReadLogic) TenantAppRead(in *sys.TenantAppWithIDOrCode) (*sys.
 	if err != nil {
 		return nil, err
 	}
-	var ret = utils.Copy[sys.TenantAppInfo](po)
-	ret.Code = string(po.TenantCode)
-	return ret, nil
+	return ToTenantApp(l.ctx, l.svcCtx, po), nil
 }

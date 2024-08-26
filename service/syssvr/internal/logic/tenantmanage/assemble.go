@@ -24,3 +24,16 @@ func ToTenantConfigPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relat
 	}
 	return utils.Copy[sys.TenantConfig](po)
 }
+
+func ToTenantApp(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysTenantApp) *sys.TenantAppInfo {
+	var ret = utils.Copy[sys.TenantAppInfo](po)
+	ret.Code = string(po.TenantCode)
+	if ret.Android != nil && ret.Android.FilePath != "" {
+		var err error
+		ret.Android.FilePath, err = svcCtx.OssClient.PublicBucket().GetUrl(ret.Android.FilePath, false)
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
+	return ret
+}

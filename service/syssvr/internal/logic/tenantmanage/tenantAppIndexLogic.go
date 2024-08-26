@@ -6,8 +6,6 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -55,8 +53,7 @@ func (l *TenantAppIndexLogic) TenantAppIndex(in *sys.TenantAppIndexReq) (*sys.Te
 	//}
 	var retList []*sys.TenantAppInfo
 	for _, v := range list {
-		val := utils.Copy[sys.TenantAppInfo](v)
-		val.Code = string(v.TenantCode)
+		val := ToTenantApp(l.ctx, l.svcCtx, v)
 		retList = append(retList, val)
 	}
 	return &sys.TenantAppIndexResp{List: retList, Total: int64(len(list))}, nil
