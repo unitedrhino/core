@@ -591,7 +591,17 @@
           "accessCode": "systemDictManageFind",
           "method": "POST",
           "route": "/api/v1/system/dict/detail/index",
-          "name": "获取字典信息列表",
+          "name": "获取字典详情列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemDictManageFind",
+          "method": "POST",
+          "route": "/api/v1/system/dict/detail/read",
+          "name": "",
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",

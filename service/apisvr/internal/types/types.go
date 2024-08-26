@@ -296,20 +296,27 @@ type DeviceCore struct {
 }
 
 type DictDetail struct {
-	ID     int64   `json:"id,optional"`     // 编号
-	DictID int64   `json:"dictID,optional"` // 关联标记
-	Label  string  `json:"label,optional"`  // 展示值
-	Value  int64   `json:"value,optional"`  // 字典值
-	Extend string  `json:"extend,optional"` // 扩展值
-	Sort   int64   `json:"sort,optional"`   // 排序标记
-	Desc   *string `json:"desc,optional"`   // 模块描述
-	Status int64   `json:"status,optional"` // 状态  1:启用,2:禁用
-	Body   *string `json:"body,optional"`   // 自定义数据
+	ID       int64         `json:"id,optional"` // 编号
+	DictCode string        `json:"dictCode"`
+	ParentID int64         `json:"parentID,optional"`       //父节点
+	IdPath   string        `json:"idPath,optional"`         //1-2-3-的格式记录顶级区域到当前id的路径
+	Label    string        `json:"label,optional"`          // 展示值
+	Value    string        `json:"value,optional"`          // 字典值
+	Sort     int64         `json:"sort,optional"`           // 排序标记
+	Desc     *string       `json:"desc,optional"`           // 模块描述
+	Status   int64         `json:"status,optional"`         // 状态  1:启用,2:禁用
+	Body     *string       `json:"body,optional,omitempty"` // 自定义数据
+	Parent   *DictDetail   `json:"parent,optional,omitempty"`
+	Children []*DictDetail `json:"children,optional,omitempty"`
 }
 
 type DictDetailIndexReq struct {
-	Page   *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	DictID int64     `json:"dictID,optional"`
+	Page     *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	DictCode string    `json:"dictCode"`
+	ParentID int64     `json:"parentID,optional"` //父节点
+	Status   int64     `json:"status,optional"`   // 状态  1:启用,2:禁用
+	Label    string    `json:"label,optional"`    // 展示值
+	Value    string    `json:"value,optional"`    // 字典值
 }
 
 type DictDetailIndexResp struct {
@@ -317,25 +324,28 @@ type DictDetailIndexResp struct {
 	List  []*DictDetail `json:"list"`  //菜单列表
 }
 
+type DictDetailReadReq struct {
+	ID           int64  `json:"id,optional"` // 编号
+	DictCode     string `json:"dictCode"`
+	Value        string `json:"value,optional"`        // 字典值
+	WithFather   bool   `json:"withFather,optional"`   //是否返回父级
+	WithChildren bool   `json:"withChildren,optional"` //是否返回子级
+}
+
 type DictInfo struct {
-	ID       int64         `json:"id,optional"`   // 编号
-	Name     string        `json:"name,optional"` // 菜单名称
-	ParentID int64         `json:"parentID,optional"`
-	IDPath   []int64       `json:"idPath,optional"` //只读
-	Type     string        `json:"type,optional"`   // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Desc     *string       `json:"desc,optional"`   // 页面
-	Body     *string       `json:"body,optional"`   //前端自定义字段
-	Details  []*DictDetail `json:"details,optional"`
-	Children []*DictInfo   `json:"children,optional"`
+	ID    int64   `json:"id,optional"`    // 编号
+	Name  string  `json:"name,optional"`  // 名称
+	Group string  `json:"group,optional"` // 分组
+	Code  string  `json:"code,optional"`  // 编码
+	Desc  *string `json:"desc,optional"`  // 页面
+	Body  *string `json:"body,optional"`  //前端自定义字段
 }
 
 type DictInfoIndexReq struct {
-	Page        *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	Status      int64     `json:"status,optional"`
-	Name        string    `json:"name,optional"` // 按菜单名称筛选
-	Type        string    `json:"type,optional"`
-	WithDetails bool      `json:"withDetails,optional"`
-	ParentID    int64     `json:"parentID,optional"`
+	Page   *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Status int64     `json:"status,optional"`
+	Name   string    `json:"name,optional"` // 名称
+	Group  string    `json:"group,optional"`
 }
 
 type DictInfoIndexResp struct {
@@ -344,9 +354,8 @@ type DictInfoIndexResp struct {
 }
 
 type DictInfoReadReq struct {
-	ID           int64 `json:"id"` // 编号
-	WithDetails  bool  `json:"withDetails,optional"`
-	WithChildren bool  `json:"withChildren,optional"`
+	ID   int64  `json:"id"`            // 编号
+	Code string `json:"code,optional"` // 编码
 }
 
 type IDList struct {

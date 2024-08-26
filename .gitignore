@@ -64,3 +64,4 @@ service/usersvr/usersvr*
 /service/timedjobsvr/job
 /go.sum
 /service/apisvr/.token/corp/dingu3zh1aifodxsgtye
+/tools/genAdcode/out/modelMigrateAdcode.go

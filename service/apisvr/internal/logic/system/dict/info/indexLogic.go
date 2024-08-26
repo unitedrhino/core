@@ -2,9 +2,9 @@ package info
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/dict"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -27,14 +27,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.DictInfoIndexReq) (resp *types.DictInfoIndexResp, err error) {
-	ret, err := l.svcCtx.DictM.DictInfoIndex(l.ctx, &sys.DictInfoIndexReq{
-		Page:        logic.ToSysPageRpc(req.Page),
-		Name:        req.Name,
-		Type:        req.Type,
-		Status:      req.Status,
-		WithDetails: req.WithDetails,
-		ParentID:    req.ParentID,
-	})
+	ret, err := l.svcCtx.DictM.DictInfoIndex(l.ctx, utils.Copy[sys.DictInfoIndexReq](req))
 	if err != nil {
 		return nil, err
 	}

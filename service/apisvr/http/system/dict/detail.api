@@ -15,19 +15,19 @@ info(
 
 service api {
     @doc(
-        summary: "添加字典信息"
+        summary: "添加字典详情"
         authType: "supper"
         isNeedAuth: "true"
     )
     @handler create
     post /create (DictDetail) returns (WithID)
 
-    @doc "获取字典信息列表"
+    @doc "获取字典详情列表"
     @handler index
     post /index (DictDetailIndexReq) returns (DictDetailIndexResp)
 
     @doc(
-        summary: "更新字典信息"
+        summary: "更新字典详情"
         authType: "supper"
         isNeedAuth: "true"
     )
@@ -35,7 +35,13 @@ service api {
     post /update (DictDetail) returns ()
 
     @doc(
-        summary: "删除字典信息"
+        summary: "获取字典详情单个"
+    )
+    @handler read
+    post /read (DictDetailReadReq) returns (DictDetail)
+
+    @doc(
+        summary: "删除字典详情"
         authType: "supper"
         isNeedAuth: "true"
     )
@@ -43,10 +49,20 @@ service api {
     post /delete (WithID) returns ()
 }
 type (
-
+    DictDetailReadReq{
+        ID int64 `json:"id,optional"`                                  // 编号
+        DictCode string `json:"dictCode"`
+        Value  string                   `json:"value,optional"`   // 字典值
+        WithFather bool `json:"withFather,optional"`//是否返回父级
+        WithChildren bool `json:"withChildren,optional"`//是否返回子级
+    }
     DictDetailIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
-        DictID int64 `json:"dictID,optional"`
+        DictCode string `json:"dictCode"`
+        ParentID int64 `json:"parentID,optional"`//父节点
+        Status int64 `json:"status,optional"` // 状态  1:启用,2:禁用
+        Label string `json:"label,optional"`           // 展示值
+        Value string `json:"value,optional"`           // 字典值
     }
 
     DictDetailIndexResp  {
@@ -55,13 +71,16 @@ type (
     }
     DictDetail{
         ID int64 `json:"id,optional"`                                  // 编号
-        DictID int64                   `json:"dictID,optional"` // 关联标记
-        Label  string                  `json:"label,optional"`    // 展示值
-        Value  int64                   `json:"value,optional"`   // 字典值
-        Extend string                  `json:"extend,optional"`  // 扩展值
+        DictCode string `json:"dictCode"`
+        ParentID int64 `json:"parentID,optional"`//父节点
+        IdPath string `json:"idPath,optional"`//1-2-3-的格式记录顶级区域到当前id的路径
+        Label string `json:"label,optional"`           // 展示值
+        Value  string                   `json:"value,optional"`   // 字典值
         Sort   int64                   `json:"sort,optional"`     // 排序标记
         Desc   *string `json:"desc,optional"`      // 模块描述
         Status int64                   `json:"status,optional"` // 状态  1:启用,2:禁用
-        Body   *string `json:"body,optional"`      // 自定义数据
+        Body   *string `json:"body,optional,omitempty"`      // 自定义数据
+        Parent *DictDetail  `json:"parent,optional,omitempty"`
+        Children []*DictDetail `json:"children,optional,omitempty"`
     }
 )

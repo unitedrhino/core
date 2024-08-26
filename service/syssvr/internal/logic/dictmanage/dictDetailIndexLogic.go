@@ -4,8 +4,6 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/utils"
-
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 
@@ -27,7 +25,13 @@ func NewDictDetailIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 }
 
 func (l *DictDetailIndexLogic) DictDetailIndex(in *sys.DictDetailIndexReq) (*sys.DictDetailIndexResp, error) {
-	f := relationDB.DictDetailFilter{DictID: in.DictID}
+	f := relationDB.DictDetailFilter{
+		DictCode: in.DictCode,
+		ParentID: in.ParentID,
+		Status:   in.Status,
+		Label:    in.Label,
+		Value:    in.Value,
+	}
 	repo := relationDB.NewDictDetailRepo(l.ctx)
 	total, err := repo.CountByFilter(l.ctx, f)
 	if err != nil {
@@ -36,20 +40,6 @@ func (l *DictDetailIndexLogic) DictDetailIndex(in *sys.DictDetailIndexReq) (*sys
 	pos, err := repo.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	if err != nil {
 		return nil, err
-	}
-	var list []*sys.DictDetail
-	for _, v := range pos {
-		list = append(list, &sys.DictDetail{
-			Id:     v.ID,
-			DictID: v.DictID,
-			Label:  v.Label,
-			Value:  v.Value,
-			Extend: v.Extend,
-			Sort:   v.Sort,
-			Desc:   utils.ToRpcNullString(v.Desc),
-			Status: v.Status,
-			Body:   utils.ToRpcNullString(v.Body),
-		})
 	}
 	return &sys.DictDetailIndexResp{Total: total, List: ToDictDetailsPb(pos)}, nil
 }

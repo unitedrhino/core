@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/dict"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -27,6 +28,6 @@ func NewReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ReadLogic {
 
 func (l *ReadLogic) Read(req *types.DictInfoReadReq) (resp *types.DictInfo, err error) {
 	ret, err := l.svcCtx.DictM.DictInfoRead(l.ctx,
-		&sys.DictInfoReadReq{Id: req.ID, WithDetails: req.WithDetails, WithChildren: req.WithChildren})
+		utils.Copy[sys.DictInfoReadReq](req))
 	return dict.ToInfoTypes(ret), err
 }

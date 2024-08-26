@@ -32,6 +32,9 @@ func (l *ModuleInfoIndexLogic) ModuleInfoIndex(in *sys.ModuleInfoIndexReq) (*sys
 		if err != nil {
 			return nil, err
 		}
+		if len(am) == 0 {
+			return &sys.ModuleInfoIndexResp{}, nil
+		}
 		for _, v := range am {
 			f.Codes = append(f.Codes, v.ModuleCode)
 		}

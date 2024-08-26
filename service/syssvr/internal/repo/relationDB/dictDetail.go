@@ -23,14 +23,45 @@ func NewDictDetailRepo(in any) *DictDetailRepo {
 }
 
 type DictDetailFilter struct {
-	DictID int64
+	ID           int64
+	IDs          []int64
+	DictCode     string
+	WithChildren bool
+	IDPath       string
+	ParentID     int64
+	Status       int64
+	Label        string
+	Value        string
 }
 
 func (p DictDetailRepo) fmtFilter(ctx context.Context, f DictDetailFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	if f.DictID != 0 {
-		db = db.Where("dict_id=?", f.DictID)
+	if f.DictCode != "" {
+		db = db.Where("dict_code = ?", f.DictCode)
 	}
+	if f.Label != "" {
+		db = db.Where("label = ?", f.Label)
+	}
+	if f.Value != "" {
+		db = db.Where("value = ?", f.Value)
+	}
+	if f.IDPath != "" {
+		db = db.Where("id_path like ?", f.IDPath+"%")
+	}
+	if f.ParentID != 0 {
+		db = db.Where("parent_id = ?", f.ParentID)
+	}
+	if f.ID != 0 {
+		db = db.Where("id = ?", f.ID)
+	}
+	if len(f.IDs) > 0 {
+		db = db.Where("id in ?", f.IDs)
+	}
+
+	if f.WithChildren {
+		db = db.Preload("Children")
+	}
+
 	return db
 }
 

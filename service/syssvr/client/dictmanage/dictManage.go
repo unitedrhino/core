@@ -57,6 +57,7 @@ type (
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp
+	DictDetailReadReq                     = sys.DictDetailReadReq
 	DictInfo                              = sys.DictInfo
 	DictInfoIndexReq                      = sys.DictInfoIndexReq
 	DictInfoIndexResp                     = sys.DictInfoIndexResp
@@ -221,6 +222,7 @@ type (
 		DictInfoUpdate(ctx context.Context, in *DictInfo, opts ...grpc.CallOption) (*Empty, error)
 		DictInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 		DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error)
+		DictDetailRead(ctx context.Context, in *DictDetailReadReq, opts ...grpc.CallOption) (*DictDetail, error)
 		DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error)
 		DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
 		DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Empty, error)
@@ -293,6 +295,15 @@ func (m *defaultDictManage) DictInfoRead(ctx context.Context, in *DictInfoReadRe
 
 func (d *directDictManage) DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error) {
 	return d.svr.DictInfoRead(ctx, in)
+}
+
+func (m *defaultDictManage) DictDetailRead(ctx context.Context, in *DictDetailReadReq, opts ...grpc.CallOption) (*DictDetail, error) {
+	client := sys.NewDictManageClient(m.cli.Conn())
+	return client.DictDetailRead(ctx, in, opts...)
+}
+
+func (d *directDictManage) DictDetailRead(ctx context.Context, in *DictDetailReadReq, opts ...grpc.CallOption) (*DictDetail, error) {
+	return d.svr.DictDetailRead(ctx, in)
 }
 
 func (m *defaultDictManage) DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error) {

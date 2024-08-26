@@ -30,8 +30,10 @@ func (l *DictInfoUpdateLogic) DictInfoUpdate(in *sys.DictInfo) (*sys.Empty, erro
 	if err != nil {
 		return nil, err
 	}
+
 	old.Name = in.Name
-	old.Type = in.Type
+	//old.Type = in.Type
+	old.Group = in.Group
 	old.Desc = in.Desc.GetValue()
 	old.Body = in.Body.GetValue()
 	err = repo.Update(l.ctx, old)

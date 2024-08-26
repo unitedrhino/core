@@ -7,50 +7,15 @@ import (
 )
 
 func ToDetailPb(in *types.DictDetail) *sys.DictDetail {
-	if in == nil {
-		return nil
-	}
-	return &sys.DictDetail{
-		Id:     in.ID,
-		DictID: in.DictID,
-		Label:  in.Label,
-		Value:  in.Value,
-		Extend: in.Extend,
-		Sort:   in.Sort,
-		Desc:   utils.ToRpcNullString(in.Desc),
-		Status: in.Status,
-		Body:   utils.ToRpcNullString(in.Body),
-	}
+	return utils.Copy[sys.DictDetail](in)
 }
 
 func ToInfoPb(in *types.DictInfo) *sys.DictInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.DictInfo{
-		Id:   in.ID,
-		Name: in.Name,
-		Type: in.Type,
-		Desc: utils.ToRpcNullString(in.Desc),
-		Body: utils.ToRpcNullString(in.Body),
-	}
+	return utils.Copy[sys.DictInfo](in)
 }
 
 func ToDetailTypes(in *sys.DictDetail) *types.DictDetail {
-	if in == nil {
-		return nil
-	}
-	return &types.DictDetail{
-		ID:     in.Id,
-		DictID: in.DictID,
-		Label:  in.Label,
-		Value:  in.Value,
-		Extend: in.Extend,
-		Sort:   in.Sort,
-		Desc:   utils.ToNullString(in.Desc),
-		Status: in.Status,
-		Body:   utils.ToNullString(in.Body),
-	}
+	return utils.Copy[types.DictDetail](in)
 }
 
 func ToDetailsTypes(in []*sys.DictDetail) (ret []*types.DictDetail) {
@@ -61,20 +26,7 @@ func ToDetailsTypes(in []*sys.DictDetail) (ret []*types.DictDetail) {
 }
 
 func ToInfoTypes(in *sys.DictInfo) *types.DictInfo {
-	if in == nil {
-		return nil
-	}
-	return &types.DictInfo{
-		ID:       in.Id,
-		Name:     in.Name,
-		Type:     in.Type,
-		ParentID: in.ParentID,
-		Desc:     utils.ToNullString(in.Desc),
-		Body:     utils.ToNullString(in.Body),
-		Details:  ToDetailsTypes(in.Details),
-		IDPath:   in.IdPath,
-		Children: ToInfosTypes(in.Children),
-	}
+	return utils.Copy[types.DictInfo](in)
 }
 func ToInfosTypes(in []*sys.DictInfo) (ret []*types.DictInfo) {
 	for _, v := range in {

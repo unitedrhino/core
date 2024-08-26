@@ -48,6 +48,11 @@ func (s *DictManageServer) DictInfoRead(ctx context.Context, in *sys.DictInfoRea
 	return l.DictInfoRead(in)
 }
 
+func (s *DictManageServer) DictDetailRead(ctx context.Context, in *sys.DictDetailReadReq) (*sys.DictDetail, error) {
+	l := dictmanagelogic.NewDictDetailReadLogic(ctx, s.svcCtx)
+	return l.DictDetailRead(in)
+}
+
 func (s *DictManageServer) DictDetailCreate(ctx context.Context, in *sys.DictDetail) (*sys.WithID, error) {
 	l := dictmanagelogic.NewDictDetailCreateLogic(ctx, s.svcCtx)
 	return l.DictDetailCreate(in)

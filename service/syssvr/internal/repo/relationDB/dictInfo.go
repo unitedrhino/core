@@ -23,38 +23,25 @@ func NewDictInfoRepo(in any) *DictInfoRepo {
 }
 
 type DictInfoFilter struct {
-	ID           int64
-	Name         string
-	Type         string
-	Status       int64
-	WithDetails  bool
-	WithChildren bool
-	IDPath       string
-	ParentID     int64
+	ID    int64
+	Name  string
+	Group string
+	Code  string
 }
 
 func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	if f.IDPath != "" {
-		db = db.Where("id_path like ?", f.IDPath+"%")
-	}
-	if f.ParentID != 0 {
-		db = db.Where("parent_id = ?", f.ParentID)
-	}
 	if f.ID != 0 {
 		db = db.Where("id = ?", f.ID)
 	}
 	if f.Name != "" {
 		db = db.Where("name like ?", "%"+f.Name+"%")
 	}
-	if f.Type != "" {
-		db = db.Where("type like ?", "%"+f.Type+"%")
+	if f.Code != "" {
+		db = db.Where("code = ?", f.Code)
 	}
-	if f.WithChildren {
-		db = db.Preload("Children")
-	}
-	if f.WithDetails {
-		db = db.Preload("Details")
+	if f.Group != "" {
+		db = db.Where("group = ?", f.Group)
 	}
 	return db
 }

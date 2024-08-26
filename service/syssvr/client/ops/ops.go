@@ -57,6 +57,7 @@ type (
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp
+	DictDetailReadReq                     = sys.DictDetailReadReq
 	DictInfo                              = sys.DictInfo
 	DictInfoIndexReq                      = sys.DictInfoIndexReq
 	DictInfoIndexResp                     = sys.DictInfoIndexResp

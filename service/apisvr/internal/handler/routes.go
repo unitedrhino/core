@@ -423,25 +423,31 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
-					// 添加字典信息
+					// 添加字典详情
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemdictdetail.CreateHandler(serverCtx),
 				},
 				{
-					// 删除字典信息
+					// 删除字典详情
 					Method:  http.MethodPost,
 					Path:    "/delete",
 					Handler: systemdictdetail.DeleteHandler(serverCtx),
 				},
 				{
-					// 获取字典信息列表
+					// 获取字典详情列表
 					Method:  http.MethodPost,
 					Path:    "/index",
 					Handler: systemdictdetail.IndexHandler(serverCtx),
 				},
 				{
-					// 更新字典信息
+					// 获取字典详情单个
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemdictdetail.ReadHandler(serverCtx),
+				},
+				{
+					// 更新字典详情
 					Method:  http.MethodPost,
 					Path:    "/update",
 					Handler: systemdictdetail.UpdateHandler(serverCtx),

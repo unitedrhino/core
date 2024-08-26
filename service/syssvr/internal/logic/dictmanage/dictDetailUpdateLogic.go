@@ -31,7 +31,6 @@ func (l *DictDetailUpdateLogic) DictDetailUpdate(in *sys.DictDetail) (*sys.Empty
 	}
 	old.Label = in.Label
 	old.Value = in.Value
-	old.Extend = in.Extend
 	old.Status = in.Status
 	old.Sort = in.Sort
 	old.Desc = in.Desc.GetValue()

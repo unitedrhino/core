@@ -153,6 +153,7 @@ service DictManage{
   rpc dictInfoDelete(WithID) returns(Empty); //删除角色
   rpc dictInfoRead(DictInfoReadReq) returns(DictInfo);   //获取详情接口
 
+  rpc dictDetailRead(DictDetailReadReq)returns(DictDetail);
   rpc dictDetailCreate(DictDetail) returns(WithID); //添加角色
   rpc dictDetailIndex(DictDetailIndexReq) returns(DictDetailIndexResp); //获取角色列表
   rpc dictDetailUpdate(DictDetail) returns(Empty); //更新角色
@@ -1431,29 +1432,22 @@ message UserAreaApplyDealReq{
 
 message DictInfo{
   int64 id = 1;
-  int64 parentID=2;
+  string group =2;//分组
   string name= 3;          // 字典名（中）
-  string type = 4;          // 字典名（英）
+  string code = 4;          // 字典编码
   google.protobuf.StringValue desc = 5;        // 模块描述
   google.protobuf.StringValue body = 6; // 自定义数据
-  repeated int64 idPath =7;
-  repeated DictInfo Children =8;
-  repeated DictDetail Details = 9;
 }
 
 message DictInfoReadReq{
   int64 id = 1;
-  bool withChildren =2;
-  bool withDetails = 3;
+  string code = 2;
 }
 
 message DictInfoIndexReq{
   PageInfo page = 1;//分页信息
   string name = 2;
-  string type = 3;
-  int64 status = 4;
-  bool withDetails = 5;
-  int64 parentID=6;
+  string group = 3;
 }
 
 message DictInfoIndexResp{
@@ -1461,21 +1455,37 @@ message DictInfoIndexResp{
   int64 total = 2;
 }
 
+message DictDetailReadReq{
+  int64 id = 1;
+  string dictCode= 2;         // 关联标记
+  string value = 3;           // 字典值
+  bool withFather = 4;//是否返回父级
+  bool withChildren =5;//是否返回子级
+}
+
+
 message DictDetail{
   int64 id = 1;
-  int64 dictID= 2;         // 关联标记
+  string dictCode= 2;         // 关联标记
   string label = 3;           // 展示值
-  int64 value = 4;           // 字典值
-  string extend = 5;       // 扩展值
+  string value = 4;           // 字典值
   int64 sort = 6;          // 排序标记
   google.protobuf.StringValue desc = 7;        // 模块描述
   int64 status = 8; // 状态  1:启用,2:禁用
   google.protobuf.StringValue body = 9; // 自定义数据
+  string idPath =10;//1-2-3-的格式记录顶级区域到当前id的路径
+  int64 parentID =11;//父节点
+  DictDetail parent =12;
+  repeated DictDetail children =13;
 }
 
 message DictDetailIndexReq{
   PageInfo page = 1;//分页信息
-  int64 dictID= 2;         // 关联标记
+  string dictCode= 2;         // 关联标记
+  int64 parentID =11;//父节点
+  int64 status = 8; // 状态  1:启用,2:禁用
+  string label = 3;           // 展示值
+  string value = 4;           // 字典值
 }
 
 message DictDetailIndexResp{

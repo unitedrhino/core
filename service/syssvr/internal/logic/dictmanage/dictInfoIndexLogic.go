@@ -26,11 +26,8 @@ func NewDictInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dic
 
 func (l *DictInfoIndexLogic) DictInfoIndex(in *sys.DictInfoIndexReq) (*sys.DictInfoIndexResp, error) {
 	f := relationDB.DictInfoFilter{
-		Name:        in.Name,
-		Type:        in.Type,
-		Status:      in.Status,
-		WithDetails: in.WithDetails,
-		ParentID:    in.ParentID,
+		Name:  in.Name,
+		Group: in.Group,
 	}
 	total, err := relationDB.NewDictInfoRepo(l.ctx).CountByFilter(l.ctx, f)
 	if err != nil {
@@ -39,7 +36,7 @@ func (l *DictInfoIndexLogic) DictInfoIndex(in *sys.DictInfoIndexReq) (*sys.DictI
 	pos, err := relationDB.NewDictInfoRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	var list []*sys.DictInfo
 	for _, v := range pos {
-		list = append(list, ToDictInfoPb(v, nil))
+		list = append(list, ToDictInfoPb(v))
 	}
 	return &sys.DictInfoIndexResp{Total: total, List: list}, nil
 }
