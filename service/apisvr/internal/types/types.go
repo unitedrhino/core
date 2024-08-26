@@ -942,7 +942,7 @@ type TenantAppMenu struct {
 }
 
 type TenantAppMenuIndexReq struct {
-	Code       string `json:"code"` // 应用编号
+	Code       string `json:"code,optional"` // 应用编号
 	AppCode    string `json:"appCode"`
 	ModuleCode string `json:"moduleCode"`
 	IsRetTree  bool   `json:"isRetTree,optional"`
@@ -1046,7 +1046,7 @@ type TenantInfoIndexResp struct {
 }
 
 type TenantModuleCreateReq struct {
-	Code       string  `json:"code"` // 应用编号
+	Code       string  `json:"code,optional"` // 应用编号
 	AppCode    string  `json:"appCode"`
 	ModuleCode string  `json:"moduleCode"`
 	MenuIDs    []int64 `json:"menuIDs"`
@@ -1054,7 +1054,7 @@ type TenantModuleCreateReq struct {
 }
 
 type TenantModuleIndexReq struct {
-	Code    string    `json:"code"` // 应用编号
+	Code    string    `json:"code,optional"` // 应用编号
 	AppCode string    `json:"appCode"`
 	Page    *PageInfo `json:"page,optional"`
 }
@@ -1073,7 +1073,7 @@ type TenantModuleWithIDOrCode struct {
 type ThirdApp struct {
 	Version          string `json:"version,optional"`                    // 应用版本
 	FilePath         string `json:"filePath,optional"`                   // 文件路径,拿来下载文件
-	IsUpdateFilePath string `json:"isUpdateFilePath,optional,omitempty"` // 是否更新固件
+	IsUpdateFilePath bool   `json:"isUpdateFilePath,optional,omitempty"` // 是否更新固件
 	VersionDesc      string `json:"versionDesc,optional"`                //版本说明
 }
 

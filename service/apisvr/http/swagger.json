@@ -11202,7 +11202,6 @@
       },
       "title": "TenantAppMenuIndexReq",
       "required": [
-        "code",
         "appCode",
         "moduleCode"
       ]
@@ -11590,7 +11589,6 @@
       },
       "title": "TenantModuleCreateReq",
       "required": [
-        "code",
         "appCode",
         "moduleCode",
         "menuIDs",
@@ -11613,7 +11611,6 @@
       },
       "title": "TenantModuleIndexReq",
       "required": [
-        "code",
         "appCode"
       ]
     },
@@ -11666,7 +11663,8 @@
           "description": " 文件路径,拿来下载文件"
         },
         "isUpdateFilePath": {
-          "type": "string",
+          "type": "boolean",
+          "format": "boolean",
           "description": " 是否更新固件"
         },
         "versionDesc": {

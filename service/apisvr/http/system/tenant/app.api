@@ -159,7 +159,7 @@ type (
         Code string `json:"code"`
     }
     TenantAppMenuIndexReq{
-        Code string `json:"code"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 应用编号
         AppCode string `json:"appCode"`
         ModuleCode string `json:"moduleCode"`
         IsRetTree bool `json:"isRetTree,optional"`
@@ -178,14 +178,14 @@ type (
 
 type (
     TenantModuleCreateReq{
-        Code string `json:"code"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 应用编号
         AppCode string `json:"appCode"`
         ModuleCode string `json:"moduleCode"`
         MenuIDs []int64 `json:"menuIDs"`
         ApiIDs []int64 `json:"apiIDs"`
     }
     TenantModuleIndexReq{
-        Code string `json:"code"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 应用编号
         AppCode string `json:"appCode"`
         Page *PageInfo `json:"page,optional"`
     }
