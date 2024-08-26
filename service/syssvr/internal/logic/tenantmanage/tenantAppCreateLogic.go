@@ -44,6 +44,7 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empt
 			WxMini:     utils.Copy[relationDB.SysTenantThird](in.WxMini),
 			WxOpen:     utils.Copy[relationDB.SysTenantThird](in.WxOpen),
 			DingMini:   utils.Copy[relationDB.SysTenantThird](in.DingMini),
+			Android:    utils.Copy[relationDB.SysThirdApp](in.Android),
 		})
 		if err != nil {
 			return err

@@ -77,7 +77,13 @@ type(
         AppKey string `json:"appKey,optional"`//微信小程序无需填写
         AppSecret string `json:"appSecret"`
     }
-    ThirdAppCore {
+    ThirdApp{
+        Version  string  `json:"version,optional"`// 应用版本
+        FilePath string  `json:"filePath,optional"`// 文件路径,拿来下载文件
+        IsUpdateFilePath string  `json:"isUpdateFilePath,optional,omitempty"`// 是否更新固件
+        VersionDesc string  `json:"versionDesc,optional"`//版本说明
+    }
+    ThirdMiniCore {
         AppID string `json:"appID,optional,omitempty"`
         AppKey string `json:"appKey,optional,omitempty"`
     }

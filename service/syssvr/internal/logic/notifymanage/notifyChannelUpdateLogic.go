@@ -40,7 +40,7 @@ func (l *NotifyChannelUpdateLogic) NotifyChannelUpdate(in *sys.NotifyChannel) (*
 		old.WebHook = in.Webhook
 	}
 	if in.App != nil {
-		old.App = utils.Copy[relationDB.SysThirdApp](in.App)
+		old.App = utils.Copy[relationDB.SysTenantThird](in.App)
 	}
 	if in.Sms != nil {
 		old.Sms = utils.Copy[relationDB.SysSms](in.Sms)

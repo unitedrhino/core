@@ -59,6 +59,9 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 		if ta.WxOpen != nil && ta.WxOpen.AppID != "" {
 			val.WxOpen = utils.Copy[types.ThirdAppConfig](ta.WxOpen)
 		}
+		if ta.Android != nil {
+			val.Android = utils.Copy[types.ThirdApp](ta.Android)
+		}
 		val.LoginTypes = ta.LoginTypes
 		retList = append(retList, val)
 	}

@@ -77,7 +77,7 @@ type SysNotifyChannel struct {
 	Type       def.NotifyType    `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置类型 sms email
 	Email      *SysTenantEmail   `gorm:"embedded;embeddedPrefix:email_"`                          //邮箱配置
 	AppCode    string            `gorm:"column:app_code;type:VARCHAR(50);"`                       //微信小程序推送
-	App        *SysThirdApp      `gorm:"embedded;embeddedPrefix:app_"`                            //钉钉消息
+	App        *SysTenantThird   `gorm:"embedded;embeddedPrefix:app_"`                            //钉钉消息
 	Sms        *SysSms           `gorm:"embedded;embeddedPrefix:sms_"`                            //短信
 	WebHook    string            `gorm:"column:webhook;type:VARCHAR(256)"`                        //钉钉webhook模式及企业微信webhook方式
 	Name       string            `gorm:"column:name;uniqueIndex:ri_mi;type:VARCHAR(100);NOT NULL"`
@@ -94,11 +94,11 @@ type SysSms struct {
 	AppKey          string       `gorm:"column:appKey;type:VARCHAR(256);default:'';"`
 }
 
-type SysThirdApp struct {
-	AppID     string `gorm:"column:app_id;type:VARCHAR(50);default:'';"` //钉钉为agentID
-	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
-	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
-}
+//type SysThirdApp struct {
+//	AppID     string `gorm:"column:app_id;type:VARCHAR(50);default:'';"` //钉钉为agentID
+//	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
+//	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
+//}
 
 func (m *SysNotifyChannel) TableName() string {
 	return "sys_notify_channel"

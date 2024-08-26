@@ -7863,13 +7863,16 @@
           "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOpen\": 微信开放平台登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
         },
         "wxOpen": {
-          "$ref": "#/definitions/ThirdAppCore",
+          "$ref": "#/definitions/ThirdMiniCore",
           "description": "微信开放 web app有"
         },
         "isAutoRegister": {
           "type": "integer",
           "format": "int64",
           "description": "登录未注册是否自动注册"
+        },
+        "android": {
+          "$ref": "#/definitions/ThirdApp"
         },
         "tenant": {
           "$ref": "#/definitions/TenantCore",
@@ -9284,7 +9287,7 @@
           "description": "邮箱"
         },
         "app": {
-          "$ref": "#/definitions/ThirdApp",
+          "$ref": "#/definitions/ThirdAppConfig",
           "description": "第三方应用配置"
         },
         "sms": {
@@ -10993,6 +10996,9 @@
         "wxMini": {
           "$ref": "#/definitions/ThirdAppConfig"
         },
+        "android": {
+          "$ref": "#/definitions/ThirdApp"
+        },
         "loginTypes": {
           "type": "array",
           "items": {
@@ -11061,6 +11067,9 @@
         },
         "wxMini": {
           "$ref": "#/definitions/ThirdAppConfig"
+        },
+        "android": {
+          "$ref": "#/definitions/ThirdApp"
         },
         "loginTypes": {
           "type": "array",
@@ -11648,14 +11657,21 @@
     "ThirdApp": {
       "type": "object",
       "properties": {
-        "appID": {
-          "type": "string"
+        "version": {
+          "type": "string",
+          "description": " 应用版本"
         },
-        "appKey": {
-          "type": "string"
+        "filePath": {
+          "type": "string",
+          "description": " 文件路径,拿来下载文件"
         },
-        "appSecret": {
-          "type": "string"
+        "isUpdateFilePath": {
+          "type": "string",
+          "description": " 是否更新固件"
+        },
+        "versionDesc": {
+          "type": "string",
+          "description": "版本说明"
         }
       },
       "title": "ThirdApp"
@@ -11679,18 +11695,6 @@
         "appID",
         "appSecret"
       ]
-    },
-    "ThirdAppCore": {
-      "type": "object",
-      "properties": {
-        "appID": {
-          "type": "string"
-        },
-        "appKey": {
-          "type": "string"
-        }
-      },
-      "title": "ThirdAppCore"
     },
     "ThirdEmailConfig": {
       "type": "object",
@@ -11731,6 +11735,18 @@
         "port",
         "isSsl"
       ]
+    },
+    "ThirdMiniCore": {
+      "type": "object",
+      "properties": {
+        "appID": {
+          "type": "string"
+        },
+        "appKey": {
+          "type": "string"
+        }
+      },
+      "title": "ThirdMiniCore"
     },
     "ThirdSms": {
       "type": "object",

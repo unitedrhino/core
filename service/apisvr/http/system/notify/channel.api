@@ -80,13 +80,8 @@ type (
         Desc string `json:"desc,optional"`  // 备注
         WebHook string `json:"webhook,optional"`  //钉钉webhook及企微webhook
         Email *ThirdEmailConfig `json:"email,optional"`  //邮箱
-        App *ThirdApp `json:"app,optional"`//第三方应用配置
+        App *ThirdAppConfig `json:"app,optional"`//第三方应用配置
         Sms *ThirdSms `json:"sms,optional"`//短信配置
-    }
-     ThirdApp {
-        AppID string `json:"appID,optional"`
-        AppKey string `json:"appKey,optional"`
-        AppSecret string `json:"appSecret,optional"`
     }
 
      ThirdSms {

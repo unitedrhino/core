@@ -79,6 +79,7 @@ type SysTenantApp struct {
 	TenantCode     stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
 	AppCode        string            `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
 	DingMini       *SysTenantThird   `gorm:"embedded;embeddedPrefix:ding_mini_"`                             //钉钉企业应用接入
+	Android        *SysThirdApp      `gorm:"embedded;embeddedPrefix:android_"`                               //安卓应用
 	WxMini         *SysTenantThird   `gorm:"embedded;embeddedPrefix:wx_mini_"`                               //微信小程序接入
 	WxOpen         *SysTenantThird   `gorm:"embedded;embeddedPrefix:wx_open_"`                               //微信公众号接入
 	LoginTypes     []users.RegType   `gorm:"column:login_types;type:json;serializer:json"`                   //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
@@ -155,10 +156,17 @@ type SysTenantEmail struct {
 
 // 第三方app配置
 type SysTenantThird struct {
-	AppID     string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`
-	MiniAppID string `gorm:"column:mini_app_id;type:VARCHAR(50);default:'';"`
+	AppID string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`
+	//MiniAppID string `gorm:"column:mini_app_id;type:VARCHAR(50);default:'';"`
 	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
 	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
+}
+
+// 第三方app配置
+type SysThirdApp struct {
+	Version     string `gorm:"column:version;type:varchar(64);"`       // 应用版本
+	FilePath    string `gorm:"column:file_path;type:varchar(256);"`    // 文件路径,拿来下载文件
+	VersionDesc string `gorm:"column:version_desc;type:VARCHAR(100);"` //版本说明
 }
 
 func (m *SysTenantConfig) TableName() string {

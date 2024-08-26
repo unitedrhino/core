@@ -285,6 +285,13 @@ message ThirdAppConfig {
   string appSecret=3;
 }
 
+message ThirdApp {
+  string version =1;// 应用版本
+  string versionDesc=2;//版本说明
+  string filePath=3;// 文件路径,拿来下载文件
+  bool isUpdateFilePath=4;// 文件路径,拿来下载文件
+}
+
 
 message IDList{
   repeated int64 ids=1;
@@ -337,7 +344,7 @@ message NotifyChannel{
   string desc =4;  // 备注
   string webhook =5;//钉钉webhook及企微webhook
   ThirdEmail email =6;//邮箱配置
-  ThirdApp app =7;//第三方应用配置
+  ThirdAppConfig app =7;//第三方应用配置
   ThirdSms sms =8;//短信配置
 }
 
@@ -361,11 +368,7 @@ message ThirdEmail {
   int64 IsSSL    =6;// 是否SSL   是否开启SSL
 }
 
-message ThirdApp {
-  string appID    =1; //钉钉为agentID
-  string appKey     =2;
-  string appSecret   =3;
-}
+
 
 message ThirdSms {
   string type =1;//ali|tencent
@@ -626,6 +629,7 @@ message TenantAppInfo{
   ThirdAppConfig dingMini =4;//钉钉小程序
   ThirdAppConfig wxMini =5;//微信小程序
   ThirdAppConfig wxOpen =7;//微信开放 web app需要填写
+  ThirdApp android =10; //安卓应用
   repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
   int64 isAutoRegister =9;//登录未注册是否自动注册
 }
