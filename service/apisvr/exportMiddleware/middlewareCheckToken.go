@@ -77,7 +77,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			return
 		}
 		if userCtx.AppCode != "" && userCtx.AppCode != appCode {
-			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("认证失败,应用不一致"))
+			result.HttpErr(w, r, http.StatusUnauthorized, errors.Permissions.AddMsg("认证失败,应用不一致"))
 			return
 		}
 		//注入 用户信息 到 ctx
