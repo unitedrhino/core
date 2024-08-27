@@ -157,6 +157,21 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	if err != nil {
 		return nil, err
 	}
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	if si.FilterRoles != "" {
+		roles := strings.Split(si.FilterRoles, ",")
+		rm := utils.SliceToSet(uc.RoleCodes)
+		var find bool
+		for _, role := range roles {
+			if _, ok := rm[role]; ok {
+				find = true
+				break
+			}
+		}
+		if !find {
+			return nil, errors.Permissions
+		}
+	}
 	var (
 		columns []string
 		groups  []string
@@ -174,7 +189,6 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 	for i, c := range groups {
 		groups[i] = ColFmt(c, si.IsToHump == def.True, false)
 	}
-	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	conn := stores.GetTenantConn(l.ctx)
 	if si.FilterSlotCode != "" {
 		sl, err := l.svcCtx.Slot.GetData(l.ctx, sysExport.GenSlotCacheKey(slot.CodeDataFilter, si.FilterSlotCode))
@@ -262,11 +276,8 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 			}
 			switch val := v.(type) {
 			case time.Time:
-				if k == "date" {
-					r[k] = utils.ToTimeStr(val)
-					continue
-				}
-				r[utils.UderscoreToLowerCamelCase(k)] = val.Unix()
+				r[k] = utils.ToTimeStr(val)
+				//r[utils.UderscoreToLowerCamelCase(k)] = val.Unix()
 			default:
 				k2 := utils.UderscoreToLowerCamelCase(k)
 				if utils.SliceIn(k2, "areaID", "projectID") {

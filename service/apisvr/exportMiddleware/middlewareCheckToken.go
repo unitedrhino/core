@@ -137,6 +137,7 @@ func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWrit
 	return &ctxs.UserCtx{
 		IsOpen:       authType == "open",
 		TenantCode:   resp.TenantCode,
+		AppCode:      resp.AppCode,
 		UserID:       resp.UserID,
 		RoleIDs:      resp.RoleIDs,
 		RoleCodes:    resp.RoleCodes,
@@ -177,6 +178,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 	return &ctxs.UserCtx{
 		IsOpen:       false,
 		TenantCode:   resp.TenantCode,
+		AppCode:      resp.AppCode,
 		UserID:       resp.UserID,
 		RoleIDs:      resp.RoleIDs,
 		RoleCodes:    resp.RoleCodes,

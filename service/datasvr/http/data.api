@@ -99,7 +99,6 @@ type (
 	// }
 	StaticsticsInfoReadResp {
 		List []map[string]interface{} `json:"list"` //如果返回的是个列表
-		One  interface{}              `json:"one"` //如果只返回一个数
 	}
 	Aggregation {
 		Func   string `json:"argFunc,optional"`

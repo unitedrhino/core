@@ -63,8 +63,9 @@ func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) er
 func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCtlInfo) (*sys.UserLoginResp, error) {
 	now := time.Now()
 	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
+	uc := ctxs.GetUserCtx(l.ctx)
 	jwtToken, err := users.GetLoginJwtToken(l.svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
-		ui.UserID)
+		ui.UserID, uc.AppCode)
 	if err != nil {
 		l.Error(err)
 		return nil, errors.System.AddDetail(err)

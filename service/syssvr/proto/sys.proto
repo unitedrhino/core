@@ -1158,6 +1158,7 @@ message UserCheckTokenResp{
   string tenantCode = 6;//租户编码
   bool isAdmin = 7;//是否是管理员
   bool isSuperAdmin = 8;//是否是超级管理员(可以跨租户)
+  string appCode =9;//应用code
   string account = 10 ;//账号
   map<int64,ProjectAuth> projectAuth = 11;
 }

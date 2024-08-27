@@ -604,16 +604,11 @@
             "$ref": "#/definitions/map[string]interface"
           },
           "description": "如果返回的是个列表"
-        },
-        "one": {
-          "type": "object",
-          "description": "如果只返回一个数"
         }
       },
       "title": "StaticsticsInfoReadResp",
       "required": [
-        "list",
-        "one"
+        "list"
       ]
     },
     "WithID": {
