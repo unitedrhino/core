@@ -51,8 +51,9 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			err      error
 			isOpen   bool
 			token    string
-			strIP, _ = utils.GetIP(r)
-			authType = "user"
+			strIP, _        = utils.GetIP(r)
+			authType        = "user"
+			appCode  string = ctxs.GetHandle(r, ctxs.UserAppCodeKey, ctxs.UserAppCodeKey2)
 		)
 		authHeader := ctxs.GetHandle(r, "Authorization")
 		// 检查"Authorization"字段是否存在并且以"Bearer "为前缀
@@ -73,6 +74,10 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
 			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("认证失败"))
+			return
+		}
+		if userCtx.AppCode != "" && userCtx.AppCode != appCode {
+			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("认证失败,应用不一致"))
 			return
 		}
 		//注入 用户信息 到 ctx

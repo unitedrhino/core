@@ -36,7 +36,6 @@ func NewUserCheckTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 
 func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCheckTokenResp, error) {
 	switch in.AuthType {
-
 	case "open":
 		return l.openCheckToken(in)
 	default:
@@ -148,6 +147,7 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	}
 	ret := sys.UserCheckTokenResp{
 		Token:        token,
+		AppCode:      claim.AppCode,
 		UserID:       claim.UserID,
 		RoleIDs:      ui.RoleIDs,
 		RoleCodes:    ui.RoleCodes,
