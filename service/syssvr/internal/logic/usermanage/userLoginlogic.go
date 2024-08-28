@@ -94,7 +94,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	if er != nil {
 		return nil, errors.System.AddDetail(err)
 	}
-	if utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
+	if !utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
 		l.Errorf("不支持的登录方式:%v", in.LoginType)
 		//return nil, errors.NotSupportLogin
 	}

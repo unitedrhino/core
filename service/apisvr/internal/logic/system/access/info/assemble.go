@@ -55,18 +55,17 @@ func ToAccessModuleInfoTypes(in []*sys.AccessInfo) (ret []*types.AccessModuleInf
 	}
 	var retList []*types.AccessModuleInfo
 	var moduleID int64
-
+	var groupID int64
 	for k, v := range retMap {
 		moduleID++
 		code := fmt.Sprintf("module%d", moduleID)
 		var groups []*types.AccessGroupInfo
-		var groupID int64
 		for gk, gv := range v {
 			groupID++
-			code := fmt.Sprintf("group%d", groupID)
+			gcode := fmt.Sprintf("group%d", groupID)
 			groups = append(groups, &types.AccessGroupInfo{
-				ID:       code,
-				Code:     code,
+				ID:       gcode,
+				Code:     gcode,
 				Name:     gk,
 				Children: gv,
 			})
