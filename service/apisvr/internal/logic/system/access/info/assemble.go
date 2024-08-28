@@ -50,7 +50,6 @@ func ToAccessModuleInfoTypes(in []*sys.AccessInfo) (ret []*types.AccessModuleInf
 		if !ok {
 			retMap[v.Module] = map[string][]*types.AccessInfo{}
 		}
-
 		retMap[v.Module][v.Group] = append(retMap[v.Module][v.Group], ToAccessInfoTypes(v))
 	}
 	var retList []*types.AccessModuleInfo

@@ -61,12 +61,13 @@ type AccessTreeResp struct {
 }
 
 type ApiInfo struct {
-	ID         int64  `json:"id,optional"`     // 接口编号
-	AccessCode string `json:"accessCode"`      // 模块编号
-	Route      string `json:"route,optional"`  // 接口路由
-	Method     string `json:"method,optional"` // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
-	Name       string `json:"name,optional"`   // 接口名称
-	Desc       string `json:"desc,optional"`   // 备注
+	ID           int64  `json:"id,optional"`                       // 接口编号
+	AccessCode   string `json:"accessCode"`                        // 模块编号
+	Route        string `json:"route,optional"`                    // 接口路由
+	Method       string `json:"method,optional"`                   // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
+	Name         string `json:"name,optional"`                     // 接口名称
+	BusinessType int64  `json:"businessType,optional,range=[1:5]"` // 业务类型（1新增 2修改 3删除 4查询 5其它)
+	Desc         string `json:"desc,optional"`                     // 备注
 }
 
 type ApiInfoIndexReq struct {
@@ -139,7 +140,7 @@ type AreaInfo struct {
 	AreaID          int64       `json:"areaID,string,optional"`       //项目区域id（只读）
 	ParentAreaID    int64       `json:"parentAreaID,string,optional"` //上级项目区域id（只读）
 	AreaName        string      `json:"areaName,optional"`            //项目区域名称（读写）
-	Position        *Point      `json:"position,optional"`            //项目区域定位，默认百度坐标系（读写）
+	Position        *Point      `json:"position,optional"`            //项目区域定位，默认高德坐标系（读写）
 	Desc            *string     `json:"desc,optional"`                //项目区域备注（读写）
 	LowerLevelCount int64       `json:"lowerLevelCount,optional"`     //下级的数量统计（只读）
 	DeviceCount     int64       `json:"deviceCount,optional"`         //设备数量统计

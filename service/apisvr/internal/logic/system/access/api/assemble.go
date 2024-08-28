@@ -10,12 +10,12 @@ func ToApiInfoPb(in *types.ApiInfo) *sys.ApiInfo {
 		return nil
 	}
 	return &sys.ApiInfo{
-		AccessCode: in.AccessCode,
-		Id:         in.ID,
-		Route:      in.Route,
-		Method:     in.Method,
-		Name:       in.Name,
-		//BusinessType: in.BusinessType,
+		AccessCode:   in.AccessCode,
+		Id:           in.ID,
+		Route:        in.Route,
+		Method:       in.Method,
+		Name:         in.Name,
+		BusinessType: in.BusinessType,
 		//AuthType:     in.AuthType,
 		Desc: in.Desc,
 	}
@@ -33,12 +33,12 @@ func ToApiInfoTypes(in *sys.ApiInfo) *types.ApiInfo {
 		return nil
 	}
 	return &types.ApiInfo{
-		AccessCode: in.AccessCode,
-		ID:         in.Id,
-		Route:      in.Route,
-		Method:     in.Method,
-		Name:       in.Name,
-		//BusinessType: in.BusinessType,
+		AccessCode:   in.AccessCode,
+		ID:           in.Id,
+		Route:        in.Route,
+		Method:       in.Method,
+		Name:         in.Name,
+		BusinessType: in.BusinessType,
 		//AuthType:     in.AuthType,
 		Desc: in.Desc,
 	}

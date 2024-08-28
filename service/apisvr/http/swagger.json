@@ -7809,6 +7809,13 @@
           "type": "string",
           "description": " 接口名称"
         },
+        "businessType": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 业务类型（1新增 2修改 3删除 4查询 5其它)",
+          "maximum": 5,
+          "minimum": 1
+        },
         "desc": {
           "type": "string",
           "description": " 备注"
@@ -8092,7 +8099,7 @@
         },
         "position": {
           "$ref": "#/definitions/Point",
-          "description": "项目区域定位，默认百度坐标系（读写）"
+          "description": "项目区域定位，默认高德坐标系（读写）"
         },
         "desc": {
           "type": "string",
