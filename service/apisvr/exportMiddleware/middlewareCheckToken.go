@@ -84,7 +84,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
 		var apiRet *sys.RoleApiAuthResp
-		if !isOpen {
+		if !isOpen && !userCtx.IsSuperAdmin {
 			////校验 Casbin Rule
 			req := user.RoleApiAuthReq{
 				Path:   r.URL.Path,
