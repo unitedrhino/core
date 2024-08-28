@@ -7,8 +7,8 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -33,10 +33,11 @@ func (l *AccessInfoMultiImportLogic) AccessInfoMultiImport(in *sys.AccessInfoMul
 		return nil, errors.Parameter.AddMsg("json格式不对").AddDetail(err)
 	}
 	var (
-		total     int64
-		errCount  int64
-		noCount   int64
-		succCount int64
+		total          int64
+		errCount       int64
+		noCount        int64
+		succCount      int64
+		addAccessCodes []string
 	)
 
 	acDB := relationDB.NewAccessRepo(l.ctx)
@@ -66,6 +67,7 @@ func (l *AccessInfoMultiImportLogic) AccessInfoMultiImport(in *sys.AccessInfoMul
 				continue
 			}
 		}
+		addAccessCodes = append(addAccessCodes, acc.Code)
 		for _, api := range acc.Apis {
 			old, err := apiDB.FindOneByFilter(l.ctx, relationDB.ApiInfoFilter{
 				Route:  api.Route,
@@ -93,6 +95,19 @@ func (l *AccessInfoMultiImportLogic) AccessInfoMultiImport(in *sys.AccessInfoMul
 			} else {
 				noCount++
 			}
+		}
+	}
+	if len(addAccessCodes) > 0 {
+		var datas []*relationDB.SysTenantAccess
+		for _, v := range addAccessCodes {
+			datas = append(datas, &relationDB.SysTenantAccess{
+				TenantCode: def.TenantCodeDefault,
+				AccessCode: v,
+			})
+		}
+		err = relationDB.NewTenantAccessRepo(l.ctx).MultiInsert(l.ctx, datas)
+		if err != nil {
+			l.Error(err)
 		}
 	}
 
