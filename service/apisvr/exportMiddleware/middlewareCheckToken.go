@@ -80,6 +80,9 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			result.HttpErr(w, r, http.StatusUnauthorized, errors.Permissions.AddMsg("认证失败,应用不一致"))
 			return
 		}
+		userCtx.Os = ctxs.GetHandle(r, "User-Agent")
+		userCtx.AcceptLanguage = ctxs.GetHandle(r, "Accept-Language")
+		userCtx.Token = token
 		//注入 用户信息 到 ctx
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
