@@ -54,6 +54,7 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 	}
 	newPo := utils.Copy[relationDB.SysTenantConfig](in)
 	newPo.NoDelTime = old.NoDelTime
+	newPo.ID = old.ID
 	err = relationDB.NewTenantConfigRepo(l.ctx).Update(l.ctx, newPo)
 	return &sys.Empty{}, err
 }
