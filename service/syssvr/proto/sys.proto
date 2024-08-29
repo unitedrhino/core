@@ -964,7 +964,7 @@ message SlotInfoIndexReq{
 }
 
 message SlotInfoIndexResp{
-  repeated SlotInfo slots=1;
+  repeated SlotInfo list=1;
   int64 total = 2;
 }
 

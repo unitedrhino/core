@@ -43,5 +43,5 @@ func (l *SlotInfoIndexLogic) SlotInfoIndex(in *sys.SlotInfoIndexReq) (*sys.SlotI
 		return nil, err
 	}
 
-	return &sys.SlotInfoIndexResp{Slots: utils.CopySlice[sys.SlotInfo](list), Total: total}, nil
+	return &sys.SlotInfoIndexResp{List: utils.CopySlice[sys.SlotInfo](list), Total: total}, nil
 }

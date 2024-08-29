@@ -93,7 +93,7 @@ func NewSlotCache(pm common.Common) (SlotCacheT, error) {
 		GetData: func(ctx context.Context, key string) (*slot.Infos, error) {
 			t := strings.Split(key, ":")
 			ret, err := pm.SlotInfoIndex(ctx, &sys.SlotInfoIndexReq{Code: t[0], SubCode: t[1]})
-			slots := slot.Infos(utils.CopySlice[slot.Info](ret.Slots))
+			slots := slot.Infos(utils.CopySlice[slot.Info](ret.List))
 			return &slots, err
 		},
 	})
