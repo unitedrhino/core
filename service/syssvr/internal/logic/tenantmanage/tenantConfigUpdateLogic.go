@@ -28,13 +28,15 @@ func NewTenantConfigUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys.Empty, error) {
-	if err := ctxs.IsRoot(l.ctx); err != nil {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
 		return nil, err
 	}
-	ctxs.GetUserCtx(l.ctx).AllTenant = true
-	defer func() {
-		ctxs.GetUserCtx(l.ctx).AllTenant = false
-	}()
+	if ctxs.IsRoot(l.ctx) == nil {
+		ctxs.GetUserCtx(l.ctx).AllTenant = true
+		defer func() {
+			ctxs.GetUserCtx(l.ctx).AllTenant = false
+		}()
+	}
 	old, err := relationDB.NewTenantConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: in.TenantCode})
 	if err != nil {
 		return nil, err

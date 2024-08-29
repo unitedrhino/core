@@ -41,7 +41,7 @@ func (p TenantInfoRepo) fmtFilter(ctx context.Context, f TenantInfoFilter) *gorm
 		db = db.Where("name like ?", "%"+f.Name+"%")
 	}
 	if f.Code != "" {
-		db = db.Where("code like ?", "%"+f.Code+"%")
+		db = db.Where("code = ?", f.Code)
 	}
 	return db
 }

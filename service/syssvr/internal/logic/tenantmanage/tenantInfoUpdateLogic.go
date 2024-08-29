@@ -35,15 +35,18 @@ func NewTenantInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 // 更新区域
 func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Empty, error) {
-	if err := ctxs.IsRoot(l.ctx); err != nil {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
 		return nil, err
 	}
-	ctxs.GetUserCtx(l.ctx).AllTenant = true
-	defer func() {
-		ctxs.GetUserCtx(l.ctx).AllTenant = false
-	}()
+	if ctxs.IsRoot(l.ctx) == nil {
+		ctxs.GetUserCtx(l.ctx).AllTenant = true
+		defer func() {
+			ctxs.GetUserCtx(l.ctx).AllTenant = false
+		}()
+	}
+
 	repo := relationDB.NewTenantInfoRepo(l.ctx)
-	old, err := repo.FindOne(l.ctx, in.Id)
+	old, err := repo.FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{ID: in.Id, Code: in.Code})
 	if err != nil {
 		return nil, err
 	}
