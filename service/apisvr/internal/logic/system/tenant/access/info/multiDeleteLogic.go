@@ -10,22 +10,23 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type MultiUpdateLogic struct {
+type MultiDeleteLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MultiUpdateLogic {
-	return &MultiUpdateLogic{
+// 批量删除租户操作权限
+func NewMultiDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MultiDeleteLogic {
+	return &MultiDeleteLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *MultiUpdateLogic) MultiUpdate(req *types.TenantAccessInfo) error {
-	_, err := l.svcCtx.TenantRpc.TenantAccessMultiUpdate(l.ctx, &sys.TenantAccessMultiSaveReq{
+func (l *MultiDeleteLogic) MultiDelete(req *types.TenantAccessInfo) error {
+	_, err := l.svcCtx.TenantRpc.TenantAccessMultiDelete(l.ctx, &sys.TenantAccessMultiSaveReq{
 		Code:        req.Code,
 		AccessCodes: req.AccessCodes,
 	})

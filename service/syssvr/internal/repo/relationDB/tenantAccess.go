@@ -16,21 +16,25 @@ func NewTenantAccessRepo(in any) *TenantApiRepo {
 }
 
 type TenantAccessFilter struct {
-	TenantCode string
-	AppCode    string
-	Route      string
-	Method     string
-	Group      string
-	Name       string
-	ModuleCode string
-	WithRoles  bool
-	IsNeedAuth int64
+	TenantCode  string
+	AppCode     string
+	Route       string
+	Method      string
+	Group       string
+	Name        string
+	ModuleCode  string
+	WithRoles   bool
+	IsNeedAuth  int64
+	AccessCodes []string
 }
 
 func (p TenantApiRepo) fmtFilter(ctx context.Context, f TenantAccessFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.WithRoles {
 		db = db.Preload("Roles")
+	}
+	if len(f.AccessCodes) != 0 {
+		db = db.Where("access_code IN ?", f.AccessCodes)
 	}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)

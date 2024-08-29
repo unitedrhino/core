@@ -5334,6 +5334,84 @@
         ]
       }
     },
+    "/api/v1/system/tenant/access/info/multi-create": {
+      "post": {
+        "summary": "批量创建租户操作权限",
+        "operationId": "postApiV1SystemTenantAccessInfoMulti-create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantAccessInfo"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/access/info",
+          "systemTenantAccessInfo"
+        ]
+      }
+    },
+    "/api/v1/system/tenant/access/info/multi-delete": {
+      "post": {
+        "summary": "批量删除租户操作权限",
+        "operationId": "postApiV1SystemTenantAccessInfoMulti-delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantAccessInfo"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/access/info",
+          "systemTenantAccessInfo"
+        ]
+      }
+    },
     "/api/v1/system/tenant/access/info/multi-update": {
       "post": {
         "summary": "批量更新租户操作权限",

@@ -1890,6 +1890,46 @@
       ],
       "authType": "supper"
     },
+    "systemTenantAccessAdd": {
+      "name": "新增租户授权",
+      "code": "systemTenantAccessAdd",
+      "group": "租户管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAccessAdd",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/access/info/multi-create",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "add",
+          "desc": "",
+          "authType": "admin"
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemTenantAccessDelete": {
+      "name": "删除租户授权",
+      "code": "systemTenantAccessDelete",
+      "group": "租户管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAccessDelete",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/access/info/multi-delete",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "admin"
+        }
+      ],
+      "authType": "admin"
+    },
     "systemTenantAccessFind": {
       "name": "查询租户授权",
       "code": "systemTenantAccessFind",

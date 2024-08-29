@@ -10,22 +10,23 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type MultiUpdateLogic struct {
+type MultiCreateLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewMultiUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MultiUpdateLogic {
-	return &MultiUpdateLogic{
+// 批量创建租户操作权限
+func NewMultiCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *MultiCreateLogic {
+	return &MultiCreateLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *MultiUpdateLogic) MultiUpdate(req *types.TenantAccessInfo) error {
-	_, err := l.svcCtx.TenantRpc.TenantAccessMultiUpdate(l.ctx, &sys.TenantAccessMultiSaveReq{
+func (l *MultiCreateLogic) MultiCreate(req *types.TenantAccessInfo) error {
+	_, err := l.svcCtx.TenantRpc.TenantAccessMultiCreate(l.ctx, &sys.TenantAccessMultiSaveReq{
 		Code:        req.Code,
 		AccessCodes: req.AccessCodes,
 	})

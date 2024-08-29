@@ -141,7 +141,7 @@ type (
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
-	TenantAccessMultiUpdateReq            = sys.TenantAccessMultiUpdateReq
+	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
 	TenantAgreement                       = sys.TenantAgreement
 	TenantAgreementIndexReq               = sys.TenantAgreementIndexReq
 	TenantAgreementIndexResp              = sys.TenantAgreementIndexResp
@@ -229,7 +229,9 @@ type (
 		TenantInfoIndex(ctx context.Context, in *TenantInfoIndexReq, opts ...grpc.CallOption) (*TenantInfoIndexResp, error)
 		TenantConfigUpdate(ctx context.Context, in *TenantConfig, opts ...grpc.CallOption) (*Empty, error)
 		TenantConfigRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantConfig, error)
-		TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+		TenantAccessMultiDelete(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		TenantAccessMultiCreate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		TenantAccessIndex(ctx context.Context, in *TenantAccessIndexReq, opts ...grpc.CallOption) (*TenantAccessIndexResp, error)
 		TenantAppIndex(ctx context.Context, in *TenantAppIndexReq, opts ...grpc.CallOption) (*TenantAppIndexResp, error)
 		TenantAppCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -349,12 +351,30 @@ func (d *directTenantManage) TenantConfigRead(ctx context.Context, in *WithCode,
 	return d.svr.TenantConfigRead(ctx, in)
 }
 
-func (m *defaultTenantManage) TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+func (m *defaultTenantManage) TenantAccessMultiDelete(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAccessMultiDelete(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAccessMultiDelete(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.TenantAccessMultiDelete(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAccessMultiCreate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewTenantManageClient(m.cli.Conn())
+	return client.TenantAccessMultiCreate(ctx, in, opts...)
+}
+
+func (d *directTenantManage) TenantAccessMultiCreate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.TenantAccessMultiCreate(ctx, in)
+}
+
+func (m *defaultTenantManage) TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
 	client := sys.NewTenantManageClient(m.cli.Conn())
 	return client.TenantAccessMultiUpdate(ctx, in, opts...)
 }
 
-func (d *directTenantManage) TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+func (d *directTenantManage) TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.TenantAccessMultiUpdate(ctx, in)
 }
 

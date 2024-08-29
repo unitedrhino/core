@@ -141,7 +141,7 @@ type (
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
-	TenantAccessMultiUpdateReq            = sys.TenantAccessMultiUpdateReq
+	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
 	TenantAgreement                       = sys.TenantAgreement
 	TenantAgreementIndexReq               = sys.TenantAgreementIndexReq
 	TenantAgreementIndexResp              = sys.TenantAgreementIndexResp

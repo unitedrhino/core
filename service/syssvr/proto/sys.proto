@@ -234,7 +234,9 @@ service TenantManage {
   rpc tenantConfigUpdate(TenantConfig)returns(Empty);
   rpc tenantConfigRead(WithCode)returns(TenantConfig);
 
-  rpc tenantAccessMultiUpdate(TenantAccessMultiUpdateReq) returns (Empty);  //更新角色API权限
+  rpc tenantAccessMultiDelete(TenantAccessMultiSaveReq) returns (Empty);  //更新角色API权限
+  rpc tenantAccessMultiCreate(TenantAccessMultiSaveReq) returns (Empty);  //更新角色API权限
+  rpc tenantAccessMultiUpdate(TenantAccessMultiSaveReq) returns (Empty);  //更新角色API权限
   rpc tenantAccessIndex(TenantAccessIndexReq) returns (TenantAccessIndexResp); //获取角色API权限列表
 
   rpc tenantAppIndex(TenantAppIndexReq) returns (TenantAppIndexResp); //获取租户APP权限列表
@@ -608,7 +610,7 @@ message TenantConfigRegisterAutoCreateArea{
   bool isUpdateAreaImg=4;//是否更新区域图片
 }
 
-message TenantAccessMultiUpdateReq{
+message TenantAccessMultiSaveReq{
   string code = 1;
   repeated  string  accessCodes = 4;
 }

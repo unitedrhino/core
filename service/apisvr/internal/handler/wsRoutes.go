@@ -1127,6 +1127,18 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemtenantaccessinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 批量创建租户操作权限
+					Method:  http.MethodPost,
+					Path:    "/multi-create",
+					Handler: systemtenantaccessinfo.MultiCreateHandler(serverCtx),
+				},
+				{
+					// 批量删除租户操作权限
+					Method:  http.MethodPost,
+					Path:    "/multi-delete",
+					Handler: systemtenantaccessinfo.MultiDeleteHandler(serverCtx),
+				},
+				{
 					// 批量更新租户操作权限
 					Method:  http.MethodPost,
 					Path:    "/multi-update",

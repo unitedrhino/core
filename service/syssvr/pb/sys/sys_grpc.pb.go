@@ -5537,6 +5537,8 @@ const (
 	TenantManage_TenantInfoIndex_FullMethodName            = "/sys.TenantManage/tenantInfoIndex"
 	TenantManage_TenantConfigUpdate_FullMethodName         = "/sys.TenantManage/tenantConfigUpdate"
 	TenantManage_TenantConfigRead_FullMethodName           = "/sys.TenantManage/tenantConfigRead"
+	TenantManage_TenantAccessMultiDelete_FullMethodName    = "/sys.TenantManage/tenantAccessMultiDelete"
+	TenantManage_TenantAccessMultiCreate_FullMethodName    = "/sys.TenantManage/tenantAccessMultiCreate"
 	TenantManage_TenantAccessMultiUpdate_FullMethodName    = "/sys.TenantManage/tenantAccessMultiUpdate"
 	TenantManage_TenantAccessIndex_FullMethodName          = "/sys.TenantManage/tenantAccessIndex"
 	TenantManage_TenantAppIndex_FullMethodName             = "/sys.TenantManage/tenantAppIndex"
@@ -5577,7 +5579,9 @@ type TenantManageClient interface {
 	TenantInfoIndex(ctx context.Context, in *TenantInfoIndexReq, opts ...grpc.CallOption) (*TenantInfoIndexResp, error)
 	TenantConfigUpdate(ctx context.Context, in *TenantConfig, opts ...grpc.CallOption) (*Empty, error)
 	TenantConfigRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*TenantConfig, error)
-	TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+	TenantAccessMultiDelete(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	TenantAccessMultiCreate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	TenantAccessIndex(ctx context.Context, in *TenantAccessIndexReq, opts ...grpc.CallOption) (*TenantAccessIndexResp, error)
 	TenantAppIndex(ctx context.Context, in *TenantAppIndexReq, opts ...grpc.CallOption) (*TenantAppIndexResp, error)
 	TenantAppCreate(ctx context.Context, in *TenantAppInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -5672,7 +5676,25 @@ func (c *tenantManageClient) TenantConfigRead(ctx context.Context, in *WithCode,
 	return out, nil
 }
 
-func (c *tenantManageClient) TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
+func (c *tenantManageClient) TenantAccessMultiDelete(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAccessMultiDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAccessMultiCreate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, TenantManage_TenantAccessMultiCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *tenantManageClient) TenantAccessMultiUpdate(ctx context.Context, in *TenantAccessMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, TenantManage_TenantAccessMultiUpdate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -5886,7 +5908,9 @@ type TenantManageServer interface {
 	TenantInfoIndex(context.Context, *TenantInfoIndexReq) (*TenantInfoIndexResp, error)
 	TenantConfigUpdate(context.Context, *TenantConfig) (*Empty, error)
 	TenantConfigRead(context.Context, *WithCode) (*TenantConfig, error)
-	TenantAccessMultiUpdate(context.Context, *TenantAccessMultiUpdateReq) (*Empty, error)
+	TenantAccessMultiDelete(context.Context, *TenantAccessMultiSaveReq) (*Empty, error)
+	TenantAccessMultiCreate(context.Context, *TenantAccessMultiSaveReq) (*Empty, error)
+	TenantAccessMultiUpdate(context.Context, *TenantAccessMultiSaveReq) (*Empty, error)
 	TenantAccessIndex(context.Context, *TenantAccessIndexReq) (*TenantAccessIndexResp, error)
 	TenantAppIndex(context.Context, *TenantAppIndexReq) (*TenantAppIndexResp, error)
 	TenantAppCreate(context.Context, *TenantAppInfo) (*Empty, error)
@@ -5936,7 +5960,13 @@ func (UnimplementedTenantManageServer) TenantConfigUpdate(context.Context, *Tena
 func (UnimplementedTenantManageServer) TenantConfigRead(context.Context, *WithCode) (*TenantConfig, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantConfigRead not implemented")
 }
-func (UnimplementedTenantManageServer) TenantAccessMultiUpdate(context.Context, *TenantAccessMultiUpdateReq) (*Empty, error) {
+func (UnimplementedTenantManageServer) TenantAccessMultiDelete(context.Context, *TenantAccessMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAccessMultiDelete not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAccessMultiCreate(context.Context, *TenantAccessMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TenantAccessMultiCreate not implemented")
+}
+func (UnimplementedTenantManageServer) TenantAccessMultiUpdate(context.Context, *TenantAccessMultiSaveReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantAccessMultiUpdate not implemented")
 }
 func (UnimplementedTenantManageServer) TenantAccessIndex(context.Context, *TenantAccessIndexReq) (*TenantAccessIndexResp, error) {
@@ -6141,8 +6171,44 @@ func _TenantManage_TenantConfigRead_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TenantManage_TenantAccessMultiDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantAccessMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAccessMultiDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAccessMultiDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAccessMultiDelete(ctx, req.(*TenantAccessMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TenantManage_TenantAccessMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TenantAccessMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TenantManageServer).TenantAccessMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TenantManage_TenantAccessMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TenantManageServer).TenantAccessMultiCreate(ctx, req.(*TenantAccessMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TenantManage_TenantAccessMultiUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantAccessMultiUpdateReq)
+	in := new(TenantAccessMultiSaveReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -6154,7 +6220,7 @@ func _TenantManage_TenantAccessMultiUpdate_Handler(srv interface{}, ctx context.
 		FullMethod: TenantManage_TenantAccessMultiUpdate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantAccessMultiUpdate(ctx, req.(*TenantAccessMultiUpdateReq))
+		return srv.(TenantManageServer).TenantAccessMultiUpdate(ctx, req.(*TenantAccessMultiSaveReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -6571,6 +6637,14 @@ var TenantManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tenantConfigRead",
 			Handler:    _TenantManage_TenantConfigRead_Handler,
+		},
+		{
+			MethodName: "tenantAccessMultiDelete",
+			Handler:    _TenantManage_TenantAccessMultiDelete_Handler,
+		},
+		{
+			MethodName: "tenantAccessMultiCreate",
+			Handler:    _TenantManage_TenantAccessMultiCreate_Handler,
 		},
 		{
 			MethodName: "tenantAccessMultiUpdate",

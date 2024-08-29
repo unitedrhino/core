@@ -63,7 +63,17 @@ func (s *TenantManageServer) TenantConfigRead(ctx context.Context, in *sys.WithC
 	return l.TenantConfigRead(in)
 }
 
-func (s *TenantManageServer) TenantAccessMultiUpdate(ctx context.Context, in *sys.TenantAccessMultiUpdateReq) (*sys.Empty, error) {
+func (s *TenantManageServer) TenantAccessMultiDelete(ctx context.Context, in *sys.TenantAccessMultiSaveReq) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantAccessMultiDeleteLogic(ctx, s.svcCtx)
+	return l.TenantAccessMultiDelete(in)
+}
+
+func (s *TenantManageServer) TenantAccessMultiCreate(ctx context.Context, in *sys.TenantAccessMultiSaveReq) (*sys.Empty, error) {
+	l := tenantmanagelogic.NewTenantAccessMultiCreateLogic(ctx, s.svcCtx)
+	return l.TenantAccessMultiCreate(in)
+}
+
+func (s *TenantManageServer) TenantAccessMultiUpdate(ctx context.Context, in *sys.TenantAccessMultiSaveReq) (*sys.Empty, error) {
 	l := tenantmanagelogic.NewTenantAccessMultiUpdateLogic(ctx, s.svcCtx)
 	return l.TenantAccessMultiUpdate(in)
 }

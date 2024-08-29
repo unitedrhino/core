@@ -119,6 +119,16 @@ service api {
     )
     @handler multiUpdate
     post /multi-update (TenantAccessInfo) returns ()
+    @doc(
+        summary: "批量创建租户操作权限"
+    )
+    @handler multiCreate
+    post /multi-create (TenantAccessInfo) returns ()
+    @doc(
+        summary: "批量删除租户操作权限"
+    )
+    @handler multiDelete
+    post /multi-delete (TenantAccessInfo) returns ()
 }
 
 
