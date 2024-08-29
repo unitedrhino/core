@@ -128,6 +128,7 @@ type (
 	UserSelfReadReq{
 		WithRoles bool  `json:"withRoles,optional"`
 		WithTenant bool `json:"withTenant,optional"`
+		WithProjects bool `json:"withProjects,optional"`
 	}
 
 	UserResourceWithModuleReq{

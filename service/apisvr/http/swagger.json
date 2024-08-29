@@ -12824,9 +12824,19 @@
         },
         "tenant": {
           "$ref": "#/definitions/TenantInfo"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectInfo"
+          },
+          "description": "项目列表"
         }
       },
-      "title": "UserInfo"
+      "title": "UserInfo",
+      "required": [
+        "projects"
+      ]
     },
     "UserInfoCreateReq": {
       "type": "object",
@@ -13387,6 +13397,10 @@
           "format": "boolean"
         },
         "withTenant": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "withProjects": {
           "type": "boolean",
           "format": "boolean"
         }

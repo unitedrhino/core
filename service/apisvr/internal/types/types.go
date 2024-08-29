@@ -1347,6 +1347,7 @@ type UserInfo struct {
 	MessageNotRead  map[string]int64 `json:"messageNotRead,optional,omitempty"`
 	Roles           []*RoleInfo      `json:"roles,optional,omitempty"`
 	Tenant          *TenantInfo      `json:"tenant,optional,omitempty"`
+	Projects        []*ProjectInfo   `json:"projects"` //项目列表
 }
 
 type UserInfoCreateReq struct {
@@ -1498,8 +1499,9 @@ type UserSelfAppReadResp struct {
 }
 
 type UserSelfReadReq struct {
-	WithRoles  bool `json:"withRoles,optional"`
-	WithTenant bool `json:"withTenant,optional"`
+	WithRoles    bool `json:"withRoles,optional"`
+	WithTenant   bool `json:"withTenant,optional"`
+	WithProjects bool `json:"withProjects,optional"`
 }
 
 type WeatherAir struct {

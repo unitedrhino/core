@@ -68,7 +68,8 @@ type (
 		MessageNotRead map[string]int64  `json:"messageNotRead,optional,omitempty"`
 	 	Roles []*RoleInfo `json:"roles,optional,omitempty"`
 		Tenant *TenantInfo `json:"tenant,optional,omitempty"`
-	}
+		Projects []*ProjectInfo `json:"projects"`    //项目列表
+	 }
 
 
 
