@@ -10702,15 +10702,7 @@
       "title": "SlotInfo",
       "required": [
         "code",
-        "subCode",
-        "slotCode",
-        "method",
-        "uri",
-        "hosts",
-        "body",
-        "handler",
-        "authType",
-        "desc"
+        "subCode"
       ]
     },
     "SlotInfoIndexReq": {

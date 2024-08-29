@@ -58,7 +58,7 @@ type SysNotifyConfigTemplate struct {
 	ID         int64              `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
 	TenantCode stores.TenantCode  `gorm:"column:tenant_code;type:VARCHAR(50);uniqueIndex:ri_mi;NOT NULL"` // 租户编码
 	NotifyCode string             `gorm:"column:notify_code;type:VARCHAR(50);uniqueIndex:ri_mi;NOT NULL"` //对应的配置Code
-	Type       string             `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的类型
+	Type       def.NotifyType     `gorm:"column:type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`        //对应的类型
 	TemplateID int64              `gorm:"column:template_id;type:BIGINT;default:1"`                       //绑定的模板id,1为默认
 	Template   *SysNotifyTemplate `gorm:"foreignKey:ID;references:TemplateID"`
 	Config     *SysNotifyConfig   `gorm:"foreignKey:Code;references:NotifyCode"`

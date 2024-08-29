@@ -797,16 +797,16 @@ type SendOption struct {
 
 type SlotInfo struct {
 	ID       int64             `json:"id,optional"`
-	Code     string            `json:"code"`     // 主编码
-	SubCode  string            `json:"subCode"`  // 子编码
-	SlotCode string            `json:"slotCode"` //slot的编码
-	Method   string            `json:"method"`   // 请求方式 GET  POST
-	Uri      string            `json:"uri"`      // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
-	Hosts    []string          `json:"hosts"`    //访问的地址 host or host:port
-	Body     string            `json:"body"`     // body 参数模板
-	Handler  map[string]string `json:"handler"`  //http头 key是头的ID,value是头的值(暂时不需要做这个字段)
-	AuthType string            `json:"authType"` //鉴权类型 core
-	Desc     string            `json:"desc"`     //描述类型
+	Code     string            `json:"code"`              // 主编码
+	SubCode  string            `json:"subCode"`           // 子编码
+	SlotCode string            `json:"slotCode,optional"` //slot的编码
+	Method   string            `json:"method,optional"`   // 请求方式 GET  POST
+	Uri      string            `json:"uri,optional"`      // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
+	Hosts    []string          `json:"hosts,optional"`    //访问的地址 host or host:port
+	Body     string            `json:"body,optional"`     // body 参数模板
+	Handler  map[string]string `json:"handler,optional"`  //http头 key是头的ID,value是头的值(暂时不需要做这个字段)
+	AuthType string            `json:"authType,optional"` //鉴权类型 core
+	Desc     string            `json:"desc,optional"`     //描述类型
 }
 
 type SlotInfoIndexReq struct {
