@@ -37,7 +37,10 @@ func (l *ReadLogic) Read(req *types.UserSelfReadReq) (resp *types.UserInfo, err 
 		return nil, err
 	}
 	if req.WithProjects {
-		ret2, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, &sys.ProjectInfoIndexReq{})
+		ret2, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, &sys.ProjectInfoIndexReq{Page: &sys.PageInfo{
+			Page: 1,
+			Size: 20,
+		}})
 		if err != nil {
 			return nil, err
 		}
