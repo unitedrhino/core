@@ -36,16 +36,5 @@ func (l *TenantConfigReadLogic) TenantConfigRead(in *sys.WithCode) (*sys.TenantC
 	if err != nil {
 		return nil, err
 	}
-	//for _, p := range po.RegisterAutoCreateProject {
-	//	for _, a := range p.Areas {
-	//		if a.AreaImg != "" {
-	//			var err error
-	//			a.AreaImg, err = l.svcCtx.OssClient.PrivateBucket().SignedGetUrl(l.ctx, a.AreaImg, 24*60*60, common.OptionKv{})
-	//			if err != nil {
-	//				logx.WithContext(l.ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
-	//			}
-	//		}
-	//	}
-	//}
 	return ToTenantConfigPb(l.ctx, l.svcCtx, po), nil
 }

@@ -59,7 +59,7 @@ service api {
 
 	@doc "获取用户配置详情"
 	@handler profileRead
-	post /profile/read (WithCode) returns (UserProfile)
+	post /profile/read (UserProfileReadReq) returns (UserProfileReadResp)
 	@doc "更新用户配置"
 	@handler profileUpdate
 	post /profile/update (UserProfile) returns ()
@@ -179,6 +179,14 @@ type (
 	}
 )
 type (
+	UserProfileReadReq{
+		Code string `json:"code"`
+		WithProjects bool `json:"withProjects,optional"`
+	}
+	UserProfileReadResp{
+		UserProfile
+		Projects []*ProjectInfo `json:"projects,optional,omitempty"`    //项目列表
+	}
 	UserProfile{
 		Code string `json:"code"`
 		Params string  `json:"params"`

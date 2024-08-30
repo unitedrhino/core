@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/apisvr/internal/logic/system"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/utils"
 
@@ -25,7 +26,23 @@ func NewProfileReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Profi
 	}
 }
 
-func (l *ProfileReadLogic) ProfileRead(req *types.WithCode) (resp *types.UserProfile, err error) {
+func (l *ProfileReadLogic) ProfileRead(req *types.UserProfileReadReq) (resp *types.UserProfileReadResp, err error) {
 	ret, err := l.svcCtx.UserRpc.UserProfileRead(l.ctx, utils.Copy[sys.WithCode](req))
-	return utils.Copy[types.UserProfile](ret), err
+	if err != nil {
+		return nil, err
+	}
+	resp = &types.UserProfileReadResp{
+		UserProfile: utils.Copy2[types.UserProfile](ret),
+	}
+	if req.WithProjects {
+		ret2, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, &sys.ProjectInfoIndexReq{Page: &sys.PageInfo{
+			Page: 1,
+			Size: 20,
+		}})
+		if err != nil {
+			return nil, err
+		}
+		resp.Projects = system.ProjectInfosToApi(ret2.List)
+	}
+	return resp, err
 }

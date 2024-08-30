@@ -7409,7 +7409,7 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/UserProfile"
+                  "$ref": "#/definitions/UserProfileReadResp"
                 }
               }
             }
@@ -7421,7 +7421,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/WithCode"
+              "$ref": "#/definitions/UserProfileReadReq"
             }
           }
         ],
@@ -12833,10 +12833,7 @@
           "description": "项目列表"
         }
       },
-      "title": "UserInfo",
-      "required": [
-        "projects"
-      ]
+      "title": "UserInfo"
     },
     "UserInfoCreateReq": {
       "type": "object",
@@ -13171,6 +13168,41 @@
       "required": [
         "profiles"
       ]
+    },
+    "UserProfileReadReq": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "withProjects": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "UserProfileReadReq",
+      "required": [
+        "code"
+      ]
+    },
+    "UserProfileReadResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "params": {
+          "type": "string"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectInfo"
+          },
+          "description": "项目列表"
+        }
+      },
+      "title": "UserProfileReadResp"
     },
     "UserRegisterReq": {
       "type": "object",

@@ -1347,7 +1347,7 @@ type UserInfo struct {
 	MessageNotRead  map[string]int64 `json:"messageNotRead,optional,omitempty"`
 	Roles           []*RoleInfo      `json:"roles,optional,omitempty"`
 	Tenant          *TenantInfo      `json:"tenant,optional,omitempty"`
-	Projects        []*ProjectInfo   `json:"projects"` //项目列表
+	Projects        []*ProjectInfo   `json:"projects,optional,omitempty"` //项目列表
 }
 
 type UserInfoCreateReq struct {
@@ -1439,6 +1439,16 @@ type UserProfileIndexReq struct {
 
 type UserProfileIndexResp struct {
 	Profiles []*UserProfile `json:"profiles"`
+}
+
+type UserProfileReadReq struct {
+	Code         string `json:"code"`
+	WithProjects bool   `json:"withProjects,optional"`
+}
+
+type UserProfileReadResp struct {
+	UserProfile
+	Projects []*ProjectInfo `json:"projects,optional,omitempty"` //项目列表
 }
 
 type UserRegisterReq struct {
