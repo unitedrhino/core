@@ -42,6 +42,9 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 		}
 		return nil, err
 	}
+	if uc.IsSuperAdmin {
+		return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, nil
+	}
 	if api.Access == nil {
 		return nil, errors.Permissions
 	}

@@ -47,9 +47,9 @@ func NewCheckTokenWareMiddleware(UserRpc user.UserManage, AuthRpc role.RoleManag
 func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var (
-			userCtx  *ctxs.UserCtx
-			err      error
-			isOpen   bool
+			userCtx *ctxs.UserCtx
+			err     error
+			//isOpen   bool
 			token    string
 			strIP, _        = utils.GetIP(r)
 			authType        = "user"
@@ -87,20 +87,19 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
 		var apiRet *sys.RoleApiAuthResp
-		if !isOpen && !userCtx.IsSuperAdmin {
-			////校验 Casbin Rule
-			req := user.RoleApiAuthReq{
-				Path:   r.URL.Path,
-				Method: r.Method,
-			}
-			apiRet, err = m.AuthRpc.RoleApiAuth(r.Context(), &req)
-			if err != nil {
-				logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
-				//http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
-				systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
-				//return
-			}
+		////校验 Casbin Rule
+		req := user.RoleApiAuthReq{
+			Path:   r.URL.Path,
+			Method: r.Method,
 		}
+		apiRet, err = m.AuthRpc.RoleApiAuth(r.Context(), &req)
+		if err != nil {
+			logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
+			//http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
+			systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
+			//return
+		}
+
 		m.OperationLogRecord(next, w, r, apiRet)
 	}
 }
