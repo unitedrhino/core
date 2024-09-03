@@ -2,6 +2,11 @@ package opslogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/internal/logic"
+	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/stores"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -24,7 +29,25 @@ func NewOpsFeedbackIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *OpsFeedbackIndexLogic) OpsFeedbackIndex(in *sys.OpsFeedbackIndexReq) (*sys.OpsFeedbackIndexResp, error) {
-	// todo: add your logic here and delete this line
-
-	return &sys.OpsFeedbackIndexResp{}, nil
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
+	l.ctx = ctxs.WithRoot(l.ctx)
+	f := relationDB.OpsFeedbackFilter{
+		TenantCode: in.TenantCode,
+		ProjectID:  in.ProjectID,
+		Type:       in.Type,
+	}
+	total, err := relationDB.NewOpsFeedbackRepo(l.ctx).CountByFilter(l.ctx, f)
+	if err != nil {
+		return nil, err
+	}
+	list, err := relationDB.NewOpsFeedbackRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Field: "createdTime",
+		Sort:  stores.OrderDesc,
+	}))
+	if err != nil {
+		return nil, err
+	}
+	return &sys.OpsFeedbackIndexResp{List: utils.CopySlice[sys.OpsFeedback](list), Total: total}, nil
 }

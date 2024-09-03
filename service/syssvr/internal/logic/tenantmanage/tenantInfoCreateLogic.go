@@ -114,7 +114,9 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		po.LogoImg = path
 	}
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		ris := []*relationDB.SysRoleInfo{{TenantCode: stores.TenantCode(in.Info.Code), Name: "超级管理员"}, {TenantCode: stores.TenantCode(in.Info.Code), Name: "普通用户"}}
+		ris := []*relationDB.SysRoleInfo{{TenantCode: stores.TenantCode(in.Info.Code), Name: "超级管理员", Code: "supper"},
+			{TenantCode: stores.TenantCode(in.Info.Code), Name: "管理员", Code: "admin"},
+			{TenantCode: stores.TenantCode(in.Info.Code), Name: "普通用户", Code: "client"}}
 		err = relationDB.NewRoleInfoRepo(tx).MultiInsert(l.ctx, ris)
 		if err != nil {
 			return err

@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,7 +31,10 @@ func (l *OpsWorkOrderIndexLogic) OpsWorkOrderIndex(in *sys.OpsWorkOrderIndexReq)
 	if err != nil {
 		return nil, err
 	}
-	list, err := relationDB.NewOpsWorkOrderRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
+	list, err := relationDB.NewOpsWorkOrderRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Field: "createdTime",
+		Sort:  stores.OrderDesc,
+	}))
 	if err != nil {
 		return nil, err
 	}

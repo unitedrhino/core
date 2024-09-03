@@ -23,12 +23,22 @@ func NewOpsFeedbackRepo(in any) *OpsFeedbackRepo {
 }
 
 type OpsFeedbackFilter struct {
-	//todo 添加过滤字段
+	TenantCode string
+	ProjectID  int64
+	Type       string
 }
 
 func (p OpsFeedbackRepo) fmtFilter(ctx context.Context, f OpsFeedbackFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
-	//todo 添加条件
+	if f.TenantCode != "" {
+		db = db.Where("tenant_code = ?", f.TenantCode)
+	}
+	if f.ProjectID != 0 {
+		db = db.Where("project_id = ?", f.ProjectID)
+	}
+	if f.Type != "" {
+		return db.Where("type = ?", f.Type)
+	}
 	return db
 }
 

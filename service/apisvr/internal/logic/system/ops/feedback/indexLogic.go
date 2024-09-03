@@ -2,6 +2,8 @@ package feedback
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -24,7 +26,12 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.OpsFeedbackIndexReq) (resp *types.OpsFeedbackIndexResp, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	ret, err := l.svcCtx.Ops.OpsFeedbackIndex(l.ctx, utils.Copy[sys.OpsFeedbackIndexReq](req))
+	if err != nil {
+		return nil, err
+	}
+	return &types.OpsFeedbackIndexResp{
+		Total: ret.Total,
+		List:  utils.CopySlice[types.OpsFeedback](ret.List),
+	}, nil
 }
