@@ -29,6 +29,7 @@ func (l *ModuleMenuIndexLogic) ModuleMenuIndex(in *sys.MenuInfoIndexReq) (*sys.M
 	f := relationDB.MenuInfoFilter{
 		ModuleCode: in.ModuleCode,
 		MenuIDs:    in.MenuIDs,
+		IsCommon:   in.IsCommon,
 	}
 	resp, err := relationDB.NewMenuInfoRepo(l.ctx).FindByFilter(l.ctx, f, nil)
 	if err != nil {

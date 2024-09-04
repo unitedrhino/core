@@ -26,7 +26,7 @@ service api {
 	post /module/index () returns (ModuleInfoIndexResp)
 	@doc "获取用户菜单列表"
 	@handler menuIndex
-	post /menu/index () returns (TenantAppMenuIndexResp)
+	post /menu/index (UserMenuIndexReq) returns (TenantAppMenuIndexResp)
 	@doc "获取用户授权树"
 	@handler accessTree
 	post /access/tree () returns (AccessTreeResp)
@@ -131,8 +131,9 @@ type (
 		WithProjects bool `json:"withProjects,optional"`
 	}
 
-	UserResourceWithModuleReq{
+	UserMenuIndexReq{
 		ModuleCode string `json:"moduleCode,optional"`                               // 应用编号
+		IsCommon   int64 `json:"isCommon,optional"`  // 是否常用菜单 1-是 2-否
 	}
     UserResourceReadResp{
 		Roles []*RoleInfo `json:"roles"` //角色列表

@@ -23,6 +23,7 @@ func ToMenuInfoRpc(in *types.MenuInfo) *sys.MenuInfo {
 		HideInMenu: in.HideInMenu,
 		Body:       utils.ToRpcNullString(in.Body),
 		ModuleCode: in.ModuleCode,
+		IsCommon:   in.IsCommon,
 	}
 }
 func ToMenuInfosRpc(in []*types.MenuInfo) (ret []*sys.MenuInfo) {

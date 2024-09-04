@@ -7196,6 +7196,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserMenuIndexReq"
+            }
+          }
+        ],
         "tags": [
           "system/user/self",
           "systemUserSelf"
@@ -9105,6 +9115,11 @@
           "format": "int64",
           "description": " 菜单是否隐藏 1：是 2：否"
         },
+        "isCommon": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 是否常用菜单 1-是 2-否"
+        },
         "body": {
           "type": "string",
           "description": "前端自定义字段"
@@ -9146,6 +9161,11 @@
           "type": "boolean",
           "format": "boolean",
           "description": " 是否返回树形结构"
+        },
+        "isCommon": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 是否常用菜单 1-是 2-否"
         }
       },
       "title": "MenuInfoIndexReq"
@@ -11306,6 +11326,11 @@
           "format": "int64",
           "description": " 菜单是否隐藏 1：是 2：否"
         },
+        "isCommon": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 是否常用菜单 1-是 2-否"
+        },
         "body": {
           "type": "string",
           "description": "前端自定义字段"
@@ -13017,6 +13042,21 @@
         "token"
       ]
     },
+    "UserMenuIndexReq": {
+      "type": "object",
+      "properties": {
+        "moduleCode": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "isCommon": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 是否常用菜单 1-是 2-否"
+        }
+      },
+      "title": "UserMenuIndexReq"
+    },
     "UserMessage": {
       "type": "object",
       "properties": {
@@ -13270,16 +13310,6 @@
         "roles",
         "info"
       ]
-    },
-    "UserResourceWithModuleReq": {
-      "type": "object",
-      "properties": {
-        "moduleCode": {
-          "type": "string",
-          "description": " 应用编号"
-        }
-      },
-      "title": "UserResourceWithModuleReq"
     },
     "UserRoleIndexReq": {
       "type": "object",

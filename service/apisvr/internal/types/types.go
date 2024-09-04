@@ -387,6 +387,7 @@ type MenuInfo struct {
 	Redirect   string      `json:"redirect,optional"`           // 路由重定向
 	Order      int64       `json:"order,optional"`              // 左侧table排序序号
 	HideInMenu int64       `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
+	IsCommon   int64       `json:"isCommon,optional"`           // 是否常用菜单 1-是 2-否
 	Body       *string     `json:"body,optional"`               //前端自定义字段
 	CreateTime int64       `json:"createTime,optional"`         // 创建时间
 	Children   []*MenuInfo `json:"children,optional,omitempty"` //子节点
@@ -397,6 +398,7 @@ type MenuInfoIndexReq struct {
 	Name       string `json:"name,optional"`       // 按菜单名称筛选
 	Path       string `json:"path,optional"`       // 按菜单路径筛选
 	IsRetTree  bool   `json:"isRetTree,optional"`  // 是否返回树形结构
+	IsCommon   int64  `json:"isCommon,optional"`   // 是否常用菜单 1-是 2-否
 }
 
 type MenuInfoIndexResp struct {
@@ -1397,6 +1399,11 @@ type UserLoginResp struct {
 	Token JwtToken    `json:"token"` //用户token
 }
 
+type UserMenuIndexReq struct {
+	ModuleCode string `json:"moduleCode,optional"` // 应用编号
+	IsCommon   int64  `json:"isCommon,optional"`   // 是否常用菜单 1-是 2-否
+}
+
 type UserMessage struct {
 	ID     int64 `json:"id"`
 	UserID int64 `json:"userID"`
@@ -1464,10 +1471,6 @@ type UserRegisterReq struct {
 type UserResourceReadResp struct {
 	Roles []*RoleInfo `json:"roles"` //角色列表
 	Info  *UserInfo   `json:"info"`  //用户信息
-}
-
-type UserResourceWithModuleReq struct {
-	ModuleCode string `json:"moduleCode,optional"` // 应用编号
 }
 
 type UserRoleIndexReq struct {

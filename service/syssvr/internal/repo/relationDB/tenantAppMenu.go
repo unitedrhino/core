@@ -23,10 +23,14 @@ type TenantAppMenuFilter struct {
 	Path       string
 	MenuIDs    []int64
 	TempLateID int64
+	IsCommon   int64
 }
 
 func (p TenantAppMenuRepo) fmtFilter(ctx context.Context, f TenantAppMenuFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	if f.IsCommon != 0 {
+		db = db.Where("is_common=?", f.IsCommon)
+	}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)
 	}

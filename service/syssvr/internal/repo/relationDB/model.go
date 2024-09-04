@@ -164,6 +164,7 @@ type SysModuleMenu struct {
 	Redirect   string           `gorm:"column:redirect;type:VARCHAR(64);NOT NULL"`          // 路由重定向
 	Body       string           `gorm:"column:body;type:VARCHAR(1024)"`                     // 菜单自定义数据
 	HideInMenu int64            `gorm:"column:hide_in_menu;type:BIGINT;default:2;NOT NULL"` // 是否隐藏菜单 1-是 2-否
+	IsCommon   int64            `gorm:"column:is_common;type:BIGINT;default:2;"`            // 是否常用菜单 1-是 2-否
 	Children   []*SysModuleMenu `gorm:"foreignKey:ID;references:ParentID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`

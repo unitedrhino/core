@@ -19,10 +19,14 @@ type MenuInfoFilter struct {
 	Name       string
 	Path       string
 	MenuIDs    []int64
+	IsCommon   int64
 }
 
 func (p MenuInfoRepo) fmtFilter(ctx context.Context, f MenuInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	if f.IsCommon != 0 {
+		db = db.Where("is_common=?", f.IsCommon)
+	}
 	if f.ModuleCode != "" {
 		db = db.Where("module_code =?", f.ModuleCode)
 	}

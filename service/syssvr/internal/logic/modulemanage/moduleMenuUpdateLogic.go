@@ -68,6 +68,10 @@ func (l *ModuleMenuUpdateLogic) ModuleMenuUpdate(in *sys.MenuInfo) (*sys.Empty, 
 		old.Body = in.Body.GetValue()
 		tenantMenu.Body = in.Body.GetValue()
 	}
+	if in.IsCommon != 0 {
+		old.IsCommon = in.IsCommon
+		tenantMenu.IsCommon = in.IsCommon
+	}
 	if in.HideInMenu != 0 && in.HideInMenu != old.HideInMenu {
 		old.HideInMenu = in.HideInMenu
 		tenantMenu.HideInMenu = in.HideInMenu

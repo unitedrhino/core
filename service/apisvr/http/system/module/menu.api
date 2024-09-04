@@ -48,6 +48,7 @@ type (
         Name string `json:"name,optional"` // 按菜单名称筛选
         Path string `json:"path,optional"` // 按菜单路径筛选
         IsRetTree bool `json:"isRetTree,optional"` // 是否返回树形结构
+        IsCommon   int64 `json:"isCommon,optional"`  // 是否常用菜单 1-是 2-否
     }
 
     MenuInfoIndexResp  {

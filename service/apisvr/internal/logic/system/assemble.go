@@ -47,6 +47,7 @@ func ToMenuInfoApi(i *sys.MenuInfo) *types.MenuInfo {
 		Order:      i.Order,
 		HideInMenu: i.HideInMenu,
 		Body:       utils.ToNullString(i.Body),
+		IsCommon:   i.IsCommon,
 		Children:   ToMenuInfosApi(i.Children),
 	}
 }

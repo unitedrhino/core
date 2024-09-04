@@ -80,6 +80,7 @@ func ToMenuInfoPb(in *relationDB.SysModuleMenu) *sys.MenuInfo {
 		Path:       in.Path,
 		Component:  in.Component,
 		Icon:       in.Icon,
+		IsCommon:   in.IsCommon,
 		Redirect:   in.Redirect,
 		Body:       utils.ToRpcNullString(in.Body),
 		HideInMenu: in.HideInMenu,

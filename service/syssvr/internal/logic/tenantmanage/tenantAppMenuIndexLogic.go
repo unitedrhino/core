@@ -39,6 +39,7 @@ func (l *TenantAppMenuIndexLogic) TenantAppMenuIndex(in *sys.TenantAppMenuIndexR
 		TenantCode: in.Code,
 		AppCode:    in.AppCode,
 		MenuIDs:    in.MenuIDs,
+		IsCommon:   in.IsCommon,
 	}
 	resp, err := relationDB.NewTenantAppMenuRepo(l.ctx).FindByFilter(l.ctx, f, &stores.PageInfo{Orders: []stores.OrderBy{
 		{Field: "hide_in_menu", Sort: stores.OrderDesc}, {Field: "order", Sort: stores.OrderAsc}}})

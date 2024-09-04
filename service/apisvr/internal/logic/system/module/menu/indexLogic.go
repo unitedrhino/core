@@ -29,6 +29,7 @@ func (l *IndexLogic) Index(req *types.MenuInfoIndexReq) (resp *types.MenuInfoInd
 	info, err := l.svcCtx.ModuleRpc.ModuleMenuIndex(l.ctx, &sys.MenuInfoIndexReq{
 		ModuleCode: req.ModuleCode,
 		IsRetTree:  req.IsRetTree,
+		IsCommon:   req.IsCommon,
 	})
 	if err != nil {
 		return nil, err
