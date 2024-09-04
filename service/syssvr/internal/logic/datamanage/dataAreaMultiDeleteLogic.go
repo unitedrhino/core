@@ -35,16 +35,24 @@ func (l *DataAreaMultiDeleteLogic) DataAreaMultiDelete(in *sys.DataAreaMultiDele
 	} else {
 		in.ProjectID = uc.ProjectID
 	}
-	project, err := relationDB.NewDataProjectRepo(l.ctx).FindOne(l.ctx, in.TargetType, in.TargetID, in.ProjectID)
-	if err != nil {
-		if !errors.Cmp(err, errors.NotFind) {
-			return nil, err
+
+	if !(uc.IsAdmin) {
+		pa := uc.ProjectAuth[in.ProjectID]
+		if pa == nil {
+			return nil, errors.Permissions.AddMsg("项目无权限")
 		}
+		in.TargetID = uc.UserID
+		if in.TargetType != def.TargetUser {
+			return nil, errors.Permissions.AddMsg("普通用户只能修改用户类型")
+		}
+		for _, v := range in.AreaIDs {
+			if pa.Area[v] == 0 {
+				return nil, errors.Permissions.AddMsg("区域无权限")
+			}
+		}
+		//return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
 	}
-	if !(uc.IsAdmin || uc.ProjectID == project.ProjectID) {
-		return nil, errors.Permissions.WithMsg("只有管理员才有权限授权")
-	}
-	err = relationDB.NewDataAreaRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DataAreaFilter{Targets: []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}}, AreaIDs: in.AreaIDs})
+	err := relationDB.NewDataAreaRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DataAreaFilter{Targets: []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}}, AreaIDs: in.AreaIDs})
 	if err != nil {
 		return nil, err
 	}
