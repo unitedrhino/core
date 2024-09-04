@@ -28,10 +28,12 @@ type MessageInfoFilter struct {
 	Group          string
 	IsGlobal       int64
 	IsDirectNotify int64 //是否是发送通知消息创建
+	NotifyTime     *stores.Cmp
 }
 
 func (p MessageInfoRepo) fmtFilter(ctx context.Context, f MessageInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	db = f.NotifyTime.Where(db, "notify_time")
 	if f.Group != "" {
 		db = db.Where(fmt.Sprintf("%s=?", stores.Col("group")), f.Group)
 	}

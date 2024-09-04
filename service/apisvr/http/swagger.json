@@ -9194,16 +9194,19 @@
           "format": "int64"
         },
         "group": {
-          "type": "string"
+          "type": "string",
+          "description": "分组"
         },
         "notifyCode": {
           "type": "string"
         },
         "subject": {
-          "type": "string"
+          "type": "string",
+          "description": "主题"
         },
         "body": {
-          "type": "string"
+          "type": "string",
+          "description": "内容"
         },
         "str1": {
           "type": "string"
@@ -9217,6 +9220,11 @@
         "isGlobal": {
           "type": "integer",
           "format": "int64"
+        },
+        "notifyTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "通知时间"
         },
         "createdTime": {
           "type": "integer",
@@ -9234,6 +9242,7 @@
         "str2",
         "str3",
         "isGlobal",
+        "notifyTime",
         "createdTime"
       ]
     },
@@ -9250,6 +9259,11 @@
         "group": {
           "type": "string",
           "description": "分组"
+        },
+        "isGlobal": {
+          "type": "integer",
+          "format": "int64",
+          "description": "全局消息"
         }
       },
       "title": "MessageInfoIndexReq"
@@ -9303,6 +9317,11 @@
         "body": {
           "type": "string"
         },
+        "notifyTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "通知时间"
+        },
         "str1": {
           "type": "string"
         },
@@ -9315,7 +9334,6 @@
       },
       "title": "MessageInfoSendReq",
       "required": [
-        "userIDs",
         "isGlobal",
         "notifyCode",
         "subject",

@@ -136,6 +136,7 @@ type (
 	RoleModuleIndexReq                    = sys.RoleModuleIndexReq
 	RoleModuleIndexResp                   = sys.RoleModuleIndexResp
 	RoleModuleMultiUpdateReq              = sys.RoleModuleMultiUpdateReq
+	SendOption                            = sys.SendOption
 	SlotInfo                              = sys.SlotInfo
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp

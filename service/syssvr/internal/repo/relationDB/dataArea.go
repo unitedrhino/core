@@ -52,7 +52,7 @@ func (p DataAreaRepo) fmtFilter(ctx context.Context, f DataAreaFilter) *gorm.DB 
 			}
 			return db
 		}
-		db = db.Where(scope(db))
+		db = db.Where(scope(p.db))
 	}
 	if f.TargetID != 0 {
 		db = db.Where("target_id = ? ", f.TargetID)

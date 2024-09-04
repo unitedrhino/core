@@ -4,6 +4,7 @@ import (
 	"gitee.com/i-Things/share/conf"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
+	"time"
 )
 
 /*
@@ -114,8 +115,9 @@ type SysMessageInfo struct {
 	Str1           string            `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如产品id
 	Str2           string            `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如设备id
 	Str3           string            `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);"`
-	IsGlobal       int64             `gorm:"column:is_global;index;type:bigint;default:2"`        //是否是全局消息,是的话所有用户都能看到
-	IsDirectNotify int64             `gorm:"column:is_direct_notify;index;type:bigint;default:2"` //是否是发送通知消息创建
+	IsGlobal       int64             `gorm:"column:is_global;index;type:bigint;default:2"`                //是否是全局消息,是的话所有用户都能看到
+	IsDirectNotify int64             `gorm:"column:is_direct_notify;index;type:bigint;default:2"`         //是否是发送通知消息创建
+	NotifyTime     time.Time         `gorm:"column:notify_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` //通知时间
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 }

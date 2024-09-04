@@ -7,6 +7,7 @@ import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
+	"time"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -34,6 +35,7 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 	if err != nil {
 		return nil, err
 	}
+
 	po := relationDB.SysMessageInfo{
 		Group:      ni.Group,
 		NotifyCode: ni.Code,
@@ -43,6 +45,9 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 		Str2:       in.Str2,
 		Str3:       in.Str3,
 		IsGlobal:   in.IsGlobal,
+	}
+	if in.NotifyTime != 0 {
+		po.NotifyTime = time.Unix(in.NotifyTime, 0)
 	}
 
 	if in.IsGlobal == def.True {

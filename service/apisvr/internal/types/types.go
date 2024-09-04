@@ -407,14 +407,15 @@ type MenuInfoIndexResp struct {
 
 type MessageInfo struct {
 	ID          int64  `json:"id"`
-	Group       string `json:"group"`
+	Group       string `json:"group"` //分组
 	NotifyCode  string `json:"notifyCode"`
-	Subject     string `json:"subject"`
-	Body        string `json:"body"`
+	Subject     string `json:"subject"` //主题
+	Body        string `json:"body"`    //内容
 	Str1        string `json:"str1"`
 	Str2        string `json:"str2"`
 	Str3        string `json:"str3"`
 	IsGlobal    int64  `json:"isGlobal"`
+	NotifyTime  int64  `json:"notifyTime"` //通知时间
 	CreatedTime int64  `json:"createdTime"`
 }
 
@@ -422,6 +423,7 @@ type MessageInfoIndexReq struct {
 	Page       *PageInfo `json:"page,optional"`       // 分页信息,只获取一个则不填
 	NotifyCode string    `json:"notifyCode,optional"` //
 	Group      string    `json:"group,optional"`      //分组
+	IsGlobal   int64     `json:"isGlobal,optional"`   //全局消息
 }
 
 type MessageInfoIndexResp struct {
@@ -430,11 +432,12 @@ type MessageInfoIndexResp struct {
 }
 
 type MessageInfoSendReq struct {
-	UserIDs    []int64 `json:"userIDs"`    //指定用户ID
-	IsGlobal   int64   `json:"isGlobal"`   //全局消息
-	NotifyCode string  `json:"notifyCode"` //通知的code
-	Subject    string  `json:"subject"`    //通知主题
+	UserIDs    []int64 `json:"userIDs,optional"` //指定用户ID
+	IsGlobal   int64   `json:"isGlobal"`         //全局消息
+	NotifyCode string  `json:"notifyCode"`       //通知的code
+	Subject    string  `json:"subject"`          //通知主题
 	Body       string  `json:"body"`
+	NotifyTime int64   `json:"notifyTime,optional"` //通知时间
 	Str1       string  `json:"str1,optional"`
 	Str2       string  `json:"str2,optional"`
 	Str3       string  `json:"str3,optional"`

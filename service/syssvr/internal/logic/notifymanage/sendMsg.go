@@ -108,13 +108,14 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
 				mi := relationDB.NewMessageInfoRepo(tx)
 				miPo := relationDB.SysMessageInfo{
-					Group:      config.Group,
-					NotifyCode: cfg.NotifyCode,
-					Subject:    subject,
-					Body:       body,
-					Str1:       cfg.Str1,
-					Str2:       cfg.Str2,
-					Str3:       cfg.Str3,
+					Group:          config.Group,
+					NotifyCode:     cfg.NotifyCode,
+					Subject:        subject,
+					Body:           body,
+					Str1:           cfg.Str1,
+					Str2:           cfg.Str2,
+					Str3:           cfg.Str3,
+					IsDirectNotify: def.True,
 				}
 				err := mi.Insert(ctx, &miPo)
 				if err != nil {

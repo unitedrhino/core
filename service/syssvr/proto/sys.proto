@@ -280,7 +280,11 @@ service ops{
   rpc opsFeedbackCreate(OpsFeedback)returns(WithID);
   rpc opsFeedbackIndex(OpsFeedbackIndexReq)returns(OpsFeedbackIndexResp);
 }
-
+message SendOption {
+  int64  timeoutToFail = 1;//超时失败时间
+  int64  requestTimeout = 2;//请求超时,超时后会进行重试
+  int64  retryInterval = 3;//重试间隔
+}
 
 message ThirdAppConfig {
   string appID =1;
@@ -413,6 +417,8 @@ message MessageInfoSendReq{
   string str1        =7;
   string str2        =8;
   string str3        =9;
+  repeated string withTypes =10;  //同时推送指定方式 sms email
+  int64 NotifyTime = 11;//通知时间,不传为立刻通知
 }
 
 message MessageInfo {
@@ -426,6 +432,7 @@ message MessageInfo {
   string str3=7;
   int64 isGlobal =8;
   int64 createdTime=9;
+  int64 NotifyTime = 11;//通知时间,不传为立刻通知
 }
 
 
