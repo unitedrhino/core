@@ -9868,6 +9868,14 @@
         },
         "issueDesc": {
           "type": "string"
+        },
+        "createdTime": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "user": {
+          "$ref": "#/definitions/UserCore",
+          "description": "获取用户类型返回"
         }
       },
       "title": "OpsFeedback",

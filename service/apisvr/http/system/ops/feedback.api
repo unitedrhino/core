@@ -30,6 +30,8 @@ type (
         Type string `json:"type"`
         ContactInformation string `json:"contactInformation"`
         IssueDesc string `json:"issueDesc"`
+        CreatedTime int64 `json:"createdTime,optional"`
+        User *UserCore `json:"user,optional"`//获取用户类型返回
     }
     OpsFeedbackIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填

@@ -1758,6 +1758,7 @@ message OpsFeedback{
   string type =5;
   string contactInformation =6;
   string issueDesc =7;
+  int64 createdTime = 8;
 }
 
 message OpsFeedbackIndexReq{

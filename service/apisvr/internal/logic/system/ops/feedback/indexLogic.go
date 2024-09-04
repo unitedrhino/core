@@ -30,8 +30,16 @@ func (l *IndexLogic) Index(req *types.OpsFeedbackIndexReq) (resp *types.OpsFeedb
 	if err != nil {
 		return nil, err
 	}
+	var list = utils.CopySlice[types.OpsFeedback](ret.List)
+	for _, v := range list {
+		u, err := l.svcCtx.UserCache.GetData(l.ctx, v.RaiseUserID)
+		if err != nil {
+			continue
+		}
+		v.User = utils.Copy[types.UserCore](u)
+	}
 	return &types.OpsFeedbackIndexResp{
 		Total: ret.Total,
-		List:  utils.CopySlice[types.OpsFeedback](ret.List),
+		List:  list,
 	}, nil
 }

@@ -584,13 +584,15 @@ type NtpReadResp struct {
 }
 
 type OpsFeedback struct {
-	ID                 int64  `json:"id,optional"`
-	TenantCode         string `json:"tenantCode,optional"`
-	RaiseUserID        int64  `json:"raiseUserID,optional"`
-	ProjectID          int64  `json:"projectID,optional"`
-	Type               string `json:"type"`
-	ContactInformation string `json:"contactInformation"`
-	IssueDesc          string `json:"issueDesc"`
+	ID                 int64     `json:"id,optional"`
+	TenantCode         string    `json:"tenantCode,optional"`
+	RaiseUserID        int64     `json:"raiseUserID,optional"`
+	ProjectID          int64     `json:"projectID,optional"`
+	Type               string    `json:"type"`
+	ContactInformation string    `json:"contactInformation"`
+	IssueDesc          string    `json:"issueDesc"`
+	CreatedTime        int64     `json:"createdTime,optional"`
+	User               *UserCore `json:"user,optional"` //获取用户类型返回
 }
 
 type OpsFeedbackIndexReq struct {
