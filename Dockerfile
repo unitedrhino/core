@@ -5,15 +5,16 @@ RUN go mod download
 COPY ./ ./
 RUN cd ./service/apisvr && go mod tidy && go build .
 
-FROM alpine:3.16  as web-builder
+FROM alpine:3.20  as web-builder
 ARG frontFile
 WORKDIR /ithings/
 RUN echo "Front file URL: $frontFile"
 RUN wget -O front.tgz $frontFile
 RUN tar -xvzf front.tgz
+RUN ls -l
 RUN rm -rf front.tgz
 
-FROM alpine:3.16
+FROM alpine:3.20
 LABEL homepage="https://github.com/i-Things/iThings"
 ENV TZ Asia/Shanghai
 RUN apk add tzdata
