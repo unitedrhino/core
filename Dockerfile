@@ -28,6 +28,7 @@ RUN apk add tzdata
 WORKDIR /ithings/
 COPY --from=go-builder /ithings/service/apisvr/apisvr ./apisvr
 COPY --from=go-builder /ithings/deploy/conf/core/etc/ ./etc
-COPY --from=go-builder /ithings/front/* ./dist/app
+RUN mkdir -p ./dist/app
+COPY --from=go-builder /ithings/front/ ./dist/app
 
 ENTRYPOINT ["./apisvr"]
