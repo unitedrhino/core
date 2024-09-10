@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine3.16 as go-builder
+FROM golang:1.21.13-alpine3.20 as go-builder
 WORKDIR /ithings/
 COPY ./go.mod ./go.mod
 RUN go mod download
@@ -7,10 +7,10 @@ RUN cd ./service/apisvr && go mod tidy && go build .
 
 FROM alpine:3.16  as web-builder
 WORKDIR /ithings/
-RUN mkdir front
-RUN cd front&& wget -O front.tgz ${frontFIle}
-RUN cd front && tar -xvzf front.tgz
-RUN cd front && rm -rf front.tgz
+ENV fileUrl=${frontFIle}
+RUN wget -O front.tgz ${fileUrl}
+RUN tar -xvzf front.tgz
+RUN rm -rf front.tgz
 
 
 FROM alpine:3.16
