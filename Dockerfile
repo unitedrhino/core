@@ -6,10 +6,11 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod download
 RUN cd ./service/apisvr && go mod tidy && go build -ldflags="-s -w" .
 RUN echo "Front file URL: $frontFile"
-RUN wget -O front.tgz $frontFile
-RUN tar -xvzf front.tgz
-RUN ls -l
-RUN rm -rf front.tgz
+RUN mkdir front
+RUN cd front&&wget -O front.tgz $frontFile
+RUN cd front&&tar -xvzf front.tgz
+RUN cd front&&ls -l
+RUN cd front&&rm -rf front.tgz
 
 #FROM alpine:3.20  as web-builder
 #ARG frontFile
