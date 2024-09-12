@@ -29,8 +29,6 @@ type (
 	AppModuleIndexReq                     = sys.AppModuleIndexReq
 	AppModuleIndexResp                    = sys.AppModuleIndexResp
 	AppModuleMultiUpdateReq               = sys.AppModuleMultiUpdateReq
-	AppPolicy                             = sys.AppPolicy
-	AppPolicyReadReq                      = sys.AppPolicyReadReq
 	AreaInfo                              = sys.AreaInfo
 	AreaInfoIndexReq                      = sys.AreaInfoIndexReq
 	AreaInfoIndexResp                     = sys.AreaInfoIndexResp

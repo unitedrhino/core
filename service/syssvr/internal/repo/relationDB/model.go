@@ -98,19 +98,6 @@ func (m *SysAppInfo) TableName() string {
 	return "sys_app_info"
 }
 
-type SysAppPolicy struct {
-	ID      int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`            // id编号
-	AppCode string `gorm:"column:app_code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"` // 应用编码
-	Code    string `gorm:"column:code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`
-	Name    string `gorm:"column:name;type:VARCHAR(50);NOT NULL"`              //命名
-	Subject string `gorm:"column:subject;uniqueIndex:tc_ac;type:VARCHAR(256)"` //主题
-	Body    string `gorm:"column:body;uniqueIndex:tc_ac;type:text;NOT NULL"`   //协议内容
-}
-
-func (m *SysAppPolicy) TableName() string {
-	return "sys_app_policy"
-}
-
 // 应用默认绑定的模块
 type SysAppModule struct {
 	ID         int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号

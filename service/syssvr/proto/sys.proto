@@ -127,8 +127,6 @@ service AppManage{
 
   rpc appModuleIndex(AppModuleIndexReq) returns (AppModuleIndexResp); //获取角色API权限列表
   rpc appModuleMultiUpdate(AppModuleMultiUpdateReq) returns (Empty);  //更新角色API权限
-
-  rpc appPolicyRead(AppPolicyReadReq)returns(AppPolicy);
 }
 
 service ModuleManage{
@@ -1540,19 +1538,6 @@ message ModuleInfoIndexResp{
 //----------------------------------------------------------------------------------------------
 //应用相关接口
 
-message AppPolicyReadReq{
-  string appCode =2;
-  string code = 3;          //
-}
-
-message AppPolicy{
-  int64 id = 1;
-  string appCode =2;
-  string code = 3;          //
-  string name= 4;          //
-  string subject =5;
-  string body =6;
-}
 
 message AppInfo{
   int64 id = 1;

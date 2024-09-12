@@ -3111,7 +3111,6 @@ const (
 	AppManage_AppInfoRead_FullMethodName          = "/sys.AppManage/appInfoRead"
 	AppManage_AppModuleIndex_FullMethodName       = "/sys.AppManage/appModuleIndex"
 	AppManage_AppModuleMultiUpdate_FullMethodName = "/sys.AppManage/appModuleMultiUpdate"
-	AppManage_AppPolicyRead_FullMethodName        = "/sys.AppManage/appPolicyRead"
 )
 
 // AppManageClient is the client API for AppManage service.
@@ -3125,7 +3124,6 @@ type AppManageClient interface {
 	AppInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*AppInfo, error)
 	AppModuleIndex(ctx context.Context, in *AppModuleIndexReq, opts ...grpc.CallOption) (*AppModuleIndexResp, error)
 	AppModuleMultiUpdate(ctx context.Context, in *AppModuleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
-	AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error)
 }
 
 type appManageClient struct {
@@ -3199,15 +3197,6 @@ func (c *appManageClient) AppModuleMultiUpdate(ctx context.Context, in *AppModul
 	return out, nil
 }
 
-func (c *appManageClient) AppPolicyRead(ctx context.Context, in *AppPolicyReadReq, opts ...grpc.CallOption) (*AppPolicy, error) {
-	out := new(AppPolicy)
-	err := c.cc.Invoke(ctx, AppManage_AppPolicyRead_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // AppManageServer is the server API for AppManage service.
 // All implementations must embed UnimplementedAppManageServer
 // for forward compatibility
@@ -3219,7 +3208,6 @@ type AppManageServer interface {
 	AppInfoRead(context.Context, *WithIDCode) (*AppInfo, error)
 	AppModuleIndex(context.Context, *AppModuleIndexReq) (*AppModuleIndexResp, error)
 	AppModuleMultiUpdate(context.Context, *AppModuleMultiUpdateReq) (*Empty, error)
-	AppPolicyRead(context.Context, *AppPolicyReadReq) (*AppPolicy, error)
 	mustEmbedUnimplementedAppManageServer()
 }
 
@@ -3247,9 +3235,6 @@ func (UnimplementedAppManageServer) AppModuleIndex(context.Context, *AppModuleIn
 }
 func (UnimplementedAppManageServer) AppModuleMultiUpdate(context.Context, *AppModuleMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AppModuleMultiUpdate not implemented")
-}
-func (UnimplementedAppManageServer) AppPolicyRead(context.Context, *AppPolicyReadReq) (*AppPolicy, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AppPolicyRead not implemented")
 }
 func (UnimplementedAppManageServer) mustEmbedUnimplementedAppManageServer() {}
 
@@ -3390,24 +3375,6 @@ func _AppManage_AppModuleMultiUpdate_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AppManage_AppPolicyRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AppPolicyReadReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppManageServer).AppPolicyRead(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AppManage_AppPolicyRead_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppManageServer).AppPolicyRead(ctx, req.(*AppPolicyReadReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // AppManage_ServiceDesc is the grpc.ServiceDesc for AppManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -3442,10 +3409,6 @@ var AppManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "appModuleMultiUpdate",
 			Handler:    _AppManage_AppModuleMultiUpdate_Handler,
-		},
-		{
-			MethodName: "appPolicyRead",
-			Handler:    _AppManage_AppPolicyRead_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
