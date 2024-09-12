@@ -4,7 +4,7 @@ WORKDIR /ithings/
 COPY ./ ./
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod download
-RUN cd ./service/apisvr && go mod tidy && go build -ldflags="-s -w" .
+RUN cd ./service/apisvr && go mod tidy && go build  -tags no_k8s -ldflags="-s -w" .
 RUN echo "Front file URL: $frontFile"
 RUN mkdir front
 RUN cd front&&wget -O front.tgz $frontFile

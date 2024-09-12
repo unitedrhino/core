@@ -6,7 +6,7 @@ build:build.clean mod cp.etc build.api   build.sys  build.timedjob build.timedsc
 buildback: build.clean mod cp.etc build.api
 
 
-buildone: buildback moduleupdate build.front
+buildone: buildback moduleupdate
 
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
@@ -33,14 +33,6 @@ moduleupdate:
 	@git submodule foreach git checkout master
 	@git submodule foreach git pull
 
-build.front:
-	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@mkdir -p ./cmd/dist/app/core
-	@cd module/front/core  && npm install && npm run pro && cp -rf ./dist/* ../../../cmd/dist/app/core
-#	@git switch 'origin/dev/dyb/v1.0.4'
-	@mkdir -p ./cmd/dist/app/system-manage
-	@cd module/front/systemManage  && npm install && npm run pro && cp -rf ./dist/* ../../../cmd/dist/app/system-manage
-#	@git switch 'origin/dyb/v1.0.5'
 
 killall:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>killing all<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
@@ -67,28 +59,28 @@ cp.etc:
 
 build.api:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w" -o ./cmd/coresvr ./service/apisvr
+	@go build -ldflags="-s -w"  -tags no_k8s -o ./cmd/coresvr ./service/apisvr
 
 build.view:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w" -o ./cmd/viewsvr ./service/viewsvr
+	@go build -ldflags="-s -w" -tags no_k8s  -o ./cmd/viewsvr ./service/viewsvr
 
 build.data:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w" -o ./cmd/datasvr ./service/datasvr
+	@go build -ldflags="-s -w" -tags no_k8s  -o ./cmd/datasvr ./service/datasvr
 
 
 build.sys:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w"  -o ./cmd/syssvr ./service/syssvr
+	@go build -ldflags="-s -w"  -tags no_k8s  -o ./cmd/syssvr ./service/syssvr
 
 build.timedjob:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w"  -o ./cmd/timedjobsvr ./service/timed/timedjobsvr
+	@go build -ldflags="-s -w" -tags no_k8s   -o ./cmd/timedjobsvr ./service/timed/timedjobsvr
 
 build.timedscheduler:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w"  -o ./cmd/timedschedulersvr ./service/timed/timedschedulersvr
+	@go build -ldflags="-s -w" -tags no_k8s   -o ./cmd/timedschedulersvr ./service/timed/timedschedulersvr
 
 
 run.api:
