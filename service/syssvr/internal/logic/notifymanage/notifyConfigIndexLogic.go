@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/i-Things/core/service/syssvr/internal/logic"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/i-Things/share/stores"
 	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
@@ -37,7 +38,10 @@ func (l *NotifyConfigIndexLogic) NotifyConfigIndex(in *sys.NotifyConfigIndexReq)
 	if err != nil {
 		return nil, err
 	}
-	pos, err := db.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
+	pos, err := db.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Field: "createdTime",
+		Sort:  stores.OrderDesc,
+	}))
 	if err != nil {
 		return nil, err
 	}

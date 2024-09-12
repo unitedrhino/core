@@ -91,9 +91,6 @@ func migrateTableColumn() error {
 		return err
 	}
 
-	//if err := db.CreateInBatches(&MigrateRoleApi, 100).Error; err != nil {
-	//	return err
-	//}
 	if err := db.CreateInBatches(&MigrateUserRole, 100).Error; err != nil {
 		return err
 	}
@@ -112,32 +109,6 @@ func migrateTableColumn() error {
 		return err
 	}
 
-	//{
-	//	if err := db.CreateInBatches(&MigrateModuleApi, 100).Error; err != nil {
-	//		return err
-	//	}
-	//	for _, v := range MigrateModuleApi {
-	//		data := SysTenantAppApi{
-	//			TempLateID:   v.ID,
-	//			TenantCode:   def.TenantCodeDefault,
-	//			AppCode:      def.AppCore,
-	//			SysModuleApi: v,
-	//		}
-	//		data.ID = 0
-	//		MigrateTenantAppApi = append(MigrateTenantAppApi, data)
-	//	}
-	//	if err := db.CreateInBatches(&MigrateTenantAppApi, 100).Error; err != nil {
-	//		return err
-	//	}
-	//}
-
-	{
-
-		if err := db.CreateInBatches(&MigrateTenantAppModule, 100).Error; err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
@@ -149,9 +120,8 @@ const (
 // 子应用管理员可以配置自己子应用的角色
 
 var (
-	MigrateTenantAppModule = []SysTenantAppModule{}
-	MigrateTenantAppMenu   = []SysTenantAppMenu{}
-	MigrateTenantConfig    = []SysTenantConfig{
+	MigrateTenantAppMenu = []SysTenantAppMenu{}
+	MigrateTenantConfig  = []SysTenantConfig{
 		{TenantCode: def.TenantCodeDefault, RegisterRoleID: 2},
 	}
 	MigrateProjectInfo = []SysProjectInfo{{TenantCode: def.TenantCodeDefault, AdminUserID: adminUserID, ProjectID: defaultProjectID, ProjectName: "默认项目"}}
@@ -161,6 +131,8 @@ var (
 	}
 	MigrateUserRole = []SysUserRole{
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 1},
+		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 2},
+		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 3},
 	}
 	MigrateRoleInfo = []SysRoleInfo{
 		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "管理员", Code: def.RoleCodeAdmin},
