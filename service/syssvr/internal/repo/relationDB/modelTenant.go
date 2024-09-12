@@ -22,7 +22,8 @@ type SysTenantInfo struct {
 }
 
 type SysTenantOem struct {
-	BackGroundColour string `gorm:"column:background_colour;type:VARCHAR(54);"` //背景颜色
+	BackgroundColour string `gorm:"column:background_colour;type:VARCHAR(54);"` //背景颜色
+	BackgroundDesc   string `gorm:"column:background_desc;type:VARCHAR(54);"`   //背景描述
 	BackgroundImg    string `gorm:"column:background_img;type:VARCHAR(512);"`   //背景图片
 	LogoImg          string `gorm:"column:logo_img;type:VARCHAR(512);"`         //租户logo地址
 	Title            string `gorm:"column:title;type:VARCHAR(100);"`            //中文标题

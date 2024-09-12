@@ -574,6 +574,7 @@ message TenantInfo{
   string backgroundImg =9;
   bool isUpdateBackgroundImg = 10;
   string backgroundColour =15;//背景颜色
+  google.protobuf.StringValue backgroundDesc =19;//背景描述
   string logoImg =11;
   bool isUpdateLogoImg =12;
   string title =13;

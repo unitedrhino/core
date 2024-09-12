@@ -1017,6 +1017,7 @@ type TenantCore struct {
 	Title            string  `json:"title,optional"`
 	TitleEn          string  `json:"titleEn,optional"`
 	BackgroundColour string  `json:"backgroundColour,optional"`
+	BackgroundDesc   *string `json:"backgroundDesc,optional,omitempty"`
 	Footer           string  `json:"footer,optional"` //页尾
 }
 
@@ -1029,6 +1030,7 @@ type TenantInfo struct {
 	Desc                  *string   `json:"desc,optional"` // 备注
 	DefaultProjectID      int64     `json:"defaultProjectID,optional"`
 	BackgroundColour      string    `json:"backgroundColour,optional"`
+	BackgroundDesc        string    `json:"backgroundDesc,optional,omitempty"`
 	BackgroundImg         string    `json:"backgroundImg,optional"`
 	Footer                string    `json:"footer,optional"` //页尾
 	IsUpdateBackgroundImg bool      `json:"isUpdateBackgroundImg,optional,omitempty"`

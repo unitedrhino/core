@@ -99,8 +99,11 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Empty
 	if in.TitleEn != "" {
 		old.TitleEn = in.TitleEn
 	}
+	if in.BackgroundDesc != nil {
+		old.BackgroundDesc = in.BackgroundDesc.GetValue()
+	}
 	if in.BackgroundColour != "" {
-		old.BackGroundColour = in.BackgroundColour
+		old.BackgroundColour = in.BackgroundColour
 	}
 	if in.Desc != nil {
 		old.Desc = utils.ToEmptyString(in.Desc)

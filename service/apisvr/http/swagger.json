@@ -11603,6 +11603,9 @@
         "backgroundColour": {
           "type": "string"
         },
+        "backgroundDesc": {
+          "type": "string"
+        },
         "footer": {
           "type": "string",
           "description": "页尾"
@@ -11645,6 +11648,9 @@
           "format": "int64"
         },
         "backgroundColour": {
+          "type": "string"
+        },
+        "backgroundDesc": {
           "type": "string"
         },
         "backgroundImg": {
