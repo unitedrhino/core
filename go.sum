@@ -1,7 +1,7 @@
 filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
 filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
-gitee.com/i-Things/share v0.1.14 h1:kVZ46R/1aFzTEWiAC3J4RZw9yTNPaG6VN8Itx0H9xyk=
-gitee.com/i-Things/share v0.1.14/go.mod h1:uWRuZ5bfe70MZWimF1Mqkq4KZUQWHfiEYXJSPqOT5lA=
+gitee.com/i-Things/share v0.1.17 h1:9NSTsWNg9cooX3X2MweyYMPm1+3vhFiyxyBWxpAGDTU=
+gitee.com/i-Things/share v0.1.17/go.mod h1:UyFnCz/zAf3+k1ZDK7UMyjLLEeyaFLANwNtGB01zHHE=
 github.com/BurntSushi/toml v1.3.2 h1:o7IhLm0Msx3BaB+n3Ag7L8EVlByGnpq14C4YWiu/gL8=
 github.com/BurntSushi/toml v1.3.2/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/DATA-DOG/go-sqlmock v1.5.2 h1:OcvFkGmslmlZibjAjaHm3L//6LiuBgolP7OputlJIzU=
