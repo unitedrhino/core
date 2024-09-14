@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/utils"
+	"sort"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -35,7 +36,10 @@ func (l *TreeLogic) Tree(req *types.NotifyConfigIndexReq) (resp *types.NotifyCon
 	}
 	var retList []*types.NotifyGroupInfo
 	var groupID int64
-	for k, v := range retMap {
+	var keys = utils.SetToSlice(retMap)
+	sort.Strings(keys)
+	for _, k := range keys {
+		v := retMap[k]
 		groupID++
 		code := fmt.Sprintf("group%d", groupID)
 		retList = append(retList, &types.NotifyGroupInfo{
