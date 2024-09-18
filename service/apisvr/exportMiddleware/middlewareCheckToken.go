@@ -95,9 +95,9 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		apiRet, err = m.AuthRpc.RoleApiAuth(r.Context(), &req)
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
-			//http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
+			http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
 			systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
-			//return
+			return
 		}
 
 		m.OperationLogRecord(next, w, r, apiRet)
