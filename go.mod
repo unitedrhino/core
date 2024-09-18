@@ -1,14 +1,10 @@
 module gitee.com/i-Things/core
 
-go 1.21
-
-toolchain go1.21.4
-
-replace github.com/Masterminds/squirrel => github.com/i-Things/squirrel v1.20.2
+go 1.21.4
 
 require (
-	gitee.com/i-Things/share v0.1.17
-	github.com/Masterminds/squirrel v1.20.1
+	gitee.com/i-Things/share v0.1.18
+	gitee.com/i-Things/squirrel v1.20.4
 	github.com/alibabacloud-go/tea v1.2.1
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079
@@ -152,7 +148,7 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/tjfoc/gmsm v1.3.2 // indirect
-	github.com/twpayne/go-geom v1.5.3 // indirect
+	github.com/twpayne/go-geom v1.5.4 // indirect
 	github.com/xuri/efp v0.0.0-20231025114914-d1ff6096ae53 // indirect
 	github.com/xuri/excelize/v2 v2.8.1 // indirect
 	github.com/xuri/nfp v0.0.0-20230919160717-d98342af3f05 // indirect

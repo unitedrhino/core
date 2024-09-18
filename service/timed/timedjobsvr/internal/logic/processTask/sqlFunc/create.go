@@ -3,7 +3,7 @@ package sqlFunc
 import (
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/utils"
-	sq "github.com/Masterminds/squirrel"
+	sq "gitee.com/i-Things/squirrel"
 	"github.com/dop251/goja"
 )
 
