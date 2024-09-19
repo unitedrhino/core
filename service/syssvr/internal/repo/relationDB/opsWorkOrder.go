@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"gitee.com/i-Things/share/domain/ops"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -24,7 +25,7 @@ func NewOpsWorkOrderRepo(in any) *OpsWorkOrderRepo {
 }
 
 type OpsWorkOrderFilter struct {
-	Status    int64
+	Status    ops.WorkOrderStatus
 	Type      string
 	StartTime time.Time
 	EndTime   time.Time

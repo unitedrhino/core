@@ -6707,6 +6707,7 @@ const (
 	Ops_OpsWorkOrderUpdate_FullMethodName = "/sys.ops/opsWorkOrderUpdate"
 	Ops_OpsWorkOrderIndex_FullMethodName  = "/sys.ops/opsWorkOrderIndex"
 	Ops_OpsFeedbackCreate_FullMethodName  = "/sys.ops/opsFeedbackCreate"
+	Ops_OpsFeedbackUpdate_FullMethodName  = "/sys.ops/opsFeedbackUpdate"
 	Ops_OpsFeedbackIndex_FullMethodName   = "/sys.ops/opsFeedbackIndex"
 )
 
@@ -6720,6 +6721,7 @@ type OpsClient interface {
 	OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error)
 	// 反馈
 	OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error)
+	OpsFeedbackUpdate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*Empty, error)
 	OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error)
 }
 
@@ -6767,6 +6769,15 @@ func (c *opsClient) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts
 	return out, nil
 }
 
+func (c *opsClient) OpsFeedbackUpdate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Ops_OpsFeedbackUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *opsClient) OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error) {
 	out := new(OpsFeedbackIndexResp)
 	err := c.cc.Invoke(ctx, Ops_OpsFeedbackIndex_FullMethodName, in, out, opts...)
@@ -6786,6 +6797,7 @@ type OpsServer interface {
 	OpsWorkOrderIndex(context.Context, *OpsWorkOrderIndexReq) (*OpsWorkOrderIndexResp, error)
 	// 反馈
 	OpsFeedbackCreate(context.Context, *OpsFeedback) (*WithID, error)
+	OpsFeedbackUpdate(context.Context, *OpsFeedback) (*Empty, error)
 	OpsFeedbackIndex(context.Context, *OpsFeedbackIndexReq) (*OpsFeedbackIndexResp, error)
 	mustEmbedUnimplementedOpsServer()
 }
@@ -6805,6 +6817,9 @@ func (UnimplementedOpsServer) OpsWorkOrderIndex(context.Context, *OpsWorkOrderIn
 }
 func (UnimplementedOpsServer) OpsFeedbackCreate(context.Context, *OpsFeedback) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OpsFeedbackCreate not implemented")
+}
+func (UnimplementedOpsServer) OpsFeedbackUpdate(context.Context, *OpsFeedback) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OpsFeedbackUpdate not implemented")
 }
 func (UnimplementedOpsServer) OpsFeedbackIndex(context.Context, *OpsFeedbackIndexReq) (*OpsFeedbackIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OpsFeedbackIndex not implemented")
@@ -6894,6 +6909,24 @@ func _Ops_OpsFeedbackCreate_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Ops_OpsFeedbackUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpsFeedback)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OpsServer).OpsFeedbackUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ops_OpsFeedbackUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OpsServer).OpsFeedbackUpdate(ctx, req.(*OpsFeedback))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Ops_OpsFeedbackIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(OpsFeedbackIndexReq)
 	if err := dec(in); err != nil {
@@ -6934,6 +6967,10 @@ var Ops_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "opsFeedbackCreate",
 			Handler:    _Ops_OpsFeedbackCreate_Handler,
+		},
+		{
+			MethodName: "opsFeedbackUpdate",
+			Handler:    _Ops_OpsFeedbackUpdate_Handler,
 		},
 		{
 			MethodName: "opsFeedbackIndex",

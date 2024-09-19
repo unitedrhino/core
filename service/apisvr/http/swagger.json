@@ -4152,6 +4152,48 @@
         ]
       }
     },
+    "/api/v1/system/ops/feedback/update": {
+      "post": {
+        "summary": "更新帮助与反馈",
+        "operationId": "postApiV1SystemOpsFeedbackUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithID"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OpsFeedback"
+            }
+          }
+        ],
+        "tags": [
+          "system/ops/feedback",
+          "systemOpsFeedback"
+        ]
+      }
+    },
     "/api/v1/system/ops/work-order/create": {
       "post": {
         "summary": "添加工单",
@@ -9913,11 +9955,17 @@
         "type": {
           "type": "string"
         },
-        "tenantCode": {
-          "type": "string"
-        },
         "projectID": {
           "type": "string"
+        },
+        "isAllTenant": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "default租户获取所有租户的信息"
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": "过滤所属租户,isAllTenant为true有效"
         }
       },
       "title": "OpsFeedbackIndexReq"

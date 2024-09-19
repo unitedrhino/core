@@ -862,6 +862,12 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/feedback/index",
 					Handler: systemopsfeedback.IndexHandler(serverCtx),
 				},
+				{
+					// 更新帮助与反馈
+					Method:  http.MethodPost,
+					Path:    "/feedback/update",
+					Handler: systemopsfeedback.UpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/ops"),

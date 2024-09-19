@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"gitee.com/i-Things/share/domain/ops"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -26,12 +27,16 @@ type OpsFeedbackFilter struct {
 	TenantCode string
 	ProjectID  int64
 	Type       string
+	Status     ops.WorkOrderStatus
 }
 
 func (p OpsFeedbackRepo) fmtFilter(ctx context.Context, f OpsFeedbackFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code = ?", f.TenantCode)
+	}
+	if f.Status != 0 {
+		db = db.Where("status = ?", f.Status)
 	}
 	if f.ProjectID != 0 {
 		db = db.Where("project_id = ?", f.ProjectID)

@@ -16,10 +16,13 @@ service api {
     @handler create
     post /feedback/create (OpsFeedback) returns (WithID)
 
+    @doc "更新帮助与反馈"
+    @handler update
+    post /feedback/update (OpsFeedback) returns (WithID)
+
     @doc "获取帮助与反馈"
     @handler index
     post /feedback/index (OpsFeedbackIndexReq) returns (OpsFeedbackIndexResp)
-
 }
 type (
     OpsFeedback{
@@ -36,8 +39,9 @@ type (
     OpsFeedbackIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Type string  `json:"type,optional"`
-        TenantCode string  `json:"tenantCode,optional"`
         ProjectID string  `json:"projectID,optional"`
+        IsAllTenant bool `json:"isAllTenant,optional"`//default租户获取所有租户的信息
+        TenantCode string `json:"tenantCode,optional"` //过滤所属租户,isAllTenant为true有效
     }
 
     OpsFeedbackIndexResp  {

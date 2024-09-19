@@ -599,10 +599,11 @@ type OpsFeedback struct {
 }
 
 type OpsFeedbackIndexReq struct {
-	Page       *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	Type       string    `json:"type,optional"`
-	TenantCode string    `json:"tenantCode,optional"`
-	ProjectID  string    `json:"projectID,optional"`
+	Page        *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Type        string    `json:"type,optional"`
+	ProjectID   string    `json:"projectID,optional"`
+	IsAllTenant bool      `json:"isAllTenant,optional"` //default租户获取所有租户的信息
+	TenantCode  string    `json:"tenantCode,optional"`  //过滤所属租户,isAllTenant为true有效
 }
 
 type OpsFeedbackIndexResp struct {

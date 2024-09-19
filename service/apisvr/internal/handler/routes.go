@@ -863,6 +863,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/feedback/index",
 					Handler: systemopsfeedback.IndexHandler(serverCtx),
 				},
+				{
+					// 更新帮助与反馈
+					Method:  http.MethodPost,
+					Path:    "/feedback/update",
+					Handler: systemopsfeedback.UpdateHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/ops"),

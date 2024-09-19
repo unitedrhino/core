@@ -222,6 +222,7 @@ type (
 		OpsWorkOrderIndex(ctx context.Context, in *OpsWorkOrderIndexReq, opts ...grpc.CallOption) (*OpsWorkOrderIndexResp, error)
 		// 反馈
 		OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error)
+		OpsFeedbackUpdate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*Empty, error)
 		OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error)
 	}
 
@@ -286,6 +287,15 @@ func (m *defaultOps) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opt
 // 反馈
 func (d *directOps) OpsFeedbackCreate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*WithID, error) {
 	return d.svr.OpsFeedbackCreate(ctx, in)
+}
+
+func (m *defaultOps) OpsFeedbackUpdate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewOpsClient(m.cli.Conn())
+	return client.OpsFeedbackUpdate(ctx, in, opts...)
+}
+
+func (d *directOps) OpsFeedbackUpdate(ctx context.Context, in *OpsFeedback, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.OpsFeedbackUpdate(ctx, in)
 }
 
 func (m *defaultOps) OpsFeedbackIndex(ctx context.Context, in *OpsFeedbackIndexReq, opts ...grpc.CallOption) (*OpsFeedbackIndexResp, error) {

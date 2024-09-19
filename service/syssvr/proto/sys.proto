@@ -276,6 +276,7 @@ service ops{
 
   //反馈
   rpc opsFeedbackCreate(OpsFeedback)returns(WithID);
+  rpc opsFeedbackUpdate(OpsFeedback)returns(Empty);
   rpc opsFeedbackIndex(OpsFeedbackIndexReq)returns(OpsFeedbackIndexResp);
 }
 message SendOption {
@@ -1752,13 +1753,16 @@ message OpsFeedback{
   string contactInformation =6;
   string issueDesc =7;
   int64 createdTime = 8;
+  int64 status = 9;//状态（1 待处理 2:处理中 3:已完成）
 }
 
 message OpsFeedbackIndexReq{
   PageInfo page = 1;//分页信息 只获取一个则不填
-  string tenantCode = 2;
-  int64 projectID=3;
-  string type =4;
+  int64 projectID=2;
+  string type =3;
+  bool isAllTenant =4;//default租户获取所有租户的信息
+  string tenantCode =5; //过滤所属租户,isAllTenant为true有效
+  int64 status = 6;//状态（1 待处理 2:处理中 3:已完成）
 }
 
 message OpsFeedbackIndexResp{

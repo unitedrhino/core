@@ -1460,6 +1460,26 @@
       ],
       "authType": "all"
     },
+    "systemOpsFeedbackModify": {
+      "name": "修改帮助与反馈",
+      "code": "systemOpsFeedbackModify",
+      "group": "运营管理",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemOpsFeedbackModify",
+          "method": "POST",
+          "route": "/api/v1/system/ops/feedback/update",
+          "name": "更新帮助与反馈",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all"
+        }
+      ],
+      "authType": "all"
+    },
     "systemOpsWorkOrderAdd": {
       "name": "新增工单管理",
       "code": "systemOpsWorkOrderAdd",

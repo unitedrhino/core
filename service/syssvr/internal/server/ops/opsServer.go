@@ -45,6 +45,11 @@ func (s *OpsServer) OpsFeedbackCreate(ctx context.Context, in *sys.OpsFeedback) 
 	return l.OpsFeedbackCreate(in)
 }
 
+func (s *OpsServer) OpsFeedbackUpdate(ctx context.Context, in *sys.OpsFeedback) (*sys.Empty, error) {
+	l := opslogic.NewOpsFeedbackUpdateLogic(ctx, s.svcCtx)
+	return l.OpsFeedbackUpdate(in)
+}
+
 func (s *OpsServer) OpsFeedbackIndex(ctx context.Context, in *sys.OpsFeedbackIndexReq) (*sys.OpsFeedbackIndexResp, error) {
 	l := opslogic.NewOpsFeedbackIndexLogic(ctx, s.svcCtx)
 	return l.OpsFeedbackIndex(in)
