@@ -29,12 +29,16 @@ func NewOpsFeedbackIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *OpsFeedbackIndexLogic) OpsFeedbackIndex(in *sys.OpsFeedbackIndexReq) (*sys.OpsFeedbackIndexResp, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	if err := ctxs.IsRoot(l.ctx); err == nil && in.IsAllTenant {
 		ctxs.GetUserCtx(l.ctx).AllTenant = true
 		defer func() {
 			ctxs.GetUserCtx(l.ctx).AllTenant = false
 		}()
 	}
+	ctxs.GetUserCtx(l.ctx).AllProject = true
 	f := relationDB.OpsFeedbackFilter{
 		TenantCode: in.TenantCode,
 		ProjectID:  in.ProjectID,
