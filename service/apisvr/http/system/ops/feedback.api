@@ -30,16 +30,18 @@ type (
         TenantCode string `json:"tenantCode,optional"`
         RaiseUserID int64 `json:"raiseUserID,optional"`
         ProjectID int64 `json:"projectID,optional"`
-        Type string `json:"type"`
-        ContactInformation string `json:"contactInformation"`
-        IssueDesc string `json:"issueDesc"`
-        CreatedTime int64 `json:"createdTime,optional"`
+        Type string `json:"type,optional"` //反馈类型 设备问题:thingsDevice 智能场景:thingsScene 体验问题: experience 其他: other
+        ContactInformation string `json:"contactInformation,optional"`//联系方式
+        IssueDesc string `json:"issueDesc,optional"` //反馈内容
+        CreatedTime int64 `json:"createdTime,optional"` //创建时间
+        Status      int64  `json:"status,optional,range=[0:3]"`           // 状态（1 待处理 2:处理中 3:已完成）
         User *UserCore `json:"user,optional"`//获取用户类型返回
     }
     OpsFeedbackIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
-        Type string  `json:"type,optional"`
-        ProjectID string  `json:"projectID,optional"`
+        Type string  `json:"type,optional"` //反馈类型	设备问题:thingsDevice 智能场景:thingsScene 体验问题: experience 其他: other
+        ProjectID string  `json:"projectID,optional"` //所属项目
+        Status      int64  `json:"status,optional,range=[0:3]"`           // 状态（1 待处理 2:处理中 3:已完成）
         IsAllTenant bool `json:"isAllTenant,optional"`//default租户获取所有租户的信息
         TenantCode string `json:"tenantCode,optional"` //过滤所属租户,isAllTenant为true有效
     }

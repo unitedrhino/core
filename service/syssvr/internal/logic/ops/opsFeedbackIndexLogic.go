@@ -39,6 +39,7 @@ func (l *OpsFeedbackIndexLogic) OpsFeedbackIndex(in *sys.OpsFeedbackIndexReq) (*
 		TenantCode: in.TenantCode,
 		ProjectID:  in.ProjectID,
 		Type:       in.Type,
+		Status:     in.Status,
 	}
 	total, err := relationDB.NewOpsFeedbackRepo(l.ctx).CountByFilter(l.ctx, f)
 	if err != nil {
