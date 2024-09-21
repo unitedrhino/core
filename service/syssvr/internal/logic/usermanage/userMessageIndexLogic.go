@@ -80,6 +80,9 @@ func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*
 		return nil, err
 	}
 	pos, err := db.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Field: "isRead",
+		Sort:  stores.OrderDesc,
+	}, stores.OrderBy{
 		Field: "createdTime",
 		Sort:  stores.OrderDesc,
 	}))
