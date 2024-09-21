@@ -29,8 +29,8 @@ service api {
     )
     @handler update
     post /work-order/update (OpsWorkOrder) returns ()
-
 }
+
 type (
     OpsWorkOrder{
         ID          int64  `json:"id,optional"`
