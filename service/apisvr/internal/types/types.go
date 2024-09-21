@@ -432,10 +432,10 @@ type MessageInfoIndexResp struct {
 }
 
 type MessageInfoSendReq struct {
-	UserIDs    []int64 `json:"userIDs,optional"` //指定用户ID
-	IsGlobal   int64   `json:"isGlobal"`         //全局消息
-	NotifyCode string  `json:"notifyCode"`       //通知的code
-	Subject    string  `json:"subject"`          //通知主题
+	UserIDs    []int64 `json:"userIDs,string,optional"` //指定用户ID
+	IsGlobal   int64   `json:"isGlobal"`                //全局消息
+	NotifyCode string  `json:"notifyCode"`              //通知的code
+	Subject    string  `json:"subject"`                 //通知主题
 	Body       string  `json:"body"`
 	NotifyTime int64   `json:"notifyTime,optional"` //通知时间
 	Str1       string  `json:"str1,optional"`
@@ -1416,7 +1416,7 @@ type UserMenuIndexReq struct {
 
 type UserMessage struct {
 	ID     int64 `json:"id"`
-	UserID int64 `json:"userID"`
+	UserID int64 `json:"userID,string"`
 	IsRead int64 `json:"isRead"`
 	*MessageInfo
 }

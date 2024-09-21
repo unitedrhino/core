@@ -34,7 +34,7 @@ service api {
 
 type (
     MessageInfoSendReq{
-      UserIDs []int64 `json:"userIDs,optional"` //指定用户ID
+      UserIDs []int64 `json:"userIDs,string,optional"` //指定用户ID
       IsGlobal int64 `json:"isGlobal"`//全局消息
       NotifyCode string `json:"notifyCode"`         //通知的code
       Subject string `json:"subject"` //通知主题

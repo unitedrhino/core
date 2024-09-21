@@ -9338,8 +9338,7 @@
         "userIDs": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "description": "指定用户ID"
         },
@@ -13158,8 +13157,7 @@
           "format": "int64"
         },
         "userID": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         },
         "isRead": {
           "type": "integer",
