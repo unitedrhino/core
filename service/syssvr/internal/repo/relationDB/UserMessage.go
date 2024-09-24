@@ -110,14 +110,22 @@ func (p UserMessageRepo) MultiIsRead(ctx context.Context, userID int64, ids []in
 }
 func (p UserMessageRepo) CountNotRead(ctx context.Context, userID int64) (map[string]int64, error) {
 	var ret []struct {
-		Group string `json:"group"`
-		C     int64  `json:"c"`
+		Group  string `json:"group"`
+		C      int64  `json:"c"`
+		IsRead int64  `json:"is_read"`
 	}
-	err := p.db.WithContext(ctx).Model(&SysUserMessage{}).Group(stores.Col("group")).
-		Select(fmt.Sprintf("%s,count(1) as c", stores.Col("group"))).
-		Where("user_id = ? and is_read = ?", userID, def.False).Find(&ret).Error
+	err := p.db.WithContext(ctx).Model(&SysUserMessage{}).Group(stores.Col("group")+",is_read").
+		Select(fmt.Sprintf("%s,is_read,count(1) as c", stores.Col("group"))).
+		Where("user_id = ?", userID).Find(&ret).Error
 	var val = map[string]int64{}
 	for _, v := range ret {
+		if v.IsRead == def.True {
+			if _, ok := val[v.Group]; !ok {
+				val[v.Group] = 0
+			}
+			continue
+		}
+
 		val[v.Group] = v.C
 	}
 	return val, stores.ErrFmt(err)

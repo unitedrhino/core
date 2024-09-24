@@ -34,37 +34,9 @@ func NewUserMessageIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*sys.UserMessageIndexResp, error) {
 	db := relationDB.NewUserMessageRepo(l.ctx)
-	ll, err := l.GetUserLastReadGlobal()
-	if err != nil {
-		ll = time.Time{}
-	}
-	mis, err := relationDB.NewMessageInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.MessageInfoFilter{
-		Group:      in.Group,
-		NotifyCode: in.NotifyCode,
-		IsGlobal:   def.True,
-		NotifyTime: stores.CmpGte(ll),
-	}, nil)
+	err := UpdateMsg(l.ctx, in.NotifyCode, in.Group)
 	if err != nil {
 		return nil, err
-	}
-	if len(mis) != 0 {
-		var users []*relationDB.SysUserMessage
-		for _, v := range mis {
-			users = append(users, &relationDB.SysUserMessage{
-				UserID:    ctxs.GetUserCtx(l.ctx).UserID,
-				Group:     v.Group,
-				MessageID: v.ID,
-				IsRead:    def.False,
-			})
-		}
-		err = relationDB.NewUserMessageRepo(l.ctx).MultiInsert(l.ctx, users)
-		if err != nil {
-			return nil, err
-		}
-		err = l.SetUserLastReadGlobal(time.Now())
-		if err != nil {
-			l.Error(err)
-		}
 	}
 	f := relationDB.UserMessageFilter{
 		WithMessage: true,
@@ -88,15 +60,51 @@ func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*
 	}))
 	return &sys.UserMessageIndexResp{Total: total, List: utils.CopySlice[sys.UserMessage](pos)}, nil
 }
-func (l *UserMessageIndexLogic) GetUserLastReadGlobal() (time.Time, error) {
-	uc := ctxs.GetUserCtx(l.ctx)
+func getUserLastReadGlobal(ctx context.Context) (time.Time, error) {
+	uc := ctxs.GetUserCtx(ctx)
 	tStr, err := caches.GetStore().Hget("cache:sys:userLastReadGlobal", cast.ToString(uc.UserID))
 	if err != nil {
 		return time.Time{}, nil
 	}
 	return time.Parse(time.RFC3339, tStr)
 }
-func (l *UserMessageIndexLogic) SetUserLastReadGlobal(t time.Time) error {
-	uc := ctxs.GetUserCtx(l.ctx)
+func setUserLastReadGlobal(ctx context.Context, t time.Time) error {
+	uc := ctxs.GetUserCtx(ctx)
 	return caches.GetStore().Hset("cache:sys:userLastReadGlobal", cast.ToString(uc.UserID), t.Format(time.RFC3339))
+}
+
+func UpdateMsg(ctx context.Context, NotifyCode string, Group string) error {
+	ll, err := getUserLastReadGlobal(ctx)
+	if err != nil {
+		ll = time.Time{}
+	}
+	mis, err := relationDB.NewMessageInfoRepo(ctx).FindByFilter(ctx, relationDB.MessageInfoFilter{
+		Group:      Group,
+		NotifyCode: NotifyCode,
+		IsGlobal:   def.True,
+		NotifyTime: stores.CmpGte(ll),
+	}, nil)
+	if err != nil {
+		return err
+	}
+	if len(mis) != 0 {
+		var users []*relationDB.SysUserMessage
+		for _, v := range mis {
+			users = append(users, &relationDB.SysUserMessage{
+				UserID:    ctxs.GetUserCtx(ctx).UserID,
+				Group:     v.Group,
+				MessageID: v.ID,
+				IsRead:    def.False,
+			})
+		}
+		err = relationDB.NewUserMessageRepo(ctx).MultiInsert(ctx, users)
+		if err != nil {
+			return err
+		}
+		err = setUserLastReadGlobal(ctx, time.Now())
+		if err != nil {
+			logx.WithContext(ctx).Error(err)
+		}
+	}
+	return nil
 }

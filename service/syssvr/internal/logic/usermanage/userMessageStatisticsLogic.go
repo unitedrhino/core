@@ -26,6 +26,10 @@ func NewUserMessageStatisticsLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *UserMessageStatisticsLogic) UserMessageStatistics(in *sys.Empty) (*sys.UserMessageStatisticsResp, error) {
+	err := UpdateMsg(l.ctx, "", "")
+	if err != nil {
+		return nil, err
+	}
 	count, err := relationDB.NewUserMessageRepo(l.ctx).CountNotRead(l.ctx, ctxs.GetUserCtx(l.ctx).UserID)
 	if err != nil {
 		return nil, err
