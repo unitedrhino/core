@@ -13,8 +13,6 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/data.yaml", "the config file")
-
 func main() {
 	flag.Parse()
 	logx.DisableStat()

@@ -3,6 +3,7 @@ package relationDB
 import (
 	"context"
 	"fmt"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/stores"
 	"gorm.io/gorm"
@@ -43,6 +44,7 @@ func (p UserMessageRepo) fmtFilter(ctx context.Context, f UserMessageFilter) *go
 	if f.Group != "" {
 		db = db.Where(fmt.Sprintf("%s = ?", stores.Col("group")), f.Group)
 	}
+	db = db.Where("user_id=?", ctxs.GetUserCtxNoNil(ctx).UserID)
 	if f.NotifyCode != "" {
 		db = db.Where("notify_code = ?", f.NotifyCode)
 	}
