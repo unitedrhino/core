@@ -666,11 +666,13 @@ type ProjectInfo struct {
 	ProjectName        string      `json:"projectName,optional"`        //项目名称（读写）
 	AdminUserID        int64       `json:"adminUserID,string,optional"` // 管理员用户id（读写）
 	Position           *Point      `json:"position,optional"`           //项目定位
+	Address            *string     `json:"address,optional"`            //项目详细地址（读写）
 	ProjectImg         string      `json:"projectImg,optional"`
 	IsSysCreated       int64       `json:"isSysCreated,optional"` //是否是系统创建的,系统创建的只有管理员可以删除
 	IsUpdateProjectImg bool        `json:"isUpdateProjectImg,optional"`
 	Desc               *string     `json:"desc,optional"`                    //项目备注（读写）
 	AreaCount          int64       `json:"areaCount,optional"`               //项目下的区域统计(只读)
+	DeviceCount        int64       `json:"deviceCount,optional"`             //项目下的设备统计(只读)
 	Ppsm               int64       `json:"ppsm,optional,omitempty"`          //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
 	Area               *float32    `json:"area,optional,omitempty"`          //建筑面积(单位平米)
 	AdminUserInfo      *UserCore   `json:"adminUserInfo,optional,omitempty"` //管理员信息
@@ -1025,25 +1027,27 @@ type TenantCore struct {
 }
 
 type TenantInfo struct {
-	ID                    int64     `json:"id,optional"`   // 接口编号
-	Code                  string    `json:"code"`          // 应用编号
-	Name                  string    `json:"name,optional"` // 接口名称
-	AdminUserID           int64     `json:"adminUserID,optional,string"`
-	AdminRoleID           int64     `json:"adminRoleID,optional"`
-	Desc                  *string   `json:"desc,optional"` // 备注
-	DefaultProjectID      int64     `json:"defaultProjectID,optional"`
-	BackgroundColour      string    `json:"backgroundColour,optional"`
-	BackgroundDesc        string    `json:"backgroundDesc,optional,omitempty"`
-	BackgroundImg         string    `json:"backgroundImg,optional"`
-	Footer                string    `json:"footer,optional"` //页尾
-	IsUpdateBackgroundImg bool      `json:"isUpdateBackgroundImg,optional,omitempty"`
-	LogoImg               string    `json:"logoImg,optional"`
-	IsUpdateLogoImg       bool      `json:"isUpdateLogoImg,optional,omitempty"`
-	Title                 string    `json:"title,optional"`
-	TitleEn               string    `json:"titleEn,optional"`
-	CreatedTime           int64     `json:"createdTime,string,optional"` // 创建时间
-	Status                int64     `json:"status,optional"`
-	AdminUserInfo         *UserCore `json:"adminUserInfo,omitempty"` //管理员信息
+	ID                    int64        `json:"id,optional"`   // 接口编号
+	Code                  string       `json:"code"`          // 应用编号
+	Name                  string       `json:"name,optional"` // 接口名称
+	AdminUserID           int64        `json:"adminUserID,optional,string"`
+	AdminRoleID           int64        `json:"adminRoleID,optional"`
+	Desc                  *string      `json:"desc,optional"` // 备注
+	DefaultProjectID      int64        `json:"defaultProjectID,optional"`
+	BackgroundColour      string       `json:"backgroundColour,optional"`
+	BackgroundDesc        string       `json:"backgroundDesc,optional,omitempty"`
+	BackgroundImg         string       `json:"backgroundImg,optional"`
+	Footer                string       `json:"footer,optional"` //页尾
+	IsUpdateBackgroundImg bool         `json:"isUpdateBackgroundImg,optional,omitempty"`
+	LogoImg               string       `json:"logoImg,optional"`
+	IsUpdateLogoImg       bool         `json:"isUpdateLogoImg,optional,omitempty"`
+	Title                 string       `json:"title,optional"`
+	TitleEn               string       `json:"titleEn,optional"`
+	CreatedTime           int64        `json:"createdTime,string,optional"` // 创建时间
+	Status                int64        `json:"status,optional"`
+	UserCount             int64        `json:"userCount,optional"`               //租户下的用户统计
+	AdminUserInfo         *UserCore    `json:"adminUserInfo,optional,omitempty"` //管理员信息
+	DefaultProject        *ProjectInfo `json:"defaultProject,optional,omitempty"`
 }
 
 type TenantInfoCreateReq struct {
@@ -1056,10 +1060,12 @@ type TenantInfoCreateResp struct {
 }
 
 type TenantInfoIndexReq struct {
-	Page          *PageInfo `json:"page,optional"`          // 分页信息,只获取一个则不填
-	Name          string    `json:"name,optional"`          // 应用名称
-	Code          string    `json:"code,optional"`          // 应用编号
-	WithAdminUser bool      `json:"withAdminUser,optional"` //同时获取管理员核心信息
+	Page               *PageInfo `json:"page,optional"`               // 分页信息,只获取一个则不填
+	Name               string    `json:"name,optional"`               // 租户名称
+	Code               string    `json:"code,optional"`               // 租户编号
+	Status             int64     `json:"status,optional"`             //租户状态
+	WithAdminUser      bool      `json:"withAdminUser,optional"`      //同时获取管理员核心信息
+	WithDefaultProject bool      `json:"withDefaultProject,optional"` //同时获取默认项目信息
 }
 
 type TenantInfoIndexResp struct {

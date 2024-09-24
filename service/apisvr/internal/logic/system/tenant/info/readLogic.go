@@ -41,5 +41,5 @@ func (l *ReadLogic) Read(req *types.WithIDOrCode) (resp *types.TenantInfo, err e
 		return nil, err
 	}
 
-	return system.ToTenantInfoTypes(ret, user), err
+	return system.ToTenantInfoTypes(ret, user, nil), err
 }

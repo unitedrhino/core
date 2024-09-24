@@ -223,9 +223,11 @@ type (
 
     TenantInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
-        Name string `json:"name,optional"`                     // 应用名称
-        Code string `json:"code,optional"`                     // 应用编号
+        Name string `json:"name,optional"`                     // 租户名称
+        Code string `json:"code,optional"`                     // 租户编号
+        Status int64  `json:"status,optional"` //租户状态
         WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
+        WithDefaultProject bool `json:"withDefaultProject,optional"` //同时获取默认项目信息
     }
 
     TenantInfoIndexResp  {

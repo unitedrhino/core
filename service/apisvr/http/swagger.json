@@ -10206,6 +10206,10 @@
           "$ref": "#/definitions/Point",
           "description": "项目定位"
         },
+        "address": {
+          "type": "string",
+          "description": "项目详细地址（读写）"
+        },
         "projectImg": {
           "type": "string"
         },
@@ -10226,6 +10230,11 @@
           "type": "integer",
           "format": "int64",
           "description": "项目下的区域统计(只读)"
+        },
+        "deviceCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目下的设备统计(只读)"
         },
         "ppsm": {
           "type": "integer",
@@ -11745,9 +11754,17 @@
           "type": "integer",
           "format": "int64"
         },
+        "userCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户下的用户统计"
+        },
         "adminUserInfo": {
           "$ref": "#/definitions/UserCore",
           "description": "管理员信息"
+        },
+        "defaultProject": {
+          "$ref": "#/definitions/ProjectInfo"
         }
       },
       "title": "TenantInfo",
@@ -11792,16 +11809,26 @@
         },
         "name": {
           "type": "string",
-          "description": " 应用名称"
+          "description": " 租户名称"
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户状态"
         },
         "withAdminUser": {
           "type": "boolean",
           "format": "boolean",
           "description": "同时获取管理员核心信息"
+        },
+        "withDefaultProject": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时获取默认项目信息"
         }
       },
       "title": "TenantInfoIndexReq"

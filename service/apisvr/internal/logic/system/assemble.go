@@ -17,12 +17,14 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		ProjectImg:    pb.ProjectImg,
 		Desc:          utils.ToNullString(pb.Desc),
 		Position:      logic.ToSysPointApi(pb.Position),
+		Address:       utils.ToNullString(pb.Address),
 		IsSysCreated:  pb.IsSysCreated,
 		AreaCount:     pb.AreaCount,
 		AdminUserInfo: utils.Copy[types.UserCore](ui),
 		Area:          utils.ToNullFloat32(pb.Area),
 		Ppsm:          pb.Ppsm,
 		Areas:         info.ToAreaInfosTypes(pb.Areas),
+		DeviceCount:   utils.ToInt64(pb.DeviceCount),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {
@@ -91,12 +93,13 @@ func ToTenantInfoRpc(in *types.TenantInfo) *sys.TenantInfo {
 	return utils.Copy[sys.TenantInfo](in)
 }
 
-func ToTenantInfoTypes(in *sys.TenantInfo, user *sys.UserInfo) *types.TenantInfo {
+func ToTenantInfoTypes(in *sys.TenantInfo, user *sys.UserInfo, project *sys.ProjectInfo) *types.TenantInfo {
 	if in == nil {
 		return nil
 	}
 	ret := utils.Copy[types.TenantInfo](in)
 	ret.AdminUserInfo = utils.Copy[types.UserCore](user)
+	ret.DefaultProject = utils.Copy[types.ProjectInfo](project)
 	return ret
 }
 
@@ -104,10 +107,10 @@ func ToTenantCoreTypes(in *sys.TenantInfo) *types.TenantCore {
 	return utils.Copy[types.TenantCore](in)
 }
 
-func ToTenantInfosTypes(in []*sys.TenantInfo, userMap map[int64]*sys.UserInfo) []*types.TenantInfo {
+func ToTenantInfosTypes(in []*sys.TenantInfo, userMap map[int64]*sys.UserInfo, projectMap map[int64]*sys.ProjectInfo) []*types.TenantInfo {
 	var ret []*types.TenantInfo
 	for _, v := range in {
-		ti := ToTenantInfoTypes(v, userMap[v.AdminUserID])
+		ti := ToTenantInfoTypes(v, userMap[v.AdminUserID], projectMap[v.DefaultProjectID])
 		ret = append(ret, ti)
 	}
 	return ret

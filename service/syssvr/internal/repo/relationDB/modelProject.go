@@ -13,9 +13,10 @@ type SysProjectInfo struct {
 	ProjectImg  string            `gorm:"column:project_img;type:varchar(1024);default:''"`
 	ProjectName string            `gorm:"column:project_name;type:varchar(100);NOT NULL"` // 项目名称
 	//Region      string            `gorm:"column:region;type:varchar(100);NOT NULL"`      // 项目省市区县
-	//Address     string            `gorm:"column:address;type:varchar(512);NOT NULL"`     // 项目详细地址
+	Address      string         `gorm:"column:address;type:varchar(512);"`                // 项目详细地址
 	AreaCount    int64          `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
 	Position     stores.Point   `gorm:"column:position;NOT NULL"`                         // 项目地址
+	DeviceCount  int64          `gorm:"column:device_count;type:bigint;default:0"`
 	Area         float32        `gorm:"column:area;default:0"`
 	Ppsm         int64          `gorm:"column:ppsm;type:bigint;default:0"`                    //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
 	Desc         string         `gorm:"column:desc;type:varchar(100);NOT NULL"`               // 项目备注

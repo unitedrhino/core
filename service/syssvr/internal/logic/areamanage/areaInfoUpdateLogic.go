@@ -7,6 +7,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/def"
 	"gitee.com/i-Things/share/errors"
 	"gitee.com/i-Things/share/oss"
@@ -90,14 +91,15 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 
 	//支持区域 改为 第一级区域（改字段前端必填）
 	//po.ParentAreaID = pb.ParentAreaID
-	if pb.DeviceCount != nil {
-		po.DeviceCount = pb.DeviceCount.Value
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	if uc.IsAdmin {
+		if pb.DeviceCount != nil {
+			po.DeviceCount = pb.DeviceCount.Value
+		}
 	}
+
 	if pb.AreaName != "" {
 		po.AreaName = pb.AreaName
-	}
-	if pb.DeviceCount != nil {
-		po.DeviceCount = pb.DeviceCount.GetValue()
 	}
 	if pb.Position != nil {
 		po.Position = logic.ToStorePoint(pb.Position)

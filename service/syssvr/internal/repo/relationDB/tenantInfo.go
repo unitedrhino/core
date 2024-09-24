@@ -82,6 +82,12 @@ func (p TenantInfoRepo) Update(ctx context.Context, data *SysTenantInfo) error {
 	return stores.ErrFmt(err)
 }
 
+func (p TenantInfoRepo) UpdateUserCount(ctx context.Context, tenantCode string) error {
+	subQuery := p.db.Model(&SysUserInfo{}).Select("count(1)").Where("tenant_code = ?", tenantCode)
+	err := p.db.WithContext(ctx).Where("code = ?", tenantCode).Update("user_count", subQuery).Error
+	return stores.ErrFmt(err)
+}
+
 func (p TenantInfoRepo) DeleteByFilter(ctx context.Context, f TenantInfoFilter) error {
 	db := p.fmtFilter(ctx, f)
 	err := db.Delete(&SysTenantInfo{}).Error

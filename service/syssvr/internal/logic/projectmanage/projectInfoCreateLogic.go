@@ -56,7 +56,7 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		Area:         in.Area.GetValue(),
 		IsSysCreated: in.IsSysCreated,
 		//Region:      utils.ToEmptyString(in.Region),
-		//Address:     utils.ToEmptyString(in.Address),
+		Address:  utils.ToEmptyString(in.Address),
 		Position: logic.ToStorePoint(in.Position),
 		Desc:     utils.ToEmptyString(in.Desc),
 	}

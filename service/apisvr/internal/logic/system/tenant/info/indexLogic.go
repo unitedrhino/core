@@ -6,6 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/apisvr/internal/logic/system"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
 	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/i-Things/share/def"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -32,9 +33,10 @@ func (l *IndexLogic) Index(req *types.TenantInfoIndexReq) (resp *types.TenantInf
 		return nil, err
 	}
 	ret, err := l.svcCtx.TenantRpc.TenantInfoIndex(l.ctx, &sys.TenantInfoIndexReq{
-		Name: req.Name,
-		Page: logic.ToSysPageRpc(req.Page),
-		Code: req.Code,
+		Name:   req.Name,
+		Page:   logic.ToSysPageRpc(req.Page),
+		Code:   req.Code,
+		Status: req.Status,
 	})
 	if err != nil {
 		return nil, err
@@ -55,8 +57,27 @@ func (l *IndexLogic) Index(req *types.TenantInfoIndexReq) (resp *types.TenantInf
 			userMap[v.UserID] = v
 		}
 	}
+	var projectMap = map[int64]*sys.ProjectInfo{}
+	if req.WithDefaultProject && len(ret.List) > 0 {
+		var projectIDs []int64
+		for _, v := range ret.List {
+			if v.DefaultProjectID <= def.NotClassified {
+				continue
+			}
+			projectIDs = append(projectIDs, v.DefaultProjectID)
+		}
+		projects, err := l.svcCtx.ProjectM.ProjectInfoIndex(ctxs.WithRoot(l.ctx), &sys.ProjectInfoIndexReq{
+			ProjectIDs: projectIDs,
+		})
+		if err != nil {
+			return nil, err
+		}
+		for _, v := range projects.List {
+			projectMap[v.ProjectID] = v
+		}
+	}
 	return &types.TenantInfoIndexResp{
 		Total: ret.Total,
-		List:  system.ToTenantInfosTypes(ret.List, userMap),
+		List:  system.ToTenantInfosTypes(ret.List, userMap, projectMap),
 	}, nil
 }

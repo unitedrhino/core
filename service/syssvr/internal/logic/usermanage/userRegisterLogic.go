@@ -302,5 +302,11 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		}
 		return err
 	})
+	if err != nil {
+		er := relationDB.NewTenantInfoRepo(ctx).UpdateUserCount(ctx, uc.TenantCode)
+		if er != nil {
+			logx.WithContext(ctx).Errorf("%s.UpdateUserCount err=%+v", utils.FuncName(), er)
+		}
+	}
 	return err
 }

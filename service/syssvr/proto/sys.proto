@@ -583,11 +583,13 @@ message TenantInfo{
   int64 createdTime =16;
   int64 status =17;
   string footer =18;//页尾
+  int64 userCount =20;//用户统计
 }
 message TenantInfoIndexReq{
   PageInfo page = 1;//分页信息
   string name = 2;
   string code = 3;
+  int64 status = 4;
 }
 
 message TenantInfoIndexResp{
@@ -778,6 +780,8 @@ message ProjectInfo {
   google.protobuf.FloatValue area =7;//建筑面积(单位平米)
   int64 ppsm =10;//w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
   google.protobuf.StringValue desc = 8; //项目备注（读写）
+  google.protobuf.StringValue address = 11;//项目详细地址
+  google.protobuf.Int64Value deviceCount=12;//设备统计
   int64 areaCount =9;//项目下的区域统计(只读)
   int64 userCount =17;//项目下用户统计
   string projectImg =15;//项目图片

@@ -32,6 +32,8 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		Desc:         utils.ToRpcNullString(po.Desc),
 		Position:     logic.ToSysPoint(po.Position),
 		AreaCount:    po.AreaCount,
+		Address:      utils.ToRpcNullString(po.Address),
+		DeviceCount:  utils.ToRpcNullInt64(po.DeviceCount),
 		Areas:        areamanagelogic.AreaInfosToPb(ctx, svcCtx, po.Areas),
 	}
 	return pb

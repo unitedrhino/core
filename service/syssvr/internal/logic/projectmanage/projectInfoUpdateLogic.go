@@ -72,6 +72,12 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 	//if pb.CompanyName != nil {
 	//	po.CompanyName = pb.CompanyName.GetValue()
 	//}
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	if uc.IsAdmin {
+		if pb.DeviceCount != nil {
+			po.DeviceCount = pb.DeviceCount.Value
+		}
+	}
 	if pb.AdminUserID != 0 && pb.AdminUserID != po.AdminUserID {
 		uc := ctxs.GetUserCtx(l.ctx)
 		if uc.UserID == po.AdminUserID { //只有项目的管理员才有权限更换
@@ -90,9 +96,9 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 	//if pb.Region != nil {
 	//	po.Region = pb.Region.GetValue()
 	//}
-	//if pb.Address != nil {
-	//	po.Address = pb.Address.GetValue()
-	//}
+	if pb.Address != nil {
+		po.Address = pb.Address.GetValue()
+	}
 	if pb.IsUpdateProjectImg && pb.ProjectImg != "" {
 		if po.ProjectImg != "" {
 			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, po.ProjectImg, common.OptionKv{})

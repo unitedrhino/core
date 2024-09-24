@@ -23,5 +23,6 @@ func ToProjectPb(in *types.ProjectInfo) *sys.ProjectInfo {
 		Area:               utils.ToRpcNullFloat32(in.Area),
 		Ppsm:               in.Ppsm,
 		IsSysCreated:       in.IsSysCreated,
+		Address:            utils.ToRpcNullString(in.Address),
 	}
 }

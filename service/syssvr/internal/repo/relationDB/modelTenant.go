@@ -15,6 +15,7 @@ type SysTenantInfo struct {
 	Desc             string `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                  //应用描述
 	DefaultProjectID int64  `gorm:"column:default_project_id;type:BIGINT;NOT NULL"`
 	DefaultAreaID    int64  `gorm:"column:default_area_id;type:BIGINT;NOT NULL"`
+	UserCount        int64  `gorm:"column:user_count;type:bigint;default:0;"` //租户下用户统计
 	SysTenantOem
 	Status int64 `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
 	stores.NoDelTime
