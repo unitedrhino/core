@@ -18,8 +18,6 @@ func Handler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	fileServer := http.FileServer(dir)
 	return func(w http.ResponseWriter, r *http.Request) {
 		header := w.Header()
-		header.Set("Access-Control-Allow-Headers", ctxs.HttpAllowHeader)
-		header.Set("Access-Control-Allow-Origin", "*")
 		upath := r.URL.Path
 		for _, v := range svcCtx.Config.Proxy.StaticProxy {
 			if strings.HasPrefix(upath, v.Router) {
@@ -27,6 +25,8 @@ func Handler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 				return
 			}
 		}
+		header.Set("Access-Control-Allow-Headers", ctxs.HttpAllowHeader)
+		header.Set("Access-Control-Allow-Origin", "*")
 		f, err := dir.Open(upath)
 		if err != nil {
 			defaultHandle(svcCtx, upath, w, r, false)
@@ -52,6 +52,9 @@ func staticProxy(svcCtx *svc.ServiceContext, conf *conf.StaticProxyConf, w http.
 	r.Host = remote.Host
 	if conf.DeletePrefix {
 		r.URL.Path = strings.TrimPrefix(r.URL.Path, conf.Router)
+	}
+	for k := range w.Header() {
+		w.Header().Del(k)
 	}
 	proxy.ServeHTTP(w, r)
 }
