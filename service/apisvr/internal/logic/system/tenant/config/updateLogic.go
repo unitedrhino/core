@@ -27,6 +27,5 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 
 func (l *UpdateLogic) Update(req *types.TenantConfig) error {
 	_, err := l.svcCtx.TenantRpc.TenantConfigUpdate(l.ctx, utils.Copy[sys.TenantConfig](req))
-
 	return err
 }

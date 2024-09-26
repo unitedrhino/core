@@ -6345,6 +6345,48 @@
         ]
       }
     },
+    "/api/v1/system/tenant/core/index": {
+      "post": {
+        "summary": "搜索租户信息",
+        "operationId": "postApiV1SystemTenantCoreIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/TenantCoreIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TenantCoreIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/tenant/core",
+          "systemTenantCore"
+        ]
+      }
+    },
     "/api/v1/system/tenant/core/read": {
       "post": {
         "summary": "获取租户信息",
@@ -11688,6 +11730,46 @@
       "title": "TenantCore",
       "required": [
         "code"
+      ]
+    },
+    "TenantCoreIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息"
+        },
+        "code": {
+          "type": "string",
+          "description": " 编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 协议名称"
+        }
+      },
+      "title": "TenantCoreIndexReq"
+    },
+    "TenantCoreIndexResp": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantCore"
+          },
+          "description": " 列表数据"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 列表总记录数"
+        }
+      },
+      "title": "TenantCoreIndexResp",
+      "required": [
+        "list",
+        "total"
       ]
     },
     "TenantInfo": {

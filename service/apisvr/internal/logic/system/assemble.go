@@ -107,6 +107,15 @@ func ToTenantCoreTypes(in *sys.TenantInfo) *types.TenantCore {
 	return utils.Copy[types.TenantCore](in)
 }
 
+func ToTenantCoresTypes(in []*sys.TenantInfo) []*types.TenantCore {
+	var ret []*types.TenantCore
+	for _, v := range in {
+		ti := ToTenantCoreTypes(v)
+		ret = append(ret, ti)
+	}
+	return ret
+}
+
 func ToTenantInfosTypes(in []*sys.TenantInfo, userMap map[int64]*sys.UserInfo, projectMap map[int64]*sys.ProjectInfo) []*types.TenantInfo {
 	var ret []*types.TenantInfo
 	for _, v := range in {

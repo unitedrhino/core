@@ -1350,6 +1350,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 搜索租户信息
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemtenantcore.IndexHandler(serverCtx),
+				},
+				{
 					// 获取租户信息
 					Method:  http.MethodPost,
 					Path:    "/read",

@@ -1027,6 +1027,17 @@ type TenantCore struct {
 	Footer           string  `json:"footer,optional"` //页尾
 }
 
+type TenantCoreIndexReq struct {
+	Page *PageInfo `json:"page,optional"` // 分页信息
+	Code string    `json:"code,optional"` // 编号
+	Name string    `json:"name,optional"` // 协议名称
+}
+
+type TenantCoreIndexResp struct {
+	List  []*TenantCore `json:"list"`  // 列表数据
+	Total int64         `json:"total"` // 列表总记录数
+}
+
 type TenantInfo struct {
 	ID                    int64        `json:"id,optional"`   // 接口编号
 	Code                  string       `json:"code"`          // 应用编号

@@ -2130,6 +2130,16 @@
         {
           "accessCode": "systemTenantCoreFind",
           "method": "POST",
+          "route": "/api/v1/system/tenant/core/index",
+          "name": "搜索租户信息",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemTenantCoreFind",
+          "method": "POST",
           "route": "/api/v1/system/tenant/core/read",
           "name": "获取租户信息",
           "isNeedAuth": 2,

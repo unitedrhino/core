@@ -93,6 +93,9 @@ service api {
     @doc "获取租户信息"
     @handler read
     post /read (WithIDOrCode) returns (TenantCore)
+    @doc "搜索租户信息"
+    @handler index
+    post /index (TenantCoreIndexReq) returns (TenantCoreIndexResp)
 }
 
 
@@ -181,6 +184,18 @@ service api {
     @handler read
     post /read (WithIDOrCode) returns (TenantAgreement)
 }
+
+type (
+    TenantCoreIndexReq{
+        Page *PageInfo `json:"page,optional"`                   // 分页信息
+        Code string `json:"code,optional"`                               // 编号
+        Name string `json:"name,optional"`                                 // 协议名称
+    }
+    TenantCoreIndexResp{
+        List []*TenantCore `json:"list"`            // 列表数据
+        Total int64 `json:"total"`                    // 列表总记录数
+    }
+)
 
 type (
     TenantAgreement{
