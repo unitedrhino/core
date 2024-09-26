@@ -11583,6 +11583,11 @@
           "format": "int64",
           "description": "是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)"
         },
+        "deviceLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户下的设备数量限制,0为不限制"
+        },
         "registerAutoCreateProject": {
           "type": "array",
           "items": {

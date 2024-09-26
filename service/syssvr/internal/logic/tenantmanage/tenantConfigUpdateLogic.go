@@ -54,9 +54,13 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 			}
 		}
 	}
+
 	newPo := utils.Copy[relationDB.SysTenantConfig](in)
 	newPo.NoDelTime = old.NoDelTime
 	newPo.ID = old.ID
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		newPo.DeviceLimit = old.DeviceLimit
+	}
 	err = relationDB.NewTenantConfigRepo(l.ctx).Update(l.ctx, newPo)
 	return &sys.Empty{}, err
 }

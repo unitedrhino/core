@@ -121,6 +121,7 @@ type SysTenantConfig struct {
 	ID                        int64                                       `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`               // id编号
 	TenantCode                stores.TenantCode                           `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
 	RegisterRoleID            int64                                       `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                   //注册分配的角色id
+	DeviceLimit               int64                                       `gorm:"column:device_limit;type:BIGINT;default:0"`                      // 租户下的设备数量限制,0为不限制
 	CheckUserDelete           int64                                       `gorm:"column:check_user_delete;type:BIGINT;default:2"`                 // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	WeatherKey                string                                      `gorm:"column:weather_key;type:VARCHAR(50);default:'';"`                //参考: https://dev.qweather.com/
 	RegisterAutoCreateProject []*SysTenantConfigRegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
