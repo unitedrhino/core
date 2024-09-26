@@ -67,3 +67,28 @@ func (s *DataManageServer) UserAreaApplyDeal(ctx context.Context, in *sys.UserAr
 	l := datamanagelogic.NewUserAreaApplyDealLogic(ctx, s.svcCtx)
 	return l.UserAreaApplyDeal(in)
 }
+
+func (s *DataManageServer) DataOpenAccessIndex(ctx context.Context, in *sys.OpenAccessIndexReq) (*sys.OpenAccessIndexResp, error) {
+	l := datamanagelogic.NewDataOpenAccessIndexLogic(ctx, s.svcCtx)
+	return l.DataOpenAccessIndex(in)
+}
+
+func (s *DataManageServer) DataOpenAccessRead(ctx context.Context, in *sys.WithID) (*sys.OpenAccess, error) {
+	l := datamanagelogic.NewDataOpenAccessReadLogic(ctx, s.svcCtx)
+	return l.DataOpenAccessRead(in)
+}
+
+func (s *DataManageServer) DataOpenAccessUpdate(ctx context.Context, in *sys.OpenAccess) (*sys.Empty, error) {
+	l := datamanagelogic.NewDataOpenAccessUpdateLogic(ctx, s.svcCtx)
+	return l.DataOpenAccessUpdate(in)
+}
+
+func (s *DataManageServer) DataOpenAccessCreate(ctx context.Context, in *sys.OpenAccess) (*sys.WithID, error) {
+	l := datamanagelogic.NewDataOpenAccessCreateLogic(ctx, s.svcCtx)
+	return l.DataOpenAccessCreate(in)
+}
+
+func (s *DataManageServer) DataOpenAccessDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := datamanagelogic.NewDataOpenAccessDeleteLogic(ctx, s.svcCtx)
+	return l.DataOpenAccessDelete(in)
+}

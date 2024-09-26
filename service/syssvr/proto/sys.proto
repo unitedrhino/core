@@ -44,6 +44,13 @@ service DataManage {
 
   rpc userAreaApplyIndex(UserAreaApplyIndexReq)returns(UserAreaApplyIndexResp);
   rpc userAreaApplyDeal(UserAreaApplyDealReq)returns(Empty);//处理区域权限申请
+
+
+  rpc dataOpenAccessIndex(OpenAccessIndexReq)returns(OpenAccessIndexResp);
+  rpc dataOpenAccessRead(WithID)returns(OpenAccess);
+  rpc dataOpenAccessUpdate(OpenAccess)returns(Empty);
+  rpc dataOpenAccessCreate(OpenAccess)returns(WithID);
+  rpc dataOpenAccessDelete(WithID) returns(Empty);
 }
 
 
@@ -140,8 +147,6 @@ service ModuleManage{
   rpc moduleMenuIndex(MenuInfoIndexReq) returns(MenuInfoIndexResp); //获取菜单列表
   rpc moduleMenuUpdate(MenuInfo) returns(Empty); //更新菜单
   rpc moduleMenuDelete(WithID) returns(Empty); //删除菜单
-
-
 }
 
 service DictManage{
@@ -259,7 +264,6 @@ service TenantManage {
 
   rpc tenantOpenWebHook(WithCode)returns(TenantOpenWebHook);
 
-
   rpc tenantAgreementIndex(TenantAgreementIndexReq) returns(TenantAgreementIndexResp); //获取协议列表
   rpc tenantAgreementUpdate(TenantAgreement) returns(Empty); //更新协议
   rpc tenantAgreementCreate(TenantAgreement) returns(WithID); //创建协议
@@ -279,6 +283,7 @@ service ops{
   rpc opsFeedbackUpdate(OpsFeedback)returns(Empty);
   rpc opsFeedbackIndex(OpsFeedbackIndexReq)returns(OpsFeedbackIndexResp);
 }
+
 message SendOption {
   int64  timeoutToFail = 1;//超时失败时间
   int64  requestTimeout = 2;//请求超时,超时后会进行重试
@@ -424,6 +429,7 @@ message MessageInfo {
   int64 id=10;
   string group =1;
   string notifyCode =2;
+  string notifyName =12;
   string subject=3;
   string body=4;
   string str1=5;
@@ -495,6 +501,30 @@ message TenantOpenWebHook{
   string desc =7;
   map<string,string> handler =8;
 }
+
+
+message OpenAccess{
+  int64 id =1;
+  string tenantCode =2;
+  string code =3;
+  int64 userID =4;
+  string accessSecret =5;
+  repeated string ipRange =6;
+  string desc =7;
+}
+
+message OpenAccessIndexReq{
+  PageInfo page =1;
+  string tenantCode =2;
+  string code =3;
+  int64 userID =4;
+}
+
+message OpenAccessIndexResp{
+  int64 total =1;
+  repeated OpenAccess list=2;
+}
+
 
 
 /* 用户相关 */

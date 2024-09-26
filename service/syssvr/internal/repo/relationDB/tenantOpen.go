@@ -14,21 +14,21 @@ import (
 2. 完善todo
 */
 
-type TenantOpenRepo struct {
+type DataOpenAccessRepo struct {
 	db *gorm.DB
 }
 
-func NewTenantOpenRepo(in any) *TenantOpenRepo {
-	return &TenantOpenRepo{db: stores.GetCommonConn(in)}
+func NewDataOpenAccessRepo(in any) *DataOpenAccessRepo {
+	return &DataOpenAccessRepo{db: stores.GetCommonConn(in)}
 }
 
-type TenantOpenFilter struct {
+type DataOpenAccessFilter struct {
 	TenantCode string
 	UserID     int64
 	Code       string
 }
 
-func (p TenantOpenRepo) fmtFilter(ctx context.Context, f TenantOpenFilter) *gorm.DB {
+func (p DataOpenAccessRepo) fmtFilter(ctx context.Context, f DataOpenAccessFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code = ?", f.TenantCode)
@@ -42,13 +42,13 @@ func (p TenantOpenRepo) fmtFilter(ctx context.Context, f TenantOpenFilter) *gorm
 	return db
 }
 
-func (p TenantOpenRepo) Insert(ctx context.Context, data *SysTenantOpenAccess) error {
+func (p DataOpenAccessRepo) Insert(ctx context.Context, data *SysDataOpenAccess) error {
 	result := p.db.WithContext(ctx).Create(data)
 	return stores.ErrFmt(result.Error)
 }
 
-func (p TenantOpenRepo) FindOneByFilter(ctx context.Context, f TenantOpenFilter) (*SysTenantOpenAccess, error) {
-	var result SysTenantOpenAccess
+func (p DataOpenAccessRepo) FindOneByFilter(ctx context.Context, f DataOpenAccessFilter) (*SysDataOpenAccess, error) {
+	var result SysDataOpenAccess
 	db := p.fmtFilter(ctx, f)
 	err := db.First(&result).Error
 	if err != nil {
@@ -56,9 +56,9 @@ func (p TenantOpenRepo) FindOneByFilter(ctx context.Context, f TenantOpenFilter)
 	}
 	return &result, nil
 }
-func (p TenantOpenRepo) FindByFilter(ctx context.Context, f TenantOpenFilter, page *stores.PageInfo) ([]*SysTenantOpenAccess, error) {
-	var results []*SysTenantOpenAccess
-	db := p.fmtFilter(ctx, f).Model(&SysTenantOpenAccess{})
+func (p DataOpenAccessRepo) FindByFilter(ctx context.Context, f DataOpenAccessFilter, page *stores.PageInfo) ([]*SysDataOpenAccess, error) {
+	var results []*SysDataOpenAccess
+	db := p.fmtFilter(ctx, f).Model(&SysDataOpenAccess{})
 	db = page.ToGorm(db)
 	err := db.Find(&results).Error
 	if err != nil {
@@ -67,29 +67,29 @@ func (p TenantOpenRepo) FindByFilter(ctx context.Context, f TenantOpenFilter, pa
 	return results, nil
 }
 
-func (p TenantOpenRepo) CountByFilter(ctx context.Context, f TenantOpenFilter) (size int64, err error) {
-	db := p.fmtFilter(ctx, f).Model(&SysTenantOpenAccess{})
+func (p DataOpenAccessRepo) CountByFilter(ctx context.Context, f DataOpenAccessFilter) (size int64, err error) {
+	db := p.fmtFilter(ctx, f).Model(&SysDataOpenAccess{})
 	err = db.Count(&size).Error
 	return size, stores.ErrFmt(err)
 }
 
-func (p TenantOpenRepo) Update(ctx context.Context, data *SysTenantOpenAccess) error {
+func (p DataOpenAccessRepo) Update(ctx context.Context, data *SysDataOpenAccess) error {
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
 	return stores.ErrFmt(err)
 }
 
-func (p TenantOpenRepo) DeleteByFilter(ctx context.Context, f TenantOpenFilter) error {
+func (p DataOpenAccessRepo) DeleteByFilter(ctx context.Context, f DataOpenAccessFilter) error {
 	db := p.fmtFilter(ctx, f)
-	err := db.Delete(&SysTenantOpenAccess{}).Error
+	err := db.Delete(&SysDataOpenAccess{}).Error
 	return stores.ErrFmt(err)
 }
 
-func (p TenantOpenRepo) Delete(ctx context.Context, id int64) error {
-	err := p.db.WithContext(ctx).Where("id = ?", id).Delete(&SysTenantOpenAccess{}).Error
+func (p DataOpenAccessRepo) Delete(ctx context.Context, id int64) error {
+	err := p.db.WithContext(ctx).Where("id = ?", id).Delete(&SysDataOpenAccess{}).Error
 	return stores.ErrFmt(err)
 }
-func (p TenantOpenRepo) FindOne(ctx context.Context, id int64) (*SysTenantOpenAccess, error) {
-	var result SysTenantOpenAccess
+func (p DataOpenAccessRepo) FindOne(ctx context.Context, id int64) (*SysDataOpenAccess, error) {
+	var result SysDataOpenAccess
 	err := p.db.WithContext(ctx).Where("id = ?", id).First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
@@ -98,7 +98,7 @@ func (p TenantOpenRepo) FindOne(ctx context.Context, id int64) (*SysTenantOpenAc
 }
 
 // 批量插入 LightStrategyDevice 记录
-func (p TenantOpenRepo) MultiInsert(ctx context.Context, data []*SysTenantOpenAccess) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysTenantOpenAccess{}).Create(data).Error
+func (p DataOpenAccessRepo) MultiInsert(ctx context.Context, data []*SysDataOpenAccess) error {
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDataOpenAccess{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

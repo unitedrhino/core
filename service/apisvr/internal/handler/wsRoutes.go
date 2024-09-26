@@ -14,6 +14,7 @@ import (
 	systemcommon "gitee.com/i-Things/core/service/apisvr/internal/handler/system/common"
 	systemdataarea "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/area"
 	systemdataareauserapply "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/area/user/apply"
+	systemdataopenaccess "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/open/access"
 	systemdataproject "gitee.com/i-Things/core/service/apisvr/internal/handler/system/data/project"
 	systemdictdetail "gitee.com/i-Things/core/service/apisvr/internal/handler/system/dict/detail"
 	systemdictinfo "gitee.com/i-Things/core/service/apisvr/internal/handler/system/dict/info"
@@ -382,6 +383,45 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/data/area/user/apply"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 创建开放认证
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemdataopenaccess.CreateHandler(serverCtx),
+				},
+				{
+					// 删除开放认证
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemdataopenaccess.DeleteHandler(serverCtx),
+				},
+				{
+					// 获取开放认证列表
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdataopenaccess.IndexHandler(serverCtx),
+				},
+				{
+					// 获取开放认证详情
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemdataopenaccess.ReadHandler(serverCtx),
+				},
+				{
+					// 更新开放认证
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemdataopenaccess.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/open/access"),
 	)
 
 	server.AddRoutes(

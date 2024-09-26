@@ -24,16 +24,20 @@ func NewMessageInfoRepo(in any) *MessageInfoRepo {
 }
 
 type MessageInfoFilter struct {
-	NotifyCode     string
-	Group          string
-	IsGlobal       int64
-	IsDirectNotify int64 //是否是发送通知消息创建
-	NotifyTime     *stores.Cmp
+	NotifyCode       string
+	Group            string
+	IsGlobal         int64
+	IsDirectNotify   int64 //是否是发送通知消息创建
+	NotifyTime       *stores.Cmp
+	WithNotifyConfig bool
 }
 
 func (p MessageInfoRepo) fmtFilter(ctx context.Context, f MessageInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	db = f.NotifyTime.Where(db, "notify_time")
+	if f.WithNotifyConfig {
+		db = db.Preload("NotifyConfig")
+	}
 	if f.Group != "" {
 		db = db.Where(fmt.Sprintf("%s=?", stores.Col("group")), f.Group)
 	}

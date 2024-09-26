@@ -35,7 +35,7 @@ func (l *TenantOpenCheckTokenLogic) TenantOpenCheckToken(in *sys.TenantOpenCheck
 		if claim.TenantCode == "" || claim.UserID == 0 || claim.Code == "" {
 			return nil, errors.TokenInvalid
 		}
-		po, err := relationDB.NewTenantOpenRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantOpenFilter{
+		po, err := relationDB.NewDataOpenAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DataOpenAccessFilter{
 			TenantCode: claim.TenantCode,
 			UserID:     claim.UserID,
 			Code:       claim.Code,

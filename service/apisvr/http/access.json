@@ -520,6 +520,96 @@
       ],
       "authType": "all"
     },
+    "systemDataOpenAccessAdd": {
+      "name": "新增开放认证",
+      "code": "systemDataOpenAccessAdd",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataOpenAccessAdd",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/create",
+          "name": "创建开放认证",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all"
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDataOpenAccessDelete": {
+      "name": "删除开放认证",
+      "code": "systemDataOpenAccessDelete",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataOpenAccessDelete",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/delete",
+          "name": "删除开放认证",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all"
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDataOpenAccessFind": {
+      "name": "查询开放认证",
+      "code": "systemDataOpenAccessFind",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataOpenAccessFind",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/index",
+          "name": "获取开放认证列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemDataOpenAccessFind",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/read",
+          "name": "获取开放认证详情",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDataOpenAccessModify": {
+      "name": "修改开放认证",
+      "code": "systemDataOpenAccessModify",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataOpenAccessModify",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/update",
+          "name": "更新开放认证",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all"
+        }
+      ],
+      "authType": "all"
+    },
     "systemDictManageAdd": {
       "name": "新增字典管理",
       "code": "systemDictManageAdd",

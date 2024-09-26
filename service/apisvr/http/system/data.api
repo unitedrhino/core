@@ -32,7 +32,6 @@ service api {
     @doc "获取项目权限列表"
     @handler projectIndex
     post /index (DataProjectIndexReq) returns (DataProjectIndexResp)
-
 }
 
 @server(
@@ -76,6 +75,61 @@ service api {
     @handler index
     post /index (UserAreaApplyIndexReq) returns (UserAreaApplyIndexResp)
 }
+
+
+@server(
+    group: system/data/open/access
+    prefix: /api/v1/system/open/access
+    accessCodePrefix: "systemDataOpenAccess"
+    accessNamePrefix: "开放认证"
+    accessGroup: "数据权限"
+    middleware:  CheckTokenWare,InitCtxsWare
+)
+service api {
+    @doc "更新开放认证"
+    @handler update
+    post /update (DataOpenAccess) returns ()
+
+    @doc "删除开放认证"
+    @handler delete
+    post /delete (WithID) returns ()
+
+    @doc "创建开放认证"
+    @handler create
+    post /create (DataOpenAccess) returns (WithID)
+
+    @doc "获取开放认证详情"
+    @handler read
+    post /read (WithID) returns (DataOpenAccess)
+
+    @doc "获取开放认证列表"
+    @handler index
+    post /index (DataOpenAccessIndexReq) returns (DataOpenAccessIndexResp)
+}
+
+type (
+    DataOpenAccessIndexReq {
+        Page *PageInfo `json:"page,optional"`        //进行数据分页（不传默认2000相当于全部）
+        TenantCode string `json:"tenantCode,optional"` // 租户号
+        Code string `json:"code,optional"` //自定义编码
+        UserID int64 `json:"userID,optional"` //绑定权限的用户ID
+    }
+
+    DataOpenAccessIndexResp {
+        Total int64           `json:"total"` //总数
+        List  []*DataOpenAccess `json:"list"`    //用户数据权限列表
+    }
+
+    DataOpenAccess{
+        ID int64 `json:"id,optional"`
+        TenantCode string `json:"tenantCode,optional"` // 租户号
+        Code string `json:"code,optional"` //自定义编码
+        UserID int64 `json:"userID,optional"` //绑定权限的用户ID
+        AccessSecret string `json:"accessSecret,optional"` //秘钥
+        IpRange []string `json:"ipRange,optional"` //ip白名单,如果不填是不限制
+        Desc string `json:"desc,optional"`
+    }
+)
 
 
 //用户级权限控制

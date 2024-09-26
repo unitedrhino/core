@@ -242,6 +242,28 @@ type DataAreaMultiUpdateReq struct {
 	Areas      []*DataArea `json:"areas"`                     //权限数据IDs
 }
 
+type DataOpenAccess struct {
+	ID           int64    `json:"id,optional"`
+	TenantCode   string   `json:"tenantCode,optional"`   // 租户号
+	Code         string   `json:"code,optional"`         //自定义编码
+	UserID       int64    `json:"userID,optional"`       //绑定权限的用户ID
+	AccessSecret string   `json:"accessSecret,optional"` //秘钥
+	IpRange      []string `json:"ipRange,optional"`      //ip白名单,如果不填是不限制
+	Desc         string   `json:"desc,optional"`
+}
+
+type DataOpenAccessIndexReq struct {
+	Page       *PageInfo `json:"page,optional"`       //进行数据分页（不传默认2000相当于全部）
+	TenantCode string    `json:"tenantCode,optional"` // 租户号
+	Code       string    `json:"code,optional"`       //自定义编码
+	UserID     int64     `json:"userID,optional"`     //绑定权限的用户ID
+}
+
+type DataOpenAccessIndexResp struct {
+	Total int64             `json:"total"` //总数
+	List  []*DataOpenAccess `json:"list"`  //用户数据权限列表
+}
+
 type DataProject struct {
 	ProjectID int64     `json:"projectID,string"`         //权限数据ID
 	AuthType  int64     `json:"authType"`                 // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
@@ -409,8 +431,9 @@ type MessageInfo struct {
 	ID          int64  `json:"id"`
 	Group       string `json:"group"` //分组
 	NotifyCode  string `json:"notifyCode"`
-	Subject     string `json:"subject"` //主题
-	Body        string `json:"body"`    //内容
+	NotifyName  string `json:"notifyName,optional"` //通知的名称,只读
+	Subject     string `json:"subject"`             //主题
+	Body        string `json:"body"`                //内容
 	Str1        string `json:"str1"`
 	Str2        string `json:"str2"`
 	Str3        string `json:"str3"`
@@ -437,7 +460,7 @@ type MessageInfoSendReq struct {
 	NotifyCode string  `json:"notifyCode"`              //通知的code
 	Subject    string  `json:"subject"`                 //通知主题
 	Body       string  `json:"body"`
-	NotifyTime int64   `json:"notifyTime,optional"` //通知时间
+	NotifyTime int64   `json:"notifyTime,optional"` //通知时间,不填立刻发送
 	Str1       string  `json:"str1,optional"`
 	Str2       string  `json:"str2,optional"`
 	Str3       string  `json:"str3,optional"`

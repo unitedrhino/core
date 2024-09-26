@@ -4068,6 +4068,210 @@
         ]
       }
     },
+    "/api/v1/system/open/access/create": {
+      "post": {
+        "summary": "创建开放认证",
+        "operationId": "postApiV1SystemOpenAccessCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithID"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataOpenAccess"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/open/access",
+          "systemDataOpenAccess"
+        ]
+      }
+    },
+    "/api/v1/system/open/access/delete": {
+      "post": {
+        "summary": "删除开放认证",
+        "operationId": "postApiV1SystemOpenAccessDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/open/access",
+          "systemDataOpenAccess"
+        ]
+      }
+    },
+    "/api/v1/system/open/access/index": {
+      "post": {
+        "summary": "获取开放认证列表",
+        "operationId": "postApiV1SystemOpenAccessIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DataOpenAccessIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataOpenAccessIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/open/access",
+          "systemDataOpenAccess"
+        ]
+      }
+    },
+    "/api/v1/system/open/access/read": {
+      "post": {
+        "summary": "获取开放认证详情",
+        "operationId": "postApiV1SystemOpenAccessRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DataOpenAccess"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithID"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/open/access",
+          "systemDataOpenAccess"
+        ]
+      }
+    },
+    "/api/v1/system/open/access/update": {
+      "post": {
+        "summary": "更新开放认证",
+        "operationId": "postApiV1SystemOpenAccessUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataOpenAccess"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/open/access",
+          "systemDataOpenAccess"
+        ]
+      }
+    },
     "/api/v1/system/ops/feedback/create": {
       "post": {
         "summary": "添加帮助与反馈",
@@ -8649,6 +8853,88 @@
         "areas"
       ]
     },
+    "DataOpenAccess": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": " 租户号"
+        },
+        "code": {
+          "type": "string",
+          "description": "自定义编码"
+        },
+        "userID": {
+          "type": "integer",
+          "format": "int64",
+          "description": "绑定权限的用户ID"
+        },
+        "accessSecret": {
+          "type": "string",
+          "description": "秘钥"
+        },
+        "ipRange": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "ip白名单,如果不填是不限制"
+        },
+        "desc": {
+          "type": "string"
+        }
+      },
+      "title": "DataOpenAccess"
+    },
+    "DataOpenAccessIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": "进行数据分页（不传默认2000相当于全部）"
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": " 租户号"
+        },
+        "code": {
+          "type": "string",
+          "description": "自定义编码"
+        },
+        "userID": {
+          "type": "integer",
+          "format": "int64",
+          "description": "绑定权限的用户ID"
+        }
+      },
+      "title": "DataOpenAccessIndexReq"
+    },
+    "DataOpenAccessIndexResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DataOpenAccess"
+          },
+          "description": "用户数据权限列表"
+        }
+      },
+      "title": "DataOpenAccessIndexResp",
+      "required": [
+        "total",
+        "list"
+      ]
+    },
     "DataProject": {
       "type": "object",
       "properties": {
@@ -9284,6 +9570,10 @@
         "notifyCode": {
           "type": "string"
         },
+        "notifyName": {
+          "type": "string",
+          "description": "通知的名称,只读"
+        },
         "subject": {
           "type": "string",
           "description": "主题"
@@ -9403,7 +9693,7 @@
         "notifyTime": {
           "type": "integer",
           "format": "int64",
-          "description": "通知时间"
+          "description": "通知时间,不填立刻发送"
         },
         "str1": {
           "type": "string"

@@ -92,6 +92,9 @@ type (
 	NotifyTemplate                        = sys.NotifyTemplate
 	NotifyTemplateIndexReq                = sys.NotifyTemplateIndexReq
 	NotifyTemplateIndexResp               = sys.NotifyTemplateIndexResp
+	OpenAccess                            = sys.OpenAccess
+	OpenAccessIndexReq                    = sys.OpenAccessIndexReq
+	OpenAccessIndexResp                   = sys.OpenAccessIndexResp
 	OperLogCreateReq                      = sys.OperLogCreateReq
 	OperLogIndexReq                       = sys.OperLogIndexReq
 	OperLogIndexResp                      = sys.OperLogIndexResp

@@ -50,7 +50,7 @@ func Migrate(c conf.Database) error {
 		&SysUserRole{},
 		&SysTenantInfo{},
 		&SysTenantOpenWebhook{},
-		&SysTenantOpenAccess{},
+		&SysDataOpenAccess{},
 		&SysTenantApp{},
 		&SysTenantAccess{},
 		&SysTenantConfig{},

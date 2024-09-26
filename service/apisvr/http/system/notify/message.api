@@ -39,7 +39,7 @@ type (
       NotifyCode string `json:"notifyCode"`         //通知的code
       Subject string `json:"subject"` //通知主题
       Body string `json:"body"`
-      NotifyTime int64 `json:"notifyTime,optional"` //通知时间
+      NotifyTime int64 `json:"notifyTime,optional"` //通知时间,不填立刻发送
       Str1 string `json:"str1,optional"`
       Str2 string `json:"str2,optional"`
       Str3 string `json:"str3,optional"`
@@ -62,6 +62,7 @@ type (
          ID int64 `json:"id"`
          Group string `json:"group"` //分组
          NotifyCode string `json:"notifyCode"`
+         NotifyName string `json:"notifyName,optional"`         //通知的名称,只读
          Subject string `json:"subject"` //主题
          Body string `json:"body"` //内容
          Str1 string `json:"str1"`

@@ -92,6 +92,9 @@ type (
 	NotifyTemplate                        = sys.NotifyTemplate
 	NotifyTemplateIndexReq                = sys.NotifyTemplateIndexReq
 	NotifyTemplateIndexResp               = sys.NotifyTemplateIndexResp
+	OpenAccess                            = sys.OpenAccess
+	OpenAccessIndexReq                    = sys.OpenAccessIndexReq
+	OpenAccessIndexResp                   = sys.OpenAccessIndexResp
 	OperLogCreateReq                      = sys.OperLogCreateReq
 	OperLogIndexReq                       = sys.OperLogIndexReq
 	OperLogIndexResp                      = sys.OperLogIndexResp
@@ -225,6 +228,11 @@ type (
 		DataAreaMultiDelete(ctx context.Context, in *DataAreaMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 		UserAreaApplyIndex(ctx context.Context, in *UserAreaApplyIndexReq, opts ...grpc.CallOption) (*UserAreaApplyIndexResp, error)
 		UserAreaApplyDeal(ctx context.Context, in *UserAreaApplyDealReq, opts ...grpc.CallOption) (*Empty, error)
+		DataOpenAccessIndex(ctx context.Context, in *OpenAccessIndexReq, opts ...grpc.CallOption) (*OpenAccessIndexResp, error)
+		DataOpenAccessRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*OpenAccess, error)
+		DataOpenAccessUpdate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*Empty, error)
+		DataOpenAccessCreate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*WithID, error)
+		DataOpenAccessDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	}
 
 	defaultDataManage struct {
@@ -329,4 +337,49 @@ func (m *defaultDataManage) UserAreaApplyDeal(ctx context.Context, in *UserAreaA
 
 func (d *directDataManage) UserAreaApplyDeal(ctx context.Context, in *UserAreaApplyDealReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.UserAreaApplyDeal(ctx, in)
+}
+
+func (m *defaultDataManage) DataOpenAccessIndex(ctx context.Context, in *OpenAccessIndexReq, opts ...grpc.CallOption) (*OpenAccessIndexResp, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataOpenAccessIndex(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataOpenAccessIndex(ctx context.Context, in *OpenAccessIndexReq, opts ...grpc.CallOption) (*OpenAccessIndexResp, error) {
+	return d.svr.DataOpenAccessIndex(ctx, in)
+}
+
+func (m *defaultDataManage) DataOpenAccessRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*OpenAccess, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataOpenAccessRead(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataOpenAccessRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*OpenAccess, error) {
+	return d.svr.DataOpenAccessRead(ctx, in)
+}
+
+func (m *defaultDataManage) DataOpenAccessUpdate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataOpenAccessUpdate(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataOpenAccessUpdate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DataOpenAccessUpdate(ctx, in)
+}
+
+func (m *defaultDataManage) DataOpenAccessCreate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*WithID, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataOpenAccessCreate(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataOpenAccessCreate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.DataOpenAccessCreate(ctx, in)
+}
+
+func (m *defaultDataManage) DataOpenAccessDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataOpenAccessDelete(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataOpenAccessDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DataOpenAccessDelete(ctx, in)
 }

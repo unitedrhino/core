@@ -119,7 +119,8 @@ type SysMessageInfo struct {
 	IsDirectNotify int64             `gorm:"column:is_direct_notify;index;type:bigint;default:2"`         //是否是发送通知消息创建
 	NotifyTime     time.Time         `gorm:"column:notify_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` //通知时间
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
+	DeletedTime  stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
+	NotifyConfig *SysNotifyConfig   `gorm:"foreignKey:Code;references:NotifyCode"`
 }
 
 func (m *SysMessageInfo) TableName() string {

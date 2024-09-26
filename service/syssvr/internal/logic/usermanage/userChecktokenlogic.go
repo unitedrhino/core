@@ -71,7 +71,7 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		if claim.TenantCode == "" || claim.UserID == 0 || claim.Code == "" {
 			return nil, errors.TokenInvalid
 		}
-		po, err := relationDB.NewTenantOpenRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantOpenFilter{
+		po, err := relationDB.NewDataOpenAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DataOpenAccessFilter{
 			TenantCode: claim.TenantCode,
 			UserID:     claim.UserID,
 			Code:       claim.Code,

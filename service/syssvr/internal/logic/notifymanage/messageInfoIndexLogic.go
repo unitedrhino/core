@@ -28,7 +28,7 @@ func NewMessageInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *MessageInfoIndexLogic) MessageInfoIndex(in *sys.MessageInfoIndexReq) (*sys.MessageInfoIndexResp, error) {
-	f := relationDB.MessageInfoFilter{Group: in.Group, NotifyCode: in.NotifyCode, IsDirectNotify: def.False}
+	f := relationDB.MessageInfoFilter{Group: in.Group, NotifyCode: in.NotifyCode, IsDirectNotify: def.False, WithNotifyConfig: true}
 	total, err := relationDB.NewMessageInfoRepo(l.ctx).CountByFilter(l.ctx, f)
 	if err != nil {
 		return nil, err
@@ -39,7 +39,11 @@ func (l *MessageInfoIndexLogic) MessageInfoIndex(in *sys.MessageInfoIndexReq) (*
 	}
 	var list []*sys.MessageInfo
 	for _, v := range pos {
-		list = append(list, utils.Copy[sys.MessageInfo](v))
+		do := utils.Copy[sys.MessageInfo](v)
+		if v.NotifyConfig != nil {
+			do.NotifyName = v.NotifyConfig.Name
+		}
+		list = append(list, do)
 	}
 	return &sys.MessageInfoIndexResp{Total: total, List: list}, nil
 }

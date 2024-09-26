@@ -895,6 +895,11 @@ const (
 	DataManage_DataAreaMultiDelete_FullMethodName    = "/sys.DataManage/dataAreaMultiDelete"
 	DataManage_UserAreaApplyIndex_FullMethodName     = "/sys.DataManage/userAreaApplyIndex"
 	DataManage_UserAreaApplyDeal_FullMethodName      = "/sys.DataManage/userAreaApplyDeal"
+	DataManage_DataOpenAccessIndex_FullMethodName    = "/sys.DataManage/dataOpenAccessIndex"
+	DataManage_DataOpenAccessRead_FullMethodName     = "/sys.DataManage/dataOpenAccessRead"
+	DataManage_DataOpenAccessUpdate_FullMethodName   = "/sys.DataManage/dataOpenAccessUpdate"
+	DataManage_DataOpenAccessCreate_FullMethodName   = "/sys.DataManage/dataOpenAccessCreate"
+	DataManage_DataOpenAccessDelete_FullMethodName   = "/sys.DataManage/dataOpenAccessDelete"
 )
 
 // DataManageClient is the client API for DataManage service.
@@ -910,6 +915,11 @@ type DataManageClient interface {
 	DataAreaMultiDelete(ctx context.Context, in *DataAreaMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 	UserAreaApplyIndex(ctx context.Context, in *UserAreaApplyIndexReq, opts ...grpc.CallOption) (*UserAreaApplyIndexResp, error)
 	UserAreaApplyDeal(ctx context.Context, in *UserAreaApplyDealReq, opts ...grpc.CallOption) (*Empty, error)
+	DataOpenAccessIndex(ctx context.Context, in *OpenAccessIndexReq, opts ...grpc.CallOption) (*OpenAccessIndexResp, error)
+	DataOpenAccessRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*OpenAccess, error)
+	DataOpenAccessUpdate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*Empty, error)
+	DataOpenAccessCreate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*WithID, error)
+	DataOpenAccessDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type dataManageClient struct {
@@ -1001,6 +1011,51 @@ func (c *dataManageClient) UserAreaApplyDeal(ctx context.Context, in *UserAreaAp
 	return out, nil
 }
 
+func (c *dataManageClient) DataOpenAccessIndex(ctx context.Context, in *OpenAccessIndexReq, opts ...grpc.CallOption) (*OpenAccessIndexResp, error) {
+	out := new(OpenAccessIndexResp)
+	err := c.cc.Invoke(ctx, DataManage_DataOpenAccessIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataManageClient) DataOpenAccessRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*OpenAccess, error) {
+	out := new(OpenAccess)
+	err := c.cc.Invoke(ctx, DataManage_DataOpenAccessRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataManageClient) DataOpenAccessUpdate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DataManage_DataOpenAccessUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataManageClient) DataOpenAccessCreate(ctx context.Context, in *OpenAccess, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, DataManage_DataOpenAccessCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataManageClient) DataOpenAccessDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DataManage_DataOpenAccessDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DataManageServer is the server API for DataManage service.
 // All implementations must embed UnimplementedDataManageServer
 // for forward compatibility
@@ -1014,6 +1069,11 @@ type DataManageServer interface {
 	DataAreaMultiDelete(context.Context, *DataAreaMultiDeleteReq) (*Empty, error)
 	UserAreaApplyIndex(context.Context, *UserAreaApplyIndexReq) (*UserAreaApplyIndexResp, error)
 	UserAreaApplyDeal(context.Context, *UserAreaApplyDealReq) (*Empty, error)
+	DataOpenAccessIndex(context.Context, *OpenAccessIndexReq) (*OpenAccessIndexResp, error)
+	DataOpenAccessRead(context.Context, *WithID) (*OpenAccess, error)
+	DataOpenAccessUpdate(context.Context, *OpenAccess) (*Empty, error)
+	DataOpenAccessCreate(context.Context, *OpenAccess) (*WithID, error)
+	DataOpenAccessDelete(context.Context, *WithID) (*Empty, error)
 	mustEmbedUnimplementedDataManageServer()
 }
 
@@ -1047,6 +1107,21 @@ func (UnimplementedDataManageServer) UserAreaApplyIndex(context.Context, *UserAr
 }
 func (UnimplementedDataManageServer) UserAreaApplyDeal(context.Context, *UserAreaApplyDealReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAreaApplyDeal not implemented")
+}
+func (UnimplementedDataManageServer) DataOpenAccessIndex(context.Context, *OpenAccessIndexReq) (*OpenAccessIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataOpenAccessIndex not implemented")
+}
+func (UnimplementedDataManageServer) DataOpenAccessRead(context.Context, *WithID) (*OpenAccess, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataOpenAccessRead not implemented")
+}
+func (UnimplementedDataManageServer) DataOpenAccessUpdate(context.Context, *OpenAccess) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataOpenAccessUpdate not implemented")
+}
+func (UnimplementedDataManageServer) DataOpenAccessCreate(context.Context, *OpenAccess) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataOpenAccessCreate not implemented")
+}
+func (UnimplementedDataManageServer) DataOpenAccessDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataOpenAccessDelete not implemented")
 }
 func (UnimplementedDataManageServer) mustEmbedUnimplementedDataManageServer() {}
 
@@ -1223,6 +1298,96 @@ func _DataManage_UserAreaApplyDeal_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DataManage_DataOpenAccessIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpenAccessIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataManageServer).DataOpenAccessIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataManage_DataOpenAccessIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataManageServer).DataOpenAccessIndex(ctx, req.(*OpenAccessIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataManage_DataOpenAccessRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataManageServer).DataOpenAccessRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataManage_DataOpenAccessRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataManageServer).DataOpenAccessRead(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataManage_DataOpenAccessUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpenAccess)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataManageServer).DataOpenAccessUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataManage_DataOpenAccessUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataManageServer).DataOpenAccessUpdate(ctx, req.(*OpenAccess))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataManage_DataOpenAccessCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OpenAccess)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataManageServer).DataOpenAccessCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataManage_DataOpenAccessCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataManageServer).DataOpenAccessCreate(ctx, req.(*OpenAccess))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataManage_DataOpenAccessDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataManageServer).DataOpenAccessDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataManage_DataOpenAccessDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataManageServer).DataOpenAccessDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DataManage_ServiceDesc is the grpc.ServiceDesc for DataManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1265,6 +1430,26 @@ var DataManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userAreaApplyDeal",
 			Handler:    _DataManage_UserAreaApplyDeal_Handler,
+		},
+		{
+			MethodName: "dataOpenAccessIndex",
+			Handler:    _DataManage_DataOpenAccessIndex_Handler,
+		},
+		{
+			MethodName: "dataOpenAccessRead",
+			Handler:    _DataManage_DataOpenAccessRead_Handler,
+		},
+		{
+			MethodName: "dataOpenAccessUpdate",
+			Handler:    _DataManage_DataOpenAccessUpdate_Handler,
+		},
+		{
+			MethodName: "dataOpenAccessCreate",
+			Handler:    _DataManage_DataOpenAccessCreate_Handler,
+		},
+		{
+			MethodName: "dataOpenAccessDelete",
+			Handler:    _DataManage_DataOpenAccessDelete_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
