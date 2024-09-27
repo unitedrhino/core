@@ -29,6 +29,8 @@ type AreaInfoFilter struct {
 	AreaIDs      []int64
 	AreaIDPath   string
 	IsLeaf       int64 //是否是叶子节点
+	GroupCount   *stores.Cmp
+	DeviceCount  *stores.Cmp
 	*AreaInfoWith
 }
 
@@ -57,6 +59,8 @@ func (p AreaInfoRepo) fmtFilter(ctx context.Context, f AreaInfoFilter) *gorm.DB 
 		db = db.Where("project_id = ?", f.ProjectID)
 		//ctxs.SetMetaProjectID(ctx, f.ProjectID) //指定项目id的时候需要清除项目id
 	}
+	db = f.GroupCount.Where(db, "group_count")
+	db = f.DeviceCount.Where(db, "device_count")
 	if f.ParentAreaID != 0 {
 		db = db.Where("parent_area_id = ?", f.ParentAreaID)
 	}

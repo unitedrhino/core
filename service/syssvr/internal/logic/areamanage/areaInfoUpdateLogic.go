@@ -96,6 +96,9 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 		if pb.DeviceCount != nil {
 			po.DeviceCount = pb.DeviceCount.Value
 		}
+		if pb.GroupCount != nil {
+			po.GroupCount = pb.GroupCount.Value
+		}
 	}
 
 	if pb.AreaName != "" {

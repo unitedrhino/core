@@ -6,7 +6,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-
+	"gitee.com/i-Things/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -30,9 +30,16 @@ func NewAreaInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Are
 func (l *AreaInfoIndexLogic) AreaInfoIndex(in *sys.AreaInfoIndexReq) (*sys.AreaInfoIndexResp, error) {
 	var (
 		poArr []*relationDB.SysAreaInfo
-		f     = relationDB.AreaInfoFilter{ProjectID: in.ProjectID, AreaIDs: in.AreaIDs, ParentAreaID: in.ParentAreaID, IsLeaf: in.IsLeaf}
+		f     = relationDB.AreaInfoFilter{
+			ProjectID: in.ProjectID, AreaIDs: in.AreaIDs, ParentAreaID: in.ParentAreaID, IsLeaf: in.IsLeaf}
 	)
 
+	if in.DeviceCount != nil {
+		f.DeviceCount = stores.GetCmp(in.DeviceCount.CmpType, in.DeviceCount.Value)
+	}
+	if in.GroupCount != nil {
+		f.GroupCount = stores.GetCmp(in.GroupCount.CmpType, in.GroupCount.Value)
+	}
 	poArr, err := l.AiDB.FindByFilter(l.ctx,
 		f, logic.ToPageInfo(in.Page))
 	if err != nil {

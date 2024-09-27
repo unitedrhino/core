@@ -8489,7 +8489,12 @@
         "deviceCount": {
           "type": "integer",
           "format": "int64",
-          "description": "设备数量统计"
+          "description": "设备数量统计(只读)"
+        },
+        "groupCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "分组数量统计(只读)"
         },
         "useBy": {
           "type": "string",
@@ -8556,6 +8561,12 @@
           "type": "boolean",
           "format": "boolean",
           "description": "如果该参数为true则返回除了root节点的有权限的最高层的区域列表"
+        },
+        "deviceCount": {
+          "$ref": "#/definitions/CompareInt64"
+        },
+        "groupCount": {
+          "$ref": "#/definitions/CompareInt64"
         }
       },
       "title": "AreaInfoIndexReq"
@@ -8698,6 +8709,23 @@
         }
       },
       "title": "CommonResp"
+    },
+    "CompareInt64": {
+      "type": "object",
+      "properties": {
+        "cmpTYpe": {
+          "type": "string",
+          "description": "\"=\":相等 \"!=\":不相等 \"\u003e\":大于\"\u003e=\":大于等于\"\u003c\":小于\"\u003c=\":小于等于 \"like\":模糊查询"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "CompareInt64",
+      "required": [
+        "cmpTYpe",
+        "value"
+      ]
     },
     "ConfigResp": {
       "type": "object",

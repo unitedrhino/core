@@ -2,7 +2,6 @@ package info
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic"
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
@@ -26,13 +25,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.AreaInfoIndexReq) (resp *types.AreaInfoIndexResp, err error) {
-	dmReq := &sys.AreaInfoIndexReq{
-		Page:         logic.ToSysPageRpc(req.Page),
-		ProjectID:    req.ProjectID,
-		AreaIDs:      req.AreaIDs,
-		ParentAreaID: req.ParentAreaID,
-	}
-	dmResp, err := l.svcCtx.AreaM.AreaInfoIndex(l.ctx, dmReq)
+	dmResp, err := l.svcCtx.AreaM.AreaInfoIndex(l.ctx, utils.Copy[sys.AreaInfoIndexReq](req))
 	if err != nil {
 		er := errors.Fmt(err)
 		l.Errorf("%s.rpc.AreaManage req=%v err=%+v", utils.FuncName(), req, er)

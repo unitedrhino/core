@@ -143,7 +143,8 @@ type AreaInfo struct {
 	Position        *Point      `json:"position,optional"`            //项目区域定位，默认高德坐标系（读写）
 	Desc            *string     `json:"desc,optional"`                //项目区域备注（读写）
 	LowerLevelCount int64       `json:"lowerLevelCount,optional"`     //下级的数量统计（只读）
-	DeviceCount     int64       `json:"deviceCount,optional"`         //设备数量统计
+	DeviceCount     int64       `json:"deviceCount,optional"`         //设备数量统计(只读)
+	GroupCount      int64       `json:"groupCount,optional"`          //分组数量统计(只读)
 	UseBy           string      `json:"useBy,optional"`               //用途: commonSpace default
 	IsLeaf          int64       `json:"isLeaf,optional"`              //是否是子节点（只读）
 	IsSysCreated    int64       `json:"isSysCreated,optional"`        //是否是系统创建的,系统创建的只有管理员可以删除
@@ -155,11 +156,13 @@ type AreaInfo struct {
 }
 
 type AreaInfoIndexReq struct {
-	Page          *PageInfo `json:"page,optional"`             //进行数据分页（不传默认2000相当于全部）
-	ProjectID     int64     `json:"projectID,string,optional"` //项目id
-	AreaIDs       []int64   `json:"areaIDs,optional"`          //项目区域ids
-	ParentAreaID  int64     `json:"parentAreaID,string,optional"`
-	IsRetTopLevel bool      `json:"isRetTopLevel,optional"` //如果该参数为true则返回除了root节点的有权限的最高层的区域列表
+	Page          *PageInfo     `json:"page,optional"`             //进行数据分页（不传默认2000相当于全部）
+	ProjectID     int64         `json:"projectID,string,optional"` //项目id
+	AreaIDs       []int64       `json:"areaIDs,optional"`          //项目区域ids
+	ParentAreaID  int64         `json:"parentAreaID,string,optional"`
+	IsRetTopLevel bool          `json:"isRetTopLevel,optional"` //如果该参数为true则返回除了root节点的有权限的最高层的区域列表
+	DeviceCount   *CompareInt64 `json:"deviceCount,optional"`
+	GroupCount    *CompareInt64 `json:"groupCount,optional"`
 }
 
 type AreaInfoIndexResp struct {
@@ -199,6 +202,11 @@ type AreaWithID struct {
 
 type CommonResp struct {
 	ID int64 `json:"id,optional"` // id
+}
+
+type CompareInt64 struct {
+	CmpTYpe string `json:"cmpTYpe"` //"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+	Value   int64  `json:"value,string"`
 }
 
 type ConfigResp struct {

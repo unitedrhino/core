@@ -39,6 +39,8 @@ type (
 	AreaProfileReadReq                    = sys.AreaProfileReadReq
 	AreaWithID                            = sys.AreaWithID
 	AuthApiInfo                           = sys.AuthApiInfo
+	CompareInt64                          = sys.CompareInt64
+	CompareString                         = sys.CompareString
 	ConfigResp                            = sys.ConfigResp
 	DataArea                              = sys.DataArea
 	DataAreaIndexReq                      = sys.DataAreaIndexReq

@@ -776,6 +776,15 @@ message PageInfo {
     }
 }
 
+message CompareString{
+  string CmpType =1;//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+  string value =2;//值
+}
+message CompareInt64{
+  string CmpType =1;//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+  int64 value =2;//值
+}
+
 message WithID{
   int64 id = 1;
 }
@@ -873,7 +882,8 @@ message AreaInfo {
   string useBy =14;//用途
   string areaImg =15;//区域图片
   bool isUpdateAreaImg =16;//是否更新区域的图片
-  google.protobuf.Int64Value deviceCount=17;
+  google.protobuf.Int64Value deviceCount=17;//绑定该区域的设备统计
+  google.protobuf.Int64Value groupCount=19; //绑定该区域的分组统计
   int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
 }
 
@@ -917,6 +927,8 @@ message AreaInfoIndexReq {
   repeated int64 areaIDs = 5; //区域ids
   bool  isRetTopLevel = 6;//如果该参数为true则返回除了root节点的有权限的最高层的区域列表
   int64 isLeaf =7;//是否是叶子节点
+  CompareInt64 deviceCount =8;
+  CompareInt64 groupCount =9;
 }
 
 message AreaInfoIndexResp {
