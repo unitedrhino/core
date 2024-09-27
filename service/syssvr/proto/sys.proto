@@ -640,7 +640,7 @@ message TenantConfig{
 
 message TenantConfigRegisterAutoCreateProject{
     string projectName =1;
-    string isSysCreated =2; //是否是系统创建的,系统创建的只有管理员可以删除
+    int64 isSysCreated =2; //是否是系统创建的,系统创建的只有管理员可以删除
     repeated TenantConfigRegisterAutoCreateArea areas=3;
 }
 message TenantConfigRegisterAutoCreateArea{
