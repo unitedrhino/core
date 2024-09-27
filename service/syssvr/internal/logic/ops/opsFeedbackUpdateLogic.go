@@ -5,6 +5,7 @@ import (
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/core/service/syssvr/internal/svc"
 	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/domain/ops"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -25,6 +26,10 @@ func NewOpsFeedbackUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *OpsFeedbackUpdateLogic) OpsFeedbackUpdate(in *sys.OpsFeedback) (*sys.Empty, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
+	ctxs.GetUserCtx(l.ctx).AllProject = true
 	old, err := relationDB.NewOpsFeedbackRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err

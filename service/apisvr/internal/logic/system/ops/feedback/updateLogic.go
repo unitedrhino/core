@@ -2,6 +2,8 @@ package feedback
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/i-Things/share/utils"
 
 	"gitee.com/i-Things/core/service/apisvr/internal/svc"
 	"gitee.com/i-Things/core/service/apisvr/internal/types"
@@ -25,7 +27,9 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(req *types.OpsFeedback) (resp *types.WithID, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	_, err = l.svcCtx.Ops.OpsFeedbackUpdate(l.ctx, utils.Copy[sys.OpsFeedback](req))
+	if err != nil {
+		return nil, err
+	}
+	return &types.WithID{}, nil
 }
