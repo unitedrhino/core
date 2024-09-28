@@ -639,11 +639,13 @@ message TenantConfig{
 }
 
 message TenantConfigRegisterAutoCreateProject{
+    int64 id =4;
     string projectName =1;
     int64 isSysCreated =2; //是否是系统创建的,系统创建的只有管理员可以删除
     repeated TenantConfigRegisterAutoCreateArea areas=3;
 }
 message TenantConfigRegisterAutoCreateArea{
+  int64 id =5;
   string  areaName =1;
   string  areaImg =2;
   int64   isSysCreated = 3;//是否是系统创建的,系统创建的只有管理员可以删除

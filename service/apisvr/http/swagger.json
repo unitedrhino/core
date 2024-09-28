@@ -11961,6 +11961,10 @@
     "TenantConfigRegisterAutoCreateArea": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
         "areaName": {
           "type": "string"
         },
@@ -11986,6 +11990,10 @@
     "TenantConfigRegisterAutoCreateProject": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
         "projectName": {
           "type": "string"
         },

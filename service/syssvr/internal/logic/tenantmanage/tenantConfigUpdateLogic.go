@@ -2,6 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
+	"gitee.com/i-Things/core/service/syssvr/domain/tenant"
 	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/i-Things/share/ctxs"
 	"gitee.com/i-Things/share/oss"
@@ -41,8 +42,27 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 	if err != nil {
 		return nil, err
 	}
+	oldPMap, maxProjectID := tenant.RegisterAutoCreateProjectToMap(old.RegisterAutoCreateProject)
 	for _, v := range in.RegisterAutoCreateProject {
+		if v.Id == 0 {
+			maxProjectID++
+			v.Id = maxProjectID
+		}
+		oldP := oldPMap[v.Id]
+		if oldP == nil {
+			oldP = &tenant.RegisterAutoCreateProject{
+				ID:           v.Id,
+				ProjectName:  v.ProjectName,
+				IsSysCreated: v.IsSysCreated,
+			}
+		}
+		maxAreaID := oldP.MaxAreaID
 		for _, a := range v.Areas {
+			if a.Id == 0 {
+				maxAreaID++
+				a.Id = maxAreaID
+			}
+			oldA := oldP.AreaMap[a.Id]
 			if a.IsUpdateAreaImg == true && a.AreaImg != "" {
 				nwePath := oss.GenCommonFilePath(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, oss.GetFileNameWithPath(a.AreaImg))
 				path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(a.AreaImg, nwePath)
@@ -51,6 +71,9 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 				} else {
 					a.AreaImg = path
 				}
+			}
+			if !a.IsUpdateAreaImg && oldA != nil { //更新类型
+				a.AreaImg = oldA.AreaImg
 			}
 		}
 	}

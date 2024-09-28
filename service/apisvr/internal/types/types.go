@@ -1033,6 +1033,7 @@ type TenantConfig struct {
 }
 
 type TenantConfigRegisterAutoCreateArea struct {
+	ID              int64  `json:"id,optional"`
 	AreaName        string `json:"areaName"`
 	AreaImg         string `json:"areaImg,optional"`
 	IsUpdateAreaImg bool   `json:"isUpdateAreaImg,omitempty,optional"`
@@ -1040,6 +1041,7 @@ type TenantConfigRegisterAutoCreateArea struct {
 }
 
 type TenantConfigRegisterAutoCreateProject struct {
+	ID           int64                                 `json:"id,optional"`
 	ProjectName  string                                `json:"projectName"`
 	IsSysCreated int64                                 `json:"isSysCreated"` //是否是系统创建的,系统创建的只有管理员可以删除
 	Areas        []*TenantConfigRegisterAutoCreateArea `json:"areas,optional"`
