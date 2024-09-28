@@ -56,6 +56,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		if !errors.Cmp(err, errors.NotFind) {
 			return Clients{}, err
 		}
+		return Clients{}, errors.Parameter.AddMsg("未配置应用")
 	}
 	var cli Clients
 	cli.Config = cfg
