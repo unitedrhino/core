@@ -158,7 +158,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	if err != nil {
 		l.Error(err)
 	}
-	err = l.svcCtx.TenantCache.SetData(l.ctx, po.Code, logic.ToTenantInfoCache(po))
+	err = l.svcCtx.TenantCache.SetData(l.ctx, string(po.Code), logic.ToTenantInfoCache(po))
 	if err != nil {
 		l.Error(err)
 	}
