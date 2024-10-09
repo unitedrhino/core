@@ -36,6 +36,9 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.Code != "" && uc.TenantCode != def.TenantCodeDefault {
 		return nil, errors.Permissions
 	}
+	if in.Code == "" {
+		in.Code = uc.TenantCode
+	}
 	old, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: []string{in.AppCode}})
 	if err != nil {
 		return nil, err
