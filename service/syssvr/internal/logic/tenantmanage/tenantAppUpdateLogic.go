@@ -36,7 +36,7 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.Code != "" && uc.TenantCode != def.TenantCodeDefault {
 		return nil, errors.Permissions
 	}
-	old, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: []string{in.AppCode}})
+	old, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: []string{in.AppCode}})
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.LoginTypes != nil {
 		old.LoginTypes = in.LoginTypes
 	}
-	err = relationDB.NewTenantAppRepo(l.ctx).Update(l.ctx, old)
+	err = relationDB.NewTenantAppRepo(l.ctx).Update(ctxs.WithRoot(l.ctx), old)
 	if err == nil {
 		ctx := l.ctx
 		if in.Code != "" {
