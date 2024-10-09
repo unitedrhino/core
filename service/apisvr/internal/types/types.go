@@ -966,7 +966,7 @@ type TenantApp struct {
 }
 
 type TenantAppIndexReq struct {
-	Code string `json:"code,optional"` // 应用编号
+	Code string `json:"code,optional"` // 租户编号
 }
 
 type TenantAppIndexResp struct {
@@ -975,7 +975,7 @@ type TenantAppIndexResp struct {
 }
 
 type TenantAppInfo struct {
-	Code           string             `json:"code,optional"` // 应用编号
+	Code           string             `json:"code,optional"` // 租户编号
 	AppCode        string             `json:"appCode"`
 	Modules        []*TenantAppModule `json:"modules"`
 	DingMini       *ThirdAppConfig    `json:"dingMini,optional"` //钉钉小程序
@@ -988,14 +988,14 @@ type TenantAppInfo struct {
 
 type TenantAppMenu struct {
 	TemplateID int64  `json:"templateID"`
-	Code       string `json:"code,optional"`    // 应用编号
+	Code       string `json:"code,optional"`    // 租户编号
 	AppCode    string `json:"appCode,optional"` // 应用编号
 	MenuInfo
 	Children []*TenantAppMenu `json:"children,optional"`
 }
 
 type TenantAppMenuIndexReq struct {
-	Code       string `json:"code,optional"` // 应用编号
+	Code       string `json:"code,optional"` // 租户编号
 	AppCode    string `json:"appCode"`
 	ModuleCode string `json:"moduleCode"`
 	IsRetTree  bool   `json:"isRetTree,optional"`
@@ -1012,14 +1012,14 @@ type TenantAppModule struct {
 }
 
 type TenantAppModuleMultiCreate struct {
-	Code    string             `json:"code,optional"` // 应用编号
+	Code    string             `json:"code,optional"` // 租户编号
 	AppCode string             `json:"appCode"`
 	Modules []*TenantAppModule `json:"modules"`
 }
 
 type TenantAppWithIDOrCode struct {
 	ID      int64  `json:"id,optional"`      // 编号
-	Code    string `json:"code,optional"`    // 应用编号
+	Code    string `json:"code,optional"`    // 租户编号
 	AppCode string `json:"appCode,optional"` // 应用编号
 }
 
@@ -1061,9 +1061,10 @@ type TenantCore struct {
 }
 
 type TenantCoreIndexReq struct {
-	Page *PageInfo `json:"page,optional"` // 分页信息
-	Code string    `json:"code,optional"` // 编号
-	Name string    `json:"name,optional"` // 协议名称
+	Page    *PageInfo `json:"page,optional"`    // 分页信息
+	AppCode string    `json:"appCode,optional"` //过滤绑定了指定app的租户
+	Code    string    `json:"code,optional"`    // 编号
+	Name    string    `json:"name,optional"`    // 协议名称
 }
 
 type TenantCoreIndexResp struct {
@@ -1119,7 +1120,7 @@ type TenantInfoIndexResp struct {
 }
 
 type TenantModuleCreateReq struct {
-	Code       string  `json:"code,optional"` // 应用编号
+	Code       string  `json:"code,optional"` // 租户编号
 	AppCode    string  `json:"appCode"`
 	ModuleCode string  `json:"moduleCode"`
 	MenuIDs    []int64 `json:"menuIDs"`
@@ -1127,7 +1128,7 @@ type TenantModuleCreateReq struct {
 }
 
 type TenantModuleIndexReq struct {
-	Code    string    `json:"code,optional"` // 应用编号
+	Code    string    `json:"code,optional"` // 租户编号
 	AppCode string    `json:"appCode"`
 	Page    *PageInfo `json:"page,optional"`
 }
@@ -1137,7 +1138,7 @@ type TenantModuleIndexResp struct {
 }
 
 type TenantModuleWithIDOrCode struct {
-	ID         int64  `json:"id,optional"`      // 编号
+	ID         int64  `json:"id,optional"`      // 租户编号
 	Code       string `json:"code,optional"`    // 应用编号
 	AppCode    string `json:"appCode,optional"` // 应用编号
 	ModuleCode string `json:"moduleCode,optional"`

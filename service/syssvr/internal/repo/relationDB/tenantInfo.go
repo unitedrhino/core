@@ -23,10 +23,11 @@ func NewTenantInfoRepo(in any) *TenantInfoRepo {
 }
 
 type TenantInfoFilter struct {
-	ID    int64
-	Codes []string
-	Code  string
-	Name  string
+	ID      int64
+	Codes   []string
+	Code    string
+	Name    string
+	AppCode string
 }
 
 func (p TenantInfoRepo) fmtFilter(ctx context.Context, f TenantInfoFilter) *gorm.DB {
@@ -42,6 +43,10 @@ func (p TenantInfoRepo) fmtFilter(ctx context.Context, f TenantInfoFilter) *gorm
 	}
 	if f.Code != "" {
 		db = db.Where("code = ?", f.Code)
+	}
+	if f.AppCode != "" {
+		subQuery := p.db.Model(&SysTenantApp{}).Select("tenant_code").Where("app_code=?", f.AppCode)
+		db = db.Where("code in (?)", subQuery)
 	}
 	return db
 }

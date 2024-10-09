@@ -3,7 +3,7 @@ module gitee.com/i-Things/core
 go 1.21.4
 
 require (
-	gitee.com/i-Things/share v0.1.24
+	gitee.com/i-Things/share v0.1.25
 	gitee.com/i-Things/squirrel v1.20.4
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0

@@ -31,10 +31,11 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 
 func (l *IndexLogic) Index(req *types.TenantCoreIndexReq) (resp *types.TenantCoreIndexResp, err error) {
 	ret, err := l.svcCtx.TenantRpc.TenantInfoIndex(ctxs.WithRoot(l.ctx), &sys.TenantInfoIndexReq{
-		Name:   req.Name,
-		Page:   logic.ToSysPageRpc(req.Page),
-		Code:   req.Code,
-		Status: def.True,
+		Name:    req.Name,
+		Page:    logic.ToSysPageRpc(req.Page),
+		Code:    req.Code,
+		AppCode: req.AppCode,
+		Status:  def.True,
 	})
 	if err != nil {
 		return nil, err

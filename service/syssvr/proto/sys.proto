@@ -620,6 +620,7 @@ message TenantInfoIndexReq{
   string name = 2;
   string code = 3;
   int64 status = 4;
+  string appCode =5;//过滤绑定了指定app的租户
 }
 
 message TenantInfoIndexResp{

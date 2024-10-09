@@ -11641,7 +11641,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         }
       },
       "title": "TenantAppIndexReq"
@@ -11673,7 +11673,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string"
@@ -11726,7 +11726,7 @@
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string",
@@ -11819,7 +11819,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string"
@@ -11885,7 +11885,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string"
@@ -11913,7 +11913,7 @@
         },
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string",
@@ -12064,6 +12064,10 @@
         "page": {
           "$ref": "#/definitions/PageInfo",
           "description": " 分页信息"
+        },
+        "appCode": {
+          "type": "string",
+          "description": "过滤绑定了指定app的租户"
         },
         "code": {
           "type": "string",
@@ -12273,7 +12277,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string"
@@ -12309,7 +12313,7 @@
       "properties": {
         "code": {
           "type": "string",
-          "description": " 应用编号"
+          "description": " 租户编号"
         },
         "appCode": {
           "type": "string"
@@ -12344,7 +12348,7 @@
         "id": {
           "type": "integer",
           "format": "int64",
-          "description": " 编号"
+          "description": " 租户编号"
         },
         "code": {
           "type": "string",

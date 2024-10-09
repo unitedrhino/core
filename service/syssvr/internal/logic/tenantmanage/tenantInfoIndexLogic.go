@@ -36,8 +36,9 @@ func (l *TenantInfoIndexLogic) TenantInfoIndex(in *sys.TenantInfoIndexReq) (*sys
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
 	f := relationDB.TenantInfoFilter{
-		Code: in.Code,
-		Name: in.Name,
+		Code:    in.Code,
+		Name:    in.Name,
+		AppCode: in.AppCode,
 	}
 	list, err := relationDB.NewTenantInfoRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
 	if err != nil {

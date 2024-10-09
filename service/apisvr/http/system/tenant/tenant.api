@@ -188,6 +188,7 @@ service api {
 type (
     TenantCoreIndexReq{
         Page *PageInfo `json:"page,optional"`                   // 分页信息
+        AppCode string `json:"appCode,optional"` //过滤绑定了指定app的租户
         Code string `json:"code,optional"`                               // 编号
         Name string `json:"name,optional"`                                 // 协议名称
     }

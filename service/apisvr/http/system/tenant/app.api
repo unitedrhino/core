@@ -159,7 +159,7 @@ type (
         Code string `json:"code"`
     }
     TenantAppMenuIndexReq{
-        Code string `json:"code,optional"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 租户编号
         AppCode string `json:"appCode"`
         ModuleCode string `json:"moduleCode"`
         IsRetTree bool `json:"isRetTree,optional"`
@@ -169,7 +169,7 @@ type (
     }
     TenantAppMenu{
         TemplateID int64 `json:"templateID"`
-        Code string `json:"code,optional"`                             // 应用编号
+        Code string `json:"code,optional"`                             // 租户编号
         AppCode string `json:"appCode,optional"`                         // 应用编号
         MenuInfo
         Children []*TenantAppMenu `json:"children,optional"`
@@ -178,14 +178,14 @@ type (
 
 type (
     TenantModuleCreateReq{
-        Code string `json:"code,optional"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 租户编号
         AppCode string `json:"appCode"`
         ModuleCode string `json:"moduleCode"`
         MenuIDs []int64 `json:"menuIDs"`
         ApiIDs []int64 `json:"apiIDs"`
     }
     TenantModuleIndexReq{
-        Code string `json:"code,optional"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 租户编号
         AppCode string `json:"appCode"`
         Page *PageInfo `json:"page,optional"`
     }
@@ -194,7 +194,7 @@ type (
         List []*ModuleInfo `json:"list"`
     }
     TenantModuleWithIDOrCode{
-        ID int64 `json:"id,optional"`                                // 编号
+        ID int64 `json:"id,optional"`                                // 租户编号
         Code string `json:"code,optional"`                             // 应用编号
         AppCode string `json:"appCode,optional"`                         // 应用编号
         ModuleCode string `json:"moduleCode,optional"`
@@ -206,19 +206,19 @@ type (
 type(
     TenantAppWithIDOrCode{
         ID int64 `json:"id,optional"`                                // 编号
-        Code string `json:"code,optional"`                             // 应用编号
+        Code string `json:"code,optional"`                             // 租户编号
         AppCode string `json:"appCode,optional"`                         // 应用编号
     }
 
     TenantAppIndexReq{
-        Code string `json:"code,optional"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 租户编号
     }
     TenantAppIndexResp{
         List []*TenantApp `json:"list"`            // 租户列表数据
         Total int64 `json:"total"`                    // 租户列表总记录数
     }
     TenantAppModuleMultiCreate{
-        Code string `json:"code,optional"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 租户编号
         AppCode string `json:"appCode"`
         Modules []*TenantAppModule `json:"modules"`
     }
@@ -243,7 +243,7 @@ type(
         Tenant *TenantCore `json:"tenant"` //租户信息
     }
     TenantAppInfo {
-        Code string `json:"code,optional"`                     // 应用编号
+        Code string `json:"code,optional"`                     // 租户编号
         AppCode string `json:"appCode"`
         Modules []*TenantAppModule `json:"modules"`
         DingMini *ThirdAppConfig `json:"dingMini,optional"`//钉钉小程序
