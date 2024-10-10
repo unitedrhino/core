@@ -230,7 +230,7 @@ func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB
 }
 
 func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, tx *gorm.DB) error {
-	ctx = ctxs.WithRoot(ctx)
+	ctx = ctxs.WithAdmin(ctx)
 	uc := ctxs.GetUserCtx(ctx)
 	err := tx.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
