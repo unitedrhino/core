@@ -13,7 +13,7 @@ RUN cd front&&ls -l
 RUN cd front&&rm -rf front.tgz
 
 FROM registry.cn-qingdao.aliyuncs.com/ithings/alpine:3.20
-LABEL homepage="https://github.com/i-Things/iThings"
+LABEL homepage="https://gitee.com/unitedrhino"
 ENV TZ Asia/Shanghai
 RUN apk add tzdata
 

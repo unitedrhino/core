@@ -123,7 +123,7 @@ var (
 		},
 		{
 			Code:     def.TimedIThingsQueueGroupCode,
-			Name:     "iThings系统定时消息任务组",
+			Name:     "联犀系统定时消息任务组",
 			Type:     domain.TaskGroupTypeQueue,
 			SubType:  domain.QueueTypeNatsJs,
 			Priority: 9,
