@@ -2,13 +2,13 @@ package startup
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/event"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/repo/event/subscribe"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/timer"
-	"gitee.com/i-Things/share/clients"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/event"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/repo/event/subscribe"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/timer"
+	"gitee.com/unitedrhino/share/clients"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 )

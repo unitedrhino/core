@@ -1,13 +1,13 @@
 package common
 
 import (
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/share/utils"
 	"net/http"
 
-	"gitee.com/i-Things/share/result"
+	"gitee.com/unitedrhino/share/result"
 
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/common"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/common"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 )
 
 func DebugGetHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

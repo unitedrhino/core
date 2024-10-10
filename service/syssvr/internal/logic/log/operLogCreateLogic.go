@@ -3,11 +3,11 @@ package loglogic
 import (
 	"context"
 	"database/sql"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/stores"
 	"sync"
 
 	"github.com/zeromicro/go-zero/core/logx"

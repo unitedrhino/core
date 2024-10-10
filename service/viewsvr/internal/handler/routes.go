@@ -4,9 +4,9 @@ package handler
 import (
 	"net/http"
 
-	goViewproject "gitee.com/i-Things/core/service/viewsvr/internal/handler/goView/project"
-	goViewprojectdetail "gitee.com/i-Things/core/service/viewsvr/internal/handler/goView/project/detail"
-	"gitee.com/i-Things/core/service/viewsvr/internal/svc"
+	goViewproject "gitee.com/unitedrhino/core/service/viewsvr/internal/handler/goView/project"
+	goViewprojectdetail "gitee.com/unitedrhino/core/service/viewsvr/internal/handler/goView/project/detail"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

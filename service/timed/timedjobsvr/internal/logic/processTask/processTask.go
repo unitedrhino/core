@@ -2,10 +2,10 @@ package processTask
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/logic/processTask/sqlFunc"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/logic/processTask/sqlFunc"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/unitedrhino/share/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

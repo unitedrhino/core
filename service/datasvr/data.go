@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 
-	"gitee.com/i-Things/core/service/datasvr/internal/config"
-	"gitee.com/i-Things/core/service/datasvr/internal/handler"
-	"gitee.com/i-Things/core/service/datasvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/config"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/handler"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

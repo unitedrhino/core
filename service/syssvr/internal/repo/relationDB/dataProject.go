@@ -2,9 +2,9 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/domain/userDataAuth"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/domain/userDataAuth"
+	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

@@ -1,14 +1,14 @@
 package svc
 
 import (
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/client/timedmanage"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/timedjobdirect"
-	"gitee.com/i-Things/core/service/timed/timedschedulersvr/internal/config"
-	"gitee.com/i-Things/share/clients"
-	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/stores"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
+	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/config"
+	"gitee.com/unitedrhino/share/clients"
+	"gitee.com/unitedrhino/share/conf"
+	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/zrpc"

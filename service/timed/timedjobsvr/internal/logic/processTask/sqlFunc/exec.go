@@ -1,8 +1,8 @@
 package sqlFunc
 
 import (
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/stores"
 	"github.com/dop251/goja"
 )
 

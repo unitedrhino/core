@@ -2,11 +2,11 @@ package processTask
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/conf"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/stores"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 )

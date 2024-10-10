@@ -1,8 +1,8 @@
 package relationDB
 
 import (
-	"gitee.com/i-Things/share/domain/slot"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/share/domain/slot"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func ToSlotDo(in *SysSlotInfo) *slot.Info {

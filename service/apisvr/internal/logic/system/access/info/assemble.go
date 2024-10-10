@@ -2,9 +2,9 @@ package info
 
 import (
 	"fmt"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/access/api"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/access/api"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 )
 
 func ToAccessInfoPb(in *types.AccessInfo) *sys.AccessInfo {

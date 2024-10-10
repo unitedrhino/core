@@ -1,9 +1,9 @@
 package relationDB
 
 import (
-	"gitee.com/i-Things/core/service/syssvr/domain/tenant"
-	"gitee.com/i-Things/share/stores"
-	"gitee.com/i-Things/share/users"
+	"gitee.com/unitedrhino/core/service/syssvr/domain/tenant"
+	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/users"
 )
 
 // 租户信息表

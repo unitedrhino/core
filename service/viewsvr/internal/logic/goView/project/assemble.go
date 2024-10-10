@@ -1,8 +1,8 @@
 package project
 
 import (
-	"gitee.com/i-Things/core/service/viewsvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/viewsvr/internal/types"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/types"
 )
 
 func ToProjectInfoTypes(p *relationDB.ViewProjectInfo) *types.ProjectInfo {

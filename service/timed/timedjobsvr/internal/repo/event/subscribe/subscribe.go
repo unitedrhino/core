@@ -2,8 +2,8 @@ package subscribe
 
 import (
 	"context"
-	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/share/conf"
+	"gitee.com/unitedrhino/share/errors"
 )
 
 type (

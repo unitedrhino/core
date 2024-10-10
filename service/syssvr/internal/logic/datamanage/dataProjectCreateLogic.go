@@ -2,13 +2,13 @@ package datamanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/cache"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

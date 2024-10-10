@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/config"
-	"gitee.com/i-Things/share/caches"
-	"gitee.com/i-Things/share/def"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
+	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/share/def"
 	"net/http"
 )
 

@@ -2,8 +2,8 @@ package relationDB
 
 import (
 	"database/sql"
-	"gitee.com/i-Things/share/domain/ops"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/share/domain/ops"
+	"gitee.com/unitedrhino/share/stores"
 )
 
 // 设备维护工单 device Maintenance Work Order

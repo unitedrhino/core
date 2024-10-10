@@ -1,10 +1,10 @@
 package logic
 
 import (
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/stores"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func ToModuleInfoPo(in *sys.ModuleInfo) *relationDB.SysModuleInfo {

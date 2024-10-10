@@ -2,8 +2,8 @@ package tenantmanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/errors"
 )
 
 func CheckModule(ctx context.Context, tenantCode, appCode, moduleCode string) error {

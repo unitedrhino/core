@@ -1,10 +1,10 @@
-module gitee.com/i-Things/core
+module gitee.com/unitedrhino/core
 
 go 1.21.4
 
 require (
-	gitee.com/i-Things/share v0.1.25
 	gitee.com/i-Things/squirrel v1.20.4
+	gitee.com/unitedrhino/share v0.2.1
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079

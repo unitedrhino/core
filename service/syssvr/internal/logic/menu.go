@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/def"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/def"
 	"github.com/samber/lo"
 	"github.com/zeromicro/go-zero/core/logx"
 )

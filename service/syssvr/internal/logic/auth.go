@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
 )
 
 // 租户号为空则为该用户的租户

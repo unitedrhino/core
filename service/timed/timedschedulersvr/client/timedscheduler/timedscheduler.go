@@ -6,8 +6,8 @@ package timedscheduler
 import (
 	"context"
 
-	"gitee.com/i-Things/core/service/timed/timedschedulersvr/internal/svc"
-	"gitee.com/i-Things/core/service/timed/timedschedulersvr/pb/timedscheduler"
+	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/pb/timedscheduler"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"

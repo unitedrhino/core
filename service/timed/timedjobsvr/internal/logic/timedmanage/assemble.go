@@ -1,9 +1,9 @@
 package timedmanagelogic
 
 import (
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/unitedrhino/share/stores"
 )
 
 func ToTaskGroupPo(in *timedjob.TaskGroup) *relationDB.TimedTaskGroup {

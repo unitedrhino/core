@@ -1,8 +1,8 @@
 package timedschedulerdirect
 
 import (
-	client "gitee.com/i-Things/core/service/timed/timedschedulersvr/client/timedscheduler"
-	server "gitee.com/i-Things/core/service/timed/timedschedulersvr/internal/server/timedscheduler"
+	client "gitee.com/unitedrhino/core/service/timed/timedschedulersvr/client/timedscheduler"
+	server "gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/server/timedscheduler"
 )
 
 var (

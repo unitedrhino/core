@@ -2,8 +2,8 @@ package self
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

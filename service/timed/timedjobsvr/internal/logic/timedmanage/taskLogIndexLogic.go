@@ -2,11 +2,11 @@ package timedmanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/stores"
 
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

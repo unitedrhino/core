@@ -3,7 +3,7 @@ package common
 import (
 	"context"
 
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

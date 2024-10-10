@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/timedschedulersvr/timedschedulerdirect"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/timedschedulerdirect"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func main() {

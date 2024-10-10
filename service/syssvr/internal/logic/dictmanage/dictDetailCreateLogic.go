@@ -3,11 +3,11 @@ package dictmanagelogic
 import (
 	"context"
 	"fmt"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

@@ -3,8 +3,8 @@ package project
 import (
 	"context"
 
-	"gitee.com/i-Things/core/service/viewsvr/internal/svc"
-	"gitee.com/i-Things/core/service/viewsvr/internal/types"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

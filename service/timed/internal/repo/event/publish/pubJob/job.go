@@ -2,7 +2,7 @@ package pubJob
 
 import (
 	"context"
-	"gitee.com/i-Things/share/conf"
+	"gitee.com/unitedrhino/share/conf"
 )
 
 type (

@@ -1,11 +1,11 @@
 package user
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/role"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/golang/protobuf/ptypes/wrappers"
 )
 

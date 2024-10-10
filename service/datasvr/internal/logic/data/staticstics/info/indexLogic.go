@@ -2,11 +2,11 @@ package info
 
 import (
 	"context"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/share/utils"
 	"sync"
 
-	"gitee.com/i-Things/core/service/datasvr/internal/svc"
-	"gitee.com/i-Things/core/service/datasvr/internal/types"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

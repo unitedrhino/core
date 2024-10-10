@@ -1,8 +1,8 @@
 package rolemanagelogic
 
 import (
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 )
 
 func ToRoleInfoRpc(in *relationDB.SysRoleInfo) *sys.RoleInfo {

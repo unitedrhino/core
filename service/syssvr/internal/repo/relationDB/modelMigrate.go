@@ -3,9 +3,9 @@ package relationDB
 import (
 	"context"
 	"database/sql"
-	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/share/conf"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm/clause"
 )
 

@@ -2,10 +2,10 @@ package common
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
-	ws "gitee.com/i-Things/share/websocket"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/utils"
+	ws "gitee.com/unitedrhino/share/websocket"
 	"github.com/gorilla/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"

@@ -3,7 +3,7 @@ package common
 import (
 	"net/http"
 
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 )
 
 func DebugGetTencentHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

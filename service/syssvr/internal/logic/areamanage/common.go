@@ -2,10 +2,10 @@ package areamanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 	"gorm.io/gorm"
 )
 

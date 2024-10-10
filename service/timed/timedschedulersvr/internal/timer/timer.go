@@ -2,13 +2,13 @@ package timer
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/timed/timedschedulersvr/internal/svc"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/svc"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 	"time"
 )
 

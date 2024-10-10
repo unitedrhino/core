@@ -1,9 +1,9 @@
 package area
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/area/info"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/area/info"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 )
 
 func ToDataAreaDetail(in []*sys.DataArea, areaMap map[int64]*sys.AreaInfo) (ret []*types.DataAreaDetail) {

@@ -1,9 +1,9 @@
 package workOrder
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func ToOpsWorkOrderPb(in *types.OpsWorkOrder) *sys.OpsWorkOrder {

@@ -2,7 +2,7 @@ package relationDB
 
 import (
 	"encoding/json"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
 )
 
 func ToTaskInfoDo(po *TimedTaskInfo) *domain.TaskInfo {

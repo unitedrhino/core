@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"os"
 	"strings"
@@ -47,7 +47,7 @@ func GetID() int64 {
 
 var tmp = `package relationDB
 
-import "gitee.com/i-Things/share/def"
+import "gitee.com/unitedrhino/share/def"
 
 var (
 	MigrateDictDetailAdcode = []SysDictDetail{

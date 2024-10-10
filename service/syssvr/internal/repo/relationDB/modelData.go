@@ -1,8 +1,8 @@
 package relationDB
 
 import (
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/stores"
 )
 
 // 租户开放认证

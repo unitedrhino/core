@@ -3,11 +3,11 @@ package relationDB
 import (
 	"context"
 	"fmt"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
-	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/events/topics"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/share/conf"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/events/topics"
+	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm/clause"
 	"sync"
 )

@@ -2,13 +2,13 @@ package self
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/module/info"
-	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/ctxs"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/module/info"
+	role "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

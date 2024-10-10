@@ -2,14 +2,14 @@ package project
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/viewsvr/internal/domain"
-	"gitee.com/i-Things/core/service/viewsvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/oss"
-	"gitee.com/i-Things/share/oss/common"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/domain"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/oss"
+	"gitee.com/unitedrhino/share/oss/common"
 
-	"gitee.com/i-Things/core/service/viewsvr/internal/svc"
-	"gitee.com/i-Things/core/service/viewsvr/internal/types"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

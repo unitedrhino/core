@@ -1,6 +1,6 @@
 package access
 
-import "gitee.com/i-Things/core/service/syssvr/domain/log"
+import "gitee.com/unitedrhino/core/service/syssvr/domain/log"
 
 type AuthType = int64
 

@@ -1,9 +1,9 @@
 package sqlFunc
 
 import (
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/utils"
 	sq "gitee.com/i-Things/squirrel"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/dop251/goja"
 )
 

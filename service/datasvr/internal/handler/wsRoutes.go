@@ -2,12 +2,12 @@
 package handler
 
 import (
-	ws "gitee.com/i-Things/share/websocket"
+	ws "gitee.com/unitedrhino/share/websocket"
 	"net/http"
 
-	datastaticsticsinfo "gitee.com/i-Things/core/service/datasvr/internal/handler/data/staticstics/info"
-	datastaticsticsmanage "gitee.com/i-Things/core/service/datasvr/internal/handler/data/staticstics/manage"
-	"gitee.com/i-Things/core/service/datasvr/internal/svc"
+	datastaticsticsinfo "gitee.com/unitedrhino/core/service/datasvr/internal/handler/data/staticstics/info"
+	datastaticsticsmanage "gitee.com/unitedrhino/core/service/datasvr/internal/handler/data/staticstics/manage"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/config"
-	role "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
-	user "gitee.com/i-Things/core/service/syssvr/client/usermanage"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
+	role "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
+	user "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
 	"net/http"
 )
 

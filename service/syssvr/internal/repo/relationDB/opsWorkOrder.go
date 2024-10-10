@@ -2,8 +2,8 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/i-Things/share/domain/ops"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/share/domain/ops"
+	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"time"

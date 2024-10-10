@@ -2,13 +2,13 @@ package rolemanagelogic
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/domain/access"
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/core/service/syssvr/sysExport"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/syssvr/domain/access"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

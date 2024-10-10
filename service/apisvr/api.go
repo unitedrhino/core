@@ -4,8 +4,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"gitee.com/i-Things/core/service/apisvr/apidirect"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/apisvr/apidirect"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	_ "github.com/zeromicro/go-zero/core/proc" //开启pprof采集 https://mp.weixin.qq.com/s/yYFM3YyBbOia3qah3eRVQA
 )

@@ -2,13 +2,13 @@ package usermanagelogic
 
 import (
 	"context"
-	notifymanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/notifymanage"
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/utils"
+	notifymanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/notifymanage"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

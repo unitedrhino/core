@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/config"
-	operLog "gitee.com/i-Things/core/service/syssvr/client/log"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
+	operLog "gitee.com/unitedrhino/core/service/syssvr/client/log"
 	"net/http"
 	"sync"
 )

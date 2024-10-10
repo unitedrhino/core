@@ -1,11 +1,11 @@
 package svc
 
 import (
-	"gitee.com/i-Things/core/service/viewsvr/internal/config"
-	"gitee.com/i-Things/core/service/viewsvr/internal/middleware"
-	"gitee.com/i-Things/core/service/viewsvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/oss"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/config"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/middleware"
+	"gitee.com/unitedrhino/core/service/viewsvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/oss"
+	"gitee.com/unitedrhino/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
 	"os"

@@ -3,8 +3,8 @@ package main
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/sysdirect"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/syssvr/sysdirect"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func main() {

@@ -1,11 +1,11 @@
 package system
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/logic"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system/area/info"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/area/info"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo {

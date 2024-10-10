@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/logic/timedmanage"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/logic/timedmanage"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
 )
 
 type TimedManageServer struct {

@@ -1,9 +1,9 @@
 package opslogic
 
 import (
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/stores"
 )
 
 func ToOpsWorkOrderPo(in *sys.OpsWorkOrder) *relationDB.SysOpsWorkOrder {

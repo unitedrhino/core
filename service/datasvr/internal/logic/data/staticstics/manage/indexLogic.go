@@ -2,13 +2,13 @@ package manage
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/datasvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/stores"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 
-	"gitee.com/i-Things/core/service/datasvr/internal/svc"
-	"gitee.com/i-Things/core/service/datasvr/internal/types"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

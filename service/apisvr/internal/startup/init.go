@@ -2,10 +2,10 @@ package startup
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/sysExport"
-	"gitee.com/i-Things/share/domain/slot"
-	ws "gitee.com/i-Things/share/websocket"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
+	"gitee.com/unitedrhino/share/domain/slot"
+	ws "gitee.com/unitedrhino/share/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 )

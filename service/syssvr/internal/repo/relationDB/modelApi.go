@@ -1,8 +1,8 @@
 package relationDB
 
 import (
-	"gitee.com/i-Things/core/service/syssvr/domain/access"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/syssvr/domain/access"
+	"gitee.com/unitedrhino/share/stores"
 )
 
 // 功能权限范围

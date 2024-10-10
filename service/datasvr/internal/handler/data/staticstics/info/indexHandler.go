@@ -1,12 +1,12 @@
 package info
 
 import (
-	"gitee.com/i-Things/core/service/datasvr/internal/logic/data/staticstics/info"
-	"gitee.com/i-Things/core/service/datasvr/internal/svc"
-	"gitee.com/i-Things/core/service/datasvr/internal/types"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/result"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/logic/data/staticstics/info"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/types"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/result"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 )

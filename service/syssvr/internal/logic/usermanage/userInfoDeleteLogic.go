@@ -2,19 +2,19 @@ package usermanagelogic
 
 import (
 	"context"
-	projectmanagelogic "gitee.com/i-Things/core/service/syssvr/internal/logic/projectmanage"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/domain/application"
-	"gitee.com/i-Things/share/errors"
-	"gitee.com/i-Things/share/eventBus"
-	"gitee.com/i-Things/share/stores"
-	"gitee.com/i-Things/share/utils"
+	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/domain/application"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/eventBus"
+	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

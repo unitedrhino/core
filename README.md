@@ -12,7 +12,7 @@ iThings是一个基于golang开发的轻量级云原生微服务物联网平台.
 git地址:
 
 * 后端github地址:[https://github.com/i-Things/core](https://github.com/i-Things/core)
-* 后端gitee地址:[https://gitee.com/i-Things/core](https://gitee.com/i-Things/core)
+* 后端gitee地址:[https://gitee.com/unitedrhino/core](https://gitee.com/unitedrhino/core)
 
 ## 产品架构
 

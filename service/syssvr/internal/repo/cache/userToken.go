@@ -2,12 +2,12 @@ package cache
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/i-Things/share/caches"
-	"gitee.com/i-Things/share/def"
-	"gitee.com/i-Things/share/eventBus"
-	"gitee.com/i-Things/share/users"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/eventBus"
+	"gitee.com/unitedrhino/share/users"
+	"gitee.com/unitedrhino/share/utils"
 	"github.com/spf13/cast"
 	"time"
 )

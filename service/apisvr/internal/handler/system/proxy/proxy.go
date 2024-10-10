@@ -2,10 +2,10 @@ package proxy
 
 import (
 	"fmt"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/share/conf"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/share/conf"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/utils"
 	"io"
 	"net/http"
 	"net/http/httputil"

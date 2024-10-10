@@ -2,10 +2,10 @@ package event
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/stores"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 	"strings"
 	"time"

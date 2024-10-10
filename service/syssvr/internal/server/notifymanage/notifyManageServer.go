@@ -7,9 +7,9 @@ package server
 import (
 	"context"
 
-	"gitee.com/i-Things/core/service/syssvr/internal/logic/notifymanage"
-	"gitee.com/i-Things/core/service/syssvr/internal/svc"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/logic/notifymanage"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 )
 
 type NotifyManageServer struct {

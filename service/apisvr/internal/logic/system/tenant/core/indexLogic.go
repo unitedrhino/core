@@ -2,14 +2,14 @@ package core
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic"
-	"gitee.com/i-Things/core/service/apisvr/internal/logic/system"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
-	"gitee.com/i-Things/share/ctxs"
-	"gitee.com/i-Things/share/def"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
 
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

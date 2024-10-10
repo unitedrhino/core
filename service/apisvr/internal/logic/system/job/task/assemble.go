@@ -1,9 +1,9 @@
 package task
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/client/timedmanage"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
 )
 
 func ToSendDelayReqPb(in *types.TimedTaskSendReq) *timedmanage.TaskSendReq {

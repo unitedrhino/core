@@ -1,8 +1,8 @@
 package api
 
 import (
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 )
 
 func ToApiInfoPb(in *types.ApiInfo) *sys.ApiInfo {

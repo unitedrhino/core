@@ -1,46 +1,46 @@
 package sysdirect
 
 import (
-	"gitee.com/i-Things/core/service/syssvr/client/ops"
-	client "gitee.com/i-Things/core/service/syssvr/client/usermanage"
-	opsServer "gitee.com/i-Things/core/service/syssvr/internal/server/ops"
-	server "gitee.com/i-Things/core/service/syssvr/internal/server/usermanage"
+	"gitee.com/unitedrhino/core/service/syssvr/client/ops"
+	client "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
+	opsServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/ops"
+	server "gitee.com/unitedrhino/core/service/syssvr/internal/server/usermanage"
 
-	clientNotify "gitee.com/i-Things/core/service/syssvr/client/notifymanage"
-	serverNotify "gitee.com/i-Things/core/service/syssvr/internal/server/notifymanage"
+	clientNotify "gitee.com/unitedrhino/core/service/syssvr/client/notifymanage"
+	serverNotify "gitee.com/unitedrhino/core/service/syssvr/internal/server/notifymanage"
 
-	clientRole "gitee.com/i-Things/core/service/syssvr/client/rolemanage"
-	serverRole "gitee.com/i-Things/core/service/syssvr/internal/server/rolemanage"
+	clientRole "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
+	serverRole "gitee.com/unitedrhino/core/service/syssvr/internal/server/rolemanage"
 
-	clientAccess "gitee.com/i-Things/core/service/syssvr/client/accessmanage"
-	serverAccess "gitee.com/i-Things/core/service/syssvr/internal/server/accessmanage"
+	clientAccess "gitee.com/unitedrhino/core/service/syssvr/client/accessmanage"
+	serverAccess "gitee.com/unitedrhino/core/service/syssvr/internal/server/accessmanage"
 
-	clientData "gitee.com/i-Things/core/service/syssvr/client/datamanage"
-	serverData "gitee.com/i-Things/core/service/syssvr/internal/server/datamanage"
+	clientData "gitee.com/unitedrhino/core/service/syssvr/client/datamanage"
+	serverData "gitee.com/unitedrhino/core/service/syssvr/internal/server/datamanage"
 
-	clientDict "gitee.com/i-Things/core/service/syssvr/client/dictmanage"
-	serverDict "gitee.com/i-Things/core/service/syssvr/internal/server/dictmanage"
+	clientDict "gitee.com/unitedrhino/core/service/syssvr/client/dictmanage"
+	serverDict "gitee.com/unitedrhino/core/service/syssvr/internal/server/dictmanage"
 
-	clientModule "gitee.com/i-Things/core/service/syssvr/client/modulemanage"
-	serverModule "gitee.com/i-Things/core/service/syssvr/internal/server/modulemanage"
+	clientModule "gitee.com/unitedrhino/core/service/syssvr/client/modulemanage"
+	serverModule "gitee.com/unitedrhino/core/service/syssvr/internal/server/modulemanage"
 
-	clientLog "gitee.com/i-Things/core/service/syssvr/client/log"
-	serverLog "gitee.com/i-Things/core/service/syssvr/internal/server/log"
+	clientLog "gitee.com/unitedrhino/core/service/syssvr/client/log"
+	serverLog "gitee.com/unitedrhino/core/service/syssvr/internal/server/log"
 
-	clientCommon "gitee.com/i-Things/core/service/syssvr/client/common"
-	serverCommon "gitee.com/i-Things/core/service/syssvr/internal/server/common"
+	clientCommon "gitee.com/unitedrhino/core/service/syssvr/client/common"
+	serverCommon "gitee.com/unitedrhino/core/service/syssvr/internal/server/common"
 
-	clientApp "gitee.com/i-Things/core/service/syssvr/client/appmanage"
-	serverApp "gitee.com/i-Things/core/service/syssvr/internal/server/appmanage"
+	clientApp "gitee.com/unitedrhino/core/service/syssvr/client/appmanage"
+	serverApp "gitee.com/unitedrhino/core/service/syssvr/internal/server/appmanage"
 
-	clientTenant "gitee.com/i-Things/core/service/syssvr/client/tenantmanage"
-	serverTenant "gitee.com/i-Things/core/service/syssvr/internal/server/tenantmanage"
+	clientTenant "gitee.com/unitedrhino/core/service/syssvr/client/tenantmanage"
+	serverTenant "gitee.com/unitedrhino/core/service/syssvr/internal/server/tenantmanage"
 
-	clientProject "gitee.com/i-Things/core/service/syssvr/client/projectmanage"
-	serverProject "gitee.com/i-Things/core/service/syssvr/internal/server/projectmanage"
+	clientProject "gitee.com/unitedrhino/core/service/syssvr/client/projectmanage"
+	serverProject "gitee.com/unitedrhino/core/service/syssvr/internal/server/projectmanage"
 
-	clientArea "gitee.com/i-Things/core/service/syssvr/client/areamanage"
-	serverArea "gitee.com/i-Things/core/service/syssvr/internal/server/areamanage"
+	clientArea "gitee.com/unitedrhino/core/service/syssvr/client/areamanage"
+	serverArea "gitee.com/unitedrhino/core/service/syssvr/internal/server/areamanage"
 )
 
 func NewUser(runSvr bool) client.UserManage {

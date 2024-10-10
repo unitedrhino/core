@@ -3,9 +3,9 @@ package timedmanagelogic
 import (
 	"context"
 	"fmt"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/internal/svc"
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

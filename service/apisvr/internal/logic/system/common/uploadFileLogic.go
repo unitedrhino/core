@@ -2,11 +2,11 @@ package common
 
 import (
 	"context"
-	"gitee.com/i-Things/core/service/apisvr/internal/svc"
-	"gitee.com/i-Things/core/service/apisvr/internal/types"
-	"gitee.com/i-Things/share/oss"
-	"gitee.com/i-Things/share/oss/common"
-	"gitee.com/i-Things/share/utils"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/share/oss"
+	"gitee.com/unitedrhino/share/oss/common"
+	"gitee.com/unitedrhino/share/utils"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/core/logx"

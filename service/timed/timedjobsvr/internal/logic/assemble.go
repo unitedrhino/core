@@ -2,9 +2,9 @@ package logic
 
 import (
 	"encoding/json"
-	"gitee.com/i-Things/core/service/timed/internal/domain"
-	"gitee.com/i-Things/core/service/timed/internal/repo/relationDB"
-	"gitee.com/i-Things/share/errors"
+	"gitee.com/unitedrhino/core/service/timed/internal/domain"
+	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/errors"
 )
 
 func FillTaskInfoDo(do *domain.TaskInfo, po *relationDB.TimedTaskInfo) error {

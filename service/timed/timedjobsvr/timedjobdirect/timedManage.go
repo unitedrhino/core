@@ -1,8 +1,8 @@
 package timedjobdirect
 
 import (
-	"gitee.com/i-Things/core/service/timed/timedjobsvr/client/timedmanage"
-	server "gitee.com/i-Things/core/service/timed/timedjobsvr/internal/server/timedmanage"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
+	server "gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/server/timedmanage"
 )
 
 var (
