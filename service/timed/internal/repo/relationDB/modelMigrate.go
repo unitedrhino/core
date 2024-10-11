@@ -83,7 +83,7 @@ var (
 		//	Priority:  3,
 		//},
 		//{
-		//	GroupCode: def.TimedIThingsQueueGroupCode,
+		//	GroupCode: def.TimedUnitedRhinoQueueGroupCode,
 		//	Type:      domain.TaskTypeDelay, //定义一个延时任务
 		//	Name:      "流服务数据初始化(自动添加docker到数据库)",
 		//	Code:      "VidInfoInitDatabase",
@@ -93,7 +93,7 @@ var (
 		//	Priority:  3,
 		//},
 		{
-			GroupCode: def.TimedIThingsQueueGroupCode,
+			GroupCode: def.TimedUnitedRhinoQueueGroupCode,
 			Type:      domain.TaskTypeTiming,
 			Name:      "timedJob服务缓存及日志清理",
 			Code:      "timedJobClean",
@@ -103,7 +103,7 @@ var (
 			Priority:  3,
 		},
 		//{
-		//	GroupCode: def.TimedIThingsQueueGroupCode,
+		//	GroupCode: def.TimedUnitedRhinoQueueGroupCode,
 		//	Type:      domain.TaskTypeTiming,
 		//	Name:      "流服务状态更新",
 		//	Code:      "VidInfoCheckStatus",
@@ -122,7 +122,7 @@ var (
 			Priority: 9,
 		},
 		{
-			Code:     def.TimedIThingsQueueGroupCode,
+			Code:     def.TimedUnitedRhinoQueueGroupCode,
 			Name:     "联犀系统定时消息任务组",
 			Type:     domain.TaskGroupTypeQueue,
 			SubType:  domain.QueueTypeNatsJs,
