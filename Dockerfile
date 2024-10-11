@@ -1,4 +1,4 @@
-FROM registry.cn-qingdao.aliyuncs.com/unitedrhino/golang:1.21.13-alpine3.20 as go-builder
+FROM registry.cn-qingdao.aliyuncs.com/ithings/golang:1.21.13-alpine3.20 as go-builder
 ARG frontFile
 WORKDIR /unitedrhino/
 COPY ./ ./
@@ -12,7 +12,7 @@ RUN cd front&&tar -xvzf front.tgz
 RUN cd front&&ls -l
 RUN cd front&&rm -rf front.tgz
 
-FROM registry.cn-qingdao.aliyuncs.com/unitedrhino/alpine:3.20
+FROM registry.cn-qingdao.aliyuncs.com/ithings/alpine:3.20
 LABEL homepage="https://gitee.com/unitedrhino"
 ENV TZ Asia/Shanghai
 RUN apk add tzdata
