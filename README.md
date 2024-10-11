@@ -67,8 +67,8 @@
 
 ### 后端
 
-<a href="https://github.com/i-Things/iThings/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=i-Things/iThings" />
+<a href="https://github.com/unitedrhino/things/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=unitedrhino/things" />
 </a>
 
 
@@ -86,4 +86,4 @@
 
 ## 收藏
 
-<img src="https://starchart.cc/i-Things/iThings.svg">
+<img src="https://starchart.cc/unitedrhino/things.svg">
