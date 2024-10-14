@@ -2,6 +2,7 @@ package areamanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -60,6 +61,7 @@ func transPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 		LowerLevelCount: po.LowerLevelCount,
 		ChildrenAreaIDs: po.ChildrenAreaIDs,
 		DeviceCount:     utils.ToRpcNullInt64(po.DeviceCount),
+		GroupCount:      utils.ToRpcNullInt64(po.GroupCount),
 		UseBy:           po.UseBy,
 		AreaImg:         po.AreaImg,
 	}
