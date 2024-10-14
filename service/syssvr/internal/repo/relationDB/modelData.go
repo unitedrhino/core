@@ -57,11 +57,12 @@ func (m *SysUserAreaApply) TableName() string {
 
 // 用户项目权限表
 type SysDataProject struct {
-	ID         int64          `gorm:"column:id;type:bigint;primary_key;AUTO_INCREMENT"`
-	ProjectID  int64          `gorm:"column:project_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"` // 所属项目ID(雪花ID)
-	TargetType def.TargetType `gorm:"column:target_type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`
-	TargetID   int64          `gorm:"column:target_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"` // 授权对象的id,角色id,用户id
-	AuthType   def.AuthType   `gorm:"column:auth_type;type:bigint;NOT NULL"`                   // 授权类型 1 管理员(可以修改本项目的状态,同时拥有所有区域权限)  2 读授权(可以对项目下的区域进行操作,但是不能修改项目) 2 读写授权(可以对项目下的区域进行操作,同时可以对项目进行修改)
+	ID         int64             `gorm:"column:id;type:bigint;primary_key;AUTO_INCREMENT"`
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:ri_mi;type:VARCHAR(50);default:default"` // 租户编码
+	ProjectID  int64             `gorm:"column:project_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"`              // 所属项目ID(雪花ID)
+	TargetType def.TargetType    `gorm:"column:target_type;uniqueIndex:ri_mi;type:VARCHAR(50);NOT NULL"`
+	TargetID   int64             `gorm:"column:target_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"` // 授权对象的id,角色id,用户id
+	AuthType   def.AuthType      `gorm:"column:auth_type;type:bigint;NOT NULL"`                   // 授权类型 1 管理员(可以修改本项目的状态,同时拥有所有区域权限)  2 读授权(可以对项目下的区域进行操作,但是不能修改项目) 2 读写授权(可以对项目下的区域进行操作,同时可以对项目进行修改)
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
