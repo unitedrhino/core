@@ -236,7 +236,7 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 		return nil, err
 	}
 	if len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
-		return nil, errors.Parameter.WithMsgf("不支持的升级方式:%v", in.LoginType)
+		return nil, errors.Parameter.WithMsgf("不支持的登录方式:%v", in.LoginType)
 	}
 	ui, err := l.GetUserInfo(in)
 	if err == nil {

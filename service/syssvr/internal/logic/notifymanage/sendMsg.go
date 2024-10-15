@@ -14,6 +14,7 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/silenceper/wechat/v2/miniprogram/subscribe"
 	"github.com/spf13/cast"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
 	"strings"
@@ -245,6 +246,10 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			IsSSL:    temp.Channel.Email.IsSSL == def.True,
 		}, accounts, subject,
 			body)
+		if err != nil {
+			logx.WithContext(ctx).Error(err)
+		}
+		return err
 	}
 	return nil
 }
