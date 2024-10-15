@@ -2,6 +2,7 @@ package datamanagelogic
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -36,6 +37,7 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 	}
 	uc := ctxs.GetUserCtx(l.ctx)
 	db := stores.GetTenantConn(l.ctx)
+	var authSet = map[int64]struct{}{}
 	err := db.Transaction(func(tx *gorm.DB) error {
 		uaa := relationDB.NewUserAreaApplyRepo(tx)
 		ua := relationDB.NewDataAreaRepo(tx)
@@ -63,7 +65,6 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 		if err != nil {
 			return err
 		}
-		var authSet map[int64]struct{}
 		for _, v := range authd {
 			authSet[v.TargetID] = struct{}{}
 		}
@@ -94,6 +95,8 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 		}
 		return nil
 	})
-
+	for userID := range authSet {
+		cache.ClearProjectAuth(userID)
+	}
 	return &sys.Empty{}, err
 }
