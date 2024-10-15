@@ -77,15 +77,23 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			}
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
-		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
+		var BakNotifyCode string
+		switch in.Use {
+		case def.CaptchaUseLogin:
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
+		case def.CaptchaUseRegister:
+			ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
+		case def.CaptchaUseChangePwd, def.CaptchaUseForgetPwd:
+			ConfigCode = def.NotifyCodeSysUserChangePwdCaptcha
+			BakNotifyCode = def.NotifyCodeSysUserLoginCaptcha
 		}
 		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
-			Accounts:    []string{in.Account},
-			AccountType: def.AccountTypeEmail,
-			NotifyCode:  ConfigCode,
-			Type:        def.NotifyTypeEmail,
-			Params:      map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
+			Accounts:      []string{in.Account},
+			AccountType:   def.AccountTypeEmail,
+			NotifyCode:    ConfigCode,
+			BakNotifyCode: BakNotifyCode,
+			Type:          def.NotifyTypeEmail,
+			Params:        map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
 		})
 		if err != nil {
 			return nil, err

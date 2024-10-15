@@ -3,7 +3,7 @@ module gitee.com/unitedrhino/core
 go 1.21.4
 
 require (
-	gitee.com/unitedrhino/share v1.0.3
+	gitee.com/unitedrhino/share v1.0.4
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0

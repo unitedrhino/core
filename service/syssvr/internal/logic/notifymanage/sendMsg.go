@@ -22,16 +22,17 @@ import (
 )
 
 type SendMsgConfig struct {
-	UserIDs     []int64 //只有填写了这项才会记录
-	Accounts    []string
-	AccountType string
-	NotifyCode  string         //通知的code
-	TemplateID  int64          //指定模板
-	Type        def.NotifyType //通知类型
-	Params      map[string]any
-	Str1        string
-	Str2        string
-	Str3        string
+	UserIDs       []int64 //只有填写了这项才会记录
+	Accounts      []string
+	AccountType   string
+	NotifyCode    string         //通知的code
+	BakNotifyCode string         //备用通知code
+	TemplateID    int64          //指定模板
+	Type          def.NotifyType //通知类型
+	Params        map[string]any
+	Str1          string
+	Str2          string
+	Str3          string
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
@@ -60,6 +61,16 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		})
 		if err != nil {
 			if errors.Cmp(err, errors.NotFind) {
+				if len(cfg.BakNotifyCode) > 0 {
+					c, err = relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+						NotifyCode: cfg.NotifyCode,
+						Type:       cfg.Type,
+					})
+					if errors.Cmp(err, errors.NotFind) {
+						return errors.NotEnable
+					}
+					return err
+				}
 				return errors.NotEnable
 			}
 			return err
