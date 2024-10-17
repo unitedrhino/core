@@ -46,6 +46,7 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 		return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, nil
 	}
 	if api.Access == nil {
+		l.Errorf("api.Access == nil api:%#v", api)
 		return nil, errors.Permissions
 	}
 	if api.Access.IsNeedAuth != def.True {
@@ -56,6 +57,7 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	}
 	ras, err := l.svcCtx.RoleAccessCache.GetData(l.ctx, api.AccessCode)
 	if err != nil {
+		l.Errorf("RoleAccessCache get err:%v", err)
 		return nil, err
 	}
 	for _, roleID := range uc.RoleIDs {
