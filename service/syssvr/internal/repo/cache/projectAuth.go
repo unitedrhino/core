@@ -87,6 +87,18 @@ func GetProjectAuth(ctx context.Context, userID int64, roleIDs []int64) (map[int
 			}
 		}
 	}
+	{ //项目的所有者拥有项目的最高权限
+		adminPis, err := relationDB.NewProjectInfoRepo(ctx).FindByFilter(ctxs.WithAllProject(ctx), relationDB.ProjectInfoFilter{AdminUserID: userID}, nil)
+		if err != nil {
+			logx.WithContext(ctx).Error(err)
+		}
+		for _, po := range adminPis {
+			projectAuth[int64(po.ProjectID)] = &sys.ProjectAuth{
+				AuthType: def.AuthAdmin,
+			}
+		}
+	}
+
 	projectAuthCache.Set(userID, projectAuth)
 	return projectAuth, nil
 }
