@@ -7,6 +7,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/smsClient"
+	"gitee.com/unitedrhino/share/clients/wxClient"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -235,7 +236,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			}
 
 		}
-
+	case def.NotifyTypeWxEWebhook:
+		if channel == nil || channel.WebHook == "" {
+			return errors.NotEnable.AddMsg("通道没有配置")
+		}
+		err := wxClient.SendRobotMsg(ctx, channel.WebHook, body)
+		return err
 	case def.NotifyTypeEmail:
 		var accounts = cfg.Accounts
 		if len(users) != 0 {
