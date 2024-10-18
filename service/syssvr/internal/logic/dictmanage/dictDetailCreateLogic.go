@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 
@@ -27,6 +28,9 @@ func NewDictDetailCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *DictDetailCreateLogic) DictDetailCreate(in *sys.DictDetail) (*sys.WithID, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	_, err := relationDB.NewDictInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DictInfoFilter{Code: in.GetDictCode()})
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {

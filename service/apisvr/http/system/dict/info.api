@@ -69,5 +69,6 @@ type (
         Code string `json:"code,optional"`                     // 编码
         Desc *string `json:"desc,optional"`          // 页面
         Body *string  `json:"body,optional"` //前端自定义字段
+        StructType int64 `json:"structType,optional"` //结构类型(不可修改) 1:列表(默认) 2:树型
     }
 )

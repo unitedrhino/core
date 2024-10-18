@@ -72,8 +72,8 @@ type (
     DictDetail{
         ID int64 `json:"id,optional"`                                  // 编号
         DictCode string `json:"dictCode"`
-        ParentID int64 `json:"parentID,optional"`//父节点
-        IdPath string `json:"idPath,optional"`//1-2-3-的格式记录顶级区域到当前id的路径
+        ParentID int64 `json:"parentID,optional,omitempty"`//父节点
+        IDPath string `json:"idPath,optional"`//1-2-3-的格式记录顶级区域到当前id的路径
         Label string `json:"label,optional"`           // 展示值
         Value  string                   `json:"value,optional"`   // 字典值
         Sort   int64                   `json:"sort,optional"`     // 排序标记

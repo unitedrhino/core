@@ -3,6 +3,7 @@ package dictmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -26,17 +27,38 @@ func NewDictDetailReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Di
 }
 
 func (l *DictDetailReadLogic) DictDetailRead(in *sys.DictDetailReadReq) (*sys.DictDetail, error) {
-	po, err := relationDB.NewDictDetailRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DictDetailFilter{
-		ID:           in.Id,
-		DictCode:     in.DictCode,
-		WithChildren: in.WithChildren,
-		Value:        in.Value,
-	})
-	if err != nil {
-		return nil, err
+	var po *relationDB.SysDictDetail
+	var err error
+	if in.Id <= def.RootNode {
+		po = &relationDB.SysDictDetail{
+			ID:       def.RootNode,
+			DictCode: in.DictCode,
+			Label:    "根节点",
+			Status:   def.True,
+			Sort:     1,
+		}
+		if in.WithChildren {
+			pos, err := relationDB.NewDictDetailRepo(l.ctx).FindByFilter(l.ctx,
+				relationDB.DictDetailFilter{DictCode: in.DictCode, ParentID: def.RootNode}, nil)
+			if err != nil {
+				return nil, err
+			}
+			po.Children = pos
+		}
+	} else {
+		po, err = relationDB.NewDictDetailRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DictDetailFilter{
+			ID:           in.Id,
+			DictCode:     in.DictCode,
+			WithChildren: in.WithChildren,
+			Value:        in.Value,
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	ret := utils.Copy[sys.DictDetail](po)
-	if in.WithFather {
+	if po.ID != def.RootNode && in.WithFather {
 		fatherIDs := utils.GetIDPath(po.IDPath)
 		if len(fatherIDs) > 1 {
 			fs, err := relationDB.NewDictDetailRepo(l.ctx).FindByFilter(l.ctx, relationDB.DictDetailFilter{IDs: fatherIDs}, nil)

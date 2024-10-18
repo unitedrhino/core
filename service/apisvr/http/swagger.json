@@ -9336,6 +9336,11 @@
         "body": {
           "type": "string",
           "description": "前端自定义字段"
+        },
+        "structType": {
+          "type": "integer",
+          "format": "int64",
+          "description": "结构类型(不可修改) 1:列表(默认) 2:树型"
         }
       },
       "title": "DictInfo"

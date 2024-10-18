@@ -1498,6 +1498,7 @@ message DictInfo{
   string code = 4;          // 字典编码
   google.protobuf.StringValue desc = 5;        // 模块描述
   google.protobuf.StringValue body = 6; // 自定义数据
+  int64  structType  =7; //结构类型(不可修改) 1:列表(默认) 2:树型
 }
 
 message DictInfoReadReq{

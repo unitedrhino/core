@@ -3,6 +3,7 @@ package dictmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -25,6 +26,9 @@ func NewDictInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Di
 }
 
 func (l *DictInfoDeleteLogic) DictInfoDelete(in *sys.WithID) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	err := relationDB.NewDictInfoRepo(l.Info).Delete(l.ctx, in.Id)
 	return &sys.Empty{}, err
 }

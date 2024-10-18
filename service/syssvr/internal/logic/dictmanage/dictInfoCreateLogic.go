@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -23,14 +24,17 @@ func NewDictInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Di
 }
 
 func (l *DictInfoCreateLogic) DictInfoCreate(in *sys.DictInfo) (*sys.WithID, error) {
-	po := &relationDB.SysDictInfo{
-		Group: in.Group,
-		Code:  in.Code,
-		Name:  in.Name,
-		Desc:  in.Desc.GetValue(),
-		Body:  in.Body.GetValue(),
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
 	}
-
+	po := &relationDB.SysDictInfo{
+		Group:      in.Group,
+		Code:       in.Code,
+		Name:       in.Name,
+		StructType: in.StructType,
+		Desc:       in.Desc.GetValue(),
+		Body:       in.Body.GetValue(),
+	}
 	err := relationDB.NewDictInfoRepo(l.ctx).Insert(l.ctx, po)
 	if err != nil {
 		return nil, err

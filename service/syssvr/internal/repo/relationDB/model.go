@@ -27,13 +27,14 @@ type SysConfigSms struct {
 }
 
 type SysDictInfo struct {
-	ID      int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                  // id编号
-	Name    string           `gorm:"column:name;uniqueIndex:name;comment:字典名"`                          // 字典名（中）
-	Code    string           `gorm:"column:code;uniqueIndex:code;type:VARCHAR(50);default:'';NOT NULL"` //编码
-	Group   string           `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                 //字典分组
-	Desc    string           `gorm:"column:desc;comment:描述"`                                            // 描述
-	Body    string           `gorm:"column:body;type:VARCHAR(1024)"`                                    // 自定义数据
-	Details []*SysDictDetail `gorm:"foreignKey:DictCode;references:Code"`
+	ID         int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                  // id编号
+	Name       string           `gorm:"column:name;uniqueIndex:name;comment:字典名"`                          // 字典名（中）
+	Code       string           `gorm:"column:code;uniqueIndex:code;type:VARCHAR(50);default:'';NOT NULL"` //编码
+	Group      string           `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                 //字典分组
+	Desc       string           `gorm:"column:desc;comment:描述"`                                            // 描述
+	Body       string           `gorm:"column:body;type:VARCHAR(1024)"`                                    // 自定义数据
+	StructType int64            `gorm:"column:struct_type;type:BIGINT;default:1"`                          //结构类型(不可修改) 1:列表(默认) 2:树型
+	Details    []*SysDictDetail `gorm:"foreignKey:DictCode;references:Code"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:code;uniqueIndex:name"`
 }

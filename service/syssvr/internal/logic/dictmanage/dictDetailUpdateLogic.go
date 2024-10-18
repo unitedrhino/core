@@ -3,6 +3,7 @@ package dictmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -25,6 +26,9 @@ func NewDictDetailUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *DictDetailUpdateLogic) DictDetailUpdate(in *sys.DictDetail) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	old, err := relationDB.NewDictDetailRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err

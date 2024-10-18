@@ -30,7 +30,7 @@ type SysDataArea struct {
 	TargetID   int64             `gorm:"column:target_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"`  // 授权对象的id,角色id,用户id
 	ProjectID  stores.ProjectID  `gorm:"column:project_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"` // 所属项目ID(雪花ID)
 	AreaID     int64             `gorm:"column:area_id;uniqueIndex:ri_mi;type:bigint;NOT NULL"`    // 区域ID(雪花ID)
-	AuthType   def.AuthType      `gorm:"column:auth_type;type:bigint;NOT NULL"`                    // 授权类型 1 管理员(可以调整本区域及旗下区域的设备区域规划)  2 读写授权(可以对区域下的设备进行操作,但是不能新增或删除)
+	AuthType   def.AuthType      `gorm:"column:auth_type;type:bigint;NOT NULL"`                    // 授权类型 1 管理员(可以调整本区域及旗下区域的设备区域规划)  2 读写授权(可以对该区域及旗下区域的设备进行管理) 3 只读授权()
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }

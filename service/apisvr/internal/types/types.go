@@ -330,7 +330,7 @@ type DictDetail struct {
 	ID       int64         `json:"id,optional"` // 编号
 	DictCode string        `json:"dictCode"`
 	ParentID int64         `json:"parentID,optional"`       //父节点
-	IdPath   string        `json:"idPath,optional"`         //1-2-3-的格式记录顶级区域到当前id的路径
+	IDPath   string        `json:"idPath,optional"`         //1-2-3-的格式记录顶级区域到当前id的路径
 	Label    string        `json:"label,optional"`          // 展示值
 	Value    string        `json:"value,optional"`          // 字典值
 	Sort     int64         `json:"sort,optional"`           // 排序标记
@@ -364,12 +364,13 @@ type DictDetailReadReq struct {
 }
 
 type DictInfo struct {
-	ID    int64   `json:"id,optional"`    // 编号
-	Name  string  `json:"name,optional"`  // 名称
-	Group string  `json:"group,optional"` // 分组
-	Code  string  `json:"code,optional"`  // 编码
-	Desc  *string `json:"desc,optional"`  // 页面
-	Body  *string `json:"body,optional"`  //前端自定义字段
+	ID         int64   `json:"id,optional"`         // 编号
+	Name       string  `json:"name,optional"`       // 名称
+	Group      string  `json:"group,optional"`      // 分组
+	Code       string  `json:"code,optional"`       // 编码
+	Desc       *string `json:"desc,optional"`       // 页面
+	Body       *string `json:"body,optional"`       //前端自定义字段
+	StructType int64   `json:"structType,optional"` //结构类型(不可修改) 1:列表(默认) 2:树型
 }
 
 type DictInfoIndexReq struct {
