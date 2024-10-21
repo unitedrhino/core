@@ -29,6 +29,6 @@ func (l *DictInfoDeleteLogic) DictInfoDelete(in *sys.WithID) (*sys.Empty, error)
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
-	err := relationDB.NewDictInfoRepo(l.Info).Delete(l.ctx, in.Id)
+	err := relationDB.NewDictInfoRepo(l.ctx).Delete(l.ctx, in.Id)
 	return &sys.Empty{}, err
 }
