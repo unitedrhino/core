@@ -36,17 +36,16 @@ func NewUserInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 }
 
 func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Empty, error) {
-	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{Code: ctxs.GetUserCtx(l.ctx).TenantCode})
+	uc := ctxs.GetUserCtx(l.ctx)
+	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, uc.TenantCode)
 	if err != nil {
 		return nil, err
 	}
 	if ti.AdminUserID == in.UserID {
 		return nil, errors.Permissions.AddMsg("超级管理员不允许删除")
 	}
-	if err != nil {
-		return nil, err
-	}
-	tc, err := relationDB.NewTenantConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: ctxs.GetUserCtx(l.ctx).TenantCode})
+
+	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, uc.TenantCode)
 	if err != nil {
 		return nil, err
 	}
@@ -92,6 +91,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 	if err != nil {
 		l.Errorf("Publish userDelete %v err:%v", in, err)
 	}
+	l.svcCtx.UserCache.SetData(l.ctx, in.UserID, nil)
 
 	return &sys.Empty{}, nil
 }
