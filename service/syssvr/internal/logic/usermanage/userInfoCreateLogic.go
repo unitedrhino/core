@@ -40,7 +40,9 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 			return 0, err
 		}
 	}
-
+	if info.Tags == nil {
+		info.Tags = map[string]string{}
+	}
 	if info.Phone.GetValue() != "" {
 		if !utils.IsPhone(info.Phone.GetValue()) {
 			return 0, errors.Parameter.AddMsgf("手机号格式错误")

@@ -62,3 +62,13 @@ func (s *CommonServer) SlotInfoRead(ctx context.Context, in *sys.WithID) (*sys.S
 	l := commonlogic.NewSlotInfoReadLogic(ctx, s.svcCtx)
 	return l.SlotInfoRead(in)
 }
+
+func (s *CommonServer) ServiceInfoRead(ctx context.Context, in *sys.WithCode) (*sys.ServiceInfo, error) {
+	l := commonlogic.NewServiceInfoReadLogic(ctx, s.svcCtx)
+	return l.ServiceInfoRead(in)
+}
+
+func (s *CommonServer) ServiceInfoUpdate(ctx context.Context, in *sys.ServiceInfo) (*sys.Empty, error) {
+	l := commonlogic.NewServiceInfoUpdateLogic(ctx, s.svcCtx)
+	return l.ServiceInfoUpdate(in)
+}

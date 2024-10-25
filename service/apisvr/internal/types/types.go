@@ -329,14 +329,14 @@ type DeviceCore struct {
 type DictDetail struct {
 	ID       int64         `json:"id,optional"` // 编号
 	DictCode string        `json:"dictCode"`
-	ParentID int64         `json:"parentID,optional"`       //父节点
-	IDPath   string        `json:"idPath,optional"`         //1-2-3-的格式记录顶级区域到当前id的路径
-	Label    string        `json:"label,optional"`          // 展示值
-	Value    string        `json:"value,optional"`          // 字典值
-	Sort     int64         `json:"sort,optional"`           // 排序标记
-	Desc     *string       `json:"desc,optional"`           // 模块描述
-	Status   int64         `json:"status,optional"`         // 状态  1:启用,2:禁用
-	Body     *string       `json:"body,optional,omitempty"` // 自定义数据
+	ParentID int64         `json:"parentID,optional,omitempty"` //父节点
+	IDPath   string        `json:"idPath,optional"`             //1-2-3-的格式记录顶级区域到当前id的路径
+	Label    string        `json:"label,optional"`              // 展示值
+	Value    string        `json:"value,optional"`              // 字典值
+	Sort     int64         `json:"sort,optional"`               // 排序标记
+	Desc     *string       `json:"desc,optional"`               // 模块描述
+	Status   int64         `json:"status,optional"`             // 状态  1:启用,2:禁用
+	Body     *string       `json:"body,optional,omitempty"`     // 自定义数据
 	Parent   *DictDetail   `json:"parent,optional,omitempty"`
 	Children []*DictDetail `json:"children,optional,omitempty"`
 }
@@ -1366,15 +1366,16 @@ type UserChangePwdReq struct {
 }
 
 type UserCore struct {
-	UserID      int64  `json:"userID,string,optional"`      // 用户id
-	UserName    string `json:"userName,optional"`           // 用户名(唯一)
-	Email       string `json:"email,optional"`              // 邮箱
-	Phone       string `json:"phone,optional"`              // 手机号
-	LastIP      string `json:"lastIP,optional"`             // 最后登录ip
-	RegIP       string `json:"regIP,optional"`              // 注册ip
-	NickName    string `json:"nickName,optional"`           // 用户的昵称
-	HeadImg     string `json:"headImg,optional"`            // 用户头像
-	CreatedTime int64  `json:"createdTime,string,optional"` // 创建时间
+	UserID      int64             `json:"userID,string,optional"`      // 用户id
+	UserName    string            `json:"userName,optional"`           // 用户名(唯一)
+	Email       string            `json:"email,optional"`              // 邮箱
+	Phone       string            `json:"phone,optional"`              // 手机号
+	LastIP      string            `json:"lastIP,optional"`             // 最后登录ip
+	RegIP       string            `json:"regIP,optional"`              // 注册ip
+	NickName    string            `json:"nickName,optional"`           // 用户的昵称
+	HeadImg     string            `json:"headImg,optional"`            // 用户头像
+	Tags        map[string]string `json:"tags,optional,omitempty"`     //标签对象
+	CreatedTime int64             `json:"createdTime,string,optional"` // 创建时间
 }
 
 type UserCreateResp struct {
@@ -1390,29 +1391,30 @@ type UserForgetPwdReq struct {
 }
 
 type UserInfo struct {
-	UserID          int64            `json:"userID,string,optional"`             // 用户id
-	UserName        string           `json:"userName,optional"`                  // 用户名(唯一)
-	Password        string           `json:"password,optional,omitempty"`        // 登录密码
-	Email           *string          `json:"email,optional"`                     // 邮箱
-	Phone           *string          `json:"phone,optional"`                     // 手机号
-	LastIP          string           `json:"lastIP,optional"`                    // 最后登录ip
-	RegIP           string           `json:"regIP,optional"`                     // 注册ip
-	NickName        string           `json:"nickName,optional"`                  // 用户的昵称
-	City            string           `json:"city,optional"`                      // 用户所在城市
-	Country         string           `json:"country,optional"`                   // 用户所在国家
-	Province        string           `json:"province,optional"`                  // 用户所在省份
-	Language        string           `json:"language,optional"`                  // 用户的语言，简体中文为zh_CN
-	HeadImg         string           `json:"headImg,optional"`                   // 用户头像
-	IsUpdateHeadImg bool             `json:"isUpdateHeadImg,omitempty,optional"` // 用户头像
-	CreatedTime     int64            `json:"createdTime,string,optional"`        // 创建时间
-	Role            int64            `json:"role,optional"`                      // 用户角色默认
-	Sex             int64            `json:"sex,optional"`                       // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-	IsAllData       int64            `json:"isAllData,optional,omitempty"`       // 是否所有数据权限（1是，2否）
-	Status          int64            `json:"status,optional"`
-	MessageNotRead  map[string]int64 `json:"messageNotRead,optional,omitempty"`
-	Roles           []*RoleInfo      `json:"roles,optional,omitempty"`
-	Tenant          *TenantInfo      `json:"tenant,optional,omitempty"`
-	Projects        []*ProjectInfo   `json:"projects,optional,omitempty"` //项目列表
+	UserID          int64             `json:"userID,string,optional"`             // 用户id
+	UserName        string            `json:"userName,optional"`                  // 用户名(唯一)
+	Password        string            `json:"password,optional,omitempty"`        // 登录密码
+	Email           *string           `json:"email,optional"`                     // 邮箱
+	Phone           *string           `json:"phone,optional"`                     // 手机号
+	LastIP          string            `json:"lastIP,optional"`                    // 最后登录ip
+	RegIP           string            `json:"regIP,optional"`                     // 注册ip
+	NickName        string            `json:"nickName,optional"`                  // 用户的昵称
+	City            string            `json:"city,optional"`                      // 用户所在城市
+	Country         string            `json:"country,optional"`                   // 用户所在国家
+	Province        string            `json:"province,optional"`                  // 用户所在省份
+	Language        string            `json:"language,optional"`                  // 用户的语言，简体中文为zh_CN
+	HeadImg         string            `json:"headImg,optional"`                   // 用户头像
+	IsUpdateHeadImg bool              `json:"isUpdateHeadImg,omitempty,optional"` // 用户头像
+	CreatedTime     int64             `json:"createdTime,string,optional"`        // 创建时间
+	Role            int64             `json:"role,optional"`                      // 用户角色默认
+	Sex             int64             `json:"sex,optional"`                       // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
+	IsAllData       int64             `json:"isAllData,optional,omitempty"`       // 是否所有数据权限（1是，2否）
+	Status          int64             `json:"status,optional"`
+	Tags            map[string]string `json:"tags,optional,omitempty"` //标签对象
+	MessageNotRead  map[string]int64  `json:"messageNotRead,optional,omitempty"`
+	Roles           []*RoleInfo       `json:"roles,optional,omitempty"`
+	Tenant          *TenantInfo       `json:"tenant,optional,omitempty"`
+	Projects        []*ProjectInfo    `json:"projects,optional,omitempty"` //项目列表
 }
 
 type UserInfoCreateReq struct {

@@ -4410,14 +4410,16 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Common_Config_FullMethodName         = "/sys.Common/config"
-	Common_QRCodeRead_FullMethodName     = "/sys.Common/QRCodeRead"
-	Common_WeatherRead_FullMethodName    = "/sys.Common/WeatherRead"
-	Common_SlotInfoIndex_FullMethodName  = "/sys.Common/slotInfoIndex"
-	Common_SlotInfoCreate_FullMethodName = "/sys.Common/slotInfoCreate"
-	Common_SlotInfoUpdate_FullMethodName = "/sys.Common/slotInfoUpdate"
-	Common_SlotInfoDelete_FullMethodName = "/sys.Common/slotInfoDelete"
-	Common_SlotInfoRead_FullMethodName   = "/sys.Common/slotInfoRead"
+	Common_Config_FullMethodName            = "/sys.Common/config"
+	Common_QRCodeRead_FullMethodName        = "/sys.Common/QRCodeRead"
+	Common_WeatherRead_FullMethodName       = "/sys.Common/WeatherRead"
+	Common_SlotInfoIndex_FullMethodName     = "/sys.Common/slotInfoIndex"
+	Common_SlotInfoCreate_FullMethodName    = "/sys.Common/slotInfoCreate"
+	Common_SlotInfoUpdate_FullMethodName    = "/sys.Common/slotInfoUpdate"
+	Common_SlotInfoDelete_FullMethodName    = "/sys.Common/slotInfoDelete"
+	Common_SlotInfoRead_FullMethodName      = "/sys.Common/slotInfoRead"
+	Common_ServiceInfoRead_FullMethodName   = "/sys.Common/serviceInfoRead"
+	Common_ServiceInfoUpdate_FullMethodName = "/sys.Common/serviceInfoUpdate"
 )
 
 // CommonClient is the client API for Common service.
@@ -4432,6 +4434,8 @@ type CommonClient interface {
 	SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
 	SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
+	ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error)
+	ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type commonClient struct {
@@ -4514,6 +4518,24 @@ func (c *commonClient) SlotInfoRead(ctx context.Context, in *WithID, opts ...grp
 	return out, nil
 }
 
+func (c *commonClient) ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error) {
+	out := new(ServiceInfo)
+	err := c.cc.Invoke(ctx, Common_ServiceInfoRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Common_ServiceInfoUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommonServer is the server API for Common service.
 // All implementations must embed UnimplementedCommonServer
 // for forward compatibility
@@ -4526,6 +4548,8 @@ type CommonServer interface {
 	SlotInfoUpdate(context.Context, *SlotInfo) (*Empty, error)
 	SlotInfoDelete(context.Context, *WithID) (*Empty, error)
 	SlotInfoRead(context.Context, *WithID) (*SlotInfo, error)
+	ServiceInfoRead(context.Context, *WithCode) (*ServiceInfo, error)
+	ServiceInfoUpdate(context.Context, *ServiceInfo) (*Empty, error)
 	mustEmbedUnimplementedCommonServer()
 }
 
@@ -4556,6 +4580,12 @@ func (UnimplementedCommonServer) SlotInfoDelete(context.Context, *WithID) (*Empt
 }
 func (UnimplementedCommonServer) SlotInfoRead(context.Context, *WithID) (*SlotInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoRead not implemented")
+}
+func (UnimplementedCommonServer) ServiceInfoRead(context.Context, *WithCode) (*ServiceInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ServiceInfoRead not implemented")
+}
+func (UnimplementedCommonServer) ServiceInfoUpdate(context.Context, *ServiceInfo) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ServiceInfoUpdate not implemented")
 }
 func (UnimplementedCommonServer) mustEmbedUnimplementedCommonServer() {}
 
@@ -4714,6 +4744,42 @@ func _Common_SlotInfoRead_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Common_ServiceInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithCode)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).ServiceInfoRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_ServiceInfoRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).ServiceInfoRead(ctx, req.(*WithCode))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_ServiceInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ServiceInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).ServiceInfoUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_ServiceInfoUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).ServiceInfoUpdate(ctx, req.(*ServiceInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Common_ServiceDesc is the grpc.ServiceDesc for Common service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4752,6 +4818,14 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "slotInfoRead",
 			Handler:    _Common_SlotInfoRead_Handler,
+		},
+		{
+			MethodName: "serviceInfoRead",
+			Handler:    _Common_ServiceInfoRead_Handler,
+		},
+		{
+			MethodName: "serviceInfoUpdate",
+			Handler:    _Common_ServiceInfoUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

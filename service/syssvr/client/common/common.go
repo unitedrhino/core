@@ -140,6 +140,7 @@ type (
 	RoleModuleIndexResp                   = sys.RoleModuleIndexResp
 	RoleModuleMultiUpdateReq              = sys.RoleModuleMultiUpdateReq
 	SendOption                            = sys.SendOption
+	ServiceInfo                           = sys.ServiceInfo
 	SlotInfo                              = sys.SlotInfo
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
@@ -229,6 +230,8 @@ type (
 		SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
 		SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 		SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
+		ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error)
+		ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error)
 	}
 
 	defaultCommon struct {
@@ -324,4 +327,22 @@ func (m *defaultCommon) SlotInfoRead(ctx context.Context, in *WithID, opts ...gr
 
 func (d *directCommon) SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error) {
 	return d.svr.SlotInfoRead(ctx, in)
+}
+
+func (m *defaultCommon) ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.ServiceInfoRead(ctx, in, opts...)
+}
+
+func (d *directCommon) ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error) {
+	return d.svr.ServiceInfoRead(ctx, in)
+}
+
+func (m *defaultCommon) ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.ServiceInfoUpdate(ctx, in, opts...)
+}
+
+func (d *directCommon) ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.ServiceInfoUpdate(ctx, in)
 }

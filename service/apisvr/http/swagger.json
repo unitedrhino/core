@@ -13245,6 +13245,10 @@
           "type": "string",
           "description": " 用户头像"
         },
+        "tags": {
+          "type": "object",
+          "description": "标签对象"
+        },
         "createdTime": {
           "type": "string",
           "description": " 创建时间"
@@ -13378,6 +13382,10 @@
         "status": {
           "type": "integer",
           "format": "int64"
+        },
+        "tags": {
+          "type": "object",
+          "description": "标签对象"
         },
         "messageNotRead": {
           "type": "object"

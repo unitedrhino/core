@@ -59,6 +59,9 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 		if info.UserName != "" {
 			ui.UserName = sql.NullString{String: info.UserName, Valid: true}
 		}
+		if info.Tags != nil {
+			ui.Tags = info.Tags
+		}
 	}
 
 	if info.NickName != "" {

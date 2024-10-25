@@ -83,6 +83,19 @@ func (m *SysSlotInfo) TableName() string {
 	return "sys_slot_info"
 }
 
+type SysServiceInfo struct {
+	ID      int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`             // id编号
+	Code    string `gorm:"column:code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"` // 服务编码
+	Name    string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                       // 服务名
+	Version string `gorm:"column:version;type:VARCHAR(100);NOT NULL"`                    //服务版本
+	Desc    string `gorm:"column:desc;type:VARCHAR(500);"`                               // 备注
+	stores.SoftTime
+}
+
+func (m *SysServiceInfo) TableName() string {
+	return "sys_service_info"
+}
+
 // 应用信息
 type SysAppInfo struct {
 	ID      int64          `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`        // id编号
@@ -174,16 +187,17 @@ type SysUserInfo struct {
 	WechatUnionID  sql.NullString    `gorm:"column:wechat_union_id;uniqueIndex:tc_wui;type:VARCHAR(128)"`                                                                                                       // 微信union id
 	WechatOpenID   sql.NullString    `gorm:"column:wechat_open_id;uniqueIndex:tc_woi;type:VARCHAR(128)"`                                                                                                        // 微信union id
 	DingTalkUserID sql.NullString    `gorm:"column:ding_talk_user_id;uniqueIndex:tc_doi;type:VARCHAR(128)"`
-	LastIP         string            `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`           // 最后登录ip
-	RegIP          string            `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`            // 注册ip
-	Sex            int64             `gorm:"column:sex;type:SMALLINT;default:3;NOT NULL"`         // 用户的性别，值为1时是男性，值为2时是女性，其他值为未知
-	City           string            `gorm:"column:city;type:VARCHAR(50);NOT NULL"`               // 用户所在城市
-	Country        string            `gorm:"column:country;type:VARCHAR(50);NOT NULL"`            // 用户所在国家
-	Province       string            `gorm:"column:province;type:VARCHAR(50);NOT NULL"`           // 用户所在省份
-	Language       string            `gorm:"column:language;type:VARCHAR(50);NOT NULL"`           // 用户的语言，简体中文为zh_CN
-	HeadImg        string            `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`          // 用户头像
-	Role           int64             `gorm:"column:role;type:BIGINT;NOT NULL"`                    // 用户默认角色（默认使用该角色）
-	IsAllData      int64             `gorm:"column:is_all_data;type:SMALLINT;default:1;NOT NULL"` // 是否所有数据权限（1是，2否）
+	LastIP         string            `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`                   // 最后登录ip
+	RegIP          string            `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`                    // 注册ip
+	Sex            int64             `gorm:"column:sex;type:SMALLINT;default:3;NOT NULL"`                 // 用户的性别，值为1时是男性，值为2时是女性，其他值为未知
+	City           string            `gorm:"column:city;type:VARCHAR(50);NOT NULL"`                       // 用户所在城市
+	Country        string            `gorm:"column:country;type:VARCHAR(50);NOT NULL"`                    // 用户所在国家
+	Province       string            `gorm:"column:province;type:VARCHAR(50);NOT NULL"`                   // 用户所在省份
+	Language       string            `gorm:"column:language;type:VARCHAR(50);NOT NULL"`                   // 用户的语言，简体中文为zh_CN
+	HeadImg        string            `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`                  // 用户头像
+	Role           int64             `gorm:"column:role;type:BIGINT;NOT NULL"`                            // 用户默认角色（默认使用该角色）
+	Tags           map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 产品标签
+	IsAllData      int64             `gorm:"column:is_all_data;type:SMALLINT;default:1;NOT NULL"`         // 是否所有数据权限（1是，2否）
 	Roles          []*SysUserRole    `gorm:"foreignKey:UserID;references:UserID"`
 	Tenant         *SysTenantInfo    `gorm:"foreignKey:Code;references:TenantCode"`
 	Status         int64             `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用

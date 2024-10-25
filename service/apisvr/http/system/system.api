@@ -54,6 +54,7 @@ type (
         RegIP       string `json:"regIP,optional"`             // 注册ip
         NickName    string `json:"nickName,optional"`          // 用户的昵称
         HeadImg  string `json:"headImg,optional"`        // 用户头像
+        Tags    map[string]string       `json:"tags,optional,omitempty"` //标签对象
         CreatedTime int64  `json:"createdTime,string,optional"`// 创建时间
     }
 
