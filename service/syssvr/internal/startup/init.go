@@ -3,6 +3,7 @@ package startup
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
+	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	tenantmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/tenantmanage"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
@@ -87,7 +88,24 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		logx.Must(err)
 		svcCtx.UserCache = userCache
 	}
-
+	{
+		AreaCache, err := caches.NewCache(caches.CacheConfig[sys.AreaInfo, int64]{
+			KeyType:   eventBus.ServerCacheKeySysAreaInfo,
+			FastEvent: svcCtx.FastEvent,
+			GetData: func(ctx context.Context, key int64) (*sys.AreaInfo, error) {
+				db := relationDB.NewAreaInfoRepo(ctx)
+				if key == 0 {
+					key = ctxs.GetUserCtxNoNil(ctx).UserID
+				}
+				pi, err := db.FindOne(ctx, key, nil)
+				pb := areamanagelogic.TransPoToPb(ctx, pi, svcCtx)
+				return pb, err
+			},
+			ExpireTime: 20 * time.Minute,
+		})
+		logx.Must(err)
+		svcCtx.AreaCache = AreaCache
+	}
 	{
 		projectCache, err := caches.NewCache(caches.CacheConfig[sys.ProjectInfo, int64]{
 			KeyType:   eventBus.ServerCacheKeySysProjectInfo,

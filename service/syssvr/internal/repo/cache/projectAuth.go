@@ -80,10 +80,18 @@ func GetProjectAuth(ctx context.Context, userID int64, roleIDs []int64) (map[int
 			return nil, err
 		}
 		auth.Area = make(map[int64]int64, len(areas))
+		auth.AreaPath = make(map[string]int64, len(areas))
 		for _, po := range areas {
-			old, ok := auth.Area[po.AreaID]
+			if po.IsAuthChildren != def.True {
+				old, ok := auth.Area[po.AreaID]
+				if !ok || po.AuthType < old { //取权限大的
+					auth.Area[po.AreaID] = po.AuthType
+				}
+				continue
+			}
+			old, ok := auth.AreaPath[po.AreaIDPath]
 			if !ok || po.AuthType < old { //取权限大的
-				auth.Area[po.AreaID] = po.AuthType
+				auth.AreaPath[po.AreaIDPath] = po.AuthType
 			}
 		}
 	}

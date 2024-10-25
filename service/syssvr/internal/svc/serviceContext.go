@@ -34,6 +34,7 @@ type ServiceContext struct {
 	TenantConfigCache *caches.Cache[sys.TenantConfig, string]
 	ProjectCache      *caches.Cache[sys.ProjectInfo, int64]
 	UserCache         *caches.Cache[sys.UserInfo, int64]
+	AreaCache         *caches.Cache[sys.AreaInfo, int64]
 	ApiCache          *caches.Cache[relationDB.SysApiInfo, string]
 	RoleAccessCache   *caches.Cache[map[int64]struct{}, string]
 	Sms               *smsClient.Sms

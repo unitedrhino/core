@@ -11,7 +11,7 @@ func ToDataAreaDetail(in []*sys.DataArea, areaMap map[int64]*sys.AreaInfo) (ret 
 		return
 	}
 	for _, v := range in {
-		ret = append(ret, &types.DataAreaDetail{AuthType: v.AuthType, AreaInfo: info.ToAreaInfoTypes(areaMap[v.AreaID])})
+		ret = append(ret, &types.DataAreaDetail{AuthType: v.AuthType, IsAuthChildren: v.IsAuthChildren, AreaInfo: info.ToAreaInfoTypes(areaMap[v.AreaID])})
 	}
 	return
 }
@@ -21,7 +21,7 @@ func ToAreaPbs(in []*types.DataArea) (ret []*sys.DataArea) {
 		return
 	}
 	for _, v := range in {
-		ret = append(ret, &sys.DataArea{AreaID: v.AreaID, AuthType: v.AuthType})
+		ret = append(ret, &sys.DataArea{AreaID: v.AreaID, AuthType: v.AuthType, IsAuthChildren: v.IsAuthChildren})
 	}
 	return
 }

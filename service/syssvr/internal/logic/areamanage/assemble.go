@@ -16,9 +16,9 @@ import (
 func transPoArrToPbTree(ctx context.Context, svcCtx *svc.ServiceContext, root *relationDB.SysAreaInfo, poArr []*relationDB.SysAreaInfo) *sys.AreaInfo {
 	pbList := make([]*sys.AreaInfo, 0, len(poArr))
 	for _, po := range poArr {
-		pbList = append(pbList, transPoToPb(ctx, po, svcCtx))
+		pbList = append(pbList, TransPoToPb(ctx, po, svcCtx))
 	}
-	return buildPbTree(transPoToPb(ctx, root, svcCtx), pbList)
+	return buildPbTree(TransPoToPb(ctx, root, svcCtx), pbList)
 }
 
 func buildPbTree(rootArea *sys.AreaInfo, pbList []*sys.AreaInfo) *sys.AreaInfo {
@@ -34,7 +34,7 @@ func buildPbTree(rootArea *sys.AreaInfo, pbList []*sys.AreaInfo) *sys.AreaInfo {
 	return rootArea
 }
 
-func transPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.ServiceContext) *sys.AreaInfo {
+func TransPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.ServiceContext) *sys.AreaInfo {
 	parentAreaID := po.ParentAreaID
 	if parentAreaID == 0 {
 		parentAreaID = def.RootNode
@@ -71,7 +71,7 @@ func AreaInfosToPb(ctx context.Context, svcCtx *svc.ServiceContext, pos []*relat
 		return nil
 	}
 	for _, po := range pos {
-		ret = append(ret, transPoToPb(ctx, po, svcCtx))
+		ret = append(ret, TransPoToPb(ctx, po, svcCtx))
 	}
 	return
 }

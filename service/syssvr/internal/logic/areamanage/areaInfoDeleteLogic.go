@@ -107,5 +107,6 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 		}
 
 	}
+	l.svcCtx.AreaCache.SetData(l.ctx, in.AreaID, nil)
 	return &sys.Empty{}, err
 }

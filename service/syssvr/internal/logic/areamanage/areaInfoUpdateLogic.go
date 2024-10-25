@@ -83,7 +83,7 @@ func (l *AreaInfoUpdateLogic) AreaInfoUpdate(in *sys.AreaInfo) (*sys.Empty, erro
 		}
 		return nil
 	})
-
+	l.svcCtx.AreaCache.SetData(l.ctx, in.AreaID, nil)
 	return &sys.Empty{}, err
 }
 func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.AreaInfo) {

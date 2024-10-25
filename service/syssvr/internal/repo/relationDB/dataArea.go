@@ -131,11 +131,13 @@ func (g DataAreaRepo) MultiUpdate(ctx context.Context, target *Target, projectID
 	var datas []*SysDataArea
 	for _, v := range areas {
 		datas = append(datas, &SysDataArea{
-			TargetID:   target.ID,
-			TargetType: target.Type,
-			ProjectID:  stores.ProjectID(projectID),
-			AreaID:     v.AreaID,
-			AuthType:   v.AuthType,
+			TargetID:       target.ID,
+			TargetType:     target.Type,
+			ProjectID:      stores.ProjectID(projectID),
+			AreaID:         v.AreaID,
+			AreaIDPath:     v.AreaIDPath,
+			AuthType:       v.AuthType,
+			IsAuthChildren: v.IsAuthChildren,
 		})
 	}
 	err := g.db.Transaction(func(tx *gorm.DB) error {

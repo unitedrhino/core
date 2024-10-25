@@ -215,13 +215,15 @@ type ConfigResp struct {
 }
 
 type DataArea struct {
-	AreaID   int64 `json:"areaID,string"` //项目id
-	AuthType int64 `json:"authType"`      // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	AreaID         int64 `json:"areaID,string"`           //项目id
+	AuthType       int64 `json:"authType"`                // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	IsAuthChildren int64 `json:"isAuthChildren,optional"` //是否同时授权子节点,默认为2
 }
 
 type DataAreaDetail struct {
 	*AreaInfo
-	AuthType int64 `json:"authType"` // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	AuthType       int64 `json:"authType"`                // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	IsAuthChildren int64 `json:"isAuthChildren,optional"` //是否同时授权子节点,默认为2
 }
 
 type DataAreaIndexReq struct {

@@ -41,8 +41,6 @@ func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	default:
 		return l.userCheckToken(in)
 	}
-
-	return nil, errors.Parameter.AddMsg(in.AuthType)
 }
 
 var (

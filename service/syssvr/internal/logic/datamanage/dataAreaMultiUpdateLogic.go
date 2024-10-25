@@ -57,7 +57,7 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 	//} else if po == nil {
 	//	return nil, errors.Parameter.AddDetail(err).WithMsg("检查用户不存在")
 	//}
-	areas := ToAuthAreaDos(in.Areas)
+	areas := ToAuthAreaDos(l.ctx, l.svcCtx, in.Areas)
 	err = l.UaaDB.MultiUpdate(l.ctx, &relationDB.Target{Type: in.TargetType, ID: in.TargetID}, in.ProjectID, areas)
 	if err != nil {
 		return nil, errors.Fmt(err).WithMsg("用户数据权限保存失败")

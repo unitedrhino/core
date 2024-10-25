@@ -55,7 +55,7 @@ func (l *AreaInfoReadLogic) AreaInfoRead(in *sys.AreaInfoReadReq) (*sys.AreaInfo
 		po = &rootNode
 	case def.NotClassified:
 		po = &notClassifiedNode
-		return transPoToPb(l.ctx, po, l.svcCtx), nil
+		return TransPoToPb(l.ctx, po, l.svcCtx), nil
 	default:
 		po, err = l.AiDB.FindOne(l.ctx, in.AreaID, nil)
 		if err != nil {
@@ -63,7 +63,7 @@ func (l *AreaInfoReadLogic) AreaInfoRead(in *sys.AreaInfoReadReq) (*sys.AreaInfo
 		}
 	}
 	if !in.WithChildren {
-		return transPoToPb(l.ctx, po, l.svcCtx), nil
+		return TransPoToPb(l.ctx, po, l.svcCtx), nil
 	}
 	poArr, err := l.AiDB.FindByFilter(l.ctx, relationDB.AreaInfoFilter{ProjectID: in.ProjectID, AreaIDPath: po.AreaIDPath}, nil)
 	if err != nil {

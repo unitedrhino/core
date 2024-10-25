@@ -1,15 +1,18 @@
 package datamanagelogic
 
 import (
+	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/domain/userDataAuth"
 )
 
 func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {
 	return &sys.DataArea{
-		AreaID:   int64(po.AreaID),
-		AuthType: po.AuthType,
+		AreaID:         int64(po.AreaID),
+		AuthType:       po.AuthType,
+		IsAuthChildren: po.IsAuthChildren,
 	}
 }
 
@@ -21,18 +24,26 @@ func transProjectPoToPb(po *relationDB.SysDataProject) *sys.DataProject {
 	}
 }
 
-func ToAuthAreaDo(area *sys.DataArea) *userDataAuth.Area {
+func ToAuthAreaDo(ctx context.Context, svcCtx *svc.ServiceContext, area *sys.DataArea) *userDataAuth.Area {
 	if area == nil {
 		return nil
 	}
-	return &userDataAuth.Area{AreaID: area.AreaID, AuthType: area.AuthType}
+	a, err := svcCtx.AreaCache.GetData(ctx, area.AreaID)
+	if err != nil {
+		return nil
+	}
+	return &userDataAuth.Area{AreaID: area.AreaID, AreaIDPath: a.AreaIDPath, AuthType: area.AuthType, IsAuthChildren: area.IsAuthChildren}
 }
-func ToAuthAreaDos(areas []*sys.DataArea) (ret []*userDataAuth.Area) {
+func ToAuthAreaDos(ctx context.Context, svcCtx *svc.ServiceContext, areas []*sys.DataArea) (ret []*userDataAuth.Area) {
 	if len(areas) == 0 {
 		return
 	}
 	for _, v := range areas {
-		ret = append(ret, ToAuthAreaDo(v))
+		a := ToAuthAreaDo(ctx, svcCtx, v)
+		if a == nil {
+			continue
+		}
+		ret = append(ret, a)
 	}
 	return
 }
@@ -41,7 +52,7 @@ func DBToAuthAreaDo(area *relationDB.SysDataArea) *userDataAuth.Area {
 	if area == nil {
 		return nil
 	}
-	return &userDataAuth.Area{AreaID: int64(area.AreaID), AuthType: area.AuthType}
+	return &userDataAuth.Area{AreaID: int64(area.AreaID), AuthType: area.AuthType, IsAuthChildren: area.IsAuthChildren}
 }
 func DBToAuthAreaDos(areas []*relationDB.SysDataArea) (ret []*userDataAuth.Area) {
 	if len(areas) == 0 {
