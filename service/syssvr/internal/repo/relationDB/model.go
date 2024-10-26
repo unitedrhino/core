@@ -84,12 +84,12 @@ func (m *SysSlotInfo) TableName() string {
 }
 
 type SysServiceInfo struct {
-	ID      int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`   // id编号
-	Code    string `gorm:"column:code;uniqueIndex;type:VARCHAR(100);NOT NULL"` // 服务编码
-	Name    string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`             // 服务名
-	Version string `gorm:"column:version;type:VARCHAR(100);NOT NULL"`          //服务版本
-	Desc    string `gorm:"column:desc;type:VARCHAR(500);"`                     // 备注
-	stores.SoftTime
+	ID      int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"` // id编号
+	Code    string `gorm:"column:code;unique;type:VARCHAR(100);NOT NULL"`    // 服务编码
+	Name    string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`           // 服务名
+	Version string `gorm:"column:version;type:VARCHAR(100);NOT NULL"`        //服务版本
+	Desc    string `gorm:"column:desc;type:VARCHAR(500);"`                   // 备注
+	stores.NoDelTime
 }
 
 func (m *SysServiceInfo) TableName() string {
