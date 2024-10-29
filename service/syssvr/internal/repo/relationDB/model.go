@@ -64,6 +64,41 @@ func (SysDictDetail) TableName() string {
 	return "sys_dict_detail"
 }
 
+type SysDeptInfo struct {
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                  // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`                      // 租户编码
+	ParentID   int64             `gorm:"column:parent_id;uniqueIndex:name;type:BIGINT"`                     // id编号
+	Name       string            `gorm:"column:name;type:VARCHAR(50);uniqueIndex:name;default:'';NOT NULL"` // 部门名称
+	Status     int64             `gorm:"column:status;type:SMALLINT;default:1"`                             // 状态  1:启用,2:禁用
+	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                          // 排序标记
+	Desc       string            `gorm:"column:desc;comment:描述"`                                            // 描述
+	IDPath     string            `gorm:"column:id_path;type:varchar(100);NOT NULL"`                         // 1-2-3-的格式记录顶级区域到当前id的路径
+	DingTalkID int64             `gorm:"column:ding_talk_id;default:0;"`                                    //钉钉的部门ID
+	Children   []*SysDeptInfo    `gorm:"foreignKey:parent_id;references:id"`
+	Parent     *SysDeptInfo      `gorm:"foreignKey:ID;references:ParentID"`
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:name"`
+}
+
+func (SysDeptInfo) TableName() string {
+	return "sys_dept_info"
+}
+
+type SysDeptUser struct {
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`      // id编号
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"`         // 租户编码
+	UserID     int64             `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 用户ID
+	DeptID     int64             `gorm:"column:dept_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 角色ID
+	Dept       *SysDeptInfo      `gorm:"foreignKey:ID;references:DeptID"`
+	User       *SysUserInfo      `gorm:"foreignKey:UserID;references:UserID"`
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+}
+
+func (m *SysDeptUser) TableName() string {
+	return "sys_dept_user"
+}
+
 type SysSlotInfo struct {
 	ID       int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
 	Code     string            `gorm:"column:code;uniqueIndex:code_slot;type:VARCHAR(100);NOT NULL"`            // 鉴权的编码

@@ -16,6 +16,7 @@ import (
 	systemdataareauserapply "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/area/user/apply"
 	systemdataopenaccess "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/open/access"
 	systemdataproject "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/project"
+	systemdeptinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/info"
 	systemdictdetail "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dict/detail"
 	systemdictinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dict/info"
 	systemjobtask "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/job/task"
@@ -455,6 +456,51 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/data/project"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 添加部门详情
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemdeptinfo.CreateHandler(serverCtx),
+				},
+				{
+					// 删除部门
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemdeptinfo.DeleteHandler(serverCtx),
+				},
+				{
+					// 获取部门列表
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdeptinfo.IndexHandler(serverCtx),
+				},
+				{
+					// 获取部门单个
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemdeptinfo.ReadHandler(serverCtx),
+				},
+				{
+					// 同步部门
+					Method:  http.MethodPost,
+					Path:    "/sync",
+					Handler: systemdeptinfo.SyncHandler(serverCtx),
+				},
+				{
+					// 更新部门
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemdeptinfo.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/dept/info"),
 	)
 
 	server.AddRoutes(

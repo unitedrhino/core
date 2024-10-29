@@ -22,6 +22,10 @@ service UserManage {
   rpc userRoleMultiUpdate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
   rpc userRoleMultiCreate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
 
+  rpc userDeptIndex(UserDeptIndexReq) returns (UserDeptIndexResp); //获取用户部门列表
+  rpc userDeptMultiDelete(UserDeptMultiSaveReq) returns(Empty); //添加部门
+  rpc userDeptMultiCreate(UserDeptMultiSaveReq) returns(Empty); //添加部门
+
   rpc userAreaApplyCreate(UserAreaApplyCreateReq) returns(Empty);//申请区域权限
 
   rpc userMessageMultiIsRead(IDList)returns(Empty);//用户消息批量已读
@@ -125,6 +129,7 @@ service RoleManage {
 }
 
 
+
 service AppManage{
   rpc appInfoCreate(AppInfo) returns(WithID); //添加角色
   rpc appInfoIndex(AppInfoIndexReq) returns(AppInfoIndexResp); //获取角色列表
@@ -163,6 +168,23 @@ service DictManage{
   rpc dictDetailDelete(WithID) returns(Empty); //删除角色
 }
 
+service DepartmentManage{
+  rpc deptInfoRead(DeptInfoReadReq)returns(DeptInfo);
+  rpc deptInfoCreate(DeptInfo) returns(WithID); //添加角色
+  rpc deptInfoIndex(DeptInfoIndexReq) returns(DeptInfoIndexResp); //获取角色列表
+  rpc deptInfoUpdate(DeptInfo) returns(Empty); //更新角色
+  rpc deptInfoDelete(WithID) returns(Empty); //删除角色
+
+  rpc deptInfoSync(DeptInfoSyncReq)returns(DeptInfoSyncResp);//从应用同步用户数据
+
+  rpc deptUserIndex(DeptUserIndexReq) returns (DeptUserIndexResp); //获取用户部门列表
+  rpc deptUserMultiDelete(DeptUserMultiSaveReq) returns(Empty); //添加部门
+  rpc deptUserMultiCreate(DeptUserMultiSaveReq) returns(Empty); //添加部门
+
+  rpc deptRoleIndex(DeptRoleIndexReq) returns (DeptRoleIndexResp); //获取用户部门列表
+  rpc deptRoleMultiDelete(DeptRoleMultiSaveReq) returns(Empty); //添加部门
+  rpc deptRoleMultiCreate(DeptRoleMultiSaveReq) returns(Empty); //添加部门
+}
 
 service Common {
   rpc config(Empty) returns(configResp); //添加菜单
@@ -1401,6 +1423,51 @@ message UserRoleMultiUpdateReq{
   repeated string roleCodes =3;//角色code
 }
 
+
+message UserDeptIndexReq{
+  int64 userID = 1;
+}
+
+message UserDeptIndexResp{
+  int64 total = 1;
+  repeated DeptInfo list = 2;//部门列表
+}
+
+message UserDeptMultiSaveReq{
+  int64 userID = 1;
+  repeated int64 deptIDs = 2;//API列表数据
+}
+
+
+
+message DeptUserIndexReq{
+  int64 deptID = 1;
+}
+
+message DeptUserIndexResp{
+  int64 total = 1;
+  repeated UserInfo list = 2;//部门列表
+}
+
+message DeptUserMultiSaveReq{
+  int64 deptID = 1;
+  repeated int64 userIDs = 2;//API列表数据
+}
+
+message DeptRoleIndexReq{
+  int64 deptID = 1;
+}
+
+message DeptRoleIndexResp{
+  int64 total = 1;
+  repeated RoleInfo list = 2;//部门列表
+}
+
+message DeptRoleMultiSaveReq{
+  int64 deptID = 1;
+  repeated int64 roleIDs = 2;//API列表数据
+}
+
 //----------------------------------------------------------------------------------------------
 
 message DataProject {
@@ -1567,6 +1634,48 @@ message DictDetailIndexReq{
 
 message DictDetailIndexResp{
   repeated  DictDetail list =1;
+  int64 total = 2;
+}
+
+
+
+
+message DeptInfoReadReq{
+  int64 id = 1;
+  bool withFather = 2;//是否返回父级
+  bool withChildren =3;//是否返回子级
+}
+
+message DeptInfoSyncReq{
+  string appCode =1;//同步的应用,目前只支持钉钉
+  int64 deptMode =2;//部门同步模式,1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的部门
+  int64 userMode = 3;//用户同步模式,0 不同步 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的用户
+}
+message DeptInfoSyncResp{
+
+}
+
+message DeptInfo{
+  int64 id = 1;
+  string name= 2;         // 部门名称
+  google.protobuf.StringValue desc = 3;        // 模块描述
+  int64 status = 4; // 状态  1:启用,2:禁用
+  int64 parentID =5;//父节点
+  DeptInfo parent =6;
+  repeated DeptInfo children =7;
+  int64 sort = 8;          // 排序标记
+  string idPath = 9;
+}
+
+message DeptInfoIndexReq{
+  PageInfo page = 1;//分页信息
+  int64 parentID =2;//父节点
+  int64 status = 3; // 状态  1:启用,2:禁用
+  string name = 4;  // 部门名称
+}
+
+message DeptInfoIndexResp{
+  repeated  DeptInfo list =1;
   int64 total = 2;
 }
 

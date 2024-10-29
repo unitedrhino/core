@@ -610,6 +610,116 @@
       ],
       "authType": "all"
     },
+    "systemDeptManageAdd": {
+      "name": "新增部门管理",
+      "code": "systemDeptManageAdd",
+      "group": "部门管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptManageAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/create",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "add",
+          "desc": "",
+          "authType": "admin"
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemDeptManageDelete": {
+      "name": "删除部门管理",
+      "code": "systemDeptManageDelete",
+      "group": "部门管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptManageDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/delete",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "admin"
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemDeptManageFind": {
+      "name": "查询部门管理",
+      "code": "systemDeptManageFind",
+      "group": "部门管理",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptManageFind",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/index",
+          "name": "获取部门列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemDeptManageFind",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/read",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptManageModify": {
+      "name": "修改部门管理",
+      "code": "systemDeptManageModify",
+      "group": "部门管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptManageModify",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/update",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "admin"
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemDeptManageOther": {
+      "name": "操作部门管理",
+      "code": "systemDeptManageOther",
+      "group": "部门管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptManageOther",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/sync",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "admin"
+        }
+      ],
+      "authType": "admin"
+    },
     "systemDictManageAdd": {
       "name": "新增字典管理",
       "code": "systemDictManageAdd",

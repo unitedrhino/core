@@ -129,6 +129,7 @@ type (
 		WithRoles bool  `json:"withRoles,optional"`
 		WithTenant bool `json:"withTenant,optional"`
 		WithProjects bool `json:"withProjects,optional"`
+		WithDepts bool  `json:"withDepts,optional"`
 	}
 
 	UserMenuIndexReq{
@@ -170,6 +171,7 @@ type (
 	UserLoginResp {
 		Info  UserInfo `json:"info"`  //用户信息
 		Roles []*RoleInfo `json:"roles"` //角色列表
+		Depts []*DeptInfo `json:"depts,omitempty"`
 		Token JwtToken `json:"token"` //用户token
 	}
 

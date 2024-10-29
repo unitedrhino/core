@@ -70,6 +70,7 @@ type (
 	 	Roles []*RoleInfo `json:"roles,optional,omitempty"`
 		Tenant *TenantInfo `json:"tenant,optional,omitempty"`
 		Projects []*ProjectInfo `json:"projects,optional,omitempty"`    //项目列表
+	 	Depts []*DeptInfo `json:"depts,optional,omitempty"`
 	 }
 
 

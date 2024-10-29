@@ -1,0 +1,92 @@
+info(
+    desc: "部门信息"
+	author: "yl"
+	email: "603785348@qq.com"
+)
+
+@server(
+    group: system/dept/info
+    prefix: /api/v1/system/dept/info
+    accessCodePrefix: "systemDeptManage"
+    accessNamePrefix: "部门管理"
+    accessGroup: "部门管理"
+    middleware:  CheckTokenWare,InitCtxsWare
+)
+
+service api {
+    @doc(
+        summary: "添加部门详情"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
+    @handler create
+    post /create (DeptInfo) returns (WithID)
+
+    @doc "获取部门列表"
+    @handler index
+    post /index (DeptInfoIndexReq) returns (DeptInfoIndexResp)
+
+    @doc(
+        summary: "更新部门"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
+    @handler update
+    post /update (DeptInfo) returns ()
+
+    @doc(
+        summary: "获取部门单个"
+    )
+    @handler read
+    post /read (DeptInfoReadReq) returns (DeptInfo)
+
+    @doc(
+        summary: "删除部门"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
+    @handler delete
+    post /delete (WithID) returns ()
+
+    @doc(
+        summary: "同步部门"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
+    @handler sync
+    post /sync (DeptInfoSyncReq) returns ()
+}
+type (
+    DeptInfoSyncReq{
+         AppCode string `json:"appCode"`//同步的应用,目前只支持钉钉
+         DeptMode int64 `json:"deptMode"`//部门同步模式,1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的部门
+         UserMode int64 `json:"userMode,optional"`//用户同步模式,0 不同步 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的用户
+    }
+    DeptInfoReadReq{
+        ID int64 `json:"id,optional"`                                  // 编号
+        WithFather bool `json:"withFather,optional"`//是否返回父级
+        WithChildren bool `json:"withChildren,optional"`//是否返回子级
+    }
+    DeptInfoIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        ParentID int64 `json:"parentID,optional"`//父节点
+        Status int64 `json:"status,optional"` // 状态  1:启用,2:禁用
+        Name string `json:"name,optional"`           // 名称
+    }
+
+    DeptInfoIndexResp  {
+        Total int64 `json:"total"` //总数
+        List []*DeptInfo `json:"list"` //菜单列表
+    }
+    DeptInfo{
+        ID int64 `json:"id,optional"`                                  // 编号
+        ParentID int64 `json:"parentID,optional,omitempty"`//父节点
+        IDPath string `json:"idPath,optional"`//1-2-3-的格式记录顶级区域到当前id的路径
+        Name string `json:"name,optional"`           // 部门名称
+        Sort   int64                   `json:"sort,optional"`     // 排序标记
+        Desc   *string `json:"desc,optional"`      // 模块描述
+        Status int64                   `json:"status,optional"` // 状态  1:启用,2:禁用
+        Parent *DeptInfo  `json:"parent,optional,omitempty"`
+        Children []*DeptInfo `json:"children,optional,omitempty"`
+    }
+)

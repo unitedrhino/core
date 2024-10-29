@@ -1,0 +1,48 @@
+info(
+    title: "用户数据权限管理模块"
+    desc: "用户数据权限管理接口"
+    author: "godLei6"
+    email: "603785348@qq.com"
+    version: "v1"
+)
+
+
+@server (
+    group: system/user/dept
+    prefix: /api/v1/system/user/dept
+    accessCodePrefix: "systemUserManage"
+    accessNamePrefix: "用户部门"
+    accessGroup: "用户管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
+)
+service api {
+    @doc "获取用户部门列表"
+    @handler index
+    post /index (UserDeptIndexReq) returns (UserDeptIndexResp)
+    @doc "新增用户的部门列表"
+    @handler multiCreate
+    post /multi-create (UserDeptMultiSaveReq) returns ()
+    @doc "删除用户的部门列表"
+    @handler multiDelete
+    post /multi-delete (UserDeptMultiSaveReq) returns ()
+}
+
+
+//用户级权限控制
+type (
+    UserDeptIndexReq{
+        UserID         int64  `json:"userID,string"`        // 用户id
+    }
+
+    UserDeptIndexResp{
+        Total int64 `json:"total"`
+        List  []*DeptInfo `json:"list"`           //用户角色列表
+    }
+
+    UserDeptMultiSaveReq{
+        UserID         int64  `json:"userID,string"`        // 用户id
+        DeptIDs 		[]int64 `json:"deptIDs"` //角色编号列表
+    }
+)

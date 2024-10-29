@@ -29,7 +29,11 @@ func (l *DictDetailDeleteLogic) DictDetailDelete(in *sys.WithID) (*sys.Empty, er
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
-	err := relationDB.NewDictDetailRepo(l.ctx).Delete(l.ctx, in.Id)
+	old, err := relationDB.NewDictDetailRepo(l.ctx).FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = relationDB.NewDictDetailRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DictDetailFilter{IDPath: old.IDPath})
 
 	return &sys.Empty{}, err
 }

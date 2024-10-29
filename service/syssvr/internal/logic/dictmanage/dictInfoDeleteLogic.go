@@ -4,6 +4,8 @@ import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -29,6 +31,17 @@ func (l *DictInfoDeleteLogic) DictInfoDelete(in *sys.WithID) (*sys.Empty, error)
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
-	err := relationDB.NewDictInfoRepo(l.ctx).Delete(l.ctx, in.Id)
+	old, err := relationDB.NewDictInfoRepo(l.ctx).FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		err := relationDB.NewDictInfoRepo(tx).Delete(l.ctx, in.Id)
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewDictDetailRepo(tx).DeleteByFilter(l.ctx, relationDB.DictDetailFilter{DictCode: old.Code})
+		return err
+	})
 	return &sys.Empty{}, err
 }

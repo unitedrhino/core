@@ -54,6 +54,12 @@ type (
 	DataProjectMultiUpdateReq             = sys.DataProjectMultiUpdateReq
 	DataProjectSaveReq                    = sys.DataProjectSaveReq
 	DateRange                             = sys.DateRange
+	DeptInfo                              = sys.DeptInfo
+	DeptInfoIndexReq                      = sys.DeptInfoIndexReq
+	DeptInfoIndexResp                     = sys.DeptInfoIndexResp
+	DeptInfoReadReq                       = sys.DeptInfoReadReq
+	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
+	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp

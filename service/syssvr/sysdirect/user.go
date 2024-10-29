@@ -9,6 +9,9 @@ import (
 	clientNotify "gitee.com/unitedrhino/core/service/syssvr/client/notifymanage"
 	serverNotify "gitee.com/unitedrhino/core/service/syssvr/internal/server/notifymanage"
 
+	clientDeptM "gitee.com/unitedrhino/core/service/syssvr/client/departmentmanage"
+	serverDeptM "gitee.com/unitedrhino/core/service/syssvr/internal/server/departmentmanage"
+
 	clientRole "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
 	serverRole "gitee.com/unitedrhino/core/service/syssvr/internal/server/rolemanage"
 
@@ -151,4 +154,12 @@ func NewNotify(runSvr bool) clientNotify.NotifyManage {
 		RunServer(svcCtx)
 	}
 	return clientNotify.NewDirectNotifyManage(svcCtx, serverNotify.NewNotifyManageServer(svcCtx))
+}
+
+func NewDeptM(runSvr bool) clientDeptM.DepartmentManage {
+	svcCtx := GetSvcCtx()
+	if runSvr {
+		RunServer(svcCtx)
+	}
+	return clientDeptM.NewDirectDepartmentManage(svcCtx, serverDeptM.NewDepartmentManageServer(svcCtx))
 }

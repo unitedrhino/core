@@ -24,3 +24,4 @@ import "system/tenant.api" //租户管理相关功能
 import "system/userSelf.api" //用户相关功能
 import "system/dict.api"
 import "system/ops.api"
+import "system/dept.api"

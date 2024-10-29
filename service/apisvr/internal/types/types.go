@@ -323,6 +323,42 @@ type DebugResp struct {
 	Body       string            `json:"body,omitempty"`
 }
 
+type DeptInfo struct {
+	ID       int64       `json:"id,optional"`                 // 编号
+	ParentID int64       `json:"parentID,optional,omitempty"` //父节点
+	IDPath   string      `json:"idPath,optional"`             //1-2-3-的格式记录顶级区域到当前id的路径
+	Name     string      `json:"name,optional"`               // 部门名称
+	Sort     int64       `json:"sort,optional"`               // 排序标记
+	Desc     *string     `json:"desc,optional"`               // 模块描述
+	Status   int64       `json:"status,optional"`             // 状态  1:启用,2:禁用
+	Parent   *DeptInfo   `json:"parent,optional,omitempty"`
+	Children []*DeptInfo `json:"children,optional,omitempty"`
+}
+
+type DeptInfoIndexReq struct {
+	Page     *PageInfo `json:"page,optional"`     // 分页信息,只获取一个则不填
+	ParentID int64     `json:"parentID,optional"` //父节点
+	Status   int64     `json:"status,optional"`   // 状态  1:启用,2:禁用
+	Name     string    `json:"name,optional"`     // 名称
+}
+
+type DeptInfoIndexResp struct {
+	Total int64       `json:"total"` //总数
+	List  []*DeptInfo `json:"list"`  //菜单列表
+}
+
+type DeptInfoReadReq struct {
+	ID           int64 `json:"id,optional"`           // 编号
+	WithFather   bool  `json:"withFather,optional"`   //是否返回父级
+	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
+}
+
+type DeptInfoSyncReq struct {
+	AppCode  string `json:"appCode"`           //同步的应用,目前只支持钉钉
+	DeptMode int64  `json:"deptMode"`          //部门同步模式,1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的部门
+	UserMode int64  `json:"userMode,optional"` //用户同步模式,0 不同步 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的用户
+}
+
 type DeviceCore struct {
 	ProductID  string `json:"productID"`  //产品ID
 	DeviceName string `json:"deviceName"` //设备名称
@@ -1417,6 +1453,7 @@ type UserInfo struct {
 	Roles           []*RoleInfo       `json:"roles,optional,omitempty"`
 	Tenant          *TenantInfo       `json:"tenant,optional,omitempty"`
 	Projects        []*ProjectInfo    `json:"projects,optional,omitempty"` //项目列表
+	Depts           []*DeptInfo       `json:"depts,optional,omitempty"`
 }
 
 type UserInfoCreateReq struct {
@@ -1463,6 +1500,7 @@ type UserLoginReq struct {
 type UserLoginResp struct {
 	Info  UserInfo    `json:"info"`  //用户信息
 	Roles []*RoleInfo `json:"roles"` //角色列表
+	Depts []*DeptInfo `json:"depts,omitempty"`
 	Token JwtToken    `json:"token"` //用户token
 }
 
@@ -1582,6 +1620,7 @@ type UserSelfReadReq struct {
 	WithRoles    bool `json:"withRoles,optional"`
 	WithTenant   bool `json:"withTenant,optional"`
 	WithProjects bool `json:"withProjects,optional"`
+	WithDepts    bool `json:"withDepts,optional"`
 }
 
 type WeatherAir struct {

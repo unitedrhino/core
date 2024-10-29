@@ -8,6 +8,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/client/areamanage"
 	"gitee.com/unitedrhino/core/service/syssvr/client/common"
 	"gitee.com/unitedrhino/core/service/syssvr/client/datamanage"
+	"gitee.com/unitedrhino/core/service/syssvr/client/departmentmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/client/dictmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/client/log"
 	module "gitee.com/unitedrhino/core/service/syssvr/client/modulemanage"
@@ -56,6 +57,7 @@ type SvrClient struct {
 	Timedscheduler timedscheduler.Timedscheduler
 	TimedJob       timedmanage.TimedManage
 	Ops            ops.Ops
+	DeptM          departmentmanage.DepartmentManage
 }
 
 type ServiceContext struct {
@@ -86,6 +88,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		accessM       accessmanage.AccessManage
 		Ops           ops.Ops
 		NotifyM       notifymanage.NotifyManage
+		DeptM         departmentmanage.DepartmentManage
 	)
 	var ur user.UserManage
 	var ro role.RoleManage
@@ -113,6 +116,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			DictM = dictmanage.NewDictManage(zrpc.MustNewClient(c.SysRpc.Conf))
 			Ops = ops.NewOps(zrpc.MustNewClient(c.SysRpc.Conf))
 			NotifyM = notifymanage.NewNotifyManage(zrpc.MustNewClient(c.SysRpc.Conf))
+			DeptM = departmentmanage.NewDepartmentManage(zrpc.MustNewClient(c.SysRpc.Conf))
 		} else {
 			projectM = sysdirect.NewProjectManage(c.SysRpc.RunProxy)
 			areaM = sysdirect.NewAreaManage(c.SysRpc.RunProxy)
@@ -128,6 +132,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			DictM = sysdirect.NewDict(c.SysRpc.RunProxy)
 			Ops = sysdirect.NewOps(c.SysRpc.RunProxy)
 			NotifyM = sysdirect.NewNotify(c.SysRpc.RunProxy)
+			DeptM = sysdirect.NewDeptM(c.SysRpc.RunProxy)
 		}
 	}
 
@@ -178,6 +183,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			NotifyM:        NotifyM,
 			Timedscheduler: timedSchedule,
 			TimedJob:       timedJob,
+			DeptM:          DeptM,
 			ProjectM:       projectM,
 			AreaM:          areaM,
 			DataM:          DataM,

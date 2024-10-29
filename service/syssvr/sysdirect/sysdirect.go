@@ -9,6 +9,7 @@ import (
 	areamanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/areamanage"
 	commonServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/common"
 	datamanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/datamanage"
+	deptMServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/departmentmanage"
 	logServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/log"
 	modulemanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/modulemanage"
 	notifymanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/notifymanage"
@@ -74,21 +75,13 @@ func Run(svcCtx *svc.ServiceContext) {
 		sys.RegisterDataManageServer(grpcServer, datamanageServer.NewDataManageServer(svcCtx))
 		sys.RegisterOpsServer(grpcServer, opsServer.NewOpsServer(svcCtx))
 		sys.RegisterNotifyManageServer(grpcServer, notifymanageServer.NewNotifyManageServer(svcCtx))
+		sys.RegisterDepartmentManageServer(grpcServer, deptMServer.NewDepartmentManageServer(svcCtx))
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}
 	})
 	defer s.Stop()
 	s.AddUnaryInterceptors(interceptors.Ctxs, interceptors.Error)
-	//notifymanageServer.NewNotifyManageServer(svcCtx).NotifyConfigSend(ctxs.SetUserCtx(context.Background(), &ctxs.UserCtx{
-	//	TenantCode: def.TenantCodeDefault,
-	//}), &sys.NotifyConfigSendReq{
-	//	UserIDs:    nil,
-	//	Accounts:   []string{"17052709767"},
-	//	NotifyCode: "ruleDeviceAlarm",
-	//	Type:       "wxMini",
-	//	Params:     map[string]string{"111": "111"},
-	//})
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

@@ -20,7 +20,9 @@ func Migrate(c conf.Database) error {
 		needInitColumn = true
 	}
 	err := db.AutoMigrate(
+		&SysDeptUser{},
 		&SysServiceInfo{},
+		&SysDeptInfo{},
 		&SysUserMessage{},
 		&SysMessageInfo{},
 		&SysNotifyConfig{},
@@ -110,6 +112,9 @@ func migrateTableColumn() error {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateDataProject, 100).Error; err != nil {
+		return err
+	}
+	if err := db.Create(&SysDeptInfo{ID: 3, Name: "锚点"}).Error; err != nil {
 		return err
 	}
 	return nil

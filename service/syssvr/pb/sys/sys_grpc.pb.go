@@ -4410,6 +4410,281 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
+	DepartmentManage_DeptInfoRead_FullMethodName   = "/sys.DepartmentManage/deptInfoRead"
+	DepartmentManage_DeptInfoCreate_FullMethodName = "/sys.DepartmentManage/deptInfoCreate"
+	DepartmentManage_DeptInfoIndex_FullMethodName  = "/sys.DepartmentManage/deptInfoIndex"
+	DepartmentManage_DeptInfoUpdate_FullMethodName = "/sys.DepartmentManage/deptInfoUpdate"
+	DepartmentManage_DeptInfoDelete_FullMethodName = "/sys.DepartmentManage/deptInfoDelete"
+	DepartmentManage_DeptInfoSync_FullMethodName   = "/sys.DepartmentManage/deptInfoSync"
+)
+
+// DepartmentManageClient is the client API for DepartmentManage service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type DepartmentManageClient interface {
+	DeptInfoRead(ctx context.Context, in *DeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error)
+	DeptInfoCreate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*WithID, error)
+	DeptInfoIndex(ctx context.Context, in *DeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error)
+	DeptInfoUpdate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*Empty, error)
+	DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error)
+}
+
+type departmentManageClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewDepartmentManageClient(cc grpc.ClientConnInterface) DepartmentManageClient {
+	return &departmentManageClient{cc}
+}
+
+func (c *departmentManageClient) DeptInfoRead(ctx context.Context, in *DeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error) {
+	out := new(DeptInfo)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptInfoCreate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptInfoIndex(ctx context.Context, in *DeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error) {
+	out := new(DeptInfoIndexResp)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptInfoUpdate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error) {
+	out := new(DeptInfoSyncResp)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoSync_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DepartmentManageServer is the server API for DepartmentManage service.
+// All implementations must embed UnimplementedDepartmentManageServer
+// for forward compatibility
+type DepartmentManageServer interface {
+	DeptInfoRead(context.Context, *DeptInfoReadReq) (*DeptInfo, error)
+	DeptInfoCreate(context.Context, *DeptInfo) (*WithID, error)
+	DeptInfoIndex(context.Context, *DeptInfoIndexReq) (*DeptInfoIndexResp, error)
+	DeptInfoUpdate(context.Context, *DeptInfo) (*Empty, error)
+	DeptInfoDelete(context.Context, *WithID) (*Empty, error)
+	DeptInfoSync(context.Context, *DeptInfoSyncReq) (*DeptInfoSyncResp, error)
+	mustEmbedUnimplementedDepartmentManageServer()
+}
+
+// UnimplementedDepartmentManageServer must be embedded to have forward compatible implementations.
+type UnimplementedDepartmentManageServer struct {
+}
+
+func (UnimplementedDepartmentManageServer) DeptInfoRead(context.Context, *DeptInfoReadReq) (*DeptInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoRead not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptInfoCreate(context.Context, *DeptInfo) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoCreate not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptInfoIndex(context.Context, *DeptInfoIndexReq) (*DeptInfoIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoIndex not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptInfoUpdate(context.Context, *DeptInfo) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoUpdate not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptInfoDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoDelete not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptInfoSync(context.Context, *DeptInfoSyncReq) (*DeptInfoSyncResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoSync not implemented")
+}
+func (UnimplementedDepartmentManageServer) mustEmbedUnimplementedDepartmentManageServer() {}
+
+// UnsafeDepartmentManageServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DepartmentManageServer will
+// result in compilation errors.
+type UnsafeDepartmentManageServer interface {
+	mustEmbedUnimplementedDepartmentManageServer()
+}
+
+func RegisterDepartmentManageServer(s grpc.ServiceRegistrar, srv DepartmentManageServer) {
+	s.RegisterService(&DepartmentManage_ServiceDesc, srv)
+}
+
+func _DepartmentManage_DeptInfoRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptInfoReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptInfoRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptInfoRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptInfoRead(ctx, req.(*DeptInfoReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptInfoCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptInfoCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptInfoCreate(ctx, req.(*DeptInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptInfoIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptInfoIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptInfoIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptInfoIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptInfoIndex(ctx, req.(*DeptInfoIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptInfoUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptInfoUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptInfoUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptInfoUpdate(ctx, req.(*DeptInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptInfoDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptInfoDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptInfoDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptInfoDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptInfoSync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptInfoSyncReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptInfoSync(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptInfoSync_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptInfoSync(ctx, req.(*DeptInfoSyncReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// DepartmentManage_ServiceDesc is the grpc.ServiceDesc for DepartmentManage service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var DepartmentManage_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "sys.DepartmentManage",
+	HandlerType: (*DepartmentManageServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "deptInfoRead",
+			Handler:    _DepartmentManage_DeptInfoRead_Handler,
+		},
+		{
+			MethodName: "deptInfoCreate",
+			Handler:    _DepartmentManage_DeptInfoCreate_Handler,
+		},
+		{
+			MethodName: "deptInfoIndex",
+			Handler:    _DepartmentManage_DeptInfoIndex_Handler,
+		},
+		{
+			MethodName: "deptInfoUpdate",
+			Handler:    _DepartmentManage_DeptInfoUpdate_Handler,
+		},
+		{
+			MethodName: "deptInfoDelete",
+			Handler:    _DepartmentManage_DeptInfoDelete_Handler,
+		},
+		{
+			MethodName: "deptInfoSync",
+			Handler:    _DepartmentManage_DeptInfoSync_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/sys.proto",
+}
+
+const (
 	Common_Config_FullMethodName            = "/sys.Common/config"
 	Common_QRCodeRead_FullMethodName        = "/sys.Common/QRCodeRead"
 	Common_WeatherRead_FullMethodName       = "/sys.Common/WeatherRead"
