@@ -10,6 +10,7 @@ import (
 	user "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/log"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -18,6 +19,7 @@ import (
 	"gitee.com/unitedrhino/share/tools"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/zrpc"
 	"io"
 	"net/http"
 	"strings"
@@ -41,6 +43,14 @@ func init() {
 }
 
 func NewCheckTokenWareMiddleware(UserRpc user.UserManage, AuthRpc role.RoleManage, TenantRpc tenant.TenantManage, LogRpc operLog.Log) *CheckTokenWareMiddleware {
+	return &CheckTokenWareMiddleware{UserRpc: UserRpc, AuthRpc: AuthRpc, TenantRpc: TenantRpc, LogRpc: LogRpc}
+}
+
+func NewCheckTokenWareMiddleware2(SysRpc conf.RpcClientConf) *CheckTokenWareMiddleware {
+	TenantRpc := tenant.NewTenantManage(zrpc.MustNewClient(SysRpc.Conf))
+	LogRpc := operLog.NewLog(zrpc.MustNewClient(SysRpc.Conf))
+	UserRpc := user.NewUserManage(zrpc.MustNewClient(SysRpc.Conf))
+	AuthRpc := role.NewRoleManage(zrpc.MustNewClient(SysRpc.Conf))
 	return &CheckTokenWareMiddleware{UserRpc: UserRpc, AuthRpc: AuthRpc, TenantRpc: TenantRpc, LogRpc: LogRpc}
 }
 

@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/users"
@@ -69,7 +70,7 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		if claim.TenantCode == "" || claim.UserID == 0 || claim.Code == "" {
 			return nil, errors.TokenInvalid
 		}
-		po, err := relationDB.NewDataOpenAccessRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DataOpenAccessFilter{
+		po, err := relationDB.NewDataOpenAccessRepo(l.ctx).FindOneByFilter(ctxs.WithRoot(l.ctx), relationDB.DataOpenAccessFilter{
 			TenantCode: claim.TenantCode,
 			UserID:     claim.UserID,
 			Code:       claim.Code,
@@ -83,7 +84,8 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		l.Errorf("%s parse token fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
-	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(ctxs.WithRoot(l.ctx), relationDB.UserInfoFilter{
+		TenantCode: claim.TenantCode,
 		UserIDs:    []int64{claim.UserID},
 		WithRoles:  true,
 		WithTenant: true,
