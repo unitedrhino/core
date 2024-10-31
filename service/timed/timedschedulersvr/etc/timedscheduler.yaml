@@ -2,12 +2,12 @@ Name: timedscheduler.rpc
 ListenOn: 0.0.0.0:9284
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
+    - localhost:2379
   Key: timedscheduler.rpc
 Event:
   
 CacheRedis:
-  - Host: 127.0.0.1:6379
+  - Host: localhost:6379
     Pass:
     Type: node
 TimedJobRpc:
@@ -16,8 +16,8 @@ TimedJobRpc:
     Timeout: 1000000
 #Database:
 #  DBType: pgsql
-#  DSN: host=127.0.0.1 user= password= dbname=gleketest port=5432 sslmode=disable TimeZone=Asia/Shanghai
+#  DSN: host=localhost user= password= dbname=gleketest port=5432 sslmode=disable TimeZone=Asia/Shanghai
 Database:
   IsInitTable: true
   DBType: mysql
-  DSN: root:password@tcp(127.0.0.1:3306)/iThings?charset=utf8mb4&collation=utf8mb4_bin&parseTime=true&loc=Asia%2FShanghai
+  DSN: root:password@tcp(localhost:3306)/iThings?charset=utf8mb4&collation=utf8mb4_bin&parseTime=true&loc=Asia%2FShanghai

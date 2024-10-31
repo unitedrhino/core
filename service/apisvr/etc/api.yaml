@@ -10,7 +10,7 @@ Log:
   Encoding: plain
   #Mode: file
 CacheRedis:
-  - Host: 127.0.0.1:6379
+  - Host: localhost:6379
     Pass:
     Type: node
 
@@ -26,21 +26,21 @@ OpenAuth:
 Proxy:
   StaticProxy:
     - Router: /api/v1/view/
-      Dest: http://127.0.0.1:7789
+      Dest: http://localhost:7789
     - Router: /api/v1/app/
-      Dest: http://127.0.0.1:8000
+      Dest: http://localhost:8000
     - Router: /api/v1/things/
-      Dest: http://127.0.0.1:7788
+      Dest: http://localhost:7788
     - Router: /api/v1/protocol/cloud/tencent/
-      Dest: http://127.0.0.1:9363
+      Dest: http://localhost:9363
     - Router: /api/v1/video/
-      Dest: http://127.0.0.1:7800
+      Dest: http://localhost:7800
     - Router: /api/v1/media/
-      Dest: http://127.0.0.1:8088
+      Dest: http://localhost:8088
     - Router: /api/v1/data/
-      Dest: http://127.0.0.1:9218
+      Dest: http://localhost:9218
     - Router: /api/v1/sale/
-      Dest: http://127.0.0.1:9283
+      Dest: http://localhost:9283
     - Router: /oss/
       DeletePrefix: true
       Dest: http://127.0.0.1:9000
