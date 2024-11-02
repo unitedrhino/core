@@ -3,6 +3,7 @@ package areamanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"github.com/samber/lo"
 
@@ -49,7 +50,7 @@ func (l *AreaInfoReadLogic) AreaInfoRead(in *sys.AreaInfoReadReq) (*sys.AreaInfo
 		po  *relationDB.SysAreaInfo
 		err error
 	)
-
+	l.ctx = ctxs.WithDefaultRoot(l.ctx)
 	switch in.AreaID {
 	case def.RootNode, 0:
 		po = &rootNode

@@ -33,6 +33,8 @@ func (l *ProjectInfoReadLogic) ProjectInfoRead(in *sys.ProjectWithID) (*sys.Proj
 	defer func() {
 		ctxs.GetUserCtx(l.ctx).AllProject = false
 	}()
+	l.ctx = ctxs.WithDefaultRoot(l.ctx)
+
 	po, err := l.PiDB.FindOne(l.ctx, in.ProjectID)
 	if err != nil {
 		return nil, err
