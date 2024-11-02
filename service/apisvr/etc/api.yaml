@@ -43,10 +43,10 @@ Proxy:
       Dest: http://localhost:9283
     - Router: /oss/
       DeletePrefix: true
-      Dest: http://127.0.0.1:9000
+      Dest: http://localhost:9000
     - Router: /iot
       DeletePrefix: false
-      Dest: http://127.0.0.1:9119
+      Dest: http://localhost:9119
 
 SysRpc:
   Enable: true
