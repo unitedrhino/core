@@ -22,7 +22,7 @@ service api {
         injectFormdataParam: "file"
     )
     @handler uploadFile
-    post /upload-file() returns (UploadFileResp)
+    post /upload-file(Empty) returns (UploadFileResp)
     @doc "获取天气情况"
     @handler weatherRead
     post /weather/read(WeatherReadReq) returns (WeatherReadResp)

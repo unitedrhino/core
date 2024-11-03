@@ -428,6 +428,9 @@ type DictInfoReadReq struct {
 	Code string `json:"code,optional"` // 编码
 }
 
+type Empty struct {
+}
+
 type IDList struct {
 	IDs []int64 `json:"ids"`
 }
