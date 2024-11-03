@@ -3,7 +3,6 @@ package exportMiddleware
 import (
 	"bytes"
 	"context"
-	"fmt"
 	operLog "gitee.com/unitedrhino/core/service/syssvr/client/log"
 	role "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/unitedrhino/core/service/syssvr/client/tenantmanage"
@@ -15,7 +14,6 @@ import (
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/result"
-	"gitee.com/unitedrhino/share/systems"
 	"gitee.com/unitedrhino/share/tools"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -106,7 +104,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
 			http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
-			systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
+			//systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
 			return
 		}
 
