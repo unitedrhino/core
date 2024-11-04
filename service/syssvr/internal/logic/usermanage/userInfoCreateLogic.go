@@ -75,6 +75,9 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 	}
 	//校验密码强度
 	err := CheckPwd(l.svcCtx, info.Password)
+	if err != nil {
+		return 0, err
+	}
 	if info.Role == 0 {
 		info.Role = in.RoleIDs[0]
 	} else if !utils.SliceIn(info.Role, in.RoleIDs...) {
