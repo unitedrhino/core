@@ -3,6 +3,7 @@ package departmentmanagelogic
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
@@ -124,6 +125,13 @@ func (l *DeptInfoSyncLogic) DeptInfoSyncDingTalkUser(info *relationDB.SysDeptInf
 						uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
 						uc.UserName = uc.Phone
 					}
+					if ding.Extension != "" {
+						var tags = map[string]string{}
+						err = json.Unmarshal([]byte(ding.Extension), &tags)
+						if err == nil {
+							uc.Tags = tags
+						}
+					}
 					err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 						return usermanagelogic.Register(l.ctx, l.svcCtx, uc, tx)
 					})
@@ -148,6 +156,13 @@ func (l *DeptInfoSyncLogic) DeptInfoSyncDingTalkUser(info *relationDB.SysDeptInf
 				po.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
 				if ding.OrgEmail != "" {
 					po.Email = sql.NullString{String: ding.OrgEmail, Valid: true}
+				}
+				if ding.Extension != "" {
+					var tags = map[string]string{}
+					err = json.Unmarshal([]byte(ding.Extension), &tags)
+					if err == nil {
+						po.Tags = tags
+					}
 				}
 				if ding.Mobile != "" {
 					po.Phone = sql.NullString{String: ding.Mobile, Valid: true}
