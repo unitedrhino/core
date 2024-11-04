@@ -186,8 +186,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
-				UserID: userID,
-				Email:  sql.NullString{Valid: true, String: email},
+				UserID:   userID,
+				Email:    sql.NullString{Valid: true, String: email},
+				UserName: sql.NullString{Valid: true, String: email},
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
@@ -204,8 +205,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
-				UserID: userID,
-				Phone:  sql.NullString{Valid: true, String: phone},
+				UserID:   userID,
+				Phone:    sql.NullString{Valid: true, String: phone},
+				UserName: sql.NullString{Valid: true, String: phone},
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)

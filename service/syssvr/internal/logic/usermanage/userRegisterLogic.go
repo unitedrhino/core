@@ -55,7 +55,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
 	if in.Info != nil {
 		ui.NickName = in.Info.NickName
-		if in.Info.UserName != "" {
+		if in.Info.UserName == "" {
 			ui.UserName = utils.AnyToNullString(in.Info.UserName)
 		}
 	}
