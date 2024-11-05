@@ -915,6 +915,8 @@ message AreaInfo {
   google.protobuf.Int64Value deviceCount=17;//绑定该区域的设备统计
   google.protobuf.Int64Value groupCount=19; //绑定该区域的分组统计
   int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
+  string configFile =21;//区域配置文件
+  bool isUpdateConfigFile=22;
 }
 
 

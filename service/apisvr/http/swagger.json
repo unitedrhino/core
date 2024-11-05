@@ -8776,6 +8776,14 @@
           "type": "boolean",
           "format": "boolean"
         },
+        "configFile": {
+          "type": "string",
+          "description": "区域配置文件"
+        },
+        "isUpdateConfigFile": {
+          "type": "boolean",
+          "format": "boolean"
+        },
         "children": {
           "type": "array",
           "items": {

@@ -46,6 +46,13 @@ func TransPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
 		}
 	}
+	if po.ConfigFile != "" {
+		var err error
+		po.ConfigFile, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, po.ConfigFile, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
+		}
+	}
 	return &sys.AreaInfo{
 		TenantCode:      string(po.TenantCode),
 		CreatedTime:     po.CreatedTime.Unix(),

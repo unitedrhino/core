@@ -54,6 +54,7 @@ type SysAreaInfo struct {
 	AreaNamePath    string            `gorm:"column:area_name_path;type:varchar(1024);NOT NULL"`              // 1-2-3-的格式记录顶级区域到当前区域的路径
 	AreaName        string            `gorm:"column:area_name;index;type:varchar(100);NOT NULL"`              // 区域名称
 	AreaImg         string            `gorm:"column:area_img;type:varchar(1024);NOT NULL"`
+	ConfigFile      string            `gorm:"column:config_file;type:varchar(1024);NOT NULL"`
 	Position        stores.Point      `gorm:"column:position;NOT NULL"`                                // 区域定位(默认火星坐标系)
 	Desc            string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                  // 区域备注
 	LowerLevelCount int64             `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计

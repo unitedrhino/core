@@ -133,4 +133,24 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 		}
 
 	}
+	if pb.IsUpdateConfigFile {
+		if po.ConfigFile != "" && !oss.IsCommonFile(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneConfigFile, po.ConfigFile) {
+			err := l.svcCtx.OssClient.PrivateBucket().Delete(l.ctx, po.ConfigFile, common.OptionKv{})
+			if err != nil {
+				l.Errorf("Delete file err path:%v,err:%v", po.ConfigFile, err)
+			}
+		}
+		if pb.ConfigFile != "" {
+			nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneConfigFile, fmt.Sprintf("%d/%s", pb.AreaID, oss.GetFileNameWithPath(pb.ConfigFile)))
+			path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(pb.ConfigFile, nwePath)
+			if err != nil {
+				l.Error(err)
+			} else {
+				po.ConfigFile = path
+			}
+		} else {
+			po.ConfigFile = ""
+		}
+
+	}
 }

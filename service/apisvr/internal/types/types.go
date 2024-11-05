@@ -135,24 +135,26 @@ type AppModuleMultiUpdateReq struct {
 }
 
 type AreaInfo struct {
-	CreatedTime     int64       `json:"createdTime,optional,string"`  //创建时间（只读）
-	ProjectID       int64       `json:"projectID,string,optional"`    //项目id（只读）
-	AreaID          int64       `json:"areaID,string,optional"`       //项目区域id（只读）
-	ParentAreaID    int64       `json:"parentAreaID,string,optional"` //上级项目区域id（只读）
-	AreaName        string      `json:"areaName,optional"`            //项目区域名称（读写）
-	Position        *Point      `json:"position,optional"`            //项目区域定位，默认高德坐标系（读写）
-	Desc            *string     `json:"desc,optional"`                //项目区域备注（读写）
-	LowerLevelCount int64       `json:"lowerLevelCount,optional"`     //下级的数量统计（只读）
-	DeviceCount     int64       `json:"deviceCount,optional"`         //设备数量统计(只读)
-	GroupCount      int64       `json:"groupCount,optional"`          //分组数量统计(只读)
-	UseBy           string      `json:"useBy,optional"`               //用途: commonSpace default
-	IsLeaf          int64       `json:"isLeaf,optional"`              //是否是子节点（只读）
-	IsSysCreated    int64       `json:"isSysCreated,optional"`        //是否是系统创建的,系统创建的只有管理员可以删除
-	AreaIDPath      string      `json:"areaIDPath,optional"`          //项目区域ids（只读）
-	AreaNamePath    string      `json:"areaNamePath,optional"`        //（只读）
-	AreaImg         string      `json:"areaImg,optional"`
-	IsUpdateAreaImg bool        `json:"isUpdateAreaImg,optional"`
-	Children        []*AreaInfo `json:"children,optional"` //下级项目区域列表（只读）
+	CreatedTime        int64       `json:"createdTime,optional,string"`  //创建时间（只读）
+	ProjectID          int64       `json:"projectID,string,optional"`    //项目id（只读）
+	AreaID             int64       `json:"areaID,string,optional"`       //项目区域id（只读）
+	ParentAreaID       int64       `json:"parentAreaID,string,optional"` //上级项目区域id（只读）
+	AreaName           string      `json:"areaName,optional"`            //项目区域名称（读写）
+	Position           *Point      `json:"position,optional"`            //项目区域定位，默认高德坐标系（读写）
+	Desc               *string     `json:"desc,optional"`                //项目区域备注（读写）
+	LowerLevelCount    int64       `json:"lowerLevelCount,optional"`     //下级的数量统计（只读）
+	DeviceCount        int64       `json:"deviceCount,optional"`         //设备数量统计(只读)
+	GroupCount         int64       `json:"groupCount,optional"`          //分组数量统计(只读)
+	UseBy              string      `json:"useBy,optional"`               //用途: commonSpace default
+	IsLeaf             int64       `json:"isLeaf,optional"`              //是否是子节点（只读）
+	IsSysCreated       int64       `json:"isSysCreated,optional"`        //是否是系统创建的,系统创建的只有管理员可以删除
+	AreaIDPath         string      `json:"areaIDPath,optional"`          //项目区域ids（只读）
+	AreaNamePath       string      `json:"areaNamePath,optional"`        //（只读）
+	AreaImg            string      `json:"areaImg,optional"`
+	IsUpdateAreaImg    bool        `json:"isUpdateAreaImg,optional"`
+	ConfigFile         string      `json:"configFile,optional"` //区域配置文件
+	IsUpdateConfigFile bool        `json:"isUpdateConfigFile,optional"`
+	Children           []*AreaInfo `json:"children,optional"` //下级项目区域列表（只读）
 }
 
 type AreaInfoIndexReq struct {

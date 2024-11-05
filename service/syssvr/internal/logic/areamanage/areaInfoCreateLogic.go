@@ -84,6 +84,14 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		}
 		areaPo.AreaImg = path
 	}
+	if in.IsUpdateConfigFile && in.ConfigFile != "" {
+		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneConfigFile, fmt.Sprintf("%d/%s", areaID, oss.GetFileNameWithPath(in.ConfigFile)))
+		path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(in.ConfigFile, nwePath)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		areaPo.ConfigFile = path
+	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 		projPo, err := checkProject(l.ctx, tx, in.ProjectID)

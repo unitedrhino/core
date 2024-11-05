@@ -136,6 +136,8 @@ type (
         AreaNamePath string `json:"areaNamePath,optional"`//（只读）
         AreaImg string  `json:"areaImg,optional"`
         IsUpdateAreaImg bool  `json:"isUpdateAreaImg,optional"`
+        ConfigFile string  `json:"configFile,optional"` //区域配置文件
+        IsUpdateConfigFile bool  `json:"isUpdateConfigFile,optional"`
         Children []*AreaInfo `json:"children,optional"`          //下级项目区域列表（只读）
     }
 

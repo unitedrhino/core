@@ -5699,26 +5699,28 @@ type AreaInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TenantCode      string                  `protobuf:"bytes,20,opt,name=tenantCode,proto3" json:"tenantCode,omitempty"`     //租户号
-	CreatedTime     int64                   `protobuf:"varint,1,opt,name=createdTime,proto3" json:"createdTime,omitempty"`   //创建时间（只读）
-	AreaID          int64                   `protobuf:"varint,2,opt,name=areaID,proto3" json:"areaID,omitempty"`             //项目区域id（只读）
-	ParentAreaID    int64                   `protobuf:"varint,3,opt,name=parentAreaID,proto3" json:"parentAreaID,omitempty"` //上级项目区域id（只读）
-	ProjectID       int64                   `protobuf:"varint,4,opt,name=projectID,proto3" json:"projectID,omitempty"`       //项目id（只读）
-	AreaName        string                  `protobuf:"bytes,5,opt,name=areaName,proto3" json:"areaName,omitempty"`          //项目区域名称（读写）
-	Position        *Point                  `protobuf:"bytes,6,opt,name=Position,proto3" json:"Position,omitempty"`          //项目区域定位，默认百度坐标系（读写）
-	Desc            *wrapperspb.StringValue `protobuf:"bytes,7,opt,name=desc,proto3" json:"desc,omitempty"`                  //项目区域备注（读写）
-	Children        []*AreaInfo             `protobuf:"bytes,8,rep,name=children,proto3" json:"children,omitempty"`          //下级项目区域列表（只读）
-	AreaIDPath      string                  `protobuf:"bytes,9,opt,name=areaIDPath,proto3" json:"areaIDPath,omitempty"`
-	AreaNamePath    string                  `protobuf:"bytes,10,opt,name=areaNamePath,proto3" json:"areaNamePath,omitempty"`
-	LowerLevelCount int64                   `protobuf:"varint,11,opt,name=lowerLevelCount,proto3" json:"lowerLevelCount,omitempty"`        //下级区域的数量
-	ChildrenAreaIDs []int64                 `protobuf:"varint,12,rep,packed,name=childrenAreaIDs,proto3" json:"childrenAreaIDs,omitempty"` //所属的子区域id列表
-	IsLeaf          int64                   `protobuf:"varint,13,opt,name=isLeaf,proto3" json:"isLeaf,omitempty"`                          //是否是叶子节点
-	UseBy           string                  `protobuf:"bytes,14,opt,name=useBy,proto3" json:"useBy,omitempty"`                             //用途
-	AreaImg         string                  `protobuf:"bytes,15,opt,name=areaImg,proto3" json:"areaImg,omitempty"`                         //区域图片
-	IsUpdateAreaImg bool                    `protobuf:"varint,16,opt,name=isUpdateAreaImg,proto3" json:"isUpdateAreaImg,omitempty"`        //是否更新区域的图片
-	DeviceCount     *wrapperspb.Int64Value  `protobuf:"bytes,17,opt,name=deviceCount,proto3" json:"deviceCount,omitempty"`                 //绑定该区域的设备统计
-	GroupCount      *wrapperspb.Int64Value  `protobuf:"bytes,19,opt,name=groupCount,proto3" json:"groupCount,omitempty"`                   //绑定该区域的分组统计
-	IsSysCreated    int64                   `protobuf:"varint,18,opt,name=isSysCreated,proto3" json:"isSysCreated,omitempty"`              //是否是系统创建的,系统创建的只有管理员可以删除
+	TenantCode         string                  `protobuf:"bytes,20,opt,name=tenantCode,proto3" json:"tenantCode,omitempty"`     //租户号
+	CreatedTime        int64                   `protobuf:"varint,1,opt,name=createdTime,proto3" json:"createdTime,omitempty"`   //创建时间（只读）
+	AreaID             int64                   `protobuf:"varint,2,opt,name=areaID,proto3" json:"areaID,omitempty"`             //项目区域id（只读）
+	ParentAreaID       int64                   `protobuf:"varint,3,opt,name=parentAreaID,proto3" json:"parentAreaID,omitempty"` //上级项目区域id（只读）
+	ProjectID          int64                   `protobuf:"varint,4,opt,name=projectID,proto3" json:"projectID,omitempty"`       //项目id（只读）
+	AreaName           string                  `protobuf:"bytes,5,opt,name=areaName,proto3" json:"areaName,omitempty"`          //项目区域名称（读写）
+	Position           *Point                  `protobuf:"bytes,6,opt,name=Position,proto3" json:"Position,omitempty"`          //项目区域定位，默认百度坐标系（读写）
+	Desc               *wrapperspb.StringValue `protobuf:"bytes,7,opt,name=desc,proto3" json:"desc,omitempty"`                  //项目区域备注（读写）
+	Children           []*AreaInfo             `protobuf:"bytes,8,rep,name=children,proto3" json:"children,omitempty"`          //下级项目区域列表（只读）
+	AreaIDPath         string                  `protobuf:"bytes,9,opt,name=areaIDPath,proto3" json:"areaIDPath,omitempty"`
+	AreaNamePath       string                  `protobuf:"bytes,10,opt,name=areaNamePath,proto3" json:"areaNamePath,omitempty"`
+	LowerLevelCount    int64                   `protobuf:"varint,11,opt,name=lowerLevelCount,proto3" json:"lowerLevelCount,omitempty"`        //下级区域的数量
+	ChildrenAreaIDs    []int64                 `protobuf:"varint,12,rep,packed,name=childrenAreaIDs,proto3" json:"childrenAreaIDs,omitempty"` //所属的子区域id列表
+	IsLeaf             int64                   `protobuf:"varint,13,opt,name=isLeaf,proto3" json:"isLeaf,omitempty"`                          //是否是叶子节点
+	UseBy              string                  `protobuf:"bytes,14,opt,name=useBy,proto3" json:"useBy,omitempty"`                             //用途
+	AreaImg            string                  `protobuf:"bytes,15,opt,name=areaImg,proto3" json:"areaImg,omitempty"`                         //区域图片
+	IsUpdateAreaImg    bool                    `protobuf:"varint,16,opt,name=isUpdateAreaImg,proto3" json:"isUpdateAreaImg,omitempty"`        //是否更新区域的图片
+	DeviceCount        *wrapperspb.Int64Value  `protobuf:"bytes,17,opt,name=deviceCount,proto3" json:"deviceCount,omitempty"`                 //绑定该区域的设备统计
+	GroupCount         *wrapperspb.Int64Value  `protobuf:"bytes,19,opt,name=groupCount,proto3" json:"groupCount,omitempty"`                   //绑定该区域的分组统计
+	IsSysCreated       int64                   `protobuf:"varint,18,opt,name=isSysCreated,proto3" json:"isSysCreated,omitempty"`              //是否是系统创建的,系统创建的只有管理员可以删除
+	ConfigFile         string                  `protobuf:"bytes,21,opt,name=configFile,proto3" json:"configFile,omitempty"`                   //区域配置文件
+	IsUpdateConfigFile bool                    `protobuf:"varint,22,opt,name=isUpdateConfigFile,proto3" json:"isUpdateConfigFile,omitempty"`
 }
 
 func (x *AreaInfo) Reset() {
@@ -5891,6 +5893,20 @@ func (x *AreaInfo) GetIsSysCreated() int64 {
 		return x.IsSysCreated
 	}
 	return 0
+}
+
+func (x *AreaInfo) GetConfigFile() string {
+	if x != nil {
+		return x.ConfigFile
+	}
+	return ""
+}
+
+func (x *AreaInfo) GetIsUpdateConfigFile() bool {
+	if x != nil {
+		return x.IsUpdateConfigFile
+	}
+	return false
 }
 
 type AreaWithID struct {
@@ -16466,7 +16482,7 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x28, 0x03, 0x52, 0x05, 0x74, 0x6f, 0x74, 0x61, 0x6c, 0x12, 0x24, 0x0a, 0x04, 0x6c, 0x69, 0x73,
 	0x74, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x50, 0x72,
 	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x6c, 0x69, 0x73, 0x74, 0x22,
-	0xf1, 0x05, 0x0a, 0x08, 0x41, 0x72, 0x65, 0x61, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1e, 0x0a, 0x0a,
+	0xc1, 0x06, 0x0a, 0x08, 0x41, 0x72, 0x65, 0x61, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1e, 0x0a, 0x0a,
 	0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x14, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x0a, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x20, 0x0a, 0x0b,
 	0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
@@ -16513,7 +16529,12 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x6c, 0x75, 0x65, 0x52, 0x0a, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12,
 	0x22, 0x0a, 0x0c, 0x69, 0x73, 0x53, 0x79, 0x73, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x18,
 	0x12, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x69, 0x73, 0x53, 0x79, 0x73, 0x43, 0x72, 0x65, 0x61,
-	0x74, 0x65, 0x64, 0x22, 0x24, 0x0a, 0x0a, 0x41, 0x72, 0x65, 0x61, 0x57, 0x69, 0x74, 0x68, 0x49,
+	0x74, 0x65, 0x64, 0x12, 0x1e, 0x0a, 0x0a, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x46, 0x69, 0x6c,
+	0x65, 0x18, 0x15, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x46,
+	0x69, 0x6c, 0x65, 0x12, 0x2e, 0x0a, 0x12, 0x69, 0x73, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43,
+	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x46, 0x69, 0x6c, 0x65, 0x18, 0x16, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x12, 0x69, 0x73, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x46,
+	0x69, 0x6c, 0x65, 0x22, 0x24, 0x0a, 0x0a, 0x41, 0x72, 0x65, 0x61, 0x57, 0x69, 0x74, 0x68, 0x49,
 	0x44, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x72, 0x65, 0x61, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x03, 0x52, 0x06, 0x61, 0x72, 0x65, 0x61, 0x49, 0x44, 0x22, 0x51, 0x0a, 0x0b, 0x41, 0x72, 0x65,
 	0x61, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x72, 0x65, 0x61,

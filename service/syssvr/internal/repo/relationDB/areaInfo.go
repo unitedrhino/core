@@ -122,6 +122,7 @@ func (g AreaInfoRepo) Delete(ctx context.Context, areaID int64) error {
 	err := g.db.WithContext(ctx).Where("area_id = ?", areaID).Delete(&SysAreaInfo{}).Error
 	return stores.ErrFmt(err)
 }
+
 func (g AreaInfoRepo) FindOne(ctx context.Context, areaID int64, with *AreaInfoWith) (*SysAreaInfo, error) {
 	var result SysAreaInfo
 	db := g.db.WithContext(ctx)
