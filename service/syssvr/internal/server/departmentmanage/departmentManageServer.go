@@ -52,3 +52,33 @@ func (s *DepartmentManageServer) DeptInfoSync(ctx context.Context, in *sys.DeptI
 	l := departmentmanagelogic.NewDeptInfoSyncLogic(ctx, s.svcCtx)
 	return l.DeptInfoSync(in)
 }
+
+func (s *DepartmentManageServer) DeptUserIndex(ctx context.Context, in *sys.DeptUserIndexReq) (*sys.DeptUserIndexResp, error) {
+	l := departmentmanagelogic.NewDeptUserIndexLogic(ctx, s.svcCtx)
+	return l.DeptUserIndex(in)
+}
+
+func (s *DepartmentManageServer) DeptUserMultiDelete(ctx context.Context, in *sys.DeptUserMultiSaveReq) (*sys.Empty, error) {
+	l := departmentmanagelogic.NewDeptUserMultiDeleteLogic(ctx, s.svcCtx)
+	return l.DeptUserMultiDelete(in)
+}
+
+func (s *DepartmentManageServer) DeptUserMultiCreate(ctx context.Context, in *sys.DeptUserMultiSaveReq) (*sys.Empty, error) {
+	l := departmentmanagelogic.NewDeptUserMultiCreateLogic(ctx, s.svcCtx)
+	return l.DeptUserMultiCreate(in)
+}
+
+func (s *DepartmentManageServer) DeptRoleIndex(ctx context.Context, in *sys.DeptRoleIndexReq) (*sys.DeptRoleIndexResp, error) {
+	l := departmentmanagelogic.NewDeptRoleIndexLogic(ctx, s.svcCtx)
+	return l.DeptRoleIndex(in)
+}
+
+func (s *DepartmentManageServer) DeptRoleMultiDelete(ctx context.Context, in *sys.DeptRoleMultiSaveReq) (*sys.Empty, error) {
+	l := departmentmanagelogic.NewDeptRoleMultiDeleteLogic(ctx, s.svcCtx)
+	return l.DeptRoleMultiDelete(in)
+}
+
+func (s *DepartmentManageServer) DeptRoleMultiCreate(ctx context.Context, in *sys.DeptRoleMultiSaveReq) (*sys.Empty, error) {
+	l := departmentmanagelogic.NewDeptRoleMultiCreateLogic(ctx, s.svcCtx)
+	return l.DeptRoleMultiCreate(in)
+}

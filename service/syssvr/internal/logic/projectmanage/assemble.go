@@ -22,6 +22,7 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		}
 	}
 	pb := &sys.ProjectInfo{
+		TenantCode:   string(po.TenantCode),
 		CreatedTime:  po.CreatedTime.Unix(),
 		ProjectID:    int64(po.ProjectID),
 		ProjectName:  po.ProjectName,

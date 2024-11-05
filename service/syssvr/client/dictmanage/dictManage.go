@@ -60,6 +60,12 @@ type (
 	DeptInfoReadReq                       = sys.DeptInfoReadReq
 	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
 	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
+	DeptRoleIndexReq                      = sys.DeptRoleIndexReq
+	DeptRoleIndexResp                     = sys.DeptRoleIndexResp
+	DeptRoleMultiSaveReq                  = sys.DeptRoleMultiSaveReq
+	DeptUserIndexReq                      = sys.DeptUserIndexReq
+	DeptUserIndexResp                     = sys.DeptUserIndexResp
+	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp
@@ -196,6 +202,9 @@ type (
 	UserCodeToUserIDReq                   = sys.UserCodeToUserIDReq
 	UserCodeToUserIDResp                  = sys.UserCodeToUserIDResp
 	UserCreateResp                        = sys.UserCreateResp
+	UserDeptIndexReq                      = sys.UserDeptIndexReq
+	UserDeptIndexResp                     = sys.UserDeptIndexResp
+	UserDeptMultiSaveReq                  = sys.UserDeptMultiSaveReq
 	UserForgetPwdReq                      = sys.UserForgetPwdReq
 	UserInfo                              = sys.UserInfo
 	UserInfoCreateReq                     = sys.UserInfoCreateReq

@@ -839,6 +839,7 @@ message ProjectWithID{
 }
 
 message ProjectInfo {
+  string tenantCode =20;//租户号
   int64 createdTime = 1; //创建时间（只读）
   int64 projectID = 2; //项目id（只读）
   string projectName = 3; //项目名称（读写）
@@ -894,6 +895,7 @@ message ProjectInfoIndexResp {
 
 
 message AreaInfo {
+  string tenantCode =20;//租户号
   int64 createdTime = 1; //创建时间（只读）
   int64 areaID = 2; //项目区域id（只读）
   int64 parentAreaID = 3; //上级项目区域id（只读）

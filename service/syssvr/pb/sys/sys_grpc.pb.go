@@ -34,6 +34,9 @@ const (
 	UserManage_UserRoleIndex_FullMethodName          = "/sys.UserManage/userRoleIndex"
 	UserManage_UserRoleMultiUpdate_FullMethodName    = "/sys.UserManage/userRoleMultiUpdate"
 	UserManage_UserRoleMultiCreate_FullMethodName    = "/sys.UserManage/userRoleMultiCreate"
+	UserManage_UserDeptIndex_FullMethodName          = "/sys.UserManage/userDeptIndex"
+	UserManage_UserDeptMultiDelete_FullMethodName    = "/sys.UserManage/userDeptMultiDelete"
+	UserManage_UserDeptMultiCreate_FullMethodName    = "/sys.UserManage/userDeptMultiCreate"
 	UserManage_UserAreaApplyCreate_FullMethodName    = "/sys.UserManage/userAreaApplyCreate"
 	UserManage_UserMessageMultiIsRead_FullMethodName = "/sys.UserManage/userMessageMultiIsRead"
 	UserManage_UserMessageIndex_FullMethodName       = "/sys.UserManage/userMessageIndex"
@@ -62,6 +65,9 @@ type UserManageClient interface {
 	UserRoleIndex(ctx context.Context, in *UserRoleIndexReq, opts ...grpc.CallOption) (*UserRoleIndexResp, error)
 	UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+	UserDeptIndex(ctx context.Context, in *UserDeptIndexReq, opts ...grpc.CallOption) (*UserDeptIndexResp, error)
+	UserDeptMultiDelete(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	UserDeptMultiCreate(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 	UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
@@ -214,6 +220,33 @@ func (c *userManageClient) UserRoleMultiCreate(ctx context.Context, in *UserRole
 	return out, nil
 }
 
+func (c *userManageClient) UserDeptIndex(ctx context.Context, in *UserDeptIndexReq, opts ...grpc.CallOption) (*UserDeptIndexResp, error) {
+	out := new(UserDeptIndexResp)
+	err := c.cc.Invoke(ctx, UserManage_UserDeptIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserDeptMultiDelete(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserManage_UserDeptMultiDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserDeptMultiCreate(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserManage_UserDeptMultiCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userManageClient) UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, UserManage_UserAreaApplyCreate_FullMethodName, in, out, opts...)
@@ -296,6 +329,9 @@ type UserManageServer interface {
 	UserRoleIndex(context.Context, *UserRoleIndexReq) (*UserRoleIndexResp, error)
 	UserRoleMultiUpdate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error)
 	UserRoleMultiCreate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error)
+	UserDeptIndex(context.Context, *UserDeptIndexReq) (*UserDeptIndexResp, error)
+	UserDeptMultiDelete(context.Context, *UserDeptMultiSaveReq) (*Empty, error)
+	UserDeptMultiCreate(context.Context, *UserDeptMultiSaveReq) (*Empty, error)
 	UserAreaApplyCreate(context.Context, *UserAreaApplyCreateReq) (*Empty, error)
 	UserMessageMultiIsRead(context.Context, *IDList) (*Empty, error)
 	UserMessageIndex(context.Context, *UserMessageIndexReq) (*UserMessageIndexResp, error)
@@ -354,6 +390,15 @@ func (UnimplementedUserManageServer) UserRoleMultiUpdate(context.Context, *UserR
 }
 func (UnimplementedUserManageServer) UserRoleMultiCreate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRoleMultiCreate not implemented")
+}
+func (UnimplementedUserManageServer) UserDeptIndex(context.Context, *UserDeptIndexReq) (*UserDeptIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDeptIndex not implemented")
+}
+func (UnimplementedUserManageServer) UserDeptMultiDelete(context.Context, *UserDeptMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDeptMultiDelete not implemented")
+}
+func (UnimplementedUserManageServer) UserDeptMultiCreate(context.Context, *UserDeptMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDeptMultiCreate not implemented")
 }
 func (UnimplementedUserManageServer) UserAreaApplyCreate(context.Context, *UserAreaApplyCreateReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAreaApplyCreate not implemented")
@@ -659,6 +704,60 @@ func _UserManage_UserRoleMultiCreate_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManage_UserDeptIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDeptIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserDeptIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserDeptIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserDeptIndex(ctx, req.(*UserDeptIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserDeptMultiDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDeptMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserDeptMultiDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserDeptMultiDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserDeptMultiDelete(ctx, req.(*UserDeptMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserDeptMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDeptMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserDeptMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserDeptMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserDeptMultiCreate(ctx, req.(*UserDeptMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserManage_UserAreaApplyCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserAreaApplyCreateReq)
 	if err := dec(in); err != nil {
@@ -851,6 +950,18 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userRoleMultiCreate",
 			Handler:    _UserManage_UserRoleMultiCreate_Handler,
+		},
+		{
+			MethodName: "userDeptIndex",
+			Handler:    _UserManage_UserDeptIndex_Handler,
+		},
+		{
+			MethodName: "userDeptMultiDelete",
+			Handler:    _UserManage_UserDeptMultiDelete_Handler,
+		},
+		{
+			MethodName: "userDeptMultiCreate",
+			Handler:    _UserManage_UserDeptMultiCreate_Handler,
 		},
 		{
 			MethodName: "userAreaApplyCreate",
@@ -4410,12 +4521,18 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	DepartmentManage_DeptInfoRead_FullMethodName   = "/sys.DepartmentManage/deptInfoRead"
-	DepartmentManage_DeptInfoCreate_FullMethodName = "/sys.DepartmentManage/deptInfoCreate"
-	DepartmentManage_DeptInfoIndex_FullMethodName  = "/sys.DepartmentManage/deptInfoIndex"
-	DepartmentManage_DeptInfoUpdate_FullMethodName = "/sys.DepartmentManage/deptInfoUpdate"
-	DepartmentManage_DeptInfoDelete_FullMethodName = "/sys.DepartmentManage/deptInfoDelete"
-	DepartmentManage_DeptInfoSync_FullMethodName   = "/sys.DepartmentManage/deptInfoSync"
+	DepartmentManage_DeptInfoRead_FullMethodName        = "/sys.DepartmentManage/deptInfoRead"
+	DepartmentManage_DeptInfoCreate_FullMethodName      = "/sys.DepartmentManage/deptInfoCreate"
+	DepartmentManage_DeptInfoIndex_FullMethodName       = "/sys.DepartmentManage/deptInfoIndex"
+	DepartmentManage_DeptInfoUpdate_FullMethodName      = "/sys.DepartmentManage/deptInfoUpdate"
+	DepartmentManage_DeptInfoDelete_FullMethodName      = "/sys.DepartmentManage/deptInfoDelete"
+	DepartmentManage_DeptInfoSync_FullMethodName        = "/sys.DepartmentManage/deptInfoSync"
+	DepartmentManage_DeptUserIndex_FullMethodName       = "/sys.DepartmentManage/deptUserIndex"
+	DepartmentManage_DeptUserMultiDelete_FullMethodName = "/sys.DepartmentManage/deptUserMultiDelete"
+	DepartmentManage_DeptUserMultiCreate_FullMethodName = "/sys.DepartmentManage/deptUserMultiCreate"
+	DepartmentManage_DeptRoleIndex_FullMethodName       = "/sys.DepartmentManage/deptRoleIndex"
+	DepartmentManage_DeptRoleMultiDelete_FullMethodName = "/sys.DepartmentManage/deptRoleMultiDelete"
+	DepartmentManage_DeptRoleMultiCreate_FullMethodName = "/sys.DepartmentManage/deptRoleMultiCreate"
 )
 
 // DepartmentManageClient is the client API for DepartmentManage service.
@@ -4428,6 +4545,12 @@ type DepartmentManageClient interface {
 	DeptInfoUpdate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*Empty, error)
 	DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error)
+	DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error)
+	DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error)
+	DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type departmentManageClient struct {
@@ -4492,6 +4615,60 @@ func (c *departmentManageClient) DeptInfoSync(ctx context.Context, in *DeptInfoS
 	return out, nil
 }
 
+func (c *departmentManageClient) DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error) {
+	out := new(DeptUserIndexResp)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptUserIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptUserMultiDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptUserMultiCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error) {
+	out := new(DeptRoleIndexResp)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptRoleIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptRoleMultiDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptRoleMultiCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DepartmentManageServer is the server API for DepartmentManage service.
 // All implementations must embed UnimplementedDepartmentManageServer
 // for forward compatibility
@@ -4502,6 +4679,12 @@ type DepartmentManageServer interface {
 	DeptInfoUpdate(context.Context, *DeptInfo) (*Empty, error)
 	DeptInfoDelete(context.Context, *WithID) (*Empty, error)
 	DeptInfoSync(context.Context, *DeptInfoSyncReq) (*DeptInfoSyncResp, error)
+	DeptUserIndex(context.Context, *DeptUserIndexReq) (*DeptUserIndexResp, error)
+	DeptUserMultiDelete(context.Context, *DeptUserMultiSaveReq) (*Empty, error)
+	DeptUserMultiCreate(context.Context, *DeptUserMultiSaveReq) (*Empty, error)
+	DeptRoleIndex(context.Context, *DeptRoleIndexReq) (*DeptRoleIndexResp, error)
+	DeptRoleMultiDelete(context.Context, *DeptRoleMultiSaveReq) (*Empty, error)
+	DeptRoleMultiCreate(context.Context, *DeptRoleMultiSaveReq) (*Empty, error)
 	mustEmbedUnimplementedDepartmentManageServer()
 }
 
@@ -4526,6 +4709,24 @@ func (UnimplementedDepartmentManageServer) DeptInfoDelete(context.Context, *With
 }
 func (UnimplementedDepartmentManageServer) DeptInfoSync(context.Context, *DeptInfoSyncReq) (*DeptInfoSyncResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoSync not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptUserIndex(context.Context, *DeptUserIndexReq) (*DeptUserIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptUserIndex not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptUserMultiDelete(context.Context, *DeptUserMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptUserMultiDelete not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptUserMultiCreate(context.Context, *DeptUserMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptUserMultiCreate not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptRoleIndex(context.Context, *DeptRoleIndexReq) (*DeptRoleIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptRoleIndex not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptRoleMultiDelete(context.Context, *DeptRoleMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptRoleMultiDelete not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptRoleMultiCreate(context.Context, *DeptRoleMultiSaveReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptRoleMultiCreate not implemented")
 }
 func (UnimplementedDepartmentManageServer) mustEmbedUnimplementedDepartmentManageServer() {}
 
@@ -4648,6 +4849,114 @@ func _DepartmentManage_DeptInfoSync_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DepartmentManage_DeptUserIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptUserIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptUserIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptUserIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptUserIndex(ctx, req.(*DeptUserIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptUserMultiDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptUserMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptUserMultiDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptUserMultiDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptUserMultiDelete(ctx, req.(*DeptUserMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptUserMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptUserMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptUserMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptUserMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptUserMultiCreate(ctx, req.(*DeptUserMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptRoleIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptRoleIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptRoleIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptRoleIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptRoleIndex(ctx, req.(*DeptRoleIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptRoleMultiDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptRoleMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptRoleMultiDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptRoleMultiDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptRoleMultiDelete(ctx, req.(*DeptRoleMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptRoleMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptRoleMultiSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptRoleMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptRoleMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptRoleMultiCreate(ctx, req.(*DeptRoleMultiSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DepartmentManage_ServiceDesc is the grpc.ServiceDesc for DepartmentManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4678,6 +4987,30 @@ var DepartmentManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "deptInfoSync",
 			Handler:    _DepartmentManage_DeptInfoSync_Handler,
+		},
+		{
+			MethodName: "deptUserIndex",
+			Handler:    _DepartmentManage_DeptUserIndex_Handler,
+		},
+		{
+			MethodName: "deptUserMultiDelete",
+			Handler:    _DepartmentManage_DeptUserMultiDelete_Handler,
+		},
+		{
+			MethodName: "deptUserMultiCreate",
+			Handler:    _DepartmentManage_DeptUserMultiCreate_Handler,
+		},
+		{
+			MethodName: "deptRoleIndex",
+			Handler:    _DepartmentManage_DeptRoleIndex_Handler,
+		},
+		{
+			MethodName: "deptRoleMultiDelete",
+			Handler:    _DepartmentManage_DeptRoleMultiDelete_Handler,
+		},
+		{
+			MethodName: "deptRoleMultiCreate",
+			Handler:    _DepartmentManage_DeptRoleMultiCreate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

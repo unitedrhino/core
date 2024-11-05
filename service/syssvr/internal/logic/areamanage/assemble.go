@@ -47,6 +47,7 @@ func TransPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 		}
 	}
 	return &sys.AreaInfo{
+		TenantCode:      string(po.TenantCode),
 		CreatedTime:     po.CreatedTime.Unix(),
 		AreaID:          int64(po.AreaID),
 		ParentAreaID:    parentAreaID,

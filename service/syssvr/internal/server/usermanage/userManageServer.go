@@ -98,6 +98,21 @@ func (s *UserManageServer) UserRoleMultiCreate(ctx context.Context, in *sys.User
 	return l.UserRoleMultiCreate(in)
 }
 
+func (s *UserManageServer) UserDeptIndex(ctx context.Context, in *sys.UserDeptIndexReq) (*sys.UserDeptIndexResp, error) {
+	l := usermanagelogic.NewUserDeptIndexLogic(ctx, s.svcCtx)
+	return l.UserDeptIndex(in)
+}
+
+func (s *UserManageServer) UserDeptMultiDelete(ctx context.Context, in *sys.UserDeptMultiSaveReq) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserDeptMultiDeleteLogic(ctx, s.svcCtx)
+	return l.UserDeptMultiDelete(in)
+}
+
+func (s *UserManageServer) UserDeptMultiCreate(ctx context.Context, in *sys.UserDeptMultiSaveReq) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserDeptMultiCreateLogic(ctx, s.svcCtx)
+	return l.UserDeptMultiCreate(in)
+}
+
 func (s *UserManageServer) UserAreaApplyCreate(ctx context.Context, in *sys.UserAreaApplyCreateReq) (*sys.Empty, error) {
 	l := usermanagelogic.NewUserAreaApplyCreateLogic(ctx, s.svcCtx)
 	return l.UserAreaApplyCreate(in)

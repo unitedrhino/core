@@ -60,6 +60,12 @@ type (
 	DeptInfoReadReq                       = sys.DeptInfoReadReq
 	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
 	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
+	DeptRoleIndexReq                      = sys.DeptRoleIndexReq
+	DeptRoleIndexResp                     = sys.DeptRoleIndexResp
+	DeptRoleMultiSaveReq                  = sys.DeptRoleMultiSaveReq
+	DeptUserIndexReq                      = sys.DeptUserIndexReq
+	DeptUserIndexResp                     = sys.DeptUserIndexResp
+	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp
@@ -196,6 +202,9 @@ type (
 	UserCodeToUserIDReq                   = sys.UserCodeToUserIDReq
 	UserCodeToUserIDResp                  = sys.UserCodeToUserIDResp
 	UserCreateResp                        = sys.UserCreateResp
+	UserDeptIndexReq                      = sys.UserDeptIndexReq
+	UserDeptIndexResp                     = sys.UserDeptIndexResp
+	UserDeptMultiSaveReq                  = sys.UserDeptMultiSaveReq
 	UserForgetPwdReq                      = sys.UserForgetPwdReq
 	UserInfo                              = sys.UserInfo
 	UserInfoCreateReq                     = sys.UserInfoCreateReq
@@ -234,6 +243,12 @@ type (
 		DeptInfoUpdate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*Empty, error)
 		DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 		DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error)
+		DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error)
+		DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error)
+		DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	}
 
 	defaultDepartmentManage struct {
@@ -311,4 +326,58 @@ func (m *defaultDepartmentManage) DeptInfoSync(ctx context.Context, in *DeptInfo
 
 func (d *directDepartmentManage) DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error) {
 	return d.svr.DeptInfoSync(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptUserIndex(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error) {
+	return d.svr.DeptUserIndex(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptUserMultiDelete(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DeptUserMultiDelete(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptUserMultiCreate(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DeptUserMultiCreate(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptRoleIndex(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error) {
+	return d.svr.DeptRoleIndex(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptRoleMultiDelete(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DeptRoleMultiDelete(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptRoleMultiCreate(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DeptRoleMultiCreate(ctx, in)
 }

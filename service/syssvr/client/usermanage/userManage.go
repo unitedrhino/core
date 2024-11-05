@@ -60,6 +60,12 @@ type (
 	DeptInfoReadReq                       = sys.DeptInfoReadReq
 	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
 	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
+	DeptRoleIndexReq                      = sys.DeptRoleIndexReq
+	DeptRoleIndexResp                     = sys.DeptRoleIndexResp
+	DeptRoleMultiSaveReq                  = sys.DeptRoleMultiSaveReq
+	DeptUserIndexReq                      = sys.DeptUserIndexReq
+	DeptUserIndexResp                     = sys.DeptUserIndexResp
+	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp
@@ -196,6 +202,9 @@ type (
 	UserCodeToUserIDReq                   = sys.UserCodeToUserIDReq
 	UserCodeToUserIDResp                  = sys.UserCodeToUserIDResp
 	UserCreateResp                        = sys.UserCreateResp
+	UserDeptIndexReq                      = sys.UserDeptIndexReq
+	UserDeptIndexResp                     = sys.UserDeptIndexResp
+	UserDeptMultiSaveReq                  = sys.UserDeptMultiSaveReq
 	UserForgetPwdReq                      = sys.UserForgetPwdReq
 	UserInfo                              = sys.UserInfo
 	UserInfoCreateReq                     = sys.UserInfoCreateReq
@@ -243,6 +252,9 @@ type (
 		UserRoleIndex(ctx context.Context, in *UserRoleIndexReq, opts ...grpc.CallOption) (*UserRoleIndexResp, error)
 		UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
+		UserDeptIndex(ctx context.Context, in *UserDeptIndexReq, opts ...grpc.CallOption) (*UserDeptIndexResp, error)
+		UserDeptMultiDelete(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		UserDeptMultiCreate(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
@@ -408,6 +420,33 @@ func (m *defaultUserManage) UserRoleMultiCreate(ctx context.Context, in *UserRol
 
 func (d *directUserManage) UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.UserRoleMultiCreate(ctx, in)
+}
+
+func (m *defaultUserManage) UserDeptIndex(ctx context.Context, in *UserDeptIndexReq, opts ...grpc.CallOption) (*UserDeptIndexResp, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserDeptIndex(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserDeptIndex(ctx context.Context, in *UserDeptIndexReq, opts ...grpc.CallOption) (*UserDeptIndexResp, error) {
+	return d.svr.UserDeptIndex(ctx, in)
+}
+
+func (m *defaultUserManage) UserDeptMultiDelete(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserDeptMultiDelete(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserDeptMultiDelete(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.UserDeptMultiDelete(ctx, in)
+}
+
+func (m *defaultUserManage) UserDeptMultiCreate(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserDeptMultiCreate(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserDeptMultiCreate(ctx context.Context, in *UserDeptMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.UserDeptMultiCreate(ctx, in)
 }
 
 func (m *defaultUserManage) UserAreaApplyCreate(ctx context.Context, in *UserAreaApplyCreateReq, opts ...grpc.CallOption) (*Empty, error) {
