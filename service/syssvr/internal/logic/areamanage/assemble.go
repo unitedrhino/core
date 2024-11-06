@@ -72,6 +72,7 @@ func TransPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 		GroupCount:      utils.ToRpcNullInt64(po.GroupCount),
 		UseBy:           po.UseBy,
 		AreaImg:         po.AreaImg,
+		ConfigFile:      po.ConfigFile,
 	}
 }
 func AreaInfosToPb(ctx context.Context, svcCtx *svc.ServiceContext, pos []*relationDB.SysAreaInfo) (ret []*sys.AreaInfo) {

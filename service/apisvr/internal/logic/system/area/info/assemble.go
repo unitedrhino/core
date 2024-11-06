@@ -27,6 +27,7 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 		Desc:            utils.ToNullString(root.Desc),
 		Children:        nil,
 		AreaImg:         root.AreaImg,
+		ConfigFile:      root.ConfigFile,
 		DeviceCount:     root.DeviceCount.GetValue(),
 		GroupCount:      root.GroupCount.GetValue(),
 	}
