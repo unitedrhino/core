@@ -1574,6 +1574,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemuserself.AreaApplyCreateHandler(serverCtx),
 				},
 				{
+					// 绑定账号
+					Method:  http.MethodPost,
+					Path:    "/bind-account",
+					Handler: systemuserself.BindAccountHandler(serverCtx),
+				},
+				{
 					// 注销用户
 					Method:  http.MethodPost,
 					Path:    "/cancel",

@@ -83,7 +83,7 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		case def.CaptchaUseRegister:
 			ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
-		case def.CaptchaUseChangePwd, def.CaptchaUseForgetPwd:
+		case def.CaptchaUseChangePwd, def.CaptchaUseForgetPwd, def.CaptchaUseBindAccount:
 			ConfigCode = def.NotifyCodeSysUserChangePwdCaptcha
 			BakNotifyCode = def.NotifyCodeSysUserLoginCaptcha
 		}

@@ -17,6 +17,7 @@ service UserManage {
   rpc userRegister(UserRegisterReq) returns(UserRegisterResp);
   rpc userChangePwd(UserChangePwdReq) returns(Empty);
   rpc userCodeToUserID(UserCodeToUserIDReq)returns(UserCodeToUserIDResp);//第三方的code获取用户的id
+  rpc userBindAccount(UserBindAccountReq)returns(Empty);
 
   rpc userRoleIndex(UserRoleIndexReq) returns (UserRoleIndexResp); //获取角色API权限列表
   rpc userRoleMultiUpdate(UserRoleMultiUpdateReq) returns(Empty); //添加角色
@@ -1411,6 +1412,12 @@ message UserRegisterResp{
   int64 userID = 1;
 }
 
+message UserBindAccountReq{
+  string type =1;//验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序
+  string account = 2; //手机号,邮箱需要填写
+  string code = 3;//验证码    微信登录填code
+  string codeID = 4;//验证码编号 微信登录填state
+}
 
 message UserRoleIndexReq{
   int64 userID = 1;

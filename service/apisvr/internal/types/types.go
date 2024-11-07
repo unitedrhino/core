@@ -217,9 +217,10 @@ type ConfigResp struct {
 }
 
 type DataArea struct {
-	AreaID         int64 `json:"areaID,string"`           //项目id
-	AuthType       int64 `json:"authType"`                // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
-	IsAuthChildren int64 `json:"isAuthChildren,optional"` //是否同时授权子节点,默认为2
+	AreaID         int64     `json:"areaID,string"`           //项目id
+	AuthType       int64     `json:"authType"`                // 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
+	IsAuthChildren int64     `json:"isAuthChildren,optional"` //是否同时授权子节点,默认为2
+	User           *UserCore `json:"user,optional"`           //获取用户类型返回
 }
 
 type DataAreaDetail struct {
@@ -1385,6 +1386,13 @@ type UserAreaApplyInfo struct {
 	CreatedTime int64     `json:"createdTime"`
 	AreaInfo    *AreaInfo `json:"areaInfo"`
 	UserInfo    *UserInfo `json:"userInfo"`
+}
+
+type UserBindAccountReq struct {
+	Type    string `json:"type,options=phone|email|wxOpen|wxIn|wxMiniP|dingApp"` //验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序
+	Account string `json:"account,optional"`                                     //手机号注册时填写手机号 email填写邮箱
+	Code    string `json:"code,optional"`                                        //验证码    微信登录填code 账号密码登录时填写密码
+	CodeID  string `json:"codeID,optional"`                                      //验证码编号 微信登录填state
 }
 
 type UserCaptchaReq struct {

@@ -7518,6 +7518,45 @@
         ]
       }
     },
+    "/api/v1/system/user/self/bind-account": {
+      "post": {
+        "summary": "绑定账号",
+        "operationId": "postApiV1SystemUserSelfBind-account",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserBindAccountReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/self",
+          "systemUserSelf"
+        ]
+      }
+    },
     "/api/v1/system/user/self/cancel": {
       "post": {
         "summary": "注销用户",
@@ -9020,6 +9059,10 @@
           "type": "integer",
           "format": "int64",
           "description": "是否同时授权子节点,默认为2"
+        },
+        "user": {
+          "$ref": "#/definitions/UserCore",
+          "description": "获取用户类型返回"
         }
       },
       "title": "DataArea",
@@ -13526,6 +13569,39 @@
         "createdTime",
         "areaInfo",
         "userInfo"
+      ]
+    },
+    "UserBindAccountReq": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "phone",
+            "email",
+            "wxOpen",
+            "wxIn",
+            "wxMiniP",
+            "dingApp"
+          ],
+          "description": "验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序"
+        },
+        "account": {
+          "type": "string",
+          "description": "手机号注册时填写手机号 email填写邮箱"
+        },
+        "code": {
+          "type": "string",
+          "description": "验证码    微信登录填code 账号密码登录时填写密码"
+        },
+        "codeID": {
+          "type": "string",
+          "description": "验证码编号 微信登录填state"
+        }
+      },
+      "title": "UserBindAccountReq",
+      "required": [
+        "type"
       ]
     },
     "UserCaptchaReq": {

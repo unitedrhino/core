@@ -31,6 +31,7 @@ const (
 	UserManage_UserRegister_FullMethodName           = "/sys.UserManage/userRegister"
 	UserManage_UserChangePwd_FullMethodName          = "/sys.UserManage/userChangePwd"
 	UserManage_UserCodeToUserID_FullMethodName       = "/sys.UserManage/userCodeToUserID"
+	UserManage_UserBindAccount_FullMethodName        = "/sys.UserManage/userBindAccount"
 	UserManage_UserRoleIndex_FullMethodName          = "/sys.UserManage/userRoleIndex"
 	UserManage_UserRoleMultiUpdate_FullMethodName    = "/sys.UserManage/userRoleMultiUpdate"
 	UserManage_UserRoleMultiCreate_FullMethodName    = "/sys.UserManage/userRoleMultiCreate"
@@ -62,6 +63,7 @@ type UserManageClient interface {
 	UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
 	UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 	UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error)
+	UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error)
 	UserRoleIndex(ctx context.Context, in *UserRoleIndexReq, opts ...grpc.CallOption) (*UserRoleIndexResp, error)
 	UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	UserRoleMultiCreate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
@@ -187,6 +189,15 @@ func (c *userManageClient) UserChangePwd(ctx context.Context, in *UserChangePwdR
 func (c *userManageClient) UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error) {
 	out := new(UserCodeToUserIDResp)
 	err := c.cc.Invoke(ctx, UserManage_UserCodeToUserID_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserManage_UserBindAccount_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -326,6 +337,7 @@ type UserManageServer interface {
 	UserRegister(context.Context, *UserRegisterReq) (*UserRegisterResp, error)
 	UserChangePwd(context.Context, *UserChangePwdReq) (*Empty, error)
 	UserCodeToUserID(context.Context, *UserCodeToUserIDReq) (*UserCodeToUserIDResp, error)
+	UserBindAccount(context.Context, *UserBindAccountReq) (*Empty, error)
 	UserRoleIndex(context.Context, *UserRoleIndexReq) (*UserRoleIndexResp, error)
 	UserRoleMultiUpdate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error)
 	UserRoleMultiCreate(context.Context, *UserRoleMultiUpdateReq) (*Empty, error)
@@ -381,6 +393,9 @@ func (UnimplementedUserManageServer) UserChangePwd(context.Context, *UserChangeP
 }
 func (UnimplementedUserManageServer) UserCodeToUserID(context.Context, *UserCodeToUserIDReq) (*UserCodeToUserIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCodeToUserID not implemented")
+}
+func (UnimplementedUserManageServer) UserBindAccount(context.Context, *UserBindAccountReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserBindAccount not implemented")
 }
 func (UnimplementedUserManageServer) UserRoleIndex(context.Context, *UserRoleIndexReq) (*UserRoleIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRoleIndex not implemented")
@@ -646,6 +661,24 @@ func _UserManage_UserCodeToUserID_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserManageServer).UserCodeToUserID(ctx, req.(*UserCodeToUserIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserBindAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserBindAccountReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserBindAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserBindAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserBindAccount(ctx, req.(*UserBindAccountReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -938,6 +971,10 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userCodeToUserID",
 			Handler:    _UserManage_UserCodeToUserID_Handler,
+		},
+		{
+			MethodName: "userBindAccount",
+			Handler:    _UserManage_UserBindAccount_Handler,
 		},
 		{
 			MethodName: "userRoleIndex",

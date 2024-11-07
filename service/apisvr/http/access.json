@@ -2740,6 +2740,16 @@
         {
           "accessCode": "systemUserSelf",
           "method": "POST",
+          "route": "/api/v1/system/user/self/bind-account",
+          "name": "绑定账号",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemUserSelf",
+          "method": "POST",
           "route": "/api/v1/system/user/self/cancel",
           "name": "注销用户",
           "isNeedAuth": 2,

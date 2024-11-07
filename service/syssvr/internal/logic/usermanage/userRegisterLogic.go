@@ -62,10 +62,10 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 
 	switch in.RegType {
 	case users.RegEmail:
-		//email := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, def.CaptchaUseRegister, in.CodeID, in.Code)
-		//if email == "" || email != in.Account {
-		//	return nil, errors.Captcha
-		//}
+		email := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, def.CaptchaUseRegister, in.CodeID, in.Code)
+		if email == "" || email != in.Account {
+			return nil, errors.Captcha
+		}
 		ui.Email = utils.AnyToNullString(in.Account)
 		ui.UserName = ui.Email
 	case users.RegPhone:

@@ -83,6 +83,11 @@ func (s *UserManageServer) UserCodeToUserID(ctx context.Context, in *sys.UserCod
 	return l.UserCodeToUserID(in)
 }
 
+func (s *UserManageServer) UserBindAccount(ctx context.Context, in *sys.UserBindAccountReq) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserBindAccountLogic(ctx, s.svcCtx)
+	return l.UserBindAccount(in)
+}
+
 func (s *UserManageServer) UserRoleIndex(ctx context.Context, in *sys.UserRoleIndexReq) (*sys.UserRoleIndexResp, error) {
 	l := usermanagelogic.NewUserRoleIndexLogic(ctx, s.svcCtx)
 	return l.UserRoleIndex(in)

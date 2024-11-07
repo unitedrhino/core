@@ -194,6 +194,7 @@ type (
 	UserAreaApplyIndexReq                 = sys.UserAreaApplyIndexReq
 	UserAreaApplyIndexResp                = sys.UserAreaApplyIndexResp
 	UserAreaApplyInfo                     = sys.UserAreaApplyInfo
+	UserBindAccountReq                    = sys.UserBindAccountReq
 	UserCaptchaReq                        = sys.UserCaptchaReq
 	UserCaptchaResp                       = sys.UserCaptchaResp
 	UserChangePwdReq                      = sys.UserChangePwdReq
