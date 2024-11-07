@@ -46,7 +46,7 @@ func (l *IndexLogic) Index(req *types.DataAreaIndexReq) (resp *types.DataAreaInd
 	for _, v := range areaInfos.List {
 		areaMap[v.AreaID] = v
 	}
-	list := ToDataAreaDetail(dmResp.List, areaMap)
+	list := ToDataAreaDetail(l.ctx, l.svcCtx, dmResp.List, areaMap)
 	return &types.DataAreaIndexResp{
 		Total: dmResp.Total,
 		List:  list,

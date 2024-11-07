@@ -1524,6 +1524,8 @@ message DataArea {
   int64 authType =2;// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
   int64 isAuthChildren =3;//是否同时授权子节点,默认为2
   int64 areaIDPath = 4;
+  int64 targetID = 5; //用户ID或Roleid（必填，雪花ID）
+  string targetType = 6;
 }
 
 message DataAreaMultiUpdateReq {

@@ -13,6 +13,8 @@ func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {
 		AreaID:         int64(po.AreaID),
 		AuthType:       po.AuthType,
 		IsAuthChildren: po.IsAuthChildren,
+		TargetID:       po.TargetID,
+		TargetType:     po.TargetType,
 	}
 }
 
