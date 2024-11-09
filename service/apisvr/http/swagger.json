@@ -12868,11 +12868,7 @@
           "type": "string"
         }
       },
-      "title": "ThirdAppConfig",
-      "required": [
-        "appID",
-        "appSecret"
-      ]
+      "title": "ThirdAppConfig"
     },
     "ThirdEmailConfig": {
       "type": "object",

@@ -73,9 +73,9 @@ type(
         IsSSL    int64 `json:"isSsl"`// 是否SSL   是否开启SSL
     }
     ThirdAppConfig {
-        AppID string `json:"appID"`
+        AppID string `json:"appID,optional"`
         AppKey string `json:"appKey,optional"`//微信小程序无需填写
-        AppSecret string `json:"appSecret"`
+        AppSecret string `json:"appSecret,optional"`
     }
     ThirdApp{
         Version  string  `json:"version,optional"`// 应用版本

@@ -7,7 +7,7 @@ require (
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
-	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079
+	github.com/dop251/goja v0.0.0-20231024180952-594410467bc6
 	github.com/gogf/gf/v2 v2.7.2
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/golang/protobuf v1.5.4

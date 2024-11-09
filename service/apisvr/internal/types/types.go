@@ -1199,9 +1199,9 @@ type ThirdApp struct {
 }
 
 type ThirdAppConfig struct {
-	AppID     string `json:"appID"`
+	AppID     string `json:"appID,optional"`
 	AppKey    string `json:"appKey,optional"` //微信小程序无需填写
-	AppSecret string `json:"appSecret"`
+	AppSecret string `json:"appSecret,optional"`
 }
 
 type ThirdEmailConfig struct {
