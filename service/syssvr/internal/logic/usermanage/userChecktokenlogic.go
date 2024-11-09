@@ -157,7 +157,7 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		Account:      ui.Account,
 	}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, ui.RoleCodes...) || ret.IsSuperAdmin
-	projectAuth, err := cache.GetProjectAuth(l.ctx, ret.UserID, ret.RoleIDs)
+	projectAuth, err := cache.GetProjectAuth(ctxs.BindTenantCode(l.ctx, ui.TenantCode, 0), ret.UserID, ret.RoleIDs)
 	if err != nil {
 		return nil, err
 	}
