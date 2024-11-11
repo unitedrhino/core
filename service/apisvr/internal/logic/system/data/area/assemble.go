@@ -23,7 +23,7 @@ func ToDataAreaDetail(ctx context.Context, svcCtx *svc.ServiceContext, in []*sys
 			}
 			ui = utils.Copy[types.UserCore](u)
 		}
-		ret = append(ret, &types.DataAreaDetail{User: ui, TargetType: v.TargetType, TargetID: v.TargetID, AuthType: v.AuthType, IsAuthChildren: v.IsAuthChildren, AreaInfo: info.ToAreaInfoTypes(areaMap[v.AreaID])})
+		ret = append(ret, &types.DataAreaDetail{User: ui, TargetType: v.TargetType, UpdatedTime: v.UpdatedTime, TargetID: v.TargetID, AuthType: v.AuthType, IsAuthChildren: v.IsAuthChildren, AreaInfo: info.ToAreaInfoTypes(areaMap[v.AreaID])})
 	}
 	return
 }

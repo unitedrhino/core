@@ -51,7 +51,7 @@ type (
 	DataProjectDeleteReq                  = sys.DataProjectDeleteReq
 	DataProjectIndexReq                   = sys.DataProjectIndexReq
 	DataProjectIndexResp                  = sys.DataProjectIndexResp
-	DataProjectMultiUpdateReq             = sys.DataProjectMultiUpdateReq
+	DataProjectMultiSaveReq               = sys.DataProjectMultiSaveReq
 	DataProjectSaveReq                    = sys.DataProjectSaveReq
 	DateRange                             = sys.DateRange
 	DeptInfo                              = sys.DeptInfo
@@ -238,8 +238,8 @@ type (
 	WithIDCode                            = sys.WithIDCode
 
 	DataManage interface {
-		DataProjectMultiUpdate(ctx context.Context, in *DataProjectMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		DataProjectMultiCreate(ctx context.Context, in *DataProjectMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectIndex(ctx context.Context, in *DataProjectIndexReq, opts ...grpc.CallOption) (*DataProjectIndexResp, error)
 		DataAreaMultiUpdate(ctx context.Context, in *DataAreaMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
@@ -277,15 +277,6 @@ func NewDirectDataManage(svcCtx *svc.ServiceContext, svr sys.DataManageServer) D
 	}
 }
 
-func (m *defaultDataManage) DataProjectMultiUpdate(ctx context.Context, in *DataProjectMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
-	client := sys.NewDataManageClient(m.cli.Conn())
-	return client.DataProjectMultiUpdate(ctx, in, opts...)
-}
-
-func (d *directDataManage) DataProjectMultiUpdate(ctx context.Context, in *DataProjectMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error) {
-	return d.svr.DataProjectMultiUpdate(ctx, in)
-}
-
 func (m *defaultDataManage) DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error) {
 	client := sys.NewDataManageClient(m.cli.Conn())
 	return client.DataProjectCreate(ctx, in, opts...)
@@ -293,6 +284,15 @@ func (m *defaultDataManage) DataProjectCreate(ctx context.Context, in *DataProje
 
 func (d *directDataManage) DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.DataProjectCreate(ctx, in)
+}
+
+func (m *defaultDataManage) DataProjectMultiCreate(ctx context.Context, in *DataProjectMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataProjectMultiCreate(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataProjectMultiCreate(ctx context.Context, in *DataProjectMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DataProjectMultiCreate(ctx, in)
 }
 
 func (m *defaultDataManage) DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error) {

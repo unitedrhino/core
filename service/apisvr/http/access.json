@@ -391,6 +391,16 @@
           "accessCode": "systemDataManageAdd",
           "method": "POST",
           "route": "/api/v1/system/data/project/create",
+          "name": "创建授权项目权限",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemDataManageAdd",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/multi-create",
           "name": "批量创建授权项目权限",
           "isNeedAuth": 2,
           "businessType": "add",
@@ -471,7 +481,7 @@
       "authType": "all"
     },
     "systemDataManageModify": {
-      "name": "修改项目权限",
+      "name": "修改区域权限",
       "code": "systemDataManageModify",
       "group": "数据权限",
       "isNeedAuth": 2,
@@ -482,16 +492,6 @@
           "method": "POST",
           "route": "/api/v1/system/data/area/multi-update",
           "name": "更新授权区域权限",
-          "isNeedAuth": 2,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "all"
-        },
-        {
-          "accessCode": "systemDataManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/data/project/multi-update",
-          "name": "批量更新授权项目权限",
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",

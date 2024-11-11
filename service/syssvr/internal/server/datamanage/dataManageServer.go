@@ -23,14 +23,14 @@ func NewDataManageServer(svcCtx *svc.ServiceContext) *DataManageServer {
 	}
 }
 
-func (s *DataManageServer) DataProjectMultiUpdate(ctx context.Context, in *sys.DataProjectMultiUpdateReq) (*sys.Empty, error) {
-	l := datamanagelogic.NewDataProjectMultiUpdateLogic(ctx, s.svcCtx)
-	return l.DataProjectMultiUpdate(in)
-}
-
 func (s *DataManageServer) DataProjectCreate(ctx context.Context, in *sys.DataProjectSaveReq) (*sys.Empty, error) {
 	l := datamanagelogic.NewDataProjectCreateLogic(ctx, s.svcCtx)
 	return l.DataProjectCreate(in)
+}
+
+func (s *DataManageServer) DataProjectMultiCreate(ctx context.Context, in *sys.DataProjectMultiSaveReq) (*sys.Empty, error) {
+	l := datamanagelogic.NewDataProjectMultiCreateLogic(ctx, s.svcCtx)
+	return l.DataProjectMultiCreate(in)
 }
 
 func (s *DataManageServer) DataProjectDelete(ctx context.Context, in *sys.DataProjectDeleteReq) (*sys.Empty, error) {

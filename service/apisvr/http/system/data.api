@@ -17,15 +17,15 @@ info(
 )
 
 service api {
-    @doc "批量更新授权项目权限"
-    @handler projectMultiUpdate
-    post /multi-update (DataProjectMultiUpdateReq) returns ()
-
     @doc "删除授权项目权限"
     @handler delete
     post /delete (DataProjectDeleteReq) returns ()
 
     @doc "批量创建授权项目权限"
+    @handler projectMultiCreate
+    post /multi-create (DataProjectMultiSaveReq) returns ()
+
+    @doc "创建授权项目权限"
     @handler create
     post /create (DataProjectSaveReq) returns ()
 
@@ -138,6 +138,7 @@ type (
         ProjectID   int64 `json:"projectID,string"`     //权限数据ID
         AuthType  int64 `json:"authType"`// 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
         TargetID   int64 `json:"targetID,string,optional"`    //用户ID
+        UpdatedTime int64 `json:"updatedTime,optional"` //更新时间
         User *UserCore `json:"user,optional"`//获取用户类型返回
     }
 
@@ -153,10 +154,11 @@ type (
         AuthType  int64 `json:"authType"`// 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
     }
 
-    DataProjectMultiUpdateReq  {
-        TargetID   int64 `json:"targetID,string"`    //用户ID
+    DataProjectMultiSaveReq{
+        TargetIDs   []int64 `json:"targetID,string"`    //用户ID
         TargetType string `json:"targetType"`
-        Projects []*DataProject `json:"projects"` //权限数据IDs（必填）
+        ProjectID   int64 `json:"projectID,string"`     //权限数据ID
+        AuthType  int64 `json:"authType"`// 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
     }
 
     DataProjectIndexReq  {
@@ -201,6 +203,7 @@ type (
         IsAuthChildren int64 `json:"isAuthChildren,optional"`//是否同时授权子节点,默认为2
         TargetID   int64 `json:"targetID,string,optional"`    //用户ID
         TargetType string `json:"targetType,optional"`
+        UpdatedTime int64 `json:"updatedTime,optional"` //更新时间
         User *UserCore `json:"user,optional"`//获取用户类型返回
     }
     DataAreaIndexResp  {

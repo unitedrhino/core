@@ -21,7 +21,7 @@ func ToProjectApis(ctx context.Context, svcCtx *svc.ServiceContext, in []*sys.Da
 			}
 			ui = utils.Copy[types.UserCore](u)
 		}
-		ret = append(ret, &types.DataProject{ProjectID: v.ProjectID, AuthType: v.AuthType, TargetID: v.TargetID, User: ui})
+		ret = append(ret, &types.DataProject{ProjectID: v.ProjectID, AuthType: v.AuthType, TargetID: v.TargetID, UpdatedTime: v.UpdatedTime, User: ui})
 	}
 	return
 }

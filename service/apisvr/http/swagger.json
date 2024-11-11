@@ -1615,7 +1615,7 @@
     },
     "/api/v1/system/data/project/create": {
       "post": {
-        "summary": "批量创建授权项目权限",
+        "summary": "创建授权项目权限",
         "operationId": "postApiV1SystemDataProjectCreate",
         "responses": {
           "200": {
@@ -1733,10 +1733,10 @@
         ]
       }
     },
-    "/api/v1/system/data/project/multi-update": {
+    "/api/v1/system/data/project/multi-create": {
       "post": {
-        "summary": "批量更新授权项目权限",
-        "operationId": "postApiV1SystemDataProjectMulti-update",
+        "summary": "批量创建授权项目权限",
+        "operationId": "postApiV1SystemDataProjectMulti-create",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1762,7 +1762,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/DataProjectMultiUpdateReq"
+              "$ref": "#/definitions/DataProjectMultiSaveReq"
             }
           }
         ],
@@ -9087,6 +9087,11 @@
         "targetType": {
           "type": "string"
         },
+        "updatedTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "更新时间"
+        },
         "user": {
           "$ref": "#/definitions/UserCore",
           "description": "获取用户类型返回"
@@ -9298,6 +9303,11 @@
           "type": "string",
           "description": "用户ID"
         },
+        "updatedTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "更新时间"
+        },
         "user": {
           "$ref": "#/definitions/UserCore",
           "description": "获取用户类型返回"
@@ -9376,29 +9386,35 @@
         "list"
       ]
     },
-    "DataProjectMultiUpdateReq": {
+    "DataProjectMultiSaveReq": {
       "type": "object",
       "properties": {
         "targetID": {
-          "type": "string",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
           "description": "用户ID"
         },
         "targetType": {
           "type": "string"
         },
-        "projects": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DataProject"
-          },
-          "description": "权限数据IDs（必填）"
+        "projectID": {
+          "type": "string",
+          "description": "权限数据ID"
+        },
+        "authType": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改"
         }
       },
-      "title": "DataProjectMultiUpdateReq",
+      "title": "DataProjectMultiSaveReq",
       "required": [
         "targetID",
         "targetType",
-        "projects"
+        "projectID",
+        "authType"
       ]
     },
     "DataProjectSaveReq": {

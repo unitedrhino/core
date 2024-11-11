@@ -38,8 +38,8 @@ service UserManage {
 }
 
 service DataManage {
-  rpc dataProjectMultiUpdate (DataProjectMultiUpdateReq) returns (Empty);   //授权用户数据权限
   rpc dataProjectCreate (DataProjectSaveReq) returns (Empty);   //授权用户数据权限
+  rpc dataProjectMultiCreate (DataProjectMultiSaveReq) returns (Empty);   //授权用户数据权限
   rpc dataProjectDelete (DataProjectDeleteReq) returns (Empty);   //授权用户数据权限
   rpc dataProjectIndex (DataProjectIndexReq) returns (DataProjectIndexResp); //获取用户数据权限列表
 
@@ -1485,6 +1485,7 @@ message DataProject {
     int64 projectID = 1; //权限数据ID
     int64 authType =2;// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
     int64 targetID = 3; //用户ID（必填，雪花ID）
+    int64 updatedTime=4;//更新时间
 }
 
 message DataProjectDeleteReq{
@@ -1499,11 +1500,15 @@ message DataProjectSaveReq{
   int64 projectID = 3; //权限数据ID
   int64 authType =4;// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
 }
-message DataProjectMultiUpdateReq {
-    int64 targetID = 1; //用户ID（必填，雪花ID）
-    string targetType = 2;
-    repeated DataProject projects = 3; //权限数据IDs（必填）
+
+message DataProjectMultiSaveReq{
+  repeated int64 targetIDs = 1; //用户ID（必填，雪花ID）
+  string targetType = 2;
+  int64 projectID = 3; //权限数据ID
+  int64 authType =4;// 1:读权限,只能读,不能写 4:管理权限,可以修改别人的权限
 }
+
+
 
 message DataProjectIndexReq {
     PageInfo page = 1 ; //进行数据分页（不传默认2000相当于全部）
@@ -1526,6 +1531,7 @@ message DataArea {
   int64 areaIDPath = 4;
   int64 targetID = 5; //用户ID或Roleid（必填，雪花ID）
   string targetType = 6;
+  int64 updatedTime=7;//更新时间
 }
 
 message DataAreaMultiUpdateReq {

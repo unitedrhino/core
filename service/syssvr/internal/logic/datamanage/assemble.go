@@ -15,14 +15,16 @@ func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {
 		IsAuthChildren: po.IsAuthChildren,
 		TargetID:       po.TargetID,
 		TargetType:     po.TargetType,
+		UpdatedTime:    po.UpdatedTime.Unix(),
 	}
 }
 
 func transProjectPoToPb(po *relationDB.SysDataProject) *sys.DataProject {
 	return &sys.DataProject{
-		ProjectID: int64(po.ProjectID),
-		AuthType:  po.AuthType,
-		TargetID:  po.TargetID,
+		ProjectID:   int64(po.ProjectID),
+		AuthType:    po.AuthType,
+		TargetID:    po.TargetID,
+		UpdatedTime: po.UpdatedTime.Unix(),
 	}
 }
 

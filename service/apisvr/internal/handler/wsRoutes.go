@@ -430,7 +430,7 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
-					// 批量创建授权项目权限
+					// 创建授权项目权限
 					Method:  http.MethodPost,
 					Path:    "/create",
 					Handler: systemdataproject.CreateHandler(serverCtx),
@@ -448,10 +448,10 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemdataproject.ProjectIndexHandler(serverCtx),
 				},
 				{
-					// 批量更新授权项目权限
+					// 批量创建授权项目权限
 					Method:  http.MethodPost,
-					Path:    "/multi-update",
-					Handler: systemdataproject.ProjectMultiUpdateHandler(serverCtx),
+					Path:    "/multi-create",
+					Handler: systemdataproject.ProjectMultiCreateHandler(serverCtx),
 				},
 			}...,
 		),
