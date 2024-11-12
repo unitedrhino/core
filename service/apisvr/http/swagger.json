@@ -13645,7 +13645,8 @@
             "login",
             "register",
             "changePwd",
-            "forgetPwd"
+            "forgetPwd",
+            "bindAccount"
           ],
           "description": "用途"
         },

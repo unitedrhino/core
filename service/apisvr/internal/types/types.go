@@ -1401,11 +1401,11 @@ type UserBindAccountReq struct {
 }
 
 type UserCaptchaReq struct {
-	Account string `json:"account,optional"`                               //短信验证时填写手机号,邮箱验证时填写邮箱
-	Type    string `json:"type,options=phone|image|email"`                 //验证方式:短信验证,图片验证码
-	Use     string `json:"use,options=login|register|changePwd|forgetPwd"` //用途
-	Code    string `json:"code,optional"`                                  //验证码    微信邮箱验证登录填code
-	CodeID  string `json:"codeID,optional"`                                //验证码编号 微信邮箱验证登录填state
+	Account string `json:"account,optional"`                                           //短信验证时填写手机号,邮箱验证时填写邮箱
+	Type    string `json:"type,options=phone|image|email"`                             //验证方式:短信验证,图片验证码
+	Use     string `json:"use,options=login|register|changePwd|forgetPwd|bindAccount"` //用途
+	Code    string `json:"code,optional"`                                              //验证码    微信邮箱验证登录填code
+	CodeID  string `json:"codeID,optional"`                                            //验证码编号 微信邮箱验证登录填state
 }
 
 type UserCaptchaResp struct {

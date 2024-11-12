@@ -117,7 +117,9 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	if account == "" {
 		account = cast.ToString(ui.UserID)
 	}
-	ret := sys.UserCheckTokenResp{UserID: claim.UserID, IsAllData: ui.IsAllData, RoleIDs: rolses, RoleCodes: roleCodes, IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, roleCodes...), IsAdmin: isAdmin == def.True, Account: account, TenantCode: claim.TenantCode}
+	ret := sys.UserCheckTokenResp{UserID: claim.UserID, IsAllData: ui.IsAllData, RoleIDs: rolses, RoleCodes: roleCodes,
+		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, roleCodes...) || (isAdmin == def.True),
+		Account:      account, TenantCode: claim.TenantCode}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, roleCodes...) || ret.IsSuperAdmin
 	projectAuth, err := cache.GetProjectAuth(l.ctx, ret.UserID, ret.RoleIDs)
 	if err != nil {
