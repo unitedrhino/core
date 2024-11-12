@@ -4,7 +4,6 @@ import (
 	"context"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -35,9 +34,13 @@ func (l *ReadLogic) Read(req *types.ProjectWithID) (resp *types.ProjectInfo, err
 		l.Errorf("%s rpc.ProjectManage req=%v err=%+v", utils.FuncName(), req, er)
 		return nil, er
 	}
-	user, err := l.svcCtx.UserRpc.UserInfoRead(ctxs.WithRoot(l.ctx), &sys.UserInfoReadReq{
-		UserID: dmResp.AdminUserID,
-	})
+	var user *sys.UserInfo
+	if req.WithAdminUser {
+		user, err = l.svcCtx.UserCache.GetData(l.ctx, dmResp.AdminUserID)
+		if err != nil {
+			l.Error(err)
+		}
+	}
 
 	return system.ProjectInfoToApi(dmResp, user), nil
 }

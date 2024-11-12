@@ -751,21 +751,22 @@ type ProjectInfo struct {
 	ProjectImg         string      `json:"projectImg,optional"`
 	IsSysCreated       int64       `json:"isSysCreated,optional"` //是否是系统创建的,系统创建的只有管理员可以删除
 	IsUpdateProjectImg bool        `json:"isUpdateProjectImg,optional"`
-	Desc               *string     `json:"desc,optional"`                    //项目备注（读写）
-	AreaCount          int64       `json:"areaCount,optional"`               //项目下的区域统计(只读)
-	DeviceCount        int64       `json:"deviceCount,optional"`             //项目下的设备统计(只读)
-	Ppsm               int64       `json:"ppsm,optional,omitempty"`          //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
-	Area               *float32    `json:"area,optional,omitempty"`          //建筑面积(单位平米)
-	AdminUserInfo      *UserCore   `json:"adminUserInfo,optional,omitempty"` //管理员信息
+	Desc               *string     `json:"desc,optional"`                //项目备注（读写）
+	AreaCount          int64       `json:"areaCount,optional"`           //项目下的区域统计(只读)
+	DeviceCount        int64       `json:"deviceCount,optional"`         //项目下的设备统计(只读)
+	Ppsm               int64       `json:"ppsm,optional,omitempty"`      //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
+	Area               *float32    `json:"area,optional,omitempty"`      //建筑面积(单位平米)
+	AdminUser          *UserCore   `json:"adminUser,optional,omitempty"` //管理员信息
 	Areas              []*AreaInfo `json:"areas,optional,omitempty"`
 }
 
 type ProjectInfoIndexReq struct {
-	Page         *PageInfo `json:"page,optional"`         //进行数据分页（不传默认2000相当于全部）
-	ProjectName  string    `json:"projectName,optional"`  //过滤项目名称
-	IsGetAll     bool      `json:"isGetAll,optional"`     //是否获取所有(管理员获取所有)
-	ProjectIDs   []int64   `json:"projectIDs,optional"`   //过滤项目id列表
-	WithTopAreas bool      `json:"withTopAreas,optional"` //同时返回顶层的区域列表
+	Page          *PageInfo `json:"page,optional"`          //进行数据分页（不传默认2000相当于全部）
+	ProjectName   string    `json:"projectName,optional"`   //过滤项目名称
+	IsGetAll      bool      `json:"isGetAll,optional"`      //是否获取所有(管理员获取所有)
+	ProjectIDs    []int64   `json:"projectIDs,optional"`    //过滤项目id列表
+	WithTopAreas  bool      `json:"withTopAreas,optional"`  //同时返回顶层的区域列表
+	WithAdminUser bool      `json:"withAdminUser,optional"` //同时获取管理员核心信息
 }
 
 type ProjectInfoIndexResp struct {
@@ -787,8 +788,8 @@ type ProjectProfileIndexResp struct {
 }
 
 type ProjectWithID struct {
-	ProjectID        int64 `json:"projectID,string"`          //项目id 只读
-	WithAdminProject bool  `json:"withAdminProject,optional"` //同时获取管理员核心信息
+	ProjectID     int64 `json:"projectID,string"`       //项目id 只读
+	WithAdminUser bool  `json:"withAdminUser,optional"` //同时获取管理员核心信息
 }
 
 type QRCodeReadReq struct {

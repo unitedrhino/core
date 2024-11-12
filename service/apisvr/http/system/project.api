@@ -88,7 +88,7 @@ type (
 
     ProjectWithID  {
         ProjectID int64 `json:"projectID,string"` //项目id 只读
-        WithAdminProject bool `json:"withAdminProject,optional"` //同时获取管理员核心信息
+        WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
     }
 
     ProjectInfoIndexReq  {
@@ -97,6 +97,7 @@ type (
         IsGetAll bool   `json:"isGetAll,optional"`//是否获取所有(管理员获取所有)
         ProjectIDs []int64 `json:"projectIDs,optional"`  //过滤项目id列表
         WithTopAreas bool `json:"withTopAreas,optional"` //同时返回顶层的区域列表
+        WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
     }
 
     ProjectInfoIndexResp  {

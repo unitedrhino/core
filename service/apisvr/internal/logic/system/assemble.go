@@ -10,21 +10,21 @@ import (
 
 func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo {
 	return &types.ProjectInfo{
-		CreatedTime:   pb.CreatedTime,
-		ProjectID:     pb.ProjectID,
-		ProjectName:   pb.ProjectName,
-		AdminUserID:   pb.AdminUserID,
-		ProjectImg:    pb.ProjectImg,
-		Desc:          utils.ToNullString(pb.Desc),
-		Position:      logic.ToSysPointApi(pb.Position),
-		Address:       utils.ToNullString(pb.Address),
-		IsSysCreated:  pb.IsSysCreated,
-		AreaCount:     pb.AreaCount,
-		AdminUserInfo: utils.Copy[types.UserCore](ui),
-		Area:          utils.ToNullFloat32(pb.Area),
-		Ppsm:          pb.Ppsm,
-		Areas:         info.ToAreaInfosTypes(pb.Areas),
-		DeviceCount:   utils.ToInt64(pb.DeviceCount),
+		CreatedTime:  pb.CreatedTime,
+		ProjectID:    pb.ProjectID,
+		ProjectName:  pb.ProjectName,
+		AdminUserID:  pb.AdminUserID,
+		ProjectImg:   pb.ProjectImg,
+		Desc:         utils.ToNullString(pb.Desc),
+		Position:     logic.ToSysPointApi(pb.Position),
+		Address:      utils.ToNullString(pb.Address),
+		IsSysCreated: pb.IsSysCreated,
+		AreaCount:    pb.AreaCount,
+		AdminUser:    utils.Copy[types.UserCore](ui),
+		Area:         utils.ToNullFloat32(pb.Area),
+		Ppsm:         pb.Ppsm,
+		Areas:        info.ToAreaInfosTypes(pb.Areas),
+		DeviceCount:  utils.ToInt64(pb.DeviceCount),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {

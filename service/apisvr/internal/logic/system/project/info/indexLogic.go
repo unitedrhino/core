@@ -45,7 +45,14 @@ func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectI
 
 	list := make([]*types.ProjectInfo, 0, len(dmResp.List))
 	for _, pb := range dmResp.List {
-		list = append(list, system.ProjectInfoToApi(pb, nil))
+		var user *sys.UserInfo
+		if req.WithAdminUser {
+			user, err = l.svcCtx.UserCache.GetData(l.ctx, pb.AdminUserID)
+			if err != nil {
+				l.Error(err)
+			}
+		}
+		list = append(list, system.ProjectInfoToApi(pb, user))
 	}
 
 	return &types.ProjectInfoIndexResp{
