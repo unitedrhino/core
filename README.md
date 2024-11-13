@@ -8,15 +8,19 @@
 - **易部署**：一键安装和运行，简化部署流程。
 - **易集成**：支持通过 HTTP, gRPC 或直接集成，同时兼容 MySQL 和 PostgreSQL，实现无缝集成。
 
+<img  src="./doc/assets/SaaS平台.png">  
+
+<img  src="./doc/assets/物联网.png">  
+
 ## 开源社区
-- **GitHub**: [联犀 GitHub](https://github.com/unitedrhino)
-- **Gitee**: [联犀 Gitee](https://gitee.com/unitedrhino)
+- **GitHub**: [联犀 GitHub](https://github.com/unitedrhino/things)
+- **Gitee**: [联犀 Gitee](https://gitee.com/unitedrhino/things)
 
 # 产品架构
 联犀物联网平台作为物联网架构中的关键中介，实现设备与应用层的高效联动。它不仅向下管理物联网设备，完成数据的收集与存储，而且向上为开发者和集成商提供统一的数据接口和工具，加速物联网解决方案的开发和部署。
 
-通过 HTTP, gRPC 应用厂商可以快速将 联犀 集成到自己的系统中，实现轻量级且高效的物联网能力扩展。
-<img style="width:300px;" src="./doc/assets/部署架构图.png">
+通过 HTTP, gRPC 应用厂商可以快速将 联犀 集成到自己的系统中，实现轻量级且高效的物联网能力扩展。  
+<img  src="./doc/assets/部署架构图.png">
 
 ## 产品价值
 
@@ -78,11 +82,6 @@
 - [官网](https://doc.unitedrhino.com/)
 - 微信二维码
 - <img style="width: 300px;" src="./doc/assets/微信二维码.jpg">
-
-## 赞赏
-
-- 如果联犀对你有帮助或者有启发,欢迎赞赏,这是对我们的认可及动力
-- <img style="width: 300px;" src="./doc/assets/微信赞赏码.jpg">
 
 ## 收藏
 
