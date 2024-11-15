@@ -1772,6 +1772,45 @@
         ]
       }
     },
+    "/api/v1/system/data/project/multi-delete": {
+      "post": {
+        "summary": "批量删除授权项目权限",
+        "operationId": "postApiV1SystemDataProjectMulti-delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DataProjectMultiDeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/data/project",
+          "systemDataProject"
+        ]
+      }
+    },
     "/api/v1/system/dept/info/create": {
       "post": {
         "summary": "添加部门详情",
@@ -9384,6 +9423,30 @@
       "required": [
         "total",
         "list"
+      ]
+    },
+    "DataProjectMultiDeleteReq": {
+      "type": "object",
+      "properties": {
+        "targetIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "用户ID"
+        },
+        "targetType": {
+          "type": "string"
+        },
+        "projectID": {
+          "type": "string",
+          "description": "权限数据ID"
+        }
+      },
+      "title": "DataProjectMultiDeleteReq",
+      "required": [
+        "targetIDs",
+        "targetType"
       ]
     },
     "DataProjectMultiSaveReq": {

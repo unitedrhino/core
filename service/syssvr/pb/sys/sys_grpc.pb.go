@@ -1037,6 +1037,7 @@ const (
 	DataManage_DataProjectCreate_FullMethodName      = "/sys.DataManage/dataProjectCreate"
 	DataManage_DataProjectMultiCreate_FullMethodName = "/sys.DataManage/dataProjectMultiCreate"
 	DataManage_DataProjectDelete_FullMethodName      = "/sys.DataManage/dataProjectDelete"
+	DataManage_DataProjectMultiDelete_FullMethodName = "/sys.DataManage/dataProjectMultiDelete"
 	DataManage_DataProjectIndex_FullMethodName       = "/sys.DataManage/dataProjectIndex"
 	DataManage_DataAreaMultiUpdate_FullMethodName    = "/sys.DataManage/dataAreaMultiUpdate"
 	DataManage_DataAreaIndex_FullMethodName          = "/sys.DataManage/dataAreaIndex"
@@ -1057,6 +1058,7 @@ type DataManageClient interface {
 	DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	DataProjectMultiCreate(ctx context.Context, in *DataProjectMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error)
+	DataProjectMultiDelete(ctx context.Context, in *DataProjectMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 	DataProjectIndex(ctx context.Context, in *DataProjectIndexReq, opts ...grpc.CallOption) (*DataProjectIndexResp, error)
 	DataAreaMultiUpdate(ctx context.Context, in *DataAreaMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 	DataAreaIndex(ctx context.Context, in *DataAreaIndexReq, opts ...grpc.CallOption) (*DataAreaIndexResp, error)
@@ -1099,6 +1101,15 @@ func (c *dataManageClient) DataProjectMultiCreate(ctx context.Context, in *DataP
 func (c *dataManageClient) DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, DataManage_DataProjectDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataManageClient) DataProjectMultiDelete(ctx context.Context, in *DataProjectMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DataManage_DataProjectMultiDelete_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1211,6 +1222,7 @@ type DataManageServer interface {
 	DataProjectCreate(context.Context, *DataProjectSaveReq) (*Empty, error)
 	DataProjectMultiCreate(context.Context, *DataProjectMultiSaveReq) (*Empty, error)
 	DataProjectDelete(context.Context, *DataProjectDeleteReq) (*Empty, error)
+	DataProjectMultiDelete(context.Context, *DataProjectMultiDeleteReq) (*Empty, error)
 	DataProjectIndex(context.Context, *DataProjectIndexReq) (*DataProjectIndexResp, error)
 	DataAreaMultiUpdate(context.Context, *DataAreaMultiUpdateReq) (*Empty, error)
 	DataAreaIndex(context.Context, *DataAreaIndexReq) (*DataAreaIndexResp, error)
@@ -1237,6 +1249,9 @@ func (UnimplementedDataManageServer) DataProjectMultiCreate(context.Context, *Da
 }
 func (UnimplementedDataManageServer) DataProjectDelete(context.Context, *DataProjectDeleteReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DataProjectDelete not implemented")
+}
+func (UnimplementedDataManageServer) DataProjectMultiDelete(context.Context, *DataProjectMultiDeleteReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataProjectMultiDelete not implemented")
 }
 func (UnimplementedDataManageServer) DataProjectIndex(context.Context, *DataProjectIndexReq) (*DataProjectIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DataProjectIndex not implemented")
@@ -1334,6 +1349,24 @@ func _DataManage_DataProjectDelete_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DataManageServer).DataProjectDelete(ctx, req.(*DataProjectDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataManage_DataProjectMultiDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DataProjectMultiDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataManageServer).DataProjectMultiDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataManage_DataProjectMultiDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataManageServer).DataProjectMultiDelete(ctx, req.(*DataProjectMultiDeleteReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1554,6 +1587,10 @@ var DataManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "dataProjectDelete",
 			Handler:    _DataManage_DataProjectDelete_Handler,
+		},
+		{
+			MethodName: "dataProjectMultiDelete",
+			Handler:    _DataManage_DataProjectMultiDelete_Handler,
 		},
 		{
 			MethodName: "dataProjectIndex",

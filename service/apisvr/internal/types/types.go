@@ -306,6 +306,12 @@ type DataProjectIndexResp struct {
 	List  []*DataProject `json:"list"`  //用户数据权限列表
 }
 
+type DataProjectMultiDeleteReq struct {
+	TargetID   []int64 `json:"targetIDs,string"` //用户ID
+	TargetType string  `json:"targetType"`
+	ProjectID  int64   `json:"projectID,string,optional"` //权限数据ID
+}
+
 type DataProjectMultiSaveReq struct {
 	TargetIDs  []int64 `json:"targetID,string"` //用户ID
 	TargetType string  `json:"targetType"`

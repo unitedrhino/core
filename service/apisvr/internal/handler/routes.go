@@ -454,6 +454,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/multi-create",
 					Handler: systemdataproject.ProjectMultiCreateHandler(serverCtx),
 				},
+				{
+					// 批量删除授权项目权限
+					Method:  http.MethodPost,
+					Path:    "/multi-delete",
+					Handler: systemdataproject.MultiDeleteHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/data/project"),

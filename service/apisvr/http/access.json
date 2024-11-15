@@ -436,6 +436,16 @@
           "businessType": "delete",
           "desc": "",
           "authType": "all"
+        },
+        {
+          "accessCode": "systemDataManageDelete",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/multi-delete",
+          "name": "批量删除授权项目权限",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all"
         }
       ],
       "authType": "all"

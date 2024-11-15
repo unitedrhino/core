@@ -21,6 +21,10 @@ service api {
     @handler delete
     post /delete (DataProjectDeleteReq) returns ()
 
+    @doc "批量删除授权项目权限"
+    @handler multiDelete
+    post /multi-delete (DataProjectMultiDeleteReq) returns ()
+
     @doc "批量创建授权项目权限"
     @handler projectMultiCreate
     post /multi-create (DataProjectMultiSaveReq) returns ()
@@ -144,6 +148,11 @@ type (
 
     DataProjectDeleteReq{
         TargetID   int64 `json:"targetID,string"`    //用户ID
+        TargetType string `json:"targetType"`
+        ProjectID   int64 `json:"projectID,string,optional"`     //权限数据ID
+    }
+    DataProjectMultiDeleteReq{
+        TargetID   []int64 `json:"targetIDs,string"`    //用户ID
         TargetType string `json:"targetType"`
         ProjectID   int64 `json:"projectID,string,optional"`     //权限数据ID
     }

@@ -51,6 +51,7 @@ type (
 	DataProjectDeleteReq                  = sys.DataProjectDeleteReq
 	DataProjectIndexReq                   = sys.DataProjectIndexReq
 	DataProjectIndexResp                  = sys.DataProjectIndexResp
+	DataProjectMultiDeleteReq             = sys.DataProjectMultiDeleteReq
 	DataProjectMultiSaveReq               = sys.DataProjectMultiSaveReq
 	DataProjectSaveReq                    = sys.DataProjectSaveReq
 	DateRange                             = sys.DateRange

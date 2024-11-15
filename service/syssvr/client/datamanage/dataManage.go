@@ -51,6 +51,7 @@ type (
 	DataProjectDeleteReq                  = sys.DataProjectDeleteReq
 	DataProjectIndexReq                   = sys.DataProjectIndexReq
 	DataProjectIndexResp                  = sys.DataProjectIndexResp
+	DataProjectMultiDeleteReq             = sys.DataProjectMultiDeleteReq
 	DataProjectMultiSaveReq               = sys.DataProjectMultiSaveReq
 	DataProjectSaveReq                    = sys.DataProjectSaveReq
 	DateRange                             = sys.DateRange
@@ -241,6 +242,7 @@ type (
 		DataProjectCreate(ctx context.Context, in *DataProjectSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectMultiCreate(ctx context.Context, in *DataProjectMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error)
+		DataProjectMultiDelete(ctx context.Context, in *DataProjectMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 		DataProjectIndex(ctx context.Context, in *DataProjectIndexReq, opts ...grpc.CallOption) (*DataProjectIndexResp, error)
 		DataAreaMultiUpdate(ctx context.Context, in *DataAreaMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
 		DataAreaIndex(ctx context.Context, in *DataAreaIndexReq, opts ...grpc.CallOption) (*DataAreaIndexResp, error)
@@ -302,6 +304,15 @@ func (m *defaultDataManage) DataProjectDelete(ctx context.Context, in *DataProje
 
 func (d *directDataManage) DataProjectDelete(ctx context.Context, in *DataProjectDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.DataProjectDelete(ctx, in)
+}
+
+func (m *defaultDataManage) DataProjectMultiDelete(ctx context.Context, in *DataProjectMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDataManageClient(m.cli.Conn())
+	return client.DataProjectMultiDelete(ctx, in, opts...)
+}
+
+func (d *directDataManage) DataProjectMultiDelete(ctx context.Context, in *DataProjectMultiDeleteReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DataProjectMultiDelete(ctx, in)
 }
 
 func (m *defaultDataManage) DataProjectIndex(ctx context.Context, in *DataProjectIndexReq, opts ...grpc.CallOption) (*DataProjectIndexResp, error) {

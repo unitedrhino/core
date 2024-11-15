@@ -41,6 +41,7 @@ service DataManage {
   rpc dataProjectCreate (DataProjectSaveReq) returns (Empty);   //授权用户数据权限
   rpc dataProjectMultiCreate (DataProjectMultiSaveReq) returns (Empty);   //授权用户数据权限
   rpc dataProjectDelete (DataProjectDeleteReq) returns (Empty);   //授权用户数据权限
+  rpc dataProjectMultiDelete(DataProjectMultiDeleteReq)returns(Empty);
   rpc dataProjectIndex (DataProjectIndexReq) returns (DataProjectIndexResp); //获取用户数据权限列表
 
   rpc dataAreaMultiUpdate (DataAreaMultiUpdateReq) returns (Empty);   //授权用户数据权限
@@ -1490,6 +1491,12 @@ message DataProject {
 
 message DataProjectDeleteReq{
   int64 targetID = 1; //用户ID（必填，雪花ID）
+  string targetType = 2;
+  int64 projectID = 3; //权限数据ID
+}
+
+message DataProjectMultiDeleteReq{
+  repeated int64 targetIDs = 1; //用户ID（必填，雪花ID）
   string targetType = 2;
   int64 projectID = 3; //权限数据ID
 }

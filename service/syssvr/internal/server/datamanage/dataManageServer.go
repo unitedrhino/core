@@ -38,6 +38,11 @@ func (s *DataManageServer) DataProjectDelete(ctx context.Context, in *sys.DataPr
 	return l.DataProjectDelete(in)
 }
 
+func (s *DataManageServer) DataProjectMultiDelete(ctx context.Context, in *sys.DataProjectMultiDeleteReq) (*sys.Empty, error) {
+	l := datamanagelogic.NewDataProjectMultiDeleteLogic(ctx, s.svcCtx)
+	return l.DataProjectMultiDelete(in)
+}
+
 func (s *DataManageServer) DataProjectIndex(ctx context.Context, in *sys.DataProjectIndexReq) (*sys.DataProjectIndexResp, error) {
 	l := datamanagelogic.NewDataProjectIndexLogic(ctx, s.svcCtx)
 	return l.DataProjectIndex(in)
