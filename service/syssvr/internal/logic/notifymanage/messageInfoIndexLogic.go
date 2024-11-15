@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -33,7 +34,10 @@ func (l *MessageInfoIndexLogic) MessageInfoIndex(in *sys.MessageInfoIndexReq) (*
 	if err != nil {
 		return nil, err
 	}
-	pos, err := relationDB.NewMessageInfoRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
+	pos, err := relationDB.NewMessageInfoRepo(l.ctx).FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
+		Field: "notifyTime",
+		Sort:  stores.OrderDesc,
+	}))
 	if err != nil {
 		return nil, err
 	}
