@@ -26,6 +26,7 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		CreatedTime:  po.CreatedTime.Unix(),
 		ProjectID:    int64(po.ProjectID),
 		ProjectName:  po.ProjectName,
+		ProjectImg:   po.ProjectImg,
 		AdminUserID:  po.AdminUserID,
 		IsSysCreated: po.IsSysCreated,
 		Ppsm:         po.Ppsm,
