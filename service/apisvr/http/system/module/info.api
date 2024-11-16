@@ -42,6 +42,7 @@ service api {
     )
     @handler delete
     post /delete (WithIDOrCode) returns ()
+
 }
 
 type (

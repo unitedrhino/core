@@ -92,12 +92,12 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		if m == nil { //模板里不存在无法添加
 			continue
 		}
-		v := relationDB.SysTenantAppMenu{
-			TempLateID: m.ID,
-			TenantCode: stores.TenantCode(tenantCode),
-			AppCode:    appCode, SysModuleMenu: *m}
+		v := utils.Copy[relationDB.SysTenantAppMenu](m)
+		v.TempLateID = m.ID
+		v.TenantCode = stores.TenantCode(tenantCode)
+		v.AppCode = appCode
 		v.ID = 0
-		insertMenus = append(insertMenus, &v)
+		insertMenus = append(insertMenus, v)
 	}
 	err = relationDB.NewTenantAppMenuRepo(tx).MultiInsert(ctx, insertMenus)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 	"gorm.io/gorm"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -65,12 +66,11 @@ func (l *ModuleMenuCreateLogic) ModuleMenuCreate(in *sys.MenuInfo) (*sys.WithID,
 		var template = *po
 		template.ID = 0
 		for _, am := range ams {
-			data = append(data, &relationDB.SysTenantAppMenu{
-				TempLateID:    po.ID,
-				TenantCode:    am.TenantCode,
-				AppCode:       am.AppCode,
-				SysModuleMenu: template,
-			})
+			tam := utils.Copy[relationDB.SysTenantAppMenu](template)
+			tam.TempLateID = po.ID
+			tam.TenantCode = am.TenantCode
+			tam.AppCode = am.AppCode
+			data = append(data, tam)
 		}
 		err = relationDB.NewTenantAppMenuRepo(l.ctx).MultiInsert(l.ctx, data)
 		if err != nil {

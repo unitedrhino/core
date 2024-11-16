@@ -746,6 +746,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemmodulemenu.IndexHandler(serverCtx),
 				},
 				{
+					// 批量导出菜单
+					Method:  http.MethodPost,
+					Path:    "/multi-export",
+					Handler: systemmodulemenu.MultiExportHandler(serverCtx),
+				},
+				{
+					// 批量导入菜单
+					Method:  http.MethodPost,
+					Path:    "/multi-import",
+					Handler: systemmodulemenu.MultiImportHandler(serverCtx),
+				},
+				{
 					// 更新菜单
 					Method:  http.MethodPost,
 					Path:    "/update",

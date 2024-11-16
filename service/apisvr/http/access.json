@@ -1250,6 +1250,36 @@
       ],
       "authType": "supper"
     },
+    "systemModuleMenuOther": {
+      "name": "操作模块菜单",
+      "code": "systemModuleMenuOther",
+      "group": "模块管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemModuleMenuOther",
+          "method": "POST",
+          "route": "/api/v1/system/module/menu/multi-export",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "supper"
+        },
+        {
+          "accessCode": "systemModuleMenuOther",
+          "method": "POST",
+          "route": "/api/v1/system/module/menu/multi-import",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "supper"
+        }
+      ],
+      "authType": "supper"
+    },
     "systemNotifyChannelAdd": {
       "name": "新增通知通道",
       "code": "systemNotifyChannelAdd",

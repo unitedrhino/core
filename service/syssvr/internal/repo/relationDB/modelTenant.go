@@ -90,10 +90,25 @@ func (m *SysTenantAppModule) TableName() string {
 
 // 菜单管理表
 type SysTenantAppMenu struct {
-	TempLateID int64             `gorm:"column:template_id;type:BIGINT;NOT NULL"`      // 模板id
-	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"` // 租户编码
-	AppCode    string            `gorm:"column:app_code;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
-	SysModuleMenu
+	TempLateID int64             `gorm:"column:template_id;uniqueIndex:template_id;type:BIGINT;NOT NULL"`      // 模板id
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:template_id;type:VARCHAR(50);NOT NULL"` // 租户编码
+	AppCode    string            `gorm:"column:app_code;uniqueIndex:template_id;type:VARCHAR(50);NOT NULL"`    // 应用编码 这里只关联主应用,主应用授权,子应用也授权了
+	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                     // 编号
+	ModuleCode string            `gorm:"column:module_code;type:VARCHAR(50);NOT NULL"`                         // 模块编码
+	ParentID   int64             `gorm:"column:parent_id;type:BIGINT;default:1;NOT NULL"`                      // 父菜单ID，一级菜单为1
+	Type       int64             `gorm:"column:type;type:BIGINT;default:1;NOT NULL"`                           // 类型   1：菜单或者页面   2：iframe嵌入   3：外链跳转
+	Order      int64             `gorm:"column:order;type:BIGINT;default:1;NOT NULL"`                          // 左侧table排序序号
+	Name       string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                                // 菜单名称
+	Path       string            `gorm:"column:path;type:VARCHAR(64);NOT NULL"`                                // 系统的path
+	Component  string            `gorm:"column:component;type:VARCHAR(1024);NOT NULL"`                         // 页面
+	Icon       string            `gorm:"column:icon;type:VARCHAR(64);NOT NULL"`                                // 图标
+	Redirect   string            `gorm:"column:redirect;type:VARCHAR(64);NOT NULL"`                            // 路由重定向
+	Body       string            `gorm:"column:body;type:VARCHAR(1024)"`                                       // 菜单自定义数据
+	HideInMenu int64             `gorm:"column:hide_in_menu;type:BIGINT;default:2;NOT NULL"`                   // 是否隐藏菜单 1-是 2-否
+	IsCommon   int64             `gorm:"column:is_common;type:BIGINT;default:2;"`                              // 是否常用菜单 1-是 2-否
+	Children   []*SysModuleMenu  `gorm:"foreignKey:ID;references:ParentID"`
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;uniqueIndex:template_id;default:0;index"`
 }
 
 func (m *SysTenantAppMenu) TableName() string {

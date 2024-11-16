@@ -10,6 +10,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
@@ -41,13 +42,19 @@ func (l *DeptInfoSyncLogic) DeptInfoSync(in *sys.DeptInfoSyncReq) (*sys.DeptInfo
 		return nil, errors.System.AddDetail(err)
 	}
 	l.cli = cli
-	l.DeptInfoSyncDingTalk(&relationDB.SysDeptInfo{
+	resp, err := l.DeptInfoSyncDingTalk(&relationDB.SysDeptInfo{
 		ID:         def.RootNode,
 		Name:       "根节点",
 		Status:     def.True,
 		DingTalkID: def.RootNode,
 	}, in)
-	return &sys.DeptInfoSyncResp{}, nil
+	if err == nil && in.UserMode > 0 {
+		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserSync, nil)
+		if err != nil {
+			l.Errorf("Publish userDelete %v err:%v", in, err)
+		}
+	}
+	return resp, err
 }
 
 func (l *DeptInfoSyncLogic) DeptInfoSyncDingTalkUser(info *relationDB.SysDeptInfo, in *sys.DeptInfoSyncReq) error {

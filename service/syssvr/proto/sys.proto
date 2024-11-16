@@ -154,6 +154,10 @@ service ModuleManage{
   rpc moduleMenuIndex(MenuInfoIndexReq) returns(MenuInfoIndexResp); //获取菜单列表
   rpc moduleMenuUpdate(MenuInfo) returns(Empty); //更新菜单
   rpc moduleMenuDelete(WithID) returns(Empty); //删除菜单
+
+  rpc moduleMenuMultiImport(MenuMultiImportReq) returns(MenuMultiImportResp); //删除菜单
+  rpc moduleMenuMultiExport(MenuMultiExportReq) returns(MenuMultiExportResp); //删除菜单
+
 }
 
 service DictManage{
@@ -1808,6 +1812,26 @@ message RoleInfo{
 message RoleAppUpdateReq{
   int64 id = 1;
   repeated string appCodes = 2;
+}
+
+
+message MenuMultiImportReq{
+  string  moduleCode =1;                               // 应用编号
+  int64  mode =2;//同步模式, 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的
+  string menu =3;//菜单json
+}
+message MenuMultiImportResp{
+    int64 total =1;                                 //导入总接口数
+    int64  errCount =2; //失败数
+    int64  ignoreCount =3; //忽略数
+    int64  succCount =4; //成功数
+}
+message MenuMultiExportReq{
+  string  moduleCode =1;                               // 应用编号
+
+}
+message MenuMultiExportResp{
+  string menu =1; //导出的菜单json文件
 }
 
 message MenuInfoIndexReq{

@@ -10,6 +10,7 @@ import (
 	commonServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/common"
 	datamanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/datamanage"
 	deptMServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/departmentmanage"
+	dictMServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/dictmanage"
 	logServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/log"
 	modulemanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/modulemanage"
 	notifymanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/notifymanage"
@@ -76,6 +77,7 @@ func Run(svcCtx *svc.ServiceContext) {
 		sys.RegisterOpsServer(grpcServer, opsServer.NewOpsServer(svcCtx))
 		sys.RegisterNotifyManageServer(grpcServer, notifymanageServer.NewNotifyManageServer(svcCtx))
 		sys.RegisterDepartmentManageServer(grpcServer, deptMServer.NewDepartmentManageServer(svcCtx))
+		sys.RegisterDictManageServer(grpcServer, dictMServer.NewDictManageServer(svcCtx))
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}

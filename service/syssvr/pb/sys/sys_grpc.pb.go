@@ -3786,15 +3786,17 @@ var AppManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	ModuleManage_ModuleInfoCreate_FullMethodName = "/sys.ModuleManage/moduleInfoCreate"
-	ModuleManage_ModuleInfoIndex_FullMethodName  = "/sys.ModuleManage/moduleInfoIndex"
-	ModuleManage_ModuleInfoUpdate_FullMethodName = "/sys.ModuleManage/moduleInfoUpdate"
-	ModuleManage_ModuleInfoDelete_FullMethodName = "/sys.ModuleManage/moduleInfoDelete"
-	ModuleManage_ModuleInfoRead_FullMethodName   = "/sys.ModuleManage/moduleInfoRead"
-	ModuleManage_ModuleMenuCreate_FullMethodName = "/sys.ModuleManage/moduleMenuCreate"
-	ModuleManage_ModuleMenuIndex_FullMethodName  = "/sys.ModuleManage/moduleMenuIndex"
-	ModuleManage_ModuleMenuUpdate_FullMethodName = "/sys.ModuleManage/moduleMenuUpdate"
-	ModuleManage_ModuleMenuDelete_FullMethodName = "/sys.ModuleManage/moduleMenuDelete"
+	ModuleManage_ModuleInfoCreate_FullMethodName      = "/sys.ModuleManage/moduleInfoCreate"
+	ModuleManage_ModuleInfoIndex_FullMethodName       = "/sys.ModuleManage/moduleInfoIndex"
+	ModuleManage_ModuleInfoUpdate_FullMethodName      = "/sys.ModuleManage/moduleInfoUpdate"
+	ModuleManage_ModuleInfoDelete_FullMethodName      = "/sys.ModuleManage/moduleInfoDelete"
+	ModuleManage_ModuleInfoRead_FullMethodName        = "/sys.ModuleManage/moduleInfoRead"
+	ModuleManage_ModuleMenuCreate_FullMethodName      = "/sys.ModuleManage/moduleMenuCreate"
+	ModuleManage_ModuleMenuIndex_FullMethodName       = "/sys.ModuleManage/moduleMenuIndex"
+	ModuleManage_ModuleMenuUpdate_FullMethodName      = "/sys.ModuleManage/moduleMenuUpdate"
+	ModuleManage_ModuleMenuDelete_FullMethodName      = "/sys.ModuleManage/moduleMenuDelete"
+	ModuleManage_ModuleMenuMultiImport_FullMethodName = "/sys.ModuleManage/moduleMenuMultiImport"
+	ModuleManage_ModuleMenuMultiExport_FullMethodName = "/sys.ModuleManage/moduleMenuMultiExport"
 )
 
 // ModuleManageClient is the client API for ModuleManage service.
@@ -3810,6 +3812,8 @@ type ModuleManageClient interface {
 	ModuleMenuIndex(ctx context.Context, in *MenuInfoIndexReq, opts ...grpc.CallOption) (*MenuInfoIndexResp, error)
 	ModuleMenuUpdate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*Empty, error)
 	ModuleMenuDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	ModuleMenuMultiImport(ctx context.Context, in *MenuMultiImportReq, opts ...grpc.CallOption) (*MenuMultiImportResp, error)
+	ModuleMenuMultiExport(ctx context.Context, in *MenuMultiExportReq, opts ...grpc.CallOption) (*MenuMultiExportResp, error)
 }
 
 type moduleManageClient struct {
@@ -3901,6 +3905,24 @@ func (c *moduleManageClient) ModuleMenuDelete(ctx context.Context, in *WithID, o
 	return out, nil
 }
 
+func (c *moduleManageClient) ModuleMenuMultiImport(ctx context.Context, in *MenuMultiImportReq, opts ...grpc.CallOption) (*MenuMultiImportResp, error) {
+	out := new(MenuMultiImportResp)
+	err := c.cc.Invoke(ctx, ModuleManage_ModuleMenuMultiImport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moduleManageClient) ModuleMenuMultiExport(ctx context.Context, in *MenuMultiExportReq, opts ...grpc.CallOption) (*MenuMultiExportResp, error) {
+	out := new(MenuMultiExportResp)
+	err := c.cc.Invoke(ctx, ModuleManage_ModuleMenuMultiExport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ModuleManageServer is the server API for ModuleManage service.
 // All implementations must embed UnimplementedModuleManageServer
 // for forward compatibility
@@ -3914,6 +3936,8 @@ type ModuleManageServer interface {
 	ModuleMenuIndex(context.Context, *MenuInfoIndexReq) (*MenuInfoIndexResp, error)
 	ModuleMenuUpdate(context.Context, *MenuInfo) (*Empty, error)
 	ModuleMenuDelete(context.Context, *WithID) (*Empty, error)
+	ModuleMenuMultiImport(context.Context, *MenuMultiImportReq) (*MenuMultiImportResp, error)
+	ModuleMenuMultiExport(context.Context, *MenuMultiExportReq) (*MenuMultiExportResp, error)
 	mustEmbedUnimplementedModuleManageServer()
 }
 
@@ -3947,6 +3971,12 @@ func (UnimplementedModuleManageServer) ModuleMenuUpdate(context.Context, *MenuIn
 }
 func (UnimplementedModuleManageServer) ModuleMenuDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModuleMenuDelete not implemented")
+}
+func (UnimplementedModuleManageServer) ModuleMenuMultiImport(context.Context, *MenuMultiImportReq) (*MenuMultiImportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModuleMenuMultiImport not implemented")
+}
+func (UnimplementedModuleManageServer) ModuleMenuMultiExport(context.Context, *MenuMultiExportReq) (*MenuMultiExportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModuleMenuMultiExport not implemented")
 }
 func (UnimplementedModuleManageServer) mustEmbedUnimplementedModuleManageServer() {}
 
@@ -4123,6 +4153,42 @@ func _ModuleManage_ModuleMenuDelete_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ModuleManage_ModuleMenuMultiImport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuMultiImportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModuleManageServer).ModuleMenuMultiImport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ModuleManage_ModuleMenuMultiImport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModuleManageServer).ModuleMenuMultiImport(ctx, req.(*MenuMultiImportReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModuleManage_ModuleMenuMultiExport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MenuMultiExportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModuleManageServer).ModuleMenuMultiExport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ModuleManage_ModuleMenuMultiExport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModuleManageServer).ModuleMenuMultiExport(ctx, req.(*MenuMultiExportReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ModuleManage_ServiceDesc is the grpc.ServiceDesc for ModuleManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4165,6 +4231,14 @@ var ModuleManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "moduleMenuDelete",
 			Handler:    _ModuleManage_ModuleMenuDelete_Handler,
+		},
+		{
+			MethodName: "moduleMenuMultiImport",
+			Handler:    _ModuleManage_ModuleMenuMultiImport_Handler,
+		},
+		{
+			MethodName: "moduleMenuMultiExport",
+			Handler:    _ModuleManage_ModuleMenuMultiExport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

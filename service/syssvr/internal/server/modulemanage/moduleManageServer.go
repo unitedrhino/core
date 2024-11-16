@@ -67,3 +67,13 @@ func (s *ModuleManageServer) ModuleMenuDelete(ctx context.Context, in *sys.WithI
 	l := modulemanagelogic.NewModuleMenuDeleteLogic(ctx, s.svcCtx)
 	return l.ModuleMenuDelete(in)
 }
+
+func (s *ModuleManageServer) ModuleMenuMultiImport(ctx context.Context, in *sys.MenuMultiImportReq) (*sys.MenuMultiImportResp, error) {
+	l := modulemanagelogic.NewModuleMenuMultiImportLogic(ctx, s.svcCtx)
+	return l.ModuleMenuMultiImport(in)
+}
+
+func (s *ModuleManageServer) ModuleMenuMultiExport(ctx context.Context, in *sys.MenuMultiExportReq) (*sys.MenuMultiExportResp, error) {
+	l := modulemanagelogic.NewModuleMenuMultiExportLogic(ctx, s.svcCtx)
+	return l.ModuleMenuMultiExport(in)
+}

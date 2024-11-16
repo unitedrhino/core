@@ -86,6 +86,10 @@ type (
 	MenuInfo                              = sys.MenuInfo
 	MenuInfoIndexReq                      = sys.MenuInfoIndexReq
 	MenuInfoIndexResp                     = sys.MenuInfoIndexResp
+	MenuMultiExportReq                    = sys.MenuMultiExportReq
+	MenuMultiExportResp                   = sys.MenuMultiExportResp
+	MenuMultiImportReq                    = sys.MenuMultiImportReq
+	MenuMultiImportResp                   = sys.MenuMultiImportResp
 	MessageInfo                           = sys.MessageInfo
 	MessageInfoIndexReq                   = sys.MessageInfoIndexReq
 	MessageInfoIndexResp                  = sys.MessageInfoIndexResp

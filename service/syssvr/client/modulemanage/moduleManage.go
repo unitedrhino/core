@@ -86,6 +86,10 @@ type (
 	MenuInfo                              = sys.MenuInfo
 	MenuInfoIndexReq                      = sys.MenuInfoIndexReq
 	MenuInfoIndexResp                     = sys.MenuInfoIndexResp
+	MenuMultiExportReq                    = sys.MenuMultiExportReq
+	MenuMultiExportResp                   = sys.MenuMultiExportResp
+	MenuMultiImportReq                    = sys.MenuMultiImportReq
+	MenuMultiImportResp                   = sys.MenuMultiImportResp
 	MessageInfo                           = sys.MessageInfo
 	MessageInfoIndexReq                   = sys.MessageInfoIndexReq
 	MessageInfoIndexResp                  = sys.MessageInfoIndexResp
@@ -248,6 +252,8 @@ type (
 		ModuleMenuIndex(ctx context.Context, in *MenuInfoIndexReq, opts ...grpc.CallOption) (*MenuInfoIndexResp, error)
 		ModuleMenuUpdate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*Empty, error)
 		ModuleMenuDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		ModuleMenuMultiImport(ctx context.Context, in *MenuMultiImportReq, opts ...grpc.CallOption) (*MenuMultiImportResp, error)
+		ModuleMenuMultiExport(ctx context.Context, in *MenuMultiExportReq, opts ...grpc.CallOption) (*MenuMultiExportResp, error)
 	}
 
 	defaultModuleManage struct {
@@ -352,4 +358,22 @@ func (m *defaultModuleManage) ModuleMenuDelete(ctx context.Context, in *WithID, 
 
 func (d *directModuleManage) ModuleMenuDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.ModuleMenuDelete(ctx, in)
+}
+
+func (m *defaultModuleManage) ModuleMenuMultiImport(ctx context.Context, in *MenuMultiImportReq, opts ...grpc.CallOption) (*MenuMultiImportResp, error) {
+	client := sys.NewModuleManageClient(m.cli.Conn())
+	return client.ModuleMenuMultiImport(ctx, in, opts...)
+}
+
+func (d *directModuleManage) ModuleMenuMultiImport(ctx context.Context, in *MenuMultiImportReq, opts ...grpc.CallOption) (*MenuMultiImportResp, error) {
+	return d.svr.ModuleMenuMultiImport(ctx, in)
+}
+
+func (m *defaultModuleManage) ModuleMenuMultiExport(ctx context.Context, in *MenuMultiExportReq, opts ...grpc.CallOption) (*MenuMultiExportResp, error) {
+	client := sys.NewModuleManageClient(m.cli.Conn())
+	return client.ModuleMenuMultiExport(ctx, in, opts...)
+}
+
+func (d *directModuleManage) ModuleMenuMultiExport(ctx context.Context, in *MenuMultiExportReq, opts ...grpc.CallOption) (*MenuMultiExportResp, error) {
+	return d.svr.ModuleMenuMultiExport(ctx, in)
 }

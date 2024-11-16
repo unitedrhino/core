@@ -58,12 +58,11 @@ func ToTenantAppMenuPo(in *sys.TenantAppMenu) *relationDB.SysTenantAppMenu {
 	if in == nil || in.Info == nil {
 		return nil
 	}
-	return &relationDB.SysTenantAppMenu{
-		TempLateID:    in.TemplateID,
-		TenantCode:    stores.TenantCode(in.Code),
-		AppCode:       in.AppCode,
-		SysModuleMenu: *ToMenuInfoPo(in.Info),
-	}
+	po := utils.Copy[relationDB.SysTenantAppMenu](in)
+	po.TempLateID = in.TemplateID
+	po.TenantCode = stores.TenantCode(in.Code)
+	po.AppCode = in.AppCode
+	return po
 }
 
 func ToMenuInfoPb(in *relationDB.SysModuleMenu) *sys.MenuInfo {
@@ -96,6 +95,6 @@ func ToTenantAppMenuInfoPb(in *relationDB.SysTenantAppMenu) *sys.TenantAppMenu {
 		TemplateID: in.TempLateID,
 		Code:       string(in.TenantCode),
 		AppCode:    in.AppCode,
-		Info:       ToMenuInfoPb(&in.SysModuleMenu),
+		Info:       utils.Copy[sys.MenuInfo](in),
 	}
 }

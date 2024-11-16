@@ -3386,6 +3386,90 @@
         ]
       }
     },
+    "/api/v1/system/module/menu/multi-export": {
+      "post": {
+        "summary": "批量导出菜单",
+        "operationId": "postApiV1SystemModuleMenuMulti-export",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/MenuMultiExportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MenuMultiExportReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/module/menu",
+          "systemModuleMenu"
+        ]
+      }
+    },
+    "/api/v1/system/module/menu/multi-import": {
+      "post": {
+        "summary": "批量导入菜单",
+        "operationId": "postApiV1SystemModuleMenuMulti-import",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/MenuMultiImportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MenuMultiImportReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/module/menu",
+          "systemModuleMenu"
+        ]
+      }
+    },
     "/api/v1/system/module/menu/update": {
       "post": {
         "summary": "更新菜单",
@@ -10128,6 +10212,83 @@
       "title": "MenuInfoIndexResp",
       "required": [
         "list"
+      ]
+    },
+    "MenuMultiExportReq": {
+      "type": "object",
+      "properties": {
+        "moduleCode": {
+          "type": "string",
+          "description": " 应用编号"
+        }
+      },
+      "title": "MenuMultiExportReq"
+    },
+    "MenuMultiExportResp": {
+      "type": "object",
+      "properties": {
+        "menu": {
+          "type": "string",
+          "description": "菜单json"
+        }
+      },
+      "title": "MenuMultiExportResp",
+      "required": [
+        "menu"
+      ]
+    },
+    "MenuMultiImportReq": {
+      "type": "object",
+      "properties": {
+        "moduleCode": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "mode": {
+          "type": "integer",
+          "format": "int64",
+          "description": "同步模式, 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的"
+        },
+        "menu": {
+          "type": "string",
+          "description": "菜单json"
+        }
+      },
+      "title": "MenuMultiImportReq",
+      "required": [
+        "menu"
+      ]
+    },
+    "MenuMultiImportResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "导入总接口数"
+        },
+        "errCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "失败数"
+        },
+        "ignoreCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "忽略数"
+        },
+        "succCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "成功数"
+        }
+      },
+      "title": "MenuMultiImportResp",
+      "required": [
+        "total",
+        "errCount",
+        "ignoreCount",
+        "succCount"
       ]
     },
     "MessageInfo": {

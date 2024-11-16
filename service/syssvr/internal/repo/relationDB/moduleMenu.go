@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type MenuInfoRepo struct {
@@ -95,4 +96,15 @@ func (p MenuInfoRepo) FindOne(ctx context.Context, id int64) (*SysModuleMenu, er
 		return nil, stores.ErrFmt(err)
 	}
 	return &result, nil
+}
+
+// 批量插入 LightStrategyDevice 记录
+func (m MenuInfoRepo) MultiInsert(ctx context.Context, data []*SysModuleMenu) error {
+	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysModuleMenu{}).Create(data).Error
+	return stores.ErrFmt(err)
+}
+
+func (m MenuInfoRepo) MultiInsertOnly(ctx context.Context, data []*SysModuleMenu) error {
+	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Model(&SysModuleMenu{}).Create(data).Error
+	return stores.ErrFmt(err)
 }

@@ -491,6 +491,27 @@ type MenuInfoIndexResp struct {
 	List []*MenuInfo `json:"list"` //菜单列表
 }
 
+type MenuMultiExportReq struct {
+	ModuleCode string `json:"moduleCode,optional"` // 应用编号
+}
+
+type MenuMultiExportResp struct {
+	Menu string `json:"menu"` //菜单json
+}
+
+type MenuMultiImportReq struct {
+	ModuleCode string `json:"moduleCode,optional"` // 应用编号
+	Mode       int64  `json:"mode,optional"`       //同步模式, 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的
+	Menu       string `json:"menu"`                //菜单json
+}
+
+type MenuMultiImportResp struct {
+	Total       int64 `json:"total"`       //导入总接口数
+	ErrCount    int64 `json:"errCount"`    //失败数
+	IgnoreCount int64 `json:"ignoreCount"` //忽略数
+	SuccCount   int64 `json:"succCount"`   //成功数
+}
+
 type MessageInfo struct {
 	ID          int64  `json:"id"`
 	Group       string `json:"group"` //分组

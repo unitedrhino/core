@@ -40,11 +40,47 @@ service api {
     )
     @handler delete
     post /delete (WithID) returns ()
+
+
+    @doc(
+        summary: "批量导入菜单"
+        isNeedAuth: "true"
+        authType: "supper"
+    )
+    @handler multiImport
+    post /multi-import (MenuMultiImportReq) returns (MenuMultiImportResp)
+
+    @doc(
+        summary: "批量导出菜单"
+        isNeedAuth: "true"
+        authType: "supper"
+    )
+    @handler multiExport
+    post /multi-export (MenuMultiExportReq) returns (MenuMultiExportResp)
 }
 type (
 
+    MenuMultiImportReq {
+        ModuleCode string `json:"moduleCode,optional"`                               // 应用编号
+        Mode int64 `json:"mode,optional"`//同步模式, 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的
+        Menu string `json:"menu"` //菜单json
+    }
+    MenuMultiImportResp {
+        Total int64 `json:"total"`                                 //导入总接口数
+        ErrCount int64  `json:"errCount"` //失败数
+        IgnoreCount int64  `json:"ignoreCount"` //忽略数
+        SuccCount int64  `json:"succCount"` //成功数
+    }
+
+    MenuMultiExportReq {
+        ModuleCode string `json:"moduleCode,optional"`                               // 应用编号
+    }
+    MenuMultiExportResp {
+       Menu string `json:"menu"` //菜单json
+    }
+
     MenuInfoIndexReq  {
-        moduleCode string `json:"moduleCode,optional"`                               // 应用编号
+        ModuleCode string `json:"moduleCode,optional"`                               // 应用编号
         Name string `json:"name,optional"` // 按菜单名称筛选
         Path string `json:"path,optional"` // 按菜单路径筛选
         IsRetTree bool `json:"isRetTree,optional"` // 是否返回树形结构

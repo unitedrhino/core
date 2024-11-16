@@ -44,20 +44,21 @@ func (SysDictInfo) TableName() string {
 }
 
 type SysDictDetail struct {
-	ID       int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`      // id编号
-	DictCode string           `gorm:"column:dict_code;type:VARCHAR(50);default:'';NOT NULL"` // 关联标记
-	Label    string           `gorm:"column:label;comment:展示值"`                              // 展示值
-	Value    string           `gorm:"column:value;comment:字典值"`                              // 字典值
-	Status   int64            `gorm:"column:status;type:SMALLINT;default:1"`                 // 状态  1:启用,2:禁用
-	Sort     int64            `gorm:"column:sort;comment:排序标记"`                              // 排序标记
-	Desc     string           `gorm:"column:desc;comment:描述"`                                // 描述
-	Body     string           `gorm:"column:body;type:VARCHAR(1024)"`                        // 自定义数据
-	IDPath   string           `gorm:"column:id_path;type:varchar(100);NOT NULL"`             // 1-2-3-的格式记录顶级区域到当前id的路径
-	ParentID int64            `gorm:"column:parent_id;type:BIGINT"`                          // id编号
+	ID       int64            `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
+	DictCode string           `gorm:"column:dict_code;uniqueIndex:value;type:VARCHAR(50);default:'';NOT NULL"` // 关联标记
+	Label    string           `gorm:"column:label;comment:展示值"`                                                // 展示值
+	Value    string           `gorm:"column:value;uniqueIndex:value;comment:字典值"`                              // 字典值
+	Status   int64            `gorm:"column:status;type:SMALLINT;default:1"`                                   // 状态  1:启用,2:禁用
+	Sort     int64            `gorm:"column:sort;comment:排序标记"`                                                // 排序标记
+	Desc     string           `gorm:"column:desc;comment:描述"`                                                  // 描述
+	Body     string           `gorm:"column:body;type:VARCHAR(1024)"`                                          // 自定义数据
+	IDPath   string           `gorm:"column:id_path;type:varchar(100);NOT NULL"`                               // 1-2-3-的格式记录顶级区域到当前id的路径
+	ParentID int64            `gorm:"column:parent_id;type:BIGINT"`                                            // id编号
 	Children []*SysDictDetail `gorm:"foreignKey:parent_id;references:id"`
 	Parent   *SysDictDetail   `gorm:"foreignKey:ID;references:ParentID"`
 
-	stores.SoftTime
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:value"`
 }
 
 func (SysDictDetail) TableName() string {
