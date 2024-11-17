@@ -3,6 +3,7 @@ package modulemanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -26,6 +27,9 @@ func NewModuleMenuMultiExportLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *ModuleMenuMultiExportLogic) ModuleMenuMultiExport(in *sys.MenuMultiExportReq) (*sys.MenuMultiExportResp, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	pos, err := relationDB.NewMenuInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: in.ModuleCode}, nil)
 	if err != nil {
 		return nil, err

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
@@ -31,53 +32,64 @@ func NewModuleMenuMultiImportLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *ModuleMenuMultiImportLogic) ModuleMenuMultiImport(in *sys.MenuMultiImportReq) (*sys.MenuMultiImportResp, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	var pos []*relationDB.SysModuleMenu
 	err := json.Unmarshal([]byte(in.Menu), &pos)
 	if err != nil {
 		return nil, errors.Parameter.AddMsg("导入的菜单格式不对").AddDetail(err)
 	}
-	switch in.Mode {
-	case module.MenuImportModeUpdate:
-		err = relationDB.NewMenuInfoRepo(l.ctx).MultiInsertOnly(l.ctx, pos)
-	case module.MenuImportModeAll:
-		err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		switch in.Mode {
+		case module.MenuImportModeUpdate:
+			err = relationDB.NewMenuInfoRepo(tx).MultiInsert(l.ctx, pos)
+		case module.MenuImportModeAll:
 			db := relationDB.NewMenuInfoRepo(tx)
-			err := db.DeleteByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: in.ModuleCode})
+			err = db.DeleteByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: in.ModuleCode})
 			if err != nil {
 				return err
 			}
 			err = db.MultiInsert(l.ctx, pos)
-			return err
-		})
-	default:
-		err = relationDB.NewMenuInfoRepo(l.ctx).MultiInsertOnly(l.ctx, pos)
-	}
-	if err != nil {
-		return nil, err
-	}
-	ams, err := relationDB.NewTenantAppModuleRepo(l.ctx).FindByFilter(l.ctx, relationDB.TenantAppModuleFilter{
-		ModuleCodes: []string{in.ModuleCode},
-	}, nil)
-	if err != nil {
-		return nil, err
-	}
-	var data []*relationDB.SysTenantAppMenu
-	for _, po := range pos {
-		var template = *po
-		template.ID = 0
-		for _, am := range ams {
-			tam := utils.Copy[relationDB.SysTenantAppMenu](template)
-			tam.TempLateID = po.ID
-			tam.TenantCode = am.TenantCode
-			tam.AppCode = am.AppCode
-			data = append(data, tam)
+			if err != nil {
+				return err
+			}
+			err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppMenuFilter{ModuleCode: in.ModuleCode})
+			if err != nil {
+				return err
+			}
+		default:
+			err = relationDB.NewMenuInfoRepo(tx).MultiInsertOnly(l.ctx, pos)
 		}
-	}
-	if len(data) > 0 {
-		err = relationDB.NewTenantAppMenuRepo(l.ctx).MultiInsert(l.ctx, data)
 		if err != nil {
-			return nil, err
+			return err
 		}
-	}
-	return &sys.MenuMultiImportResp{}, nil
+		ams, err := relationDB.NewTenantAppModuleRepo(tx).FindByFilter(l.ctx, relationDB.TenantAppModuleFilter{
+			ModuleCodes: []string{in.ModuleCode},
+		}, nil)
+		if err != nil {
+			return err
+		}
+		var data []*relationDB.SysTenantAppMenu
+		for _, po := range pos {
+			var template = *po
+			template.ID = 0
+			for _, am := range ams {
+				tam := utils.Copy[relationDB.SysTenantAppMenu](template)
+				tam.TempLateID = po.ID
+				tam.TenantCode = am.TenantCode
+				tam.AppCode = am.AppCode
+				data = append(data, tam)
+			}
+		}
+		if len(data) > 0 {
+			err = relationDB.NewTenantAppMenuRepo(tx).MultiInsert(l.ctx, data)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+
+	return &sys.MenuMultiImportResp{Total: int64(len(pos))}, err
 }
