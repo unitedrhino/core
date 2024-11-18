@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -41,7 +42,7 @@ func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB 
 		db = db.Where("code = ?", f.Code)
 	}
 	if f.Group != "" {
-		db = db.Where("group = ?", f.Group)
+		db = db.Where(fmt.Sprintf("%s = ?", stores.Col("group")), f.Group)
 	}
 	return db
 }
@@ -92,6 +93,7 @@ func (p DictInfoRepo) Delete(ctx context.Context, id int64) error {
 	err := p.db.WithContext(ctx).Where("id = ?", id).Delete(&SysDictInfo{}).Error
 	return stores.ErrFmt(err)
 }
+
 func (p DictInfoRepo) FindOne(ctx context.Context, id int64) (*SysDictInfo, error) {
 	var result SysDictInfo
 	err := p.db.WithContext(ctx).Where("id = ?", id).First(&result).Error
