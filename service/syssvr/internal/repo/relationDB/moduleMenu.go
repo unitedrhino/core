@@ -19,7 +19,10 @@ type MenuInfoFilter struct {
 	ModuleCode string
 	Name       string
 	Path       string
+	Paths      []string
 	MenuIDs    []int64
+	ParentID   int64
+	ParentIDs  []int64
 	IsCommon   int64
 }
 
@@ -27,6 +30,12 @@ func (p MenuInfoRepo) fmtFilter(ctx context.Context, f MenuInfoFilter) *gorm.DB 
 	db := p.db.WithContext(ctx)
 	if f.IsCommon != 0 {
 		db = db.Where("is_common=?", f.IsCommon)
+	}
+	if f.ParentID != 0 {
+		db = db.Where("parent_id=?", f.ParentID)
+	}
+	if len(f.ParentIDs) != 0 {
+		db = db.Where("parent_id IN ?", f.ParentIDs)
 	}
 	if f.ModuleCode != "" {
 		db = db.Where("module_code =?", f.ModuleCode)
@@ -36,6 +45,9 @@ func (p MenuInfoRepo) fmtFilter(ctx context.Context, f MenuInfoFilter) *gorm.DB 
 	}
 	if f.Path != "" {
 		db = db.Where("path like ?", "%"+f.Path+"%")
+	}
+	if len(f.Path) != 0 {
+		db = db.Where("path in ?", f.Paths)
 	}
 	if len(f.MenuIDs) != 0 {
 		db = db.Where("id in ?", f.MenuIDs)

@@ -16,14 +16,15 @@ func NewTenantAppMenuRepo(in any) *TenantAppMenuRepo {
 }
 
 type TenantAppMenuFilter struct {
-	ModuleCode string
-	Name       string
-	TenantCode string
-	AppCode    string
-	Path       string
-	MenuIDs    []int64
-	TempLateID int64
-	IsCommon   int64
+	ModuleCode  string
+	Name        string
+	TenantCode  string
+	AppCode     string
+	Path        string
+	MenuIDs     []int64
+	TempLateID  int64
+	TempLateIDs []int64
+	IsCommon    int64
 }
 
 func (p TenantAppMenuRepo) fmtFilter(ctx context.Context, f TenantAppMenuFilter) *gorm.DB {
@@ -36,6 +37,9 @@ func (p TenantAppMenuRepo) fmtFilter(ctx context.Context, f TenantAppMenuFilter)
 	}
 	if f.TempLateID != 0 {
 		db = db.Where("template_id=?", f.TempLateID)
+	}
+	if len(f.TempLateIDs) > 0 {
+		db = db.Where("template_id in ?", f.TempLateIDs)
 	}
 	if f.AppCode != "" {
 		db = db.Where("app_code =?", f.AppCode)

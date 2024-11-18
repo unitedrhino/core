@@ -27,14 +27,7 @@ func NewModuleMenuUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *ModuleMenuUpdateLogic) ModuleMenuUpdate(in *sys.MenuInfo) (*sys.Empty, error) {
-	if err := ctxs.IsRoot(l.ctx); err != nil {
-		return nil, err
-	}
-	old, err := relationDB.NewMenuInfoRepo(l.ctx).FindOne(l.ctx, in.Id)
-	if err != nil {
-		return nil, err
-	}
+func updateMenu(ctx context.Context, tx *gorm.DB, in *sys.MenuInfo, old *relationDB.SysModuleMenu) error {
 	var tenantMenu relationDB.SysTenantAppMenu
 	if in.Type != 0 && in.Type != old.Type {
 		old.Type = in.Type
@@ -68,7 +61,7 @@ func (l *ModuleMenuUpdateLogic) ModuleMenuUpdate(in *sys.MenuInfo) (*sys.Empty, 
 		old.Body = in.Body.GetValue()
 		tenantMenu.Body = in.Body.GetValue()
 	}
-	if in.IsCommon != 0 {
+	if in.IsCommon != 0 && in.IsCommon != old.IsCommon {
 		old.IsCommon = in.IsCommon
 		tenantMenu.IsCommon = in.IsCommon
 	}
@@ -76,23 +69,38 @@ func (l *ModuleMenuUpdateLogic) ModuleMenuUpdate(in *sys.MenuInfo) (*sys.Empty, 
 		old.HideInMenu = in.HideInMenu
 		tenantMenu.HideInMenu = in.HideInMenu
 	}
-	ctxs.GetUserCtx(l.ctx).AllTenant = true
+	ctxs.GetUserCtx(ctx).AllTenant = true
 	defer func() {
-		ctxs.GetUserCtx(l.ctx).AllTenant = false
+		ctxs.GetUserCtx(ctx).AllTenant = false
 	}()
-	conn := stores.GetTenantConn(l.ctx)
-	err = conn.Transaction(func(tx *gorm.DB) error {
-		err = relationDB.NewMenuInfoRepo(tx).Update(l.ctx, old)
-		if err != nil {
-			return err
-		}
-		err = relationDB.NewTenantAppMenuRepo(tx).UpdateByFilter(l.ctx, &tenantMenu, relationDB.TenantAppMenuFilter{
-			TempLateID: in.Id,
-		})
-		if err != nil {
-			return err
-		}
-		return nil
+
+	err := relationDB.NewMenuInfoRepo(tx).Update(ctx, old)
+	if err != nil {
+		return err
+	}
+	err = relationDB.NewTenantAppMenuRepo(tx).UpdateByFilter(ctx, &tenantMenu, relationDB.TenantAppMenuFilter{
+		TempLateID: old.ID,
 	})
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func (l *ModuleMenuUpdateLogic) ModuleMenuUpdate(in *sys.MenuInfo) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
+	old, err := relationDB.NewMenuInfoRepo(l.ctx).FindOne(l.ctx, in.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		return updateMenu(l.ctx, stores.GetCommonConn(l.ctx), in, old)
+	})
+	if err != nil {
+		return nil, err
+	}
 	return &sys.Empty{}, err
 }

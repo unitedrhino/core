@@ -14,6 +14,9 @@ import (
 )
 
 func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysProjectInfo) *sys.ProjectInfo {
+	if po == nil {
+		return nil
+	}
 	if po.ProjectImg != "" {
 		var err error
 		po.ProjectImg, err = svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, po.ProjectImg, 24*60*60, common.OptionKv{})
