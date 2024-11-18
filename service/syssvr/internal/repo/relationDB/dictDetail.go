@@ -42,6 +42,9 @@ func (p DictDetailRepo) fmtFilter(ctx context.Context, f DictDetailFilter) *gorm
 	if f.Label != "" {
 		db = db.Where("label like ?", "%"+f.Label+"%")
 	}
+	if f.Status != 0 {
+		db = db.Where("status = ?", f.Status)
+	}
 	if f.Value != "" {
 		db = db.Where("value = ?", f.Value)
 	}
