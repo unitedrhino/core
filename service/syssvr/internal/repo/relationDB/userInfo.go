@@ -33,6 +33,7 @@ type UserInfoFilter struct {
 	WithRoles      bool
 	WithTenant     bool
 	RoleCode       string
+	UpdatedTime    *stores.Cmp
 }
 
 func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
@@ -44,6 +45,7 @@ func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
 
 func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	db = f.UpdatedTime.Where(db, "updated_time")
 	if f.HasAccessAreas != nil {
 		if len(f.HasAccessAreas) == 0 {
 			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=?", def.TargetUser)

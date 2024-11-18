@@ -4,6 +4,8 @@ import "google/protobuf/wrappers.proto";
 
 package sys;
 
+
+
 service UserManage {
   rpc userInfoCreate(UserInfoCreateReq) returns(UserCreateResp);//创建用户信息
   rpc userInfoIndex(UserInfoIndexReq) returns(UserInfoIndexResp);
@@ -1320,6 +1322,7 @@ message UserInfoIndexReq{
   string account =6;
   repeated int64 hasAccessAreas =7;
   string roleCode =8;
+  CompareInt64 updatedTime=9;
 }
 
 message UserInfoIndexResp{

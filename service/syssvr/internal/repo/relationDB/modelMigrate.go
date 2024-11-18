@@ -5,7 +5,9 @@ import (
 	"database/sql"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
+	"github.com/spf13/cast"
 	"gorm.io/gorm/clause"
 )
 
@@ -70,21 +72,23 @@ func Migrate(c conf.Database) error {
 	if err != nil {
 		return err
 	}
-	//{
-	//	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-	//	if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
-	//		return err
-	//	}
-	//	if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
-	//		return err
-	//	}
-	//}
+	{
+		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
+		if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
+			return err
+		}
+		if err := db.CreateInBatches(&MigrateDictDetail, 100).Error; err != nil {
+			return err
+		}
+
+	}
 
 	if needInitColumn {
 		return migrateTableColumn()
 	}
 	return err
 }
+
 func migrateTableColumn() error {
 	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
 	if err := db.CreateInBatches(&MigrateUserInfo, 100).Error; err != nil {
@@ -114,9 +118,17 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateDataProject, 100).Error; err != nil {
 		return err
 	}
+
 	if err := db.Create(&SysDeptInfo{ID: 3, Name: "锚点"}).Error; err != nil {
 		return err
 	}
+	if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateDictDetail, 100).Error; err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -147,4 +159,40 @@ var (
 		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "管理员", Code: def.RoleCodeAdmin},
 		{ID: 2, TenantCode: def.TenantCodeDefault, Name: "普通用户", Code: def.RoleCodeClient, Desc: "C端用户"},
 		{ID: 3, TenantCode: def.TenantCodeDefault, Name: "超级管理员", Code: def.RoleCodeSupper}}
+
+	MigrateDictInfo = []SysDictInfo{
+		{
+			Name:  "错误",
+			Code:  "error",
+			Group: "基础配置",
+			Desc:  "系统返回的错误code和对应的描述",
+		}, {
+			Name:  "区划",
+			Code:  "adcode",
+			Group: "基础配置",
+			Desc:  "中国区划",
+		}, {
+			Name:  "字典分组",
+			Code:  "dictGroup",
+			Group: "基础配置",
+			Desc:  "字典的分组",
+		},
+	}
+	MigrateDictDetail = []SysDictDetail{
+		{DictCode: "dictGroup", Label: "基础配置", Value: def.DictGroupBase},
+		{DictCode: "dictGroup", Label: "物联网", Value: def.DictGroupThings},
+		{DictCode: "dictGroup", Label: "系统管理", Value: def.DictGroupSystem},
+	}
 )
+
+func init() {
+	for code, msg := range errors.ErrorMap {
+		MigrateDictDetail = append(MigrateDictDetail, SysDictDetail{
+			DictCode: "error",
+			Label:    msg,
+			Value:    cast.ToString(code),
+			Status:   def.True,
+		})
+	}
+	return
+}

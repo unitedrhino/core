@@ -40,6 +40,7 @@ func (l *ModuleMenuMultiImportLogic) ModuleMenuMultiImport(in *sys.MenuMultiImpo
 	if err != nil {
 		return nil, errors.Parameter.AddMsg("导入的菜单格式不对").AddDetail(err)
 	}
+
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		switch in.Mode {
 		case module.MenuImportModeUpdate:

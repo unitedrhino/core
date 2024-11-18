@@ -8,6 +8,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -37,6 +38,9 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 		UserIDs:        in.UserIDs,
 		HasAccessAreas: in.HasAccessAreas,
 		RoleCode:       in.RoleCode,
+	}
+	if in.UpdatedTime != nil {
+		f.UpdatedTime = stores.GetCmp(in.UpdatedTime.CmpType, time.Unix(in.UpdatedTime.Value, 0))
 	}
 	if in.Account != "" {
 		f.Accounts = []string{in.Account}
