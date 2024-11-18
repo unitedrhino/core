@@ -64,5 +64,6 @@ func (l *DictDetailCreateLogic) DictDetailCreate(in *sys.DictDetail) (*sys.WithI
 	if err == nil && parent != nil {
 		po.IDPath = fmt.Sprintf("%s%v-", parent.IDPath, po.ID)
 	}
+	err = relationDB.NewDictDetailRepo(l.ctx).Update(l.ctx, &po)
 	return &sys.WithID{Id: po.ID}, err
 }
