@@ -34,7 +34,9 @@ func (l *DictDetailDeleteLogic) DictDetailDelete(in *sys.WithID) (*sys.Empty, er
 		return nil, err
 	}
 	if old.IDPath != "" {
-		err = relationDB.NewDictDetailRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DictDetailFilter{IDPath: old.IDPath})
+		err = relationDB.NewDictDetailRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DictDetailFilter{DictCode: old.DictCode, IDPath: old.IDPath})
+	} else {
+		err = relationDB.NewDictDetailRepo(l.ctx).Delete(l.ctx, in.Id)
 	}
 	return &sys.Empty{}, err
 }
