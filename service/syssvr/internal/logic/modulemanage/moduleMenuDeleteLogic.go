@@ -32,7 +32,7 @@ func deleteMenu(ctx context.Context, tx *gorm.DB, id []int64) error {
 	if err != nil {
 		return err
 	}
-	if children != nil {
+	if len(children) > 0 {
 		var cids []int64
 		for _, v := range children {
 			cids = append(cids, v.ID)
