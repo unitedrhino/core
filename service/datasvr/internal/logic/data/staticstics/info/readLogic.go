@@ -45,7 +45,7 @@ var (
 	ColFmtMap = map[string]string{
 		"dayFmt":   "date(%v)",
 		"hourFmt":  "DATE_FORMAT(%v, '%%Y-%%m-%%d %%H:00:00')",
-		"mouthFmt": "DATE_FORMAT(%v, '%%Y-%%m')",
+		"monthFmt": "DATE_FORMAT(%v, '%%Y-%%m')",
 		"yearFmt":  "Year(%v)",
 	}
 )
