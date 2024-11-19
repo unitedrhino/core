@@ -2,7 +2,6 @@ package modulemanagelogic
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
@@ -30,6 +29,7 @@ func NewModuleMenuCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func createMenu(ctx context.Context, tx *gorm.DB, in *sys.MenuInfo) (int64, error) {
+	in.Id = 0
 	if in.Type == 0 {
 		in.Type = 1
 	}
@@ -48,7 +48,7 @@ func createMenu(ctx context.Context, tx *gorm.DB, in *sys.MenuInfo) (int64, erro
 	if err != nil {
 		return 0, err
 	}
-	po := logic.ToMenuInfoPo(in)
+	po := utils.Copy[relationDB.SysModuleMenu](in)
 	err = relationDB.NewMenuInfoRepo(tx).Insert(ctx, po)
 	if err != nil {
 		return 0, err

@@ -43,6 +43,7 @@ func ToMenuInfoPo(in *sys.MenuInfo) *relationDB.SysModuleMenu {
 		ModuleCode: in.ModuleCode,
 		ParentID:   in.ParentID,
 		Type:       in.Type,
+		IsCommon:   in.IsCommon,
 		Order:      in.Order,
 		Name:       in.Name,
 		Path:       in.Path,
