@@ -2,8 +2,10 @@ package startup
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
+	modulemanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/modulemanage"
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	tenantmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/tenantmanage"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
@@ -16,6 +18,8 @@ import (
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -29,6 +33,39 @@ func Init(svcCtx *svc.ServiceContext) {
 		logx.Must(err)
 	})
 	InitCache(svcCtx)
+	TableInit(svcCtx)
+}
+
+func TableInit(svcCtx *svc.ServiceContext) {
+	if !relationDB.NeedInitColumn {
+		return
+	}
+	root := "./etc/init/module/"
+
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		if !strings.HasSuffix(info.Name(), ".json") {
+			return nil
+		}
+		body, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		moduleCode, _ := strings.CutSuffix(info.Name(), ".json")
+		_, err = modulemanagelogic.NewModuleMenuMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).ModuleMenuMultiImport(&sys.MenuMultiImportReq{
+			ModuleCode: moduleCode,
+			Mode:       module.MenuImportModeAll,
+			Menu:       string(body),
+		})
+		return err
+	})
+	logx.Error(err)
+	return
 }
 
 func InitCache(svcCtx *svc.ServiceContext) {

@@ -7,19 +7,21 @@ import (
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/users"
 	"github.com/spf13/cast"
 	"gorm.io/gorm/clause"
 )
+
+var NeedInitColumn bool
 
 func Migrate(c conf.Database) error {
 	if c.IsInitTable == false {
 		return nil
 	}
 	db := stores.GetCommonConn(context.TODO())
-	var needInitColumn bool
 	if !db.Migrator().HasTable(&SysUserInfo{}) {
 		//需要初始化表
-		needInitColumn = true
+		NeedInitColumn = true
 	}
 	err := db.AutoMigrate(
 		&SysDeptUser{},
@@ -72,7 +74,10 @@ func Migrate(c conf.Database) error {
 	if err != nil {
 		return err
 	}
-	{
+
+	if NeedInitColumn {
+		return migrateTableColumn()
+	} else {
 		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
 		if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
 			return err
@@ -80,11 +85,6 @@ func Migrate(c conf.Database) error {
 		if err := db.CreateInBatches(&MigrateDictDetail, 100).Error; err != nil {
 			return err
 		}
-
-	}
-
-	if needInitColumn {
-		return migrateTableColumn()
 	}
 	return err
 }
@@ -119,9 +119,6 @@ func migrateTableColumn() error {
 		return err
 	}
 
-	if err := db.Create(&SysDeptInfo{ID: 3, Name: "锚点"}).Error; err != nil {
-		return err
-	}
 	if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
 		return err
 	}
@@ -129,6 +126,23 @@ func migrateTableColumn() error {
 		return err
 	}
 
+	if err := db.CreateInBatches(&MigrateAppInfo, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateModuleInfo, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateAppModule, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateTenantApp, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateTenantAppModule, 100).Error; err != nil {
+		return err
+	}
+	db.Create(&SysDeptInfo{ID: 3, Name: "锚点"})
+	db.Delete(&SysDeptInfo{ID: 3, Name: "锚点"})
 	return nil
 }
 
@@ -155,6 +169,34 @@ var (
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 2},
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 3},
 	}
+	MigrateAppInfo = []SysAppInfo{
+		{Code: "core", Name: "管理后台", Type: "web", SubType: "web"},
+		{Code: "client-mini-wx", Name: "c端微信小程序", Type: "mini", SubType: "wx"},
+		{Code: "client-mini-wx", Name: "c端微信小程序", Type: "mini", SubType: "wx"},
+		{Code: "client-app-android", Name: "客户端安卓", Type: "app", SubType: "android"},
+		{Code: "client-app-ios", Name: "客户端苹果", Type: "app", SubType: "ios"},
+	}
+	MigrateModuleInfo = []SysModuleInfo{
+		{Code: "systemManage", Type: 1, Order: 2, Name: "系统管理", Path: "system", Url: "", Icon: "icon-menu-xitong", Body: `{}`, HideInMenu: 2, SubType: 3, Tag: 1},
+		{Code: "things", Type: 1, Order: 1, Name: "物联网", Path: "things", Url: "/app/things", Icon: "icon-menu-yingyong2", Body: `"{""microAppUrl"":""/app/things"",""microAppName"":""物联网"",""microAppBaseroute"":""things""}"`, HideInMenu: 2, SubType: 1, Tag: 1},
+		{Code: "myThings", Type: 1, Order: 8, Name: "我的物联", Path: "myThings", Url: "/app/my-things", Icon: "icon-menu-haoyou", Body: `"{""microAppUrl"":""/app/my-things"",""microAppName"":""我的物联"",""microAppBaseroute"":""myThings""}"`, HideInMenu: 2, SubType: 1, Tag: 1},
+	}
+	MigrateAppModule = []SysAppModule{
+		{AppCode: "core", ModuleCode: "systemManage"},
+		{AppCode: "core", ModuleCode: "things"},
+		{AppCode: "core", ModuleCode: "myThings"},
+	}
+	MigrateTenantApp = []SysTenantApp{
+		{TenantCode: def.TenantCodeDefault, AppCode: "core", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
+		{TenantCode: def.TenantCodeDefault, AppCode: "client-mini-wx", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
+		{TenantCode: def.TenantCodeDefault, AppCode: "client-app-android", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
+	}
+	MigrateTenantAppModule = []SysTenantAppModule{
+		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "systemManage"}},
+		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "things"}},
+		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "myThings"}},
+	}
+
 	MigrateRoleInfo = []SysRoleInfo{
 		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "管理员", Code: def.RoleCodeAdmin},
 		{ID: 2, TenantCode: def.TenantCodeDefault, Name: "普通用户", Code: def.RoleCodeClient, Desc: "C端用户"},
@@ -164,17 +206,17 @@ var (
 		{
 			Name:  "错误",
 			Code:  "error",
-			Group: "基础配置",
+			Group: def.DictGroupBase,
 			Desc:  "系统返回的错误code和对应的描述",
 		}, {
 			Name:  "区划",
 			Code:  "adcode",
-			Group: "基础配置",
+			Group: def.DictGroupThings,
 			Desc:  "中国区划",
 		}, {
 			Name:  "字典分组",
 			Code:  "dictGroup",
-			Group: "基础配置",
+			Group: def.DictGroupBase,
 			Desc:  "字典的分组",
 		},
 	}
