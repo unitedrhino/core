@@ -178,8 +178,8 @@ var (
 	}
 	MigrateModuleInfo = []SysModuleInfo{
 		{Code: "systemManage", Type: 1, Order: 2, Name: "系统管理", Path: "system", Url: "", Icon: "icon-menu-xitong", Body: `{}`, HideInMenu: 2, SubType: 3, Tag: 1},
-		{Code: "things", Type: 1, Order: 1, Name: "物联网", Path: "things", Url: "/app/things", Icon: "icon-menu-yingyong2", Body: `"{""microAppUrl"":""/app/things"",""microAppName"":""物联网"",""microAppBaseroute"":""things""}"`, HideInMenu: 2, SubType: 1, Tag: 1},
-		{Code: "myThings", Type: 1, Order: 8, Name: "我的物联", Path: "myThings", Url: "/app/my-things", Icon: "icon-menu-haoyou", Body: `"{""microAppUrl"":""/app/my-things"",""microAppName"":""我的物联"",""microAppBaseroute"":""myThings""}"`, HideInMenu: 2, SubType: 1, Tag: 1},
+		{Code: "things", Type: 1, Order: 1, Name: "物联网", Path: "things", Url: "/app/things", Icon: "icon-menu-yingyong2", Body: `{"microAppUrl":"/app/things","microAppName":"物联网","microAppBaseroute":"things"}`, HideInMenu: 2, SubType: 1, Tag: 1},
+		{Code: "myThings", Type: 1, Order: 8, Name: "我的物联", Path: "myThings", Url: "/app/my-things", Icon: "icon-menu-haoyou", Body: `{"microAppUrl":"/app/my-things","microAppName":"我的物联","microAppBaseroute":"myThings"}`, HideInMenu: 2, SubType: 1, Tag: 1},
 	}
 	MigrateAppModule = []SysAppModule{
 		{AppCode: "core", ModuleCode: "systemManage"},
