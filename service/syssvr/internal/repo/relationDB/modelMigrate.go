@@ -209,10 +209,11 @@ var (
 			Group: def.DictGroupBase,
 			Desc:  "系统返回的错误code和对应的描述",
 		}, {
-			Name:  "区划",
-			Code:  "adcode",
-			Group: def.DictGroupThings,
-			Desc:  "中国区划",
+			Name:       "区划",
+			Code:       "adcode",
+			Group:      def.DictGroupThings,
+			Desc:       "中国区划",
+			StructType: 2,
 		}, {
 			Name:  "字典分组",
 			Code:  "dictGroup",
