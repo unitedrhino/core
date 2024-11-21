@@ -5,7 +5,6 @@ import (
 	notifymanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/notifymanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
@@ -37,7 +36,6 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		return nil, errors.Parameter.AddMsg("account需要填写")
 	}
 
-	uc := ctxs.GetUserCtx(l.ctx)
 	switch in.Type {
 	case def.CaptchaTypeImage:
 	case def.CaptchaTypePhone:
@@ -70,30 +68,30 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			return nil, err
 		}
 	case def.CaptchaTypeEmail:
-		if uc == nil {
-			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, in.Use, in.CodeID, in.Code)
+		var imgAuth bool
+		if in.Code != "" {
+			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, in.Use, in.CodeID, in.Code)
 			if account == "" {
 				return nil, errors.Captcha
 			}
+			imgAuth = true
+		}
+		switch in.Use {
+		case def.CaptchaUseLogin, def.CaptchaUseRegister, def.CaptchaUseForgetPwd:
+			if imgAuth == false {
+				return nil, errors.Captcha.AddMsg("需要先填写图形验证码")
+			}
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
-		var BakNotifyCode string
-		switch in.Use {
-		case def.CaptchaUseLogin:
+		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
-		case def.CaptchaUseRegister:
-			ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
-		case def.CaptchaUseChangePwd, def.CaptchaUseForgetPwd, def.CaptchaUseBindAccount:
-			ConfigCode = def.NotifyCodeSysUserChangePwdCaptcha
-			BakNotifyCode = def.NotifyCodeSysUserLoginCaptcha
 		}
 		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
-			Accounts:      []string{in.Account},
-			AccountType:   def.AccountTypeEmail,
-			NotifyCode:    ConfigCode,
-			BakNotifyCode: BakNotifyCode,
-			Type:          def.NotifyTypeEmail,
-			Params:        map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
+			Accounts:    []string{in.Account},
+			AccountType: def.AccountTypeEmail,
+			NotifyCode:  ConfigCode,
+			Type:        def.NotifyTypeEmail,
+			Params:      map[string]any{"code": code, "expr": def.CaptchaExpire / 60},
 		})
 		if err != nil {
 			return nil, err
