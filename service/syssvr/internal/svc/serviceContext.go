@@ -11,11 +11,24 @@ import (
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/tools"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"os"
 )
+
+type CaptchaLimit struct {
+	PhoneIp      *tools.Limit
+	PhoneAccount *tools.Limit
+	EmailIp      *tools.Limit
+	EmailAccount *tools.Limit
+}
+
+type LoginLimit struct {
+	PwdIp      *tools.Limit
+	PwdAccount *tools.Limit
+}
 
 type ServiceContext struct {
 	Config            config.Config
@@ -25,8 +38,9 @@ type ServiceContext struct {
 	Slot              *cache.Slot
 	OssClient         *oss.Client
 	Store             kv.Store
-	PwdCheck          *cache.PwdCheck
 	Captcha           *cache.Captcha
+	CaptchaLimit      CaptchaLimit
+	LoginLimit        LoginLimit
 	Cm                *ClientsManage
 	FastEvent         *eventBus.FastEvent
 	UserTokenInfo     *cache.UserToken
@@ -65,13 +79,24 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	logx.Must(err)
 	userTokenInfo, err := cache.NewUserToken(serverMsg)
 	logx.Must(err)
+	cl := CaptchaLimit{
+		PhoneIp:      tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "phone:ip", config.DefaultIpLimit),
+		PhoneAccount: tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "phone:account", config.DefaultAccountLimit),
+		EmailIp:      tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "email:ip", config.DefaultIpLimit),
+		EmailAccount: tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "email:account", config.DefaultAccountLimit),
+	}
+	ll := LoginLimit{
+		PwdIp:      tools.NewLimit(c.LoginPwdIpLimit, "login", "pwd:ip", config.DefaultIpLimit),
+		PwdAccount: tools.NewLimit(c.LoginPwdAccountLimit, "login", "pwd:account", config.DefaultAccountLimit),
+	}
 	return &ServiceContext{
 		FastEvent:     serverMsg,
 		Captcha:       cache.NewCaptcha(store),
-		PwdCheck:      cache.NewPwdCheck(store),
 		Slot:          cache.NewSlot(),
 		Cm:            NewClients(c),
 		Config:        c,
+		CaptchaLimit:  cl,
+		LoginLimit:    ll,
 		ProjectID:     ProjectID,
 		OssClient:     ossClient,
 		AreaID:        AreaID,

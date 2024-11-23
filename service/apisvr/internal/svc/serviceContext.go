@@ -62,10 +62,9 @@ type SvrClient struct {
 
 type ServiceContext struct {
 	SvrClient
-	Ws        *ws.Server
-	Config    config.Config
-	UserCache sysExport.UserCacheT
-
+	Ws             *ws.Server
+	Config         config.Config
+	UserCache      sysExport.UserCacheT
 	CheckTokenWare rest.Middleware
 	InitCtxsWare   rest.Middleware
 	Captcha        *verify.Captcha

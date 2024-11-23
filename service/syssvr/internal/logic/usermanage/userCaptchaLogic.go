@@ -5,6 +5,7 @@ import (
 	notifymanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/notifymanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
@@ -30,12 +31,11 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		codeID = utils.Random(20, 1)
 		code   = utils.Random(6, 0)
 	)
-	//todo 防盗刷也需要做下处理
 	//code = "123456" //todo debug
 	if utils.SliceIn(in.Type, def.CaptchaTypePhone, def.CaptchaTypeEmail) && in.Account == "" {
 		return nil, errors.Parameter.AddMsg("account需要填写")
 	}
-
+	ip := ctxs.GetUserCtxNoNil(l.ctx).IP
 	switch in.Type {
 	case def.CaptchaTypeImage:
 	case def.CaptchaTypePhone:
@@ -46,6 +46,12 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 				return nil, errors.Captcha
 			}
 			imgAuth = true
+		}
+		if l.svcCtx.CaptchaLimit.PhoneAccount.CheckLimit(l.ctx, in.Account) {
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
+		}
+		if ip != "" && l.svcCtx.CaptchaLimit.PhoneIp.CheckLimit(l.ctx, ip) {
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
 		}
 		switch in.Use {
 		case def.CaptchaUseLogin, def.CaptchaUseRegister, def.CaptchaUseForgetPwd:
@@ -67,6 +73,10 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		if err != nil {
 			return nil, err
 		}
+		l.svcCtx.CaptchaLimit.PhoneAccount.LimitIt(l.ctx, in.Account)
+		if ip != "" {
+			l.svcCtx.CaptchaLimit.PhoneIp.LimitIt(l.ctx, ip)
+		}
 	case def.CaptchaTypeEmail:
 		var imgAuth bool
 		if in.Code != "" {
@@ -75,6 +85,12 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 				return nil, errors.Captcha
 			}
 			imgAuth = true
+		}
+		if l.svcCtx.CaptchaLimit.EmailAccount.CheckLimit(l.ctx, in.Account) {
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
+		}
+		if ip != "" && l.svcCtx.CaptchaLimit.EmailIp.CheckLimit(l.ctx, ip) {
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
 		}
 		switch in.Use {
 		case def.CaptchaUseLogin, def.CaptchaUseRegister, def.CaptchaUseForgetPwd:
@@ -95,6 +111,10 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 		})
 		if err != nil {
 			return nil, err
+		}
+		l.svcCtx.CaptchaLimit.EmailAccount.LimitIt(l.ctx, in.Account)
+		if ip != "" {
+			l.svcCtx.CaptchaLimit.EmailIp.LimitIt(l.ctx, ip)
 		}
 	default:
 		return nil, errors.Parameter.AddMsgf("不支持的验证方式:%v", in.Type)

@@ -6,7 +6,6 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -60,7 +59,7 @@ func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) er
 	return nil
 }
 
-func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCtlInfo) (*sys.UserLoginResp, error) {
+func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo) (*sys.UserLoginResp, error) {
 	now := time.Now()
 	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
 	uc := ctxs.GetUserCtx(l.ctx)
@@ -70,9 +69,6 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo, list []*conf.LoginSafeCt
 		l.Error(err)
 		return nil, errors.System.AddDetail(err)
 	}
-
-	//登录成功，清除密码错误次数相关redis key
-	l.svcCtx.PwdCheck.ClearWrongpassKeys(l.ctx, list)
 
 	//InitCacheUserAuthProject(l.ctx, ui.UserID)
 	//InitCacheUserAuthArea(l.ctx, ui.UserID)
@@ -100,16 +96,32 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	}
 	switch in.LoginType {
 	case users.RegPwd:
-		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
-			return nil, errors.Captcha
+		//if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
+		//	return nil, errors.Captcha
+		//}
+		if l.svcCtx.LoginLimit.PwdAccount.CheckLimit(l.ctx, in.Account) {
+			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
+		}
+		ip := ctxs.GetUserCtxNoNil(l.ctx).IP
+		if ip != "" && l.svcCtx.LoginLimit.PwdIp.CheckLimit(l.ctx, ip) {
+			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
+		}
+		limit := func() {
+			l.svcCtx.LoginLimit.PwdAccount.LimitIt(l.ctx, in.Account)
+			if ip != "" {
+				l.svcCtx.LoginLimit.PwdIp.LimitIt(l.ctx, in.Ip)
+			}
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{in.Account}})
 		if err != nil {
+			limit()
 			return nil, err
 		}
 		if err = l.getPwd(in, uc); err != nil {
+			limit()
 			return nil, err
 		}
+		l.svcCtx.LoginLimit.PwdAccount.CleanLimit(l.ctx, in.Account)
 	case users.RegDingApp:
 		if cli.DingMini == nil {
 			return nil, errors.System.AddDetail(err)
@@ -224,14 +236,6 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 
 func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error) {
 	l.Infof("%s req=%v", utils.FuncName(), utils.Fmt(in))
-	//检查账号是否冻结
-	list := l.svcCtx.Config.WrongPasswordCounter.ParseWrongPassConf(in.Account, in.Ip)
-	if len(list) > 0 {
-		forbiddenTime, f := l.svcCtx.PwdCheck.CheckAccountOrIpForbidden(l.ctx, list)
-		if f {
-			return nil, errors.Default.AddMsgf("%s %d 分钟", errors.AccountOrIpForbidden.Error(), forbiddenTime/60)
-		}
-	}
 	uc := ctxs.GetUserCtx(l.ctx)
 	cfg, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{AppCodes: []string{uc.AppCode}})
 	if err != nil {
@@ -245,20 +249,10 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 		if ui.Status != def.True {
 			return nil, errors.AccountDisable
 		}
-		return l.getRet(ui, list)
+		return l.getRet(ui)
 	}
 	if errors.Cmp(err, errors.NotFind) {
 		return nil, errors.UnRegister
-	}
-	if errors.Cmp(err, errors.Password) {
-		ret, err := l.svcCtx.PwdCheck.CheckPasswordTimes(l.ctx, list)
-		if err != nil {
-			return nil, err
-		}
-		if ret {
-			return nil, errors.UseCaptcha
-		}
-		return nil, errors.Password
 	}
 	return nil, err
 }

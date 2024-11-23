@@ -18,6 +18,7 @@ func NewCaptcha(store kv.Store) *Captcha {
 func (c *Captcha) GenKey(Type, Use, codeID string) string {
 	return "captcha:" + Type + ":" + Use + ":" + codeID
 }
+
 func (c *Captcha) Verify(ctx context.Context, Type, Use, codeID, code string) string {
 	key := c.GenKey(Type, Use, codeID)
 	val, err := c.store.GetCtx(ctx, key)
@@ -42,6 +43,6 @@ func (c *Captcha) Store(ctx context.Context, Type, Use, codeID, code string, acc
 		"code":    code,
 		"account": account,
 	}
-	bodytStr, _ := json.Marshal(body)
-	return c.store.SetexCtx(ctx, c.GenKey(Type, Use, codeID), string(bodytStr), int(expire))
+	bodyStr, _ := json.Marshal(body)
+	return c.store.SetexCtx(ctx, c.GenKey(Type, Use, codeID), string(bodyStr), int(expire))
 }

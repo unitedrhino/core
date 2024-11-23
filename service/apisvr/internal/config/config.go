@@ -30,10 +30,9 @@ type Config struct {
 		AccessSecret string
 		AccessExpire int64
 	} //注册token相关配置
-	Proxy                conf.ProxyConf `json:",optional"`
-	Captcha              Captcha
-	OssConf              conf.OssConf              `json:",optional"`
-	Map                  conf.MapConf              `json:",optional"`
-	WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
-	Event                conf.EventConf            //和things内部交互的设置
+	Proxy   conf.ProxyConf `json:",optional"`
+	Captcha Captcha
+	OssConf conf.OssConf   `json:",optional"`
+	Map     conf.MapConf   `json:",optional"`
+	Event   conf.EventConf //和things内部交互的设置
 }

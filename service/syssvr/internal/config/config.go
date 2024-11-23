@@ -32,6 +32,25 @@ type Config struct {
 		AccessKey    string
 		AccessSecret string
 	}
-	Sms                  conf.Sms
-	WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
+	Sms conf.Sms
+	//WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
+
+	CaptchaPhoneIpLimit      []conf.Limit `json:",optional"`
+	CaptchaPhoneAccountLimit []conf.Limit `json:",optional"`
+	CaptchaEmailIpLimit      []conf.Limit `json:",optional"`
+	CaptchaEmailAccountLimit []conf.Limit `json:",optional"`
+	LoginPwdIpLimit          []conf.Limit `json:",optional"` //密码错误限制
+	LoginPwdAccountLimit     []conf.Limit `json:",optional"` //密码错误限制
+}
+
+var DefaultIpLimit = []conf.Limit{
+	{Timeout: 5 * 60, TriggerTime: 30, ForbiddenTime: 5 * 60},                       //5分钟内错误30次,封禁5分钟
+	{Timeout: 60 * 60, TriggerTime: 100, ForbiddenTime: 60 * 60 * 24},               //1个小时内错误100次,封禁一天
+	{Timeout: 60 * 60 * 24 * 5, TriggerTime: 200, ForbiddenTime: 60 * 60 * 24 * 30}, //5天内错误200次,封禁30天
+}
+
+var DefaultAccountLimit = []conf.Limit{
+	{Timeout: 5 * 60, TriggerTime: 3, ForbiddenTime: 5 * 60},                       //5分钟内错误3次,封禁5分钟
+	{Timeout: 60 * 60, TriggerTime: 10, ForbiddenTime: 60 * 60 * 24},               //1个小时内错误10次,封禁一天
+	{Timeout: 60 * 60 * 24 * 5, TriggerTime: 20, ForbiddenTime: 60 * 60 * 24 * 30}, //5天内错误20次,封禁30天
 }

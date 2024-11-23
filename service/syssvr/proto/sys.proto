@@ -1356,6 +1356,7 @@ message UserCaptchaReq{
   string use = 3;//用途
   string codeID = 4;//验证码编码
   string code = 5;//验证码
+  string ip = 6;//透传请求的 ip
 }
 
 message UserCaptchaResp{

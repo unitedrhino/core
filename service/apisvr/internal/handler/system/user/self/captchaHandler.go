@@ -25,6 +25,7 @@ func CaptchaHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 			r = r.WithContext(ctx2)
 		}
+		r = ctxs.InitCtxWithReq(r)
 		l := self.NewCaptchaLogic(r.Context(), svcCtx)
 		resp, err := l.Captcha(&req)
 		result.Http(w, r, resp, err)
