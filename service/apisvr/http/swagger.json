@@ -14275,7 +14275,7 @@
         "pwdType": {
           "type": "integer",
           "format": "int32",
-          "description": "账号密码登录时需要填写.0或1,无密码 2，明文 3，md5加密"
+          "description": "账号密码登录时需要填写.0,无密码 1，明文 2，md5加密"
         },
         "password": {
           "type": "string",
