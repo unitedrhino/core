@@ -171,7 +171,7 @@ type SysTenantAgreement struct {
 	Code       string            `gorm:"column:code;uniqueIndex:tc_ac;type:VARCHAR(50);NOT NULL"`        // 协议编码
 	Name       string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                          //协议名称
 	Title      string            `gorm:"column:title;type:VARCHAR(50);"`
-	Content    string            `gorm:"column:content;type:MEDIUMTEXT;"`
+	Content    string            `gorm:"column:content;type:text;"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_ac"`
 }

@@ -25,7 +25,6 @@ import (
 	"gitee.com/unitedrhino/share/interceptors"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -78,9 +77,9 @@ func Run(svcCtx *svc.ServiceContext) {
 		sys.RegisterNotifyManageServer(grpcServer, notifymanageServer.NewNotifyManageServer(svcCtx))
 		sys.RegisterDepartmentManageServer(grpcServer, deptMServer.NewDepartmentManageServer(svcCtx))
 		sys.RegisterDictManageServer(grpcServer, dictMServer.NewDictManageServer(svcCtx))
-		if c.Mode == service.DevMode || c.Mode == service.TestMode {
-			reflection.Register(grpcServer)
-		}
+		//if c.Mode == service.DevMode || c.Mode == service.TestMode {
+		reflection.Register(grpcServer)
+		//}
 	})
 	defer s.Stop()
 	s.AddUnaryInterceptors(interceptors.Ctxs, interceptors.Error)
