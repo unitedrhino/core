@@ -7,6 +7,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/internal/domain"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
+	"gitee.com/unitedrhino/share/clients"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/domain/task"
 	"gitee.com/unitedrhino/share/errors"
@@ -95,11 +96,29 @@ func (s *SqlFunc) getConn(in goja.FunctionCall, tp string) (*sql.DB, func() erro
 		}
 	}
 	fmt.Println(driver)
-	db, err := stores.GetConnDB(conf.Database{
-		DBType: dbType,
-		DSN:    dsn,
-		Driver: driver,
-	})
+	db, err := func() (*sql.DB, error) {
+		switch dbType {
+		case conf.Tdengine:
+			td, err := clients.NewTDengine(conf.TSDB{
+				DBType: dbType,
+				Driver: driver,
+				DSN:    dsn,
+			})
+			if err != nil {
+				return nil, err
+			}
+			return td.DB, nil
+		default:
+			conn, err := stores.GetConn(conf.Database{
+				DBType: dbType,
+				DSN:    dsn,
+			})
+			if err != nil {
+				return nil, err
+			}
+			return conn.DB()
+		}
+	}()
 	if err != nil {
 		panic(errors.Database.AddMsgf("getConn.GetConn failure dsn:%v dbType:%v err:%v", dsn, dbType, err))
 	}

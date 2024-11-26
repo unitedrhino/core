@@ -2,8 +2,10 @@ package processTask
 
 import (
 	"context"
+	"database/sql"
 	"gitee.com/unitedrhino/core/service/timed/internal/domain"
 	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/clients"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
@@ -21,11 +23,29 @@ func (t ProcessTask) SqlExec(ctx context.Context, task *domain.TaskInfo) error {
 			return stores.ErrFmt(err)
 		}
 		driver := cast.ToString(task.Env[domain.SqlEnvDriver])
-		db, err := stores.GetConnDB(conf.Database{
-			Driver: driver, //只支持这种模式
-			DSN:    dsn,
-			DBType: dbType,
-		})
+		db, err := func() (*sql.DB, error) {
+			switch dbType {
+			case conf.Tdengine:
+				td, err := clients.NewTDengine(conf.TSDB{
+					DBType: dbType,
+					Driver: driver,
+					DSN:    dsn,
+				})
+				if err != nil {
+					return nil, err
+				}
+				return td.DB, nil
+			default:
+				conn, err := stores.GetConn(conf.Database{
+					DBType: dbType,
+					DSN:    dsn,
+				})
+				if err != nil {
+					return nil, err
+				}
+				return conn.DB()
+			}
+		}()
 		if err != nil {
 			return err
 		}
