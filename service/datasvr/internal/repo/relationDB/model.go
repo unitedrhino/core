@@ -53,7 +53,7 @@ type DataStatisticsInfo struct {
 	Type            string                    `gorm:"column:type;type:VARCHAR(120);not null"`                        //查询的类别: sql:sql模板替换查询   table: 直接查表
 	Table           string                    `gorm:"column:table;type:VARCHAR(120);default:''"`                     //table类型查询的表名
 	Omits           string                    `gorm:"column:omits;type:VARCHAR(120);default:''"`                     //忽略的字段列表,table类型需要
-	IsToHump        int64                     `gorm:"column:is_to_hump;type:BIGINT;default:1;NOT NULL"`              //是否转换为驼峰,入参转换为下划线
+	IsToHump        int64                     `gorm:"column:is_to_hump;type:BIGINT;default:1;"`                      //是否转换为驼峰,入参转换为下划线
 	Sql             string                    `gorm:"column:sql;type:VARCHAR(2000);default:''"`                      //sql类型的sql内容
 	OrderBy         string                    `gorm:"column:order_by;type:VARCHAR(120);default:'created_time desc'"` //排序
 	Filter          map[string]FilterKeywords `gorm:"column:filter;type:json;serializer:json;NOT NULL;default:'{}'"`

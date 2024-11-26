@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
+	accessmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/accessmanage"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
 	modulemanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/modulemanage"
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
@@ -40,31 +41,58 @@ func TableInit(svcCtx *svc.ServiceContext) {
 	if !relationDB.NeedInitColumn {
 		return
 	}
-	root := "./etc/init/module/"
-
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
+	{
+		root := "./etc/init/module/"
+		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+			if !strings.HasSuffix(info.Name(), ".json") {
+				return nil
+			}
+			body, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			moduleCode, _ := strings.CutSuffix(info.Name(), ".json")
+			_, err = modulemanagelogic.NewModuleMenuMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).ModuleMenuMultiImport(&sys.MenuMultiImportReq{
+				ModuleCode: moduleCode,
+				Mode:       module.MenuImportModeAll,
+				Menu:       string(body),
+			})
 			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		if !strings.HasSuffix(info.Name(), ".json") {
-			return nil
-		}
-		body, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		moduleCode, _ := strings.CutSuffix(info.Name(), ".json")
-		_, err = modulemanagelogic.NewModuleMenuMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).ModuleMenuMultiImport(&sys.MenuMultiImportReq{
-			ModuleCode: moduleCode,
-			Mode:       module.MenuImportModeAll,
-			Menu:       string(body),
 		})
-		return err
-	})
-	logx.Error(err)
+		logx.Error(err)
+	}
+	{
+		root := "./etc/init/access/"
+		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+			if !strings.HasSuffix(info.Name(), ".json") {
+				return nil
+			}
+			body, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			moduleCode, _ := strings.CutSuffix(info.Name(), ".json")
+			_, err = accessmanagelogic.NewAccessInfoMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).AccessInfoMultiImport(&sys.AccessInfoMultiImportReq{
+				Module: moduleCode,
+				Access: string(body),
+			})
+			return err
+		})
+		logx.Error(err)
+	}
+
 	return
 }
 
