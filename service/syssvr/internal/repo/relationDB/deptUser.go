@@ -25,6 +25,7 @@ func NewDeptUserRepo(in any) *DeptUserRepo {
 type DeptUserFilter struct {
 	UserID   int64
 	DeptID   int64
+	DeptIDs  []int64
 	WithUser bool
 }
 
@@ -35,6 +36,9 @@ func (p DeptUserRepo) fmtFilter(ctx context.Context, f DeptUserFilter) *gorm.DB 
 	}
 	if f.DeptID != 0 {
 		db = db.Where("dept_id =?", f.DeptID)
+	}
+	if f.DeptIDs != nil {
+		db = db.Where("dept_id IN ?", f.DeptIDs)
 	}
 	if f.WithUser {
 		db = db.Preload("User")

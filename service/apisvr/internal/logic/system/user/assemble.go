@@ -16,13 +16,20 @@ func GetNullVal(val *wrappers.StringValue) *string {
 	return &val.Value
 }
 
-func UserInfoToApi(ui *sys.UserInfo, roles []*sys.RoleInfo, tenant *sys.TenantInfo) *types.UserInfo {
+type UserOpt struct {
+	Roles  []*sys.RoleInfo
+	Tenant *sys.TenantInfo
+	Depts  []*sys.DeptInfo
+}
+
+func UserInfoToApi(ui *sys.UserInfo, opt UserOpt) *types.UserInfo {
 	if ui == nil {
 		return nil
 	}
 	ret := utils.Copy[types.UserInfo](ui)
-	ret.Roles = role.ToRoleInfosTypes(roles)
-	ret.Tenant = system.ToTenantInfoTypes(tenant, nil, nil)
+	ret.Roles = role.ToRoleInfosTypes(opt.Roles)
+	ret.Tenant = system.ToTenantInfoTypes(opt.Tenant, nil, nil)
+	ret.Depts = utils.CopySlice[types.DeptInfo](opt.Depts)
 	return ret
 }
 func UserInfoToRpc(ui *types.UserInfo) *sys.UserInfo {

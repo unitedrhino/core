@@ -85,5 +85,8 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 		err = relationDB.NewUserMessageRepo(l.ctx).MultiInsert(l.ctx, users)
 		return err
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &sys.WithID{Id: po.ID}, err
 }

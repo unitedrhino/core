@@ -32,6 +32,7 @@ func (l *ReadLogic) Read(req *types.UserInfoReadReq) (resp *types.UserInfo, err 
 	var (
 		roles  []*sys.RoleInfo
 		tenant *sys.TenantInfo
+		depts  []*sys.DeptInfo
 	)
 	if req.WithRoles == true {
 		ret, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
@@ -68,6 +69,13 @@ func (l *ReadLogic) Read(req *types.UserInfoReadReq) (resp *types.UserInfo, err 
 	//		areas = ret2.List
 	//	}
 	//}
+	if req.WithDepts {
+		ret, err := l.svcCtx.UserRpc.UserDeptIndex(l.ctx, &sys.UserDeptIndexReq{UserID: info.UserID})
+		if err != nil {
+			return nil, err
+		}
+		depts = ret.List
+	}
 
-	return user.UserInfoToApi(info, roles, tenant), nil
+	return user.UserInfoToApi(info, user.UserOpt{Roles: roles, Tenant: tenant, Depts: depts}), nil
 }

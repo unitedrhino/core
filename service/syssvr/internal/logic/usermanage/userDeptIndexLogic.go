@@ -2,6 +2,8 @@ package usermanagelogic
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -24,7 +26,17 @@ func NewUserDeptIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 }
 
 func (l *UserDeptIndexLogic) UserDeptIndex(in *sys.UserDeptIndexReq) (*sys.UserDeptIndexResp, error) {
-	// todo: add your logic here and delete this line
-
-	return &sys.UserDeptIndexResp{}, nil
+	ur, err := relationDB.NewDeptUserRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptUserFilter{UserID: in.UserID}, nil)
+	if err != nil {
+		return nil, err
+	}
+	var deptIDs []int64
+	for _, v := range ur {
+		deptIDs = append(deptIDs, v.DeptID)
+	}
+	rs, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDs: deptIDs}, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &sys.UserDeptIndexResp{List: utils.CopySlice[sys.DeptInfo](rs), Total: int64(len(deptIDs))}, nil
 }

@@ -47,6 +47,7 @@ import (
 	systemtenantconfig "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/tenant/config"
 	systemtenantcore "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/tenant/core"
 	systemtenantinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/tenant/info"
+	systemuserdept "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/user/dept"
 	systemuserinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/user/info"
 	systemuserrole "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/user/role"
 	systemuserself "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/user/self"
@@ -1506,6 +1507,27 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/tenant/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 新增用户的部门列表
+					Method:  http.MethodPost,
+					Path:    "/multi-create",
+					Handler: systemuserdept.MultiCreateHandler(serverCtx),
+				},
+				{
+					// 删除用户的部门列表
+					Method:  http.MethodPost,
+					Path:    "/multi-delete",
+					Handler: systemuserdept.MultiDeleteHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/user/dept"),
 	)
 
 	server.AddRoutes(

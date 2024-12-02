@@ -2640,6 +2640,16 @@
         {
           "accessCode": "systemUserManageAdd",
           "method": "POST",
+          "route": "/api/v1/system/user/dept/multi-create",
+          "name": "新增用户的部门列表",
+          "isNeedAuth": 1,
+          "businessType": "add",
+          "desc": "",
+          "authType": "admin"
+        },
+        {
+          "accessCode": "systemUserManageAdd",
+          "method": "POST",
           "route": "/api/v1/system/user/info/create",
           "name": "创建用户信息",
           "isNeedAuth": 1,
@@ -2657,6 +2667,16 @@
       "isNeedAuth": 1,
       "desc": "",
       "apis": [
+        {
+          "accessCode": "systemUserManageDelete",
+          "method": "POST",
+          "route": "/api/v1/system/user/dept/multi-delete",
+          "name": "删除用户的部门列表",
+          "isNeedAuth": 1,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "admin"
+        },
         {
           "accessCode": "systemUserManageDelete",
           "method": "POST",

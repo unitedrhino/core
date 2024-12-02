@@ -7211,6 +7211,84 @@
         ]
       }
     },
+    "/api/v1/system/user/dept/multi-create": {
+      "post": {
+        "summary": "新增用户的部门列表",
+        "operationId": "postApiV1SystemUserDeptMulti-create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDeptMultiSaveReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/dept",
+          "systemUserDept"
+        ]
+      }
+    },
+    "/api/v1/system/user/dept/multi-delete": {
+      "post": {
+        "summary": "删除用户的部门列表",
+        "operationId": "postApiV1SystemUserDeptMulti-delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDeptMultiSaveReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/dept",
+          "systemUserDept"
+        ]
+      }
+    },
     "/api/v1/system/user/info/create": {
       "post": {
         "summary": "创建用户信息",
@@ -14003,6 +14081,28 @@
       },
       "title": "UserCreateResp"
     },
+    "UserDeptMultiSaveReq": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "string",
+          "description": " 用户id"
+        },
+        "deptIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": "角色编号列表"
+        }
+      },
+      "title": "UserDeptMultiSaveReq",
+      "required": [
+        "userID",
+        "deptIDs"
+      ]
+    },
     "UserForgetPwdReq": {
       "type": "object",
       "properties": {
@@ -14116,6 +14216,14 @@
           "format": "int64",
           "description": " 是否所有数据权限（1是，2否）"
         },
+        "deptIDs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": "部门ID列表"
+        },
         "status": {
           "type": "integer",
           "format": "int64"
@@ -14224,7 +14332,13 @@
         },
         "withRoles": {
           "type": "boolean",
-          "format": "boolean"
+          "format": "boolean",
+          "description": "同时返回所有的角色列表"
+        },
+        "withDepts": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时返回所属的部门列表"
         }
       },
       "title": "UserInfoIndexReq"
@@ -14261,6 +14375,11 @@
         "withTenant": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "withDepts": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时返回所属的部门列表"
         }
       },
       "title": "UserInfoReadReq"

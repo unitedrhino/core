@@ -18,9 +18,6 @@ info(
     middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
-    @doc "获取用户部门列表"
-    @handler index
-    post /index (UserDeptIndexReq) returns (UserDeptIndexResp)
     @doc "新增用户的部门列表"
     @handler multiCreate
     post /multi-create (UserDeptMultiSaveReq) returns ()
@@ -32,15 +29,6 @@ service api {
 
 //用户级权限控制
 type (
-    UserDeptIndexReq{
-        UserID         int64  `json:"userID,string"`        // 用户id
-    }
-
-    UserDeptIndexResp{
-        Total int64 `json:"total"`
-        List  []*DeptInfo `json:"list"`           //用户角色列表
-    }
-
     UserDeptMultiSaveReq{
         UserID         int64  `json:"userID,string"`        // 用户id
         DeptIDs 		[]int64 `json:"deptIDs"` //角色编号列表

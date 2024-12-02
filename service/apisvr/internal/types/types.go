@@ -1466,6 +1466,11 @@ type UserCreateResp struct {
 	UserID int64 `json:"userID,string,optional"` // 用户id
 }
 
+type UserDeptMultiSaveReq struct {
+	UserID  int64   `json:"userID,string"` // 用户id
+	DeptIDs []int64 `json:"deptIDs"`       //角色编号列表
+}
+
 type UserForgetPwdReq struct {
 	Type     string `json:"type,options=phone|email"` //验证方式:	phone手机号 email邮箱
 	Account  string `json:"account,optional"`         //手机号注册时填写手机号 账号密码注册时填写userName
@@ -1493,6 +1498,7 @@ type UserInfo struct {
 	Role            int64             `json:"role,optional"`                      // 用户角色默认
 	Sex             int64             `json:"sex,optional"`                       // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 	IsAllData       int64             `json:"isAllData,optional,omitempty"`       // 是否所有数据权限（1是，2否）
+	DeptIDs         []int64           `json:"deptIDs,optional,omitempty"`         //部门ID列表
 	Status          int64             `json:"status,optional"`
 	Tags            map[string]string `json:"tags,optional,omitempty"` //标签对象
 	MessageNotRead  map[string]int64  `json:"messageNotRead,optional,omitempty"`
@@ -1520,7 +1526,8 @@ type UserInfoIndexReq struct {
 	UserIDs        []int64   `json:"userIDs,optional"`
 	HasAccessAreas []int64   `json:"hasAccessAreas,string,optional"` //查询拥有该区域权限的用户
 	RoleCode       string    `json:"roleCode,optional"`              //查询角色code
-	WithRoles      bool      `json:"withRoles,optional"`
+	WithRoles      bool      `json:"withRoles,optional"`             //同时返回所有的角色列表
+	WithDepts      bool      `json:"withDepts,optional"`             //同时返回所属的部门列表
 }
 
 type UserInfoIndexResp struct {
@@ -1532,6 +1539,7 @@ type UserInfoReadReq struct {
 	UserID     int64 `json:"userID,string,optional"` // 用户id
 	WithRoles  bool  `json:"withRoles,optional"`
 	WithTenant bool  `json:"withTenant,optional"`
+	WithDepts  bool  `json:"withDepts,optional"` //同时返回所属的部门列表
 }
 
 type UserLoginReq struct {

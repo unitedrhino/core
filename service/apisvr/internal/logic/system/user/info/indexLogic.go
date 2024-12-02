@@ -68,6 +68,7 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 		}
 		var (
 			roles []*sys.RoleInfo
+			depts []*sys.DeptInfo
 		)
 		if req.WithRoles == true {
 			ret, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
@@ -78,7 +79,15 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 			}
 			roles = ret.List
 		}
-		userInfo = append(userInfo, user.UserInfoToApi(i, roles, nil))
+		if req.WithDepts {
+			ret, err := l.svcCtx.UserRpc.UserDeptIndex(l.ctx, &sys.UserDeptIndexReq{UserID: i.UserID})
+			if err != nil {
+				return nil, err
+			}
+			depts = ret.List
+		}
+
+		userInfo = append(userInfo, user.UserInfoToApi(i, user.UserOpt{Roles: roles, Depts: depts}))
 	}
 
 	return &types.UserInfoIndexResp{List: userInfo, Total: total}, nil

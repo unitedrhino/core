@@ -1239,7 +1239,7 @@ message UserInfo{
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
   int64 status =21;
   map<string, string> tags = 24;//标签
-
+  repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
 }
 
 
