@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -39,7 +40,7 @@ func (p NotifyConfigRepo) fmtFilter(ctx context.Context, f NotifyConfigFilter) *
 		db = db.Where("id=?", f.ID)
 	}
 	if f.Group != "" {
-		db = db.Where("group=?", f.Group)
+		db = db.Where(fmt.Sprintf("%s=?", stores.Col("group")), f.Group)
 	}
 	if f.Name != "" {
 		db = db.Where("name like ?", "%"+f.Name+"%")
