@@ -148,15 +148,29 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			})
 			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), er)
 			if er == nil {
+				var accounts []string
+
 				if ui.OrgEmail != "" {
 					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
 					uc.UserName = uc.Email
+					accounts = append(accounts, ui.OrgEmail)
 				}
 				if ui.Mobile != "" {
 					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
 					uc.UserName = uc.Phone
+					accounts = append(accounts, ui.Mobile)
 				}
-
+				uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: accounts})
+				if err == nil {
+					if ui.OrgEmail != "" {
+						uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+					}
+					if ui.Mobile != "" {
+						uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+					}
+					err = l.UiDB.Update(l.ctx, uc)
+					goto end
+				}
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
@@ -230,6 +244,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)
 		return nil, errors.Parameter
 	}
+end:
 	l.Infof("%s uc=%#v err=%+v", utils.FuncName(), uc, err)
 	return uc, err
 }
