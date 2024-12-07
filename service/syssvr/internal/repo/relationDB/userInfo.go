@@ -33,6 +33,7 @@ type UserInfoFilter struct {
 	WithRoles      bool
 	WithTenant     bool
 	RoleCode       string
+	DeptID         int64
 	UpdatedTime    *stores.Cmp
 }
 
@@ -54,6 +55,10 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=? and area_id in ?", def.TargetUser, f.HasAccessAreas)
 			db = db.Where("user_id in (?)", subQuery)
 		}
+	}
+	if f.DeptID > 0 {
+		subQuery := p.db.Model(&SysDeptUser{}).Select("user_id").Where("dept_id=?", f.DeptID)
+		db = db.Where("user_id in (?)", subQuery)
 	}
 	if f.DingTalkUserID != "" {
 		db = db.Where("ding_talk_user_id = ?", f.DingTalkUserID)

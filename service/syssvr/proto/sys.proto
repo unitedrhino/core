@@ -1323,6 +1323,7 @@ message UserInfoIndexReq{
   repeated int64 hasAccessAreas =7;
   string roleCode =8;
   CompareInt64 updatedTime=9;
+  int64 deptID =10;
 }
 
 message UserInfoIndexResp{

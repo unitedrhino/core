@@ -9706,13 +9706,11 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 编号"
         },
         "parentID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "父节点"
         },
         "idPath": {
@@ -9757,8 +9755,7 @@
           "description": " 分页信息,只获取一个则不填"
         },
         "parentID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "父节点"
         },
         "status": {
@@ -9799,8 +9796,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": " 编号"
         },
         "withFather": {
@@ -14090,8 +14086,7 @@
         "deptIDs": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "description": "角色编号列表"
         }
@@ -14314,8 +14309,7 @@
         "userIDs": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         },
         "hasAccessAreas": {
@@ -14324,6 +14318,9 @@
             "type": "string"
           },
           "description": "查询拥有该区域权限的用户"
+        },
+        "deptID": {
+          "type": "string"
         },
         "roleCode": {
           "type": "string",

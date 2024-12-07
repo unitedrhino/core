@@ -31,6 +31,6 @@ service api {
 type (
     UserDeptMultiSaveReq{
         UserID         int64  `json:"userID,string"`        // 用户id
-        DeptIDs 		[]int64 `json:"deptIDs"` //角色编号列表
+        DeptIDs 		[]int64 `json:"deptIDs,string"` //角色编号列表
     }
 )

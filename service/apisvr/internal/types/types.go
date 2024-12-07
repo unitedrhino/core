@@ -338,22 +338,22 @@ type DebugResp struct {
 }
 
 type DeptInfo struct {
-	ID       int64       `json:"id,optional"`                 // 编号
-	ParentID int64       `json:"parentID,optional,omitempty"` //父节点
-	IDPath   string      `json:"idPath,optional"`             //1-2-3-的格式记录顶级区域到当前id的路径
-	Name     string      `json:"name,optional"`               // 部门名称
-	Sort     int64       `json:"sort,optional"`               // 排序标记
-	Desc     *string     `json:"desc,optional"`               // 模块描述
-	Status   int64       `json:"status,optional"`             // 状态  1:启用,2:禁用
+	ID       int64       `json:"id,string,optional"`                 // 编号
+	ParentID int64       `json:"parentID,string,optional,omitempty"` //父节点
+	IDPath   string      `json:"idPath,optional"`                    //1-2-3-的格式记录顶级区域到当前id的路径
+	Name     string      `json:"name,optional"`                      // 部门名称
+	Sort     int64       `json:"sort,optional"`                      // 排序标记
+	Desc     *string     `json:"desc,optional"`                      // 模块描述
+	Status   int64       `json:"status,optional"`                    // 状态  1:启用,2:禁用
 	Parent   *DeptInfo   `json:"parent,optional,omitempty"`
 	Children []*DeptInfo `json:"children,optional,omitempty"`
 }
 
 type DeptInfoIndexReq struct {
-	Page     *PageInfo `json:"page,optional"`     // 分页信息,只获取一个则不填
-	ParentID int64     `json:"parentID,optional"` //父节点
-	Status   int64     `json:"status,optional"`   // 状态  1:启用,2:禁用
-	Name     string    `json:"name,optional"`     // 名称
+	Page     *PageInfo `json:"page,optional"`            // 分页信息,只获取一个则不填
+	ParentID int64     `json:"parentID,string,optional"` //父节点
+	Status   int64     `json:"status,optional"`          // 状态  1:启用,2:禁用
+	Name     string    `json:"name,optional"`            // 名称
 }
 
 type DeptInfoIndexResp struct {
@@ -362,7 +362,7 @@ type DeptInfoIndexResp struct {
 }
 
 type DeptInfoReadReq struct {
-	ID           int64 `json:"id,optional"`           // 编号
+	ID           int64 `json:"id,optional,string"`    // 编号
 	WithFather   bool  `json:"withFather,optional"`   //是否返回父级
 	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
 }
@@ -1467,8 +1467,8 @@ type UserCreateResp struct {
 }
 
 type UserDeptMultiSaveReq struct {
-	UserID  int64   `json:"userID,string"` // 用户id
-	DeptIDs []int64 `json:"deptIDs"`       //角色编号列表
+	UserID  int64   `json:"userID,string"`  // 用户id
+	DeptIDs []int64 `json:"deptIDs,string"` //角色编号列表
 }
 
 type UserForgetPwdReq struct {
@@ -1523,11 +1523,12 @@ type UserInfoIndexReq struct {
 	Phone          string    `json:"phone,optional"`    // 手机号
 	Email          string    `json:"email,optional"`    // 邮箱
 	Account        string    `json:"account,optional"`
-	UserIDs        []int64   `json:"userIDs,optional"`
+	UserIDs        []int64   `json:"userIDs,string,optional"`
 	HasAccessAreas []int64   `json:"hasAccessAreas,string,optional"` //查询拥有该区域权限的用户
-	RoleCode       string    `json:"roleCode,optional"`              //查询角色code
-	WithRoles      bool      `json:"withRoles,optional"`             //同时返回所有的角色列表
-	WithDepts      bool      `json:"withDepts,optional"`             //同时返回所属的部门列表
+	DeptID         int64     `json:"deptID,string,optional"`
+	RoleCode       string    `json:"roleCode,optional"`  //查询角色code
+	WithRoles      bool      `json:"withRoles,optional"` //同时返回所有的角色列表
+	WithDepts      bool      `json:"withDepts,optional"` //同时返回所属的部门列表
 }
 
 type UserInfoIndexResp struct {
