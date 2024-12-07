@@ -14213,8 +14213,7 @@
         "deptIDs": {
           "type": "array",
           "items": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           "description": "部门ID列表"
         },
