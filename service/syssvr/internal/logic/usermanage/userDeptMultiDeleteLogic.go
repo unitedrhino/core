@@ -33,6 +33,19 @@ func (l *UserDeptMultiDeleteLogic) UserDeptMultiDelete(in *sys.UserDeptMultiSave
 		UserID:  in.UserID,
 		DeptIDs: in.DeptIDs,
 	})
-
+	if err != nil {
+		return nil, err
+	}
+	var idPaths []string
+	rs, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{
+		IDs: in.DeptIDs,
+	}, nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range rs {
+		idPaths = append(idPaths, v.IDPath)
+	}
+	fillDeptUserCount(l.ctx, l.svcCtx, idPaths...)
 	return &sys.Empty{}, err
 }

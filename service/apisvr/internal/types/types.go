@@ -338,15 +338,16 @@ type DebugResp struct {
 }
 
 type DeptInfo struct {
-	ID       int64       `json:"id,string,optional"`                 // 编号
-	ParentID int64       `json:"parentID,string,optional,omitempty"` //父节点
-	IDPath   string      `json:"idPath,optional"`                    //1-2-3-的格式记录顶级区域到当前id的路径
-	Name     string      `json:"name,optional"`                      // 部门名称
-	Sort     int64       `json:"sort,optional"`                      // 排序标记
-	Desc     *string     `json:"desc,optional"`                      // 模块描述
-	Status   int64       `json:"status,optional"`                    // 状态  1:启用,2:禁用
-	Parent   *DeptInfo   `json:"parent,optional,omitempty"`
-	Children []*DeptInfo `json:"children,optional,omitempty"`
+	ID        int64       `json:"id,string,optional"`                 // 编号
+	ParentID  int64       `json:"parentID,string,optional,omitempty"` //父节点
+	IDPath    string      `json:"idPath,optional"`                    //1-2-3-的格式记录顶级区域到当前id的路径
+	Name      string      `json:"name,optional"`                      // 部门名称
+	Sort      int64       `json:"sort,optional"`                      // 排序标记
+	Desc      *string     `json:"desc,optional"`                      // 描述
+	UserCount int64       `json:"userCount,optional"`                 //只读,用户统计,包含下级部门的人数
+	Status    int64       `json:"status,optional"`                    // 状态  1:启用,2:禁用
+	Parent    *DeptInfo   `json:"parent,optional,omitempty"`
+	Children  []*DeptInfo `json:"children,optional,omitempty"`
 }
 
 type DeptInfoIndexReq struct {

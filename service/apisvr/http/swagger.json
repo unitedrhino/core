@@ -9728,7 +9728,12 @@
         },
         "desc": {
           "type": "string",
-          "description": " 模块描述"
+          "description": " 描述"
+        },
+        "userCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "只读,用户统计,包含下级部门的人数"
         },
         "status": {
           "type": "integer",

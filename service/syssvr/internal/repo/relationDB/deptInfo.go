@@ -99,6 +99,12 @@ func (p DeptInfoRepo) Update(ctx context.Context, data *SysDeptInfo) error {
 	return stores.ErrFmt(err)
 }
 
+func (d DeptInfoRepo) UpdateWithField(ctx context.Context, f DeptInfoFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysDeptInfo{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
+
 func (p DeptInfoRepo) DeleteByFilter(ctx context.Context, f DeptInfoFilter) error {
 	db := p.fmtFilter(ctx, f)
 	err := db.Delete(&SysDeptInfo{}).Error

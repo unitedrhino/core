@@ -36,6 +36,11 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 			Status: def.True,
 			Sort:   1,
 		}
+		t, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{})
+		if err != nil {
+			return nil, err
+		}
+		po.UserCount = t
 		if in.WithChildren {
 			pos, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx,
 				relationDB.DeptInfoFilter{ParentID: def.RootNode}, nil)

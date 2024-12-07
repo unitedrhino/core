@@ -144,8 +144,9 @@ func (l *DeptInfoSyncLogic) DeptInfoSyncDingTalkUser(info *relationDB.SysDeptInf
 					})
 				}
 				err = relationDB.NewDeptUserRepo(l.ctx).Insert(l.ctx, &relationDB.SysDeptUser{
-					UserID: uc.UserID,
-					DeptID: info.ID,
+					UserID:     uc.UserID,
+					DeptID:     info.ID,
+					DeptIDPath: info.IDPath,
 				})
 				if err != nil {
 					return err

@@ -1700,6 +1700,7 @@ message DeptInfo{
   repeated DeptInfo children =7;
   int64 sort = 8;          // 排序标记
   string idPath = 9;
+  int64 userCount = 10;//只读,用户统计,包含下级部门的人数
 }
 
 message DeptInfoIndexReq{

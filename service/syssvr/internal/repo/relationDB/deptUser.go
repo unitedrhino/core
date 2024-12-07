@@ -23,10 +23,11 @@ func NewDeptUserRepo(in any) *DeptUserRepo {
 }
 
 type DeptUserFilter struct {
-	UserID   int64
-	DeptID   int64
-	DeptIDs  []int64
-	WithUser bool
+	UserID     int64
+	DeptID     int64
+	DeptIDs    []int64
+	DeptIDPath string
+	WithUser   bool
 }
 
 func (p DeptUserRepo) fmtFilter(ctx context.Context, f DeptUserFilter) *gorm.DB {
@@ -39,6 +40,9 @@ func (p DeptUserRepo) fmtFilter(ctx context.Context, f DeptUserFilter) *gorm.DB 
 	}
 	if f.DeptIDs != nil {
 		db = db.Where("dept_id IN ?", f.DeptIDs)
+	}
+	if f.DeptIDPath != "" {
+		db = db.Where("dept_id_path  like ?", f.DeptIDPath+"%")
 	}
 	if f.WithUser {
 		db = db.Preload("User")

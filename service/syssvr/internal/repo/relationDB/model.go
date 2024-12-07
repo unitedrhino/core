@@ -72,8 +72,9 @@ type SysDeptInfo struct {
 	Status     int64             `gorm:"column:status;type:SMALLINT;default:1"`                             // 状态  1:启用,2:禁用
 	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                          // 排序标记
 	Desc       string            `gorm:"column:desc;comment:描述"`                                            // 描述
-	IDPath     string            `gorm:"column:id_path;type:varchar(100);NOT NULL"`                         // 1-2-3-的格式记录顶级区域到当前id的路径
-	DingTalkID int64             `gorm:"column:ding_talk_id;default:0;"`                                    //钉钉的部门ID
+	UserCount  int64             `gorm:"column:sort;comment:用户统计,包含下级部门的人数"`
+	IDPath     string            `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
+	DingTalkID int64             `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:name"`
 	Children    []*SysDeptInfo     `gorm:"foreignKey:parent_id;references:id"`
@@ -89,6 +90,7 @@ type SysDeptUser struct {
 	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"`         // 租户编码
 	UserID     int64             `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 用户ID
 	DeptID     int64             `gorm:"column:dept_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 角色ID
+	DeptIDPath string            `gorm:"column:dept_id_path;type:varchar(100);NOT NULL"`        // 1-2-3-的格式记录顶级区域到当前id的路径
 	Dept       *SysDeptInfo      `gorm:"foreignKey:ID;references:DeptID"`
 	User       *SysUserInfo      `gorm:"foreignKey:UserID;references:UserID"`
 	stores.NoDelTime
