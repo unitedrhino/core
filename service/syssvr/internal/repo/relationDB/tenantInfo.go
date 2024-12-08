@@ -89,7 +89,7 @@ func (p TenantInfoRepo) Update(ctx context.Context, data *SysTenantInfo) error {
 
 func (p TenantInfoRepo) UpdateUserCount(ctx context.Context, tenantCode string) error {
 	subQuery := p.db.Model(&SysUserInfo{}).Select("count(1)").Where("tenant_code = ?", tenantCode)
-	err := p.db.WithContext(ctx).Where("code = ?", tenantCode).Update("user_count", subQuery).Error
+	err := p.db.WithContext(ctx).Model(&SysTenantInfo{}).Omit("updated_by", "updated_time").Where("code = ?", tenantCode).Update("user_count", stores.Expr("(?)", subQuery)).Error
 	return stores.ErrFmt(err)
 }
 

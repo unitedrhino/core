@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -14,6 +15,7 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -232,12 +234,12 @@ func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB
 func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, tx *gorm.DB) error {
 	ctx = ctxs.WithAdmin(ctx)
 	uc := ctxs.GetUserCtx(ctx)
-	err := tx.Transaction(func(tx *gorm.DB) error {
+	cfg, err := svcCtx.TenantConfigCache.GetData(ctx, uc.TenantCode)
+	if err != nil {
+		return err
+	}
+	err = tx.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
-		cfg, err := relationDB.NewTenantConfigRepo(tx).FindOne(ctx)
-		if err != nil {
-			return err
-		}
 		in.RegIP = uc.IP
 		in.Role = cfg.RegisterRoleID
 		err = uidb.Insert(ctx, in)
@@ -251,10 +253,15 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		if err != nil {
 			return err
 		}
-		if len(cfg.RegisterAutoCreateProject) > 0 {
-			piDb := relationDB.NewProjectInfoRepo(tx)
+		return err
+	})
+	if err == nil && len(cfg.RegisterAutoCreateProject) > 0 {
+		ctxs.GoNewCtx(ctx, func(ctx context.Context) {
+			var pis []*relationDB.SysProjectInfo
+			var dps []*relationDB.SysDataProject
+			var ais []*relationDB.SysAreaInfo
 			for _, rap := range cfg.RegisterAutoCreateProject {
-				po := &relationDB.SysProjectInfo{
+				po := relationDB.SysProjectInfo{
 					ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
 					ProjectName: rap.ProjectName,
 					//CompanyName: utils.ToEmptyString(in.CompanyName),
@@ -263,26 +270,21 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 					IsSysCreated: rap.IsSysCreated,
 					Desc:         "自动创建",
 				}
-				err = piDb.Insert(ctx, po)
-				if err != nil {
-					logx.WithContext(ctx).Errorf("%s.Insert err=%+v", utils.FuncName(), err)
-					return err
-				}
-				err = relationDB.NewDataProjectRepo(tx).Insert(ctx, &relationDB.SysDataProject{
+				pis = append(pis, &po)
+				dps = append(dps, &relationDB.SysDataProject{
 					ProjectID:  int64(po.ProjectID),
 					TargetType: def.TargetUser,
 					TargetID:   po.AdminUserID,
 					AuthType:   def.AuthAdmin,
 				})
 				if rap.Areas != nil {
-					aiRepo := relationDB.NewAreaInfoRepo(tx)
 					for _, area := range rap.Areas {
 						var areaID = svcCtx.AreaID.GetSnowflakeId()
 						var areaIDPath string = cast.ToString(areaID) + "-"
 						var areaNamePath = area.AreaName + "-"
-						areaPo := &relationDB.SysAreaInfo{
+						areaPo := relationDB.SysAreaInfo{
 							AreaID:       stores.AreaID(areaID),
-							ParentAreaID: 1,            //创建时必填
+							ParentAreaID: def.RootNode, //创建时必填
 							ProjectID:    po.ProjectID, //创建时必填
 							AreaIDPath:   areaIDPath,
 							AreaNamePath: areaNamePath,
@@ -291,22 +293,66 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 							IsLeaf:       def.True,
 							IsSysCreated: area.IsSysCreated,
 						}
-						err = aiRepo.Insert(ctx, areaPo)
+						ais = append(ais, &areaPo)
+					}
+				}
+			}
+			for i := 3; i > 0; i-- { //三次重试
+				err := stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
+					if len(pis) > 0 {
+						piDb := relationDB.NewProjectInfoRepo(tx)
+						err := piDb.MultiInsert(ctx, pis)
 						if err != nil {
-							logx.WithContext(ctx).Errorf("%s.Insert err=%+v", utils.FuncName(), err)
+							logx.WithContext(ctx).Error(err)
 							return err
 						}
+					}
+					if len(dps) > 0 {
+						err := relationDB.NewDataProjectRepo(tx).MultiInsert(ctx, dps)
+						if err != nil {
+							logx.WithContext(ctx).Error(err)
+							return err
+						}
+					}
+					if len(ais) > 0 {
+						aiRepo := relationDB.NewAreaInfoRepo(tx)
+						err := aiRepo.MultiInsert(ctx, ais)
+						if err != nil {
+							logx.WithContext(ctx).Error(err)
+							return err
+						}
+					}
+					return nil
+				})
+				if err == nil {
+					return
+				}
+			}
+
+		})
+	}
+	return err
+}
+
+func Init() {
+	ctx := ctxs.WithRoot(context.Background())
+	utils.Go(ctx, func() {
+		t := time.NewTicker(time.Second * 5)
+		for {
+			select {
+			case <-t.C:
+				tenantCodes, err := caches.GetTenantCodes(ctx)
+				if err != nil {
+					logx.WithContext(ctx).Error(err)
+					continue
+				}
+				for _, code := range tenantCodes {
+					err = relationDB.NewTenantInfoRepo(ctx).UpdateUserCount(ctx, code)
+					if err != nil {
+						logx.WithContext(ctx).Error(err)
 					}
 				}
 			}
 		}
-		return err
 	})
-	if err != nil {
-		er := relationDB.NewTenantInfoRepo(ctx).UpdateUserCount(ctx, uc.TenantCode)
-		if er != nil {
-			logx.WithContext(ctx).Errorf("%s.UpdateUserCount err=%+v", utils.FuncName(), er)
-		}
-	}
-	return err
 }

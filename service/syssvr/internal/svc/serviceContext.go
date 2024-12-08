@@ -77,8 +77,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	logx.Must(err)
 	sms, err := smsClient.NewSms(c.Sms)
 	logx.Must(err)
-	userTokenInfo, err := cache.NewUserToken(serverMsg)
-	logx.Must(err)
+
 	cl := CaptchaLimit{
 		PhoneIp:      tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "phone:ip", config.DefaultIpLimit),
 		PhoneAccount: tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "phone:account", config.DefaultAccountLimit),
@@ -90,19 +89,18 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		PwdAccount: tools.NewLimit(c.LoginPwdAccountLimit, "login", "pwd:account", config.DefaultAccountLimit),
 	}
 	return &ServiceContext{
-		FastEvent:     serverMsg,
-		Captcha:       cache.NewCaptcha(store),
-		Slot:          cache.NewSlot(),
-		Cm:            NewClients(c),
-		Config:        c,
-		CaptchaLimit:  cl,
-		LoginLimit:    ll,
-		ProjectID:     ProjectID,
-		OssClient:     ossClient,
-		AreaID:        AreaID,
-		UserID:        UserID,
-		Store:         store,
-		Sms:           sms,
-		UserTokenInfo: userTokenInfo,
+		FastEvent:    serverMsg,
+		Captcha:      cache.NewCaptcha(store),
+		Slot:         cache.NewSlot(),
+		Cm:           NewClients(c),
+		Config:       c,
+		CaptchaLimit: cl,
+		LoginLimit:   ll,
+		ProjectID:    ProjectID,
+		OssClient:    ossClient,
+		AreaID:       AreaID,
+		UserID:       UserID,
+		Store:        store,
+		Sms:          sms,
 	}
 }

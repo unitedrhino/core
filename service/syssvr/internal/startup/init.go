@@ -10,6 +10,7 @@ import (
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	tenantmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/tenantmanage"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -35,6 +36,7 @@ func Init(svcCtx *svc.ServiceContext) {
 	})
 	InitCache(svcCtx)
 	TableInit(svcCtx)
+	usermanagelogic.Init()
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
@@ -232,5 +234,10 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		})
 		logx.Must(err)
 		svcCtx.RoleAccessCache = c
+	}
+	{
+		userTokenInfo, err := cache.NewUserToken(svcCtx.FastEvent, svcCtx.TenantCache, svcCtx.UserCache)
+		logx.Must(err)
+		svcCtx.UserTokenInfo = userTokenInfo
 	}
 }
