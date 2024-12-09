@@ -23,13 +23,17 @@ func NewUserRoleRepo(in any) *UserRoleRepo {
 }
 
 type UserRoleFilter struct {
-	UserID int64
+	UserID   int64
+	WithRole bool
 }
 
 func (p UserRoleRepo) fmtFilter(ctx context.Context, f UserRoleFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.UserID != 0 {
 		db = db.Where("user_id =?", f.UserID)
+	}
+	if f.WithRole {
+		db = db.Preload("Role")
 	}
 	return db
 }

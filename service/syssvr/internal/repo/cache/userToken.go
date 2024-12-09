@@ -29,7 +29,7 @@ func NewUserToken(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 			if err != nil {
 				return nil, err
 			}
-			roles, err := relationDB.NewUserRoleRepo(ctx).FindByFilter(ctx, relationDB.UserRoleFilter{UserID: key}, nil)
+			roles, err := relationDB.NewUserRoleRepo(ctx).FindByFilter(ctx, relationDB.UserRoleFilter{UserID: key, WithRole: true}, nil)
 			if err != nil {
 				return nil, err
 			}
