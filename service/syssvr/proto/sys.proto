@@ -670,6 +670,7 @@ message TenantConfig{
   int64 checkUserDelete=5;//1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
   google.protobuf.Int64Value deviceLimit = 8;//租户下的设备数量限制,0为不限制
   repeated  TenantConfigRegisterAutoCreateProject registerAutoCreateProject =6;//注册自动创建项目
+  repeated int64 feedbackNotifyUserIDs = 9;//产生问题反馈通知的用户ID列表
 }
 
 message TenantConfigRegisterAutoCreateProject{
@@ -1240,6 +1241,7 @@ message UserInfo{
   int64 status =21;
   map<string, string> tags = 24;//标签
   repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
+  int64 deviceCount =26; //拥有的设备统计
 }
 
 

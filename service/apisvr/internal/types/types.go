@@ -1103,12 +1103,13 @@ type TenantAppWithIDOrCode struct {
 }
 
 type TenantConfig struct {
-	TenantCode                string                                   `json:"tenantCode,optional"`                // 租户编码
-	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`            //注册分配的角色id
-	WeatherKey                string                                   `json:"weatherKey,optional"`                //和风天气秘钥 参考: https://dev.qweather.com/
-	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`           //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
-	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`               //租户下的设备数量限制,0为不限制
-	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"` //注册自动创建项目和区域
+	TenantCode                string                                   `json:"tenantCode,optional"`                   // 租户编码
+	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`               //注册分配的角色id
+	WeatherKey                string                                   `json:"weatherKey,optional"`                   //和风天气秘钥 参考: https://dev.qweather.com/
+	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`              //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`                  //租户下的设备数量限制,0为不限制
+	FeedbackNotifyUserIDs     []int64                                  `json:"feedbackNotifyUserIDs,optional,string"` //产生问题反馈通知的用户ID列表
+	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"`    //注册自动创建项目和区域
 }
 
 type TenantConfigRegisterAutoCreateArea struct {

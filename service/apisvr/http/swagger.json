@@ -12738,6 +12738,13 @@
           "format": "int64",
           "description": "租户下的设备数量限制,0为不限制"
         },
+        "feedbackNotifyUserIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "产生问题反馈通知的用户ID列表"
+        },
         "registerAutoCreateProject": {
           "type": "array",
           "items": {

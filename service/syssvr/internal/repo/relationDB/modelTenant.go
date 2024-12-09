@@ -124,6 +124,7 @@ type SysTenantConfig struct {
 	CheckUserDelete           int64                               `gorm:"column:check_user_delete;type:BIGINT;default:2"`                 // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	WeatherKey                string                              `gorm:"column:weather_key;type:VARCHAR(50);default:'';"`                //参考: https://dev.qweather.com/
 	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
+	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json;default:'[]'"` //产生问题反馈通知的用户ID列表
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
