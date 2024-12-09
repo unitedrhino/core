@@ -16,6 +16,7 @@ import (
 const (
 	CodeDmDeviceConn           = "dmDeviceConn"
 	CodeDmDevicePropertyReport = "devicePropertyReport"
+	CodeDmDeviceEventReport    = "deviceEventReport"
 )
 
 type Webhook struct {
