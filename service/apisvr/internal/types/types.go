@@ -1496,6 +1496,7 @@ type UserInfo struct {
 	Language        string            `json:"language,optional"`                  // 用户的语言，简体中文为zh_CN
 	HeadImg         string            `json:"headImg,optional"`                   // 用户头像
 	IsUpdateHeadImg bool              `json:"isUpdateHeadImg,omitempty,optional"` // 用户头像
+	DeviceCount     int64             `json:"deviceCount,optional,omitempty"`     //用户所拥有的设备数量统计
 	CreatedTime     int64             `json:"createdTime,string,optional"`        // 创建时间
 	Role            int64             `json:"role,optional"`                      // 用户角色默认
 	Sex             int64             `json:"sex,optional"`                       // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知

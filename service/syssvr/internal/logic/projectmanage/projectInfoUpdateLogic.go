@@ -52,9 +52,8 @@ func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Em
 	} else if po == nil {
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("检查项目不存在")
 	}
-
+	oldDevCount := po.DeviceCount
 	l.setPoByPb(po, in)
-
 	err = l.PiDB.Update(l.ctx, po)
 	if err != nil {
 		return nil, err
@@ -62,6 +61,12 @@ func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Em
 	err = l.svcCtx.ProjectCache.SetData(l.ctx, in.ProjectID, nil)
 	if err != nil {
 		l.Error(err)
+	}
+	if oldDevCount != po.DeviceCount {
+		err = relationDB.NewUserInfoRepo(l.ctx).UpdateDeviceCount(l.ctx, po.AdminUserID)
+		if err != nil {
+			l.Error(err)
+		}
 	}
 	return &sys.Empty{}, nil
 }

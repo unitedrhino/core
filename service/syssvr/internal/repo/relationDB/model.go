@@ -235,6 +235,7 @@ type SysUserInfo struct {
 	Role           int64             `gorm:"column:role;type:BIGINT;NOT NULL"`                            // 用户默认角色（默认使用该角色）
 	Tags           map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 产品标签
 	IsAllData      int64             `gorm:"column:is_all_data;type:SMALLINT;default:1;NOT NULL"`         // 是否所有数据权限（1是，2否）
+	DeviceCount    int64             `gorm:"column:device_count;default:0"`                               //用户所拥有的设备数量统计
 	Roles          []*SysUserRole    `gorm:"foreignKey:UserID;references:UserID"`
 	Tenant         *SysTenantInfo    `gorm:"foreignKey:Code;references:TenantCode"`
 	Status         int64             `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用

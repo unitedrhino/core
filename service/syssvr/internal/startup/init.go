@@ -27,7 +27,7 @@ import (
 )
 
 func Init(svcCtx *svc.ServiceContext) {
-	ctx := context.Background()
+	ctx := ctxs.WithRoot(context.Background())
 	utils.Go(ctx, func() {
 		list, err := relationDB.NewTenantInfoRepo(ctx).FindByFilter(ctx, relationDB.TenantInfoFilter{}, nil)
 		logx.Must(err)

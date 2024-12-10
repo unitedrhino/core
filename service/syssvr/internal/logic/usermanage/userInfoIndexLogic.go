@@ -38,6 +38,7 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 		UserIDs:        in.UserIDs,
 		HasAccessAreas: in.HasAccessAreas,
 		RoleCode:       in.RoleCode,
+		DeptID:         in.DeptID,
 	}
 	if in.UpdatedTime != nil {
 		f.UpdatedTime = stores.GetCmp(in.UpdatedTime.CmpType, time.Unix(in.UpdatedTime.Value, 0))
