@@ -27,7 +27,7 @@ func NewMultiDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Multi
 }
 
 func (l *MultiDeleteLogic) MultiDelete(req *types.UserDeptMultiSaveReq) error {
-	_, err := l.svcCtx.UserRpc.UserDeptMultiCreate(l.ctx, utils.Copy[sys.UserDeptMultiSaveReq](req))
+	_, err := l.svcCtx.UserRpc.UserDeptMultiDelete(l.ctx, utils.Copy[sys.UserDeptMultiSaveReq](req))
 
 	return err
 }
