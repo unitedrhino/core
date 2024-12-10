@@ -25,6 +25,9 @@ type(
     WithID{
         ID int64 `json:"id,optional"`         // id
     }
+    WithIDStr{
+        ID int64 `json:"id,string,optional"`         // id
+    }
     WithCode{
         Code string `json:"code,optional"`
     }

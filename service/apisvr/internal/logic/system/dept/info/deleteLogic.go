@@ -26,7 +26,7 @@ func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteLogi
 	}
 }
 
-func (l *DeleteLogic) Delete(req *types.WithID) error {
+func (l *DeleteLogic) Delete(req *types.WithIDStr) error {
 	_, err := l.svcCtx.DeptM.DeptInfoDelete(l.ctx, utils.Copy[sys.WithID](req))
 
 	return err

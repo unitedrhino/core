@@ -1831,7 +1831,7 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/WithID"
+                  "$ref": "#/definitions/WithIDStr"
                 }
               }
             }
@@ -1882,7 +1882,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/WithID"
+              "$ref": "#/definitions/WithIDStr"
             }
           }
         ],
@@ -15133,6 +15133,16 @@
         }
       },
       "title": "WithIDOrCode"
+    },
+    "WithIDStr": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " id"
+        }
+      },
+      "title": "WithIDStr"
     }
   },
   "securityDefinitions": {

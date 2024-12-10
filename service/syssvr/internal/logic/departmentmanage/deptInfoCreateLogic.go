@@ -32,13 +32,6 @@ func (l *DeptInfoCreateLogic) DeptInfoCreate(in *sys.DeptInfo) (*sys.WithID, err
 	if err := ctxs.IsAdmin(l.ctx); err != nil {
 		return nil, err
 	}
-	if in.ParentID <= def.RootNode {
-		_, err := relationDB.NewDeptInfoRepo(l.ctx).FindOne(l.ctx, in.ParentID)
-		if err == nil {
-			return nil, errors.Parameter.AddMsg("名称重复")
-		}
-	}
-
 	po := relationDB.SysDeptInfo{
 		ParentID: in.ParentID,
 		Name:     in.Name,
@@ -53,14 +46,26 @@ func (l *DeptInfoCreateLogic) DeptInfoCreate(in *sys.DeptInfo) (*sys.WithID, err
 	if in.ParentID > def.RootNode {
 		parent, err = relationDB.NewDeptInfoRepo(l.ctx).FindOne(l.ctx, in.ParentID)
 		if err != nil {
+			if errors.Cmp(err, errors.NotFind) {
+				return nil, errors.Parameter.AddMsg("未找到父节点")
+			}
 			return nil, err
 		}
 	} else {
 		po.ParentID = def.RootNode
 	}
 	err = relationDB.NewDeptInfoRepo(l.ctx).Insert(l.ctx, &po)
-	if err == nil && parent != nil {
-		po.IDPath = fmt.Sprintf("%s%v-", parent.IDPath, po.ID)
+	if err != nil {
+		if errors.Cmp(err, errors.Duplicate) {
+			return nil, errors.Parameter.AddMsg("名称重复")
+		}
+		return nil, err
 	}
+	po.IDPath = fmt.Sprintf("%s%v-", parent.IDPath, po.ID)
+	err = relationDB.NewDeptInfoRepo(l.ctx).Update(l.ctx, &po)
+	if err != nil {
+		return nil, err
+	}
+
 	return &sys.WithID{Id: po.ID}, err
 }

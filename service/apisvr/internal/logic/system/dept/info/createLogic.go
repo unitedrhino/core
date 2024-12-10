@@ -26,8 +26,8 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 	}
 }
 
-func (l *CreateLogic) Create(req *types.DeptInfo) (resp *types.WithID, err error) {
+func (l *CreateLogic) Create(req *types.DeptInfo) (resp *types.WithIDStr, err error) {
 	ret, err := l.svcCtx.DeptM.DeptInfoCreate(l.ctx, utils.Copy[sys.DeptInfo](req))
 
-	return utils.Copy[types.WithID](ret), err
+	return utils.Copy[types.WithIDStr](ret), err
 }

@@ -20,7 +20,7 @@ service api {
         isNeedAuth: "true"
     )
     @handler create
-    post /create (DeptInfo) returns (WithID)
+    post /create (DeptInfo) returns (WithIDStr)
 
     @doc "获取部门列表"
     @handler index
@@ -46,7 +46,7 @@ service api {
         isNeedAuth: "true"
     )
     @handler delete
-    post /delete (WithID) returns ()
+    post /delete (WithIDStr) returns ()
 
     @doc(
         summary: "同步部门"

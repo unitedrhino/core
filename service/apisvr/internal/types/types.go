@@ -1750,3 +1750,7 @@ type WithIDOrCode struct {
 	ID   int64  `json:"id,optional"` // id
 	Code string `json:"code,optional"`
 }
+
+type WithIDStr struct {
+	ID int64 `json:"id,string,optional"` // id
+}
