@@ -30,6 +30,9 @@ func (l *UserDeptIndexLogic) UserDeptIndex(in *sys.UserDeptIndexReq) (*sys.UserD
 	if err != nil {
 		return nil, err
 	}
+	if len(ur) == 0 {
+		return &sys.UserDeptIndexResp{}, nil
+	}
 	var deptIDs []int64
 	for _, v := range ur {
 		deptIDs = append(deptIDs, v.DeptID)
