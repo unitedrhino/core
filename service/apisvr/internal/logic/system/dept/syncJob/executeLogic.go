@@ -1,4 +1,4 @@
-package info
+package syncJob
 
 import (
 	"context"
@@ -11,23 +11,23 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type SyncLogic struct {
+type ExecuteLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-// 同步部门
-func NewSyncLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SyncLogic {
-	return &SyncLogic{
+// 执行同步任务
+func NewExecuteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ExecuteLogic {
+	return &ExecuteLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *SyncLogic) Sync(req *types.DeptInfoSyncReq) error {
-	_, err := l.svcCtx.DeptM.DeptInfoSync(l.ctx, utils.Copy[sys.DeptInfoSyncReq](req))
+func (l *ExecuteLogic) Execute(req *types.DeptSyncJobExecuteReq) error {
+	_, err := l.svcCtx.DeptM.DeptSyncJobExecute(l.ctx, utils.Copy[sys.DeptSyncJobExecuteReq](req))
 
 	return err
 }
