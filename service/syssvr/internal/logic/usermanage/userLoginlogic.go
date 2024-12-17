@@ -3,6 +3,7 @@ package usermanagelogic
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -152,15 +153,10 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), er)
 			if er == nil {
 				var accounts []string
-
 				if ui.OrgEmail != "" {
-					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
-					uc.UserName = uc.Email
 					accounts = append(accounts, ui.OrgEmail)
 				}
 				if ui.Mobile != "" {
-					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
-					uc.UserName = uc.Phone
 					accounts = append(accounts, ui.Mobile)
 				}
 				uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: accounts})
@@ -171,8 +167,20 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 					if ui.Mobile != "" {
 						uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
 					}
+					uc.DingTalkUserID = sql.NullString{Valid: true, String: ret.UserInfo.UserId}
+					if ret.UserInfo.UnionId != "" {
+						uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+					}
 					err = l.UiDB.Update(l.ctx, uc)
 					goto end
+				}
+			}
+			uc.NickName = ui.Name
+			if len(ui.Extension) != 0 {
+				var tags = map[string]string{}
+				err = json.Unmarshal([]byte(ui.Extension), &tags)
+				if err == nil {
+					uc.Tags = tags
 				}
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {

@@ -46,7 +46,7 @@ func Init(svcCtx *svc.ServiceContext) {
 	InitEventBus(svcCtx)
 	TimerInit(svcCtx)
 	usermanagelogic.Init()
-	//InitSync(svcCtx)
+	InitSync(svcCtx)
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {

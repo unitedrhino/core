@@ -32,6 +32,9 @@ type DeptInfoFilter struct {
 	Status       int64
 	Name         string
 	Names        []string
+	DingTalkID   int64   //钉钉的部门ID
+	DingTalkIDs  []int64 //钉钉的部门ID
+
 }
 
 func (p DeptInfoRepo) fmtFilter(ctx context.Context, f DeptInfoFilter) *gorm.DB {
@@ -43,7 +46,13 @@ func (p DeptInfoRepo) fmtFilter(ctx context.Context, f DeptInfoFilter) *gorm.DB 
 	if len(f.Names) > 0 {
 		db = db.Where("name in ?", f.Names)
 	}
+	if f.DingTalkID != 0 {
+		db = db.Where("ding_talk_id = ?", f.DingTalkID)
+	}
 
+	if len(f.DingTalkIDs) > 0 {
+		db = db.Where("ding_talk_id in ?", f.DingTalkIDs)
+	}
 	if f.IDPath != "" {
 		db = db.Where("id_path like ?", f.IDPath+"%")
 	}

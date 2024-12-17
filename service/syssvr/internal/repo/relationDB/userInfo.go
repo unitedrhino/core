@@ -170,6 +170,11 @@ func (p UserInfoRepo) Update(ctx context.Context, data *SysUserInfo) error {
 	err := p.db.WithContext(ctx).Where("user_id = ?", data.UserID).Save(data).Error
 	return stores.ErrFmt(err)
 }
+func (d UserInfoRepo) UpdateWithField(ctx context.Context, f UserInfoFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysUserInfo{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
 
 func (p UserInfoRepo) UpdateDeviceCount(ctx context.Context, userID int64) error {
 	subQuery1 := p.db.Model(&SysProjectInfo{}).Select("sum(device_count)").Where("admin_user_id=?", userID)
