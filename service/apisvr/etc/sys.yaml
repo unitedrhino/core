@@ -54,6 +54,12 @@ WrongPasswordCounter:
     - triggerTimes: 8  # 触发次数 默认 8
       statistics: 5    # 统计时间 默认 5 单位：分钟
       forbiddenTime: 2 # 冻结时长 默认 2 单位：分钟
+TimedJobRpc:
+  Enable: true
+  Mode: direct
+  RunProxy: true
+  Conf:
+    Timeout: 1000000
 Sms:
   Enable: true
   Mode: ali

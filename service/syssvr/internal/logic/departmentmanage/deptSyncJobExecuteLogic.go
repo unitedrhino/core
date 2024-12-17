@@ -14,6 +14,9 @@ import (
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
+	"github.com/open-dingtalk/dingtalk-stream-sdk-go/event"
+	"github.com/open-dingtalk/dingtalk-stream-sdk-go/payload"
+	"github.com/zeromicro/go-zero/core/timex"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
 	"sync"
@@ -314,11 +317,53 @@ func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationD
 		return err
 	}
 	for _, o := range old {
-
 		err := SyncDeptDing(ctx, cli, o)
 		if err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+var DingSync func(ctx context.Context, svcCtx *svc.ServiceContext, jobID int64, df *payload.DataFrame) error
+
+func DeptSyncAddDing(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysDeptSyncJob) error {
+	svcCtx.DingStreamMapMutex.Lock()
+	defer svcCtx.DingStreamMapMutex.Unlock()
+	cli1 := svcCtx.DingStreamMap[string(po.TenantCode)]
+	if cli1 != nil {
+		defer cli1.Close()
+	}
+	cli := dingClient.NewDingStream(po.ThirdConfig.AppKey, po.ThirdConfig.AppSecret)
+	cli.RegisterAllEventRouter(func(c context.Context, df *payload.DataFrame) (*payload.DataFrameResponse, error) {
+		ctx, span := ctxs.StartSpan(c, "dingStreamEvent", "")
+		defer span.End()
+		startTime := timex.Now()
+		duration := timex.Since(startTime)
+		ctx = ctxs.WithRoot(ctx)
+		ctx = ctxs.BindTenantCode(ctx, string(po.TenantCode), 0)
+		err := DingSync(ctx, svcCtx, po.ID, df)
+		logx.WithContext(ctx).WithDuration(duration).Infof(
+			"subscribeDingStream df:%v err:%v",
+			utils.Fmt(df), err)
+		return event.NewSuccessResponse()
+	})
+	err := cli.Start(context.Background())
+	if err != nil {
+		logx.Error(err)
+		return err
+	}
+	svcCtx.DingStreamMap[string(po.TenantCode)] = cli
+	return nil
+}
+
+func DeptSyncDelDing(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysDeptSyncJob) error {
+	svcCtx.DingStreamMapMutex.Lock()
+	defer svcCtx.DingStreamMapMutex.Unlock()
+	cli1 := svcCtx.DingStreamMap[string(po.TenantCode)]
+	if cli1 != nil {
+		cli1.Close()
+		delete(svcCtx.DingStreamMap, string(po.TenantCode))
 	}
 	return nil
 }

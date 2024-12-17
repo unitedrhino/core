@@ -21,8 +21,8 @@ type Config struct {
 		SecondSecret string //第二步需要的token秘钥
 		SecondExpire int64  //token过期时间 单位:秒
 	} `json:",optional"`
-	WxMiniProgram *conf.ThirdConf `json:",optional"` // 微信小程序，可选
-	UserOpt       struct {
+	TimedJobRpc conf.RpcClientConf `json:",optional"`
+	UserOpt     struct {
 		NeedUserName bool  `json:",default=true"` //注册是否必须填写账号密码
 		NeedPassWord bool  `json:",default=true"` //注册是否必须填写账号密码
 		PassLevel    int32 `json:",default=2"`    //用户密码强度级别

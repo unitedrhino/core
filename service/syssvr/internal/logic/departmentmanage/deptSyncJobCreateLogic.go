@@ -3,7 +3,6 @@ package departmentmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
@@ -54,10 +53,10 @@ func (l *DeptSyncJobCreateLogic) DeptSyncJobCreate(in *sys.DeptSyncJob) (*sys.Wi
 			return err
 		}
 		if in.SyncMode == dept.SyncModeRealTime {
-			err = deptSync.NewDeptSync(l.ctx, l.svcCtx).AddDing(po)
+			err = DeptSyncAddDing(l.ctx, l.svcCtx, po)
 		}
 		return err
 	})
-	
+
 	return &sys.WithID{Id: po.ID}, err
 }

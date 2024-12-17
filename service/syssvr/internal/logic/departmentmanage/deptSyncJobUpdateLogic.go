@@ -3,7 +3,6 @@ package departmentmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
@@ -46,7 +45,7 @@ func (l *DeptSyncJobUpdateLogic) DeptSyncJobUpdate(in *sys.DeptSyncJob) (*sys.Em
 			old.ThirdConfig = newConfig
 		}
 		if old.SyncMode == dept.SyncModeRealTime {
-			err = deptSync.NewDeptSync(l.ctx, l.svcCtx).AddDing(old)
+			err = DeptSyncAddDing(l.ctx, l.svcCtx, old)
 			if err != nil {
 				return nil, errors.System.WithMsgf("钉钉连接失败:%v", err.Error())
 			}

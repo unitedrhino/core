@@ -38,10 +38,11 @@ func (l *ThirdDeptReadLogic) ThirdDeptRead(in *sys.ThirdDeptInfoReadReq) (*sys.D
 	if err != nil {
 		return nil, err
 	}
+
 	req := request.NewDeptDetail(int(in.Id))
 	detail, err := cli.GetDeptDetail(req.Build())
 	if err != nil {
-		return nil, err
+		return nil, errors.Default.WithMsg(err.Error())
 	}
 	ret := &sys.DeptInfo{
 		Id:       int64(detail.Detail.Id),
@@ -53,7 +54,7 @@ func (l *ThirdDeptReadLogic) ThirdDeptRead(in *sys.ThirdDeptInfoReadReq) (*sys.D
 		req := request.NewDeptDetail(int(ret.ParentID))
 		father, err := cli.GetDeptDetail(req.Build())
 		if err != nil {
-			return nil, err
+			return nil, errors.Default.WithMsg(err.Error())
 		}
 		ret.Parent = &sys.DeptInfo{
 			Id:       int64(father.Detail.Id),
@@ -67,7 +68,7 @@ func (l *ThirdDeptReadLogic) ThirdDeptRead(in *sys.ThirdDeptInfoReadReq) (*sys.D
 		req.SetDeptId(int(ret.Id))
 		dings, err := cli.GetDeptList(req.Build())
 		if err != nil {
-			return nil, errors.System.AddDetail(err)
+			return nil, errors.Default.WithMsg(err.Error())
 		}
 		var list []*sys.DeptInfo
 		for _, v := range dings.List {

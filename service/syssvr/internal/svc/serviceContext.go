@@ -5,9 +5,12 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/smsClient"
+	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/domain/tenant"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/oss"
@@ -16,6 +19,7 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
+	"github.com/zeromicro/go-zero/zrpc"
 	"os"
 	"sync"
 )
@@ -56,9 +60,13 @@ type ServiceContext struct {
 	Sms                *smsClient.Sms
 	DingStreamMap      map[string]*dingClient.StreamClient //key是租户号,value是需要同步的stream
 	DingStreamMapMutex sync.RWMutex
+	TimedM             timedmanage.TimedManage
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	var (
+		timedJob timedmanage.TimedManage
+	)
 	stores.InitConn(c.Database)
 	err := relationDB.Migrate(c.Database)
 	if err != nil {
@@ -92,6 +100,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		PwdIp:      tools.NewLimit(c.LoginPwdIpLimit, "login", "pwd:ip", config.DefaultIpLimit),
 		PwdAccount: tools.NewLimit(c.LoginPwdAccountLimit, "login", "pwd:account", config.DefaultAccountLimit),
 	}
+	if c.TimedJobRpc.Enable {
+		if c.TimedJobRpc.Mode == conf.ClientModeGrpc {
+			timedJob = timedmanage.NewTimedManage(zrpc.MustNewClient(c.TimedJobRpc.Conf))
+		} else {
+			timedJob = timedjobdirect.NewTimedJob(c.TimedJobRpc.RunProxy)
+		}
+	}
 	return &ServiceContext{
 		FastEvent:     serverMsg,
 		Captcha:       cache.NewCaptcha(store),
@@ -106,6 +121,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserID:        UserID,
 		Store:         store,
 		Sms:           sms,
+		TimedM:        timedJob,
 		DingStreamMap: make(map[string]*dingClient.StreamClient),
 	}
 }

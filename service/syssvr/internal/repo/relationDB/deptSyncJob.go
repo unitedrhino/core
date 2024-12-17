@@ -27,6 +27,7 @@ func NewDeptSyncJobRepo(in any) *DeptSyncJobRepo {
 type DeptSyncJobFilter struct {
 	Direction dept.SyncDirection
 	SyncMode  dept.SyncMode
+	SyncModes []dept.SyncMode
 	ThirdType def.AppSubType
 }
 
@@ -37,6 +38,9 @@ func (p DeptSyncJobRepo) fmtFilter(ctx context.Context, f DeptSyncJobFilter) *go
 	}
 	if f.SyncMode != 0 {
 		db = db.Where("sync_mode=?", f.SyncMode)
+	}
+	if len(f.SyncModes) != 0 {
+		db = db.Where("sync_modes in ?", f.SyncModes)
 	}
 	if f.ThirdType != "" {
 		db = db.Where("third_type=?", f.ThirdType)

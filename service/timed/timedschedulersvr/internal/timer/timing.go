@@ -40,6 +40,10 @@ func TimingTaskCheck(svcCtx *svc.ServiceContext) {
 		}
 		wait := sync.WaitGroup{}
 		for _, j := range js {
+			if j.Group == nil { //分组被删除了,任务也直接删除
+				jobDB.Delete(ctx, j.ID)
+				continue
+			}
 			wait.Add(1)
 			t := j
 			utils.Go(ctx, func() {

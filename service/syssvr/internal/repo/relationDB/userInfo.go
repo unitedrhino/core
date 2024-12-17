@@ -30,6 +30,7 @@ type UserInfoFilter struct {
 	WechatUnionID   string
 	WechatOpenID    string
 	DingTalkUserID  string
+	DingTalkUserIDs []string
 	DingTalkUnionID string
 	WithRoles       bool
 	WithTenant      bool
@@ -98,6 +99,10 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	if f.DingTalkUserID != "" {
 		isDing = true
 		dingOr = dingOr.Or("ding_talk_user_id = ?", f.DingTalkUserID)
+	}
+	if len(f.DingTalkUserIDs) != 0 {
+		isDing = true
+		dingOr = dingOr.Or("ding_talk_user_id in ?", f.DingTalkUserIDs)
 	}
 	if f.DingTalkUnionID != "" {
 		isDing = true

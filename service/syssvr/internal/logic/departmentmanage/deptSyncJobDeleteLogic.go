@@ -3,7 +3,6 @@ package departmentmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 
@@ -36,7 +35,7 @@ func (l *DeptSyncJobDeleteLogic) DeptSyncJobDelete(in *sys.WithID) (*sys.Empty, 
 		return nil, err
 	}
 	if old.SyncMode == dept.SyncModeRealTime {
-		err = deptSync.NewDeptSync(l.ctx, l.svcCtx).DelDing(old)
+		err = DeptSyncDelDing(l.ctx, l.svcCtx, old)
 		if err != nil {
 			return nil, err
 		}

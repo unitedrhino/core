@@ -2,12 +2,14 @@ package startup
 
 import (
 	"context"
+	"fmt"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	accessmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/accessmanage"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
+	departmentmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/departmentmanage"
 	modulemanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/modulemanage"
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	tenantmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/tenantmanage"
@@ -16,9 +18,12 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/domain/tenant"
+	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -38,8 +43,10 @@ func Init(svcCtx *svc.ServiceContext) {
 	})
 	InitCache(svcCtx)
 	TableInit(svcCtx)
+	InitEventBus(svcCtx)
+	TimerInit(svcCtx)
 	usermanagelogic.Init()
-	InitSync(svcCtx)
+	//InitSync(svcCtx)
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
@@ -107,7 +114,7 @@ func InitSync(svcCtx *svc.ServiceContext) {
 		Direction: dept.SyncDirectionFrom, SyncMode: dept.SyncModeRealTime}, nil)
 	logx.Must(err)
 	for _, v := range pos {
-		err := deptSync.NewDeptSync(ctx, svcCtx).AddDing(v)
+		err := departmentmanagelogic.DeptSyncAddDing(ctx, svcCtx, v)
 		if err != nil {
 			logx.Error(err)
 			continue
@@ -256,5 +263,29 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		userTokenInfo, err := cache.NewUserToken(svcCtx.FastEvent, svcCtx.TenantCache, svcCtx.UserCache)
 		logx.Must(err)
 		svcCtx.UserTokenInfo = userTokenInfo
+	}
+}
+
+func InitEventBus(svcCtx *svc.ServiceContext) {
+	err := svcCtx.FastEvent.QueueSubscribe(eventBus.SysSyncHalfHour, func(ctx context.Context, t time.Time, body []byte) error {
+		return deptSync.NewDeptSync(ctxs.WithRoot(ctx), svcCtx).Timing()
+	})
+	logx.Must(err)
+}
+
+func TimerInit(svcCtx *svc.ServiceContext) {
+	ctx := context.Background()
+	_, err := svcCtx.TimedM.TaskInfoCreate(ctx, &timedmanage.TaskInfo{
+		GroupCode: def.TimedUnitedRhinoQueueGroupCode,                                   //组编码
+		Type:      1,                                                                    //任务类型 1 定时任务 2 延时任务
+		Name:      "联犀中台半小时同步",                                                          // 任务名称
+		Code:      "dmDeviceStaticHalfHour",                                             //任务编码
+		Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, eventBus.SysSyncHalfHour), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
+		CronExpr:  "@every 30m",                                                         // cron执行表达式
+		Status:    def.StatusWaitRun,                                                    // 状态
+		Priority:  3,                                                                    //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
+	})
+	if err != nil && !errors.Cmp(errors.Fmt(err), errors.Duplicate) {
+		logx.Must(err)
 	}
 }
