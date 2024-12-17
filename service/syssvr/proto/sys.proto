@@ -178,12 +178,11 @@ service DictManage{
 
 service DepartmentManage{
   rpc deptInfoRead(DeptInfoReadReq)returns(DeptInfo);
-  rpc deptInfoCreate(DeptInfo) returns(WithID); //添加角色
-  rpc deptInfoIndex(DeptInfoIndexReq) returns(DeptInfoIndexResp); //获取角色列表
-  rpc deptInfoUpdate(DeptInfo) returns(Empty); //更新角色
-  rpc deptInfoDelete(WithID) returns(Empty); //删除角色
+  rpc deptInfoCreate(DeptInfo) returns(WithID); //添加部门
+  rpc deptInfoIndex(DeptInfoIndexReq) returns(DeptInfoIndexResp); //获取部门列表
+  rpc deptInfoUpdate(DeptInfo) returns(Empty); //更新部门
+  rpc deptInfoDelete(WithID) returns(Empty); //删除部门
 
-  rpc deptInfoSync(DeptInfoSyncReq)returns(DeptInfoSyncResp);//从应用同步用户数据
 
   rpc deptUserIndex(DeptUserIndexReq) returns (DeptUserIndexResp); //获取用户部门列表
   rpc deptUserMultiDelete(DeptUserMultiSaveReq) returns(Empty); //添加部门
@@ -192,6 +191,13 @@ service DepartmentManage{
   rpc deptRoleIndex(DeptRoleIndexReq) returns (DeptRoleIndexResp); //获取用户部门列表
   rpc deptRoleMultiDelete(DeptRoleMultiSaveReq) returns(Empty); //添加部门
   rpc deptRoleMultiCreate(DeptRoleMultiSaveReq) returns(Empty); //添加部门
+
+  rpc deptSyncJobExecute(DeptSyncJobExecuteReq)returns(DeptSyncJobExecuteResp);//从应用同步用户数据
+  rpc deptSyncJobRead(DeptSyncJobReadReq)returns(DeptSyncJob);//获取同步任务详情
+  rpc deptSyncJobCreate(DeptSyncJob) returns(WithID); //添加同步任务
+  rpc deptSyncJobIndex(DeptSyncJobIndexReq) returns(DeptSyncJobIndexResp); //获取同步任务列表
+  rpc deptSyncJobUpdate(DeptSyncJob) returns(Empty); //更新同步任务
+  rpc deptSyncJobDelete(WithID) returns(Empty); //删除同步任务
 }
 
 service Common {
@@ -207,6 +213,9 @@ service Common {
 
   rpc serviceInfoRead(WithCode)returns(ServiceInfo);
   rpc serviceInfoUpdate(ServiceInfo) returns(Empty); //更新服务信息
+
+  rpc thirdDeptRead(ThirdDeptInfoReadReq)returns(DeptInfo);//获取第三方的部门信息,Children只能获取一层,需要递归获取
+  rpc thirdDeptIndex(ThirdDeptInfoIndexReq)returns(DeptInfoIndexResp);//获取第三方的部门信息,Children只能获取一层,需要递归获取
 }
 
 service Log {
@@ -1675,6 +1684,34 @@ message DictDetailIndexResp{
 }
 
 
+message DeptSyncJobReadReq{
+  int64 id = 1;
+}
+
+message DeptSyncJob{
+  int64 id = 1;
+  int64 direction =2;// 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
+  string thirdType =3;//同步的类型
+  ThirdAppConfig thirdConfig =4;//第三方配置
+  map<string,string> fieldMap = 5;//用户字段映射,左边是联犀的字段,右边是第三方的,不填写就是全量映射
+  repeated int64 syncDeptIDs=6;//同步的第三方部门id列表,不填为同步全部
+  int64 isAddSync =7;//新增人员自动同步,默认为1
+  int64 syncMode =8;//同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步
+  int64 createdTime =9;//创建时间
+}
+
+message DeptSyncJobIndexReq{
+  PageInfo page = 1;//分页信息
+  int64 direction =2;// 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
+  string thirdType =3;//同步的类型
+  int64 syncMode =8;//同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步
+}
+
+message DeptSyncJobIndexResp{
+  repeated  DeptSyncJob list =1;
+  int64 total = 2;
+}
+
 
 
 message DeptInfoReadReq{
@@ -1683,14 +1720,29 @@ message DeptInfoReadReq{
   bool withChildren =3;//是否返回子级
 }
 
-message DeptInfoSyncReq{
-  string appCode =1;//同步的应用,目前只支持钉钉
-  int64 deptMode =2;//部门同步模式,1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的部门
-  int64 userMode = 3;//用户同步模式,0 不同步 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的用户
+message DeptSyncJobExecuteReq{
+  int64 jobID =1;//同步任务的ID
 }
-message DeptInfoSyncResp{
 
+message DeptSyncJobExecuteResp{
 }
+
+
+message ThirdDeptInfoIndexReq{
+  PageInfo page = 1;//分页信息
+  int64 parentID =2;//父节点
+  string thirdType =3;//第三方的类型 ding:钉钉  wxE:企业微信
+  ThirdAppConfig thirdConfig =4;//第三方配置
+}
+
+message ThirdDeptInfoReadReq{
+  int64 id = 1;//需要获取的第三方部门ID,顶级为1
+  bool withFather = 2;//是否返回父级
+  bool withChildren =3;//是否返回子级
+  string thirdType =4;//第三方的类型 ding:钉钉  wxE:企业微信
+  ThirdAppConfig thirdConfig =5;//第三方配置
+}
+
 
 message DeptInfo{
   int64 id = 1;

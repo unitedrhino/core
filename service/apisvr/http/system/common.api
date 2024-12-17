@@ -34,6 +34,13 @@ service api {
     @doc "获取小程序二维码"
     @handler qRCodeReadReq
     post /qr-code/read (QRCodeReadReq) returns (QRCodeReadResp)
+
+    @doc "获取第三方的部门信息详情,Children只能获取一层,需要递归获取"
+    @handler thirdDeptRead
+    post /third/dept/read (ThirdDeptInfoReadReq) returns (DeptInfo)
+    @doc "获取第三方的部门信息列表"
+    @handler thirdDeptIndex
+    post /third/dept/index (ThirdDeptInfoIndexReq) returns (DeptInfoIndexResp)
 }
 
 @server (
@@ -55,6 +62,26 @@ service api {
     @handler debugGetTencent
     get /debug-tencent() returns ()
 }
+
+
+type (
+
+    ThirdDeptInfoReadReq{
+        ID int64 `json:"id,optional,string"`                                  // 编号
+        WithFather bool `json:"withFather,optional"`//是否返回父级
+        WithChildren bool `json:"withChildren,optional"`//是否返回子级
+        ThirdType string `json:"thirdType,optional"` //第三方的类型 ding:钉钉  wxE:企业微信
+        ThirdConfig *ThirdAppConfig `json:"thirdConfig"` //
+    }
+    ThirdDeptInfoIndexReq  {
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        ParentID int64 `json:"parentID,string,optional"`//父节点
+        ThirdType string `json:"thirdType,optional"` //第三方的类型 ding:钉钉  wxE:企业微信
+        ThirdConfig *ThirdAppConfig `json:"thirdConfig"` //
+    }
+
+
+)
 
 type (
     QRCodeReadReq{

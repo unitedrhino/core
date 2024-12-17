@@ -59,11 +59,15 @@ type (
 	DeptInfoIndexReq                      = sys.DeptInfoIndexReq
 	DeptInfoIndexResp                     = sys.DeptInfoIndexResp
 	DeptInfoReadReq                       = sys.DeptInfoReadReq
-	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
-	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
 	DeptRoleIndexReq                      = sys.DeptRoleIndexReq
 	DeptRoleIndexResp                     = sys.DeptRoleIndexResp
 	DeptRoleMultiSaveReq                  = sys.DeptRoleMultiSaveReq
+	DeptSyncJob                           = sys.DeptSyncJob
+	DeptSyncJobExecuteReq                 = sys.DeptSyncJobExecuteReq
+	DeptSyncJobExecuteResp                = sys.DeptSyncJobExecuteResp
+	DeptSyncJobIndexReq                   = sys.DeptSyncJobIndexReq
+	DeptSyncJobIndexResp                  = sys.DeptSyncJobIndexResp
+	DeptSyncJobReadReq                    = sys.DeptSyncJobReadReq
 	DeptUserIndexReq                      = sys.DeptUserIndexReq
 	DeptUserIndexResp                     = sys.DeptUserIndexResp
 	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
@@ -192,6 +196,8 @@ type (
 	TenantOpenWebHook                     = sys.TenantOpenWebHook
 	ThirdApp                              = sys.ThirdApp
 	ThirdAppConfig                        = sys.ThirdAppConfig
+	ThirdDeptInfoIndexReq                 = sys.ThirdDeptInfoIndexReq
+	ThirdDeptInfoReadReq                  = sys.ThirdDeptInfoReadReq
 	ThirdEmail                            = sys.ThirdEmail
 	ThirdSms                              = sys.ThirdSms
 	UserAreaApplyCreateReq                = sys.UserAreaApplyCreateReq
@@ -253,6 +259,8 @@ type (
 		SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
 		ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error)
 		ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error)
+		ThirdDeptRead(ctx context.Context, in *ThirdDeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error)
+		ThirdDeptIndex(ctx context.Context, in *ThirdDeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error)
 	}
 
 	defaultCommon struct {
@@ -366,4 +374,22 @@ func (m *defaultCommon) ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, 
 
 func (d *directCommon) ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.ServiceInfoUpdate(ctx, in)
+}
+
+func (m *defaultCommon) ThirdDeptRead(ctx context.Context, in *ThirdDeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.ThirdDeptRead(ctx, in, opts...)
+}
+
+func (d *directCommon) ThirdDeptRead(ctx context.Context, in *ThirdDeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error) {
+	return d.svr.ThirdDeptRead(ctx, in)
+}
+
+func (m *defaultCommon) ThirdDeptIndex(ctx context.Context, in *ThirdDeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.ThirdDeptIndex(ctx, in, opts...)
+}
+
+func (d *directCommon) ThirdDeptIndex(ctx context.Context, in *ThirdDeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error) {
+	return d.svr.ThirdDeptIndex(ctx, in)
 }

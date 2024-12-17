@@ -2,7 +2,9 @@ package startup
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	accessmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/accessmanage"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
@@ -37,6 +39,7 @@ func Init(svcCtx *svc.ServiceContext) {
 	InitCache(svcCtx)
 	TableInit(svcCtx)
 	usermanagelogic.Init()
+	InitSync(svcCtx)
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
@@ -96,6 +99,20 @@ func TableInit(svcCtx *svc.ServiceContext) {
 	}
 
 	return
+}
+
+func InitSync(svcCtx *svc.ServiceContext) {
+	ctx := ctxs.WithRoot(context.Background())
+	pos, err := relationDB.NewDeptSyncJobRepo(ctx).FindByFilter(ctx, relationDB.DeptSyncJobFilter{
+		Direction: dept.SyncDirectionFrom, SyncMode: dept.SyncModeRealTime}, nil)
+	logx.Must(err)
+	for _, v := range pos {
+		err := deptSync.NewDeptSync(ctx, svcCtx).AddDing(v)
+		if err != nil {
+			logx.Error(err)
+			continue
+		}
+	}
 }
 
 func InitCache(svcCtx *svc.ServiceContext) {

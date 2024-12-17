@@ -368,10 +368,38 @@ type DeptInfoReadReq struct {
 	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
 }
 
-type DeptInfoSyncReq struct {
-	AppCode  string `json:"appCode"`           //同步的应用,目前只支持钉钉
-	DeptMode int64  `json:"deptMode"`          //部门同步模式,1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的部门
-	UserMode int64  `json:"userMode,optional"` //用户同步模式,0 不同步 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的用户
+type DeptSyncJob struct {
+	ID          int64             `json:"id,string,optional"`          // 编号
+	Direction   int64             `json:"direction,optional"`          // 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
+	ThirdType   string            `json:"thirdType,optional"`          //同步的类型
+	ThirdConfig *ThirdAppConfig   `json:"thirdConfig,optional"`        //第三方配置
+	FieldMap    map[string]string `json:"fieldMap,optional"`           //用户字段映射,左边是联犀的字段,右边是第三方的,不填写就是全量映射
+	SyncDeptIDs []int64           `json:"syncDeptIDs,string,optional"` //同步的第三方部门id列表,不填为同步全部
+	IsAddSync   int64             `json:"isAddSync,optional"`          //新增人员自动同步,默认为1
+	SyncMode    int64             `json:"syncMode,optional"`           //同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步
+	CreatedTime int64             `json:"createdTime,optional"`        //创建时间
+}
+
+type DeptSyncJobExecuteReq struct {
+	JobID int64 `json:"jobID,optional,string"` // 编号
+}
+
+type DeptSyncJobIndexReq struct {
+	Page     *PageInfo `json:"page,optional"`            // 分页信息,只获取一个则不填
+	ParentID int64     `json:"parentID,string,optional"` //父节点
+	Status   int64     `json:"status,optional"`          // 状态  1:启用,2:禁用
+	Name     string    `json:"name,optional"`            // 名称
+}
+
+type DeptSyncJobIndexResp struct {
+	Total int64          `json:"total"` //总数
+	List  []*DeptSyncJob `json:"list"`  //任务列表
+}
+
+type DeptSyncJobReadReq struct {
+	ID           int64 `json:"id,optional,string"`    // 编号
+	WithFather   bool  `json:"withFather,optional"`   //是否返回父级
+	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
 }
 
 type DeviceCore struct {
@@ -1235,6 +1263,21 @@ type ThirdAppConfig struct {
 	AppID     string `json:"appID,optional"`
 	AppKey    string `json:"appKey,optional"` //微信小程序无需填写
 	AppSecret string `json:"appSecret,optional"`
+}
+
+type ThirdDeptInfoIndexReq struct {
+	Page        *PageInfo       `json:"page,optional"`            // 分页信息,只获取一个则不填
+	ParentID    int64           `json:"parentID,string,optional"` //父节点
+	ThirdType   string          `json:"thirdType,optional"`       //第三方的类型 ding:钉钉  wxE:企业微信
+	ThirdConfig *ThirdAppConfig `json:"thirdConfig"`              //
+}
+
+type ThirdDeptInfoReadReq struct {
+	ID           int64           `json:"id,optional,string"`    // 编号
+	WithFather   bool            `json:"withFather,optional"`   //是否返回父级
+	WithChildren bool            `json:"withChildren,optional"` //是否返回子级
+	ThirdType    string          `json:"thirdType,optional"`    //第三方的类型 ding:钉钉  wxE:企业微信
+	ThirdConfig  *ThirdAppConfig `json:"thirdConfig"`           //
 }
 
 type ThirdEmailConfig struct {

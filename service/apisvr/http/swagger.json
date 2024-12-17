@@ -1259,6 +1259,90 @@
         ]
       }
     },
+    "/api/v1/system/common/third/dept/index": {
+      "post": {
+        "summary": "获取第三方的部门信息列表",
+        "operationId": "postApiV1SystemCommonThirdDeptIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DeptInfoIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ThirdDeptInfoIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
+    "/api/v1/system/common/third/dept/read": {
+      "post": {
+        "summary": "获取第三方的部门信息详情,Children只能获取一层,需要递归获取",
+        "operationId": "postApiV1SystemCommonThirdDeptRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DeptInfo"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ThirdDeptInfoReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
     "/api/v1/system/common/upload-file": {
       "post": {
         "summary": "文件直传",
@@ -1976,45 +2060,6 @@
         ]
       }
     },
-    "/api/v1/system/dept/info/sync": {
-      "post": {
-        "summary": "同步部门",
-        "operationId": "postApiV1SystemDeptInfoSync",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "code": {
-                  "type": "integer",
-                  "default": "200",
-                  "title": "返回code"
-                },
-                "msg": {
-                  "type": "string",
-                  "title": "返回的消息"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DeptInfoSyncReq"
-            }
-          }
-        ],
-        "tags": [
-          "system/dept/info",
-          "systemDeptInfo"
-        ]
-      }
-    },
     "/api/v1/system/dept/info/update": {
       "post": {
         "summary": "更新部门",
@@ -2051,6 +2096,249 @@
         "tags": [
           "system/dept/info",
           "systemDeptInfo"
+        ]
+      }
+    },
+    "/api/v1/system/dept/sync-job/create": {
+      "post": {
+        "summary": "添加同步任务",
+        "operationId": "postApiV1SystemDeptSync-jobCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithIDStr"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptSyncJob"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/syncJob",
+          "systemDeptSyncJob"
+        ]
+      }
+    },
+    "/api/v1/system/dept/sync-job/delete": {
+      "post": {
+        "summary": "删除同步任务",
+        "operationId": "postApiV1SystemDeptSync-jobDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithIDStr"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/syncJob",
+          "systemDeptSyncJob"
+        ]
+      }
+    },
+    "/api/v1/system/dept/sync-job/execute": {
+      "post": {
+        "summary": "执行同步任务",
+        "operationId": "postApiV1SystemDeptSync-jobExecute",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptSyncJobExecuteReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/syncJob",
+          "systemDeptSyncJob"
+        ]
+      }
+    },
+    "/api/v1/system/dept/sync-job/index": {
+      "post": {
+        "summary": "获取同步任务列表",
+        "operationId": "postApiV1SystemDeptSync-jobIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DeptSyncJobIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptSyncJobIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/syncJob",
+          "systemDeptSyncJob"
+        ]
+      }
+    },
+    "/api/v1/system/dept/sync-job/read": {
+      "post": {
+        "summary": "获取同步任务单个",
+        "operationId": "postApiV1SystemDeptSync-jobRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DeptSyncJob"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptSyncJobReadReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/syncJob",
+          "systemDeptSyncJob"
+        ]
+      }
+    },
+    "/api/v1/system/dept/sync-job/update": {
+      "post": {
+        "summary": "更新同步任务",
+        "operationId": "postApiV1SystemDeptSync-jobUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptSyncJob"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/syncJob",
+          "systemDeptSyncJob"
         ]
       }
     },
@@ -9817,29 +10105,129 @@
       },
       "title": "DeptInfoReadReq"
     },
-    "DeptInfoSyncReq": {
+    "DeptSyncJob": {
       "type": "object",
       "properties": {
-        "appCode": {
+        "id": {
           "type": "string",
-          "description": "同步的应用,目前只支持钉钉"
+          "description": " 编号"
         },
-        "deptMode": {
+        "direction": {
           "type": "integer",
           "format": "int64",
-          "description": "部门同步模式,1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的部门"
+          "description": " 同步的方向,1上游同步到联犀(默认),2联犀同步到下游"
         },
-        "userMode": {
+        "thirdType": {
+          "type": "string",
+          "description": "同步的类型"
+        },
+        "thirdConfig": {
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "第三方配置"
+        },
+        "fieldMap": {
+          "type": "object",
+          "description": "用户字段映射,左边是联犀的字段,右边是第三方的,不填写就是全量映射"
+        },
+        "syncDeptIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "同步的第三方部门id列表,不填为同步全部"
+        },
+        "isAddSync": {
           "type": "integer",
           "format": "int64",
-          "description": "用户同步模式,0 不同步 1 只新增,不修改(默认) 2 新增并修改 3 新增修改及删除不存在的用户"
+          "description": "新增人员自动同步,默认为1"
+        },
+        "syncMode": {
+          "type": "integer",
+          "format": "int64",
+          "description": "同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步"
+        },
+        "createdTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "创建时间"
         }
       },
-      "title": "DeptInfoSyncReq",
+      "title": "DeptSyncJob"
+    },
+    "DeptSyncJobExecuteReq": {
+      "type": "object",
+      "properties": {
+        "jobID": {
+          "type": "string",
+          "description": " 编号"
+        }
+      },
+      "title": "DeptSyncJobExecuteReq"
+    },
+    "DeptSyncJobIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息,只获取一个则不填"
+        },
+        "parentID": {
+          "type": "string",
+          "description": "父节点"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 状态  1:启用,2:禁用"
+        },
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        }
+      },
+      "title": "DeptSyncJobIndexReq"
+    },
+    "DeptSyncJobIndexResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeptSyncJob"
+          },
+          "description": "任务列表"
+        }
+      },
+      "title": "DeptSyncJobIndexResp",
       "required": [
-        "appCode",
-        "deptMode"
+        "total",
+        "list"
       ]
+    },
+    "DeptSyncJobReadReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 编号"
+        },
+        "withFather": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "是否返回父级"
+        },
+        "withChildren": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "是否返回子级"
+        }
+      },
+      "title": "DeptSyncJobReadReq"
     },
     "DeviceCore": {
       "type": "object",
@@ -13199,6 +13587,60 @@
         }
       },
       "title": "ThirdAppConfig"
+    },
+    "ThirdDeptInfoIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息,只获取一个则不填"
+        },
+        "parentID": {
+          "type": "string",
+          "description": "父节点"
+        },
+        "thirdType": {
+          "type": "string",
+          "description": "第三方的类型 ding:钉钉  wxE:企业微信"
+        },
+        "thirdConfig": {
+          "$ref": "#/definitions/ThirdAppConfig"
+        }
+      },
+      "title": "ThirdDeptInfoIndexReq",
+      "required": [
+        "thirdConfig"
+      ]
+    },
+    "ThirdDeptInfoReadReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 编号"
+        },
+        "withFather": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "是否返回父级"
+        },
+        "withChildren": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "是否返回子级"
+        },
+        "thirdType": {
+          "type": "string",
+          "description": "第三方的类型 ding:钉钉  wxE:企业微信"
+        },
+        "thirdConfig": {
+          "$ref": "#/definitions/ThirdAppConfig"
+        }
+      },
+      "title": "ThirdDeptInfoReadReq",
+      "required": [
+        "thirdConfig"
+      ]
     },
     "ThirdEmailConfig": {
       "type": "object",

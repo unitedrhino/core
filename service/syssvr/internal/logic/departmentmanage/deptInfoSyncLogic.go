@@ -2,22 +2,7 @@ package departmentmanagelogic
 
 import (
 	"context"
-	"database/sql"
-	"encoding/json"
-	"fmt"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
-	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/def"
-	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
-	"gitee.com/unitedrhino/share/stores"
-	"github.com/zhaoyunxing92/dingtalk/v2/request"
-	"gorm.io/gorm"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -36,6 +21,7 @@ func NewDeptInfoSyncLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dept
 	}
 }
 
+/*
 func (l *DeptInfoSyncLogic) DeptInfoSync(in *sys.DeptInfoSyncReq) (*sys.DeptInfoSyncResp, error) {
 	cli, err := l.svcCtx.Cm.GetClients(l.ctx, in.AppCode)
 	if err != nil || cli.DingMini == nil {
@@ -123,6 +109,9 @@ func (l *DeptInfoSyncLogic) DeptInfoSyncDingTalkUser(info *relationDB.SysDeptInf
 						UserID:         userID,
 						DingTalkUserID: sql.NullString{Valid: true, String: ding.UserId},
 						NickName:       ding.Name,
+					}
+					if ding.UnionId != "" {
+						uc.DingTalkUnionID = sql.NullString{Valid: true, String: ding.UnionId}
 					}
 					if ding.OrgEmail != "" {
 						uc.Email = sql.NullString{String: ding.OrgEmail, Valid: true}
@@ -282,3 +271,4 @@ func (l *DeptInfoSyncLogic) DeptInfoSyncDingTalk(info *relationDB.SysDeptInfo, i
 	}
 	return &sys.DeptInfoSyncResp{}, nil
 }
+*/

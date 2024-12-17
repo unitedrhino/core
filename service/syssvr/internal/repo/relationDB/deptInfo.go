@@ -27,6 +27,7 @@ type DeptInfoFilter struct {
 	IDs          []int64
 	WithChildren bool
 	IDPath       string
+	IDPaths      []string
 	ParentID     int64
 	Status       int64
 	Name         string
@@ -45,6 +46,13 @@ func (p DeptInfoRepo) fmtFilter(ctx context.Context, f DeptInfoFilter) *gorm.DB 
 
 	if f.IDPath != "" {
 		db = db.Where("id_path like ?", f.IDPath+"%")
+	}
+	if len(f.IDPaths) > 0 {
+		or := p.db
+		for _, v := range f.IDPaths {
+			or = or.Or("id_path like ?", v+"%")
+		}
+		db = db.Where(or)
 	}
 	if f.ParentID != 0 {
 		db = db.Where("parent_id = ?", f.ParentID)

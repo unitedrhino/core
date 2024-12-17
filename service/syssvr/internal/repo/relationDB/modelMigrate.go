@@ -27,6 +27,7 @@ func Migrate(c conf.Database) error {
 		&SysDeptUser{},
 		&SysServiceInfo{},
 		&SysDeptInfo{},
+		&SysDeptSyncJob{},
 		&SysUserMessage{},
 		&SysMessageInfo{},
 		&SysNotifyConfig{},

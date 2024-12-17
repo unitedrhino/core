@@ -72,3 +72,13 @@ func (s *CommonServer) ServiceInfoUpdate(ctx context.Context, in *sys.ServiceInf
 	l := commonlogic.NewServiceInfoUpdateLogic(ctx, s.svcCtx)
 	return l.ServiceInfoUpdate(in)
 }
+
+func (s *CommonServer) ThirdDeptRead(ctx context.Context, in *sys.ThirdDeptInfoReadReq) (*sys.DeptInfo, error) {
+	l := commonlogic.NewThirdDeptReadLogic(ctx, s.svcCtx)
+	return l.ThirdDeptRead(in)
+}
+
+func (s *CommonServer) ThirdDeptIndex(ctx context.Context, in *sys.ThirdDeptInfoIndexReq) (*sys.DeptInfoIndexResp, error) {
+	l := commonlogic.NewThirdDeptIndexLogic(ctx, s.svcCtx)
+	return l.ThirdDeptIndex(in)
+}

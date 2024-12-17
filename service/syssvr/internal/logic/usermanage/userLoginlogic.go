@@ -134,7 +134,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
 
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId})
 		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
@@ -142,6 +142,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				UserID:         userID,
 				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
 				NickName:       ret.UserInfo.Name,
+			}
+			if ret.UserInfo.UnionId != "" {
+				uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
 			}
 			ui, er := cli.DingMini.GetUserDetail(&request.UserDetail{
 				UserId: ret.UserInfo.UserId,
@@ -178,7 +181,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			if err != nil {
 				return nil, err
 			}
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, WithRoles: true, WithTenant: true})
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId, WithRoles: true, WithTenant: true})
 		}
 	case users.RegWxOpen:
 		if cli.WxOfficial == nil {

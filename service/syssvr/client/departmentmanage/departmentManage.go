@@ -59,11 +59,15 @@ type (
 	DeptInfoIndexReq                      = sys.DeptInfoIndexReq
 	DeptInfoIndexResp                     = sys.DeptInfoIndexResp
 	DeptInfoReadReq                       = sys.DeptInfoReadReq
-	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
-	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
 	DeptRoleIndexReq                      = sys.DeptRoleIndexReq
 	DeptRoleIndexResp                     = sys.DeptRoleIndexResp
 	DeptRoleMultiSaveReq                  = sys.DeptRoleMultiSaveReq
+	DeptSyncJob                           = sys.DeptSyncJob
+	DeptSyncJobExecuteReq                 = sys.DeptSyncJobExecuteReq
+	DeptSyncJobExecuteResp                = sys.DeptSyncJobExecuteResp
+	DeptSyncJobIndexReq                   = sys.DeptSyncJobIndexReq
+	DeptSyncJobIndexResp                  = sys.DeptSyncJobIndexResp
+	DeptSyncJobReadReq                    = sys.DeptSyncJobReadReq
 	DeptUserIndexReq                      = sys.DeptUserIndexReq
 	DeptUserIndexResp                     = sys.DeptUserIndexResp
 	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
@@ -192,6 +196,8 @@ type (
 	TenantOpenWebHook                     = sys.TenantOpenWebHook
 	ThirdApp                              = sys.ThirdApp
 	ThirdAppConfig                        = sys.ThirdAppConfig
+	ThirdDeptInfoIndexReq                 = sys.ThirdDeptInfoIndexReq
+	ThirdDeptInfoReadReq                  = sys.ThirdDeptInfoReadReq
 	ThirdEmail                            = sys.ThirdEmail
 	ThirdSms                              = sys.ThirdSms
 	UserAreaApplyCreateReq                = sys.UserAreaApplyCreateReq
@@ -248,13 +254,18 @@ type (
 		DeptInfoIndex(ctx context.Context, in *DeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error)
 		DeptInfoUpdate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*Empty, error)
 		DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
-		DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error)
 		DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error)
 		DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error)
 		DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 		DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+		DeptSyncJobExecute(ctx context.Context, in *DeptSyncJobExecuteReq, opts ...grpc.CallOption) (*DeptSyncJobExecuteResp, error)
+		DeptSyncJobRead(ctx context.Context, in *DeptSyncJobReadReq, opts ...grpc.CallOption) (*DeptSyncJob, error)
+		DeptSyncJobCreate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*WithID, error)
+		DeptSyncJobIndex(ctx context.Context, in *DeptSyncJobIndexReq, opts ...grpc.CallOption) (*DeptSyncJobIndexResp, error)
+		DeptSyncJobUpdate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*Empty, error)
+		DeptSyncJobDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	}
 
 	defaultDepartmentManage struct {
@@ -325,15 +336,6 @@ func (d *directDepartmentManage) DeptInfoDelete(ctx context.Context, in *WithID,
 	return d.svr.DeptInfoDelete(ctx, in)
 }
 
-func (m *defaultDepartmentManage) DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error) {
-	client := sys.NewDepartmentManageClient(m.cli.Conn())
-	return client.DeptInfoSync(ctx, in, opts...)
-}
-
-func (d *directDepartmentManage) DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error) {
-	return d.svr.DeptInfoSync(ctx, in)
-}
-
 func (m *defaultDepartmentManage) DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error) {
 	client := sys.NewDepartmentManageClient(m.cli.Conn())
 	return client.DeptUserIndex(ctx, in, opts...)
@@ -386,4 +388,58 @@ func (m *defaultDepartmentManage) DeptRoleMultiCreate(ctx context.Context, in *D
 
 func (d *directDepartmentManage) DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.DeptRoleMultiCreate(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptSyncJobExecute(ctx context.Context, in *DeptSyncJobExecuteReq, opts ...grpc.CallOption) (*DeptSyncJobExecuteResp, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptSyncJobExecute(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptSyncJobExecute(ctx context.Context, in *DeptSyncJobExecuteReq, opts ...grpc.CallOption) (*DeptSyncJobExecuteResp, error) {
+	return d.svr.DeptSyncJobExecute(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptSyncJobRead(ctx context.Context, in *DeptSyncJobReadReq, opts ...grpc.CallOption) (*DeptSyncJob, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptSyncJobRead(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptSyncJobRead(ctx context.Context, in *DeptSyncJobReadReq, opts ...grpc.CallOption) (*DeptSyncJob, error) {
+	return d.svr.DeptSyncJobRead(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptSyncJobCreate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*WithID, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptSyncJobCreate(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptSyncJobCreate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.DeptSyncJobCreate(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptSyncJobIndex(ctx context.Context, in *DeptSyncJobIndexReq, opts ...grpc.CallOption) (*DeptSyncJobIndexResp, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptSyncJobIndex(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptSyncJobIndex(ctx context.Context, in *DeptSyncJobIndexReq, opts ...grpc.CallOption) (*DeptSyncJobIndexResp, error) {
+	return d.svr.DeptSyncJobIndex(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptSyncJobUpdate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptSyncJobUpdate(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptSyncJobUpdate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DeptSyncJobUpdate(ctx, in)
+}
+
+func (m *defaultDepartmentManage) DeptSyncJobDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDepartmentManageClient(m.cli.Conn())
+	return client.DeptSyncJobDelete(ctx, in, opts...)
+}
+
+func (d *directDepartmentManage) DeptSyncJobDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DeptSyncJobDelete(ctx, in)
 }

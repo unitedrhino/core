@@ -4674,13 +4674,18 @@ const (
 	DepartmentManage_DeptInfoIndex_FullMethodName       = "/sys.DepartmentManage/deptInfoIndex"
 	DepartmentManage_DeptInfoUpdate_FullMethodName      = "/sys.DepartmentManage/deptInfoUpdate"
 	DepartmentManage_DeptInfoDelete_FullMethodName      = "/sys.DepartmentManage/deptInfoDelete"
-	DepartmentManage_DeptInfoSync_FullMethodName        = "/sys.DepartmentManage/deptInfoSync"
 	DepartmentManage_DeptUserIndex_FullMethodName       = "/sys.DepartmentManage/deptUserIndex"
 	DepartmentManage_DeptUserMultiDelete_FullMethodName = "/sys.DepartmentManage/deptUserMultiDelete"
 	DepartmentManage_DeptUserMultiCreate_FullMethodName = "/sys.DepartmentManage/deptUserMultiCreate"
 	DepartmentManage_DeptRoleIndex_FullMethodName       = "/sys.DepartmentManage/deptRoleIndex"
 	DepartmentManage_DeptRoleMultiDelete_FullMethodName = "/sys.DepartmentManage/deptRoleMultiDelete"
 	DepartmentManage_DeptRoleMultiCreate_FullMethodName = "/sys.DepartmentManage/deptRoleMultiCreate"
+	DepartmentManage_DeptSyncJobExecute_FullMethodName  = "/sys.DepartmentManage/deptSyncJobExecute"
+	DepartmentManage_DeptSyncJobRead_FullMethodName     = "/sys.DepartmentManage/deptSyncJobRead"
+	DepartmentManage_DeptSyncJobCreate_FullMethodName   = "/sys.DepartmentManage/deptSyncJobCreate"
+	DepartmentManage_DeptSyncJobIndex_FullMethodName    = "/sys.DepartmentManage/deptSyncJobIndex"
+	DepartmentManage_DeptSyncJobUpdate_FullMethodName   = "/sys.DepartmentManage/deptSyncJobUpdate"
+	DepartmentManage_DeptSyncJobDelete_FullMethodName   = "/sys.DepartmentManage/deptSyncJobDelete"
 )
 
 // DepartmentManageClient is the client API for DepartmentManage service.
@@ -4692,13 +4697,18 @@ type DepartmentManageClient interface {
 	DeptInfoIndex(ctx context.Context, in *DeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error)
 	DeptInfoUpdate(ctx context.Context, in *DeptInfo, opts ...grpc.CallOption) (*Empty, error)
 	DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
-	DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error)
 	DeptUserIndex(ctx context.Context, in *DeptUserIndexReq, opts ...grpc.CallOption) (*DeptUserIndexResp, error)
 	DeptUserMultiDelete(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	DeptUserMultiCreate(ctx context.Context, in *DeptUserMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	DeptRoleIndex(ctx context.Context, in *DeptRoleIndexReq, opts ...grpc.CallOption) (*DeptRoleIndexResp, error)
 	DeptRoleMultiDelete(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
 	DeptRoleMultiCreate(ctx context.Context, in *DeptRoleMultiSaveReq, opts ...grpc.CallOption) (*Empty, error)
+	DeptSyncJobExecute(ctx context.Context, in *DeptSyncJobExecuteReq, opts ...grpc.CallOption) (*DeptSyncJobExecuteResp, error)
+	DeptSyncJobRead(ctx context.Context, in *DeptSyncJobReadReq, opts ...grpc.CallOption) (*DeptSyncJob, error)
+	DeptSyncJobCreate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*WithID, error)
+	DeptSyncJobIndex(ctx context.Context, in *DeptSyncJobIndexReq, opts ...grpc.CallOption) (*DeptSyncJobIndexResp, error)
+	DeptSyncJobUpdate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*Empty, error)
+	DeptSyncJobDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type departmentManageClient struct {
@@ -4748,15 +4758,6 @@ func (c *departmentManageClient) DeptInfoUpdate(ctx context.Context, in *DeptInf
 func (c *departmentManageClient) DeptInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoDelete_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *departmentManageClient) DeptInfoSync(ctx context.Context, in *DeptInfoSyncReq, opts ...grpc.CallOption) (*DeptInfoSyncResp, error) {
-	out := new(DeptInfoSyncResp)
-	err := c.cc.Invoke(ctx, DepartmentManage_DeptInfoSync_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -4817,6 +4818,60 @@ func (c *departmentManageClient) DeptRoleMultiCreate(ctx context.Context, in *De
 	return out, nil
 }
 
+func (c *departmentManageClient) DeptSyncJobExecute(ctx context.Context, in *DeptSyncJobExecuteReq, opts ...grpc.CallOption) (*DeptSyncJobExecuteResp, error) {
+	out := new(DeptSyncJobExecuteResp)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptSyncJobExecute_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptSyncJobRead(ctx context.Context, in *DeptSyncJobReadReq, opts ...grpc.CallOption) (*DeptSyncJob, error) {
+	out := new(DeptSyncJob)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptSyncJobRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptSyncJobCreate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptSyncJobCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptSyncJobIndex(ctx context.Context, in *DeptSyncJobIndexReq, opts ...grpc.CallOption) (*DeptSyncJobIndexResp, error) {
+	out := new(DeptSyncJobIndexResp)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptSyncJobIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptSyncJobUpdate(ctx context.Context, in *DeptSyncJob, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptSyncJobUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *departmentManageClient) DeptSyncJobDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DepartmentManage_DeptSyncJobDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DepartmentManageServer is the server API for DepartmentManage service.
 // All implementations must embed UnimplementedDepartmentManageServer
 // for forward compatibility
@@ -4826,13 +4881,18 @@ type DepartmentManageServer interface {
 	DeptInfoIndex(context.Context, *DeptInfoIndexReq) (*DeptInfoIndexResp, error)
 	DeptInfoUpdate(context.Context, *DeptInfo) (*Empty, error)
 	DeptInfoDelete(context.Context, *WithID) (*Empty, error)
-	DeptInfoSync(context.Context, *DeptInfoSyncReq) (*DeptInfoSyncResp, error)
 	DeptUserIndex(context.Context, *DeptUserIndexReq) (*DeptUserIndexResp, error)
 	DeptUserMultiDelete(context.Context, *DeptUserMultiSaveReq) (*Empty, error)
 	DeptUserMultiCreate(context.Context, *DeptUserMultiSaveReq) (*Empty, error)
 	DeptRoleIndex(context.Context, *DeptRoleIndexReq) (*DeptRoleIndexResp, error)
 	DeptRoleMultiDelete(context.Context, *DeptRoleMultiSaveReq) (*Empty, error)
 	DeptRoleMultiCreate(context.Context, *DeptRoleMultiSaveReq) (*Empty, error)
+	DeptSyncJobExecute(context.Context, *DeptSyncJobExecuteReq) (*DeptSyncJobExecuteResp, error)
+	DeptSyncJobRead(context.Context, *DeptSyncJobReadReq) (*DeptSyncJob, error)
+	DeptSyncJobCreate(context.Context, *DeptSyncJob) (*WithID, error)
+	DeptSyncJobIndex(context.Context, *DeptSyncJobIndexReq) (*DeptSyncJobIndexResp, error)
+	DeptSyncJobUpdate(context.Context, *DeptSyncJob) (*Empty, error)
+	DeptSyncJobDelete(context.Context, *WithID) (*Empty, error)
 	mustEmbedUnimplementedDepartmentManageServer()
 }
 
@@ -4855,9 +4915,6 @@ func (UnimplementedDepartmentManageServer) DeptInfoUpdate(context.Context, *Dept
 func (UnimplementedDepartmentManageServer) DeptInfoDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoDelete not implemented")
 }
-func (UnimplementedDepartmentManageServer) DeptInfoSync(context.Context, *DeptInfoSyncReq) (*DeptInfoSyncResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeptInfoSync not implemented")
-}
 func (UnimplementedDepartmentManageServer) DeptUserIndex(context.Context, *DeptUserIndexReq) (*DeptUserIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeptUserIndex not implemented")
 }
@@ -4875,6 +4932,24 @@ func (UnimplementedDepartmentManageServer) DeptRoleMultiDelete(context.Context, 
 }
 func (UnimplementedDepartmentManageServer) DeptRoleMultiCreate(context.Context, *DeptRoleMultiSaveReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeptRoleMultiCreate not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptSyncJobExecute(context.Context, *DeptSyncJobExecuteReq) (*DeptSyncJobExecuteResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptSyncJobExecute not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptSyncJobRead(context.Context, *DeptSyncJobReadReq) (*DeptSyncJob, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptSyncJobRead not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptSyncJobCreate(context.Context, *DeptSyncJob) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptSyncJobCreate not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptSyncJobIndex(context.Context, *DeptSyncJobIndexReq) (*DeptSyncJobIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptSyncJobIndex not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptSyncJobUpdate(context.Context, *DeptSyncJob) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptSyncJobUpdate not implemented")
+}
+func (UnimplementedDepartmentManageServer) DeptSyncJobDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeptSyncJobDelete not implemented")
 }
 func (UnimplementedDepartmentManageServer) mustEmbedUnimplementedDepartmentManageServer() {}
 
@@ -4975,24 +5050,6 @@ func _DepartmentManage_DeptInfoDelete_Handler(srv interface{}, ctx context.Conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DepartmentManageServer).DeptInfoDelete(ctx, req.(*WithID))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DepartmentManage_DeptInfoSync_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeptInfoSyncReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DepartmentManageServer).DeptInfoSync(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: DepartmentManage_DeptInfoSync_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DepartmentManageServer).DeptInfoSync(ctx, req.(*DeptInfoSyncReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -5105,6 +5162,114 @@ func _DepartmentManage_DeptRoleMultiCreate_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DepartmentManage_DeptSyncJobExecute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptSyncJobExecuteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptSyncJobExecute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptSyncJobExecute_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptSyncJobExecute(ctx, req.(*DeptSyncJobExecuteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptSyncJobRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptSyncJobReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptSyncJobRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptSyncJobRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptSyncJobRead(ctx, req.(*DeptSyncJobReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptSyncJobCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptSyncJob)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptSyncJobCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptSyncJobCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptSyncJobCreate(ctx, req.(*DeptSyncJob))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptSyncJobIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptSyncJobIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptSyncJobIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptSyncJobIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptSyncJobIndex(ctx, req.(*DeptSyncJobIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptSyncJobUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeptSyncJob)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptSyncJobUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptSyncJobUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptSyncJobUpdate(ctx, req.(*DeptSyncJob))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepartmentManage_DeptSyncJobDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepartmentManageServer).DeptSyncJobDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DepartmentManage_DeptSyncJobDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepartmentManageServer).DeptSyncJobDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DepartmentManage_ServiceDesc is the grpc.ServiceDesc for DepartmentManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5133,10 +5298,6 @@ var DepartmentManage_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DepartmentManage_DeptInfoDelete_Handler,
 		},
 		{
-			MethodName: "deptInfoSync",
-			Handler:    _DepartmentManage_DeptInfoSync_Handler,
-		},
-		{
 			MethodName: "deptUserIndex",
 			Handler:    _DepartmentManage_DeptUserIndex_Handler,
 		},
@@ -5160,6 +5321,30 @@ var DepartmentManage_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "deptRoleMultiCreate",
 			Handler:    _DepartmentManage_DeptRoleMultiCreate_Handler,
 		},
+		{
+			MethodName: "deptSyncJobExecute",
+			Handler:    _DepartmentManage_DeptSyncJobExecute_Handler,
+		},
+		{
+			MethodName: "deptSyncJobRead",
+			Handler:    _DepartmentManage_DeptSyncJobRead_Handler,
+		},
+		{
+			MethodName: "deptSyncJobCreate",
+			Handler:    _DepartmentManage_DeptSyncJobCreate_Handler,
+		},
+		{
+			MethodName: "deptSyncJobIndex",
+			Handler:    _DepartmentManage_DeptSyncJobIndex_Handler,
+		},
+		{
+			MethodName: "deptSyncJobUpdate",
+			Handler:    _DepartmentManage_DeptSyncJobUpdate_Handler,
+		},
+		{
+			MethodName: "deptSyncJobDelete",
+			Handler:    _DepartmentManage_DeptSyncJobDelete_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/sys.proto",
@@ -5176,6 +5361,8 @@ const (
 	Common_SlotInfoRead_FullMethodName      = "/sys.Common/slotInfoRead"
 	Common_ServiceInfoRead_FullMethodName   = "/sys.Common/serviceInfoRead"
 	Common_ServiceInfoUpdate_FullMethodName = "/sys.Common/serviceInfoUpdate"
+	Common_ThirdDeptRead_FullMethodName     = "/sys.Common/thirdDeptRead"
+	Common_ThirdDeptIndex_FullMethodName    = "/sys.Common/thirdDeptIndex"
 )
 
 // CommonClient is the client API for Common service.
@@ -5192,6 +5379,8 @@ type CommonClient interface {
 	SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
 	ServiceInfoRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*ServiceInfo, error)
 	ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, opts ...grpc.CallOption) (*Empty, error)
+	ThirdDeptRead(ctx context.Context, in *ThirdDeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error)
+	ThirdDeptIndex(ctx context.Context, in *ThirdDeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error)
 }
 
 type commonClient struct {
@@ -5292,6 +5481,24 @@ func (c *commonClient) ServiceInfoUpdate(ctx context.Context, in *ServiceInfo, o
 	return out, nil
 }
 
+func (c *commonClient) ThirdDeptRead(ctx context.Context, in *ThirdDeptInfoReadReq, opts ...grpc.CallOption) (*DeptInfo, error) {
+	out := new(DeptInfo)
+	err := c.cc.Invoke(ctx, Common_ThirdDeptRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) ThirdDeptIndex(ctx context.Context, in *ThirdDeptInfoIndexReq, opts ...grpc.CallOption) (*DeptInfoIndexResp, error) {
+	out := new(DeptInfoIndexResp)
+	err := c.cc.Invoke(ctx, Common_ThirdDeptIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommonServer is the server API for Common service.
 // All implementations must embed UnimplementedCommonServer
 // for forward compatibility
@@ -5306,6 +5513,8 @@ type CommonServer interface {
 	SlotInfoRead(context.Context, *WithID) (*SlotInfo, error)
 	ServiceInfoRead(context.Context, *WithCode) (*ServiceInfo, error)
 	ServiceInfoUpdate(context.Context, *ServiceInfo) (*Empty, error)
+	ThirdDeptRead(context.Context, *ThirdDeptInfoReadReq) (*DeptInfo, error)
+	ThirdDeptIndex(context.Context, *ThirdDeptInfoIndexReq) (*DeptInfoIndexResp, error)
 	mustEmbedUnimplementedCommonServer()
 }
 
@@ -5342,6 +5551,12 @@ func (UnimplementedCommonServer) ServiceInfoRead(context.Context, *WithCode) (*S
 }
 func (UnimplementedCommonServer) ServiceInfoUpdate(context.Context, *ServiceInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ServiceInfoUpdate not implemented")
+}
+func (UnimplementedCommonServer) ThirdDeptRead(context.Context, *ThirdDeptInfoReadReq) (*DeptInfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ThirdDeptRead not implemented")
+}
+func (UnimplementedCommonServer) ThirdDeptIndex(context.Context, *ThirdDeptInfoIndexReq) (*DeptInfoIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ThirdDeptIndex not implemented")
 }
 func (UnimplementedCommonServer) mustEmbedUnimplementedCommonServer() {}
 
@@ -5536,6 +5751,42 @@ func _Common_ServiceInfoUpdate_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Common_ThirdDeptRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThirdDeptInfoReadReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).ThirdDeptRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_ThirdDeptRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).ThirdDeptRead(ctx, req.(*ThirdDeptInfoReadReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_ThirdDeptIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ThirdDeptInfoIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).ThirdDeptIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_ThirdDeptIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).ThirdDeptIndex(ctx, req.(*ThirdDeptInfoIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Common_ServiceDesc is the grpc.ServiceDesc for Common service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -5582,6 +5833,14 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "serviceInfoUpdate",
 			Handler:    _Common_ServiceInfoUpdate_Handler,
+		},
+		{
+			MethodName: "thirdDeptRead",
+			Handler:    _Common_ThirdDeptRead_Handler,
+		},
+		{
+			MethodName: "thirdDeptIndex",
+			Handler:    _Common_ThirdDeptIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

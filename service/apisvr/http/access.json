@@ -621,7 +621,7 @@
       "authType": "all"
     },
     "systemDeptManageAdd": {
-      "name": "新增部门管理",
+      "name": "新增部门同步任务",
       "code": "systemDeptManageAdd",
       "group": "部门管理",
       "isNeedAuth": 1,
@@ -636,12 +636,22 @@
           "businessType": "add",
           "desc": "",
           "authType": "admin"
+        },
+        {
+          "accessCode": "systemDeptManageAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/create",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "add",
+          "desc": "",
+          "authType": "admin"
         }
       ],
       "authType": "admin"
     },
     "systemDeptManageDelete": {
-      "name": "删除部门管理",
+      "name": "删除部门同步任务",
       "code": "systemDeptManageDelete",
       "group": "部门管理",
       "isNeedAuth": 1,
@@ -656,12 +666,22 @@
           "businessType": "delete",
           "desc": "",
           "authType": "admin"
+        },
+        {
+          "accessCode": "systemDeptManageDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/delete",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "admin"
         }
       ],
       "authType": "admin"
     },
     "systemDeptManageFind": {
-      "name": "查询部门管理",
+      "name": "查询部门同步任务",
       "code": "systemDeptManageFind",
       "group": "部门管理",
       "isNeedAuth": 2,
@@ -686,12 +706,32 @@
           "businessType": "find",
           "desc": "",
           "authType": "all"
+        },
+        {
+          "accessCode": "systemDeptManageFind",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/index",
+          "name": "获取同步任务列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
+        },
+        {
+          "accessCode": "systemDeptManageFind",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/read",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all"
         }
       ],
       "authType": "all"
     },
     "systemDeptManageModify": {
-      "name": "修改部门管理",
+      "name": "修改部门同步任务",
       "code": "systemDeptManageModify",
       "group": "部门管理",
       "isNeedAuth": 1,
@@ -706,12 +746,22 @@
           "businessType": "modify",
           "desc": "",
           "authType": "admin"
+        },
+        {
+          "accessCode": "systemDeptManageModify",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/update",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "admin"
         }
       ],
       "authType": "admin"
     },
     "systemDeptManageOther": {
-      "name": "操作部门管理",
+      "name": "操作部门同步任务",
       "code": "systemDeptManageOther",
       "group": "部门管理",
       "isNeedAuth": 1,
@@ -720,7 +770,7 @@
         {
           "accessCode": "systemDeptManageOther",
           "method": "POST",
-          "route": "/api/v1/system/dept/info/sync",
+          "route": "/api/v1/system/dept/sync-job/execute",
           "name": "",
           "isNeedAuth": 1,
           "businessType": "other",

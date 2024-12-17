@@ -59,11 +59,15 @@ type (
 	DeptInfoIndexReq                      = sys.DeptInfoIndexReq
 	DeptInfoIndexResp                     = sys.DeptInfoIndexResp
 	DeptInfoReadReq                       = sys.DeptInfoReadReq
-	DeptInfoSyncReq                       = sys.DeptInfoSyncReq
-	DeptInfoSyncResp                      = sys.DeptInfoSyncResp
 	DeptRoleIndexReq                      = sys.DeptRoleIndexReq
 	DeptRoleIndexResp                     = sys.DeptRoleIndexResp
 	DeptRoleMultiSaveReq                  = sys.DeptRoleMultiSaveReq
+	DeptSyncJob                           = sys.DeptSyncJob
+	DeptSyncJobExecuteReq                 = sys.DeptSyncJobExecuteReq
+	DeptSyncJobExecuteResp                = sys.DeptSyncJobExecuteResp
+	DeptSyncJobIndexReq                   = sys.DeptSyncJobIndexReq
+	DeptSyncJobIndexResp                  = sys.DeptSyncJobIndexResp
+	DeptSyncJobReadReq                    = sys.DeptSyncJobReadReq
 	DeptUserIndexReq                      = sys.DeptUserIndexReq
 	DeptUserIndexResp                     = sys.DeptUserIndexResp
 	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
@@ -192,6 +196,8 @@ type (
 	TenantOpenWebHook                     = sys.TenantOpenWebHook
 	ThirdApp                              = sys.ThirdApp
 	ThirdAppConfig                        = sys.ThirdAppConfig
+	ThirdDeptInfoIndexReq                 = sys.ThirdDeptInfoIndexReq
+	ThirdDeptInfoReadReq                  = sys.ThirdDeptInfoReadReq
 	ThirdEmail                            = sys.ThirdEmail
 	ThirdSms                              = sys.ThirdSms
 	UserAreaApplyCreateReq                = sys.UserAreaApplyCreateReq

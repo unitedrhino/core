@@ -48,11 +48,6 @@ func (s *DepartmentManageServer) DeptInfoDelete(ctx context.Context, in *sys.Wit
 	return l.DeptInfoDelete(in)
 }
 
-func (s *DepartmentManageServer) DeptInfoSync(ctx context.Context, in *sys.DeptInfoSyncReq) (*sys.DeptInfoSyncResp, error) {
-	l := departmentmanagelogic.NewDeptInfoSyncLogic(ctx, s.svcCtx)
-	return l.DeptInfoSync(in)
-}
-
 func (s *DepartmentManageServer) DeptUserIndex(ctx context.Context, in *sys.DeptUserIndexReq) (*sys.DeptUserIndexResp, error) {
 	l := departmentmanagelogic.NewDeptUserIndexLogic(ctx, s.svcCtx)
 	return l.DeptUserIndex(in)
@@ -81,4 +76,34 @@ func (s *DepartmentManageServer) DeptRoleMultiDelete(ctx context.Context, in *sy
 func (s *DepartmentManageServer) DeptRoleMultiCreate(ctx context.Context, in *sys.DeptRoleMultiSaveReq) (*sys.Empty, error) {
 	l := departmentmanagelogic.NewDeptRoleMultiCreateLogic(ctx, s.svcCtx)
 	return l.DeptRoleMultiCreate(in)
+}
+
+func (s *DepartmentManageServer) DeptSyncJobExecute(ctx context.Context, in *sys.DeptSyncJobExecuteReq) (*sys.DeptSyncJobExecuteResp, error) {
+	l := departmentmanagelogic.NewDeptSyncJobExecuteLogic(ctx, s.svcCtx)
+	return l.DeptSyncJobExecute(in)
+}
+
+func (s *DepartmentManageServer) DeptSyncJobRead(ctx context.Context, in *sys.DeptSyncJobReadReq) (*sys.DeptSyncJob, error) {
+	l := departmentmanagelogic.NewDeptSyncJobReadLogic(ctx, s.svcCtx)
+	return l.DeptSyncJobRead(in)
+}
+
+func (s *DepartmentManageServer) DeptSyncJobCreate(ctx context.Context, in *sys.DeptSyncJob) (*sys.WithID, error) {
+	l := departmentmanagelogic.NewDeptSyncJobCreateLogic(ctx, s.svcCtx)
+	return l.DeptSyncJobCreate(in)
+}
+
+func (s *DepartmentManageServer) DeptSyncJobIndex(ctx context.Context, in *sys.DeptSyncJobIndexReq) (*sys.DeptSyncJobIndexResp, error) {
+	l := departmentmanagelogic.NewDeptSyncJobIndexLogic(ctx, s.svcCtx)
+	return l.DeptSyncJobIndex(in)
+}
+
+func (s *DepartmentManageServer) DeptSyncJobUpdate(ctx context.Context, in *sys.DeptSyncJob) (*sys.Empty, error) {
+	l := departmentmanagelogic.NewDeptSyncJobUpdateLogic(ctx, s.svcCtx)
+	return l.DeptSyncJobUpdate(in)
+}
+
+func (s *DepartmentManageServer) DeptSyncJobDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := departmentmanagelogic.NewDeptSyncJobDeleteLogic(ctx, s.svcCtx)
+	return l.DeptSyncJobDelete(in)
 }

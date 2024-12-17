@@ -18,6 +18,7 @@ import (
 	systemdataopenaccess "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/open/access"
 	systemdataproject "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/project"
 	systemdeptinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/info"
+	systemdeptsyncJob "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/syncJob"
 	systemdictdetail "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dict/detail"
 	systemdictinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dict/info"
 	systemjobtask "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/job/task"
@@ -279,6 +280,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemcommon.QRCodeReadReqHandler(serverCtx),
 				},
 				{
+					// 获取第三方的部门信息列表
+					Method:  http.MethodPost,
+					Path:    "/third/dept/index",
+					Handler: systemcommon.ThirdDeptIndexHandler(serverCtx),
+				},
+				{
+					// 获取第三方的部门信息详情,Children只能获取一层,需要递归获取
+					Method:  http.MethodPost,
+					Path:    "/third/dept/read",
+					Handler: systemcommon.ThirdDeptReadHandler(serverCtx),
+				},
+				{
 					// 文件直传
 					Method:  http.MethodPost,
 					Path:    "/upload-file",
@@ -495,12 +508,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemdeptinfo.ReadHandler(serverCtx),
 				},
 				{
-					// 同步部门
-					Method:  http.MethodPost,
-					Path:    "/sync",
-					Handler: systemdeptinfo.SyncHandler(serverCtx),
-				},
-				{
 					// 更新部门
 					Method:  http.MethodPost,
 					Path:    "/update",
@@ -509,6 +516,51 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/dept/info"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 添加同步任务
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemdeptsyncJob.CreateHandler(serverCtx),
+				},
+				{
+					// 删除同步任务
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemdeptsyncJob.DeleteHandler(serverCtx),
+				},
+				{
+					// 执行同步任务
+					Method:  http.MethodPost,
+					Path:    "/execute",
+					Handler: systemdeptsyncJob.ExecuteHandler(serverCtx),
+				},
+				{
+					// 获取同步任务列表
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdeptsyncJob.IndexHandler(serverCtx),
+				},
+				{
+					// 获取同步任务单个
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemdeptsyncJob.ReadHandler(serverCtx),
+				},
+				{
+					// 更新同步任务
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemdeptsyncJob.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/dept/sync-job"),
 	)
 
 	server.AddRoutes(

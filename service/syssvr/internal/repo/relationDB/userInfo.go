@@ -16,25 +16,26 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
-	UserIDs        []int64
-	HasAccessAreas []int64
-	TenantCode     string
-	UserNames      []string
-	UserName       string
-	Phone          string
-	Phones         []string
-	Email          string
-	Emails         []string
-	WechatOpenIDs  []string
-	Accounts       []string //账号查询 非模糊查询
-	WechatUnionID  string
-	WechatOpenID   string
-	DingTalkUserID string
-	WithRoles      bool
-	WithTenant     bool
-	RoleCode       string
-	DeptID         int64
-	UpdatedTime    *stores.Cmp
+	UserIDs         []int64
+	HasAccessAreas  []int64
+	TenantCode      string
+	UserNames       []string
+	UserName        string
+	Phone           string
+	Phones          []string
+	Email           string
+	Emails          []string
+	WechatOpenIDs   []string
+	Accounts        []string //账号查询 非模糊查询
+	WechatUnionID   string
+	WechatOpenID    string
+	DingTalkUserID  string
+	DingTalkUnionID string
+	WithRoles       bool
+	WithTenant      bool
+	RoleCode        string
+	DeptID          int64
+	UpdatedTime     *stores.Cmp
 }
 
 func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
@@ -60,9 +61,7 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 		subQuery := p.db.Model(&SysDeptUser{}).Select("user_id").Where("dept_id=?", f.DeptID)
 		db = db.Where("user_id in (?)", subQuery)
 	}
-	if f.DingTalkUserID != "" {
-		db = db.Where("ding_talk_user_id = ?", f.DingTalkUserID)
-	}
+
 	if f.WithRoles {
 		db = db.Preload("Roles.Role")
 	}
@@ -92,6 +91,20 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	}
 	if len(f.Emails) != 0 {
 		db = db.Where("email in ?", f.Emails)
+	}
+
+	dingOr := db
+	var isDing bool
+	if f.DingTalkUserID != "" {
+		isDing = true
+		dingOr = dingOr.Or("ding_talk_user_id = ?", f.DingTalkUserID)
+	}
+	if f.DingTalkUnionID != "" {
+		isDing = true
+		dingOr = dingOr.Or("ding_talk_union_id = ?", f.DingTalkUnionID)
+	}
+	if isDing {
+		db = db.Where(dingOr)
 	}
 	wechatOr := db
 	var isWechat bool

@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/smsClient"
 	"gitee.com/unitedrhino/share/domain/tenant"
 	"gitee.com/unitedrhino/share/eventBus"
@@ -16,6 +17,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"os"
+	"sync"
 )
 
 type CaptchaLimit struct {
@@ -31,27 +33,29 @@ type LoginLimit struct {
 }
 
 type ServiceContext struct {
-	Config            config.Config
-	ProjectID         *utils.SnowFlake
-	AreaID            *utils.SnowFlake
-	UserID            *utils.SnowFlake
-	Slot              *cache.Slot
-	OssClient         *oss.Client
-	Store             kv.Store
-	Captcha           *cache.Captcha
-	CaptchaLimit      CaptchaLimit
-	LoginLimit        LoginLimit
-	Cm                *ClientsManage
-	FastEvent         *eventBus.FastEvent
-	UserTokenInfo     *cache.UserToken
-	TenantCache       *caches.Cache[tenant.Info, string]
-	TenantConfigCache *caches.Cache[sys.TenantConfig, string]
-	ProjectCache      *caches.Cache[sys.ProjectInfo, int64]
-	UserCache         *caches.Cache[sys.UserInfo, int64]
-	AreaCache         *caches.Cache[sys.AreaInfo, int64]
-	ApiCache          *caches.Cache[relationDB.SysApiInfo, string]
-	RoleAccessCache   *caches.Cache[map[int64]struct{}, string]
-	Sms               *smsClient.Sms
+	Config             config.Config
+	ProjectID          *utils.SnowFlake
+	AreaID             *utils.SnowFlake
+	UserID             *utils.SnowFlake
+	Slot               *cache.Slot
+	OssClient          *oss.Client
+	Store              kv.Store
+	Captcha            *cache.Captcha
+	CaptchaLimit       CaptchaLimit
+	LoginLimit         LoginLimit
+	Cm                 *ClientsManage
+	FastEvent          *eventBus.FastEvent
+	UserTokenInfo      *cache.UserToken
+	TenantCache        *caches.Cache[tenant.Info, string]
+	TenantConfigCache  *caches.Cache[sys.TenantConfig, string]
+	ProjectCache       *caches.Cache[sys.ProjectInfo, int64]
+	UserCache          *caches.Cache[sys.UserInfo, int64]
+	AreaCache          *caches.Cache[sys.AreaInfo, int64]
+	ApiCache           *caches.Cache[relationDB.SysApiInfo, string]
+	RoleAccessCache    *caches.Cache[map[int64]struct{}, string]
+	Sms                *smsClient.Sms
+	DingStreamMap      map[string]*dingClient.StreamClient //key是租户号,value是需要同步的stream
+	DingStreamMapMutex sync.RWMutex
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -89,18 +93,19 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		PwdAccount: tools.NewLimit(c.LoginPwdAccountLimit, "login", "pwd:account", config.DefaultAccountLimit),
 	}
 	return &ServiceContext{
-		FastEvent:    serverMsg,
-		Captcha:      cache.NewCaptcha(store),
-		Slot:         cache.NewSlot(),
-		Cm:           NewClients(c),
-		Config:       c,
-		CaptchaLimit: cl,
-		LoginLimit:   ll,
-		ProjectID:    ProjectID,
-		OssClient:    ossClient,
-		AreaID:       AreaID,
-		UserID:       UserID,
-		Store:        store,
-		Sms:          sms,
+		FastEvent:     serverMsg,
+		Captcha:       cache.NewCaptcha(store),
+		Slot:          cache.NewSlot(),
+		Cm:            NewClients(c),
+		Config:        c,
+		CaptchaLimit:  cl,
+		LoginLimit:    ll,
+		ProjectID:     ProjectID,
+		OssClient:     ossClient,
+		AreaID:        AreaID,
+		UserID:        UserID,
+		Store:         store,
+		Sms:           sms,
+		DingStreamMap: make(map[string]*dingClient.StreamClient),
 	}
 }

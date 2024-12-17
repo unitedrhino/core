@@ -203,6 +203,9 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 		DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
 		NickName:       ret.UserInfo.Name,
 	}
+	if ret.UserInfo.UnionId != "" {
+		ui.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+	}
 	if in.Info != nil {
 		ui.NickName = in.Info.NickName
 		if in.Info.UserName != "" {
@@ -211,7 +214,7 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 	}
 	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId})
+		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister
 		}
@@ -347,7 +350,7 @@ func Init() {
 					continue
 				}
 				for _, code := range tenantCodes {
-					err = relationDB.NewTenantInfoRepo(ctx).UpdateUserCount(ctx, code)
+					err = stores.WithNoDebug(ctx, relationDB.NewTenantInfoRepo).UpdateUserCount(ctx, code)
 					if err != nil {
 						logx.WithContext(ctx).Error(err)
 					}

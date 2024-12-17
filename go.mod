@@ -3,7 +3,7 @@ module gitee.com/unitedrhino/core
 go 1.21.4
 
 require (
-	gitee.com/unitedrhino/share v1.1.5
+	gitee.com/unitedrhino/share v1.1.10
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
@@ -16,6 +16,7 @@ require (
 	github.com/maypok86/otter v1.2.0
 	github.com/mssola/user_agent v0.6.0
 	github.com/nats-io/nats.go v1.35.0
+	github.com/open-dingtalk/dingtalk-stream-sdk-go v0.9.0
 	github.com/parnurzeal/gorequest v0.3.0
 	github.com/samber/lo v1.47.0
 	github.com/silenceper/wechat/v2 v2.1.5
@@ -88,6 +89,7 @@ require (
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20230207041349-798e818bf904 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/grokify/html-strip-tags-go v0.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -142,7 +144,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.2.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/smartystreets/goconvey v1.8.1 // indirect
+	github.com/smarty/assertions v1.15.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/suifengtec/gocoord v0.0.0-20210116135606-a0cd8c71c959 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.985 // indirect
