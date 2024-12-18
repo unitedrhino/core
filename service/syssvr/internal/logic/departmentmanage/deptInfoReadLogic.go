@@ -3,6 +3,7 @@ package departmentmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -35,6 +36,11 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 			Name:   "根节点",
 			Status: def.True,
 			Sort:   1,
+		}
+		uc := ctxs.GetUserCtx(l.ctx)
+		ti, _ := l.svcCtx.TenantCache.GetData(l.ctx, uc.TenantCode)
+		if ti != nil {
+			po.Name = ti.Name
 		}
 		t, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{})
 		if err != nil {
@@ -73,7 +79,6 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 			}
 			FillFather(ret, fsMap)
 		}
-
 	}
 	return ret, nil
 }

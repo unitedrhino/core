@@ -7,6 +7,8 @@ import (
 	"fmt"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -20,9 +22,7 @@ import (
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
 	"sync"
-
-	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -41,6 +41,9 @@ func NewDeptSyncJobExecuteLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
+var runMutex sync.Mutex
+var runMap = make(map[int64]struct{})
+
 func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteReq) (*sys.DeptSyncJobExecuteResp, error) {
 	if err := ctxs.IsAdmin(l.ctx); err != nil {
 		return nil, err
@@ -49,61 +52,87 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 	if err != nil {
 		return nil, err
 	}
-	cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
-		AppID:     po.ThirdConfig.AppID,
-		AppKey:    po.ThirdConfig.AppKey,
-		AppSecret: po.ThirdConfig.AppSecret,
-	})
-	if err != nil {
-		return nil, err
-	}
-	err = SyncDeptDing(l.ctx, cli, &relationDB.SysDeptInfo{
-		ID:         def.RootNode,
-		Name:       "根节点",
-		Status:     def.True,
-		DingTalkID: def.RootNode,
-	})
-	if err != nil {
-		return nil, err
-	}
-	var needSyncDeptMap = map[int64]*relationDB.SysDeptInfo{}
-	var needSyncDepts = []*relationDB.SysDeptInfo{}
-	if len(po.SyncDeptIDs) == 0 { //指定只同步这几个部门的用户
-		needSyncDepts, err = relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{}, nil)
-		if err != nil {
-			return nil, err
+	canRun := func() bool {
+		runMutex.Lock()
+		defer runMutex.Unlock()
+		if _, ok := runMap[po.ID]; ok {
+			return false
 		}
-	} else {
-		needSyncDepts, err = relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDs: po.SyncDeptIDs}, nil)
-		if err != nil {
-			return nil, err
-		}
-		var idPaths []string
-		for _, d := range needSyncDepts {
-			idPaths = append(idPaths, d.IDPath)
-		}
-		depts, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDPaths: idPaths}, nil)
-		if err != nil {
-			return nil, err
-		}
-		needSyncDepts = append(needSyncDepts, depts...)
+		runMap[po.ID] = struct{}{}
+		return true
+	}()
+	if !canRun {
+		return &sys.DeptSyncJobExecuteResp{}, nil
 	}
-	for _, d := range needSyncDepts {
-		needSyncDeptMap[d.ID] = d
-	}
-	var wait sync.WaitGroup
-	for _, d := range needSyncDeptMap {
-		dd := d
-		wait.Add(1)
-		utils.Go(l.ctx, func() {
-			defer wait.Done()
-			err := SyncDeptUserDing(l.ctx, l.svcCtx, cli, dd)
+	ctxs.GoNewCtx(l.ctx, func(ctx context.Context) {
+		defer func() {
+			runMutex.Lock()
+			defer runMutex.Unlock()
+			delete(runMap, po.ID)
+		}()
+		start := time.Now()
+		err := func() error {
+			cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
+				AppID:     po.ThirdConfig.AppID,
+				AppKey:    po.ThirdConfig.AppKey,
+				AppSecret: po.ThirdConfig.AppSecret,
+			})
 			if err != nil {
-				l.Error(dd, err)
+				return err
 			}
-		})
-	}
-	wait.Wait()
+			err = SyncDeptDing(ctx, cli, &relationDB.SysDeptInfo{
+				ID:         def.RootNode,
+				Name:       "根节点",
+				Status:     def.True,
+				DingTalkID: def.RootNode,
+			})
+			if err != nil {
+				return err
+			}
+			var needSyncDeptMap = map[int64]*relationDB.SysDeptInfo{}
+			var needSyncDepts = []*relationDB.SysDeptInfo{}
+			var deptIDPaths = []string{}
+			if len(po.SyncDeptIDs) == 0 { //指定只同步这几个部门的用户
+				needSyncDepts, err = relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{}, &stores.PageInfo{Size: 2000})
+				if err != nil {
+					return err
+				}
+			} else {
+				needSyncDepts, err = relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{IDs: po.SyncDeptIDs}, nil)
+				if err != nil {
+					return err
+				}
+				var idPaths []string
+				for _, d := range needSyncDepts {
+					idPaths = append(idPaths, d.IDPath)
+				}
+				depts, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{IDPaths: idPaths}, nil)
+				if err != nil {
+					return err
+				}
+				needSyncDepts = append(needSyncDepts, depts...)
+			}
+			for _, d := range needSyncDepts {
+				needSyncDeptMap[d.ID] = d
+			}
+			for _, d := range needSyncDeptMap {
+				dd := d
+				deptIDPaths = append(deptIDPaths, d.IDPath)
+				err := SyncDeptUserDing(ctx, l.svcCtx, cli, dd)
+				if err != nil {
+					l.Error(dd, err)
+				}
+			}
+			if len(deptIDPaths) > 0 {
+				err = usermanagelogic.FillDeptUserCount(ctx, l.svcCtx, deptIDPaths...)
+				if err != nil {
+					l.Error(err)
+				}
+			}
+			return nil
+		}()
+		logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v use:%v err:%v", po.ID, time.Now().Sub(start), err)
+	})
 
 	return &sys.DeptSyncJobExecuteResp{}, nil
 }
@@ -111,12 +140,15 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *dingClient.DingTalk, info *relationDB.SysDeptInfo) error {
 	c := 0
 	page := 100
-	for {
+	var hasMore = true
+	for hasMore {
 		req := request.NewDeptDetailUserInfo(int(info.DingTalkID), c, page)
 		dings, err := cli.GetDeptDetailUserInfo(req.Build())
 		if err != nil {
 			return errors.System.AddDetail(err)
 		}
+		hasMore = dings.Page.HasMore
+		c = dings.Page.NextCursor
 		old, err := relationDB.NewDeptUserRepo(ctx).FindByFilter(ctx,
 			relationDB.DeptUserFilter{DeptID: info.ID, WithUser: true}, nil)
 		if err != nil {
@@ -317,9 +349,10 @@ func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationD
 		return err
 	}
 	for _, o := range old {
-		err := SyncDeptDing(ctx, cli, o)
+		oo := o
+		err := SyncDeptDing(ctx, cli, oo)
 		if err != nil {
-			return err
+			logx.WithContext(ctx).Error(oo, err)
 		}
 	}
 	return nil

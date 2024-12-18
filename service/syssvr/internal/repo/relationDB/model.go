@@ -73,7 +73,7 @@ type SysDeptInfo struct {
 	Status     int64             `gorm:"column:status;type:SMALLINT;default:1"`                             // 状态  1:启用,2:禁用
 	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                          // 排序标记
 	Desc       string            `gorm:"column:desc;comment:描述"`                                            // 描述
-	UserCount  int64             `gorm:"column:sort;comment:用户统计,包含下级部门的人数"`
+	UserCount  int64             `gorm:"column:user_count;comment:用户统计,包含下级部门的人数"`
 	IDPath     string            `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
 	DingTalkID int64             `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID
 	stores.NoDelTime

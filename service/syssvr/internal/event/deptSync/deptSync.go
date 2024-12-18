@@ -267,7 +267,7 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 func (d DeptSync) Timing() error {
 	d.Infof("DeptSync Timing")
 	pos, err := relationDB.NewDeptSyncJobRepo(d.ctx).FindByFilter(d.ctx, relationDB.DeptSyncJobFilter{
-		Direction: dept.SyncDirectionFrom, SyncModes: []int64{dept.SyncModeRealTime, dept.SyncModeTiming}}, nil)
+		Direction: dept.SyncDirectionFrom, SyncModes: []int64{dept.SyncModeTiming}}, nil)
 	if err != nil {
 		return err
 	}

@@ -61,12 +61,12 @@ func (l *UserDeptMultiCreateLogic) UserDeptMultiCreate(in *sys.UserDeptMultiSave
 	if err == nil {
 		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
 	}
-	fillDeptUserCount(l.ctx, l.svcCtx, idPaths...)
+	FillDeptUserCount(l.ctx, l.svcCtx, idPaths...)
 	return &sys.Empty{}, err
 }
 
-func fillDeptUserCount(ctx context.Context, svcCtx *svc.ServiceContext, deptIDPaths ...string) error {
-	logx.WithContext(ctx).Infof("fillDeptUserCount areaIDPaths:%v", deptIDPaths)
+func FillDeptUserCount(ctx context.Context, svcCtx *svc.ServiceContext, deptIDPaths ...string) error {
+	logx.WithContext(ctx).Infof("FillDeptUserCount areaIDPaths:%v", deptIDPaths)
 	defer utils.Recover(ctx)
 	ctx = ctxs.WithRoot(ctx)
 	log := logx.WithContext(ctx)
@@ -89,7 +89,7 @@ func fillDeptUserCount(ctx context.Context, svcCtx *svc.ServiceContext, deptIDPa
 				continue
 			}
 			err = relationDB.NewDeptInfoRepo(ctx).UpdateWithField(ctx, relationDB.DeptInfoFilter{ID: id}, map[string]any{
-				"userCount": count,
+				"user_count": count,
 			})
 			if err != nil {
 				log.Error(err)
