@@ -101,7 +101,7 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	})
 	if err == nil {
 		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
-		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.SysAreaInfoDelete, application.IDs{IDs: areaIDs})
+		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreAreaInfoDelete, application.IDs{IDs: areaIDs})
 		if err != nil {
 			l.Error(err)
 		}

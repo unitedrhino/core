@@ -7,7 +7,9 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/domain/application"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -151,6 +153,10 @@ func (l *UserInfoCreateLogic) UserInfoCreate(in *sys.UserInfoCreateReq) (*sys.Us
 	userID, err := l.UserInfoInsert(in)
 	if err != nil {
 		return nil, err
+	}
+	e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, application.IDs{IDs: []int64{userID}})
+	if e != nil {
+		l.Errorf("Publish CoreUserCreate %v err:%v", userID, e)
 	}
 	return &sys.UserCreateResp{UserID: userID}, nil
 }

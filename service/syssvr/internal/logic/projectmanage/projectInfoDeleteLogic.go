@@ -68,7 +68,7 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		return err
 	})
 	if err == nil {
-		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.SysProjectInfoDelete, in.ProjectID)
+		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreProjectInfoDelete, in.ProjectID)
 		if err != nil {
 			l.Error(err)
 		}

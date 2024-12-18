@@ -9,7 +9,9 @@ import (
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/domain/application"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
@@ -86,6 +88,10 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	err = l.FillUserInfo(&ui, conn)
 	if err != nil {
 		return nil, err
+	}
+	e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, application.IDs{IDs: []int64{ui.UserID}})
+	if e != nil {
+		l.Errorf("Publish CoreUserCreate %v err:%v", ui, e)
 	}
 	return &sys.UserRegisterResp{
 		UserID: ui.UserID,

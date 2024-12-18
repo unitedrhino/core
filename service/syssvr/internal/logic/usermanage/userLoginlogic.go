@@ -9,7 +9,9 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/domain/application"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
@@ -95,6 +97,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		l.Errorf("不支持的登录方式:%v", in.LoginType)
 		return nil, errors.NotSupportLogin
 	}
+	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
 		//if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
@@ -186,6 +189,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
+			isRegister = true
 			if err != nil {
 				return nil, err
 			}
@@ -230,6 +234,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
+			isRegister = true
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
 		}
 	case users.RegPhone:
@@ -249,6 +254,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
+			isRegister = true
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
 		}
 	default:
@@ -257,6 +263,12 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	}
 end:
 	l.Infof("%s uc=%#v err=%+v", utils.FuncName(), uc, err)
+	if isRegister && err == nil {
+		e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, application.IDs{IDs: []int64{uc.UserID}})
+		if e != nil {
+			l.Errorf("Publish CoreUserCreate %v err:%v", uc, e)
+		}
+	}
 	return uc, err
 }
 

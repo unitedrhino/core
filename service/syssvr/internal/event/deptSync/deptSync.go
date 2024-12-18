@@ -13,7 +13,9 @@ import (
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/domain/application"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/payload"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -94,9 +96,15 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 			map[string]any{
 				"status": def.False,
 			})
+		if err != nil {
+			return err
+		}
 		return err
 
 	case "user_add_org": //用户添加
+		if po.IsAddSync == def.False {
+			return nil
+		}
 		cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
 			AppID:     po.ThirdConfig.AppID,
 			AppKey:    po.ThirdConfig.AppKey,
@@ -141,7 +149,22 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 				if ui.UnionId != "" {
 					uc.DingTalkUnionID = sql.NullString{Valid: true, String: ui.UnionId}
 				}
+				if len(ui.Extension) != 0 {
+					var tags = map[string]string{}
+					err = json.Unmarshal([]byte(ui.Extension), &tags)
+					if err == nil {
+						uc.Tags = tags
+					}
+				}
 				err = relationDB.NewUserInfoRepo(d.ctx).Update(d.ctx, uc)
+				if err != nil {
+					return err
+				}
+				d.svcCtx.UserCache.SetData(d.ctx, uc.UserID, nil)
+				err = d.svcCtx.FastEvent.Publish(d.ctx, eventBus.CoreUserUpdate, application.IDs{IDs: []int64{uc.UserID}})
+				if err != nil {
+					d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
+				}
 				return err
 			}
 			if !errors.Cmp(err, errors.NotFind) {
@@ -158,7 +181,14 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 			err = stores.GetTenantConn(d.ctx).Transaction(func(tx *gorm.DB) error {
 				return usermanagelogic.Register(d.ctx, d.svcCtx, uc, tx)
 			})
-			return err
+			if err != nil {
+				return err
+			}
+			err = d.svcCtx.FastEvent.Publish(d.ctx, eventBus.CoreUserCreate, application.IDs{IDs: []int64{uc.UserID}})
+			if err != nil {
+				d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
+			}
+			return nil
 		}
 
 	case "user_modify_org": //用户信息变更
@@ -185,6 +215,11 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 				if err != nil {
 					d.Error(err)
 					continue
+				}
+				d.svcCtx.UserCache.SetData(d.ctx, ui.UserID, nil)
+				err = d.svcCtx.FastEvent.Publish(d.ctx, eventBus.CoreUserUpdate, application.IDs{IDs: []int64{ui.UserID}})
+				if err != nil {
+					d.Errorf("Publish CoreUserUpdate %v err:%v", ui, err)
 				}
 			}
 		}

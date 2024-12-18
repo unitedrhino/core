@@ -77,7 +77,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 				if err != nil {
 					return err
 				}
-				err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.SysProjectInfoDelete, v.ProjectID)
+				err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreProjectInfoDelete, v.ProjectID)
 				if err != nil {
 					l.Error(err)
 				}
