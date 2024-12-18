@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -30,13 +31,13 @@ func NewDeptInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dept
 func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo, error) {
 	var po *relationDB.SysDeptInfo
 	var err error
+	po = &relationDB.SysDeptInfo{
+		ID:     def.RootNode,
+		Name:   "根节点",
+		Status: def.True,
+		Sort:   1,
+	}
 	if in.Id <= def.RootNode {
-		po = &relationDB.SysDeptInfo{
-			ID:     def.RootNode,
-			Name:   "根节点",
-			Status: def.True,
-			Sort:   1,
-		}
 		uc := ctxs.GetUserCtx(l.ctx)
 		ti, _ := l.svcCtx.TenantCache.GetData(l.ctx, uc.TenantCode)
 		if ti != nil {
@@ -47,25 +48,30 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 			return nil, err
 		}
 		po.UserCount = t
-		if in.WithChildren {
-			pos, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx,
-				relationDB.DeptInfoFilter{ParentID: def.RootNode}, nil)
-			if err != nil {
-				return nil, err
-			}
-			po.Children = pos
-		}
+
 	} else {
 		po, err = relationDB.NewDeptInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DeptInfoFilter{
-			ID:           in.Id,
-			WithChildren: in.WithChildren,
+			ID: in.Id,
 		})
 		if err != nil {
 			return nil, err
 		}
 	}
-
 	ret := utils.Copy[sys.DeptInfo](po)
+	if in.WithChildren {
+		children, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDPath: po.IDPath}, &stores.PageInfo{Size: 2000})
+		if err != nil {
+			return nil, err
+		}
+		fsMap := map[int64][]*sys.DeptInfo{}
+		for _, v := range children {
+			if _, ok := fsMap[v.ParentID]; !ok {
+				fsMap[v.ParentID] = []*sys.DeptInfo{}
+			}
+			fsMap[v.ParentID] = append(fsMap[v.ParentID], utils.Copy[sys.DeptInfo](v))
+		}
+		FillChildren(ret, fsMap)
+	}
 	if po.ID != def.RootNode && in.WithFather {
 		fatherIDs := utils.GetIDPath(po.IDPath)
 		if len(fatherIDs) > 1 {
@@ -88,5 +94,16 @@ func FillFather(in *sys.DeptInfo, fsMap map[int64]*sys.DeptInfo) {
 	if f != nil {
 		in.Parent = f
 		FillFather(f, fsMap)
+	}
+}
+
+func FillChildren(in *sys.DeptInfo, fsMap map[int64][]*sys.DeptInfo) {
+	f := fsMap[in.Id]
+	if f != nil {
+		in.Children = f
+		for _, child := range f {
+			FillChildren(child, fsMap)
+		}
+
 	}
 }
