@@ -96,6 +96,7 @@ type (
 		HasAccessAreas []int64 `json:"hasAccessAreas,string,optional"` //查询拥有该区域权限的用户
 		DeptID int64 `json:"deptID,string,optional"`
 		RoleCode string  `json:"roleCode,optional"` //查询角色code
+		NickName    string `json:"nickName,optional"`          // 用户的昵称
 		WithRoles bool  `json:"withRoles,optional"` //同时返回所有的角色列表
 		WithDepts bool  `json:"withDepts,optional"` //同时返回所属的部门列表
 	}

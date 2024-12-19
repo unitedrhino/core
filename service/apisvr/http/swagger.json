@@ -329,7 +329,7 @@
         "parameters": [
           {
             "name": "module",
-            "description": "模块",
+            "description": "模块\r",
             "in": "query",
             "required": false,
             "type": "string",
@@ -711,7 +711,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "    AppPolicyReadReq{,        AppCode string `json:\"appCode\"`,        Code string `json:\"code\"`,    },    AppPolicy{,     ID int64 `json:\"id,optional\"`,     AppCode string `json:\"appCode,optional\"`,     Code string           `json:\"code,optional\"`,     Name string           `json:\"name,optional\"`,     Subject string `json:\"subject,optional\"`,     Body string `json:\"body,optional\"`,    }",
+            "description": "    AppPolicyReadReq{\r,        AppCode string `json:\"appCode\"`\r,        Code string `json:\"code\"`\r,    }\r,    AppPolicy{\r,     ID int64 `json:\"id,optional\"`\r,     AppCode string `json:\"appCode,optional\"`\r,     Code string           `json:\"code,optional\"`\r,     Name string           `json:\"name,optional\"`\r,     Subject string `json:\"subject,optional\"`\r,     Body string `json:\"body,optional\"`\r,    }\r",
             "in": "body",
             "required": true,
             "schema": {
@@ -8615,7 +8615,7 @@
         "parameters": [
           {
             "name": "body",
-            "description": "登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息",
+            "description": "登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息\r",
             "in": "body",
             "required": true,
             "schema": {
@@ -14783,6 +14783,10 @@
         "roleCode": {
           "type": "string",
           "description": "查询角色code"
+        },
+        "nickName": {
+          "type": "string",
+          "description": " 用户的昵称"
         },
         "withRoles": {
           "type": "boolean",

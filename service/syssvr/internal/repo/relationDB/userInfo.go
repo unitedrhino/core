@@ -21,6 +21,7 @@ type UserInfoFilter struct {
 	TenantCode      string
 	UserNames       []string
 	UserName        string
+	NickName        string
 	Phone           string
 	Phones          []string
 	Email           string
@@ -74,6 +75,9 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	}
 	if len(f.UserNames) != 0 {
 		db = db.Where("user_name in ?", f.UserNames)
+	}
+	if f.NickName != "" {
+		db = db.Where("nick_name like ?", "%"+f.NickName+"%")
 	}
 	if len(f.Accounts) != 0 {
 		db = p.accountsFilter(db, f.Accounts)

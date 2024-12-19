@@ -33,6 +33,7 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 	l.Infof("%s req=%+v", utils.FuncName(), in)
 	f := relationDB.UserInfoFilter{
 		UserName:       in.UserName,
+		NickName:       in.NickName,
 		Phone:          in.Phone,
 		Email:          in.Email,
 		UserIDs:        in.UserIDs,

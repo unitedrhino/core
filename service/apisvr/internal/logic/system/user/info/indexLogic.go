@@ -39,6 +39,7 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 		Email:          req.Email,
 		Account:        req.Account,
 		UserIDs:        req.UserIDs,
+		NickName:       req.NickName,
 		HasAccessAreas: req.HasAccessAreas,
 		RoleCode:       req.RoleCode,
 		DeptID:         req.DeptID,
