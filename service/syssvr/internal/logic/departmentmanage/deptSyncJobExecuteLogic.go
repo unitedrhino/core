@@ -20,6 +20,7 @@ import (
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/payload"
 	"github.com/zeromicro/go-zero/core/timex"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
+	"golang.org/x/time/rate"
 	"gorm.io/gorm"
 	"sync"
 	"time"
@@ -143,6 +144,7 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 	var hasMore = true
 	for hasMore {
 		req := request.NewDeptDetailUserInfo(int(info.DingTalkID), c, page)
+		limit.Wait(ctx)
 		dings, err := cli.GetDeptDetailUserInfo(req.Build())
 		if err != nil {
 			return errors.System.AddDetail(err)
@@ -178,13 +180,13 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 		for _, ding := range dings.Page.List {
 			po := deptIDMap[ding.UserId]
 			if po == nil {
-				po = deptPhoneMap[ding.Telephone]
+				po = deptPhoneMap[ding.Mobile]
 			}
 			if po == nil {
 				po = deptEmailMap[ding.Email]
 			}
 			delete(deptIDMap, ding.UserId)
-			delete(deptPhoneMap, ding.Telephone)
+			delete(deptPhoneMap, ding.Mobile)
 			delete(deptEmailMap, ding.Email)
 			if po == nil {
 				uc, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{DingTalkUserID: ding.UserId, DingTalkUnionID: ding.UnionId})
@@ -192,7 +194,7 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 					if !errors.Cmp(err, errors.NotFind) {
 						return err
 					}
-					uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Telephone}})
+					uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Mobile}})
 					if !errors.Cmp(err, errors.NotFind) {
 						return err
 					}
@@ -278,13 +280,17 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 	return nil
 }
 
+var limit = rate.NewLimiter(38, 38)
+
 func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationDB.SysDeptInfo) error {
 	req := request.NewDeptList()
 	req.SetDeptId(int(info.DingTalkID))
+	limit.Wait(ctx)
 	dings, err := cli.GetDeptList(req.Build())
 	if err != nil {
 		return errors.System.AddDetail(err)
 	}
+
 	old, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{ParentID: info.ID}, nil)
 	if err != nil {
 		return errors.System.AddDetail(err)
