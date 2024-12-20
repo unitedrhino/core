@@ -3,7 +3,7 @@ module gitee.com/unitedrhino/core
 go 1.21.4
 
 require (
-	gitee.com/unitedrhino/share v1.1.12
+	gitee.com/unitedrhino/share v1.1.14
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
@@ -23,6 +23,7 @@ require (
 	github.com/spf13/cast v1.7.0
 	github.com/zeromicro/go-zero v1.7.2
 	github.com/zhaoyunxing92/dingtalk/v2 v2.1.0
+	golang.org/x/time v0.8.0
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.35.2
 	gorm.io/gorm v1.25.12
@@ -184,7 +185,6 @@ require (
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/term v0.26.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
-	golang.org/x/time v0.8.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240711142825-46eb208f015d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240711142825-46eb208f015d // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

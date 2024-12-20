@@ -63,11 +63,19 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 		return nil, errors.Fmt(err).WithMsg("用户数据权限保存失败")
 	}
 	if len(areas) == 0 && project != nil { //如果把项目下所有区域权限取消了,则项目权限默认也取消
-		l.UapDB.Delete(l.ctx, in.TargetType, in.TargetID, in.ProjectID)
+		err = l.UapDB.Delete(l.ctx, in.TargetType, in.TargetID, in.ProjectID)
+		if err != nil {
+			l.Error(err)
+			return nil, err
+		}
 		//InitCacheUserAuthProject(l.ctx, in.TargetID)
 	}
 	if len(areas) != 0 && project == nil {
-		l.UapDB.Insert(l.ctx, &relationDB.SysDataProject{TargetType: def.TargetUser, TargetID: in.TargetID, ProjectID: in.ProjectID})
+		err = l.UapDB.Insert(l.ctx, &relationDB.SysDataProject{TargetType: def.TargetUser, TargetID: in.TargetID, ProjectID: in.ProjectID, AuthType: def.AuthRead})
+		if err != nil {
+			l.Error(err)
+			return nil, err
+		}
 		//InitCacheUserAuthProject(l.ctx, in.TargetID)
 	}
 	if in.TargetType == def.TargetUser {
