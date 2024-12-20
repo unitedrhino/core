@@ -82,6 +82,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 			if err != nil {
 				return err
 			}
+			logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start sync dept", po.ID)
 			err = SyncDeptDing(ctx, cli, &relationDB.SysDeptInfo{
 				ID:         def.RootNode,
 				Name:       "根节点",
@@ -117,6 +118,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 			for _, d := range needSyncDepts {
 				needSyncDeptMap[d.ID] = d
 			}
+			logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start sync user ", po.ID)
 			for _, d := range needSyncDeptMap {
 				dd := d
 				deptIDPaths = append(deptIDPaths, d.IDPath)
@@ -126,6 +128,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 				}
 			}
 			if len(deptIDPaths) > 0 {
+				logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start count dept user ", po.ID)
 				err = usermanagelogic.FillDeptUserCount(ctx, l.svcCtx, deptIDPaths...)
 				if err != nil {
 					l.Error(err)
