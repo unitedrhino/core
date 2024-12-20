@@ -60,7 +60,7 @@ func (l *WeatherReadLogic) WeatherRead(in *sys.WeatherReadReq) (*sys.WeatherRead
 		json.Unmarshal([]byte(ret), &rett)
 		return &rett, nil
 	}
-	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, "")
+	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, uc.TenantCode)
 	if err != nil {
 		return nil, err
 	}
@@ -71,15 +71,15 @@ func (l *WeatherReadLogic) WeatherRead(in *sys.WeatherReadReq) (*sys.WeatherRead
 		greq    = gorequest.New().Retry(3, time.Second*2)
 	)
 	//参考: https://dev.qweather.com/
-	_, body, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
+	resp, body, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
 		in.Position.Longitude, in.Position.Latitude, key)).EndStruct(&weather)
 	if errs != nil {
-		return nil, errors.System.AddDetail(string(body), errs)
+		return nil, errors.System.AddDetail(string(body), resp, errs)
 	}
-	_, body, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",
+	resp, body, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",
 		in.Position.Longitude, in.Position.Latitude, key)).EndStruct(&air)
 	if errs != nil {
-		return nil, errors.System.AddDetail(string(body), errs)
+		return nil, errors.System.AddDetail(string(body), resp, errs)
 	}
 	weather.Now.Air = &air.Now
 	caches.GetStore().SetexCtx(l.ctx, cacheKey, utils.MarshalNoErr(weather.Now), 60*60*1) //1个小时的有效期
