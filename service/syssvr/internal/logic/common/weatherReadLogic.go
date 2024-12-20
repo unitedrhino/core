@@ -71,15 +71,15 @@ func (l *WeatherReadLogic) WeatherRead(in *sys.WeatherReadReq) (*sys.WeatherRead
 		greq    = gorequest.New().Retry(3, time.Second*2)
 	)
 	//参考: https://dev.qweather.com/
-	_, _, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
+	_, body, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
 		in.Position.Longitude, in.Position.Latitude, key)).EndStruct(&weather)
 	if errs != nil {
-		return nil, errors.System.AddDetail(errs)
+		return nil, errors.System.AddDetail(string(body), errs)
 	}
-	_, _, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",
+	_, body, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",
 		in.Position.Longitude, in.Position.Latitude, key)).EndStruct(&air)
 	if errs != nil {
-		return nil, errors.System.AddDetail(errs)
+		return nil, errors.System.AddDetail(string(body), errs)
 	}
 	weather.Now.Air = &air.Now
 	caches.GetStore().SetexCtx(l.ctx, cacheKey, utils.MarshalNoErr(weather.Now), 60*60*1) //1个小时的有效期
