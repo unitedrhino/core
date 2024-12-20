@@ -66,6 +66,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 		return &sys.DeptSyncJobExecuteResp{}, nil
 	}
 	ctxs.GoNewCtx(l.ctx, func(ctx context.Context) {
+		logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start", po.ID)
 		defer func() {
 			runMutex.Lock()
 			defer runMutex.Unlock()
