@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -60,6 +61,7 @@ func (l *UserDeptMultiCreateLogic) UserDeptMultiCreate(in *sys.UserDeptMultiSave
 	err := relationDB.NewDeptUserRepo(l.ctx).MultiInsert(l.ctx, datas)
 	if err == nil {
 		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
+		cache.ClearProjectAuth(in.UserID)
 	}
 	FillDeptUserCount(l.ctx, l.svcCtx, idPaths...)
 	return &sys.Empty{}, err

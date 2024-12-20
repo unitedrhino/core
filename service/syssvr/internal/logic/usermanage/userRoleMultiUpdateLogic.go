@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 
@@ -32,6 +33,7 @@ func (l *UserRoleMultiUpdateLogic) UserRoleMultiUpdate(in *sys.UserRoleMultiUpda
 	err := relationDB.NewUserRoleRepo(l.ctx).MultiUpdate(l.ctx, in.UserID, in.RoleIDs)
 	if err == nil {
 		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
+		cache.ClearProjectAuth(in.UserID)
 	}
 	return &sys.Empty{}, err
 }
