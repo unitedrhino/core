@@ -16,6 +16,7 @@ import (
 	"gitee.com/unitedrhino/share/result"
 	"gitee.com/unitedrhino/share/tools"
 	"gitee.com/unitedrhino/share/utils"
+	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/zrpc"
 	"io"
@@ -91,6 +92,15 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		userCtx.Os = ctxs.GetHandle(r, "User-Agent")
 		userCtx.AcceptLanguage = ctxs.GetHandle(r, "Accept-Language")
 		userCtx.Token = token
+		strProjectID := ctxs.GetHandle(r, ctxs.UserProjectID, ctxs.UserProjectID2)
+		projectID := cast.ToInt64(strProjectID)
+		if projectID == 0 {
+			projectID = def.NotClassified
+		}
+		if projectID > def.NotClassified && !userCtx.IsAdmin && userCtx.ProjectAuth[projectID] == nil {
+			result.HttpErr(w, r, http.StatusUnauthorized, errors.Permissions.AddMsg("无所选项目的权限"))
+			return
+		}
 		//注入 用户信息 到 ctx
 		ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)
 		r = r.WithContext(ctx2)
