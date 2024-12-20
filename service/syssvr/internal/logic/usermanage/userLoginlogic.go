@@ -170,6 +170,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 					if ui.Mobile != "" {
 						uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
 					}
+					if uc.NickName == "" {
+						uc.NickName = ui.Name
+					}
 					uc.DingTalkUserID = sql.NullString{Valid: true, String: ret.UserInfo.UserId}
 					if ret.UserInfo.UnionId != "" {
 						uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
@@ -178,7 +181,20 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 					goto end
 				}
 			}
-			uc.NickName = ui.Name
+			uc = &relationDB.SysUserInfo{
+				UserID:         userID,
+				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
+				NickName:       ret.UserInfo.Name,
+			}
+			if ret.UserInfo.UnionId != "" {
+				uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+			}
+			if ui.OrgEmail != "" {
+				uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+			}
+			if ui.Mobile != "" {
+				uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+			}
 			if len(ui.Extension) != 0 {
 				var tags = map[string]string{}
 				err = json.Unmarshal([]byte(ui.Extension), &tags)
