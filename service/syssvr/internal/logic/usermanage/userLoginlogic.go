@@ -100,9 +100,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
-		//if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
-		//	return nil, errors.Captcha
-		//}
+		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
+			return nil, errors.Captcha
+		}
 		if l.svcCtx.LoginLimit.PwdAccount.CheckLimit(l.ctx, in.Account) {
 			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
 		}
