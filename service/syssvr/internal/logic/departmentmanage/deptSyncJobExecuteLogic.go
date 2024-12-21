@@ -151,7 +151,7 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 		limit.Wait(ctx)
 		dings, err := cli.GetDeptDetailUserInfo(req.Build())
 		if err != nil {
-			return errors.System.AddDetail(err)
+			return errors.System.AddDetail(info, err)
 		}
 		hasMore = dings.Page.HasMore
 		c = dings.Page.NextCursor
@@ -275,11 +275,6 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 				}
 			}
 		}
-
-		if !dings.Page.HasMore {
-			break
-		}
-		c = dings.Page.NextCursor
 	}
 	return nil
 }

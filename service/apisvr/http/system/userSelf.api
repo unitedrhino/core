@@ -216,6 +216,7 @@ type (
 		Str1 string `json:"str1,optional"`
 		Str2 string `json:"str2,optional"`
 		Str3 string `json:"str3,optional"`
+		CreatedTime *TimeRange `json:"createdTime,optional"`
 	}
 	UserMessageStatisticsResp{
 		List []*UserMessageStatistics `json:"list"`

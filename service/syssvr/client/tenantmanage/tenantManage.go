@@ -200,6 +200,7 @@ type (
 	ThirdDeptInfoReadReq                  = sys.ThirdDeptInfoReadReq
 	ThirdEmail                            = sys.ThirdEmail
 	ThirdSms                              = sys.ThirdSms
+	TimeRange                             = sys.TimeRange
 	UserAreaApplyCreateReq                = sys.UserAreaApplyCreateReq
 	UserAreaApplyDealReq                  = sys.UserAreaApplyDealReq
 	UserAreaApplyIndexReq                 = sys.UserAreaApplyIndexReq

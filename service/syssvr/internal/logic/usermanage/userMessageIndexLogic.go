@@ -42,6 +42,7 @@ func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*
 		WithMessage: true,
 		Group:       in.Group,
 		NotifyCode:  in.NotifyCode,
+		CreatedTime: utils.Copy[def.TimeRange](in.CreatedTime),
 		IsRead:      in.IsRead,
 		Str1:        in.Str1,
 		Str2:        in.Str2,

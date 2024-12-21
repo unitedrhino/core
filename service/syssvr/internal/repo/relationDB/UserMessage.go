@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -30,6 +31,7 @@ type UserMessageFilter struct {
 	WithMessage bool
 	Group       string
 	NotifyCode  string
+	CreatedTime *def.TimeRange
 	IsRead      int64
 	Str1        string
 	Str2        string
@@ -40,6 +42,14 @@ func (p UserMessageRepo) fmtFilter(ctx context.Context, f UserMessageFilter) *go
 	db := p.db.WithContext(ctx)
 	if f.MessageID != 0 {
 		db = db.Where("message_id=?", f.MessageID)
+	}
+	if f.CreatedTime != nil {
+		if f.CreatedTime.Start != 0 {
+			db = db.Where("created_time >= ?", utils.ToYYMMddHHSS(f.CreatedTime.Start*1000))
+		}
+		if f.CreatedTime.End != 0 {
+			db = db.Where("created_time <= ?", utils.ToYYMMddHHSS(f.CreatedTime.End*1000))
+		}
 	}
 	if f.Group != "" {
 		db = db.Where(fmt.Sprintf("%s = ?", stores.Col("group")), f.Group)

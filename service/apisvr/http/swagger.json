@@ -14981,6 +14981,9 @@
         },
         "str3": {
           "type": "string"
+        },
+        "createdTime": {
+          "$ref": "#/definitions/TimeRange"
         }
       },
       "title": "UserMessageIndexReq"

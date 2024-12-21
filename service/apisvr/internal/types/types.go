@@ -1619,13 +1619,14 @@ type UserMessage struct {
 }
 
 type UserMessageIndexReq struct {
-	Page       *PageInfo `json:"page,optional"`
-	Group      string    `json:"group,optional"`
-	NotifyCode string    `json:"notifyCode,optional"`
-	IsRead     int64     `json:"isRead,optional"`
-	Str1       string    `json:"str1,optional"`
-	Str2       string    `json:"str2,optional"`
-	Str3       string    `json:"str3,optional"`
+	Page        *PageInfo  `json:"page,optional"`
+	Group       string     `json:"group,optional"`
+	NotifyCode  string     `json:"notifyCode,optional"`
+	IsRead      int64      `json:"isRead,optional"`
+	Str1        string     `json:"str1,optional"`
+	Str2        string     `json:"str2,optional"`
+	Str3        string     `json:"str3,optional"`
+	CreatedTime *TimeRange `json:"createdTime,optional"`
 }
 
 type UserMessageIndexResp struct {

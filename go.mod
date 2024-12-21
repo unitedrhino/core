@@ -145,7 +145,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.2.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/smarty/assertions v1.15.0 // indirect
+	github.com/smarty/assertions v1.16.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/suifengtec/gocoord v0.0.0-20210116135606-a0cd8c71c959 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.985 // indirect

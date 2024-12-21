@@ -479,7 +479,7 @@ message MessageInfo {
   string str3=7;
   int64 isGlobal =8;
   int64 createdTime=9;
-  int64 NotifyTime = 11;//通知时间,不传为立刻通知
+  int64 notifyTime = 11;//通知时间,不传为立刻通知
 }
 
 
@@ -591,6 +591,15 @@ message UserMessage{
   MessageInfo message=4;
 }
 
+message UserMessageStatisticsResp{
+  repeated UserMessageStatistics list =1;
+}
+
+message UserMessageStatistics{
+  string group=1;
+  int64 count=2;
+}
+
 message UserMessageIndexReq{
   PageInfo page =1;
   string group =2;
@@ -599,16 +608,10 @@ message UserMessageIndexReq{
   string str1        =5;
   string str2        =6;
   string str3        =7;
+  TimeRange createdTime = 8;//
 }
 
-message UserMessageStatisticsResp{
-   repeated UserMessageStatistics list =1;
-}
 
-message UserMessageStatistics{
-  string group=1;
-  int64 count=2;
-}
 
 message UserMessageIndexResp{
   int64 total =1;
@@ -1139,6 +1142,11 @@ message RoleModuleIndexResp{
 message DateRange{
   string start = 1;
   string end = 2;
+}
+
+message TimeRange{
+  int64 start = 1;
+  int64 end = 2;
 }
 
 message LoginLogIndexReq{
