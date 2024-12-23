@@ -84,6 +84,31 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	if err != nil {
 		return nil, err
 	}
+	wxOpenCode := in.Expand["wxOpenCode"]
+	if wxOpenCode != "" {
+		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+		if er != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		if cli.WxOfficial == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		_, err = relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
+		if err == nil {
+			return nil, errors.BindAccount.WithMsg("微信已绑定其他账号")
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return nil, err
+		}
+		ui.WechatOpenID = sql.NullString{Valid: true, String: at.OpenID}
+		if at.UnionID != "" {
+			ui.WechatUnionID = sql.NullString{Valid: true, String: at.UnionID}
+		}
+	}
 	conn := stores.GetTenantConn(l.ctx)
 	err = l.FillUserInfo(&ui, conn)
 	if err != nil {
