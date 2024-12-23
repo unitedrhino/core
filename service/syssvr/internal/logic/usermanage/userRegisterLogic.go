@@ -80,15 +80,18 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		ui.Phone = utils.AnyToNullString(in.Account)
 		ui.UserName = ui.Phone
 	}
-	err := CheckPwd(l.svcCtx, in.Password)
-	if err != nil {
-		return nil, err
+	if in.Password != "" {
+		err := CheckPwd(l.svcCtx, in.Password)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	wxOpenCode := in.Expand["wxOpenCode"]
 	if wxOpenCode != "" {
 		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 		if er != nil {
-			return nil, errors.System.AddDetail(err)
+			return nil, errors.System.AddDetail(er)
 		}
 		if cli.WxOfficial == nil {
 			return nil, errors.System.AddDetail(er)
@@ -97,7 +100,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		_, err = relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
+		_, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 		if err == nil {
 			return nil, errors.BindAccount.WithMsg("微信已绑定其他账号")
 		}
@@ -110,7 +113,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		}
 	}
 	conn := stores.GetTenantConn(l.ctx)
-	err = l.FillUserInfo(&ui, conn)
+	err := l.FillUserInfo(&ui, conn)
 	if err != nil {
 		return nil, err
 	}
