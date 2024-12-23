@@ -89,7 +89,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 
 	wxOpenCode := in.Expand["wxOpenCode"]
 	if wxOpenCode != "" {
-		at, err := GetWxResAccessToken(l.ctx, wxOpenCode)
+		at, err := GetWxLoginResAccessToken(l.ctx, wxOpenCode)
 		if err != nil {
 			cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 			if er != nil {
@@ -102,6 +102,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 			if er != nil {
 				return nil, errors.System.AddDetail(er)
 			}
+			StoreWxRegisterResAccessToken(l.ctx, wxOpenCode, at)
 			at = &at2
 		}
 		_, err = relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})

@@ -220,9 +220,14 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
 		if er != nil {
-			return nil, errors.System.AddDetail(er)
+			at2, er := GetWxRegisterResAccessToken(l.ctx, in.Code)
+			if er != nil {
+				return nil, errors.System.AddDetail(er)
+			}
+			at = *at2
+		} else {
+			StoreWxLoginResAccessToken(l.ctx, in.Code, &at)
 		}
-		StoreWxResAccessToken(l.ctx, in.Code, &at)
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 	case users.RegWxMiniP:
 		if cli.MiniProgram == nil {
@@ -329,15 +334,44 @@ func GetAccount(ui *relationDB.SysUserInfo) string {
 	return account
 }
 
-func gentKey(code string) string {
-	return fmt.Sprintf("sys:user:wxak:%s", code)
+func gentLoginKey(code string) string {
+	return fmt.Sprintf("sys:user:wxak:login:%s", code)
 }
 
-func StoreWxResAccessToken(ctx context.Context, code string, tk *oauth.ResAccessToken) error {
-	return caches.GetStore().SetexCtx(ctx, gentKey(code), utils.MarshalNoErr(tk), 10*60)
+func StoreWxLoginResAccessToken(ctx context.Context, code string, tk *oauth.ResAccessToken) error {
+	return caches.GetStore().SetexCtx(ctx, gentLoginKey(code), utils.MarshalNoErr(tk), 10*60)
 }
-func GetWxResAccessToken(ctx context.Context, code string) (*oauth.ResAccessToken, error) {
-	ret, err := caches.GetStore().GetCtx(ctx, gentKey(code))
+
+func DelWxLoginResAccessToken(ctx context.Context, code string) error {
+	_, err := caches.GetStore().DelCtx(ctx, gentLoginKey(code))
+	return err
+}
+
+func GetWxLoginResAccessToken(ctx context.Context, code string) (*oauth.ResAccessToken, error) {
+	ret, err := caches.GetStore().GetCtx(ctx, gentLoginKey(code))
+	if err != nil {
+		return nil, err
+	}
+	var val oauth.ResAccessToken
+	err = json.Unmarshal([]byte(ret), &val)
+	return &val, err
+}
+
+func gentRegisterKey(code string) string {
+	return fmt.Sprintf("sys:user:wxak:register:%s", code)
+}
+
+func DelWxRegisterResAccessToken(ctx context.Context, code string) error {
+	_, err := caches.GetStore().DelCtx(ctx, gentRegisterKey(code))
+	return err
+}
+
+func StoreWxRegisterResAccessToken(ctx context.Context, code string, tk *oauth.ResAccessToken) error {
+	DelWxLoginResAccessToken(ctx, code)
+	return caches.GetStore().SetexCtx(ctx, gentRegisterKey(code), utils.MarshalNoErr(tk), 10*60)
+}
+func GetWxRegisterResAccessToken(ctx context.Context, code string) (*oauth.ResAccessToken, error) {
+	ret, err := caches.GetStore().GetCtx(ctx, gentRegisterKey(code))
 	if err != nil {
 		return nil, err
 	}
