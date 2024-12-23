@@ -83,15 +83,15 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 				return err
 			}
 			logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start sync dept", po.ID)
-			err = SyncDeptDing(ctx, cli, &relationDB.SysDeptInfo{
-				ID:         def.RootNode,
-				Name:       "根节点",
-				Status:     def.True,
-				DingTalkID: def.RootNode,
-			})
-			if err != nil {
-				return err
-			}
+			//err = SyncDeptDing(ctx, cli, &relationDB.SysDeptInfo{
+			//	ID:         def.RootNode,
+			//	Name:       "根节点",
+			//	Status:     def.True,
+			//	DingTalkID: def.RootNode,
+			//})
+			//if err != nil {
+			//	return err
+			//}
 			var needSyncDeptMap = map[int64]*relationDB.SysDeptInfo{}
 			var needSyncDepts = []*relationDB.SysDeptInfo{}
 			var deptIDPaths = []string{}
@@ -119,10 +119,11 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 				needSyncDeptMap[d.ID] = d
 			}
 			logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start sync user ", po.ID)
+			var syncedUserSet = map[string]struct{}{}
 			for _, d := range needSyncDeptMap {
 				dd := d
 				deptIDPaths = append(deptIDPaths, d.IDPath)
-				err := SyncDeptUserDing(ctx, l.svcCtx, cli, dd)
+				err := SyncDeptUserDing(ctx, l.svcCtx, syncedUserSet, cli, dd)
 				if err != nil {
 					l.Error(dd, err)
 				}
@@ -142,7 +143,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 	return &sys.DeptSyncJobExecuteResp{}, nil
 }
 
-func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *dingClient.DingTalk, info *relationDB.SysDeptInfo) error {
+func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUserSet map[string]struct{}, cli *dingClient.DingTalk, info *relationDB.SysDeptInfo) error {
 	c := 0
 	page := 100
 	var hasMore = true
@@ -155,124 +156,104 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, cli *ding
 		}
 		hasMore = dings.Page.HasMore
 		c = dings.Page.NextCursor
-		old, err := relationDB.NewDeptUserRepo(ctx).FindByFilter(ctx,
-			relationDB.DeptUserFilter{DeptID: info.ID, WithUser: true}, nil)
-		if err != nil {
-			return err
-		}
-		var (
-			deptPhoneMap = map[string]*relationDB.SysUserInfo{}
-			deptEmailMap = map[string]*relationDB.SysUserInfo{}
-			deptIDMap    = map[string]*relationDB.SysUserInfo{}
-		)
-		for _, o := range old {
-			if o.User == nil {
+		for _, ding := range dings.Page.List {
+			if _, ok := syncedUserSet[ding.UserId]; ok { //一个员工只处理一次
 				continue
 			}
-			u := o.User
-			if u.Phone.Valid {
-				deptPhoneMap[u.Phone.String] = u
-			}
-			if u.Email.Valid {
-				deptEmailMap[u.Email.String] = u
-			}
-
-			if u.DingTalkUserID.Valid {
-				deptIDMap[u.DingTalkUserID.String] = u
-			}
-		}
-		for _, ding := range dings.Page.List {
-			po := deptIDMap[ding.UserId]
-			if po == nil {
-				po = deptPhoneMap[ding.Mobile]
-			}
-			if po == nil {
-				po = deptEmailMap[ding.Email]
-			}
-			delete(deptIDMap, ding.UserId)
-			delete(deptPhoneMap, ding.Mobile)
-			delete(deptEmailMap, ding.Email)
-			if po == nil {
-				uc, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{DingTalkUserID: ding.UserId, DingTalkUnionID: ding.UnionId})
-				if err != nil {
-					if !errors.Cmp(err, errors.NotFind) {
-						return err
-					}
-					uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Mobile}})
-					if !errors.Cmp(err, errors.NotFind) {
-						return err
-					}
-				}
-				if uc == nil {
-					userID := svcCtx.UserID.GetSnowflakeId()
-					uc = &relationDB.SysUserInfo{
-						UserID:         userID,
-						DingTalkUserID: sql.NullString{Valid: true, String: ding.UserId},
-						NickName:       ding.Name,
-					}
-					if ding.UnionId != "" {
-						uc.DingTalkUnionID = sql.NullString{Valid: true, String: ding.UnionId}
-					}
-					if ding.OrgEmail != "" {
-						uc.Email = sql.NullString{String: ding.OrgEmail, Valid: true}
-						uc.UserName = uc.Email
-					}
-					if ding.Mobile != "" {
-						uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
-						uc.UserName = uc.Phone
-					}
-					if ding.Extension != "" {
-						var tags = map[string]string{}
-						err = json.Unmarshal([]byte(ding.Extension), &tags)
-						if err == nil {
-							uc.Tags = tags
-						}
-					}
-					err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
-						return usermanagelogic.Register(ctx, svcCtx, uc, tx)
-					})
-				}
-				err = relationDB.NewDeptUserRepo(ctx).Insert(ctx, &relationDB.SysDeptUser{
-					UserID:     uc.UserID,
-					DeptID:     info.ID,
-					DeptIDPath: info.IDPath,
-				})
-				if err != nil {
+			syncedUserSet[ding.UserId] = struct{}{}
+			uc, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{DingTalkUserID: ding.UserId, DingTalkUnionID: ding.UnionId})
+			if err != nil {
+				if !errors.Cmp(err, errors.NotFind) {
 					return err
 				}
-				continue
+				uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Mobile}})
+				if err != nil && !errors.Cmp(err, errors.NotFind) {
+					return err
+				}
 			}
-			if po.NickName != ding.Name || po.DingTalkUserID.String != ding.UserId || po.Phone.String != ding.Telephone || po.Email.String != ding.Email {
-				delete(deptPhoneMap, po.Phone.String)
-				delete(deptEmailMap, po.Email.String)
-				delete(deptIDMap, po.DingTalkUserID.String)
-				po.NickName = ding.Name
-				po.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
-				if ding.OrgEmail != "" {
-					po.Email = sql.NullString{String: ding.OrgEmail, Valid: true}
+			dingEmail := ding.Email
+			if ding.OrgEmail != "" {
+				dingEmail = ding.OrgEmail
+			}
+			if uc == nil {
+				userID := svcCtx.UserID.GetSnowflakeId()
+				uc = &relationDB.SysUserInfo{
+					UserID:         userID,
+					DingTalkUserID: sql.NullString{Valid: true, String: ding.UserId},
+					NickName:       ding.Name,
+				}
+				if ding.UnionId != "" {
+					uc.DingTalkUnionID = sql.NullString{Valid: true, String: ding.UnionId}
+				}
+				if dingEmail != "" {
+					uc.Email = sql.NullString{String: dingEmail, Valid: true}
+					uc.UserName = uc.Email
+				}
+				if ding.Mobile != "" {
+					uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
+					uc.UserName = uc.Phone
 				}
 				if ding.Extension != "" {
 					var tags = map[string]string{}
 					err = json.Unmarshal([]byte(ding.Extension), &tags)
 					if err == nil {
-						po.Tags = tags
+						uc.Tags = tags
+					}
+				}
+				err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
+					return usermanagelogic.Register(ctx, svcCtx, uc, tx)
+				})
+			} else if uc.NickName != ding.Name || uc.DingTalkUserID.String != ding.UserId || uc.Phone.String != ding.Mobile || uc.Email.String != dingEmail {
+				uc.NickName = ding.Name
+				uc.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
+				if dingEmail != "" {
+					uc.Email = sql.NullString{String: dingEmail, Valid: true}
+				}
+				if ding.Extension != "" {
+					var tags = map[string]string{}
+					err = json.Unmarshal([]byte(ding.Extension), &tags)
+					if err == nil {
+						uc.Tags = tags
 					}
 				}
 				if ding.Mobile != "" {
-					po.Phone = sql.NullString{String: ding.Mobile, Valid: true}
+					uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
 				}
-				err = relationDB.NewUserInfoRepo(ctx).Update(ctx, po)
+				err = relationDB.NewUserInfoRepo(ctx).Update(ctx, uc)
 				if err != nil {
 					return err
 				}
 			}
-			if len(deptIDMap) > 0 { //如果存在删除的情况
-				for _, one := range deptIDMap {
-					err := relationDB.NewDeptUserRepo(ctx).DeleteByFilter(ctx, relationDB.DeptUserFilter{UserID: one.UserID})
-					if err != nil {
-						return err
-					}
+			var dIDs []int64
+			for _, v := range ding.DeptIds {
+				dIDs = append(dIDs, int64(v))
+			}
+			if len(dIDs) == 0 {
+				continue
+			}
+			ds, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{DingTalkIDs: dIDs}, nil)
+			if err != nil {
+				logx.WithContext(ctx).Error(err)
+				continue
+			}
+			var dus []*relationDB.SysDeptUser
+			for _, d := range ds {
+				dus = append(dus, &relationDB.SysDeptUser{
+					UserID:     uc.UserID,
+					DeptID:     d.ID,
+					DeptIDPath: d.IDPath,
+				})
+			}
+			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
+				err := relationDB.NewDeptUserRepo(tx).DeleteByFilter(ctx, relationDB.DeptUserFilter{UserID: uc.UserID})
+				if err != nil {
+					return err
 				}
+				return relationDB.NewDeptUserRepo(tx).MultiInsert(ctx, dus)
+			})
+			if err != nil {
+				logx.WithContext(ctx).Error(err)
+				continue
 			}
 		}
 	}
