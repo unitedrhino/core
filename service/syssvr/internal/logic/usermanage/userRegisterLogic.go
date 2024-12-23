@@ -89,18 +89,22 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 
 	wxOpenCode := in.Expand["wxOpenCode"]
 	if wxOpenCode != "" {
-		cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-		if er != nil {
-			return nil, errors.System.AddDetail(er)
+		at, err := GetWxResAccessToken(l.ctx, wxOpenCode)
+		if err != nil {
+			cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+			if er != nil {
+				return nil, errors.System.AddDetail(er)
+			}
+			if cli.WxOfficial == nil {
+				return nil, errors.System.AddDetail(er)
+			}
+			at2, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+			if er != nil {
+				return nil, errors.System.AddDetail(er)
+			}
+			at = &at2
 		}
-		if cli.WxOfficial == nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
-		if er != nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		_, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
+		_, err = relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 		if err == nil {
 			return nil, errors.BindAccount.WithMsg("微信已绑定其他账号")
 		}

@@ -4,9 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/domain/application"
@@ -15,6 +17,7 @@ import (
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
+	"github.com/silenceper/wechat/v2/officialaccount/oauth"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
@@ -219,6 +222,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
+		StoreWxResAccessToken(l.ctx, in.Code, &at)
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 	case users.RegWxMiniP:
 		if cli.MiniProgram == nil {
@@ -323,4 +327,21 @@ func GetAccount(ui *relationDB.SysUserInfo) string {
 		account = cast.ToString(ui.UserID)
 	}
 	return account
+}
+
+func gentKey(code string) string {
+	return fmt.Sprintf("sys:user:wxak:%s", code)
+}
+
+func StoreWxResAccessToken(ctx context.Context, code string, tk *oauth.ResAccessToken) error {
+	return caches.GetStore().SetexCtx(ctx, gentKey(code), utils.MarshalNoErr(tk), 10*60)
+}
+func GetWxResAccessToken(ctx context.Context, code string) (*oauth.ResAccessToken, error) {
+	ret, err := caches.GetStore().GetCtx(ctx, gentKey(code))
+	if err != nil {
+		return nil, err
+	}
+	var val oauth.ResAccessToken
+	err = json.Unmarshal([]byte(ret), &val)
+	return &val, err
 }
