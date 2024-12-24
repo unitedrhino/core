@@ -3,7 +3,7 @@ module gitee.com/unitedrhino/core
 go 1.21.4
 
 require (
-	gitee.com/unitedrhino/share v1.1.16
+	gitee.com/unitedrhino/share v1.1.17
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
@@ -145,7 +145,6 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.2.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/smarty/assertions v1.16.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/suifengtec/gocoord v0.0.0-20210116135606-a0cd8c71c959 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.985 // indirect
