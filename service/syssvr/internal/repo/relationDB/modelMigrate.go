@@ -169,7 +169,7 @@ var (
 	}
 	MigrateProjectInfo = []SysProjectInfo{{TenantCode: def.TenantCodeDefault, AdminUserID: adminUserID, ProjectID: defaultProjectID, ProjectName: "默认项目"}}
 	MigrateDataProject = []SysDataProject{{ProjectID: defaultProjectID, TargetType: def.TargetRole, TargetID: 1, AuthType: def.AuthAdmin}}
-	MigrateTenantInfo  = []SysTenantInfo{{Code: def.TenantCodeDefault, Name: "默认租户", AdminUserID: adminUserID, DefaultProjectID: defaultProjectID}}
+	MigrateTenantInfo  = []SysTenantInfo{{Code: def.TenantCodeDefault, Name: "联犀平台", AdminUserID: adminUserID, DefaultProjectID: defaultProjectID}}
 	MigrateUserInfo    = []SysUserInfo{
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, UserName: sql.NullString{String: "administrator", Valid: true}, Password: "4f0fded4a38abe7a3ea32f898bb82298", Role: 1, NickName: "联犀管理员", IsAllData: def.True},
 	}
