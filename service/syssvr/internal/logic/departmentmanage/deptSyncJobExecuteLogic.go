@@ -83,15 +83,15 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 				return err
 			}
 			logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start sync dept", po.ID)
-			//err = SyncDeptDing(ctx, cli, &relationDB.SysDeptInfo{
-			//	ID:         def.RootNode,
-			//	Name:       "根节点",
-			//	Status:     def.True,
-			//	DingTalkID: def.RootNode,
-			//})
-			//if err != nil {
-			//	return err
-			//}
+			err = SyncDeptDing(ctx, cli, &relationDB.SysDeptInfo{
+				ID:         def.RootNode,
+				Name:       "根节点",
+				Status:     def.True,
+				DingTalkID: def.RootNode,
+			})
+			if err != nil {
+				return err
+			}
 			var needSyncDeptMap = map[int64]*relationDB.SysDeptInfo{}
 			var needSyncDepts = []*relationDB.SysDeptInfo{}
 			var deptIDPaths = []string{}
