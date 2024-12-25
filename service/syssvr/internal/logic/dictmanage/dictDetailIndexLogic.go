@@ -31,6 +31,7 @@ func (l *DictDetailIndexLogic) DictDetailIndex(in *sys.DictDetailIndexReq) (*sys
 		Status:   in.Status,
 		Label:    in.Label,
 		Value:    in.Value,
+		Values:   in.Values,
 	}
 	repo := relationDB.NewDictDetailRepo(l.ctx)
 	total, err := repo.CountByFilter(l.ctx, f)

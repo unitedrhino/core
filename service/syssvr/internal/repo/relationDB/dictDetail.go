@@ -32,6 +32,7 @@ type DictDetailFilter struct {
 	Status       int64
 	Label        string
 	Value        string
+	Values       []string
 }
 
 func (p DictDetailRepo) fmtFilter(ctx context.Context, f DictDetailFilter) *gorm.DB {
@@ -47,6 +48,9 @@ func (p DictDetailRepo) fmtFilter(ctx context.Context, f DictDetailFilter) *gorm
 	}
 	if f.Value != "" {
 		db = db.Where("value = ?", f.Value)
+	}
+	if len(f.Values) != 0 {
+		db = db.Where("values IN ?", f.Values)
 	}
 	if f.IDPath != "" {
 		db = db.Where("id_path like ?", f.IDPath+"%")

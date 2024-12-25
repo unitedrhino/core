@@ -10183,6 +10183,11 @@
         "name": {
           "type": "string",
           "description": " 名称"
+        },
+        "direction": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 同步的方向,1上游同步到联犀(默认),2联犀同步到下游"
         }
       },
       "title": "DeptSyncJobIndexReq"
@@ -10335,6 +10340,13 @@
         "value": {
           "type": "string",
           "description": " 字典值"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "字典值过滤"
         }
       },
       "title": "DictDetailIndexReq",
@@ -15154,7 +15166,7 @@
         },
         "expand": {
           "type": "object",
-          "description": "拓展, 微信登录方式 phoneCode:获取手机号code"
+          "description": "拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code"
         },
         "info": {
           "$ref": "#/definitions/UserInfo",

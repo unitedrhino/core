@@ -120,6 +120,7 @@ type (
         ParentID int64 `json:"parentID,string,optional"`//父节点
         Status int64 `json:"status,optional"` // 状态  1:启用,2:禁用
         Name string `json:"name,optional"`           // 名称
+        Direction int64 `json:"direction,optional"`// 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
     }
 
     DeptSyncJobIndexResp  {

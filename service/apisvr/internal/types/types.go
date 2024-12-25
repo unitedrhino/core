@@ -385,10 +385,11 @@ type DeptSyncJobExecuteReq struct {
 }
 
 type DeptSyncJobIndexReq struct {
-	Page     *PageInfo `json:"page,optional"`            // 分页信息,只获取一个则不填
-	ParentID int64     `json:"parentID,string,optional"` //父节点
-	Status   int64     `json:"status,optional"`          // 状态  1:启用,2:禁用
-	Name     string    `json:"name,optional"`            // 名称
+	Page      *PageInfo `json:"page,optional"`            // 分页信息,只获取一个则不填
+	ParentID  int64     `json:"parentID,string,optional"` //父节点
+	Status    int64     `json:"status,optional"`          // 状态  1:启用,2:禁用
+	Name      string    `json:"name,optional"`            // 名称
+	Direction int64     `json:"direction,optional"`       // 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
 }
 
 type DeptSyncJobIndexResp struct {
@@ -429,6 +430,7 @@ type DictDetailIndexReq struct {
 	Status   int64     `json:"status,optional"`   // 状态  1:启用,2:禁用
 	Label    string    `json:"label,optional"`    // 展示值
 	Value    string    `json:"value,optional"`    // 字典值
+	Values   []string  `json:"values,optional"`   //字典值过滤
 }
 
 type DictDetailIndexResp struct {
@@ -1672,7 +1674,7 @@ type UserRegisterReq struct {
 	Code     string            `json:"code"`              //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID   string            `json:"codeID,optional"`   //验证码编号 微信登录填state
 	Password string            `json:"password,optional"` //密码
-	Expand   map[string]string `json:"expand,optional"`   ////拓展, 微信登录方式 phoneCode:获取手机号code
+	Expand   map[string]string `json:"expand,optional"`   //拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
 	Info     *UserInfo         `json:"info,optional"`     //用户信息
 }
 
