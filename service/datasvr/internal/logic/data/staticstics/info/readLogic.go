@@ -152,12 +152,18 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 }
 
 func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.StaticsticsInfoReadResp, err error) {
+	reqStr := utils.MarshalNoErr(req)
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	key := fmt.Sprintf("%s:%s", uc.TenantCode, reqStr)
+	r, _ := cache.Get(key)
+	if r != nil {
+		return r, nil
+	}
 	db := relationDB.NewStatisticsInfoRepo(l.ctx)
 	si, err := db.FindOneByFilter(l.ctx, relationDB.StatisticsInfoFilter{Code: req.Code})
 	if err != nil {
 		return nil, err
 	}
-	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	if si.FilterRoles != "" {
 		roles := strings.Split(si.FilterRoles, ",")
 		rm := utils.SliceToSet(uc.RoleCodes)
@@ -288,5 +294,7 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 			}
 		}
 	}
-	return &types.StaticsticsInfoReadResp{List: ret}, nil
+	resp = &types.StaticsticsInfoReadResp{List: ret}
+	cache.Set(key, resp)
+	return resp, nil
 }

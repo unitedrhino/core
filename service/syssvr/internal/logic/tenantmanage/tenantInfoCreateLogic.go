@@ -141,13 +141,31 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		po.DefaultProjectID = int64(projectPo.ProjectID)
 		po.AdminUserID = ui.UserID
 		po.AdminRoleID = ris[0].ID
-		err = relationDB.NewTenantInfoRepo(l.ctx).Insert(l.ctx, po)
+		err = relationDB.NewTenantInfoRepo(tx).Insert(l.ctx, po)
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewTenantConfigRepo(l.ctx).Insert(l.ctx, &relationDB.SysTenantConfig{
+		err = relationDB.NewTenantConfigRepo(tx).Insert(l.ctx, &relationDB.SysTenantConfig{
 			TenantCode:     stores.TenantCode(in.Info.Code),
 			RegisterRoleID: ris[1].ID,
+		})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewDataProjectRepo(tx).MultiInsert(l.ctx, []*relationDB.SysDataProject{
+			{
+				TenantCode: stores.TenantCode(in.Info.Code),
+				ProjectID:  po.DefaultProjectID,
+				TargetType: def.TargetUser,
+				TargetID:   po.AdminUserID,
+				AuthType:   def.AuthAdmin,
+			}, {
+				TenantCode: stores.TenantCode(in.Info.Code),
+				ProjectID:  po.DefaultProjectID,
+				TargetType: def.TargetRole,
+				TargetID:   po.AdminRoleID,
+				AuthType:   def.AuthAdmin,
+			},
 		})
 		return err
 	})
