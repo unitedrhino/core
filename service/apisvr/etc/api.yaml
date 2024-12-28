@@ -41,6 +41,8 @@ Proxy:
       Dest: http://localhost:9218
     - Router: /api/v1/sale/
       Dest: http://localhost:9283
+    - Router: /api/v1/tunnel/
+      Dest: http://localhost:8533
     - Router: /oss/
       DeletePrefix: true
       Dest: http://localhost:9000

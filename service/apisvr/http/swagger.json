@@ -1052,6 +1052,48 @@
         ]
       }
     },
+    "/api/v1/system/common/api/batch-agg": {
+      "post": {
+        "summary": "批量聚合接口请求",
+        "operationId": "postApiV1SystemCommonApiBatch-agg",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ApiBatchAggResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApiBatchAggReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
     "/api/v1/system/common/config": {
       "post": {
         "summary": "获取系统配置",
@@ -8938,6 +8980,60 @@
       "title": "AccessTreeResp",
       "required": [
         "list"
+      ]
+    },
+    "ApiBatchAggReq": {
+      "type": "object",
+      "properties": {
+        "reqs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiBatchAggReqOne"
+          }
+        }
+      },
+      "title": "ApiBatchAggReq",
+      "required": [
+        "reqs"
+      ]
+    },
+    "ApiBatchAggReqOne": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "description": "访问的路径资源"
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/map[string]interface"
+          }
+        }
+      },
+      "title": "ApiBatchAggReqOne",
+      "required": [
+        "uri",
+        "body"
+      ]
+    },
+    "ApiBatchAggResp": {
+      "type": "object",
+      "properties": {
+        "lists": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "invalid",
+              "format": "UNKNOWN"
+            }
+          }
+        }
+      },
+      "title": "ApiBatchAggResp",
+      "required": [
+        "lists"
       ]
     },
     "ApiInfo": {

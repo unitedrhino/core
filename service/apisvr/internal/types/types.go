@@ -60,6 +60,19 @@ type AccessTreeResp struct {
 	List []*AccessModuleInfo `json:"list"` // 接口列表数据
 }
 
+type ApiBatchAggReq struct {
+	Reqs []*ApiBatchAggReqOne `json:"reqs"`
+}
+
+type ApiBatchAggReqOne struct {
+	Uri   string                   `json:"uri"` //访问的路径资源
+	Bodys []map[string]interface{} `json:"body"`
+}
+
+type ApiBatchAggResp struct {
+	Lists [][]map[string]interface{} `json:"lists"`
+}
+
 type ApiInfo struct {
 	ID           int64  `json:"id,optional"`                       // 接口编号
 	AccessCode   string `json:"accessCode"`                        // 模块编号

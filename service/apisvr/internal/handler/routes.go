@@ -268,6 +268,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 批量聚合接口请求
+					Method:  http.MethodPost,
+					Path:    "/api/batch-agg",
+					Handler: systemcommon.ApiBatchAggHandler(serverCtx),
+				},
+				{
 					// 获取系统配置
 					Method:  http.MethodPost,
 					Path:    "/config",

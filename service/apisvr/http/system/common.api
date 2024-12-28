@@ -41,6 +41,10 @@ service api {
     @doc "获取第三方的部门信息列表"
     @handler thirdDeptIndex
     post /third/dept/index (ThirdDeptInfoIndexReq) returns (DeptInfoIndexResp)
+
+    @doc "批量聚合接口请求"
+    @handler apiBatchAgg
+    post /api/batch-agg (ApiBatchAggReq) returns (ApiBatchAggResp)
 }
 
 @server (
@@ -62,6 +66,19 @@ service api {
     @handler debugGetTencent
     get /debug-tencent() returns ()
 }
+
+type (
+    ApiBatchAggReq{
+        Reqs []*ApiBatchAggReqOne `json:"reqs"`
+    }
+    ApiBatchAggResp{
+        Lists [][]map[string]interface{} `json:"lists"`
+    }
+    ApiBatchAggReqOne{
+        Uri string  `json:"uri"` //访问的路径资源
+        Bodys []map[string]interface{} `json:"body"`
+    }
+)
 
 
 type (
