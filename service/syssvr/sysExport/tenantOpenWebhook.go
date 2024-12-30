@@ -15,6 +15,7 @@ import (
 
 const (
 	CodeDmDeviceConn           = "dmDeviceConn"
+	CodeDmDeviceDisConn        = "dmDeviceDisConn"
 	CodeDmDevicePropertyReport = "devicePropertyReport"
 	CodeDmDeviceEventReport    = "deviceEventReport"
 )
