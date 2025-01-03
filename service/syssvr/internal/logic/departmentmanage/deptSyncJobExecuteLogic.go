@@ -151,6 +151,7 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 		req := request.NewDeptDetailUserInfo(int(info.DingTalkID), c, page)
 		limit.Wait(ctx)
 		dings, err := cli.GetDeptDetailUserInfo(req.Build())
+		logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v dings:%#v err:%v", info.ID, dings, err)
 		if err != nil {
 			return errors.System.AddDetail(info, err)
 		}
@@ -203,7 +204,7 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 				err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
 					return usermanagelogic.Register(ctx, svcCtx, uc, tx)
 				})
-			} else if uc.NickName != ding.Name || uc.DingTalkUserID.String != ding.UserId || uc.Phone.String != ding.Mobile || uc.Email.String != dingEmail {
+			} else {
 				uc.NickName = ding.Name
 				uc.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
 				if dingEmail != "" {
