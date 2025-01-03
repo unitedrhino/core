@@ -27,7 +27,7 @@ var operOnce sync.Once
 
 func NewOperLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *OperLogCreateLogic {
 	operOnce.Do(func() {
-		asyncOperInsert = stores.NewAsyncInsert[relationDB.SysOperLog]()
+		asyncOperInsert = stores.NewAsyncInsert[relationDB.SysOperLog](stores.GetTenantConn(ctx), "")
 	})
 	return &OperLogCreateLogic{
 		ctx:    ctx,

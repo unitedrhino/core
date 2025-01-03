@@ -25,7 +25,7 @@ var loginOnce sync.Once
 
 func NewLoginLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogCreateLogic {
 	loginOnce.Do(func() {
-		asyncLoginInsert = stores.NewAsyncInsert[relationDB.SysLoginLog]()
+		asyncLoginInsert = stores.NewAsyncInsert[relationDB.SysLoginLog](stores.GetTenantConn(ctx), "")
 	})
 	return &LoginLogCreateLogic{
 		ctx:    ctx,
