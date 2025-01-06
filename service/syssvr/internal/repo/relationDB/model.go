@@ -29,10 +29,10 @@ type SysConfigSms struct {
 
 type SysDictInfo struct {
 	ID         int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                  // id编号
-	Name       string `gorm:"column:name;uniqueIndex:name;comment:字典名"`                       // 字典名（中）
+	Name       string `gorm:"column:name;uniqueIndex:name;comment:字典名"`                          // 字典名（中）
 	Code       string `gorm:"column:code;uniqueIndex:code;type:VARCHAR(50);default:'';NOT NULL"` //编码
 	Group      string `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                 //字典分组
-	Desc       string `gorm:"column:desc;comment:描述"`                                          // 描述
+	Desc       string `gorm:"column:desc;comment:描述"`                                            // 描述
 	Body       string `gorm:"column:body;type:VARCHAR(1024)"`                                    // 自定义数据
 	StructType int64  `gorm:"column:struct_type;type:BIGINT;default:1"`                          //结构类型(不可修改) 1:列表(默认) 2:树型
 	stores.NoDelTime
@@ -47,11 +47,11 @@ func (SysDictInfo) TableName() string {
 type SysDictDetail struct {
 	ID       int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
 	DictCode string `gorm:"column:dict_code;uniqueIndex:value;type:VARCHAR(50);default:'';NOT NULL"` // 关联标记
-	Label    string `gorm:"column:label;comment:展示值"`                                             // 展示值
-	Value    string `gorm:"column:value;uniqueIndex:value;comment:字典值"`                           // 字典值
+	Label    string `gorm:"column:label;comment:展示值"`                                                // 展示值
+	Value    string `gorm:"column:value;uniqueIndex:value;comment:字典值"`                              // 字典值
 	Status   int64  `gorm:"column:status;type:SMALLINT;default:1"`                                   // 状态  1:启用,2:禁用
-	Sort     int64  `gorm:"column:sort;comment:排序标记"`                                            // 排序标记
-	Desc     string `gorm:"column:desc;comment:描述"`                                                // 描述
+	Sort     int64  `gorm:"column:sort;comment:排序标记"`                                                // 排序标记
+	Desc     string `gorm:"column:desc;comment:描述"`                                                  // 描述
 	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                          // 自定义数据
 	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                               // 1-2-3-的格式记录顶级区域到当前id的路径
 	ParentID int64  `gorm:"column:parent_id;type:BIGINT"`                                            // id编号
@@ -71,8 +71,8 @@ type SysDeptInfo struct {
 	ParentID   int64             `gorm:"column:parent_id;uniqueIndex:name;type:BIGINT"`                     // id编号
 	Name       string            `gorm:"column:name;type:VARCHAR(50);uniqueIndex:name;default:'';NOT NULL"` // 部门名称
 	Status     int64             `gorm:"column:status;type:SMALLINT;default:1"`                             // 状态  1:启用,2:禁用
-	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                      // 排序标记
-	Desc       string            `gorm:"column:desc;comment:描述"`                                          // 描述
+	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                          // 排序标记
+	Desc       string            `gorm:"column:desc;comment:描述"`                                            // 描述
 	UserCount  int64             `gorm:"column:user_count;comment:用户统计,包含下级部门的人数"`
 	IDPath     string            `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
 	DingTalkID int64             `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID

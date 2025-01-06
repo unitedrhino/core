@@ -14,10 +14,11 @@ import (
 )
 
 const (
-	CodeDmDeviceConn           = "dmDeviceConn"
-	CodeDmDeviceDisConn        = "dmDeviceDisConn"
-	CodeDmDevicePropertyReport = "devicePropertyReport"
-	CodeDmDeviceEventReport    = "deviceEventReport"
+	CodeDmDeviceConn             = "dmDeviceConn"
+	CodeDmDeviceDisConn          = "dmDeviceDisConn"
+	CodeDmDevicePropertyReport   = "devicePropertyReport"
+	CodeDmDevicePropertyReportV2 = "devicePropertyReportV2"
+	CodeDmDeviceEventReport      = "deviceEventReport"
 )
 
 type Webhook struct {
