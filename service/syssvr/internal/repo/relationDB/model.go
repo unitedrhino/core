@@ -29,10 +29,10 @@ type SysConfigSms struct {
 
 type SysDictInfo struct {
 	ID         int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                  // id编号
-	Name       string `gorm:"column:name;uniqueIndex:name;comment:字典名"`                          // 字典名（中）
+	Name       string `gorm:"column:name;uniqueIndex:name;comment:字典名"`                       // 字典名（中）
 	Code       string `gorm:"column:code;uniqueIndex:code;type:VARCHAR(50);default:'';NOT NULL"` //编码
 	Group      string `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                 //字典分组
-	Desc       string `gorm:"column:desc;comment:描述"`                                            // 描述
+	Desc       string `gorm:"column:desc;comment:描述"`                                          // 描述
 	Body       string `gorm:"column:body;type:VARCHAR(1024)"`                                    // 自定义数据
 	StructType int64  `gorm:"column:struct_type;type:BIGINT;default:1"`                          //结构类型(不可修改) 1:列表(默认) 2:树型
 	stores.NoDelTime
@@ -47,11 +47,11 @@ func (SysDictInfo) TableName() string {
 type SysDictDetail struct {
 	ID       int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
 	DictCode string `gorm:"column:dict_code;uniqueIndex:value;type:VARCHAR(50);default:'';NOT NULL"` // 关联标记
-	Label    string `gorm:"column:label;comment:展示值"`                                                // 展示值
-	Value    string `gorm:"column:value;uniqueIndex:value;comment:字典值"`                              // 字典值
+	Label    string `gorm:"column:label;comment:展示值"`                                             // 展示值
+	Value    string `gorm:"column:value;uniqueIndex:value;comment:字典值"`                           // 字典值
 	Status   int64  `gorm:"column:status;type:SMALLINT;default:1"`                                   // 状态  1:启用,2:禁用
-	Sort     int64  `gorm:"column:sort;comment:排序标记"`                                                // 排序标记
-	Desc     string `gorm:"column:desc;comment:描述"`                                                  // 描述
+	Sort     int64  `gorm:"column:sort;comment:排序标记"`                                            // 排序标记
+	Desc     string `gorm:"column:desc;comment:描述"`                                                // 描述
 	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                          // 自定义数据
 	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                               // 1-2-3-的格式记录顶级区域到当前id的路径
 	ParentID int64  `gorm:"column:parent_id;type:BIGINT"`                                            // id编号
@@ -71,8 +71,8 @@ type SysDeptInfo struct {
 	ParentID   int64             `gorm:"column:parent_id;uniqueIndex:name;type:BIGINT"`                     // id编号
 	Name       string            `gorm:"column:name;type:VARCHAR(50);uniqueIndex:name;default:'';NOT NULL"` // 部门名称
 	Status     int64             `gorm:"column:status;type:SMALLINT;default:1"`                             // 状态  1:启用,2:禁用
-	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                          // 排序标记
-	Desc       string            `gorm:"column:desc;comment:描述"`                                            // 描述
+	Sort       int64             `gorm:"column:sort;comment:排序标记"`                                      // 排序标记
+	Desc       string            `gorm:"column:desc;comment:描述"`                                          // 描述
 	UserCount  int64             `gorm:"column:user_count;comment:用户统计,包含下级部门的人数"`
 	IDPath     string            `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
 	DingTalkID int64             `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID
@@ -272,7 +272,7 @@ func (m *SysUserInfo) TableName() string {
 // 应用菜单关联表
 type SysUserRole struct {
 	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`      // id编号
-	TenantCode stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"`         // 租户编码
+	TenantCode stores.TenantCode `gorm:"column:tenant_code;index;type:VARCHAR(50);NOT NULL;"`   // 租户编码
 	UserID     int64             `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 用户ID
 	RoleID     int64             `gorm:"column:role_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 角色ID
 	Role       *SysRoleInfo      `gorm:"foreignKey:ID;references:RoleID"`
@@ -286,18 +286,18 @@ func (m *SysUserRole) TableName() string {
 
 // 登录日志管理
 type SysLoginLog struct {
-	ID            int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`       // 编号
-	TenantCode    stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`           // 租户编码
-	AppCode       string            `gorm:"column:app_code;NOT NULL;type:VARCHAR(50)"`              // 应用ID
-	UserID        int64             `gorm:"column:user_id;type:BIGINT;NOT NULL"`                    // 用户id
-	UserName      string            `gorm:"column:user_name;type:VARCHAR(50)"`                      // 登录账号
-	IpAddr        string            `gorm:"column:ip_addr;type:VARCHAR(50)"`                        // 登录IP地址
-	LoginLocation string            `gorm:"column:login_location;type:VARCHAR(100)"`                // 登录地点
-	Browser       string            `gorm:"column:browser;type:VARCHAR(50)"`                        // 浏览器类型
-	Os            string            `gorm:"column:os;type:VARCHAR(50)"`                             // 操作系统
-	Code          int64             `gorm:"column:code;type:BIGINT;default:200;NOT NULL"`           // 登录状态（200成功 其它失败）
-	Msg           string            `gorm:"column:msg;type:VARCHAR(255)"`                           // 提示消息
-	CreatedTime   time.Time         `gorm:"column:created_time;default:CURRENT_TIMESTAMP;NOT NULL"` // 登录时间
+	ID            int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`             // 编号
+	TenantCode    stores.TenantCode `gorm:"column:tenant_code;index;type:VARCHAR(50);NOT NULL"`           // 租户编码
+	AppCode       string            `gorm:"column:app_code;NOT NULL;type:VARCHAR(50)"`                    // 应用ID
+	UserID        int64             `gorm:"column:user_id;type:BIGINT;NOT NULL"`                          // 用户id
+	UserName      string            `gorm:"column:user_name;type:VARCHAR(50)"`                            // 登录账号
+	IpAddr        string            `gorm:"column:ip_addr;type:VARCHAR(50)"`                              // 登录IP地址
+	LoginLocation string            `gorm:"column:login_location;type:VARCHAR(100)"`                      // 登录地点
+	Browser       string            `gorm:"column:browser;type:VARCHAR(50)"`                              // 浏览器类型
+	Os            string            `gorm:"column:os;type:VARCHAR(50)"`                                   // 操作系统
+	Code          int64             `gorm:"column:code;type:BIGINT;default:200;NOT NULL"`                 // 登录状态（200成功 其它失败）
+	Msg           string            `gorm:"column:msg;type:VARCHAR(255)"`                                 // 提示消息
+	CreatedTime   time.Time         `gorm:"column:created_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` // 登录时间
 }
 
 func (m *SysLoginLog) TableName() string {
@@ -306,21 +306,21 @@ func (m *SysLoginLog) TableName() string {
 
 // 操作日志管理
 type SysOperLog struct {
-	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`       // 编号
-	TenantCode   stores.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`           // 租户编码
-	AppCode      string            `gorm:"column:app_code;NOT NULL;type:VARCHAR(50)"`              // 应用ID
-	OperUserID   int64             `gorm:"column:oper_user_id;type:BIGINT;NOT NULL"`               // 用户id
-	OperUserName string            `gorm:"column:oper_user_name;type:VARCHAR(50)"`                 // 操作人员名称
-	OperName     string            `gorm:"column:oper_name;type:VARCHAR(50)"`                      // 操作名称
-	BusinessType int64             `gorm:"column:business_type;type:BIGINT;NOT NULL"`              // 业务类型（1新增 2修改 3删除 4查询 5其它）
-	Uri          string            `gorm:"column:uri;type:VARCHAR(100)"`                           // 请求地址
-	OperIpAddr   string            `gorm:"column:oper_ip_addr;type:VARCHAR(50)"`                   // 主机地址
-	OperLocation string            `gorm:"column:oper_location;type:VARCHAR(255)"`                 // 操作地点
-	Req          sql.NullString    `gorm:"column:req;type:TEXT"`                                   // 请求参数
-	Resp         sql.NullString    `gorm:"column:resp;type:TEXT"`                                  // 返回参数
-	Code         int64             `gorm:"column:code;type:BIGINT;default:200;NOT NULL"`           // 返回状态（200成功 其它失败）
-	Msg          string            `gorm:"column:msg;type:VARCHAR(255)"`                           // 提示消息
-	CreatedTime  time.Time         `gorm:"column:created_time;default:CURRENT_TIMESTAMP;NOT NULL"` // 操作时间
+	ID           int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`             // 编号
+	TenantCode   stores.TenantCode `gorm:"column:tenant_code;index;type:VARCHAR(50);NOT NULL"`           // 租户编码
+	AppCode      string            `gorm:"column:app_code;NOT NULL;type:VARCHAR(50)"`                    // 应用ID
+	OperUserID   int64             `gorm:"column:oper_user_id;type:BIGINT;NOT NULL"`                     // 用户id
+	OperUserName string            `gorm:"column:oper_user_name;type:VARCHAR(50)"`                       // 操作人员名称
+	OperName     string            `gorm:"column:oper_name;type:VARCHAR(50)"`                            // 操作名称
+	BusinessType int64             `gorm:"column:business_type;type:BIGINT;NOT NULL"`                    // 业务类型（1新增 2修改 3删除 4查询 5其它）
+	Uri          string            `gorm:"column:uri;type:VARCHAR(100)"`                                 // 请求地址
+	OperIpAddr   string            `gorm:"column:oper_ip_addr;type:VARCHAR(50)"`                         // 主机地址
+	OperLocation string            `gorm:"column:oper_location;type:VARCHAR(255)"`                       // 操作地点
+	Req          sql.NullString    `gorm:"column:req;type:TEXT"`                                         // 请求参数
+	Resp         sql.NullString    `gorm:"column:resp;type:TEXT"`                                        // 返回参数
+	Code         int64             `gorm:"column:code;type:BIGINT;default:200;NOT NULL"`                 // 返回状态（200成功 其它失败）
+	Msg          string            `gorm:"column:msg;type:VARCHAR(255)"`                                 // 提示消息
+	CreatedTime  time.Time         `gorm:"column:created_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` // 操作时间
 }
 
 func (m *SysOperLog) TableName() string {
