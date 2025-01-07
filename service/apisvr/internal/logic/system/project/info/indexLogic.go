@@ -35,6 +35,7 @@ func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectI
 		ProjectIDs:   req.ProjectIDs,
 		IsGetAll:     req.IsGetAll,
 		WithTopAreas: req.WithTopAreas,
+		TenantCode:   req.TenantCode,
 	}
 	dmResp, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, dmReq)
 	if err != nil {

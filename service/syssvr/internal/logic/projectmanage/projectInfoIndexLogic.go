@@ -29,6 +29,9 @@ func NewProjectInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 // 获取项目信息列表
 func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*sys.ProjectInfoIndexResp, error) {
+	if in.TenantCode != "" && ctxs.IsRoot(l.ctx) == nil {
+		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
+	}
 	var (
 		list  []*sys.ProjectInfo
 		total int64

@@ -98,6 +98,7 @@ type (
         ProjectIDs []int64 `json:"projectIDs,optional"`  //过滤项目id列表
         WithTopAreas bool `json:"withTopAreas,optional"` //同时返回顶层的区域列表
         WithAdminUser bool `json:"withAdminUser,optional"` //同时获取管理员核心信息
+        TenantCode string `json:"tenantCode,optional"`//指定租户(只有default租户下的管理员才有效)
     }
 
     ProjectInfoIndexResp  {

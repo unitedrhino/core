@@ -11933,6 +11933,10 @@
           "type": "boolean",
           "format": "boolean",
           "description": "同时获取管理员核心信息"
+        },
+        "tenantCode": {
+          "type": "string",
+          "description": "指定租户(只有default租户下的管理员才有效)"
         }
       },
       "title": "ProjectInfoIndexReq"
