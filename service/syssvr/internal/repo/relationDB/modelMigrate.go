@@ -218,9 +218,10 @@ var (
 	MigrateSlotInfo = []SysSlotInfo{
 		{Code: "areaInfo", SubCode: "create", SlotCode: "ithings", Uri: "/api/v1/things/slot/area/create", Hosts: []string{"http://localhost:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, AuthType: def.AppCore},
 		{Code: "areaInfo", SubCode: "delete", SlotCode: "ithings", Uri: "/api/v1/things/slot/area/delete", Hosts: []string{"http://localhost:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: "devicePropertyReport", SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: "deviceConn", SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: "deviceOtaReport", SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
+		{Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
+		{Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport2, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
+		{Code: "userSubscribe", SubCode: def.UserSubscribeDeviceConn, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
+		{Code: "userSubscribe", SubCode: def.UserSubscribeDeviceOtaReport, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
 	}
 
 	MigrateRoleInfo = []SysRoleInfo{

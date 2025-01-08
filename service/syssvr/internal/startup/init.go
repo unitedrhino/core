@@ -41,12 +41,22 @@ func Init(svcCtx *svc.ServiceContext) {
 		err = caches.InitTenant(ctx, logic.ToTenantInfoCaches(list)...)
 		logx.Must(err)
 	})
+	VersionUpdate(svcCtx)
 	InitCache(svcCtx)
 	TableInit(svcCtx)
 	InitEventBus(svcCtx)
 	TimerInit(svcCtx)
 	usermanagelogic.Init()
 	InitSync(svcCtx)
+}
+
+func VersionUpdate(svcCtx *svc.ServiceContext) {
+	ctx := ctxs.WithRoot(context.Background())
+	{ //1.2.0->1.3.0
+		po := relationDB.SysSlotInfo{
+			Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport2, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore}
+		relationDB.NewSlotInfoRepo(ctx).Insert(ctx, &po)
+	}
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
@@ -278,7 +288,7 @@ func TimerInit(svcCtx *svc.ServiceContext) {
 	_, err := svcCtx.TimedM.TaskInfoCreate(ctx, &timedmanage.TaskInfo{
 		GroupCode: def.TimedUnitedRhinoQueueGroupCode,                                    //组编码
 		Type:      1,                                                                     //任务类型 1 定时任务 2 延时任务
-		Name:      "联犀中台半小时同步",                                                           // 任务名称
+		Name:      "联犀中台半小时同步",                                                  // 任务名称
 		Code:      "dmDeviceStaticHalfHour",                                              //任务编码
 		Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, eventBus.CoreSyncHalfHour), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
 		CronExpr:  "@every 30m",                                                          // cron执行表达式

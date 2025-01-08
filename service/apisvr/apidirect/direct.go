@@ -1,53 +1,22 @@
 package apidirect
 
 import (
-	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/handler"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/proxy"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/startup"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/datasvr/dataExport"
-	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
-	"net/http"
-)
-
-type (
-	Config         = config.Config
-	ServiceContext = svc.ServiceContext
-	ApiCtx         struct {
-		Server *rest.Server
-		SvcCtx *ServiceContext
-	}
 )
 
 var (
-	c config.Config
+	registerServers []func(server *rest.Server) error
 )
 
-func NewApi(apiCtx ApiCtx) ApiCtx {
-	utils.ConfMustLoad("etc/api.yaml", &c)
-	apiCtx = runApi(apiCtx)
-	return apiCtx
+func RegisterServer(run func(server *rest.Server) error) {
+	registerServers = append(registerServers, run)
 }
 
-func runApi(apiCtx ApiCtx) ApiCtx {
-	var server = apiCtx.Server
-	ctx := svc.NewServiceContext(c)
-	apiCtx.SvcCtx = ctx
-	if server == nil {
-		server = rest.MustNewServer(c.RestConf, rest.WithCustomCors(func(header http.Header) {
-			header.Set("Access-Control-Allow-Headers", ctxs.HttpAllowHeader)
-			header.Set("Access-Control-Allow-Origin", "*")
-		}, nil, "*"),
-			rest.WithNotFoundHandler(proxy.Handler(ctx)),
-		)
-		apiCtx.Server = server
+func InitServers(svr *rest.Server) *rest.Server {
+	for _, r := range registerServers {
+		err := r(svr)
+		logx.Must(err)
 	}
-	handler.RegisterHandlers(server, ctx)
-	//handler.RegisterWsHandlers(apiCtx.SvcCtx.Ws, ctx)
-	startup.Init(ctx)
-	dataExport.Run(server)
-	return apiCtx
+	return svr
 }
