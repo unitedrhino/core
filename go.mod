@@ -5,7 +5,8 @@ go 1.22.0
 toolchain go1.23.3
 
 require (
-	gitee.com/unitedrhino/share v1.2.5
+	gitee.com/unitedrhino/core-ee v1.0.0
+	gitee.com/unitedrhino/share v1.2.8
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
@@ -31,6 +32,10 @@ require (
 	google.golang.org/protobuf v1.35.2
 	gorm.io/gorm v1.25.12
 )
+
+//replace (
+//	gitee.com/unitedrhino/core-ee => codeup.aliyun.com/642f7dca8b47795dae985084/ee/core-ee v0.1.0
+//)
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect

@@ -19,13 +19,19 @@ type DateRange struct {
 	End   string
 }
 type LoginLogFilter struct {
+	TenantCode    string
 	IpAddr        string
 	LoginLocation string
 	Data          *DateRange
+	CreateTime    *stores.Cmp
 }
 
 func (p LoginLogRepo) fmtFilter(ctx context.Context, f LoginLogFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	db = f.CreateTime.Where(db, "created_time")
+	if f.TenantCode != "" {
+		db = db.Where("tenant_code = ?", f.TenantCode)
+	}
 	if f.IpAddr != "" {
 		db = db.Where("ip_addr= ?", f.IpAddr)
 	}

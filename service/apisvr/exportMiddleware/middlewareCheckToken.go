@@ -219,7 +219,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 func (m *CheckTokenWareMiddleware) OperationLogRecord(next http.HandlerFunc, w http.ResponseWriter, r *http.Request, apiInfo *sys.RoleApiAuthResp) {
 	ctx := ctxs.CopyCtx(r.Context())
 	useCtx := ctxs.GetUserCtx(ctx)
-	if useCtx.IsOpen || useCtx.UserID == 0 || apiInfo == nil || apiInfo.BusinessType == 0 || apiInfo.BusinessType == log.OptQuery {
+	if useCtx.IsOpen || useCtx.UserID == 0 || apiInfo == nil || apiInfo.RecordLogMode == 3 || (apiInfo.RecordLogMode == 1 && apiInfo.BusinessType == log.OptQuery) || apiInfo.BusinessType == 0 {
 		next(w, r)
 		return
 	}

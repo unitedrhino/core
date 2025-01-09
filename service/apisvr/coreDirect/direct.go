@@ -1,4 +1,4 @@
-package apidirect
+package coreDirect
 
 import (
 	"github.com/zeromicro/go-zero/core/logx"

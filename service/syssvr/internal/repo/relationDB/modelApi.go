@@ -26,13 +26,14 @@ func (m *SysAccessInfo) TableName() string {
 
 // 接口管理
 type SysApiInfo struct {
-	ID           int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`          // 编号
-	AccessCode   string `gorm:"column:access_code;type:VARCHAR(50);NOT NULL"`              // 范围编码
-	Method       string `gorm:"column:method;uniqueIndex:route;type:VARCHAR(50);NOT NULL"` // 请求方式（1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
-	Route        string `gorm:"column:route;uniqueIndex:route;type:VARCHAR(100);NOT NULL"` // 路由
-	Name         string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                    // 请求名称
-	BusinessType int64  `gorm:"column:business_type;type:BIGINT;NOT NULL"`                 // 业务类型（1(add)新增 2修改(modify) 3删除(delete) 4查询(find) 5其它(other)
-	Desc         string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                    // 备注
+	ID            int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`          // 编号
+	AccessCode    string `gorm:"column:access_code;type:VARCHAR(50);NOT NULL"`              // 范围编码
+	Method        string `gorm:"column:method;uniqueIndex:route;type:VARCHAR(50);NOT NULL"` // 请求方式（1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
+	Route         string `gorm:"column:route;uniqueIndex:route;type:VARCHAR(100);NOT NULL"` // 路由
+	Name          string `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                    // 请求名称
+	BusinessType  int64  `gorm:"column:business_type;type:BIGINT;NOT NULL"`                 // 业务类型（1(add)新增 2修改(modify) 3删除(delete) 4查询(find) 5其它(other)
+	RecordLogMode int64  `gorm:"column:record_log_mode;type:BIGINT;default:1;"`             //1为自动模式(读取类型忽略,其他类型记录日志) 2全部记录 3不记录
+	Desc          string `gorm:"column:desc;type:VARCHAR(500);NOT NULL"`                    // 备注
 	//AuthType     int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:route"`

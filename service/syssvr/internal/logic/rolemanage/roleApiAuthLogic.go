@@ -62,7 +62,7 @@ func (l *RoleApiAuthLogic) RoleApiAuth(in *sys.RoleApiAuthReq) (*sys.RoleApiAuth
 	}
 	for _, roleID := range uc.RoleIDs {
 		if _, ok := (*ras)[roleID]; ok {
-			return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name}, nil
+			return &sys.RoleApiAuthResp{BusinessType: api.BusinessType, Name: api.Name, RecordLogMode: api.RecordLogMode}, nil
 		}
 	}
 	return nil, errors.Permissions

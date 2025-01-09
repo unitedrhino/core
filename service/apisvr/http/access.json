@@ -15,7 +15,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAccessManageAdd",
@@ -25,7 +26,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -45,7 +47,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAccessManageDelete",
@@ -55,7 +58,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -75,7 +79,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAccessManageFind",
@@ -85,7 +90,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAccessManageFind",
@@ -95,7 +101,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -115,7 +122,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAccessManageModify",
@@ -125,7 +133,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -145,7 +154,8 @@
           "isNeedAuth": 1,
           "businessType": "other",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -165,7 +175,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -185,7 +196,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -205,7 +217,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAppManageFind",
@@ -215,7 +228,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAppManageFind",
@@ -225,7 +239,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -245,7 +260,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAppManageModify",
@@ -255,7 +271,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -275,7 +292,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -295,7 +313,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -315,7 +334,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAreaManageFind",
@@ -325,7 +345,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAreaManageFind",
@@ -335,7 +356,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAreaManageFind",
@@ -345,7 +367,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -365,7 +388,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemAreaManageModify",
@@ -375,7 +399,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -395,7 +420,8 @@
           "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDataManageAdd",
@@ -405,7 +431,8 @@
           "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -425,7 +452,8 @@
           "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDataManageDelete",
@@ -435,7 +463,8 @@
           "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDataManageDelete",
@@ -445,7 +474,8 @@
           "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -465,7 +495,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDataManageFind",
@@ -475,7 +506,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDataManageFind",
@@ -485,7 +517,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -505,7 +538,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -525,7 +559,8 @@
           "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -545,7 +580,8 @@
           "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -565,7 +601,8 @@
           "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -585,7 +622,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDataOpenAccessFind",
@@ -595,7 +633,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -615,7 +654,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -635,7 +675,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDeptManageAdd",
@@ -645,7 +686,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -665,7 +707,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDeptManageDelete",
@@ -675,7 +718,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -695,7 +739,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDeptManageFind",
@@ -705,7 +750,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDeptManageFind",
@@ -715,7 +761,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDeptManageFind",
@@ -725,7 +772,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -745,7 +793,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDeptManageModify",
@@ -755,7 +804,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -775,7 +825,8 @@
           "isNeedAuth": 1,
           "businessType": "other",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -795,7 +846,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDictManageAdd",
@@ -805,7 +857,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -825,7 +878,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDictManageDelete",
@@ -835,7 +889,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -855,7 +910,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDictManageFind",
@@ -865,7 +921,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDictManageFind",
@@ -875,7 +932,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDictManageFind",
@@ -885,7 +943,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -905,7 +964,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemDictManageModify",
@@ -915,7 +975,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -935,7 +996,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageAdd",
@@ -945,7 +1007,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -965,7 +1028,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageDelete",
@@ -975,7 +1039,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -995,7 +1060,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageFind",
@@ -1005,7 +1071,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageFind",
@@ -1015,7 +1082,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageFind",
@@ -1025,7 +1093,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageFind",
@@ -1035,7 +1104,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1055,7 +1125,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageModify",
@@ -1065,7 +1136,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemJobManageModify",
@@ -1075,7 +1147,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1095,7 +1168,8 @@
           "isNeedAuth": 1,
           "businessType": "other",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1115,7 +1189,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemLogFind",
@@ -1125,7 +1200,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1145,7 +1221,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1165,7 +1242,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1185,7 +1263,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemModuleInfoFind",
@@ -1195,7 +1274,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1215,7 +1295,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1235,7 +1316,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1255,7 +1337,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1275,7 +1358,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1295,7 +1379,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1315,7 +1400,8 @@
           "isNeedAuth": 1,
           "businessType": "other",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemModuleMenuOther",
@@ -1325,7 +1411,8 @@
           "isNeedAuth": 1,
           "businessType": "other",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1345,7 +1432,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1365,7 +1453,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1385,7 +1474,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyChannelFind",
@@ -1395,7 +1485,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1415,7 +1506,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1435,7 +1527,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1455,7 +1548,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1475,7 +1569,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyConfigFind",
@@ -1485,7 +1580,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyConfigFind",
@@ -1495,7 +1591,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1515,7 +1612,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -1535,7 +1633,8 @@
           "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1555,7 +1654,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1575,7 +1675,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyMessageInfoModify",
@@ -1585,7 +1686,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1605,7 +1707,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1625,7 +1728,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyTemplateDelete",
@@ -1635,7 +1739,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1655,7 +1760,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyTemplateFind",
@@ -1665,7 +1771,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyTemplateFind",
@@ -1675,7 +1782,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1695,7 +1803,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemNotifyTemplateModify",
@@ -1705,7 +1814,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1725,7 +1835,8 @@
           "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1745,7 +1856,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1765,7 +1877,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1785,7 +1898,8 @@
           "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1805,7 +1919,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1825,7 +1940,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1845,7 +1961,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1865,7 +1982,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1885,7 +2003,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemProjectManageFind",
@@ -1895,7 +2014,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemProjectManageFind",
@@ -1905,7 +2025,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemProjectManageFind",
@@ -1915,7 +2036,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -1935,7 +2057,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemProjectManageModify",
@@ -1945,7 +2068,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1965,7 +2089,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -1985,7 +2110,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2005,7 +2131,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageFind",
@@ -2015,7 +2142,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageFind",
@@ -2025,7 +2153,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageFind",
@@ -2035,7 +2164,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageFind",
@@ -2045,7 +2175,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2065,7 +2196,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageModify",
@@ -2075,7 +2207,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageModify",
@@ -2085,7 +2218,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageModify",
@@ -2095,7 +2229,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemRoleManageModify",
@@ -2105,7 +2240,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2125,7 +2261,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2145,7 +2282,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2165,7 +2303,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemSlotManageFind",
@@ -2175,7 +2314,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2195,7 +2335,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2215,7 +2356,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2235,7 +2377,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2255,7 +2398,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantAccessFind",
@@ -2265,7 +2409,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2285,7 +2430,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2305,7 +2451,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2325,7 +2472,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2345,7 +2493,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -2365,7 +2514,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2385,7 +2535,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2405,7 +2556,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2425,7 +2577,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantCoreFind",
@@ -2435,7 +2588,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"
@@ -2455,7 +2609,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageAdd",
@@ -2465,7 +2620,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageAdd",
@@ -2475,7 +2631,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageAdd",
@@ -2485,7 +2642,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageAdd",
@@ -2495,7 +2653,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2515,7 +2674,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageApp",
@@ -2525,7 +2685,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageApp",
@@ -2535,7 +2696,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2555,7 +2717,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageDelete",
@@ -2565,7 +2728,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageDelete",
@@ -2575,7 +2739,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageDelete",
@@ -2585,7 +2750,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2605,7 +2771,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2625,7 +2792,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemTenantManageModify",
@@ -2635,7 +2803,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper"
+          "authType": "supper",
+          "recordLogMode": 0
         }
       ],
       "authType": "supper"
@@ -2655,7 +2824,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2675,7 +2845,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2695,7 +2866,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserManageAdd",
@@ -2705,7 +2877,8 @@
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2725,7 +2898,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserManageDelete",
@@ -2735,7 +2909,8 @@
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2755,7 +2930,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserManageFind",
@@ -2765,7 +2941,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserManageFind",
@@ -2775,7 +2952,8 @@
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2795,7 +2973,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserManageModify",
@@ -2805,7 +2984,8 @@
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin"
+          "authType": "admin",
+          "recordLogMode": 0
         }
       ],
       "authType": "admin"
@@ -2825,7 +3005,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2835,7 +3016,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2845,7 +3027,8 @@
           "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2855,7 +3038,8 @@
           "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2865,7 +3049,8 @@
           "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2875,7 +3060,8 @@
           "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2885,7 +3071,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2895,7 +3082,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2905,7 +3093,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2915,7 +3104,8 @@
           "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2925,7 +3115,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2935,7 +3126,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2945,7 +3137,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2955,7 +3148,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2965,7 +3159,8 @@
           "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2975,7 +3170,8 @@
           "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
           "accessCode": "systemUserSelf",
@@ -2985,7 +3181,8 @@
           "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "all"
+          "authType": "all",
+          "recordLogMode": 0
         }
       ],
       "authType": "all"

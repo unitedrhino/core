@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
 	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/event/day"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	accessmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/accessmanage"
@@ -281,6 +282,10 @@ func InitEventBus(svcCtx *svc.ServiceContext) {
 		return deptSync.NewDeptSync(ctxs.WithRoot(ctx), svcCtx).Timing()
 	})
 	logx.Must(err)
+	err = svcCtx.FastEvent.QueueSubscribe(eventBus.CoreSyncDay, func(ctx context.Context, t time.Time, body []byte) error {
+		return day.NewDaySync(ctxs.WithRoot(ctx), svcCtx).HandleLog()
+	})
+	logx.Must(err)
 }
 
 func TimerInit(svcCtx *svc.ServiceContext) {
@@ -288,8 +293,8 @@ func TimerInit(svcCtx *svc.ServiceContext) {
 	_, err := svcCtx.TimedM.TaskInfoCreate(ctx, &timedmanage.TaskInfo{
 		GroupCode: def.TimedUnitedRhinoQueueGroupCode,                                    //组编码
 		Type:      1,                                                                     //任务类型 1 定时任务 2 延时任务
-		Name:      "联犀中台半小时同步",                                                  // 任务名称
-		Code:      "dmDeviceStaticHalfHour",                                              //任务编码
+		Name:      "联犀中台半小时同步",                                                           // 任务名称
+		Code:      "coreSyncHalfHour",                                                    //任务编码
 		Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, eventBus.CoreSyncHalfHour), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
 		CronExpr:  "@every 30m",                                                          // cron执行表达式
 		Status:    def.StatusWaitRun,                                                     // 状态
@@ -298,4 +303,20 @@ func TimerInit(svcCtx *svc.ServiceContext) {
 	if err != nil && !errors.Cmp(errors.Fmt(err), errors.Duplicate) {
 		logx.Must(err)
 	}
+	{
+		_, err := svcCtx.TimedM.TaskInfoCreate(ctx, &timedmanage.TaskInfo{
+			GroupCode: def.TimedUnitedRhinoQueueGroupCode,                               //组编码
+			Type:      1,                                                                //任务类型 1 定时任务 2 延时任务
+			Name:      "联犀中台一天同步",                                                       // 任务名称
+			Code:      "coreSyncDay",                                                    //任务编码
+			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, eventBus.CoreSyncDay), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
+			CronExpr:  "1 0 * * *",                                                      // cron执行表达式 0点01 分进行统计
+			Status:    def.StatusWaitRun,                                                // 状态
+			Priority:  3,                                                                //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
+		})
+		if err != nil && !errors.Cmp(errors.Fmt(err), errors.Duplicate) {
+			logx.Must(err)
+		}
+	}
+
 }

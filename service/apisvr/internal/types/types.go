@@ -74,13 +74,14 @@ type ApiBatchAggResp struct {
 }
 
 type ApiInfo struct {
-	ID           int64  `json:"id,optional"`                       // 接口编号
-	AccessCode   string `json:"accessCode"`                        // 模块编号
-	Route        string `json:"route,optional"`                    // 接口路由
-	Method       string `json:"method,optional"`                   // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
-	Name         string `json:"name,optional"`                     // 接口名称
-	BusinessType int64  `json:"businessType,optional,range=[1:5]"` // 业务类型（1新增 2修改 3删除 4查询 5其它)
-	Desc         string `json:"desc,optional"`                     // 备注
+	ID            int64  `json:"id,optional"`                        // 接口编号
+	AccessCode    string `json:"accessCode"`                         // 模块编号
+	Route         string `json:"route,optional"`                     // 接口路由
+	Method        string `json:"method,optional"`                    // 接口请求方式: （1 GET 2 POST 3 HEAD 4 OPTIONS 5 PUT 6 DELETE 7 TRACE 8 CONNECT 9 其它）
+	Name          string `json:"name,optional"`                      // 接口名称
+	BusinessType  int64  `json:"businessType,optional,range=[1:5]"`  // 业务类型（1新增 2修改 3删除 4查询 5其它)
+	RecordLogMode int64  `json:"recordLogMode,optional,range=[0:3]"` //   1为自动模式(读取类型忽略,其他类型记录日志) 2全部记录 3不记录
+	Desc          string `json:"desc,optional"`                      // 备注
 }
 
 type ApiInfoIndexReq struct {
@@ -1150,6 +1151,8 @@ type TenantConfig struct {
 	TenantCode                string                                   `json:"tenantCode,optional"`                   // 租户编码
 	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`               //注册分配的角色id
 	WeatherKey                string                                   `json:"weatherKey,optional"`                   //和风天气秘钥 参考: https://dev.qweather.com/
+	OperLogKeepDays           *int64                                   `json:"operLogKeepDays,optional"`              //操作日志保留时间,如果为0则为永久
+	LoginLogKeepDays          *int64                                   `json:"loginLogKeepDays,optional"`             //登录日志保留时间,如果为0则为永久
 	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`              //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`                  //租户下的设备数量限制,0为不限制
 	FeedbackNotifyUserIDs     []int64                                  `json:"feedbackNotifyUserIDs,optional,string"` //产生问题反馈通知的用户ID列表

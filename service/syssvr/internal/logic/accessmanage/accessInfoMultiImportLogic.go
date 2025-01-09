@@ -80,12 +80,13 @@ func (l *AccessInfoMultiImportLogic) AccessInfoMultiImport(in *sys.AccessInfoMul
 			}
 			if old == nil {
 				err = apiDB.Insert(l.ctx, &relationDB.SysApiInfo{
-					AccessCode:   acc.Code,
-					Method:       api.Method,
-					Route:        api.Route,
-					Name:         api.Name,
-					BusinessType: api.GetBusinessType(),
-					Desc:         api.Desc,
+					AccessCode:    acc.Code,
+					Method:        api.Method,
+					Route:         api.Route,
+					Name:          api.Name,
+					BusinessType:  api.GetBusinessType(),
+					RecordLogMode: api.RecordLogMode,
+					Desc:          api.Desc,
 				})
 				if err != nil {
 					errCount++

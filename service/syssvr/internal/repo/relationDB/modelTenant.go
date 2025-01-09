@@ -123,6 +123,8 @@ type SysTenantConfig struct {
 	DeviceLimit               int64                               `gorm:"column:device_limit;type:BIGINT;default:0"`                      // 租户下的设备数量限制,0为不限制
 	CheckUserDelete           int64                               `gorm:"column:check_user_delete;type:BIGINT;default:2"`                 // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	WeatherKey                string                              `gorm:"column:weather_key;type:VARCHAR(50);default:'';"`                //参考: https://dev.qweather.com/
+	OperLogKeepDays           int64                               `gorm:"column:oper_log_keep_days;default:0;"`                           //操作日志保留时间,如果为0则为永久
+	LoginLogKeepDays          int64                               `gorm:"column:login_log_keep_days;default:0;"`                          //登录日志保留时间,如果为0则为永久
 	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
 	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json;default:'[]'"` //产生问题反馈通知的用户ID列表
 	stores.NoDelTime

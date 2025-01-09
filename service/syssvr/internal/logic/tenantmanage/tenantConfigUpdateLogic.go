@@ -83,6 +83,8 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 	newPo.ID = old.ID
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		newPo.DeviceLimit = old.DeviceLimit
+		newPo.OperLogKeepDays = old.OperLogKeepDays
+		newPo.LoginLogKeepDays = old.LoginLogKeepDays
 	}
 	err = relationDB.NewTenantConfigRepo(l.ctx).Update(l.ctx, newPo)
 	return &sys.Empty{}, err

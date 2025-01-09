@@ -2,7 +2,7 @@ package dataExport
 
 import (
 	"flag"
-	"gitee.com/unitedrhino/core/service/apisvr/apidirect"
+	"gitee.com/unitedrhino/core/service/apisvr/coreDirect"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/config"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/handler"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	apidirect.RegisterServer(func(server *rest.Server) error {
+	coreDirect.RegisterServer(func(server *rest.Server) error {
 		flag.Parse()
 		var c config.Config
 		utils.ConfMustLoad("etc/data.yaml", &c)

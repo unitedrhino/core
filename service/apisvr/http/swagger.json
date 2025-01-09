@@ -9067,6 +9067,12 @@
           "maximum": 5,
           "minimum": 1
         },
+        "recordLogMode": {
+          "type": "integer",
+          "format": "int64",
+          "description": "   1为自动模式(读取类型忽略,其他类型记录日志) 2全部记录 3不记录",
+          "maximum": 3
+        },
         "desc": {
           "type": "string",
           "description": " 备注"
@@ -13227,6 +13233,16 @@
         "weatherKey": {
           "type": "string",
           "description": "和风天气秘钥 参考: https:dev.qweather.com/"
+        },
+        "operLogKeepDays": {
+          "type": "integer",
+          "format": "int64",
+          "description": "操作日志保留时间,如果为0则为永久"
+        },
+        "loginLogKeepDays": {
+          "type": "integer",
+          "format": "int64",
+          "description": "登录日志保留时间,如果为0则为永久"
         },
         "checkUserDelete": {
           "type": "integer",

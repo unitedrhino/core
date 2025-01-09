@@ -15,13 +15,19 @@ func NewOperLogRepo(in any) *OperLogRepo {
 }
 
 type OperLogFilter struct {
+	TenantCode   string
 	OperName     string
 	OperUserName string
 	BusinessType int64
+	CreateTime   *stores.Cmp
 }
 
 func (p OperLogRepo) fmtFilter(ctx context.Context, f OperLogFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	db = f.CreateTime.Where(db, "created_time")
+	if f.TenantCode != "" {
+		db = db.Where("tenant_code = ?", f.TenantCode)
+	}
 	if f.OperName != "" {
 		db = db.Where("`oper_name` like ?", "%"+f.OperName+"%")
 	}
