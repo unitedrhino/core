@@ -1,10 +1,11 @@
-package startup
+package coreExport
 
 import (
 	"gitee.com/unitedrhino/core/service/apisvr/coreDirect"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/handler"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/proxy"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/startup"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	_ "gitee.com/unitedrhino/core/service/datasvr/dataExport"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -45,7 +46,7 @@ func runApi(apiCtx ApiCtx) ApiCtx {
 	}
 	handler.RegisterHandlers(server, ctx)
 	//handler.RegisterWsHandlers(apiCtx.SvcCtx.Ws, ctx)
-	Init(ctx)
+	startup.Init(ctx)
 	coreDirect.InitServers(server)
 	//dataExport.Run(server)
 	return apiCtx
