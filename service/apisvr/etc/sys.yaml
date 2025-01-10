@@ -1,6 +1,6 @@
 #系统管理模块配置-syssvr
 Name: sys.rpc
-ListenOn: localhost:9180
+ListenOn: 0.0.0.0:9180
 CpuThreshold: 0
 Etcd:
   Hosts:
