@@ -98,7 +98,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			projectID = def.NotClassified
 		}
 		if projectID > def.NotClassified && !userCtx.IsAdmin && userCtx.ProjectAuth[projectID] == nil {
-			result.HttpErr(w, r, http.StatusUnauthorized, errors.Permissions.AddMsg("无所选项目的权限"))
+			result.HttpErr(w, r, http.StatusOK, errors.Permissions.AddMsg("无所选项目的权限").AddDetailf(strProjectID))
 			return
 		}
 		//注入 用户信息 到 ctx

@@ -1,4 +1,4 @@
-FROM registry.cn-qingdao.aliyuncs.com/ithings/golang:1.21.13-alpine3.20 as go-builder
+FROM registry.cn-qingdao.aliyuncs.com/unitedrhino/golang:1.23.4-alpine3.21 as go-builder
 ARG frontFile
 WORKDIR /unitedrhino/
 COPY ./ ./
@@ -19,7 +19,7 @@ RUN apk add tzdata
 
 WORKDIR /unitedrhino/
 COPY --from=go-builder /unitedrhino/service/apisvr/apisvr ./apisvr
-RUN mkdir ./etc
+COPY --from=go-builder /unitedrhino/service/apisvr/etc ./etc
 RUN mkdir -p ./dist/app
 COPY --from=go-builder /unitedrhino/front/ ./dist/app
 
