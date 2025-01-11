@@ -28,9 +28,10 @@ func NewDeptInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dep
 
 func (l *DeptInfoIndexLogic) DeptInfoIndex(in *sys.DeptInfoIndexReq) (*sys.DeptInfoIndexResp, error) {
 	f := relationDB.DeptInfoFilter{
-		Name:     in.Name,
-		ParentID: in.ParentID,
-		Status:   in.Status,
+		Name:        in.Name,
+		ParentID:    in.ParentID,
+		Status:      in.Status,
+		DingTalkIDs: in.DingTalkIDs,
 	}
 	repo := relationDB.NewDeptInfoRepo(l.ctx)
 	total, err := repo.CountByFilter(l.ctx, f)

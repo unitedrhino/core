@@ -1770,6 +1770,7 @@ message DeptInfo{
   int64 sort = 8;          // 排序标记
   string idPath = 9;
   int64 userCount = 10;//只读,用户统计,包含下级部门的人数
+  int64 dingTalkID = 11;// 钉钉的部门ID
 }
 
 message DeptInfoIndexReq{
@@ -1777,6 +1778,7 @@ message DeptInfoIndexReq{
   int64 parentID =2;//父节点
   int64 status = 3; // 状态  1:启用,2:禁用
   string name = 4;  // 部门名称
+  repeated int64 dingTalkIDs = 11;// 钉钉的部门ID
 }
 
 message DeptInfoIndexResp{

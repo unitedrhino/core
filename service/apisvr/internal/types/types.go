@@ -352,23 +352,25 @@ type DebugResp struct {
 }
 
 type DeptInfo struct {
-	ID        int64       `json:"id,string,optional"`                 // 编号
-	ParentID  int64       `json:"parentID,string,optional,omitempty"` //父节点
-	IDPath    string      `json:"idPath,optional"`                    //1-2-3-的格式记录顶级区域到当前id的路径
-	Name      string      `json:"name,optional"`                      // 部门名称
-	Sort      int64       `json:"sort,optional"`                      // 排序标记
-	Desc      *string     `json:"desc,optional"`                      // 描述
-	UserCount int64       `json:"userCount,optional"`                 //只读,用户统计,包含下级部门的人数
-	Status    int64       `json:"status,optional"`                    // 状态  1:启用,2:禁用
-	Parent    *DeptInfo   `json:"parent,optional,omitempty"`
-	Children  []*DeptInfo `json:"children,optional,omitempty"`
+	ID         int64       `json:"id,string,optional"`                 // 编号
+	ParentID   int64       `json:"parentID,string,optional,omitempty"` //父节点
+	IDPath     string      `json:"idPath,optional"`                    //1-2-3-的格式记录顶级区域到当前id的路径
+	Name       string      `json:"name,optional"`                      // 部门名称
+	Sort       int64       `json:"sort,optional"`                      // 排序标记
+	Desc       *string     `json:"desc,optional"`                      // 描述
+	UserCount  int64       `json:"userCount,optional"`                 //只读,用户统计,包含下级部门的人数
+	Status     int64       `json:"status,optional"`                    // 状态  1:启用,2:禁用
+	DingTalkID int64       `json:"dingTalkID,string,optional"`         //钉钉的部门ID
+	Parent     *DeptInfo   `json:"parent,optional,omitempty"`
+	Children   []*DeptInfo `json:"children,optional,omitempty"`
 }
 
 type DeptInfoIndexReq struct {
-	Page     *PageInfo `json:"page,optional"`            // 分页信息,只获取一个则不填
-	ParentID int64     `json:"parentID,string,optional"` //父节点
-	Status   int64     `json:"status,optional"`          // 状态  1:启用,2:禁用
-	Name     string    `json:"name,optional"`            // 名称
+	Page        *PageInfo `json:"page,optional"`               // 分页信息,只获取一个则不填
+	ParentID    int64     `json:"parentID,string,optional"`    //父节点
+	DingTalkIDs []int64   `json:"dingTalkIDs,string,optional"` //钉钉的部门ID
+	Status      int64     `json:"status,optional"`             // 状态  1:启用,2:禁用
+	Name        string    `json:"name,optional"`               // 名称
 }
 
 type DeptInfoIndexResp struct {

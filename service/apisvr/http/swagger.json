@@ -10130,6 +10130,10 @@
           "format": "int64",
           "description": " 状态  1:启用,2:禁用"
         },
+        "dingTalkID": {
+          "type": "string",
+          "description": "钉钉的部门ID"
+        },
         "parent": {
           "$ref": "#/definitions/DeptInfo"
         },
@@ -10152,6 +10156,13 @@
         "parentID": {
           "type": "string",
           "description": "父节点"
+        },
+        "dingTalkIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "钉钉的部门ID"
         },
         "status": {
           "type": "integer",

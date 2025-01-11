@@ -152,6 +152,7 @@ type (
     DeptInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         ParentID int64 `json:"parentID,string,optional"`//父节点
+        DingTalkIDs []int64  `json:"dingTalkIDs,string,optional"` //钉钉的部门ID
         Status int64 `json:"status,optional"` // 状态  1:启用,2:禁用
         Name string `json:"name,optional"`           // 名称
     }
@@ -169,6 +170,7 @@ type (
         Desc   *string `json:"desc,optional"`      // 描述
         UserCount int64 `json:"userCount,optional"` //只读,用户统计,包含下级部门的人数
         Status int64                   `json:"status,optional"` // 状态  1:启用,2:禁用
+        DingTalkID int64  `json:"dingTalkID,string,optional"` //钉钉的部门ID
         Parent *DeptInfo  `json:"parent,optional,omitempty"`
         Children []*DeptInfo `json:"children,optional,omitempty"`
     }
