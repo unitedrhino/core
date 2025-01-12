@@ -64,21 +64,32 @@ func (l *ThirdDeptReadLogic) ThirdDeptRead(in *sys.ThirdDeptInfoReadReq) (*sys.D
 		}
 	}
 	if in.WithChildren {
-		req := request.NewDeptList()
-		req.SetDeptId(int(ret.Id))
-		dings, err := cli.GetDeptList(req.Build())
-		if err != nil {
-			return nil, errors.Default.WithMsg(err.Error())
+		if err := FillChildren(l.ctx, cli, ret); err != nil {
+			return nil, err
 		}
-		var list []*sys.DeptInfo
-		for _, v := range dings.List {
-			list = append(list, &sys.DeptInfo{
-				Id:       int64(v.Id),
-				Name:     v.Name,
-				ParentID: int64(v.ParentId),
-			})
-		}
-		ret.Children = list
 	}
 	return ret, nil
+}
+
+func FillChildren(ctx context.Context, cli *dingClient.DingTalk, father *sys.DeptInfo) error {
+	req := request.NewDeptList()
+	req.SetDeptId(int(father.Id))
+	dings, err := cli.GetDeptList(req.Build())
+	if err != nil {
+		return errors.Default.WithMsg(err.Error())
+	}
+	var list []*sys.DeptInfo
+	for _, v := range dings.List {
+		c := sys.DeptInfo{
+			Id:       int64(v.Id),
+			Name:     v.Name,
+			ParentID: int64(v.ParentId),
+		}
+		if err := FillChildren(ctx, cli, &c); err != nil {
+			return errors.Default.WithMsg(err.Error())
+		}
+		list = append(list, &c)
+	}
+	father.Children = list
+	return nil
 }
