@@ -53,9 +53,10 @@ func staticProxy(svcCtx *svc.ServiceContext, conf *conf.StaticProxyConf, w http.
 	if conf.DeletePrefix {
 		r.URL.Path = strings.TrimPrefix(r.URL.Path, conf.Router)
 	}
-	for k := range w.Header() {
-		w.Header().Del(k)
-	}
+	//for k := range w.Header() {
+	//	w.Header().Del(k)
+	//}
+	w.Header().Del("traceparent")
 	proxy.ServeHTTP(w, r)
 }
 func defaultHandle(svcCtx *svc.ServiceContext, upath string, w http.ResponseWriter, r *http.Request, isDir bool) {

@@ -54,7 +54,6 @@ cp.etc:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>copying etc<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 	@mkdir -p ./cmd/etc/
 	@cp -rf ./service/apisvr/etc/* ./cmd/etc/
-	@cp -rf ./service/viewsvr/etc/* ./cmd/etc/
 
 
 build.api:
