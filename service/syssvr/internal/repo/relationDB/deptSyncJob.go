@@ -40,7 +40,7 @@ func (p DeptSyncJobRepo) fmtFilter(ctx context.Context, f DeptSyncJobFilter) *go
 		db = db.Where("sync_mode=?", f.SyncMode)
 	}
 	if len(f.SyncModes) != 0 {
-		db = db.Where("sync_modes in ?", f.SyncModes)
+		db = db.Where("sync_mode in ?", f.SyncModes)
 	}
 	if f.ThirdType != "" {
 		db = db.Where("third_type=?", f.ThirdType)
