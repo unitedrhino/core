@@ -245,9 +245,9 @@ func (m *CheckTokenWareMiddleware) OperationLogRecord(next http.HandlerFunc, w h
 	respStatusCode := http.StatusOK
 	respStatusMsg := ""
 	respBodyStr := ""
-	r = result.NeedResp(r)
+	r = ctxs.NeedResp(r)
 	next(w, r)
-	resp := result.GetResp(r)
+	resp := ctxs.GetResp(r)
 	if resp != nil {
 		respStatusCode = resp.StatusCode
 		respStatusMsg = resp.Status
