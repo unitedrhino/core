@@ -11889,6 +11889,11 @@
           "format": "int64",
           "description": "项目下的区域统计(只读)"
         },
+        "userCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目下的用户统计(只读)"
+        },
         "deviceCount": {
           "type": "integer",
           "format": "int64",

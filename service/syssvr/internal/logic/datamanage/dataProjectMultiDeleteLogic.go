@@ -60,6 +60,7 @@ func (l *DataProjectMultiDeleteLogic) DataProjectMultiDelete(in *sys.DataProject
 		for _, v := range in.TargetIDs {
 			cache.ClearProjectAuth(v)
 		}
+		ProjectUserCount(l.ctx, in.ProjectID)
 	}
 	return &sys.Empty{}, nil
 }

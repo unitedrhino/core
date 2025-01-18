@@ -58,6 +58,7 @@ func (l *DataProjectDeleteLogic) DataProjectDelete(in *sys.DataProjectDeleteReq)
 	})
 	if in.TargetType == def.TargetUser {
 		cache.ClearProjectAuth(in.TargetID)
+		ProjectUserCount(l.ctx, in.ProjectID)
 	}
 	return &sys.Empty{}, err
 }

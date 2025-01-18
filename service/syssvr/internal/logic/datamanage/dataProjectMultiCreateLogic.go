@@ -62,5 +62,19 @@ func (l *DataProjectMultiCreateLogic) DataProjectMultiCreate(in *sys.DataProject
 			cache.ClearProjectAuth(v)
 		}
 	}
+	ProjectUserCount(l.ctx, in.ProjectID)
 	return &sys.Empty{}, nil
+}
+
+func ProjectUserCount(ctx context.Context, projectID int64) {
+	u, err := relationDB.NewDataProjectRepo(ctx).CountByFilter(ctx, relationDB.DataProjectFilter{ProjectID: projectID, TargetType: def.TargetUser})
+	if err != nil {
+		logx.WithContext(ctx).Error(err)
+		return
+	}
+	err = relationDB.NewProjectInfoRepo(ctx).UpdateWithField(ctx, relationDB.ProjectInfoFilter{ProjectIDs: []int64{projectID}},
+		map[string]any{"user_count": u})
+	if err != nil {
+		logx.WithContext(ctx).Error(err)
+	}
 }

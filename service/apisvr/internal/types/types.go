@@ -827,6 +827,7 @@ type ProjectInfo struct {
 	IsUpdateProjectImg bool        `json:"isUpdateProjectImg,optional"`
 	Desc               *string     `json:"desc,optional"`                //项目备注（读写）
 	AreaCount          int64       `json:"areaCount,optional"`           //项目下的区域统计(只读)
+	UserCount          int64       `json:"userCount,optional"`           //项目下的用户统计(只读)
 	DeviceCount        int64       `json:"deviceCount,optional"`         //项目下的设备统计(只读)
 	Ppsm               int64       `json:"ppsm,optional,omitempty"`      //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
 	Area               *float32    `json:"area,optional,omitempty"`      //建筑面积(单位平米)

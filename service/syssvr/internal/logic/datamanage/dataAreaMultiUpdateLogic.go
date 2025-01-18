@@ -80,6 +80,7 @@ func (l *DataAreaMultiUpdateLogic) DataAreaMultiUpdate(in *sys.DataAreaMultiUpda
 	}
 	if in.TargetType == def.TargetUser {
 		cache.ClearProjectAuth(in.TargetID)
+		ProjectUserCount(l.ctx, in.ProjectID)
 	}
 	return &sys.Empty{}, nil
 }

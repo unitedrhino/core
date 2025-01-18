@@ -55,6 +55,7 @@ func (l *DataProjectCreateLogic) DataProjectCreate(in *sys.DataProjectSaveReq) (
 	}
 	if in.TargetType == def.TargetUser {
 		cache.ClearProjectAuth(in.TargetID)
+		ProjectUserCount(l.ctx, in.ProjectID)
 	}
 	return &sys.Empty{}, nil
 }

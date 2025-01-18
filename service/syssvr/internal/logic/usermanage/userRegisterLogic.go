@@ -309,6 +309,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 					//CompanyName: utils.ToEmptyString(in.CompanyName),
 					AdminUserID:  in.UserID,
 					AreaCount:    int64(len(rap.Areas)),
+					UserCount:    1,
 					IsSysCreated: rap.IsSysCreated,
 					Desc:         "自动创建",
 				}

@@ -98,5 +98,6 @@ func (l *UserAreaApplyDealLogic) UserAreaApplyDeal(in *sys.UserAreaApplyDealReq)
 	for userID := range authSet {
 		cache.ClearProjectAuth(userID)
 	}
+	ProjectUserCount(l.ctx, uc.ProjectID)
 	return &sys.Empty{}, err
 }

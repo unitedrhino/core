@@ -81,6 +81,12 @@ func (g ProjectInfoRepo) Update(ctx context.Context, data *SysProjectInfo, colum
 	return stores.ErrFmt(err)
 }
 
+func (d ProjectInfoRepo) UpdateWithField(ctx context.Context, f ProjectInfoFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysProjectInfo{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
+
 func (g ProjectInfoRepo) DeleteByFilter(ctx context.Context, f ProjectInfoFilter) error {
 	//ctxs.ClearMetaProjectID(ctx) //默认情况下只返回当前项目,需要清除当前项目
 	db := g.fmtFilter(ctx, f)
