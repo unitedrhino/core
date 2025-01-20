@@ -12,16 +12,17 @@ type SysProjectInfo struct {
 	ProjectImg  string            `gorm:"column:project_img;type:varchar(1024);default:''"`
 	ProjectName string            `gorm:"column:project_name;type:varchar(100);NOT NULL"` // 项目名称
 	//Region      string            `gorm:"column:region;type:varchar(100);NOT NULL"`      // 项目省市区县
-	Address      string         `gorm:"column:address;type:varchar(512);"`                // 项目详细地址
-	AreaCount    int64          `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
-	UserCount    int64          `gorm:"column:user_count;type:bigint;default:0;NOT NULL"`
-	Position     stores.Point   `gorm:"column:position;NOT NULL"` // 项目地址
-	DeviceCount  int64          `gorm:"column:device_count;type:bigint;default:0"`
-	Area         float32        `gorm:"column:area;default:0"`
-	Ppsm         int64          `gorm:"column:ppsm;type:bigint;default:0"`                    //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
-	Desc         string         `gorm:"column:desc;type:varchar(100);NOT NULL"`               // 项目备注
-	IsSysCreated int64          `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"` //是否是系统创建的,系统创建的只有管理员可以删除
-	Areas        []*SysAreaInfo `gorm:"foreignKey:ProjectID;references:ProjectID"`
+	Address      string            `gorm:"column:address;type:varchar(512);"`                // 项目详细地址
+	AreaCount    int64             `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
+	UserCount    int64             `gorm:"column:user_count;type:bigint;default:0;NOT NULL"`
+	Position     stores.Point      `gorm:"column:position;NOT NULL"` // 项目地址
+	DeviceCount  int64             `gorm:"column:device_count;type:bigint;default:0"`
+	Area         float32           `gorm:"column:area;default:0"`
+	Ppsm         int64             `gorm:"column:ppsm;type:bigint;default:0"`                           //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
+	Desc         string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                      // 项目备注
+	IsSysCreated int64             `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"`        //是否是系统创建的,系统创建的只有管理员可以删除
+	Tags         map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 设备标签
+	Areas        []*SysAreaInfo    `gorm:"foreignKey:ProjectID;references:ProjectID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0"`
 }
@@ -61,10 +62,11 @@ type SysAreaInfo struct {
 	LowerLevelCount int64             `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计
 	DeviceCount     int64             `gorm:"column:device_count;type:bigint;default:0;"`
 	GroupCount      int64             `gorm:"column:group_count;type:bigint;default:0;"`
-	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`        //是否是叶子节点
-	UseBy           string            `gorm:"column:use_by;type:varchar(100);default:''"`           //用途
-	ChildrenAreaIDs []int64           `gorm:"column:children_area_ids;type:json;serializer:json"`   //所有的子区域的id列表
-	IsSysCreated    int64             `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"` //是否是系统创建的,系统创建的只有管理员可以删除
+	IsLeaf          int64             `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`               //是否是叶子节点
+	Tags            map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 设备标签
+	UseBy           string            `gorm:"column:use_by;type:varchar(100);default:''"`                  //用途
+	ChildrenAreaIDs []int64           `gorm:"column:children_area_ids;type:json;serializer:json"`          //所有的子区域的id列表
+	IsSysCreated    int64             `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"`        //是否是系统创建的,系统创建的只有管理员可以删除
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 	Children    []*SysAreaInfo     `gorm:"foreignKey:ParentAreaID;references:AreaID"`

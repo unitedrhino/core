@@ -33,6 +33,7 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		AdminUserID:  po.AdminUserID,
 		IsSysCreated: po.IsSysCreated,
 		Ppsm:         po.Ppsm,
+		Tags:         po.Tags,
 		Area:         &wrapperspb.FloatValue{Value: po.Area},
 		Desc:         utils.ToRpcNullString(po.Desc),
 		Position:     logic.ToSysPoint(po.Position),

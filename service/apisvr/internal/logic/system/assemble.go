@@ -10,6 +10,7 @@ import (
 
 func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo {
 	return &types.ProjectInfo{
+		Tags:         pb.Tags,
 		CreatedTime:  pb.CreatedTime,
 		ProjectID:    pb.ProjectID,
 		ProjectName:  pb.ProjectName,

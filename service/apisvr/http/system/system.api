@@ -111,6 +111,7 @@ type (
         IsSysCreated int64 `json:"isSysCreated,optional"` //是否是系统创建的,系统创建的只有管理员可以删除
         IsUpdateProjectImg bool  `json:"isUpdateProjectImg,optional"`
         Desc *string `json:"desc,optional"`                    //项目备注（读写）
+        Tags map[string ]string `json:"tags,optional,omitempty"` //自定义标签
         AreaCount int64 `json:"areaCount,optional"` //项目下的区域统计(只读)
         UserCount int64 `json:"userCount,optional"` //项目下的用户统计(只读)
         DeviceCount int64 `json:"deviceCount,optional"` //项目下的设备统计(只读)
@@ -127,6 +128,7 @@ type (
         AreaName string `json:"areaName,optional"`               //项目区域名称（读写）
         Position *Point `json:"position,optional"`               //项目区域定位，默认高德坐标系（读写）
         Desc *string `json:"desc,optional"`                      //项目区域备注（读写）
+        Tags map[string ]string `json:"tags,optional,omitempty"` //自定义标签
         LowerLevelCount int64 `json:"lowerLevelCount,optional"` //下级的数量统计（只读）
         DeviceCount int64  `json:"deviceCount,optional"` //设备数量统计(只读)
         GroupCount int64  `json:"groupCount,optional"` //分组数量统计(只读)

@@ -60,6 +60,10 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		Position: logic.ToStorePoint(in.Position),
 		Desc:     utils.ToEmptyString(in.Desc),
 	}
+	po.Tags = in.Tags
+	if po.Tags == nil {
+		po.Tags = map[string]string{}
+	}
 	_, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, in.AdminUserID)
 	if err != nil {
 		return nil, err

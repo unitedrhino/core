@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
@@ -33,8 +34,8 @@ func (l *RoleMultiUpdateLogic) RoleMultiUpdate(req *types.UserRoleMultiUpdateReq
 	if err != nil {
 		return err
 	}
-	if ti.AdminUserID != uc.UserID {
-		return errors.Permissions.AddDetail("非超级管理员不能修改角色")
+	if ti.AdminUserID != uc.UserID && utils.SliceIn(ti.AdminRoleID, req.RoleIDs...) {
+		return errors.Permissions.AddDetail("非超级管理员不能修改角色为超级管理员")
 	}
 	_, err = l.svcCtx.UserRpc.UserRoleMultiUpdate(l.ctx, &sys.UserRoleMultiUpdateReq{UserID: req.UserID, RoleIDs: req.RoleIDs})
 	return err

@@ -60,6 +60,7 @@ func TransPoToPb(ctx context.Context, po *relationDB.SysAreaInfo, svcCtx *svc.Se
 		ParentAreaID:    parentAreaID,
 		ProjectID:       int64(po.ProjectID),
 		AreaName:        po.AreaName,
+		Tags:            po.Tags,
 		AreaNamePath:    po.AreaNamePath,
 		AreaIDPath:      po.AreaIDPath,
 		Position:        logic.ToSysPoint(po.Position),

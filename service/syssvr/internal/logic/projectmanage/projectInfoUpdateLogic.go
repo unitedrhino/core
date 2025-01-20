@@ -83,6 +83,9 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 			po.DeviceCount = pb.DeviceCount.Value
 		}
 	}
+	if pb.Tags != nil {
+		po.Tags = pb.Tags
+	}
 	if pb.AdminUserID != 0 && pb.AdminUserID != po.AdminUserID {
 		uc := ctxs.GetUserCtx(l.ctx)
 		if uc.UserID == po.AdminUserID { //只有项目的管理员才有权限更换

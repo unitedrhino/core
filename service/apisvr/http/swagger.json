@@ -9362,6 +9362,10 @@
           "type": "string",
           "description": "项目区域备注（读写）"
         },
+        "tags": {
+          "type": "object",
+          "description": "自定义标签"
+        },
         "lowerLevelCount": {
           "type": "integer",
           "format": "int64",
@@ -11883,6 +11887,10 @@
         "desc": {
           "type": "string",
           "description": "项目备注（读写）"
+        },
+        "tags": {
+          "type": "object",
+          "description": "自定义标签"
         },
         "areaCount": {
           "type": "integer",

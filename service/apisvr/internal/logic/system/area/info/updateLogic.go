@@ -38,6 +38,7 @@ func (l *UpdateLogic) Update(req *types.AreaInfo) error {
 		UseBy:              req.UseBy,
 		AreaImg:            req.AreaImg,
 		IsUpdateAreaImg:    req.IsUpdateAreaImg,
+		Tags:               req.Tags,
 		ConfigFile:         req.ConfigFile,
 		IsUpdateConfigFile: req.IsUpdateConfigFile,
 	}

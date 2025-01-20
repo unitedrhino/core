@@ -26,6 +26,7 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 		Position:        logic.ToSysPointApi(root.Position),
 		Desc:            utils.ToNullString(root.Desc),
 		Children:        nil,
+		Tags:            root.Tags,
 		AreaImg:         root.AreaImg,
 		ConfigFile:      root.ConfigFile,
 		DeviceCount:     root.DeviceCount.GetValue(),

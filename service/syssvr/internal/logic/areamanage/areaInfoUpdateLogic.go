@@ -100,7 +100,9 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 			po.GroupCount = pb.GroupCount.Value
 		}
 	}
-
+	if pb.Tags != nil {
+		po.Tags = pb.Tags
+	}
 	if pb.AreaName != "" {
 		po.AreaName = pb.AreaName
 	}

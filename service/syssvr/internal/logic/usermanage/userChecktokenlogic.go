@@ -147,6 +147,11 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		l.Errorf("%s UserTokenInfo.GetData fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
+	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, ui.TenantCode)
+	if err != nil {
+		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
+		return nil, err
+	}
 	ret := sys.UserCheckTokenResp{
 		Token:        token,
 		AppCode:      claim.AppCode,
@@ -155,7 +160,7 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		RoleCodes:    ui.RoleCodes,
 		IsAllData:    ui.IsAllData,
 		TenantCode:   ui.TenantCode,
-		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, ui.RoleCodes...),
+		IsSuperAdmin: ti.AdminUserID == ui.UserID || utils.SliceIn(ti.AdminRoleID, ui.RoleIDs...),
 		Account:      ui.Account,
 	}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, ui.RoleCodes...) || ret.IsSuperAdmin

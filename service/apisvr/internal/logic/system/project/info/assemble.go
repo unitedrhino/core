@@ -12,6 +12,7 @@ func ToProjectPb(in *types.ProjectInfo) *sys.ProjectInfo {
 		return nil
 	}
 	return &sys.ProjectInfo{
+		Tags:               in.Tags,
 		ProjectID:          in.ProjectID,
 		ProjectName:        in.ProjectName,
 		ProjectImg:         in.ProjectImg,

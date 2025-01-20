@@ -41,6 +41,7 @@ func (l *CreateLogic) Create(req *types.AreaInfo) (*types.AreaWithID, error) {
 		Desc:            utils.ToRpcNullString(req.Desc),
 		UseBy:           req.UseBy,
 		AreaImg:         req.AreaImg,
+		Tags:            req.Tags,
 		IsUpdateAreaImg: req.IsUpdateAreaImg,
 		IsSysCreated:    req.IsSysCreated,
 	}

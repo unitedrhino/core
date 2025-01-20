@@ -881,6 +881,7 @@ message ProjectInfo {
   bool isUpdateProjectImg =16;//是否更新项目的图片
   int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
   repeated AreaInfo areas =19;//
+  map<string, string> tags = 21;
 }
 
 
@@ -942,6 +943,7 @@ message AreaInfo {
   int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
   string configFile =21;//区域配置文件
   bool isUpdateConfigFile=22;
+  map<string, string> tags = 23;
 }
 
 
