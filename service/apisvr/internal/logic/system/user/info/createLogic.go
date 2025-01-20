@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -31,6 +32,20 @@ func (l *CreateLogic) Create(req *types.UserInfoCreateReq) (resp *types.UserCrea
 	//性别参数如果未传或者无效，则默认指定为男性
 	if info.Sex != 1 && info.Sex != 2 {
 		info.Sex = 1
+	}
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	//这里需要判断是否是租户下的超级管理员,只有租户下的超级管理员才能修改角色
+	ti, err := l.svcCtx.TenantRpc.TenantInfoRead(l.ctx, &sys.WithIDCode{Code: uc.TenantCode})
+	if err != nil {
+		return nil, err
+	}
+	if ti.AdminUserID != uc.UserID && utils.SliceIn(ti.AdminRoleID, req.RoleIDs...) {
+		var roleIDs []int64
+		for _, roleID := range req.RoleIDs {
+			if roleID != ti.AdminRoleID {
+				roleIDs = append(roleIDs, roleID)
+			}
+		}
 	}
 	resp1, err1 := l.svcCtx.UserRpc.UserInfoCreate(l.ctx, &sys.UserInfoCreateReq{
 		Info:    user.UserInfoToRpc(info),
