@@ -868,6 +868,7 @@ type ProjectProfileIndexResp struct {
 type ProjectWithID struct {
 	ProjectID     int64 `json:"projectID,string"`       //项目id 只读
 	WithAdminUser bool  `json:"withAdminUser,optional"` //同时获取管理员核心信息
+	WithTopAreas  bool  `json:"withTopAreas,optional"`  //同时返回顶层的区域列表
 }
 
 type QRCodeReadReq struct {

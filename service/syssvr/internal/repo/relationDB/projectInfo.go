@@ -16,6 +16,7 @@ func NewProjectInfoRepo(in any) *ProjectInfoRepo {
 }
 
 type ProjectInfoFilter struct {
+	ProjectID    int64
 	ProjectIDs   []int64
 	ProjectName  string
 	AdminUserID  int64
@@ -29,6 +30,9 @@ func (p ProjectInfoRepo) fmtFilter(ctx context.Context, f ProjectInfoFilter) *go
 	}
 	if len(f.ProjectIDs) != 0 {
 		db = db.Where("project_id in ?", f.ProjectIDs)
+	}
+	if f.ProjectID != 0 {
+		db = db.Where("project_id = ?", f.ProjectID)
 	}
 	if f.AdminUserID != 0 {
 		db = db.Where("admin_user_id = ?", f.AdminUserID)

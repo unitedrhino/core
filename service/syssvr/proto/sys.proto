@@ -860,6 +860,7 @@ message WithAppCodeID{
 
 message ProjectWithID{
   int64 projectID = 1; //项目id（只读）
+  bool withTopAreas =5;  //同时返回顶层的区域列表
 }
 
 message ProjectInfo {

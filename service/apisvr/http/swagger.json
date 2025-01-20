@@ -12049,6 +12049,11 @@
           "type": "boolean",
           "format": "boolean",
           "description": "同时获取管理员核心信息"
+        },
+        "withTopAreas": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时返回顶层的区域列表"
         }
       },
       "title": "ProjectWithID",

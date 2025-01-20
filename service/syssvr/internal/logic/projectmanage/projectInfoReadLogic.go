@@ -35,7 +35,7 @@ func (l *ProjectInfoReadLogic) ProjectInfoRead(in *sys.ProjectWithID) (*sys.Proj
 	}()
 	l.ctx = ctxs.WithDefaultRoot(l.ctx)
 
-	po, err := l.PiDB.FindOne(l.ctx, in.ProjectID)
+	po, err := l.PiDB.FindOneByFilter(l.ctx, relationDB.ProjectInfoFilter{ProjectID: in.ProjectID, WithTopAreas: in.WithTopAreas})
 	if err != nil {
 		return nil, err
 	}

@@ -28,7 +28,9 @@ func NewReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ReadLogic {
 }
 
 func (l *ReadLogic) Read(req *types.ProjectWithID) (resp *types.ProjectInfo, err error) {
-	dmResp, err := l.svcCtx.ProjectM.ProjectInfoRead(l.ctx, &sys.ProjectWithID{ProjectID: req.ProjectID})
+	dmResp, err := l.svcCtx.ProjectM.ProjectInfoRead(l.ctx, &sys.ProjectWithID{ProjectID: req.ProjectID,
+		WithTopAreas: req.WithTopAreas,
+	})
 	if err != nil {
 		er := errors.Fmt(err)
 		l.Errorf("%s rpc.ProjectManage req=%v err=%+v", utils.FuncName(), req, er)
