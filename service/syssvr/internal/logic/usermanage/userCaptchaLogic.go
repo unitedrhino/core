@@ -29,7 +29,7 @@ func NewUserCaptchaLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserC
 func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptchaResp, error) {
 	var (
 		codeID = utils.Random(20, 1)
-		code   = utils.Random(6, 0)
+		code   = utils.Random(l.svcCtx.Config.CaptchaLen, 0)
 	)
 	//code = "123456" //todo debug
 	if utils.SliceIn(in.Type, def.CaptchaTypePhone, def.CaptchaTypeEmail) && in.Account == "" {

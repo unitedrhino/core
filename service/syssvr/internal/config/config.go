@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	CaptchaLen int `json:",default=6"` //验证码长度
 	zrpc.RpcServerConf
 	Database   conf.Database
 	CacheRedis cache.ClusterConf
