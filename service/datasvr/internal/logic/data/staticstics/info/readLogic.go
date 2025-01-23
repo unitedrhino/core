@@ -155,7 +155,7 @@ func FilterFmt(conn *gorm.DB, si *relationDB.DataStatisticsInfo, k string, v any
 func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.StaticsticsInfoReadResp, err error) {
 	reqStr := utils.MarshalNoErr(req)
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
-	key := fmt.Sprintf("%s:%s", uc.TenantCode, reqStr)
+	key := fmt.Sprintf("%s:%v:%v:%s", uc.TenantCode, uc.UserID, uc.ProjectID, reqStr)
 	r, _ := cache.Get(key)
 	if r != nil {
 		return r, nil
