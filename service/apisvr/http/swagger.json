@@ -1757,6 +1757,9 @@
                 "msg": {
                   "type": "string",
                   "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DataProjectCreateResp"
                 }
               }
             }
@@ -9912,6 +9915,16 @@
         "projectID",
         "authType"
       ]
+    },
+    "DataProjectCreateResp": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/UserCore",
+          "description": "如果target是用户类型会返回用户信息"
+        }
+      },
+      "title": "DataProjectCreateResp"
     },
     "DataProjectDeleteReq": {
       "type": "object",

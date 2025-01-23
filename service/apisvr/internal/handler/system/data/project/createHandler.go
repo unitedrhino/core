@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// 创建授权项目权限
 func CreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.DataProjectSaveReq
@@ -19,7 +20,7 @@ func CreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := project.NewCreateLogic(r.Context(), svcCtx)
-		err := l.Create(&req)
-		result.Http(w, r, nil, err)
+		resp, err := l.Create(&req)
+		result.Http(w, r, resp, err)
 	}
 }

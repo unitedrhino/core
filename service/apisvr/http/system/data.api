@@ -31,7 +31,7 @@ service api {
 
     @doc "创建授权项目权限"
     @handler create
-    post /create (DataProjectSaveReq) returns ()
+    post /create (DataProjectSaveReq) returns (DataProjectCreateResp)
 
     @doc "获取项目权限列表"
     @handler projectIndex
@@ -145,7 +145,10 @@ type (
         UpdatedTime int64 `json:"updatedTime,optional"` //更新时间
         User *UserCore `json:"user,optional"`//获取用户类型返回
     }
+    DataProjectCreateResp{
+        User *UserCore `json:"user,optional"`//如果target是用户类型会返回用户信息
 
+    }
     DataProjectDeleteReq{
         TargetID   int64 `json:"targetID,string"`    //用户ID
         TargetType string `json:"targetType"`

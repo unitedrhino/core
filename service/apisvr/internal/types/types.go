@@ -303,6 +303,10 @@ type DataProject struct {
 	User        *UserCore `json:"user,optional"`            //获取用户类型返回
 }
 
+type DataProjectCreateResp struct {
+	User *UserCore `json:"user,optional"` //如果target是用户类型会返回用户信息
+}
+
 type DataProjectDeleteReq struct {
 	TargetID   int64  `json:"targetID,string"` //用户ID
 	TargetType string `json:"targetType"`
