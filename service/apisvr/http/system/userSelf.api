@@ -23,7 +23,7 @@ service api {
 
 	@doc "获取用户模块列表"
 	@handler moduleIndex
-	post /module/index () returns (ModuleInfoIndexResp)
+	post /module/index (UserModuleIndexReq) returns (TenantModuleInfoIndexResp)
 	@doc "获取用户菜单列表"
 	@handler menuIndex
 	post /menu/index (UserMenuIndexReq) returns (TenantAppMenuIndexResp)
@@ -135,7 +135,13 @@ type (
 		WithProjects bool `json:"withProjects,optional"`
 		WithDepts bool  `json:"withDepts,optional"`
 	}
-
+	TenantModuleInfoIndexResp{
+		Total int64 `json:"total"` //总数
+		List []*TenantModuleInfo `json:"list"` //菜单列表
+	}
+	UserModuleIndexReq{
+		WithMenus bool `json:"withMenus,optional"`//同时返回模块下的菜单列表
+	}
 	UserMenuIndexReq{
 		ModuleCode string `json:"moduleCode,optional"`                               // 应用编号
 		IsCommon   int64 `json:"isCommon,optional"`  // 是否常用菜单 1-是 2-否

@@ -2,10 +2,10 @@ package self
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/module/info"
 	role "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
@@ -27,7 +27,7 @@ func NewModuleIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Modul
 	}
 }
 
-func (l *ModuleIndexLogic) ModuleIndex() (resp *types.ModuleInfoIndexResp, err error) {
+func (l *ModuleIndexLogic) ModuleIndex(req *types.UserModuleIndexReq) (resp *types.TenantModuleInfoIndexResp, err error) {
 	uc := ctxs.GetUserCtx(l.ctx)
 	var moduleCodes []string
 	if !uc.IsSuperAdmin {
@@ -45,8 +45,17 @@ func (l *ModuleIndexLogic) ModuleIndex() (resp *types.ModuleInfoIndexResp, err e
 	if err != nil {
 		return nil, err
 	}
-
-	return &types.ModuleInfoIndexResp{
-		List: info.ToModuleInfosApi(ret.List),
-	}, nil
+	resp = &types.TenantModuleInfoIndexResp{
+		List: utils.CopySlice[types.TenantModuleInfo](ret.List),
+	}
+	if req.WithMenus {
+		for _, m := range resp.List {
+			r, err := NewMenuIndexLogic(l.ctx, l.svcCtx).MenuIndex(&types.UserMenuIndexReq{ModuleCode: m.Code})
+			if err != nil {
+				return nil, err
+			}
+			m.Menus = r.List
+		}
+	}
+	return resp, nil
 }

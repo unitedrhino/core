@@ -1121,7 +1121,7 @@ type TenantAppInfo struct {
 }
 
 type TenantAppMenu struct {
-	TemplateID int64  `json:"templateID"`
+	TemplateID int64  `json:"templateID,omit"`
 	Code       string `json:"code,optional"`    // 租户编号
 	AppCode    string `json:"appCode,optional"` // 应用编号
 	MenuInfo
@@ -1272,6 +1272,16 @@ type TenantModuleIndexReq struct {
 
 type TenantModuleIndexResp struct {
 	List []*ModuleInfo `json:"list"`
+}
+
+type TenantModuleInfo struct {
+	ModuleInfo
+	Menus []*TenantAppMenu `json:"menus,optional,omitempty"` //菜单列表
+}
+
+type TenantModuleInfoIndexResp struct {
+	Total int64               `json:"total"` //总数
+	List  []*TenantModuleInfo `json:"list"`  //菜单列表
 }
 
 type TenantModuleWithIDOrCode struct {
@@ -1670,6 +1680,10 @@ type UserMessageStatistics struct {
 
 type UserMessageStatisticsResp struct {
 	List []*UserMessageStatistics `json:"list"`
+}
+
+type UserModuleIndexReq struct {
+	WithMenus bool `json:"withMenus,optional"` //同时返回模块下的菜单列表
 }
 
 type UserProfile struct {

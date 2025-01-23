@@ -8457,12 +8457,22 @@
                   "title": "返回的消息"
                 },
                 "data": {
-                  "$ref": "#/definitions/ModuleInfoIndexResp"
+                  "$ref": "#/definitions/TenantModuleInfoIndexResp"
                 }
               }
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserModuleIndexReq"
+            }
+          }
+        ],
         "tags": [
           "system/user/self",
           "systemUserSelf"
@@ -13697,6 +13707,94 @@
         "list"
       ]
     },
+    "TenantModuleInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 编号"
+        },
+        "code": {
+          "type": "string",
+          "description": " 应用编号"
+        },
+        "name": {
+          "type": "string",
+          "description": " 菜单名称"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端"
+        },
+        "subType": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端"
+        },
+        "path": {
+          "type": "string",
+          "description": " 系统的path"
+        },
+        "desc": {
+          "type": "string",
+          "description": " 页面"
+        },
+        "icon": {
+          "type": "string",
+          "description": " 菜单图标"
+        },
+        "url": {
+          "type": "string",
+          "description": " 路由重定向"
+        },
+        "order": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 左侧table排序序号"
+        },
+        "hideInMenu": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 菜单是否隐藏 1：是 2：否"
+        },
+        "body": {
+          "type": "string",
+          "description": "前端自定义字段"
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantAppMenu"
+          },
+          "description": "菜单列表"
+        }
+      },
+      "title": "TenantModuleInfo"
+    },
+    "TenantModuleInfoIndexResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "总数"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TenantModuleInfo"
+          },
+          "description": "菜单列表"
+        }
+      },
+      "title": "TenantModuleInfoIndexResp",
+      "required": [
+        "total",
+        "list"
+      ]
+    },
     "TenantModuleWithIDOrCode": {
       "type": "object",
       "properties": {
@@ -15209,6 +15307,17 @@
       "required": [
         "list"
       ]
+    },
+    "UserModuleIndexReq": {
+      "type": "object",
+      "properties": {
+        "withMenus": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "同时返回模块下的菜单列表"
+        }
+      },
+      "title": "UserModuleIndexReq"
     },
     "UserProfile": {
       "type": "object",

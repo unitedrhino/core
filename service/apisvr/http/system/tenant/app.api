@@ -168,7 +168,7 @@ type (
         List []*TenantAppMenu `json:"list"`
     }
     TenantAppMenu{
-        TemplateID int64 `json:"templateID"`
+        TemplateID int64 `json:"templateID,omit"`
         Code string `json:"code,optional"`                             // 租户编号
         AppCode string `json:"appCode,optional"`                         // 应用编号
         MenuInfo

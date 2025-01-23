@@ -97,6 +97,10 @@ type (
         HideInMenu int64 `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
         Body *string  `json:"body,optional"` //前端自定义字段
     }
+    TenantModuleInfo{
+        ModuleInfo
+        Menus []*TenantAppMenu `json:"menus,optional,omitempty"` //菜单列表
+    }
 
     ProjectInfo  {
         CreatedTime int64 `json:"createdTime,optional,string"` //创建时间（只读）
