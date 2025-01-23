@@ -3,12 +3,11 @@ package usermanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/stores"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -38,7 +37,7 @@ func (l *UserAreaApplyCreateLogic) UserAreaApplyCreate(in *sys.UserAreaApplyCrea
 	err = relationDB.NewUserAreaApplyRepo(l.ctx).Insert(ctxs.WithAdmin(l.ctx), &relationDB.SysUserAreaApply{
 		ProjectID: ai.ProjectID,
 		UserID:    ctxs.GetUserCtx(l.ctx).UserID,
-		AreaID:    stores.AreaID(in.AreaID),
+		AreaID:    dataType.AreaID(in.AreaID),
 		AuthType:  in.AuthType,
 	})
 	if err != nil {

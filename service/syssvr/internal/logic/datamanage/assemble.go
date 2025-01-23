@@ -5,7 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/domain/userDataAuth"
+	"gitee.com/unitedrhino/core/share/domain/userDataAuth"
 )
 
 func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {

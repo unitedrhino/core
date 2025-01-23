@@ -5,7 +5,7 @@ import (
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/domain/application"
+	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
@@ -87,7 +87,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		return err
 	})
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)
-	err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserDelete, application.IDs{IDs: []int64{in.UserID}})
+	err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserDelete, def.IDs{IDs: []int64{in.UserID}})
 	if err != nil {
 		l.Errorf("Publish userDelete %v err:%v", in, err)
 	}

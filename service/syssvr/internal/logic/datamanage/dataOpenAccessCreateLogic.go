@@ -3,13 +3,12 @@ package datamanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/stores"
-
-	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -42,7 +41,7 @@ func (l *DataOpenAccessCreateLogic) DataOpenAccessCreate(in *sys.OpenAccess) (*s
 		return nil, errors.Permissions
 	}
 	po := &relationDB.SysDataOpenAccess{
-		TenantCode:   stores.TenantCode(in.TenantCode),
+		TenantCode:   dataType.TenantCode(in.TenantCode),
 		UserID:       in.UserID,
 		Code:         in.Code,
 		AccessSecret: in.AccessSecret,

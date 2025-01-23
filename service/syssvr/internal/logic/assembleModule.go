@@ -3,7 +3,7 @@ package logic
 import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/utils"
 )
 
@@ -61,7 +61,7 @@ func ToTenantAppMenuPo(in *sys.TenantAppMenu) *relationDB.SysTenantAppMenu {
 	}
 	po := utils.Copy[relationDB.SysTenantAppMenu](in)
 	po.TempLateID = in.TemplateID
-	po.TenantCode = stores.TenantCode(in.Code)
+	po.TenantCode = dataType.TenantCode(in.Code)
 	po.AppCode = in.AppCode
 	return po
 }

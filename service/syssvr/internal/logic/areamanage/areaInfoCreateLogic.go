@@ -8,6 +8,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -64,9 +65,9 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 	var areaIDPath string = cast.ToString(areaID) + "-"
 	var areaNamePath = in.AreaName + "-"
 	areaPo := &relationDB.SysAreaInfo{
-		AreaID:       stores.AreaID(areaID),
-		ParentAreaID: in.ParentAreaID,                //创建时必填
-		ProjectID:    stores.ProjectID(in.ProjectID), //创建时必填
+		AreaID:       dataType.AreaID(areaID),
+		ParentAreaID: in.ParentAreaID,                  //创建时必填
+		ProjectID:    dataType.ProjectID(in.ProjectID), //创建时必填
 		AreaIDPath:   areaIDPath,
 		AreaNamePath: areaNamePath,
 		AreaName:     in.AreaName,
@@ -146,7 +147,7 @@ func FillProjectAreaCount(ctx context.Context, svcCtx *svc.ServiceContext, proje
 			return
 		}
 		err = relationDB.NewProjectInfoRepo(ctx).Update(ctx,
-			&relationDB.SysProjectInfo{ProjectID: stores.ProjectID(projectID), AreaCount: count},
+			&relationDB.SysProjectInfo{ProjectID: dataType.ProjectID(projectID), AreaCount: count},
 			"areaCount")
 		if err != nil {
 			logx.WithContext(ctx).Error(err)

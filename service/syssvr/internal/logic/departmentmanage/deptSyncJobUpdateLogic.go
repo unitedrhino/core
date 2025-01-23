@@ -2,7 +2,7 @@ package departmentmanagelogic
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"

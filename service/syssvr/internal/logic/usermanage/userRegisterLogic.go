@@ -6,15 +6,16 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/core/share/caches"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
-	"gitee.com/unitedrhino/share/domain/application"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
+
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
 	"time"
@@ -122,7 +123,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	if err != nil {
 		return nil, err
 	}
-	e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, application.IDs{IDs: []int64{ui.UserID}})
+	e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, def.IDs{IDs: []int64{ui.UserID}})
 	if e != nil {
 		l.Errorf("Publish CoreUserCreate %v err:%v", ui, e)
 	}
@@ -304,7 +305,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 			var ais []*relationDB.SysAreaInfo
 			for _, rap := range cfg.RegisterAutoCreateProject {
 				po := relationDB.SysProjectInfo{
-					ProjectID:   stores.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
+					ProjectID:   dataType.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
 					ProjectName: rap.ProjectName,
 					//CompanyName: utils.ToEmptyString(in.CompanyName),
 					AdminUserID:  in.UserID,
@@ -326,7 +327,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 						var areaIDPath string = cast.ToString(areaID) + "-"
 						var areaNamePath = area.AreaName + "-"
 						areaPo := relationDB.SysAreaInfo{
-							AreaID:       stores.AreaID(areaID),
+							AreaID:       dataType.AreaID(areaID),
 							ParentAreaID: def.RootNode, //创建时必填
 							ProjectID:    po.ProjectID, //创建时必填
 							AreaIDPath:   areaIDPath,

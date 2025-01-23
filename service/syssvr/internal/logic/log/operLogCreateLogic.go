@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
 	"sync"
@@ -43,7 +44,7 @@ func (l *OperLogCreateLogic) OperLogCreate(in *sys.OperLogCreateReq) (*sys.Empty
 	//OperName，BusinessType 用Route查接口管理表获得
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	asyncOperInsert.AsyncInsert(&relationDB.SysOperLog{
-		TenantCode:   stores.TenantCode(uc.TenantCode),
+		TenantCode:   dataType.TenantCode(uc.TenantCode),
 		AppCode:      uc.AppCode,
 		OperUserID:   uc.UserID,
 		OperUserName: uc.Account,

@@ -3,7 +3,7 @@ package cache
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/domain/slot"
+	"gitee.com/unitedrhino/core/share/domain/slot"
 	"github.com/dgraph-io/ristretto"
 	"time"
 )

@@ -4,7 +4,7 @@ import (
 	"context"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
-	"gitee.com/unitedrhino/share/domain/slot"
+	"gitee.com/unitedrhino/core/share/domain/slot"
 	ws "gitee.com/unitedrhino/share/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"

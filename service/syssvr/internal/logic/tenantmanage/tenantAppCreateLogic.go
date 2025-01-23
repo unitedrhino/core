@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
@@ -39,7 +40,7 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empt
 	err := conn.Transaction(func(tx *gorm.DB) error {
 		//todo 需要检查租户是否存在
 		err := relationDB.NewTenantAppRepo(tx).Insert(l.ctx, &relationDB.SysTenantApp{
-			TenantCode: stores.TenantCode(in.Code),
+			TenantCode: dataType.TenantCode(in.Code),
 			AppCode:    in.AppCode,
 			WxMini:     utils.Copy[relationDB.SysTenantThird](in.WxMini),
 			WxOpen:     utils.Copy[relationDB.SysTenantThird](in.WxOpen),
@@ -94,7 +95,7 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		}
 		v := utils.Copy[relationDB.SysTenantAppMenu](m)
 		v.TempLateID = m.ID
-		v.TenantCode = stores.TenantCode(tenantCode)
+		v.TenantCode = dataType.TenantCode(tenantCode)
 		v.AppCode = appCode
 		v.ID = 0
 		insertMenus = append(insertMenus, v)
@@ -104,6 +105,6 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		return err
 	}
 	err = relationDB.NewTenantAppModuleRepo(tx).Insert(ctx, &relationDB.SysTenantAppModule{
-		TenantCode: stores.TenantCode(tenantCode), SysAppModule: relationDB.SysAppModule{AppCode: appCode, ModuleCode: moduleCode}})
+		TenantCode: dataType.TenantCode(tenantCode), SysAppModule: relationDB.SysAppModule{AppCode: appCode, ModuleCode: moduleCode}})
 	return err
 }

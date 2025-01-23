@@ -8,6 +8,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -48,7 +49,7 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		in.AdminUserID = uc.UserID
 	}
 	po := &relationDB.SysProjectInfo{
-		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
+		ProjectID:   dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.ProjectName,
 		//CompanyName: utils.ToEmptyString(in.CompanyName),
 		AdminUserID:  in.AdminUserID,

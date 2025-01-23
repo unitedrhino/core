@@ -3,11 +3,10 @@ package tenantmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/stores"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/share/ctxs"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -36,7 +35,7 @@ func (l *TenantAccessMultiCreateLogic) TenantAccessMultiCreate(in *sys.TenantAcc
 	var datas []*relationDB.SysTenantAccess
 	for _, v := range in.AccessCodes {
 		datas = append(datas, &relationDB.SysTenantAccess{
-			TenantCode: stores.TenantCode(in.Code),
+			TenantCode: dataType.TenantCode(in.Code),
 			AccessCode: v,
 		})
 	}

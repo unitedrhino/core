@@ -3,6 +3,7 @@ package loglogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
 	"sync"
@@ -38,7 +39,7 @@ func NewLoginLogCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Lo
 func (l *LoginLogCreateLogic) LoginLogCreate(in *sys.LoginLogCreateReq) (*sys.Empty, error) {
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
 	asyncLoginInsert.AsyncInsert(&relationDB.SysLoginLog{
-		TenantCode:    stores.TenantCode(uc.TenantCode),
+		TenantCode:    dataType.TenantCode(uc.TenantCode),
 		AppCode:       in.AppCode,
 		UserID:        in.UserID,
 		UserName:      in.UserName,

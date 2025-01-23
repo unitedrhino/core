@@ -2,7 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/tenant"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/tenant"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/oss"

@@ -1,7 +1,6 @@
 package svc
 
 import (
-	"gitee.com/unitedrhino/core/service/apisvr/exportMiddleware"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
 	"gitee.com/unitedrhino/core/service/syssvr/client/accessmanage"
 	app "gitee.com/unitedrhino/core/service/syssvr/client/appmanage"
@@ -24,6 +23,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/client/timedscheduler"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/timedschedulerdirect"
+	"gitee.com/unitedrhino/core/share/middlewares"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -162,7 +162,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
 		Config:         c,
-		CheckTokenWare: exportMiddleware.NewCheckTokenWareMiddleware(ur, ro, tenantM, lo).Handle,
+		CheckTokenWare: middlewares.NewCheckTokenWareMiddleware(ur, ro, tenantM, lo).Handle,
 		InitCtxsWare:   ctxs.InitMiddleware,
 		UserCache:      userCache,
 		Captcha:        captcha,

@@ -2,7 +2,7 @@ package relationDB
 
 import (
 	"context"
-	"gitee.com/unitedrhino/share/domain/ops"
+	"gitee.com/unitedrhino/core/share/domain/ops"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"

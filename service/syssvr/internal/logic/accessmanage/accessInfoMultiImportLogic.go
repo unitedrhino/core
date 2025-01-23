@@ -3,7 +3,7 @@ package accessmanagelogic
 import (
 	"context"
 	"encoding/json"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/access"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/access"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"

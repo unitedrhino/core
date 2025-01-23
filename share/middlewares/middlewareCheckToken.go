@@ -1,4 +1,4 @@
-package exportMiddleware
+package middlewares
 
 import (
 	"bytes"
@@ -7,8 +7,8 @@ import (
 	role "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/unitedrhino/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/log"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/domain/log"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"

@@ -3,7 +3,7 @@ package modulemanagelogic
 import (
 	"context"
 	"encoding/json"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"

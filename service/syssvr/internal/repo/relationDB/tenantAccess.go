@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -129,7 +130,7 @@ func (p TenantApiRepo) MultiUpdate(ctx context.Context, tenantCode string, Acces
 	var datas []*SysTenantAccess
 	for _, v := range AccessCodes {
 		datas = append(datas, &SysTenantAccess{
-			TenantCode: stores.TenantCode(tenantCode),
+			TenantCode: dataType.TenantCode(tenantCode),
 			AccessCode: v,
 		})
 	}

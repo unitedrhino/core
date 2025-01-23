@@ -7,7 +7,8 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/core/share/caches"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -67,7 +68,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		return nil, errors.Parameter.AddMsgf("手机号和邮箱必须填写一个")
 	}
 	ui := relationDB.SysUserInfo{
-		TenantCode: stores.TenantCode(in.Info.Code),
+		TenantCode: dataType.TenantCode(in.Info.Code),
 		UserID:     userID,
 		Phone:      utils.AnyToNullString(userInfo.Phone),
 		Email:      utils.AnyToNullString(userInfo.Email),
@@ -85,8 +86,8 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	}
 
 	projectPo := relationDB.SysProjectInfo{
-		TenantCode:  stores.TenantCode(in.Info.Code),
-		ProjectID:   stores.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
+		TenantCode:  dataType.TenantCode(in.Info.Code),
+		ProjectID:   dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.Info.Name,
 		//CompanyName: utils.ToEmptyString(in.CompanyName),
 		AdminUserID: userID,
@@ -114,15 +115,15 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		po.LogoImg = path
 	}
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		ris := []*relationDB.SysRoleInfo{{TenantCode: stores.TenantCode(in.Info.Code), Name: "超级管理员", Code: "supper"},
-			{TenantCode: stores.TenantCode(in.Info.Code), Name: "管理员", Code: "admin"},
-			{TenantCode: stores.TenantCode(in.Info.Code), Name: "普通用户", Code: "client"}}
+		ris := []*relationDB.SysRoleInfo{{TenantCode: dataType.TenantCode(in.Info.Code), Name: "超级管理员", Code: "supper"},
+			{TenantCode: dataType.TenantCode(in.Info.Code), Name: "管理员", Code: "admin"},
+			{TenantCode: dataType.TenantCode(in.Info.Code), Name: "普通用户", Code: "client"}}
 		err = relationDB.NewRoleInfoRepo(tx).MultiInsert(l.ctx, ris)
 		if err != nil {
 			return err
 		}
 		err := relationDB.NewUserRoleRepo(tx).Insert(l.ctx, &relationDB.SysUserRole{
-			TenantCode: stores.TenantCode(in.Info.Code),
+			TenantCode: dataType.TenantCode(in.Info.Code),
 			UserID:     ui.UserID,
 			RoleID:     ris[0].ID,
 		})
@@ -146,7 +147,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 			return err
 		}
 		err = relationDB.NewTenantConfigRepo(tx).Insert(l.ctx, &relationDB.SysTenantConfig{
-			TenantCode:     stores.TenantCode(in.Info.Code),
+			TenantCode:     dataType.TenantCode(in.Info.Code),
 			RegisterRoleID: ris[1].ID,
 		})
 		if err != nil {
@@ -154,13 +155,13 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		}
 		err = relationDB.NewDataProjectRepo(tx).MultiInsert(l.ctx, []*relationDB.SysDataProject{
 			{
-				TenantCode: stores.TenantCode(in.Info.Code),
+				TenantCode: dataType.TenantCode(in.Info.Code),
 				ProjectID:  po.DefaultProjectID,
 				TargetType: def.TargetUser,
 				TargetID:   po.AdminUserID,
 				AuthType:   def.AuthAdmin,
 			}, {
-				TenantCode: stores.TenantCode(in.Info.Code),
+				TenantCode: dataType.TenantCode(in.Info.Code),
 				ProjectID:  po.DefaultProjectID,
 				TargetType: def.TargetRole,
 				TargetID:   po.AdminRoleID,

@@ -1,7 +1,8 @@
 package relationDB
 
 import (
-	"gitee.com/unitedrhino/core/service/syssvr/domain/access"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/access"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/stores"
 )
 
@@ -46,9 +47,9 @@ func (m *SysApiInfo) TableName() string {
 
 // 应用菜单关联表
 type SysTenantAccess struct {
-	ID         int64             `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                       // id编号
-	TenantCode stores.TenantCode `gorm:"column:tenant_code;uniqueIndex:tenant_scope;type:VARCHAR(50);NOT NULL;"` // 租户编码
-	AccessCode string            `gorm:"column:access_code;uniqueIndex:tenant_scope;type:VARCHAR(50);NOT NULL"`  // 范围编码
+	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                       // id编号
+	TenantCode dataType.TenantCode `gorm:"column:tenant_code;uniqueIndex:tenant_scope;type:VARCHAR(50);NOT NULL;"` // 租户编码
+	AccessCode string              `gorm:"column:access_code;uniqueIndex:tenant_scope;type:VARCHAR(50);NOT NULL"`  // 范围编码
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tenant_scope"`
 }

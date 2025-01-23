@@ -3,12 +3,11 @@ package projectmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/stores"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -37,7 +36,7 @@ func (l *ProjectProfileUpdateLogic) ProjectProfileUpdate(in *sys.ProjectProfile)
 		if !errors.Cmp(err, errors.NotFind) {
 			return nil, err
 		}
-		old = &relationDB.SysProjectProfile{ProjectID: stores.ProjectID(projectID), Code: in.Code}
+		old = &relationDB.SysProjectProfile{ProjectID: dataType.ProjectID(projectID), Code: in.Code}
 	}
 	old.Params = in.Params
 	err = relationDB.NewProjectProfileRepo(l.ctx).Update(l.ctx, old)

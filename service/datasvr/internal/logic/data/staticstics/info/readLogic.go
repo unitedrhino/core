@@ -6,9 +6,10 @@ import (
 	"gitee.com/unitedrhino/core/service/datasvr/internal/domain"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/core/share/domain/slot"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
-	"gitee.com/unitedrhino/share/domain/slot"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
@@ -221,9 +222,9 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		conn = conn.Order(si.OrderBy)
 	}
 	if si.IsFilterProject == def.True {
-		conn = stores.GenProjectAuthScope(l.ctx, conn)
+		conn = dataType.GenProjectAuthScope(l.ctx, conn)
 		if si.IsFilterArea == def.True {
-			conn = stores.GenAreaAuthScope(l.ctx, conn)
+			conn = dataType.GenAreaAuthScope(l.ctx, conn)
 		}
 	}
 	if si.IsSoftDelete == def.True {

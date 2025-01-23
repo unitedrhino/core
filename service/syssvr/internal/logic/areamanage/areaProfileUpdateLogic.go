@@ -3,11 +3,10 @@ package areamanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/stores"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/share/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -35,7 +34,7 @@ func (l *AreaProfileUpdateLogic) AreaProfileUpdate(in *sys.AreaProfile) (*sys.Em
 		if !errors.Cmp(err, errors.NotFind) {
 			return nil, err
 		}
-		old = &relationDB.SysAreaProfile{AreaID: stores.AreaID(in.AreaID), Code: in.Code}
+		old = &relationDB.SysAreaProfile{AreaID: dataType.AreaID(in.AreaID), Code: in.Code}
 	}
 	old.Params = in.Params
 	err = relationDB.NewAreaProfileRepo(l.ctx).Update(l.ctx, old)

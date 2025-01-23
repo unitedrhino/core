@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
@@ -120,7 +121,7 @@ func (p TenantAppRepo) MultiUpdate(ctx context.Context, tenantCode string, appCo
 	for _, v := range appCodes {
 		datas = append(datas, &SysTenantApp{
 			AppCode:    v,
-			TenantCode: stores.TenantCode(tenantCode),
+			TenantCode: dataType.TenantCode(tenantCode),
 		})
 	}
 	ctxs.GetUserCtx(ctx).AllTenant = true //只有这样才能改为其他租户

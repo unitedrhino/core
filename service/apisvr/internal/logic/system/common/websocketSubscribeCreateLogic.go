@@ -5,7 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
-	"gitee.com/unitedrhino/share/domain/slot"
+	"gitee.com/unitedrhino/core/share/domain/slot"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 

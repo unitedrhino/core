@@ -1,10 +1,10 @@
 package self
 
 import (
-	"gitee.com/unitedrhino/core/service/apisvr/exportMiddleware"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user/self"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
+	"gitee.com/unitedrhino/core/share/middlewares"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/result"
@@ -19,7 +19,7 @@ func CaptchaHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			result.Http(w, r, nil, errors.Parameter.WithMsg("入参不正确:"+err.Error()))
 			return
 		}
-		userCtx, err := exportMiddleware.NewCheckTokenWareMiddleware(svcCtx.UserRpc, svcCtx.RoleRpc, svcCtx.TenantRpc, svcCtx.LogRpc).UserAuth(w, r)
+		userCtx, err := middlewares.NewCheckTokenWareMiddleware(svcCtx.UserRpc, svcCtx.RoleRpc, svcCtx.TenantRpc, svcCtx.LogRpc).UserAuth(w, r)
 		if err == nil { //登录态也需要支持
 			//注入 用户信息 到 ctx
 			ctx2 := ctxs.SetUserCtx(r.Context(), userCtx)

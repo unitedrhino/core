@@ -3,8 +3,8 @@ package startup
 import (
 	"context"
 	"fmt"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/dept"
-	"gitee.com/unitedrhino/core/service/syssvr/domain/module"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/event/day"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/event/deptSync"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
@@ -20,10 +20,11 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
+	coreCache "gitee.com/unitedrhino/core/share/caches"
+	"gitee.com/unitedrhino/core/share/domain/tenant"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
-	"gitee.com/unitedrhino/share/domain/tenant"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
@@ -39,7 +40,7 @@ func Init(svcCtx *svc.ServiceContext) {
 	utils.Go(ctx, func() {
 		list, err := relationDB.NewTenantInfoRepo(ctx).FindByFilter(ctx, relationDB.TenantInfoFilter{}, nil)
 		logx.Must(err)
-		err = caches.InitTenant(ctx, logic.ToTenantInfoCaches(list)...)
+		err = coreCache.InitTenant(ctx, logic.ToTenantInfoCaches(list)...)
 		logx.Must(err)
 	})
 	VersionUpdate(svcCtx)

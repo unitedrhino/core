@@ -2,8 +2,9 @@ package relationDB
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/core/share/domain/userDataAuth"
 	"gitee.com/unitedrhino/share/def"
-	"gitee.com/unitedrhino/share/domain/userDataAuth"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -133,7 +134,7 @@ func (g DataAreaRepo) MultiUpdate(ctx context.Context, target *Target, projectID
 		datas = append(datas, &SysDataArea{
 			TargetID:       target.ID,
 			TargetType:     target.Type,
-			ProjectID:      stores.ProjectID(projectID),
+			ProjectID:      dataType.ProjectID(projectID),
 			AreaID:         v.AreaID,
 			AreaIDPath:     v.AreaIDPath,
 			AuthType:       v.AuthType,

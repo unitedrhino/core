@@ -11,12 +11,12 @@ import (
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
-	"gitee.com/unitedrhino/share/domain/application"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
+
 	"github.com/silenceper/wechat/v2/officialaccount/oauth"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -289,7 +289,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 end:
 	l.Infof("%s uc=%#v err=%+v", utils.FuncName(), uc, err)
 	if isRegister && err == nil {
-		e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, application.IDs{IDs: []int64{uc.UserID}})
+		e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, def.IDs{IDs: []int64{uc.UserID}})
 		if e != nil {
 			l.Errorf("Publish CoreUserCreate %v err:%v", uc, e)
 		}

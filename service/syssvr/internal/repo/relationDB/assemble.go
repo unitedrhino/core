@@ -1,7 +1,7 @@
 package relationDB
 
 import (
-	"gitee.com/unitedrhino/share/domain/slot"
+	"gitee.com/unitedrhino/core/share/domain/slot"
 	"gitee.com/unitedrhino/share/utils"
 )
 
