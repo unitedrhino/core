@@ -26,12 +26,12 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 	}
 }
 
-func (l *CreateLogic) Create(req *types.DataProjectSaveReq) (resp *types.DataProjectCreateResp, err error) {
+func (l *CreateLogic) Create(req *types.DataProjectSaveReq) (resp *types.DataProject, err error) {
 	_, err = l.svcCtx.DataM.DataProjectCreate(l.ctx, utils.Copy[sys.DataProjectSaveReq](req))
 	if err != nil {
 		return nil, err
 	}
-	resp = &types.DataProjectCreateResp{}
+	resp = utils.Copy[types.DataProject](req)
 	if req.TargetType == def.TargetUser {
 		u, err := l.svcCtx.UserCache.GetData(l.ctx, req.TargetID)
 		if err != nil {
