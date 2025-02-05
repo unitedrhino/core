@@ -9845,6 +9845,10 @@
         },
         "desc": {
           "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/UserCore",
+          "description": "获取用户信息"
         }
       },
       "title": "DataOpenAccess"

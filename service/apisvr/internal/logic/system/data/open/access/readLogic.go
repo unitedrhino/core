@@ -31,5 +31,11 @@ func (l *ReadLogic) Read(req *types.WithID) (resp *types.DataOpenAccess, err err
 	if err != nil {
 		return nil, err
 	}
+	resp = utils.Copy[types.DataOpenAccess](ret)
+	u, err := l.svcCtx.UserCache.GetData(l.ctx, ret.UserID)
+	if err != nil {
+		return
+	}
+	resp.User = utils.Copy[types.UserCore](u)
 	return utils.Copy[types.DataOpenAccess](ret), nil
 }

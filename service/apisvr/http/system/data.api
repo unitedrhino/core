@@ -132,6 +132,7 @@ type (
         AccessSecret string `json:"accessSecret,optional"` //秘钥
         IpRange []string `json:"ipRange,optional"` //ip白名单,如果不填是不限制
         Desc string `json:"desc,optional"`
+        User *UserCore `json:"user,optional"`//获取用户信息
     }
 )
 

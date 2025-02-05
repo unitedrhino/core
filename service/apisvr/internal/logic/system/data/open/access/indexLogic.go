@@ -31,5 +31,13 @@ func (l *IndexLogic) Index(req *types.DataOpenAccessIndexReq) (resp *types.DataO
 	if err != nil {
 		return nil, err
 	}
+	resp = utils.Copy[types.DataOpenAccessIndexResp](ret)
+	for _, v := range resp.List {
+		u, err := l.svcCtx.UserCache.GetData(l.ctx, v.UserID)
+		if err != nil {
+			continue
+		}
+		v.User = utils.Copy[types.UserCore](u)
+	}
 	return utils.Copy[types.DataOpenAccessIndexResp](ret), nil
 }
