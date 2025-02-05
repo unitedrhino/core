@@ -34,15 +34,21 @@ func (l *TenantAppMenuUpdateLogic) TenantAppMenuUpdate(in *sys.TenantAppMenu) (*
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
 	old, err := relationDB.NewTenantAppMenuRepo(l.ctx).FindOne(l.ctx, in.Info.Id)
-	old.Type = in.Info.Type
-	old.Order = in.Info.Order
-	old.Name = in.Info.Name
-	old.Path = in.Info.Path
-	old.Component = in.Info.Component
-	old.Icon = in.Info.Icon
-	old.Redirect = in.Info.Redirect
-	old.Body = in.Info.Body.Value
-	old.HideInMenu = in.Info.HideInMenu
+	if err != nil {
+		return nil, err
+	}
+	if in.Info.Order != 0 {
+		old.Order = in.Info.Order
+	}
+	if in.Info.Name != "" {
+		old.Name = in.Info.Name
+	}
+	if in.Info.HideInMenu != 0 {
+		old.HideInMenu = in.Info.HideInMenu
+	}
+	if in.Info.IsCommon != 0 {
+		old.IsCommon = in.Info.IsCommon
+	}
 	err = relationDB.NewTenantAppMenuRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err
 }
