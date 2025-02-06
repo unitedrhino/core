@@ -275,11 +275,11 @@ type DataAreaMultiUpdateReq struct {
 
 type DataOpenAccess struct {
 	ID           int64     `json:"id,optional"`
-	TenantCode   string    `json:"tenantCode,optional"`   // 租户号
-	Code         string    `json:"code,optional"`         //自定义编码
-	UserID       int64     `json:"userID,optional"`       //绑定权限的用户ID
-	AccessSecret string    `json:"accessSecret,optional"` //秘钥
-	IpRange      []string  `json:"ipRange,optional"`      //ip白名单,如果不填是不限制
+	TenantCode   string    `json:"tenantCode,optional"`    // 租户号
+	Code         string    `json:"code,optional"`          //自定义编码
+	UserID       int64     `json:"userID,string,optional"` //绑定权限的用户ID
+	AccessSecret string    `json:"accessSecret,optional"`  //秘钥
+	IpRange      []string  `json:"ipRange,optional"`       //ip白名单,如果不填是不限制
 	Desc         string    `json:"desc,optional"`
 	User         *UserCore `json:"user,optional"` //获取用户信息
 }
