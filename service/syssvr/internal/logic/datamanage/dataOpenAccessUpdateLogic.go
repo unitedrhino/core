@@ -39,7 +39,12 @@ func (l *DataOpenAccessUpdateLogic) DataOpenAccessUpdate(in *sys.OpenAccess) (*s
 	if !uc.IsAdmin && old.UserID != uc.UserID {
 		return nil, errors.Permissions
 	}
-	old.AccessSecret = in.GetAccessSecret()
+	if in.Desc != "" {
+		old.Desc = in.Desc
+	}
+	if in.IpRange != nil {
+		old.IpRange = in.IpRange
+	}
 	err = relationDB.NewDataOpenAccessRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err
 }

@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -34,6 +35,9 @@ func (l *DataOpenAccessCreateLogic) DataOpenAccessCreate(in *sys.OpenAccess) (*s
 			return nil, errors.Permissions
 		}
 		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
+	}
+	if in.AccessSecret == "" {
+		in.AccessSecret = utils.Random(32, 4)
 	}
 	if !uc.IsAdmin || in.UserID == 0 {
 		in.UserID = uc.UserID
