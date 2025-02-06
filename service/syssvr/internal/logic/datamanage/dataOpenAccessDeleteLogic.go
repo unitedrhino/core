@@ -39,5 +39,6 @@ func (l *DataOpenAccessDeleteLogic) DataOpenAccessDelete(in *sys.WithID) (*sys.E
 	if !uc.IsAdmin && old.UserID != uc.UserID {
 		return nil, errors.Permissions
 	}
-	return &sys.Empty{}, nil
+	err = relationDB.NewDataOpenAccessRepo(l.ctx).Delete(l.ctx, in.Id)
+	return &sys.Empty{}, err
 }
