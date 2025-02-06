@@ -220,9 +220,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
 		if er != nil {
-			at2, er := GetWxRegisterResAccessToken(l.ctx, in.Code)
-			if er != nil {
-				return nil, errors.System.AddDetail(er)
+			at2, err := GetWxRegisterResAccessToken(l.ctx, in.Code)
+			if err != nil {
+				return nil, errors.Default.AddDetail(er)
 			}
 			at = *at2
 		} else {
