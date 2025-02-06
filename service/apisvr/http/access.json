@@ -565,101 +565,6 @@
       ],
       "authType": "all"
     },
-    "systemDataOpenAccessAdd": {
-      "name": "新增开放认证",
-      "code": "systemDataOpenAccessAdd",
-      "group": "数据权限",
-      "isNeedAuth": 2,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDataOpenAccessAdd",
-          "method": "POST",
-          "route": "/api/v1/system/open/access/create",
-          "name": "创建开放认证",
-          "isNeedAuth": 2,
-          "businessType": "add",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "all"
-    },
-    "systemDataOpenAccessDelete": {
-      "name": "删除开放认证",
-      "code": "systemDataOpenAccessDelete",
-      "group": "数据权限",
-      "isNeedAuth": 2,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDataOpenAccessDelete",
-          "method": "POST",
-          "route": "/api/v1/system/open/access/delete",
-          "name": "删除开放认证",
-          "isNeedAuth": 2,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "all"
-    },
-    "systemDataOpenAccessFind": {
-      "name": "查询开放认证",
-      "code": "systemDataOpenAccessFind",
-      "group": "数据权限",
-      "isNeedAuth": 2,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDataOpenAccessFind",
-          "method": "POST",
-          "route": "/api/v1/system/open/access/index",
-          "name": "获取开放认证列表",
-          "isNeedAuth": 2,
-          "businessType": "find",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDataOpenAccessFind",
-          "method": "POST",
-          "route": "/api/v1/system/open/access/read",
-          "name": "获取开放认证详情",
-          "isNeedAuth": 2,
-          "businessType": "find",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "all"
-    },
-    "systemDataOpenAccessModify": {
-      "name": "修改开放认证",
-      "code": "systemDataOpenAccessModify",
-      "group": "数据权限",
-      "isNeedAuth": 2,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDataOpenAccessModify",
-          "method": "POST",
-          "route": "/api/v1/system/open/access/update",
-          "name": "更新开放认证",
-          "isNeedAuth": 2,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "all"
-    },
     "systemDeptManageAdd": {
       "name": "新增部门同步任务",
       "code": "systemDeptManageAdd",
@@ -992,7 +897,7 @@
           "accessCode": "systemJobManageAdd",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/create",
-          "name": "",
+          "name": "新建任务分组",
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
@@ -1003,7 +908,7 @@
           "accessCode": "systemJobManageAdd",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/create",
-          "name": "",
+          "name": "创建任务",
           "isNeedAuth": 1,
           "businessType": "add",
           "desc": "",
@@ -1024,7 +929,7 @@
           "accessCode": "systemJobManageDelete",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/delete",
-          "name": "",
+          "name": "删除任务分组",
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
@@ -1035,7 +940,7 @@
           "accessCode": "systemJobManageDelete",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/delete",
-          "name": "",
+          "name": "删除任务",
           "isNeedAuth": 1,
           "businessType": "delete",
           "desc": "",
@@ -1056,7 +961,7 @@
           "accessCode": "systemJobManageFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/index",
-          "name": "",
+          "name": "获取任务分组列表",
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
@@ -1067,7 +972,7 @@
           "accessCode": "systemJobManageFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/read",
-          "name": "",
+          "name": "获取任务分组详情",
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
@@ -1078,7 +983,7 @@
           "accessCode": "systemJobManageFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/index",
-          "name": "",
+          "name": "获取任务列表",
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
@@ -1089,7 +994,7 @@
           "accessCode": "systemJobManageFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/read",
-          "name": "",
+          "name": "获取任务详情",
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
@@ -1100,7 +1005,7 @@
           "accessCode": "systemJobManageFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/log/index",
-          "name": "",
+          "name": "获取任务日志",
           "isNeedAuth": 1,
           "businessType": "find",
           "desc": "",
@@ -1121,7 +1026,7 @@
           "accessCode": "systemJobManageModify",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/update",
-          "name": "",
+          "name": "更新任务分组",
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
@@ -1132,7 +1037,7 @@
           "accessCode": "systemJobManageModify",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/update",
-          "name": "",
+          "name": "更新任务",
           "isNeedAuth": 1,
           "businessType": "modify",
           "desc": "",
@@ -1164,7 +1069,7 @@
           "accessCode": "systemJobManageOther",
           "method": "POST",
           "route": "/api/v1/system/job/task/cancel",
-          "name": "",
+          "name": "取消执行任务",
           "isNeedAuth": 1,
           "businessType": "other",
           "desc": "",
@@ -1819,6 +1724,101 @@
         }
       ],
       "authType": "admin"
+    },
+    "systemOpenAccessAdd": {
+      "name": "新增开放认证",
+      "code": "systemOpenAccessAdd",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemOpenAccessAdd",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/create",
+          "name": "创建开放认证",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemOpenAccessDelete": {
+      "name": "删除开放认证",
+      "code": "systemOpenAccessDelete",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemOpenAccessDelete",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/delete",
+          "name": "删除开放认证",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemOpenAccessFind": {
+      "name": "查询开放认证",
+      "code": "systemOpenAccessFind",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemOpenAccessFind",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/index",
+          "name": "获取开放认证列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemOpenAccessFind",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/read",
+          "name": "获取开放认证详情",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemOpenAccessModify": {
+      "name": "修改开放认证",
+      "code": "systemOpenAccessModify",
+      "group": "数据权限",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemOpenAccessModify",
+          "method": "POST",
+          "route": "/api/v1/system/open/access/update",
+          "name": "更新开放认证",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
     },
     "systemOpsFeedbackAdd": {
       "name": "新增帮助与反馈",

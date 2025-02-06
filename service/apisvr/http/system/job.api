@@ -22,30 +22,40 @@ service api {
     @doc "发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param"
     @handler send
     post /send (TimedTaskSendReq) returns (TimedTaskWithTaskID)
+    @doc "取消执行任务"
     @handler cancel
     post /cancel (TimedTaskWithTaskID) returns ()
+    @doc "创建任务"
     @handler infoCreate
     post /info/create (TimedTaskInfo) returns ()
+    @doc "更新任务"
     @handler infoUpdate
     post /info/update (TimedTaskInfo) returns ()
+    @doc "删除任务"
     @handler infoDelete
     post /info/delete (WithGroupCode) returns ()
+    @doc "获取任务列表"
     @handler infoIndex
     post /info/index (TimedTaskInfoIndexReq) returns (TimedTaskInfoIndexResp)
+    @doc "获取任务详情"
     @handler infoRead
     post /info/read (WithGroupCode) returns (TimedTaskInfo)
-
+    @doc "获取任务日志"
     @handler logIndex
     post /log/index (TimedTaskLogIndexReq) returns (TimedTaskLogIndexResp)
-
+    @doc "新建任务分组"
     @handler groupCreate
     post /group/create (TimedTaskGroup) returns ()
+    @doc "更新任务分组"
     @handler groupUpdate
     post /group/update (TimedTaskGroup) returns ()
+    @doc "删除任务分组"
     @handler groupDelete
     post /group/delete (WithCode) returns ()
+    @doc "获取任务分组列表"
     @handler groupIndex
     post /group/index (TimedTaskGroupIndexReq) returns (TimedTaskGroupIndexResp)
+    @doc "获取任务分组详情"
     @handler groupRead
     post /group/read (WithCode) returns (TimedTaskGroup)
 }

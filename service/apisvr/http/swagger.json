@@ -2797,6 +2797,7 @@
     },
     "/api/v1/system/job/task/cancel": {
       "post": {
+        "summary": "取消执行任务",
         "operationId": "postApiV1SystemJobTaskCancel",
         "responses": {
           "200": {
@@ -2835,6 +2836,7 @@
     },
     "/api/v1/system/job/task/group/create": {
       "post": {
+        "summary": "新建任务分组",
         "operationId": "postApiV1SystemJobTaskGroupCreate",
         "responses": {
           "200": {
@@ -2873,6 +2875,7 @@
     },
     "/api/v1/system/job/task/group/delete": {
       "post": {
+        "summary": "删除任务分组",
         "operationId": "postApiV1SystemJobTaskGroupDelete",
         "responses": {
           "200": {
@@ -2911,6 +2914,7 @@
     },
     "/api/v1/system/job/task/group/index": {
       "post": {
+        "summary": "获取任务分组列表",
         "operationId": "postApiV1SystemJobTaskGroupIndex",
         "responses": {
           "200": {
@@ -2952,6 +2956,7 @@
     },
     "/api/v1/system/job/task/group/read": {
       "post": {
+        "summary": "获取任务分组详情",
         "operationId": "postApiV1SystemJobTaskGroupRead",
         "responses": {
           "200": {
@@ -2993,6 +2998,7 @@
     },
     "/api/v1/system/job/task/group/update": {
       "post": {
+        "summary": "更新任务分组",
         "operationId": "postApiV1SystemJobTaskGroupUpdate",
         "responses": {
           "200": {
@@ -3031,6 +3037,7 @@
     },
     "/api/v1/system/job/task/info/create": {
       "post": {
+        "summary": "创建任务",
         "operationId": "postApiV1SystemJobTaskInfoCreate",
         "responses": {
           "200": {
@@ -3069,6 +3076,7 @@
     },
     "/api/v1/system/job/task/info/delete": {
       "post": {
+        "summary": "删除任务",
         "operationId": "postApiV1SystemJobTaskInfoDelete",
         "responses": {
           "200": {
@@ -3107,6 +3115,7 @@
     },
     "/api/v1/system/job/task/info/index": {
       "post": {
+        "summary": "获取任务列表",
         "operationId": "postApiV1SystemJobTaskInfoIndex",
         "responses": {
           "200": {
@@ -3148,6 +3157,7 @@
     },
     "/api/v1/system/job/task/info/read": {
       "post": {
+        "summary": "获取任务详情",
         "operationId": "postApiV1SystemJobTaskInfoRead",
         "responses": {
           "200": {
@@ -3189,6 +3199,7 @@
     },
     "/api/v1/system/job/task/info/update": {
       "post": {
+        "summary": "更新任务",
         "operationId": "postApiV1SystemJobTaskInfoUpdate",
         "responses": {
           "200": {
@@ -3227,6 +3238,7 @@
     },
     "/api/v1/system/job/task/log/index": {
       "post": {
+        "summary": "获取任务日志",
         "operationId": "postApiV1SystemJobTaskLogIndex",
         "responses": {
           "200": {
@@ -4812,8 +4824,8 @@
           }
         ],
         "tags": [
-          "system/data/open/access",
-          "systemDataOpenAccess"
+          "system/open/access",
+          "systemOpenAccess"
         ]
       }
     },
@@ -4851,8 +4863,8 @@
           }
         ],
         "tags": [
-          "system/data/open/access",
-          "systemDataOpenAccess"
+          "system/open/access",
+          "systemOpenAccess"
         ]
       }
     },
@@ -4893,8 +4905,8 @@
           }
         ],
         "tags": [
-          "system/data/open/access",
-          "systemDataOpenAccess"
+          "system/open/access",
+          "systemOpenAccess"
         ]
       }
     },
@@ -4935,8 +4947,8 @@
           }
         ],
         "tags": [
-          "system/data/open/access",
-          "systemDataOpenAccess"
+          "system/open/access",
+          "systemOpenAccess"
         ]
       }
     },
@@ -4974,8 +4986,8 @@
           }
         ],
         "tags": [
-          "system/data/open/access",
-          "systemDataOpenAccess"
+          "system/open/access",
+          "systemOpenAccess"
         ]
       }
     },
@@ -9828,8 +9840,7 @@
           "description": "自定义编码"
         },
         "userID": {
-          "type": "integer",
-          "format": "int64",
+          "type": "string",
           "description": "绑定权限的用户ID"
         },
         "accessSecret": {
