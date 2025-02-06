@@ -27,6 +27,6 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(req *types.DataOpenAccess) error {
-	_, err := l.svcCtx.DataM.DataOpenAccessCreate(l.ctx, utils.Copy[sys.OpenAccess](req))
+	_, err := l.svcCtx.DataM.DataOpenAccessUpdate(l.ctx, utils.Copy[sys.OpenAccess](req))
 	return err
 }
