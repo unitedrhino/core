@@ -29,10 +29,11 @@ func NewDataOpenAccessCreateLogic(ctx context.Context, svcCtx *svc.ServiceContex
 
 func (l *DataOpenAccessCreateLogic) DataOpenAccessCreate(in *sys.OpenAccess) (*sys.WithID, error) {
 	uc := ctxs.GetUserCtxNoNil(l.ctx)
-	if in.TenantCode != uc.TenantCode {
+	if in.TenantCode != "" && in.TenantCode != uc.TenantCode {
 		if !(uc.TenantCode == def.TenantCodeDefault) {
 			return nil, errors.Permissions
 		}
+		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
 	}
 	if !uc.IsAdmin || in.UserID == 0 {
 		in.UserID = uc.UserID
@@ -48,6 +49,6 @@ func (l *DataOpenAccessCreateLogic) DataOpenAccessCreate(in *sys.OpenAccess) (*s
 		Desc:         in.Desc,
 		IpRange:      in.IpRange,
 	}
-	err := relationDB.NewDataOpenAccessRepo(l.ctx).Insert(ctxs.BindTenantCode(l.ctx, in.TenantCode, 0), po)
+	err := relationDB.NewDataOpenAccessRepo(l.ctx).Insert(l.ctx, po)
 	return &sys.WithID{Id: po.ID}, err
 }
