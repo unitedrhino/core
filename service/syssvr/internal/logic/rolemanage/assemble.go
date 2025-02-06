@@ -3,21 +3,13 @@ package rolemanagelogic
 import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/utils"
 )
 
 func ToRoleInfoRpc(in *relationDB.SysRoleInfo) *sys.RoleInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.RoleInfo{
-		Id:          in.ID,
-		Name:        in.Name,
-		Desc:        in.Desc,
-		Code:        in.Code,
-		CreatedTime: in.CreatedTime.Unix(),
-		Status:      in.Status,
-	}
+	return utils.Copy[sys.RoleInfo](in)
 }
+
 func ToRoleInfosRpc(in []*relationDB.SysRoleInfo) []*sys.RoleInfo {
 	var ret []*sys.RoleInfo
 	for _, v := range in {

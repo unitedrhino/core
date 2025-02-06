@@ -1881,7 +1881,7 @@ message RoleInfoIndexResp{
 message RoleInfo{
   int64   id = 1;
   string  name = 2;
-  string  desc = 3;
+  google.protobuf.StringValue  desc = 3;
   int64   createdTime  =4;
   int64   status = 5;
   string code =6;

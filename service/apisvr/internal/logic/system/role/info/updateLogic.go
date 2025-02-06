@@ -27,13 +27,7 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(req *types.RoleInfo) error {
-	resp, err := l.svcCtx.RoleRpc.RoleInfoUpdate(l.ctx, &sys.RoleInfo{
-		Id:     req.ID,
-		Name:   req.Name,
-		Desc:   req.Desc,
-		Status: req.Status,
-		Code:   req.Code,
-	})
+	resp, err := l.svcCtx.RoleRpc.RoleInfoUpdate(l.ctx, utils.Copy[sys.RoleInfo](req))
 	if err != nil {
 		err := errors.Fmt(err)
 		l.Errorf("%s.rpc.RoleUpdate req=%v err=%v", utils.FuncName(), req, err)

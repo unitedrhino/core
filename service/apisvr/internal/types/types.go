@@ -910,12 +910,12 @@ type RoleAppMultiUpdateReq struct {
 }
 
 type RoleInfo struct {
-	ID          int64  `json:"id,optional"`          // 编号
-	Name        string `json:"name,optional"`        // 角色名称
-	Desc        string `json:"desc,optional"`        // 备注
-	CreatedTime int64  `json:"createdTime,optional"` // 创建时间
-	Status      int64  `json:"status,optional"`      // 角色状态
-	Code        string `json:"code,optional"`        //角色编码
+	ID          int64   `json:"id,optional"`          // 编号
+	Name        string  `json:"name,optional"`        // 角色名称
+	Desc        *string `json:"desc,optional"`        // 备注
+	CreatedTime int64   `json:"createdTime,optional"` // 创建时间
+	Status      int64   `json:"status,optional"`      // 角色状态
+	Code        string  `json:"code,optional"`        //角色编码
 }
 
 type RoleInfoIndexReq struct {

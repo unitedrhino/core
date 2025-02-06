@@ -31,12 +31,7 @@ func (l *CreateLogic) Create(req *types.RoleInfo) (*types.WithID, error) {
 	if req.Status == 0 {
 		req.Status = 1
 	}
-	resp, err := l.svcCtx.RoleRpc.RoleInfoCreate(l.ctx, &sys.RoleInfo{
-		Name:   req.Name,
-		Desc:   req.Desc,
-		Status: req.Status,
-		Code:   req.Code,
-	})
+	resp, err := l.svcCtx.RoleRpc.RoleInfoCreate(l.ctx, utils.Copy[sys.RoleInfo](req))
 	if err != nil {
 		err := errors.Fmt(err)
 		l.Errorf("%s.rpc.RoleCreate req=%v err=%+v", utils.FuncName(), req, err)

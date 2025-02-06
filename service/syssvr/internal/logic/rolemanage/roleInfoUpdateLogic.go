@@ -36,24 +36,18 @@ func (l *RoleInfoUpdateLogic) RoleInfoUpdate(in *sys.RoleInfo) (*sys.Empty, erro
 		l.Logger.Error("RoleInfoModel.FindOne err , sql:%s", l.svcCtx)
 		return nil, err
 	}
-	if in.Name == "" || ro.Name == "超级管理员" {
-		in.Name = ro.Name
+
+	if in.Name != "" {
+		ro.Name = in.Name
+	}
+	if in.Desc != nil {
+		ro.Desc = in.Desc.Value
+	}
+	if in.Status != 0 {
+		ro.Status = in.Status
 	}
 
-	if in.Desc == "" {
-		in.Desc = ro.Desc
-	}
-
-	if in.Status == 0 {
-		in.Status = ro.Status
-	}
-
-	err = l.RiDB.Update(l.ctx, &relationDB.SysRoleInfo{
-		ID:     in.Id,
-		Name:   in.Name,
-		Desc:   in.Desc,
-		Status: in.Status,
-	})
+	err = l.RiDB.Update(l.ctx, ro)
 	if err != nil {
 		return nil, err
 	}

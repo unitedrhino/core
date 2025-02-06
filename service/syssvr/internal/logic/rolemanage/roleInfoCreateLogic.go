@@ -34,7 +34,7 @@ func (l *RoleInfoCreateLogic) RoleInfoCreate(in *sys.RoleInfo) (*sys.WithID, err
 	}
 	po := relationDB.SysRoleInfo{
 		Name:   in.Name,
-		Desc:   in.Desc,
+		Desc:   in.Desc.GetValue(),
 		Status: in.Status,
 		Code:   in.Code,
 	}
