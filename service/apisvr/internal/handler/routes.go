@@ -15,7 +15,6 @@ import (
 	systemcommon "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/common"
 	systemdataarea "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/area"
 	systemdataareauserapply "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/area/user/apply"
-	systemdataopenaccess "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/open/access"
 	systemdataproject "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/project"
 	systemdeptinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/info"
 	systemdeptsyncJob "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/syncJob"
@@ -30,6 +29,7 @@ import (
 	systemnotifyconfigtemplate "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/notify/config/template"
 	systemnotifymessageinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/notify/message/info"
 	systemnotifytemplate "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/notify/template"
+	systemopenaccess "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/open/access"
 	systemopsfeedback "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/ops/feedback"
 	systemopsworkOrder "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/ops/workOrder"
 	systemprojectinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/project/info"
@@ -412,45 +412,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
-					// 创建开放认证
-					Method:  http.MethodPost,
-					Path:    "/create",
-					Handler: systemdataopenaccess.CreateHandler(serverCtx),
-				},
-				{
-					// 删除开放认证
-					Method:  http.MethodPost,
-					Path:    "/delete",
-					Handler: systemdataopenaccess.DeleteHandler(serverCtx),
-				},
-				{
-					// 获取开放认证列表
-					Method:  http.MethodPost,
-					Path:    "/index",
-					Handler: systemdataopenaccess.IndexHandler(serverCtx),
-				},
-				{
-					// 获取开放认证详情
-					Method:  http.MethodPost,
-					Path:    "/read",
-					Handler: systemdataopenaccess.ReadHandler(serverCtx),
-				},
-				{
-					// 更新开放认证
-					Method:  http.MethodPost,
-					Path:    "/update",
-					Handler: systemdataopenaccess.UpdateHandler(serverCtx),
-				},
-			}...,
-		),
-		rest.WithPrefix("/api/v1/system/open/access"),
-	)
-
-	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
-			[]rest.Route{
-				{
 					// 创建授权项目权限
 					Method:  http.MethodPost,
 					Path:    "/create",
@@ -652,61 +613,73 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
 			[]rest.Route{
 				{
+					// 取消执行任务
 					Method:  http.MethodPost,
 					Path:    "/cancel",
 					Handler: systemjobtask.CancelHandler(serverCtx),
 				},
 				{
+					// 新建任务分组
 					Method:  http.MethodPost,
 					Path:    "/group/create",
 					Handler: systemjobtask.GroupCreateHandler(serverCtx),
 				},
 				{
+					// 删除任务分组
 					Method:  http.MethodPost,
 					Path:    "/group/delete",
 					Handler: systemjobtask.GroupDeleteHandler(serverCtx),
 				},
 				{
+					// 获取任务分组列表
 					Method:  http.MethodPost,
 					Path:    "/group/index",
 					Handler: systemjobtask.GroupIndexHandler(serverCtx),
 				},
 				{
+					// 获取任务分组详情
 					Method:  http.MethodPost,
 					Path:    "/group/read",
 					Handler: systemjobtask.GroupReadHandler(serverCtx),
 				},
 				{
+					// 更新任务分组
 					Method:  http.MethodPost,
 					Path:    "/group/update",
 					Handler: systemjobtask.GroupUpdateHandler(serverCtx),
 				},
 				{
+					// 创建任务
 					Method:  http.MethodPost,
 					Path:    "/info/create",
 					Handler: systemjobtask.InfoCreateHandler(serverCtx),
 				},
 				{
+					// 删除任务
 					Method:  http.MethodPost,
 					Path:    "/info/delete",
 					Handler: systemjobtask.InfoDeleteHandler(serverCtx),
 				},
 				{
+					// 获取任务列表
 					Method:  http.MethodPost,
 					Path:    "/info/index",
 					Handler: systemjobtask.InfoIndexHandler(serverCtx),
 				},
 				{
+					// 获取任务详情
 					Method:  http.MethodPost,
 					Path:    "/info/read",
 					Handler: systemjobtask.InfoReadHandler(serverCtx),
 				},
 				{
+					// 更新任务
 					Method:  http.MethodPost,
 					Path:    "/info/update",
 					Handler: systemjobtask.InfoUpdateHandler(serverCtx),
 				},
 				{
+					// 获取任务日志
 					Method:  http.MethodPost,
 					Path:    "/log/index",
 					Handler: systemjobtask.LogIndexHandler(serverCtx),
@@ -1008,6 +981,45 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/notify/template"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 创建开放认证
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemopenaccess.CreateHandler(serverCtx),
+				},
+				{
+					// 删除开放认证
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemopenaccess.DeleteHandler(serverCtx),
+				},
+				{
+					// 获取开放认证列表
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemopenaccess.IndexHandler(serverCtx),
+				},
+				{
+					// 获取开放认证详情
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemopenaccess.ReadHandler(serverCtx),
+				},
+				{
+					// 更新开放认证
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemopenaccess.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/open/access"),
 	)
 
 	server.AddRoutes(

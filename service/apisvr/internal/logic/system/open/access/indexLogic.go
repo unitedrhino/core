@@ -39,5 +39,5 @@ func (l *IndexLogic) Index(req *types.DataOpenAccessIndexReq) (resp *types.DataO
 		}
 		v.User = utils.Copy[types.UserCore](u)
 	}
-	return utils.Copy[types.DataOpenAccessIndexResp](ret), nil
+	return
 }

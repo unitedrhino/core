@@ -1,7 +1,7 @@
 package access
 
 import (
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/data/open/access"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/open/access"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/share/errors"

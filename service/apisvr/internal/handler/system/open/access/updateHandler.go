@@ -1,7 +1,7 @@
 package access
 
 import (
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/data/open/access"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/open/access"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/share/errors"
@@ -10,17 +10,17 @@ import (
 	"net/http"
 )
 
-// 获取开放认证详情
-func ReadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+// 更新开放认证
+func UpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.WithID
+		var req types.DataOpenAccess
 		if err := httpx.Parse(r, &req); err != nil {
 			result.Http(w, r, nil, errors.Parameter.WithMsg("入参不正确:"+err.Error()))
 			return
 		}
 
-		l := access.NewReadLogic(r.Context(), svcCtx)
-		resp, err := l.Read(&req)
-		result.Http(w, r, resp, err)
+		l := access.NewUpdateLogic(r.Context(), svcCtx)
+		err := l.Update(&req)
+		result.Http(w, r, nil, err)
 	}
 }
