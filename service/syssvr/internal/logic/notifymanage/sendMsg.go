@@ -254,7 +254,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if len(accounts) == 0 {
 			return nil
 		}
-		err = utils.SenEmail(conf.Email{
+		err = utils.SendEmail(conf.Email{
 			From:     temp.Channel.Email.From,
 			Host:     temp.Channel.Email.Host,
 			Secret:   temp.Channel.Email.Secret,
