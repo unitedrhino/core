@@ -29,7 +29,7 @@ var (
 )
 
 func NewClients(c config.Config) *ClientsManage {
-	return &ClientsManage{Config: c}
+	return &ClientsManage{Config: c, sf: syncx.NewSingleFlight()}
 }
 
 func (c *ClientsManage) ClearClients(ctx context.Context, appCode string) error {
