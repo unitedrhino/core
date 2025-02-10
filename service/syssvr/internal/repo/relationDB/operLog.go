@@ -19,6 +19,9 @@ type OperLogFilter struct {
 	OperName     string
 	OperUserName string
 	BusinessType int64
+	AppCode      string
+	Code         int64
+	UserID       int64
 	CreateTime   *stores.Cmp
 }
 
@@ -29,13 +32,22 @@ func (p OperLogRepo) fmtFilter(ctx context.Context, f OperLogFilter) *gorm.DB {
 		db = db.Where("tenant_code = ?", f.TenantCode)
 	}
 	if f.OperName != "" {
-		db = db.Where("`oper_name` like ?", "%"+f.OperName+"%")
+		db = db.Where("oper_name = ?", f.OperName)
 	}
 	if f.OperUserName != "" {
-		db = db.Where("`oper_user_name` like ?", "%"+f.OperUserName+"%")
+		db = db.Where("oper_user_name = ?", f.OperUserName)
 	}
 	if f.BusinessType > 0 {
-		db = db.Where("`business_type`= ?", f.BusinessType)
+		db = db.Where("business_type= ?", f.BusinessType)
+	}
+	if f.AppCode != "" {
+		db = db.Where("app_code = ?")
+	}
+	if f.Code != 0 {
+		db = db.Where("code = ?")
+	}
+	if f.UserID != 0 {
+		db = db.Where("user_id = ?")
 	}
 	return db
 }

@@ -1000,6 +1000,9 @@ type SysLogLoginIndexReq struct {
 	LoginLocation string    `json:"loginLocation,optional"` //按登录地址查找
 	DateRange     DateRange `json:"dateRange,optional"`     //按时间范围查找
 	AppCode       string    `json:"appCode,optional"`       // 应用编号
+	UserID        int64     `json:"userID,string,optional"` // 用户id
+	UserName      string    `json:"userName,optional"`      // 登录账号
+	Code          int64     `json:"code,string,optional"`   // 登录状态（200成功 其它失败）
 }
 
 type SysLogLoginIndexResp struct {
@@ -1026,6 +1029,8 @@ type SysLogOperIndexReq struct {
 	OperUserName string    `json:"operUserName,optional "`        //按操作人员名称查找
 	BusinessType int64     `json:"businessType,string,optional "` //按业务类型（1新增 2修改 3删除 4查询）查找
 	AppCode      string    `json:"appCode,optional"`              // 应用编号
+	UserID       int64     `json:"userID,string,optional"`        // 用户id
+	Code         int64     `json:"code,string,optional"`          //登录状态（200成功 其它失败）
 }
 
 type SysLogOperIndexResp struct {

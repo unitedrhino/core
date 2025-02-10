@@ -33,31 +33,12 @@ func (l *LoginIndexLogic) LoginIndex(req *types.SysLogLoginIndexReq) (resp *type
 		IpAddr:        req.IpAddr,
 		LoginLocation: req.LoginLocation,
 		Date:          &sys.DateRange{Start: req.DateRange.Start, End: req.DateRange.End},
+		UserID:        req.UserID,
+		UserName:      req.UserName,
+		Code:          req.Code,
 	})
 	if err != nil {
 		return nil, err
 	}
-
-	var total int64
-	total = info.Total
-
-	var logLoginInfo []*types.SysLogLoginInfo
-	logLoginInfo = make([]*types.SysLogLoginInfo, 0, len(logLoginInfo))
-
-	for _, i := range info.List {
-		logLoginInfo = append(logLoginInfo, &types.SysLogLoginInfo{
-			AppCode:       i.AppCode,
-			UserID:        i.UserID,
-			UserName:      i.UserName,
-			IpAddr:        i.IpAddr,
-			LoginLocation: i.LoginLocation,
-			Browser:       i.Browser,
-			Os:            i.Os,
-			Code:          i.Code,
-			Msg:           i.Msg,
-			CreatedTime:   i.CreatedTime,
-		})
-	}
-
-	return &types.SysLogLoginIndexResp{List: logLoginInfo, Total: total}, nil
+	return utils.Copy[types.SysLogLoginIndexResp](info), err
 }

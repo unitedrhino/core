@@ -36,6 +36,9 @@ func (l *LoginLogIndexLogic) LoginLogIndex(in *sys.LoginLogIndexReq) (*sys.Login
 			Start: in.Date.Start,
 			End:   in.Date.End,
 		},
+		UserID:   in.UserID,
+		UserName: in.UserName,
+		Code:     in.Code,
 	}
 	resp, err := l.LlDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
 		Field: "createdTime",

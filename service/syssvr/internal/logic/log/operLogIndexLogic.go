@@ -33,6 +33,9 @@ func (l *OperLogIndexLogic) OperLogIndex(in *sys.OperLogIndexReq) (*sys.OperLogI
 		OperName:     in.OperName,
 		OperUserName: in.OperUserName,
 		BusinessType: in.BusinessType,
+		AppCode:      in.AppCode,
+		Code:         in.Code,
+		UserID:       in.UserID,
 	}
 	resp, err := l.OlDB.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultOrder(stores.OrderBy{
 		Field: "createdTime",

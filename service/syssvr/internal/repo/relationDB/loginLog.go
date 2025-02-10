@@ -24,6 +24,9 @@ type LoginLogFilter struct {
 	LoginLocation string
 	Data          *DateRange
 	CreateTime    *stores.Cmp
+	UserID        int64
+	UserName      string
+	Code          int64
 }
 
 func (p LoginLogRepo) fmtFilter(ctx context.Context, f LoginLogFilter) *gorm.DB {
@@ -31,6 +34,15 @@ func (p LoginLogRepo) fmtFilter(ctx context.Context, f LoginLogFilter) *gorm.DB 
 	db = f.CreateTime.Where(db, "created_time")
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code = ?", f.TenantCode)
+	}
+	if f.UserID != 0 {
+		db = db.Where("user_id = ?", f.UserID)
+	}
+	if f.UserName != "" {
+		db = db.Where("user_name = ?", f.UserName)
+	}
+	if f.Code != 0 {
+		db = db.Where("code = ?", f.Code)
 	}
 	if f.IpAddr != "" {
 		db = db.Where("ip_addr= ?", f.IpAddr)

@@ -33,34 +33,8 @@ func (l *OperIndexLogic) OperIndex(req *types.SysLogOperIndexReq) (resp *types.S
 		OperName:     req.OperName,
 		OperUserName: req.OperUserName,
 		BusinessType: req.BusinessType,
+		Code:         req.Code,
+		UserID:       req.UserID,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	var total int64
-	total = info.Total
-
-	var logOperInfo []*types.SysLogOperInfo
-	logOperInfo = make([]*types.SysLogOperInfo, 0, len(logOperInfo))
-
-	for _, i := range info.List {
-		logOperInfo = append(logOperInfo, &types.SysLogOperInfo{
-			AppCode:      i.AppCode,
-			UserID:       i.UserID,
-			OperUserName: i.OperUserName,
-			OperName:     i.OperName,
-			BusinessType: i.BusinessType,
-			Uri:          i.Uri,
-			OperIpAddr:   i.OperIpAddr,
-			OperLocation: i.OperLocation,
-			Req:          i.Req,
-			Resp:         i.Resp,
-			Code:         i.Code,
-			Msg:          i.Msg,
-			CreatedTime:  i.CreatedTime,
-		})
-	}
-
-	return &types.SysLogOperIndexResp{List: logOperInfo, Total: total}, nil
+	return utils.Copy[types.SysLogOperIndexResp](info), err
 }

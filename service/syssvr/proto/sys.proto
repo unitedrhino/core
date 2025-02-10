@@ -1162,6 +1162,9 @@ message LoginLogIndexReq{
   string ipAddr = 3;        // 登录IP地址
   string loginLocation = 4; // 登录地点
   DateRange date = 5;       // 时间范围
+  int64  userID = 6;           // 用户id
+  string userName = 7;      // 登录账号
+  int64 code = 8;           // 登录状态（200成功 其它失败）
 }
 
 message LoginLogInfo {
@@ -1188,6 +1191,8 @@ message OperLogIndexReq{
   string operUserName = 3; //按操作人员名称查找
   int64 businessType  = 4; //按业务类型（1新增 2修改 3删除 4查询）查找
   string appCode = 5;//应用编码
+  int64  code = 6;               //登录状态（200成功 其它失败）
+  int64  userID = 7;                //用户id
 }
 
 message OperLogInfo {

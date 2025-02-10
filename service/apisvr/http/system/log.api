@@ -34,7 +34,10 @@ type (
         LoginLocation string `json:"loginLocation,optional"`       //按登录地址查找
         DateRange DateRange `json:"dateRange,optional"`            //按时间范围查找
          AppCode string `json:"appCode,optional"`                               // 应用编号
-	}
+         UserID         int64  `json:"userID,string,optional"`        // 用户id
+         UserName string `json:"userName,optional"`                                // 登录账号
+         Code int64 `json:"code,string,optional"`                                  // 登录状态（200成功 其它失败）
+     }
 
     SysLogLoginInfo {
         UserID         int64  `json:"userID,string,optional"`        // 用户id
@@ -55,25 +58,27 @@ type (
     }
 
      SysLogOperIndexReq {
-         Page *PageInfo `json:"page,optional"`                               //分页信息,只获取一个则不填
+        Page *PageInfo `json:"page,optional"`                               //分页信息,只获取一个则不填
         OperName string `json:"operName,optional "`                //按操作名称查找
         OperUserName string `json:"operUserName,optional "`        //按操作人员名称查找
         BusinessType int64 `json:"businessType,string,optional "`  //按业务类型（1新增 2修改 3删除 4查询）查找
-         AppCode string `json:"appCode,optional"`                               // 应用编号
-    }
+        AppCode string `json:"appCode,optional"`                               // 应用编号
+        UserID         int64  `json:"userID,string,optional"`        // 用户id
+        Code int64 `json:"code,string,optional"`                            //登录状态（200成功 其它失败）
+     }
 
     SysLogOperInfo {
         UserID         int64  `json:"userID,string,optional"`        // 用户id
         AppCode string `json:"appCode"`                               // 应用编号
-        operUserName string `json:"operUserName"`                  //操作人员名称
-        operName string `json:"operName"`                          //操作名称
-        businessType int64 `json:"businessType,string"`            //业务类型（1新增 2修改 3删除 4查询）
-        uri string `json:"uri"`                                    //请求地址
-        operIpAddr string `json:"operIpAddr"`                      //操作主机ip地址
-        operLocation string `json:"operLocation"`                  //操作地点
-        req string `json:"req"`                                    //请求参数
-        resp string `json:"resp"`                                  //返回参数
-        code int64 `json:"code,string"`                            //登录状态（200成功 其它失败）
+        OperUserName string `json:"operUserName"`                  //操作人员名称
+        OperName string `json:"operName"`                          //操作名称
+        BusinessType int64 `json:"businessType,string"`            //业务类型（1新增 2修改 3删除 4查询）
+        Uri string `json:"uri"`                                    //请求地址
+        OperIpAddr string `json:"operIpAddr"`                      //操作主机ip地址
+        OperLocation string `json:"operLocation"`                  //操作地点
+        Req string `json:"req"`                                    //请求参数
+        Resp string `json:"resp"`                                  //返回参数
+        Code int64 `json:"code,string"`                            //登录状态（200成功 其它失败）
         Msg string `json:"msg"`                                    //提示消息
         CreatedTime int64 `json:"createdTime,string"`              //操作时间
     }

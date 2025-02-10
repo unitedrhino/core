@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
+	"github.com/zeromicro/go-zero/core/syncx"
 	"sync"
 )
 
@@ -20,6 +21,7 @@ type Clients struct {
 }
 type ClientsManage struct {
 	Config config.Config
+	sf     syncx.SingleFlight
 }
 
 var (
@@ -46,50 +48,55 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		appCode = uc.AppCode
 	}
 	var tenantCode = uc.TenantCode
+	var key = tenantCode + ":" + appCode
 	val, ok := tc.Load(tenantCode + appCode)
 	if ok {
 		return val.(Clients), nil
 	}
-	//如果缓存里没有,需要查库
-	cfg, err := relationDB.NewTenantAppRepo(ctx).FindOneByFilter(ctx, relationDB.TenantAppFilter{TenantCode: tenantCode, AppCodes: []string{appCode}})
-	if err != nil {
-		if !errors.Cmp(err, errors.NotFind) {
-			return Clients{}, err
-		}
-		return Clients{}, errors.Parameter.AddMsg("未配置应用")
-	}
-	var cli Clients
-	cli.Config = cfg
-	if cfg.DingMini != nil && cfg.DingMini.AppSecret != "" {
-		cli.DingMini, err = dingClient.NewDingTalkClient(&conf.ThirdConf{
-			AppID:     cfg.DingMini.AppID,
-			AppKey:    cfg.DingMini.AppKey,
-			AppSecret: cfg.DingMini.AppSecret,
-		})
+	cli, err := c.sf.Do(key, func() (any, error) {
+		//如果缓存里没有,需要查库
+		cfg, err := relationDB.NewTenantAppRepo(ctx).FindOneByFilter(ctx, relationDB.TenantAppFilter{TenantCode: tenantCode, AppCodes: []string{appCode}})
 		if err != nil {
-			return Clients{}, err
+			if !errors.Cmp(err, errors.NotFind) {
+				return Clients{}, err
+			}
+			return Clients{}, errors.Parameter.AddMsg("未配置应用")
 		}
-	}
-	if cfg.WxMini != nil && cfg.WxMini.AppSecret != "" {
-		cli.MiniProgram, err = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
-			AppID:     cfg.WxMini.AppID,
-			AppKey:    cfg.WxMini.AppKey,
-			AppSecret: cfg.WxMini.AppSecret,
-		}, c.Config.CacheRedis)
-		if err != nil {
-			return Clients{}, err
+		var cli Clients
+		cli.Config = cfg
+		if cfg.DingMini != nil && cfg.DingMini.AppSecret != "" {
+			cli.DingMini, err = dingClient.NewDingTalkClient(&conf.ThirdConf{
+				AppID:     cfg.DingMini.AppID,
+				AppKey:    cfg.DingMini.AppKey,
+				AppSecret: cfg.DingMini.AppSecret,
+			})
+			if err != nil {
+				return Clients{}, err
+			}
 		}
-	}
-	if cfg.WxOpen != nil && cfg.WxOpen.AppSecret != "" {
-		cli.WxOfficial, err = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
-			AppID:     cfg.WxOpen.AppID,
-			AppKey:    cfg.WxOpen.AppKey,
-			AppSecret: cfg.WxOpen.AppSecret,
-		}, c.Config.CacheRedis)
-		if err != nil {
-			return Clients{}, err
+		if cfg.WxMini != nil && cfg.WxMini.AppSecret != "" {
+			cli.MiniProgram, err = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
+				AppID:     cfg.WxMini.AppID,
+				AppKey:    cfg.WxMini.AppKey,
+				AppSecret: cfg.WxMini.AppSecret,
+			}, c.Config.CacheRedis)
+			if err != nil {
+				return Clients{}, err
+			}
 		}
-	}
-	tc.Store(tenantCode, cli)
-	return cli, nil
+		if cfg.WxOpen != nil && cfg.WxOpen.AppSecret != "" {
+			cli.WxOfficial, err = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
+				AppID:     cfg.WxOpen.AppID,
+				AppKey:    cfg.WxOpen.AppKey,
+				AppSecret: cfg.WxOpen.AppSecret,
+			}, c.Config.CacheRedis)
+			if err != nil {
+				return Clients{}, err
+			}
+		}
+		tc.Store(tenantCode, cli)
+		return cli, nil
+	})
+
+	return cli.(Clients), err
 }

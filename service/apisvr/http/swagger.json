@@ -12594,6 +12594,18 @@
         "appCode": {
           "type": "string",
           "description": " 应用编号"
+        },
+        "userID": {
+          "type": "string",
+          "description": " 用户id"
+        },
+        "userName": {
+          "type": "string",
+          "description": " 登录账号"
+        },
+        "code": {
+          "type": "string",
+          "description": " 登录状态（200成功 其它失败）"
         }
       },
       "title": "SysLogLoginIndexReq"
@@ -12699,6 +12711,14 @@
         "appCode": {
           "type": "string",
           "description": " 应用编号"
+        },
+        "userID": {
+          "type": "string",
+          "description": " 用户id"
+        },
+        "code": {
+          "type": "string",
+          "description": "登录状态（200成功 其它失败）"
         }
       },
       "title": "SysLogOperIndexReq"
