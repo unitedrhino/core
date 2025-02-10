@@ -36,6 +36,7 @@ func (l *LoginLogIndexLogic) LoginLogIndex(in *sys.LoginLogIndexReq) (*sys.Login
 			Start: in.Date.Start,
 			End:   in.Date.End,
 		},
+		AppCode:  in.AppCode,
 		UserID:   in.UserID,
 		UserName: in.UserName,
 		Code:     in.Code,

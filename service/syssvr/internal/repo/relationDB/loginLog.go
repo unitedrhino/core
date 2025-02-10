@@ -25,6 +25,7 @@ type LoginLogFilter struct {
 	Data          *DateRange
 	CreateTime    *stores.Cmp
 	UserID        int64
+	AppCode       string
 	UserName      string
 	Code          int64
 }
@@ -40,6 +41,9 @@ func (p LoginLogRepo) fmtFilter(ctx context.Context, f LoginLogFilter) *gorm.DB 
 	}
 	if f.UserName != "" {
 		db = db.Where("user_name = ?", f.UserName)
+	}
+	if f.AppCode != "" {
+		db = db.Where("app_code = ?", f.AppCode)
 	}
 	if f.Code != 0 {
 		db = db.Where("code = ?", f.Code)
