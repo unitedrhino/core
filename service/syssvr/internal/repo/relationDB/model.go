@@ -82,7 +82,7 @@ type SysDeptInfo struct {
 	IDPath         string              `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
 	DingTalkID     int64               `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID
 	Tags           map[string]string   `gorm:"column:tags;type:json;serializer:json"`     //部门标签
-	AdminUser      *SysUserInfo        `gorm:"foreignKey:admin_user_id;references:id"`
+	AdminUser      *SysUserInfo        `gorm:"foreignKey:user_id;references:AdminUserID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:name"`
 	Children    []*SysDeptInfo     `gorm:"foreignKey:parent_id;references:id"`
