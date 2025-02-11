@@ -21,7 +21,7 @@ type OperLogFilter struct {
 	BusinessType int64
 	AppCode      string
 	Code         int64
-	UserID       int64
+	OperUserID   int64
 	CreateTime   *stores.Cmp
 }
 
@@ -46,8 +46,8 @@ func (p OperLogRepo) fmtFilter(ctx context.Context, f OperLogFilter) *gorm.DB {
 	if f.Code != 0 {
 		db = db.Where("code = ?")
 	}
-	if f.UserID != 0 {
-		db = db.Where("user_id = ?")
+	if f.OperUserID != 0 {
+		db = db.Where("oper_user_id = ?")
 	}
 	return db
 }

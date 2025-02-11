@@ -48,7 +48,7 @@ func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) er
 		return errors.UnRegister
 	} else if in.PwdType == 1 {
 		//明文密码，则对密码做MD5加密后再与数据库密码比对
-		//uid_temp := l.svcCtx.UserID.GetSnowflakeId()
+		//uid_temp := l.svcCtx.OperUserID.GetSnowflakeId()
 		password1 := utils.MakePwd(in.Password, uc.UserID, false) //对密码进行md5加密
 		if password1 != uc.Password {
 			return errors.Password
@@ -76,8 +76,8 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo) (*sys.UserLoginResp, err
 		return nil, errors.System.AddDetail(err)
 	}
 
-	//InitCacheUserAuthProject(l.ctx, ui.UserID)
-	//InitCacheUserAuthArea(l.ctx, ui.UserID)
+	//InitCacheUserAuthProject(l.ctx, ui.OperUserID)
+	//InitCacheUserAuthArea(l.ctx, ui.OperUserID)
 
 	resp := &sys.UserLoginResp{
 		Info: UserInfoToPb(l.ctx, ui, l.svcCtx),

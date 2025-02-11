@@ -28,7 +28,7 @@ func checkUser(ctx context.Context, userID int64) (*relationDB.SysUserInfo, erro
 //		return caches.SetUserAuthProject(ctx, userID, DBToAuthProjectDos(projects))
 //	}
 func InitCacheUserAuthArea(ctx context.Context, userID int64) error {
-	//areas, err := relationDB.NewDataAreaRepo(ctx).FindByFilter(ctx, relationDB.DataAreaFilter{UserID: userID}, nil)
+	//areas, err := relationDB.NewDataAreaRepo(ctx).FindByFilter(ctx, relationDB.DataAreaFilter{OperUserID: userID}, nil)
 	//if err != nil {
 	//	return err
 	//}

@@ -1192,7 +1192,7 @@ message OperLogIndexReq{
   int64 businessType  = 4; //按业务类型（1新增 2修改 3删除 4查询）查找
   string appCode = 5;//应用编码
   int64  code = 6;               //登录状态（200成功 其它失败）
-  int64  userID = 7;                //用户id
+  int64  operUserID = 7;                //用户id
 }
 
 message OperLogInfo {
