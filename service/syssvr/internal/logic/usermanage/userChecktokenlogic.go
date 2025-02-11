@@ -78,6 +78,18 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		if err != nil {
 			return nil, err
 		}
+		if len(po.IpRange) != 0 { //ip校验
+			var match bool
+			for _, whiteIp := range po.IpRange {
+				if utils.MatchIP(in.Ip, whiteIp) {
+					match = true
+					break
+				}
+			}
+			if !match {
+				return nil, errors.Permissions
+			}
+		}
 		return []byte(po.AccessSecret), nil
 	})
 	if err != nil {
