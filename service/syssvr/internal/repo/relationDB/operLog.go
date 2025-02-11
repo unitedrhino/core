@@ -41,13 +41,13 @@ func (p OperLogRepo) fmtFilter(ctx context.Context, f OperLogFilter) *gorm.DB {
 		db = db.Where("business_type= ?", f.BusinessType)
 	}
 	if f.AppCode != "" {
-		db = db.Where("app_code = ?")
+		db = db.Where("app_code = ?", f.AppCode)
 	}
 	if f.Code != 0 {
-		db = db.Where("code = ?")
+		db = db.Where("code = ?", f.Code)
 	}
 	if f.OperUserID != 0 {
-		db = db.Where("oper_user_id = ?")
+		db = db.Where("oper_user_id = ?", f.OperUserID)
 	}
 	return db
 }
