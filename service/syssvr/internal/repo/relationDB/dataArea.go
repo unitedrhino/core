@@ -58,8 +58,8 @@ func (p DataAreaRepo) fmtFilter(ctx context.Context, f DataAreaFilter) *gorm.DB 
 	if f.TargetID != 0 {
 		db = db.Where("target_id = ? ", f.TargetID)
 	}
-	//if f.OperUserID != 0 {
-	//	db = db.Where("user_id= ?", f.OperUserID)
+	//if f.UserID != 0 {
+	//	db = db.Where("user_id= ?", f.UserID)
 	//}
 	if f.ProjectID != 0 {
 		db = db.Where("project_id= ?", f.ProjectID)

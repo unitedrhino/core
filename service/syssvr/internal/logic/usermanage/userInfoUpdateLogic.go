@@ -41,7 +41,7 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 
 	ui, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{info.UserID}, WithRoles: true})
 	if err != nil {
-		l.Errorf("%s.FindOne OperUserID=%d err=%v", utils.FuncName(), info.UserID, err)
+		l.Errorf("%s.FindOne UserID=%d err=%v", utils.FuncName(), info.UserID, err)
 		return nil, err
 	}
 	if in.WithRoot {
