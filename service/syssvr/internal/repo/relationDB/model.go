@@ -71,14 +71,14 @@ type SysDeptInfo struct {
 	TenantCode     dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`                       // 租户编码
 	ParentID       int64               `gorm:"column:parent_id;uniqueIndex:name;type:BIGINT"`                      // id编号
 	Name           string              `gorm:"column:name;type:VARCHAR(256);uniqueIndex:name;default:'';NOT NULL"` // 部门名称
-	AdminUserID    int64               `gorm:"column:admin_user_id;type:bigint;comment:管理员账号;NOT NULL"`
+	AdminUserID    int64               `gorm:"column:admin_user_id;comment:管理员账号;NOT NULL"`
 	Status         int64               `gorm:"column:status;type:SMALLINT;default:1"` // 状态  1:启用,2:禁用
 	Sort           int64               `gorm:"column:sort;comment:排序标记"`              // 排序标记
 	Desc           string              `gorm:"column:desc;comment:描述"`                // 描述
 	UserCount      int64               `gorm:"column:user_count;comment:用户统计,包含下级部门的人数"`
-	DeviceCount    int64               `gorm:"column:device_count;type:bigint(20);default:0;comment:部门自己的设备总数"`
-	AllDeviceCount int64               `gorm:"column:all_device_count;type:bigint(20);default:0;comment:部门及其下级的设备总数"`
-	ChildrenCount  int64               `gorm:"column:children_count;type:bigint(20);default:0;comment:部门下级数量"`
+	DeviceCount    int64               `gorm:"column:device_count;default:0;comment:部门自己的设备总数"`
+	AllDeviceCount int64               `gorm:"column:all_device_count;default:0;comment:部门及其下级的设备总数"`
+	ChildrenCount  int64               `gorm:"column:children_count;default:0;comment:部门下级数量"`
 	IDPath         string              `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
 	DingTalkID     int64               `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID
 	Tags           map[string]string   `gorm:"column:tags;type:json;serializer:json"`     //部门标签
