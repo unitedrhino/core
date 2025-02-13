@@ -9,7 +9,9 @@ import (
 	tenant "gitee.com/unitedrhino/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
+	"gitee.com/unitedrhino/core/service/syssvr/sysdirect"
 	"gitee.com/unitedrhino/core/share/middlewares"
+	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -27,17 +29,31 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 	stores.InitConn(c.Database)
 	logx.Must(relationDB.Migrate(c.Database))
-	var ur user.UserManage
-	var ro role.RoleManage
-	ur = user.NewUserManage(zrpc.MustNewClient(c.SysRpc.Conf))
-	ro = role.NewRoleManage(zrpc.MustNewClient(c.SysRpc.Conf))
-	tm := tenant.NewTenantManage(zrpc.MustNewClient(c.SysRpc.Conf))
-	lo := log.NewLog(zrpc.MustNewClient(c.SysRpc.Conf))
-	Slot, err := sysExport.NewSlotCache(common.NewCommon(zrpc.MustNewClient(c.SysRpc.Conf)))
+	var (
+		TenantRpc tenant.TenantManage
+		LogRpc    log.Log
+		UserRpc   user.UserManage
+		AuthRpc   role.RoleManage
+		Common    common.Common
+	)
+	if c.SysRpc.Mode == conf.ClientModeDirect {
+		TenantRpc = sysdirect.NewTenantManage(c.SysRpc.RunProxy)
+		LogRpc = sysdirect.NewLog(c.SysRpc.RunProxy)
+		UserRpc = sysdirect.NewUser(c.SysRpc.RunProxy)
+		AuthRpc = sysdirect.NewRole(c.SysRpc.RunProxy)
+		Common = sysdirect.NewCommon(c.SysRpc.RunProxy)
+	} else {
+		TenantRpc = tenant.NewTenantManage(zrpc.MustNewClient(c.SysRpc.Conf))
+		LogRpc = log.NewLog(zrpc.MustNewClient(c.SysRpc.Conf))
+		UserRpc = user.NewUserManage(zrpc.MustNewClient(c.SysRpc.Conf))
+		AuthRpc = role.NewRoleManage(zrpc.MustNewClient(c.SysRpc.Conf))
+		Common = common.NewCommon(zrpc.MustNewClient(c.SysRpc.Conf))
+	}
+	Slot, err := sysExport.NewSlotCache(Common)
 	logx.Must(err)
 	return &ServiceContext{
 		Config:         c,
-		CheckTokenWare: middlewares.NewCheckTokenWareMiddleware(ur, ro, tm, lo).Handle,
+		CheckTokenWare: middlewares.NewCheckTokenWareMiddleware(UserRpc, AuthRpc, TenantRpc, LogRpc).Handle,
 		InitCtxsWare:   ctxs.InitMiddleware,
 		Slot:           Slot,
 	}
