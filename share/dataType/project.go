@@ -83,7 +83,7 @@ func (sd ProjectClause) ModifyStatement(stmt *gorm.Statement) { //查询的时�
 		ti, err := caches.GetTenant(stmt.Context, uc.TenantCode)
 		if err != nil {
 			uc.ProjectID = def.NotClassified
-		} else {
+		} else if sd.Opt != stores.Select {
 			uc.ProjectID = ti.DefaultProjectID
 		}
 	}
