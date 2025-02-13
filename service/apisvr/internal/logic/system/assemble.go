@@ -26,7 +26,7 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		Area:         utils.ToNullFloat32(pb.Area),
 		Ppsm:         pb.Ppsm,
 		Areas:        info.ToAreaInfosTypes(pb.Areas),
-		DeviceCount:  utils.ToInt64(pb.DeviceCount),
+		DeviceCount:  utils.ToEmptyInt64(pb.DeviceCount),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {

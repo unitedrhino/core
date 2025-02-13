@@ -37,6 +37,9 @@ func (p RoleMenuRepo) fmtFilter(ctx context.Context, f RoleMenuFilter) *gorm.DB 
 	if f.RoleID != 0 {
 		db = db.Where("role_id =?", f.RoleID)
 	}
+	if len(f.RoleIDs) > 0 {
+		db = db.Where("role_id IN ?", f.RoleIDs)
+	}
 	if f.AppCode != "" {
 		db = db.Where("app_code =?", f.AppCode)
 	}
