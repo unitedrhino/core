@@ -14744,9 +14744,10 @@
           "type": "string",
           "enum": [
             "phone",
-            "email"
+            "email",
+            "pwd"
           ],
-          "description": "验证方式:\tphone手机号 email邮箱"
+          "description": "验证方式:\tphone手机号 email邮箱  pwd:原密码"
         },
         "code": {
           "type": "string",
@@ -14759,6 +14760,10 @@
         "password": {
           "type": "string",
           "description": "密码"
+        },
+        "oldPassword": {
+          "type": "string",
+          "description": "输入原密码修改密码(md5格式并需要输入图像验证码)"
         }
       },
       "title": "UserChangePwdReq",

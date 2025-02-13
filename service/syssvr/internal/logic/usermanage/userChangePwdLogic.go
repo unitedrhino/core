@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -51,6 +52,21 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{account}})
 		if err != nil {
 			return nil, err
+		}
+		oldUi = ui
+	case users.RegPwd:
+		account = l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseChangePwd, in.CodeID, in.Code)
+		if account == "" {
+			return nil, errors.Captcha
+		}
+		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{account}})
+		if err != nil {
+			return nil, err
+		}
+		//md5加密后的密码则通过二次md5加密再对比库中的密码
+		password1 := utils.MakePwd(in.OldPassword, uc.UserID, true) //对密码进行md5加密
+		if password1 != ui.Password {
+			return nil, errors.Password
 		}
 		oldUi = ui
 	}

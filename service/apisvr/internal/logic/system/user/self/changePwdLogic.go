@@ -26,10 +26,11 @@ func NewChangePwdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ChangeP
 
 func (l *ChangePwdLogic) ChangePwd(req *types.UserChangePwdReq) error {
 	_, err := l.svcCtx.UserRpc.UserChangePwd(l.ctx, &sys.UserChangePwdReq{
-		Type:     req.Type,
-		Password: req.Password,
-		Code:     req.Code,
-		CodeID:   req.CodeID,
+		Type:        req.Type,
+		Password:    req.Password,
+		OldPassword: req.OldPassword,
+		Code:        req.Code,
+		CodeID:      req.CodeID,
 	})
 	return err
 }

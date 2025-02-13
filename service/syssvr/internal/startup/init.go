@@ -284,7 +284,7 @@ func InitEventBus(svcCtx *svc.ServiceContext) {
 	})
 	logx.Must(err)
 	err = svcCtx.FastEvent.QueueSubscribe(eventBus.CoreSyncDay, func(ctx context.Context, t time.Time, body []byte) error {
-		return day.NewDaySync(ctxs.WithRoot(ctx), svcCtx).HandleLog()
+		return day.NewDaySync(ctxs.WithRoot(ctx), svcCtx).Handle()
 	})
 	logx.Must(err)
 }

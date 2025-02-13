@@ -1419,8 +1419,9 @@ message UserCodeToUserIDResp{
 }
 
 message  UserChangePwdReq{
-  string  type = 1;//验证类型: email:邮箱 phone:手机号
-  string password =3;//密码
+  string  type = 1;//验证类型: email:邮箱 phone:手机号 pwd:原密码
+  string oldPassword=2;//输入原密码修改密码
+  string password =3;//新密码
   string code = 5;//验证码    微信登录填code
   string codeID = 6;//验证码编号 微信登录填state
 }
