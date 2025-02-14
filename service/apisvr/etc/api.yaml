@@ -30,7 +30,7 @@ Proxy:
       Dest: http://localhost:7789
     - Router: /api/v1/app/
       Dest: http://localhost:8000
-    - Router: /api/v1/things/rule/
+    - Router: /api/v1/things/rule/chain/
       Dest: http://localhost:7789
     - Router: /api/v1/things/
       Dest: http://localhost:7788
