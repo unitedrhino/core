@@ -8,6 +8,7 @@ import (
 	tenant "gitee.com/unitedrhino/core/service/syssvr/client/tenantmanage"
 	user "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/service/syssvr/sysdirect"
 	"gitee.com/unitedrhino/core/share/domain/log"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -46,10 +47,24 @@ func NewCheckTokenWareMiddleware(UserRpc user.UserManage, AuthRpc role.RoleManag
 }
 
 func NewCheckTokenWareMiddleware2(SysRpc conf.RpcClientConf) *CheckTokenWareMiddleware {
-	TenantRpc := tenant.NewTenantManage(zrpc.MustNewClient(SysRpc.Conf))
-	LogRpc := operLog.NewLog(zrpc.MustNewClient(SysRpc.Conf))
-	UserRpc := user.NewUserManage(zrpc.MustNewClient(SysRpc.Conf))
-	AuthRpc := role.NewRoleManage(zrpc.MustNewClient(SysRpc.Conf))
+	var (
+		TenantRpc tenant.TenantManage
+		LogRpc    operLog.Log
+		UserRpc   user.UserManage
+		AuthRpc   role.RoleManage
+	)
+	if SysRpc.Mode == conf.ClientModeDirect {
+		TenantRpc = sysdirect.NewTenantManage(SysRpc.RunProxy)
+		LogRpc = sysdirect.NewLog(SysRpc.RunProxy)
+		UserRpc = sysdirect.NewUser(SysRpc.RunProxy)
+		AuthRpc = sysdirect.NewRole(SysRpc.RunProxy)
+	} else {
+		TenantRpc = tenant.NewTenantManage(zrpc.MustNewClient(SysRpc.Conf))
+		LogRpc = operLog.NewLog(zrpc.MustNewClient(SysRpc.Conf))
+		UserRpc = user.NewUserManage(zrpc.MustNewClient(SysRpc.Conf))
+		AuthRpc = role.NewRoleManage(zrpc.MustNewClient(SysRpc.Conf))
+	}
+
 	return &CheckTokenWareMiddleware{UserRpc: UserRpc, AuthRpc: AuthRpc, TenantRpc: TenantRpc, LogRpc: LogRpc}
 }
 
