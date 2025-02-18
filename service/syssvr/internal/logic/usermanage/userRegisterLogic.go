@@ -173,7 +173,7 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
-		ui, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phone: wxPhone.PhoneInfo.PurePhoneNumber})
+		ui, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{wxPhone.PhoneInfo.PurePhoneNumber}})
 		if err != nil {
 			if !errors.Cmp(err, errors.NotFind) {
 				return err

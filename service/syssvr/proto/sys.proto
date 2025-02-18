@@ -464,6 +464,7 @@ message MessageInfoSendReq{
   string str2        =8;
   string str3        =9;
   repeated string withTypes =10;  //同时推送指定方式 sms email
+  map<string,string> params =12;//
   int64 NotifyTime = 11;//通知时间,不传为立刻通知
 }
 

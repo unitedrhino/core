@@ -34,6 +34,7 @@ type SendMsgConfig struct {
 	Str1          string
 	Str2          string
 	Str3          string
+	NoRecord      bool
 }
 
 func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgConfig) error {
@@ -110,9 +111,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			return errors.System.AddMsg("模版匹配失败").AddDetail(err)
 		}
 		subject = buffer.String()
+		if subject == "" {
+			subject = config.Name
+		}
 	}
 	var users []*relationDB.SysUserInfo
-	if config.IsRecord == def.True { //需要记录到消息中心中
+	if config.IsRecord == def.True && !cfg.NoRecord { //需要记录到消息中心中
 		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs, Accounts: cfg.Accounts})
 		if err != nil {
 			return err

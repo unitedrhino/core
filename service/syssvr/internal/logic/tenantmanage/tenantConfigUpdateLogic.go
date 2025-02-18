@@ -87,5 +87,8 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 		newPo.LoginLogKeepDays = old.LoginLogKeepDays
 	}
 	err = relationDB.NewTenantConfigRepo(l.ctx).Update(l.ctx, newPo)
+	if err == nil {
+		l.svcCtx.TenantConfigCache.SetData(l.ctx, string(newPo.TenantCode), nil)
+	}
 	return &sys.Empty{}, err
 }

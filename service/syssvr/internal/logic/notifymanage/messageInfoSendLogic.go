@@ -3,9 +3,11 @@ package notifymanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
+	"gitee.com/unitedrhino/share/utils"
 	"gorm.io/gorm"
 	"time"
 
@@ -88,5 +90,23 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 	if err != nil {
 		return nil, err
 	}
+	if in.Params != nil {
+		for _, t := range in.WithTypes {
+			tt := t
+			ctxs.GoNewCtx(l.ctx, func(ctx context.Context) {
+				err := SendNotifyMsg(ctx, l.svcCtx, SendMsgConfig{
+					UserIDs:    in.UserIDs,
+					NoRecord:   true,
+					NotifyCode: in.NotifyCode,
+					Type:       tt,
+					Params:     utils.ToStringMap(in.Params),
+				})
+				if err != nil {
+					logx.WithContext(ctx).Errorf("send notify msg err:%v", err)
+				}
+			})
+		}
+	}
+
 	return &sys.WithID{Id: po.ID}, err
 }
