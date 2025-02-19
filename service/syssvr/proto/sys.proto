@@ -680,6 +680,7 @@ message TenantConfig{
   string tenantCode = 3;//租户编码
   int64 registerRoleID=4;//注册分配的角色id
   string weatherKey =7;//和风天气秘钥 参考: https://dev.qweather.com/
+  int64 isSsl =12;//是否单会话登录(默认为2) Single Session Login
   int64 checkUserDelete=5;//1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
   google.protobuf.Int64Value deviceLimit = 8;//租户下的设备数量限制,0为不限制
   repeated  TenantConfigRegisterAutoCreateProject registerAutoCreateProject =6;//注册自动创建项目
@@ -1256,6 +1257,7 @@ message UserInfo{
   string wechatUnionID = 6;
   string wechatOpenID =23;
   string lastIP =7;
+  string lastTokenID =27;
   string regIP =8;
   string nickName =9;
   string city =10;

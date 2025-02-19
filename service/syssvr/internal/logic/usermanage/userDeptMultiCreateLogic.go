@@ -60,7 +60,7 @@ func (l *UserDeptMultiCreateLogic) UserDeptMultiCreate(in *sys.UserDeptMultiSave
 	}
 	err := relationDB.NewDeptUserRepo(l.ctx).MultiInsert(l.ctx, datas)
 	if err == nil {
-		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
+		l.svcCtx.UsersCache.SetData(l.ctx, in.UserID, nil)
 		cache.ClearProjectAuth(in.UserID)
 	}
 	FillDeptUserCount(l.ctx, l.svcCtx, idPaths...)

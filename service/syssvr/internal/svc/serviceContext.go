@@ -49,7 +49,7 @@ type ServiceContext struct {
 	LoginLimit         LoginLimit
 	Cm                 *ClientsManage
 	FastEvent          *eventBus.FastEvent
-	UserTokenInfo      *cache.UserToken
+	UsersCache         *cache.UserCache
 	TenantCache        *caches.Cache[tenant.Info, string]
 	TenantConfigCache  *caches.Cache[sys.TenantConfig, string]
 	ProjectCache       *caches.Cache[sys.ProjectInfo, int64]
@@ -61,6 +61,7 @@ type ServiceContext struct {
 	DingStreamMap      map[string]*dingClient.StreamClient //key是租户号,value是需要同步的stream
 	DingStreamMapMutex sync.RWMutex
 	TimedM             timedmanage.TimedManage
+	NodeID             int64
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -121,6 +122,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserID:        UserID,
 		Store:         store,
 		Sms:           sms,
+		NodeID:        nodeID,
 		TimedM:        timedJob,
 		DingStreamMap: make(map[string]*dingClient.StreamClient),
 	}

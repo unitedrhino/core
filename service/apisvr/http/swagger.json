@@ -13326,6 +13326,11 @@
           "format": "int64",
           "description": "是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)"
         },
+        "isSsl": {
+          "type": "integer",
+          "format": "int64",
+          "description": "是否单会话登录(默认为2) Single Session Login"
+        },
         "deviceLimit": {
           "type": "integer",
           "format": "int64",

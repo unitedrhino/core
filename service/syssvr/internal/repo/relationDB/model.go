@@ -254,6 +254,7 @@ type SysUserInfo struct {
 	DingTalkUserID  sql.NullString      `gorm:"column:ding_talk_user_id;uniqueIndex:tc_doi;type:VARCHAR(128)"`
 	DingTalkUnionID sql.NullString      `gorm:"column:ding_talk_union_id;uniqueIndex:tc_doi;type:VARCHAR(128)"`
 	LastIP          string              `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`                   // 最后登录ip
+	LastTokenID     string              `gorm:"column:last_token_id;type:VARCHAR(128);default:''"`           // 最后登录的token ID
 	RegIP           string              `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`                    // 注册ip
 	Sex             int64               `gorm:"column:sex;type:SMALLINT;default:3;NOT NULL"`                 // 用户的性别，值为1时是男性，值为2时是女性，其他值为未知
 	City            string              `gorm:"column:city;type:VARCHAR(50);NOT NULL"`                       // 用户所在城市

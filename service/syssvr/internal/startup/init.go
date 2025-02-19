@@ -272,9 +272,9 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		svcCtx.RoleAccessCache = c
 	}
 	{
-		userTokenInfo, err := cache.NewUserToken(svcCtx.FastEvent, svcCtx.TenantCache, svcCtx.UserCache)
+		userTokenInfo, err := cache.NewUserCache(svcCtx.FastEvent, svcCtx.TenantCache, svcCtx.UserCache)
 		logx.Must(err)
-		svcCtx.UserTokenInfo = userTokenInfo
+		svcCtx.UsersCache = userTokenInfo
 	}
 }
 

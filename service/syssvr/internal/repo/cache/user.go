@@ -14,13 +14,11 @@ import (
 	"time"
 )
 
-type UserToken struct {
+type UserCache struct {
 	*caches.Cache[users.UserInfo, int64]
-	TenantCache *caches.Cache[tenant.Info, string]
-	UserCache   *caches.Cache[sys.UserInfo, int64]
 }
 
-func NewUserToken(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenant.Info, string], userCache *caches.Cache[sys.UserInfo, int64]) (*UserToken, error) {
+func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenant.Info, string], userCache *caches.Cache[sys.UserInfo, int64]) (*UserCache, error) {
 	c, err := caches.NewCache(caches.CacheConfig[users.UserInfo, int64]{
 		KeyType:   eventBus.ServerCacheKeySysUserTokenInfo,
 		FastEvent: FastEvent,
@@ -60,13 +58,14 @@ func NewUserToken(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 				account = cast.ToString(ui.UserID)
 			}
 			uii := users.UserInfo{
-				UserID:     ui.UserID,
-				Account:    account,
-				RoleIDs:    rolses,
-				RoleCodes:  roleCodes,
-				TenantCode: string(ui.TenantCode),
-				IsAdmin:    isAdmin,
-				IsAllData:  ui.IsAllData,
+				UserID:      ui.UserID,
+				LastTokenID: ui.LastTokenID,
+				Account:     account,
+				RoleIDs:     rolses,
+				RoleCodes:   roleCodes,
+				TenantCode:  string(ui.TenantCode),
+				IsAdmin:     isAdmin,
+				IsAllData:   ui.IsAllData,
 			}
 			return &uii, nil
 		},
@@ -75,7 +74,7 @@ func NewUserToken(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 	if err != nil {
 		return nil, err
 	}
-	return &UserToken{
+	return &UserCache{
 		Cache: c,
 	}, nil
 }

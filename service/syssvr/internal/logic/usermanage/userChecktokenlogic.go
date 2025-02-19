@@ -151,13 +151,21 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	}
 	var token string
 
+	ui, err := l.svcCtx.UsersCache.GetData(l.ctx, claim.UserID)
+	if err != nil {
+		l.Errorf("%s UsersCache.GetData fail err=%s", utils.FuncName(), err.Error())
+		return nil, err
+	}
+	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, ui.TenantCode)
+	if err != nil {
+		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
+		return nil, err
+	}
+	if tc.IsSsl == def.True && ui.LastTokenID != "" && claim.ID != ui.LastTokenID {
+		return nil, errors.AccountKickedOut
+	}
 	if (claim.ExpiresAt.Unix()-time.Now().Unix())*2 < l.svcCtx.Config.UserToken.AccessExpire {
 		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, l.svcCtx.Config.UserToken.AccessExpire)
-	}
-	ui, err := l.svcCtx.UserTokenInfo.GetData(l.ctx, claim.UserID)
-	if err != nil {
-		l.Errorf("%s UserTokenInfo.GetData fail err=%s", utils.FuncName(), err.Error())
-		return nil, err
 	}
 	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, ui.TenantCode)
 	if err != nil {

@@ -32,7 +32,7 @@ func (l *UserRoleMultiUpdateLogic) UserRoleMultiUpdate(in *sys.UserRoleMultiUpda
 	}
 	err := relationDB.NewUserRoleRepo(l.ctx).MultiUpdate(l.ctx, in.UserID, in.RoleIDs)
 	if err == nil {
-		l.svcCtx.UserTokenInfo.SetData(l.ctx, in.UserID, nil)
+		l.svcCtx.UsersCache.SetData(l.ctx, in.UserID, nil)
 		cache.ClearProjectAuth(in.UserID)
 	}
 	return &sys.Empty{}, err

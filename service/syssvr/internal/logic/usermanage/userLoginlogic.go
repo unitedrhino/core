@@ -16,13 +16,14 @@ import (
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
+	"sync/atomic"
+	"time"
 
 	"github.com/silenceper/wechat/v2/officialaccount/oauth"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
-	"time"
 )
 
 type LoginLogic struct {
@@ -65,20 +66,25 @@ func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) er
 	return nil
 }
 
-func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo) (*sys.UserLoginResp, error) {
+var randID atomic.Uint32
+
+func genID(ctx context.Context, nodeID int64) string {
+	var token = uint32(nodeID) & 0xff
+	token += randID.Add(1) << 8 & 0xfff00
+	return fmt.Sprintf("%x", token)
+}
+
+func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*sys.UserLoginResp, error) {
+	uc := ctxs.GetUserCtx(l.ctx)
+	id := genID(l.ctx, l.svcCtx.NodeID)
 	now := time.Now()
 	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
-	uc := ctxs.GetUserCtx(l.ctx)
 	jwtToken, err := users.GetLoginJwtToken(l.svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
-		ui.UserID, uc.AppCode)
+		ui.UserID, uc.AppCode, id)
 	if err != nil {
 		l.Error(err)
 		return nil, errors.System.AddDetail(err)
 	}
-
-	//InitCacheUserAuthProject(l.ctx, ui.OperUserID)
-	//InitCacheUserAuthArea(l.ctx, ui.OperUserID)
-
 	resp := &sys.UserLoginResp{
 		Info: UserInfoToPb(l.ctx, ui, l.svcCtx),
 		Token: &sys.JwtToken{
@@ -86,6 +92,13 @@ func (l *LoginLogic) getRet(ui *relationDB.SysUserInfo) (*sys.UserLoginResp, err
 			AccessExpire: now.Unix() + accessExpire,
 			RefreshAfter: now.Unix() + accessExpire/2,
 		},
+	}
+	err = relationDB.NewUserInfoRepo(l.ctx).UpdateWithField(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{ui.UserID}}, map[string]any{
+		"last_ip":       in.Ip,
+		"last_token_id": id,
+	})
+	if err != nil {
+		return nil, err
 	}
 	l.Infof("%s getRet=%+v", utils.FuncName(), resp)
 	return resp, nil
@@ -312,7 +325,7 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 		if ui.Status != def.True {
 			return nil, errors.AccountDisable
 		}
-		return l.getRet(ui)
+		return l.getRet(in, ui)
 	}
 	if errors.Cmp(err, errors.NotFind) {
 		return nil, errors.UnRegister

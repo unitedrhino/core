@@ -128,6 +128,7 @@ type SysTenantConfig struct {
 	LoginLogKeepDays          int64                               `gorm:"column:login_log_keep_days;default:0;"`                          //登录日志保留时间,如果为0则为永久
 	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
 	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json;default:'[]'"` //产生问题反馈通知的用户ID列表
+	IsSsl                     int64                               `gorm:"column:is_ssl;default:2"`                                                //是否单会话登录 Single Session Login
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
 }
