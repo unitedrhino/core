@@ -77,6 +77,12 @@ func (p DictDetailRepo) Insert(ctx context.Context, data *SysDictDetail) error {
 	return stores.ErrFmt(result.Error)
 }
 
+func (d DictDetailRepo) UpdateWithField(ctx context.Context, f DictDetailFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysDictDetail{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
+
 func (p DictDetailRepo) FindOneByFilter(ctx context.Context, f DictDetailFilter) (*SysDictDetail, error) {
 	var result SysDictDetail
 	db := p.fmtFilter(ctx, f)
@@ -129,6 +135,6 @@ func (p DictDetailRepo) FindOne(ctx context.Context, id int64) (*SysDictDetail, 
 
 // 批量插入 LightStrategyDevice 记录
 func (p DictDetailRepo) MultiInsert(ctx context.Context, data []*SysDictDetail) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDictDetail{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDictDetail{}).CreateInBatches(data, 100).Error
 	return stores.ErrFmt(err)
 }

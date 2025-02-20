@@ -2,6 +2,7 @@
 Name: sys.rpc
 ListenOn: 0.0.0.0:9180
 CpuThreshold: 0
+Timeout: 1000000
 Etcd:
   Hosts:
     - localhost:2379

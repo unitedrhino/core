@@ -58,6 +58,11 @@ func (s *DictManageServer) DictDetailCreate(ctx context.Context, in *sys.DictDet
 	return l.DictDetailCreate(in)
 }
 
+func (s *DictManageServer) DictDetailMultiCreate(ctx context.Context, in *sys.DictDetailMultiCreateReq) (*sys.Empty, error) {
+	l := dictmanagelogic.NewDictDetailMultiCreateLogic(ctx, s.svcCtx)
+	return l.DictDetailMultiCreate(in)
+}
+
 func (s *DictManageServer) DictDetailIndex(ctx context.Context, in *sys.DictDetailIndexReq) (*sys.DictDetailIndexResp, error) {
 	l := dictmanagelogic.NewDictDetailIndexLogic(ctx, s.svcCtx)
 	return l.DictDetailIndex(in)

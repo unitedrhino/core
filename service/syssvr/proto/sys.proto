@@ -171,6 +171,8 @@ service DictManage{
 
   rpc dictDetailRead(DictDetailReadReq)returns(DictDetail);
   rpc dictDetailCreate(DictDetail) returns(WithID); //添加角色
+
+  rpc dictDetailMultiCreate(DictDetailMultiCreateReq) returns(Empty); //添加角色
   rpc dictDetailIndex(DictDetailIndexReq) returns(DictDetailIndexResp); //获取角色列表
   rpc dictDetailUpdate(DictDetail) returns(Empty); //更新角色
   rpc dictDetailDelete(WithID) returns(Empty); //删除角色
@@ -1710,6 +1712,10 @@ message DictDetailIndexResp{
   int64 total = 2;
 }
 
+message DictDetailMultiCreateReq{
+  string dictCode= 1;         // 关联标记
+  repeated  DictDetail list =2;
+}
 
 message DeptSyncJobReadReq{
   int64 id = 1;

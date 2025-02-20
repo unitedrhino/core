@@ -74,6 +74,7 @@ type (
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp
+	DictDetailMultiCreateReq              = sys.DictDetailMultiCreateReq
 	DictDetailReadReq                     = sys.DictDetailReadReq
 	DictInfo                              = sys.DictInfo
 	DictInfoIndexReq                      = sys.DictInfoIndexReq
@@ -257,6 +258,7 @@ type (
 		DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error)
 		DictDetailRead(ctx context.Context, in *DictDetailReadReq, opts ...grpc.CallOption) (*DictDetail, error)
 		DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error)
+		DictDetailMultiCreate(ctx context.Context, in *DictDetailMultiCreateReq, opts ...grpc.CallOption) (*Empty, error)
 		DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
 		DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Empty, error)
 		DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
@@ -346,6 +348,15 @@ func (m *defaultDictManage) DictDetailCreate(ctx context.Context, in *DictDetail
 
 func (d *directDictManage) DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error) {
 	return d.svr.DictDetailCreate(ctx, in)
+}
+
+func (m *defaultDictManage) DictDetailMultiCreate(ctx context.Context, in *DictDetailMultiCreateReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewDictManageClient(m.cli.Conn())
+	return client.DictDetailMultiCreate(ctx, in, opts...)
+}
+
+func (d *directDictManage) DictDetailMultiCreate(ctx context.Context, in *DictDetailMultiCreateReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.DictDetailMultiCreate(ctx, in)
 }
 
 func (m *defaultDictManage) DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error) {

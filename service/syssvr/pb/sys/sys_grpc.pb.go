@@ -4246,16 +4246,17 @@ var ModuleManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	DictManage_DictInfoCreate_FullMethodName   = "/sys.DictManage/dictInfoCreate"
-	DictManage_DictInfoIndex_FullMethodName    = "/sys.DictManage/dictInfoIndex"
-	DictManage_DictInfoUpdate_FullMethodName   = "/sys.DictManage/dictInfoUpdate"
-	DictManage_DictInfoDelete_FullMethodName   = "/sys.DictManage/dictInfoDelete"
-	DictManage_DictInfoRead_FullMethodName     = "/sys.DictManage/dictInfoRead"
-	DictManage_DictDetailRead_FullMethodName   = "/sys.DictManage/dictDetailRead"
-	DictManage_DictDetailCreate_FullMethodName = "/sys.DictManage/dictDetailCreate"
-	DictManage_DictDetailIndex_FullMethodName  = "/sys.DictManage/dictDetailIndex"
-	DictManage_DictDetailUpdate_FullMethodName = "/sys.DictManage/dictDetailUpdate"
-	DictManage_DictDetailDelete_FullMethodName = "/sys.DictManage/dictDetailDelete"
+	DictManage_DictInfoCreate_FullMethodName        = "/sys.DictManage/dictInfoCreate"
+	DictManage_DictInfoIndex_FullMethodName         = "/sys.DictManage/dictInfoIndex"
+	DictManage_DictInfoUpdate_FullMethodName        = "/sys.DictManage/dictInfoUpdate"
+	DictManage_DictInfoDelete_FullMethodName        = "/sys.DictManage/dictInfoDelete"
+	DictManage_DictInfoRead_FullMethodName          = "/sys.DictManage/dictInfoRead"
+	DictManage_DictDetailRead_FullMethodName        = "/sys.DictManage/dictDetailRead"
+	DictManage_DictDetailCreate_FullMethodName      = "/sys.DictManage/dictDetailCreate"
+	DictManage_DictDetailMultiCreate_FullMethodName = "/sys.DictManage/dictDetailMultiCreate"
+	DictManage_DictDetailIndex_FullMethodName       = "/sys.DictManage/dictDetailIndex"
+	DictManage_DictDetailUpdate_FullMethodName      = "/sys.DictManage/dictDetailUpdate"
+	DictManage_DictDetailDelete_FullMethodName      = "/sys.DictManage/dictDetailDelete"
 )
 
 // DictManageClient is the client API for DictManage service.
@@ -4269,6 +4270,7 @@ type DictManageClient interface {
 	DictInfoRead(ctx context.Context, in *DictInfoReadReq, opts ...grpc.CallOption) (*DictInfo, error)
 	DictDetailRead(ctx context.Context, in *DictDetailReadReq, opts ...grpc.CallOption) (*DictDetail, error)
 	DictDetailCreate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*WithID, error)
+	DictDetailMultiCreate(ctx context.Context, in *DictDetailMultiCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
 	DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Empty, error)
 	DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
@@ -4345,6 +4347,15 @@ func (c *dictManageClient) DictDetailCreate(ctx context.Context, in *DictDetail,
 	return out, nil
 }
 
+func (c *dictManageClient) DictDetailMultiCreate(ctx context.Context, in *DictDetailMultiCreateReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, DictManage_DictDetailMultiCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dictManageClient) DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error) {
 	out := new(DictDetailIndexResp)
 	err := c.cc.Invoke(ctx, DictManage_DictDetailIndex_FullMethodName, in, out, opts...)
@@ -4383,6 +4394,7 @@ type DictManageServer interface {
 	DictInfoRead(context.Context, *DictInfoReadReq) (*DictInfo, error)
 	DictDetailRead(context.Context, *DictDetailReadReq) (*DictDetail, error)
 	DictDetailCreate(context.Context, *DictDetail) (*WithID, error)
+	DictDetailMultiCreate(context.Context, *DictDetailMultiCreateReq) (*Empty, error)
 	DictDetailIndex(context.Context, *DictDetailIndexReq) (*DictDetailIndexResp, error)
 	DictDetailUpdate(context.Context, *DictDetail) (*Empty, error)
 	DictDetailDelete(context.Context, *WithID) (*Empty, error)
@@ -4413,6 +4425,9 @@ func (UnimplementedDictManageServer) DictDetailRead(context.Context, *DictDetail
 }
 func (UnimplementedDictManageServer) DictDetailCreate(context.Context, *DictDetail) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DictDetailCreate not implemented")
+}
+func (UnimplementedDictManageServer) DictDetailMultiCreate(context.Context, *DictDetailMultiCreateReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictDetailMultiCreate not implemented")
 }
 func (UnimplementedDictManageServer) DictDetailIndex(context.Context, *DictDetailIndexReq) (*DictDetailIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DictDetailIndex not implemented")
@@ -4562,6 +4577,24 @@ func _DictManage_DictDetailCreate_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DictManage_DictDetailMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictDetailMultiCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictDetailMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictDetailMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictDetailMultiCreate(ctx, req.(*DictDetailMultiCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DictManage_DictDetailIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DictDetailIndexReq)
 	if err := dec(in); err != nil {
@@ -4650,6 +4683,10 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "dictDetailCreate",
 			Handler:    _DictManage_DictDetailCreate_Handler,
+		},
+		{
+			MethodName: "dictDetailMultiCreate",
+			Handler:    _DictManage_DictDetailMultiCreate_Handler,
 		},
 		{
 			MethodName: "dictDetailIndex",
