@@ -7,7 +7,7 @@ RUN go mod download
 RUN cd ./service/apisvr && go mod tidy && go build  -tags no_k8s -ldflags="-s -w" .
 RUN echo "Front file URL: $frontFile"
 RUN mkdir front
-RUN cd front&&wget -O front.tgz $frontFile
+RUN cd front&&wget -O front.tgz $frontFile || true
 RUN cd front&&tar -xvzf front.tgz
 RUN cd front&&ls -l
 RUN cd front&&rm -rf front.tgz
