@@ -140,7 +140,7 @@ func (sd ProjectClause) ModifyStatement(stmt *gorm.Statement) { //查询的时�
 				}
 			}
 			var values = []any{uc.ProjectID}
-			if uc.ProjectID < def.NotClassified { //如果没有传项目ID,那么就是需要获取所有项目的参数
+			if uc.ProjectID <= def.NotClassified { //如果没有传项目ID,那么就是需要获取所有项目的参数
 				values = nil
 				for k := range uc.ProjectAuth {
 					values = append(values, k)
