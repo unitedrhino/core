@@ -10,16 +10,21 @@ import (
 	"time"
 )
 
+type retStu struct {
+	List []map[string]any `json:"list"`
+}
+
 func Init(svcCtx *svc.ServiceContext) {
 
-	ws.RegisterSubscribeCheck(func(ctx context.Context, in *ws.SubscribeInfo) error {
+	ws.RegisterSubscribeCheck2(func(ctx context.Context, in *ws.SubscribeInfo) ([]map[string]any, error) {
 		ctx, _ = context.WithTimeout(ctx, 2*time.Second)
 		sl, err := svcCtx.Slot.GetData(ctx, sysExport.GenSlotCacheKey(slot.CodeUserSubscribe, in.Code))
 		if err != nil {
-			return err
+			return nil, err
 		}
-		err = sl.Request(ctx, in, nil)
-		return err
+		var ret retStu
+		err = sl.Request(ctx, in, &ret)
+		return ret.List, err
 	})
 	err := svcCtx.ServerMsg.Start()
 	logx.Must(err)
