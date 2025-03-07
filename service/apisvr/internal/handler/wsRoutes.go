@@ -348,6 +348,12 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemcommon.DebugGetTencentHandler(serverCtx),
 				},
 				{
+					// 下载本地文件
+					Method:  http.MethodGet,
+					Path:    "/download-file",
+					Handler: systemcommon.DownloadFileHandler(serverCtx),
+				},
+				{
 					// ntp
 					Method:  http.MethodPost,
 					Path:    "/ntp/read",

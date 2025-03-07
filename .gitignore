@@ -4,6 +4,7 @@ target/
 !**/service/main/**/target/
 !**/service/test/**/target/
 /deploy/data/*
+/service/oss/*
 /docker/run-debug/
 .env
 ### STS ###

@@ -1217,6 +1217,53 @@
         ]
       }
     },
+    "/api/v1/system/common/download-file": {
+      "get": {
+        "summary": "下载本地文件",
+        "operationId": "getApiV1SystemCommonDownload-file",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filePath",
+            "description": "文件的路径\r",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "schema": {}
+          },
+          {
+            "name": "sign",
+            "description": "签名.如果是私有的需要填此参数\r",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "schema": {}
+          }
+        ],
+        "tags": [
+          "system/common",
+          "systemCommon"
+        ]
+      }
+    },
     "/api/v1/system/common/ntp/read": {
       "post": {
         "summary": "ntp",
@@ -10647,6 +10694,23 @@
       "title": "DictInfoReadReq",
       "required": [
         "id"
+      ]
+    },
+    "DownloadFileReq": {
+      "type": "object",
+      "properties": {
+        "filePath": {
+          "type": "string",
+          "description": "文件的路径"
+        },
+        "sign": {
+          "type": "string",
+          "description": "签名.如果是私有的需要填此参数"
+        }
+      },
+      "title": "DownloadFileReq",
+      "required": [
+        "filePath"
       ]
     },
     "Empty": {

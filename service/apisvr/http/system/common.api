@@ -65,6 +65,10 @@ service api {
     @doc "debugTencent"
     @handler debugGetTencent
     get /debug-tencent() returns ()
+
+    @doc "下载本地文件"
+    @handler downloadFile
+    get /download-file(DownloadFileReq) returns ()
 }
 
 type (
@@ -147,6 +151,11 @@ type (
         Scene string `json:"scene"` //场景(业务定义 如产品图片 productImg)
         FilePath string `json:"filePath"` //文件路径(带文件名)
         Rename bool `json:"rename,optional"` //true 文件重命名，false 不重命名(默认)
+    }
+
+    DownloadFileReq{
+        FilePath string `form:"filePath"`//文件的路径
+        Sign string `form:"sign,optional"`//签名.如果是私有的需要填此参数
     }
 
     UploadUrlCreateResp  {

@@ -491,6 +491,11 @@ type DictInfoReadReq struct {
 	Code string `json:"code,optional"` // 编码
 }
 
+type DownloadFileReq struct {
+	FilePath string `form:"filePath"`      //文件的路径
+	Sign     string `form:"sign,optional"` //签名.如果是私有的需要填此参数
+}
+
 type Empty struct {
 }
 
