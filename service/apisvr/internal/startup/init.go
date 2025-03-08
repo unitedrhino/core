@@ -5,7 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
 	"gitee.com/unitedrhino/core/share/domain/slot"
-	ws "gitee.com/unitedrhino/share/websocket"
+	ws "gitee.com/unitedrhino/core/share/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 )

@@ -3,9 +3,9 @@ package common
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
+	ws "gitee.com/unitedrhino/core/share/websocket"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/utils"
-	ws "gitee.com/unitedrhino/share/websocket"
 	"github.com/gorilla/websocket"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
