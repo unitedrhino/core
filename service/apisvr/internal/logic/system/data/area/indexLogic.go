@@ -2,6 +2,7 @@ package area
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -26,16 +27,16 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.DataAreaIndexReq) (resp *types.DataAreaIndexResp, err error) {
-	dmResp, err := l.svcCtx.DataM.DataAreaIndex(l.ctx, utils.Copy[sys.DataAreaIndexReq](req))
+	ret, err := l.svcCtx.DataM.DataAreaIndex(l.ctx, utils.Copy[sys.DataAreaIndexReq](req))
 	if err != nil {
 		l.Errorf("%s.rpc.DataAreaIndex req=%v err=%+v", utils.FuncName(), req, err)
 		return nil, err
 	}
-	if len(dmResp.List) == 0 {
+	if len(ret.List) == 0 {
 		return &types.DataAreaIndexResp{}, nil
 	}
 	var areaIDs []int64
-	for _, v := range dmResp.List {
+	for _, v := range ret.List {
 		areaIDs = append(areaIDs, v.AreaID)
 	}
 	areaInfos, err := l.svcCtx.AreaM.AreaInfoIndex(l.ctx, &sys.AreaInfoIndexReq{AreaIDs: areaIDs})
@@ -46,9 +47,9 @@ func (l *IndexLogic) Index(req *types.DataAreaIndexReq) (resp *types.DataAreaInd
 	for _, v := range areaInfos.List {
 		areaMap[v.AreaID] = v
 	}
-	list := ToDataAreaDetail(l.ctx, l.svcCtx, dmResp.List, areaMap)
+	list := ToDataAreaDetail(l.ctx, l.svcCtx, ret.List, areaMap)
 	return &types.DataAreaIndexResp{
-		Total: dmResp.Total,
-		List:  list,
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     list,
 	}, nil
 }

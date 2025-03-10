@@ -32,5 +32,5 @@ func (l *GroupIndexLogic) GroupIndex(req *types.TimedTaskGroupIndexReq) (resp *t
 	if err != nil {
 		return nil, err
 	}
-	return &types.TimedTaskGroupIndexResp{List: ToTaskGroupsTypes(ret.List), Total: ret.Total}, nil
+	return &types.TimedTaskGroupIndexResp{List: ToTaskGroupsTypes(ret.List), PageResp: logic.ToPageResp(req.Page, ret.Total)}, nil
 }

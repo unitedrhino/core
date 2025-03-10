@@ -54,7 +54,7 @@ type (
     }
 
     OpsWorkOrderIndexResp  {
-        Total int64 `json:"total"` //总数
+        PageResp
         List []*OpsWorkOrder `json:"list"` //菜单列表
     }
 

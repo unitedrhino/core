@@ -35,7 +35,7 @@ func (l *IndexLogic) Index(req *types.AppInfoIndexReq) (resp *types.AppInfoIndex
 		return nil, err
 	}
 	return &types.AppInfoIndexResp{
-		Total: ret.Total,
-		List:  ToAppInfosTypes(ret.List),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     ToAppInfosTypes(ret.List),
 	}, nil
 }

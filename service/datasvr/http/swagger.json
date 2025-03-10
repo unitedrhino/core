@@ -438,16 +438,24 @@
           },
           "description": " 列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "DataStatisticsManageIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "FilterKeywords": {
@@ -510,6 +518,29 @@
         }
       },
       "title": "PageInfo"
+    },
+    "PageResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "PageResp",
+      "required": [
+        "total"
+      ]
     },
     "StaticsticsInfoExportReq": {
       "type": "object",

@@ -54,7 +54,7 @@ type (
 
     SysLogLoginIndexResp {
         List []*SysLogLoginInfo `json:"list"`  //登录日志列表数据
-        Total int64 `json:"total"`                  //登录日志列表总记录数
+        PageResp
     }
 
      SysLogOperIndexReq {
@@ -84,6 +84,6 @@ type (
     }
     SysLogOperIndexResp {
         List []*SysLogOperInfo `json:"list"`  //操作日志列表数据
-        Total int64 `json:"total"`                 //操作日志列表总记录数
+        PageResp
     }
 )

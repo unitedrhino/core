@@ -120,7 +120,7 @@ type (
     }
 
     DataOpenAccessIndexResp {
-        Total int64           `json:"total"` //总数
+        PageResp
         List  []*DataOpenAccess `json:"list"`    //用户数据权限列表
     }
 
@@ -178,7 +178,7 @@ type (
         TargetType string `json:"targetType"`
     }
     DataProjectIndexResp  {
-        Total int64           `json:"total"` //总数
+        PageResp
         List  []*DataProject `json:"list"`    //用户数据权限列表
     }
 
@@ -217,7 +217,7 @@ type (
         User *UserCore `json:"user,optional"`//获取用户类型返回
     }
     DataAreaIndexResp  {
-        Total int64           `json:"total"` //总数
+        PageResp
         List  []*DataAreaDetail `json:"list"`    //用户数据权限列表
     }
 )
@@ -234,7 +234,7 @@ type (
     }
     UserAreaApplyIndexResp{
         List []*UserAreaApplyInfo `json:"list"`
-        Total int64 `json:"total"`
+        PageResp
     }
     UserAreaApplyInfo{
         ID  int64 `json:"id"` //项目id

@@ -136,8 +136,8 @@ type (
 		WithDepts bool  `json:"withDepts,optional"`
 	}
 	TenantModuleInfoIndexResp{
-		Total int64 `json:"total"` //总数
 		List []*TenantModuleInfo `json:"list"` //菜单列表
+		PageResp
 	}
 	UserModuleIndexReq{
 		WithMenus bool `json:"withMenus,optional"`//同时返回模块下的菜单列表
@@ -239,7 +239,7 @@ type (
 		*MessageInfo
 	}
 	UserMessageIndexResp{
-		Total int64  `json:"total"`
+		PageResp
 		List []*UserMessage `json:"list"`
 	}
 )

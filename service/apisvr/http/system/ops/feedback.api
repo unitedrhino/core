@@ -47,8 +47,8 @@ type (
     }
 
     OpsFeedbackIndexResp  {
-        Total int64 `json:"total"` //总数
         List []*OpsFeedback `json:"list"` //菜单列表
+        PageResp
     }
 
 )

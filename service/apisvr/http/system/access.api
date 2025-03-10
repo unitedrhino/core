@@ -100,7 +100,7 @@ type (
 
     ApiInfoIndexResp  {
         List []*ApiInfo `json:"list"`            // 接口列表数据
-        Total int64 `json:"total"`                    // 接口列表总记录数
+        PageResp
     }
 
     AccessIndexReq  {
@@ -117,7 +117,7 @@ type (
 
     AccessIndexResp  {
         List []*AccessInfo `json:"list"`            // 接口列表数据
-        Total int64 `json:"total"`                    // 接口列表总记录数
+        PageResp
     }
     AccessTreeResp  {
         List []*AccessModuleInfo `json:"list"`            // 接口列表数据

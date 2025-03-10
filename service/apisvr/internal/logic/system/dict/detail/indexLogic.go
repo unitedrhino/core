@@ -2,6 +2,7 @@ package detail
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/dict"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
@@ -33,7 +34,7 @@ func (l *IndexLogic) Index(req *types.DictDetailIndexReq) (resp *types.DictDetai
 	}
 
 	return &types.DictDetailIndexResp{
-		Total: ret.Total,
-		List:  dict.ToDetailsTypes(ret.List),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     dict.ToDetailsTypes(ret.List),
 	}, nil
 }

@@ -194,7 +194,7 @@ type (
     }
     TenantCoreIndexResp{
         List []*TenantCore `json:"list"`            // 列表数据
-        Total int64 `json:"total"`                    // 列表总记录数
+        PageResp
     }
 )
 
@@ -211,7 +211,7 @@ type (
     }
     TenantAgreementIndexResp{
         List []*TenantAgreement `json:"list"`            // 列表数据
-        Total int64 `json:"total"`                    // 列表总记录数
+        PageResp
     }
 )
 
@@ -222,7 +222,7 @@ type(
     }
     TenantAccessInfoTreeResp{
         List []*AccessModuleInfo `json:"list"`
-        Total int64 `json:"total"`
+        PageResp
     }
 )
 
@@ -248,7 +248,7 @@ type (
 
     TenantInfoIndexResp  {
         List []*TenantInfo `json:"list"`            // 租户列表数据
-        Total int64 `json:"total"`                    // 租户列表总记录数
+        PageResp
     }
     TenantConfig{
         TenantCode                string                                   `json:"tenantCode,optional"`  // 租户编码

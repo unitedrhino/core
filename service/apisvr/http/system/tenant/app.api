@@ -215,7 +215,7 @@ type(
     }
     TenantAppIndexResp{
         List []*TenantApp `json:"list"`            // 租户列表数据
-        Total int64 `json:"total"`                    // 租户列表总记录数
+        PageResp
     }
     TenantAppModuleMultiCreate{
         Code string `json:"code,optional"`                     // 租户编号

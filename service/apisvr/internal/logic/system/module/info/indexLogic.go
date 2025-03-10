@@ -39,7 +39,7 @@ func (l *IndexLogic) Index(req *types.ModuleInfoIndexReq) (resp *types.ModuleInf
 	}
 
 	return &types.ModuleInfoIndexResp{
-		List:  ToModuleInfosApi(ret.List),
-		Total: ret.Total,
+		List:     ToModuleInfosApi(ret.List),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
 	}, nil
 }

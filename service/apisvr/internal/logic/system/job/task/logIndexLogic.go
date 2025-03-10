@@ -42,7 +42,7 @@ func (l *LogIndexLogic) LogIndex(req *types.TimedTaskLogIndexReq) (resp *types.T
 		list = append(list, ToTaskLog(v))
 	}
 	return &types.TimedTaskLogIndexResp{
-		List:  list,
-		Total: ret.Total,
+		List:     list,
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
 	}, nil
 }

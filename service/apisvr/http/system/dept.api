@@ -124,7 +124,7 @@ type (
     }
 
     DeptSyncJobIndexResp  {
-        Total int64 `json:"total"` //总数
+        PageResp
         List []*DeptSyncJob `json:"list"` //任务列表
     }
 
@@ -158,7 +158,7 @@ type (
     }
 
     DeptInfoIndexResp  {
-        Total int64 `json:"total"` //总数
+        PageResp
         List []*DeptInfo `json:"list"` //菜单列表
     }
     DeptInfo{

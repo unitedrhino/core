@@ -64,3 +64,13 @@ func SysToWithIDTypes(in *sys.WithID) *types.WithID {
 		ID: in.Id,
 	}
 }
+
+func ToPageResp(p *types.PageInfo, total int64) types.PageResp {
+	ret := types.PageResp{Total: total}
+	if p == nil {
+		return ret
+	}
+	ret.Page = p.Page
+	ret.Size = p.Size
+	return ret
+}

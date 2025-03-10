@@ -32,5 +32,5 @@ func (l *InfoIndexLogic) InfoIndex(req *types.TimedTaskInfoIndexReq) (resp *type
 	if err != nil {
 		return nil, err
 	}
-	return &types.TimedTaskInfoIndexResp{List: ToTaskInfosTypes(ret.List), Total: ret.Total}, nil
+	return &types.TimedTaskInfoIndexResp{List: ToTaskInfosTypes(ret.List), PageResp: logic.ToPageResp(req.Page, ret.Total)}, nil
 }

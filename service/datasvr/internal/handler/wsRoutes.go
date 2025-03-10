@@ -2,7 +2,7 @@
 package handler
 
 import (
-	ws "gitee.com/unitedrhino/core/share/websocket"
+	ws "gitee.com/unitedrhino/share/websocket"
 	"net/http"
 
 	datastaticsticsinfo "gitee.com/unitedrhino/core/service/datasvr/internal/handler/data/staticstics/info"

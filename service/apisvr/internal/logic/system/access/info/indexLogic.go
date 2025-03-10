@@ -26,7 +26,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.AccessIndexReq) (resp *types.AccessIndexResp, err error) {
-	rst, err := l.svcCtx.AccessRpc.AccessInfoIndex(l.ctx, &sys.AccessInfoIndexReq{
+	ret, err := l.svcCtx.AccessRpc.AccessInfoIndex(l.ctx, &sys.AccessInfoIndexReq{
 		Page:       logic.ToSysPageRpc(req.Page),
 		Group:      req.Group,
 		Code:       req.Code,
@@ -39,7 +39,7 @@ func (l *IndexLogic) Index(req *types.AccessIndexReq) (resp *types.AccessIndexRe
 		return nil, err
 	}
 	return &types.AccessIndexResp{
-		List:  ToAccessInfosTypes(rst.List),
-		Total: rst.Total,
+		List:     ToAccessInfosTypes(ret.List),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
 	}, nil
 }

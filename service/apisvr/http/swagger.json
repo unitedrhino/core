@@ -8906,16 +8906,24 @@
           },
           "description": " 接口列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 接口列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "AccessIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "AccessInfo": {
@@ -9197,16 +9205,24 @@
           },
           "description": " 接口列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 接口列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "ApiInfoIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "AppCore": {
@@ -9341,16 +9357,24 @@
           },
           "description": " 接口列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 接口列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "AppInfoIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "AppModuleIndexReq": {
@@ -9795,10 +9819,19 @@
     "DataAreaIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -9810,7 +9843,6 @@
       },
       "title": "DataAreaIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -9937,10 +9969,19 @@
     "DataOpenAccessIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -9952,7 +9993,6 @@
       },
       "title": "DataOpenAccessIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -10036,10 +10076,19 @@
     "DataProjectIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -10051,7 +10100,6 @@
       },
       "title": "DataProjectIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -10258,10 +10306,19 @@
     "DeptInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -10273,7 +10330,6 @@
       },
       "title": "DeptInfoIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -10387,10 +10443,19 @@
     "DeptSyncJobIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -10402,7 +10467,6 @@
       },
       "title": "DeptSyncJobIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -10549,10 +10613,19 @@
     "DictDetailIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -10564,7 +10637,6 @@
       },
       "title": "DictDetailIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -10659,10 +10731,19 @@
     "DictInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -10674,7 +10755,6 @@
       },
       "title": "DictInfoIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -11074,16 +11154,24 @@
           },
           "description": " 消息列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 消息列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "MessageInfoIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "MessageInfoSendReq": {
@@ -11232,22 +11320,30 @@
     "ModuleInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int64",
-          "description": "总数"
-        },
         "list": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/ModuleInfo"
           },
           "description": "菜单列表"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "ModuleInfoIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -11317,16 +11413,24 @@
           },
           "description": " 通知模版列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 通知模版列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "NotifyChannelIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "NotifyConfig": {
@@ -11411,16 +11515,24 @@
           },
           "description": " 通知列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 通知列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "NotifyConfigIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "NotifyConfigTemplate": {
@@ -11611,16 +11723,24 @@
           },
           "description": " 通知模版列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 通知模版列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "NotifyTemplateIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "NtpReadReq": {
@@ -11739,22 +11859,30 @@
     "OpsFeedbackIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int64",
-          "description": "总数"
-        },
         "list": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/OpsFeedback"
           },
           "description": "菜单列表"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "OpsFeedbackIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -11845,10 +11973,19 @@
     "OpsWorkOrderIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -11860,7 +11997,6 @@
       },
       "title": "OpsWorkOrderIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -11914,6 +12050,29 @@
         }
       },
       "title": "PageInfo"
+    },
+    "PageResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "PageResp",
+      "required": [
+        "total"
+      ]
     },
     "Point": {
       "type": "object",
@@ -12374,16 +12533,24 @@
           },
           "description": "角色列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "角色列表总数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "RoleInfoIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "RoleMenuIndexReq": {
@@ -12684,16 +12851,24 @@
           },
           "description": "登录日志列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "登录日志列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "SysLogLoginIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "SysLogLoginInfo": {
@@ -12797,16 +12972,24 @@
           },
           "description": "操作日志列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "操作日志列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "SysLogOperIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "SysLogOperInfo": {
@@ -12951,6 +13134,16 @@
             "$ref": "#/definitions/AccessModuleInfo"
           }
         },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
         "total": {
           "type": "integer",
           "format": "int64"
@@ -12958,8 +13151,7 @@
       },
       "title": "TenantAccessInfoTreeResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TenantAgreement": {
@@ -13009,16 +13201,24 @@
           },
           "description": " 列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "TenantAgreementIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TenantApp": {
@@ -13093,16 +13293,24 @@
           },
           "description": " 租户列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 租户列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "TenantAppIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TenantAppInfo": {
@@ -13549,16 +13757,24 @@
           },
           "description": " 列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "TenantCoreIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TenantInfo": {
@@ -13719,16 +13935,24 @@
           },
           "description": " 租户列表数据"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": " 租户列表总记录数"
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "TenantInfoIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TenantModuleCreateReq": {
@@ -13870,22 +14094,30 @@
     "TenantModuleInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int64",
-          "description": "总数"
-        },
         "list": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/TenantModuleInfo"
           },
           "description": "菜单列表"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "TenantModuleInfoIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -14154,6 +14386,16 @@
             "$ref": "#/definitions/TimedTaskGroup"
           }
         },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
         "total": {
           "type": "integer",
           "format": "int64"
@@ -14161,8 +14403,7 @@
       },
       "title": "TimedTaskGroupIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TimedTaskInfo": {
@@ -14243,6 +14484,16 @@
             "$ref": "#/definitions/TimedTaskInfo"
           }
         },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
         "total": {
           "type": "integer",
           "format": "int64"
@@ -14250,8 +14501,7 @@
       },
       "title": "TimedTaskInfoIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TimedTaskLog": {
@@ -14335,6 +14585,16 @@
             "$ref": "#/definitions/TimedTaskLog"
           }
         },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
         "total": {
           "type": "integer",
           "format": "int64"
@@ -14342,8 +14602,7 @@
       },
       "title": "TimedTaskLogIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "TimedTaskLogScript": {
@@ -14654,6 +14913,16 @@
             "$ref": "#/definitions/UserAreaApplyInfo"
           }
         },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
         "total": {
           "type": "integer",
           "format": "int64"
@@ -14661,8 +14930,7 @@
       },
       "title": "UserAreaApplyIndexResp",
       "required": [
-        "list",
-        "total"
+        "list"
       ]
     },
     "UserAreaApplyInfo": {
@@ -15358,6 +15626,16 @@
     "UserMessageIndexResp": {
       "type": "object",
       "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
         "total": {
           "type": "integer",
           "format": "int64"
@@ -15371,7 +15649,6 @@
       },
       "title": "UserMessageIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },
@@ -15582,21 +15859,30 @@
     "UserRoleIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
-          "type": "integer",
-          "format": "int64"
-        },
         "list": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/RoleInfo"
           },
           "description": "用户角色列表"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "UserRoleIndexResp",
       "required": [
-        "total",
         "list"
       ]
     },

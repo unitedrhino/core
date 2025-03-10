@@ -2,6 +2,7 @@ package role
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
@@ -32,7 +33,7 @@ func (l *RoleIndexLogic) RoleIndex(req *types.UserRoleIndexReq) (resp *types.Use
 	}
 
 	return &types.UserRoleIndexResp{
-		List:  role.ToRoleInfosTypes(ret.List),
-		Total: ret.Total,
+		List:     role.ToRoleInfosTypes(ret.List),
+		PageResp: logic.ToPageResp(nil, ret.Total),
 	}, nil
 }

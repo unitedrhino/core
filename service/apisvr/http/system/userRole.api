@@ -35,8 +35,8 @@ type (
     }
 
     UserRoleIndexResp{
-        Total int64 `json:"total"`
         List  []*RoleInfo `json:"list"`           //用户角色列表
+        PageResp
     }
 
     UserRoleMultiUpdateReq{

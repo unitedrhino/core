@@ -137,7 +137,7 @@ type (
 
     NotifyConfigIndexResp  {
         List []*NotifyConfig `json:"list"`            // 通知列表数据
-        Total int64 `json:"total"`                    // 通知列表总记录数
+        PageResp
     }
     NotifyConfigTreeResp  {
         List []*NotifyGroupInfo `json:"list"`            // 通知列表数据

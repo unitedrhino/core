@@ -77,7 +77,7 @@ func (l *IndexLogic) Index(req *types.TenantInfoIndexReq) (resp *types.TenantInf
 		}
 	}
 	return &types.TenantInfoIndexResp{
-		Total: ret.Total,
-		List:  system.ToTenantInfosTypes(ret.List, userMap, projectMap),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     system.ToTenantInfosTypes(ret.List, userMap, projectMap),
 	}, nil
 }

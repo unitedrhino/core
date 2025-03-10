@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -37,7 +38,7 @@ func (l *MessageIndexLogic) MessageIndex(req *types.UserMessageIndexReq) (resp *
 		list = append(list, val)
 	}
 	return &types.UserMessageIndexResp{
-		Total: ret.Total,
-		List:  list,
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     list,
 	}, err
 }

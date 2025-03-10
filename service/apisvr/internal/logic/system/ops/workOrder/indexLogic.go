@@ -2,6 +2,7 @@ package workOrder
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -29,7 +30,7 @@ func (l *IndexLogic) Index(req *types.OpsWorkOrderIndexReq) (resp *types.OpsWork
 		return nil, err
 	}
 	return &types.OpsWorkOrderIndexResp{
-		Total: ret.Total,
-		List:  utils.CopySlice[types.OpsWorkOrder](ret.List),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     utils.CopySlice[types.OpsWorkOrder](ret.List),
 	}, nil
 }

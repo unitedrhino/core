@@ -84,7 +84,7 @@ func (l *IndexLogic) Index(req *types.UserAreaApplyIndexReq) (resp *types.UserAr
 		}
 	}
 	return &types.UserAreaApplyIndexResp{
-		Total: ret.Total,
-		List:  list,
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     list,
 	}, nil
 }

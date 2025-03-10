@@ -34,7 +34,7 @@ func (l *ProjectIndexLogic) ProjectIndex(req *types.DataProjectIndexReq) (resp *
 		TargetID:   req.TargetID,
 		TargetType: req.TargetType,
 	}
-	dmResp, err := l.svcCtx.DataM.DataProjectIndex(l.ctx, dto)
+	ret, err := l.svcCtx.DataM.DataProjectIndex(l.ctx, dto)
 	if err != nil {
 		l.Errorf("%s.rpc.DataProjectIndex req=%v err=%+v", utils.FuncName(), req, err)
 		return nil, err
@@ -43,9 +43,9 @@ func (l *ProjectIndexLogic) ProjectIndex(req *types.DataProjectIndexReq) (resp *
 	if req.TargetType != def.TargetUser {
 		svcCtx = nil
 	}
-	list := ToProjectApis(l.ctx, svcCtx, dmResp.List)
+	list := ToProjectApis(l.ctx, svcCtx, ret.List)
 	return &types.DataProjectIndexResp{
-		Total: dmResp.Total,
-		List:  list,
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     list,
 	}, nil
 }

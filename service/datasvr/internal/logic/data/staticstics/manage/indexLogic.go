@@ -2,6 +2,7 @@ package manage
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/datasvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
@@ -41,7 +42,7 @@ func (l *IndexLogic) Index(req *types.DataStatisticsManageIndexReq) (resp *types
 		return nil, err
 	}
 	return &types.DataStatisticsManageIndexResp{
-		List:  utils.CopySlice[types.DataStatisticsManage](pos),
-		Total: total,
+		List:     utils.CopySlice[types.DataStatisticsManage](pos),
+		PageResp: logic.ToPageResp(req.Page, total),
 	}, err
 }

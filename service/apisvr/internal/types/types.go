@@ -22,8 +22,8 @@ type AccessIndexReq struct {
 }
 
 type AccessIndexResp struct {
-	List  []*AccessInfo `json:"list"`  // 接口列表数据
-	Total int64         `json:"total"` // 接口列表总记录数
+	List []*AccessInfo `json:"list"` // 接口列表数据
+	PageResp
 }
 
 type AccessInfo struct {
@@ -94,8 +94,8 @@ type ApiInfoIndexReq struct {
 }
 
 type ApiInfoIndexResp struct {
-	List  []*ApiInfo `json:"list"`  // 接口列表数据
-	Total int64      `json:"total"` // 接口列表总记录数
+	List []*ApiInfo `json:"list"` // 接口列表数据
+	PageResp
 }
 
 type AppCore struct {
@@ -131,8 +131,8 @@ type AppInfoIndexReq struct {
 }
 
 type AppInfoIndexResp struct {
-	List  []*AppInfo `json:"list"`  // 接口列表数据
-	Total int64      `json:"total"` // 接口列表总记录数
+	List []*AppInfo `json:"list"` // 接口列表数据
+	PageResp
 }
 
 type AppModuleIndexReq struct {
@@ -255,8 +255,8 @@ type DataAreaIndexReq struct {
 }
 
 type DataAreaIndexResp struct {
-	Total int64             `json:"total"` //总数
-	List  []*DataAreaDetail `json:"list"`  //用户数据权限列表
+	PageResp
+	List []*DataAreaDetail `json:"list"` //用户数据权限列表
 }
 
 type DataAreaMultiDeleteReq struct {
@@ -292,8 +292,8 @@ type DataOpenAccessIndexReq struct {
 }
 
 type DataOpenAccessIndexResp struct {
-	Total int64             `json:"total"` //总数
-	List  []*DataOpenAccess `json:"list"`  //用户数据权限列表
+	PageResp
+	List []*DataOpenAccess `json:"list"` //用户数据权限列表
 }
 
 type DataProject struct {
@@ -318,8 +318,8 @@ type DataProjectIndexReq struct {
 }
 
 type DataProjectIndexResp struct {
-	Total int64          `json:"total"` //总数
-	List  []*DataProject `json:"list"`  //用户数据权限列表
+	PageResp
+	List []*DataProject `json:"list"` //用户数据权限列表
 }
 
 type DataProjectMultiDeleteReq struct {
@@ -376,8 +376,8 @@ type DeptInfoIndexReq struct {
 }
 
 type DeptInfoIndexResp struct {
-	Total int64       `json:"total"` //总数
-	List  []*DeptInfo `json:"list"`  //菜单列表
+	PageResp
+	List []*DeptInfo `json:"list"` //菜单列表
 }
 
 type DeptInfoReadReq struct {
@@ -411,8 +411,8 @@ type DeptSyncJobIndexReq struct {
 }
 
 type DeptSyncJobIndexResp struct {
-	Total int64          `json:"total"` //总数
-	List  []*DeptSyncJob `json:"list"`  //任务列表
+	PageResp
+	List []*DeptSyncJob `json:"list"` //任务列表
 }
 
 type DeptSyncJobReadReq struct {
@@ -452,8 +452,8 @@ type DictDetailIndexReq struct {
 }
 
 type DictDetailIndexResp struct {
-	Total int64         `json:"total"` //总数
-	List  []*DictDetail `json:"list"`  //菜单列表
+	PageResp
+	List []*DictDetail `json:"list"` //菜单列表
 }
 
 type DictDetailReadReq struct {
@@ -482,8 +482,8 @@ type DictInfoIndexReq struct {
 }
 
 type DictInfoIndexResp struct {
-	Total int64       `json:"total"` //总数
-	List  []*DictInfo `json:"list"`  //菜单列表
+	PageResp
+	List []*DictInfo `json:"list"` //菜单列表
 }
 
 type DictInfoReadReq struct {
@@ -589,8 +589,8 @@ type MessageInfoIndexReq struct {
 }
 
 type MessageInfoIndexResp struct {
-	List  []*MessageInfo `json:"list"`  // 消息列表数据
-	Total int64          `json:"total"` // 消息列表总记录数
+	List []*MessageInfo `json:"list"` // 消息列表数据
+	PageResp
 }
 
 type MessageInfoSendReq struct {
@@ -630,8 +630,8 @@ type ModuleInfoIndexReq struct {
 }
 
 type ModuleInfoIndexResp struct {
-	Total int64         `json:"total"` //总数
-	List  []*ModuleInfo `json:"list"`  //菜单列表
+	List []*ModuleInfo `json:"list"` //菜单列表
+	PageResp
 }
 
 type NotifyChannel struct {
@@ -652,8 +652,8 @@ type NotifyChannelIndexReq struct {
 }
 
 type NotifyChannelIndexResp struct {
-	List  []*NotifyChannel `json:"list"`  // 通知模版列表数据
-	Total int64            `json:"total"` // 通知模版列表总记录数
+	List []*NotifyChannel `json:"list"` // 通知模版列表数据
+	PageResp
 }
 
 type NotifyConfig struct {
@@ -676,8 +676,8 @@ type NotifyConfigIndexReq struct {
 }
 
 type NotifyConfigIndexResp struct {
-	List  []*NotifyConfig `json:"list"`  // 通知列表数据
-	Total int64           `json:"total"` // 通知列表总记录数
+	List []*NotifyConfig `json:"list"` // 通知列表数据
+	PageResp
 }
 
 type NotifyConfigTemplate struct {
@@ -734,8 +734,8 @@ type NotifyTemplateIndexReq struct {
 }
 
 type NotifyTemplateIndexResp struct {
-	List  []*NotifyTemplate `json:"list"`  // 通知模版列表数据
-	Total int64             `json:"total"` // 通知模版列表总记录数
+	List []*NotifyTemplate `json:"list"` // 通知模版列表数据
+	PageResp
 }
 
 type NtpReadReq struct {
@@ -771,8 +771,8 @@ type OpsFeedbackIndexReq struct {
 }
 
 type OpsFeedbackIndexResp struct {
-	Total int64          `json:"total"` //总数
-	List  []*OpsFeedback `json:"list"`  //菜单列表
+	List []*OpsFeedback `json:"list"` //菜单列表
+	PageResp
 }
 
 type OpsWorkOrder struct {
@@ -798,8 +798,8 @@ type OpsWorkOrderIndexReq struct {
 }
 
 type OpsWorkOrderIndexResp struct {
-	Total int64           `json:"total"` //总数
-	List  []*OpsWorkOrder `json:"list"`  //菜单列表
+	PageResp
+	List []*OpsWorkOrder `json:"list"` //菜单列表
 }
 
 type OrderBy struct {
@@ -815,6 +815,12 @@ type PageInfo struct {
 	Page   int64      `json:"page,optional" form:"page,optional"` // 页码
 	Size   int64      `json:"size,optional" form:"size,optional"` // 每页大小
 	Orders []*OrderBy `json:"orders,optional"`                    //排序
+}
+
+type PageResp struct {
+	Page  int64 `json:"page,optional"` // 页码
+	Size  int64 `json:"size,optional"` // 每页大小
+	Total int64 `json:"total"`
 }
 
 type Point struct {
@@ -932,8 +938,8 @@ type RoleInfoIndexReq struct {
 }
 
 type RoleInfoIndexResp struct {
-	List  []*RoleInfo `json:"list"`  //角色列表数据
-	Total int64       `json:"total"` //角色列表总数
+	List []*RoleInfo `json:"list"` //角色列表数据
+	PageResp
 }
 
 type RoleMenuIndexReq struct {
@@ -1011,8 +1017,8 @@ type SysLogLoginIndexReq struct {
 }
 
 type SysLogLoginIndexResp struct {
-	List  []*SysLogLoginInfo `json:"list"`  //登录日志列表数据
-	Total int64              `json:"total"` //登录日志列表总记录数
+	List []*SysLogLoginInfo `json:"list"` //登录日志列表数据
+	PageResp
 }
 
 type SysLogLoginInfo struct {
@@ -1039,8 +1045,8 @@ type SysLogOperIndexReq struct {
 }
 
 type SysLogOperIndexResp struct {
-	List  []*SysLogOperInfo `json:"list"`  //操作日志列表数据
-	Total int64             `json:"total"` //操作日志列表总记录数
+	List []*SysLogOperInfo `json:"list"` //操作日志列表数据
+	PageResp
 }
 
 type SysLogOperInfo struct {
@@ -1076,8 +1082,8 @@ type TenantAccessInfo struct {
 }
 
 type TenantAccessInfoTreeResp struct {
-	List  []*AccessModuleInfo `json:"list"`
-	Total int64               `json:"total"`
+	List []*AccessModuleInfo `json:"list"`
+	PageResp
 }
 
 type TenantAgreement struct {
@@ -1093,8 +1099,8 @@ type TenantAgreementIndexReq struct {
 }
 
 type TenantAgreementIndexResp struct {
-	List  []*TenantAgreement `json:"list"`  // 列表数据
-	Total int64              `json:"total"` // 列表总记录数
+	List []*TenantAgreement `json:"list"` // 列表数据
+	PageResp
 }
 
 type TenantApp struct {
@@ -1111,8 +1117,8 @@ type TenantAppIndexReq struct {
 }
 
 type TenantAppIndexResp struct {
-	List  []*TenantApp `json:"list"`  // 租户列表数据
-	Total int64        `json:"total"` // 租户列表总记录数
+	List []*TenantApp `json:"list"` // 租户列表数据
+	PageResp
 }
 
 type TenantAppInfo struct {
@@ -1213,8 +1219,8 @@ type TenantCoreIndexReq struct {
 }
 
 type TenantCoreIndexResp struct {
-	List  []*TenantCore `json:"list"`  // 列表数据
-	Total int64         `json:"total"` // 列表总记录数
+	List []*TenantCore `json:"list"` // 列表数据
+	PageResp
 }
 
 type TenantInfo struct {
@@ -1260,8 +1266,8 @@ type TenantInfoIndexReq struct {
 }
 
 type TenantInfoIndexResp struct {
-	List  []*TenantInfo `json:"list"`  // 租户列表数据
-	Total int64         `json:"total"` // 租户列表总记录数
+	List []*TenantInfo `json:"list"` // 租户列表数据
+	PageResp
 }
 
 type TenantModuleCreateReq struct {
@@ -1288,8 +1294,8 @@ type TenantModuleInfo struct {
 }
 
 type TenantModuleInfoIndexResp struct {
-	Total int64               `json:"total"` //总数
-	List  []*TenantModuleInfo `json:"list"`  //菜单列表
+	List []*TenantModuleInfo `json:"list"` //菜单列表
+	PageResp
 }
 
 type TenantModuleWithIDOrCode struct {
@@ -1369,8 +1375,8 @@ type TimedTaskGroupIndexReq struct {
 }
 
 type TimedTaskGroupIndexResp struct {
-	List  []*TimedTaskGroup `json:"list"`
-	Total int64             `json:"total"`
+	List []*TimedTaskGroup `json:"list"`
+	PageResp
 }
 
 type TimedTaskInfo struct {
@@ -1391,8 +1397,8 @@ type TimedTaskInfoIndexReq struct {
 }
 
 type TimedTaskInfoIndexResp struct {
-	List  []*TimedTaskInfo `json:"list"`
-	Total int64            `json:"total"`
+	List []*TimedTaskInfo `json:"list"`
+	PageResp
 }
 
 type TimedTaskLog struct {
@@ -1414,8 +1420,8 @@ type TimedTaskLogIndexReq struct {
 }
 
 type TimedTaskLogIndexResp struct {
-	List  []*TimedTaskLog `json:"list"`
-	Total int64           `json:"total"`
+	List []*TimedTaskLog `json:"list"`
+	PageResp
 }
 
 type TimedTaskLogScript struct {
@@ -1499,8 +1505,8 @@ type UserAreaApplyIndexReq struct {
 }
 
 type UserAreaApplyIndexResp struct {
-	List  []*UserAreaApplyInfo `json:"list"`
-	Total int64                `json:"total"`
+	List []*UserAreaApplyInfo `json:"list"`
+	PageResp
 }
 
 type UserAreaApplyInfo struct {
@@ -1678,8 +1684,8 @@ type UserMessageIndexReq struct {
 }
 
 type UserMessageIndexResp struct {
-	Total int64          `json:"total"`
-	List  []*UserMessage `json:"list"`
+	PageResp
+	List []*UserMessage `json:"list"`
 }
 
 type UserMessageStatistics struct {
@@ -1738,8 +1744,8 @@ type UserRoleIndexReq struct {
 }
 
 type UserRoleIndexResp struct {
-	Total int64       `json:"total"`
-	List  []*RoleInfo `json:"list"` //用户角色列表
+	List []*RoleInfo `json:"list"` //用户角色列表
+	PageResp
 }
 
 type UserRoleMultiUpdateReq struct {

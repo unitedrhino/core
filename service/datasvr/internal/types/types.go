@@ -35,8 +35,8 @@ type DataStatisticsManageIndexReq struct {
 }
 
 type DataStatisticsManageIndexResp struct {
-	List  []*DataStatisticsManage `json:"list"`  // 列表数据
-	Total int64                   `json:"total"` // 总记录数
+	List []*DataStatisticsManage `json:"list"` // 列表数据
+	PageResp
 }
 
 type FilterKeywords struct {
@@ -54,6 +54,12 @@ type PageInfo struct {
 	Page   int64      `json:"page,optional" form:"page,optional"` // 页码
 	Size   int64      `json:"size,optional" form:"size,optional"` // 每页大小
 	Orders []*OrderBy `json:"orders,optional"`                    //排序
+}
+
+type PageResp struct {
+	Page  int64 `json:"page,optional"` // 页码
+	Size  int64 `json:"size,optional"` // 每页大小
+	Total int64 `json:"total"`
 }
 
 type StaticsticsInfoExportReq struct {

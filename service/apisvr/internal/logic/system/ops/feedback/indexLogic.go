@@ -2,6 +2,7 @@ package feedback
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -39,7 +40,7 @@ func (l *IndexLogic) Index(req *types.OpsFeedbackIndexReq) (resp *types.OpsFeedb
 		v.User = utils.Copy[types.UserCore](u)
 	}
 	return &types.OpsFeedbackIndexResp{
-		Total: ret.Total,
-		List:  list,
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     list,
 	}, nil
 }

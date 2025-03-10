@@ -2,6 +2,7 @@ package info
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/access/info"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
@@ -35,7 +36,7 @@ func (l *TreeLogic) Tree(req *types.WithCode) (resp *types.TenantAccessInfoTreeR
 		return nil, err
 	}
 	return &types.TenantAccessInfoTreeResp{
-		List:  info.ToAccessModuleInfoTypes(ais.List),
-		Total: ais.Total,
+		List:     info.ToAccessModuleInfoTypes(ais.List),
+		PageResp: logic.ToPageResp(nil, ais.Total),
 	}, nil
 }

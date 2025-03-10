@@ -67,7 +67,7 @@ type (
     }
 
     DictDetailIndexResp  {
-        Total int64 `json:"total"` //总数
+        PageResp
         List []*DictDetail `json:"list"` //菜单列表
     }
     DictDetail{

@@ -41,7 +41,7 @@ func (l *IndexLogic) Index(req *types.TenantCoreIndexReq) (resp *types.TenantCor
 		return nil, err
 	}
 	return &types.TenantCoreIndexResp{
-		Total: ret.Total,
-		List:  system.ToTenantCoresTypes(ret.List),
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     system.ToTenantCoresTypes(ret.List),
 	}, nil
 }

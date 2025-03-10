@@ -27,7 +27,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.RoleInfoIndexReq) (resp *types.RoleInfoIndexResp, err error) {
-	info, err := l.svcCtx.RoleRpc.RoleInfoIndex(l.ctx, &sys.RoleInfoIndexReq{
+	ret, err := l.svcCtx.RoleRpc.RoleInfoIndex(l.ctx, &sys.RoleInfoIndexReq{
 		Page:   logic.ToSysPageRpc(req.Page),
 		Name:   req.Name,
 		Status: req.Status,
@@ -38,5 +38,5 @@ func (l *IndexLogic) Index(req *types.RoleInfoIndexReq) (resp *types.RoleInfoInd
 		return nil, err
 	}
 
-	return &types.RoleInfoIndexResp{role.ToRoleInfosTypes(info.List), info.Total}, nil
+	return &types.RoleInfoIndexResp{List: role.ToRoleInfosTypes(ret.List), PageResp: logic.ToPageResp(req.Page, ret.Total)}, nil
 }

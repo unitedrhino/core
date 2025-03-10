@@ -59,7 +59,7 @@ type (
     }
 
     DictInfoIndexResp  {
-        Total int64 `json:"total"` //总数
+        PageResp
         List []*DictInfo `json:"list"` //菜单列表
     }
     DictInfo{

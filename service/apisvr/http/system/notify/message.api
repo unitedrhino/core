@@ -55,7 +55,7 @@ type (
 
     MessageInfoIndexResp  {
         List []*MessageInfo `json:"list"`            // 消息列表数据
-        Total int64 `json:"total"`                    // 消息列表总记录数
+        PageResp
     }
 
     MessageInfo{
