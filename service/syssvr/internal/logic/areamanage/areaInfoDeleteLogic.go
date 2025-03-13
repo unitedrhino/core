@@ -3,9 +3,9 @@ package areamanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 
@@ -100,7 +100,7 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	})
 	if err == nil {
 		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
-		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreAreaInfoDelete, def.IDs{IDs: areaIDs})
+		err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreAreaInfoDelete, def.IDs{IDs: areaIDs})
 		if err != nil {
 			l.Error(err)
 		}

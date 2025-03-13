@@ -4,10 +4,10 @@ import (
 	"context"
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/spf13/cast"
@@ -77,7 +77,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 				if err != nil {
 					return err
 				}
-				err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreProjectInfoDelete, v.ProjectID)
+				err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreProjectInfoDelete, v.ProjectID)
 				if err != nil {
 					l.Error(err)
 				}
@@ -87,7 +87,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		return err
 	})
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)
-	err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserDelete, def.IDs{IDs: []int64{in.UserID}})
+	err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserDelete, def.IDs{IDs: []int64{in.UserID}})
 	if err != nil {
 		l.Errorf("Publish userDelete %v err:%v", in, err)
 	}

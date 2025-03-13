@@ -10,11 +10,11 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/payload"
@@ -161,7 +161,7 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 					return err
 				}
 				d.svcCtx.UserCache.SetData(d.ctx, uc.UserID, nil)
-				err = d.svcCtx.FastEvent.Publish(d.ctx, eventBus.CoreUserUpdate, def.IDs{IDs: []int64{uc.UserID}})
+				err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{uc.UserID}})
 				if err != nil {
 					d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
 				}
@@ -184,7 +184,7 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 			if err != nil {
 				return err
 			}
-			err = d.svcCtx.FastEvent.Publish(d.ctx, eventBus.CoreUserCreate, def.IDs{IDs: []int64{uc.UserID}})
+			err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{uc.UserID}})
 			if err != nil {
 				d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
 			}
@@ -217,7 +217,7 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 					continue
 				}
 				d.svcCtx.UserCache.SetData(d.ctx, ui.UserID, nil)
-				err = d.svcCtx.FastEvent.Publish(d.ctx, eventBus.CoreUserUpdate, def.IDs{IDs: []int64{ui.UserID}})
+				err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{ui.UserID}})
 				if err != nil {
 					d.Errorf("Publish CoreUserUpdate %v err:%v", ui, err)
 				}

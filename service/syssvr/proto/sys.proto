@@ -1303,6 +1303,8 @@ message UserCheckTokenResp{
   string appCode =9;//应用code
   string account = 10 ;//账号
   map<int64,ProjectAuth> projectAuth = 11;
+  map<int64,int64> deptAuth =12;//value是授权类型
+  map<string,int64> deptPathAuth =13;//value是授权类型
 }
 
 message ProjectAuth {

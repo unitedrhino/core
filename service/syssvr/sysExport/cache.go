@@ -12,6 +12,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/domain/slot"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/eventBus"
@@ -23,7 +24,7 @@ type AreaCacheT = *caches.Cache[areamanage.AreaInfo, int64]
 
 func NewAreaInfoCache(pm areamanage.AreaManage, fastEvent *eventBus.FastEvent) (AreaCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[areamanage.AreaInfo, int64]{
-		KeyType:   eventBus.ServerCacheKeySysAreaInfo,
+		KeyType:   topics.ServerCacheKeySysAreaInfo,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key int64) (*areamanage.AreaInfo, error) {
 			ret, err := pm.AreaInfoRead(ctx, &sys.AreaInfoReadReq{ProjectID: ctxs.GetUserCtxNoNil(ctx).ProjectID, AreaID: key})
@@ -36,7 +37,7 @@ type ProjectCacheT = *caches.Cache[projectmanage.ProjectInfo, int64]
 
 func NewProjectInfoCache(pm projectmanage.ProjectManage, fastEvent *eventBus.FastEvent) (ProjectCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[projectmanage.ProjectInfo, int64]{
-		KeyType:   eventBus.ServerCacheKeySysProjectInfo,
+		KeyType:   topics.ServerCacheKeySysProjectInfo,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key int64) (*projectmanage.ProjectInfo, error) {
 			ret, err := pm.ProjectInfoRead(ctx, &sys.ProjectWithID{ProjectID: key})
@@ -49,7 +50,7 @@ type UserCacheT = *caches.Cache[usermanage.UserInfo, int64]
 
 func NewUserInfoCache(pm usermanage.UserManage, fastEvent *eventBus.FastEvent) (UserCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[usermanage.UserInfo, int64]{
-		KeyType:   eventBus.ServerCacheKeySysUserInfo,
+		KeyType:   topics.ServerCacheKeySysUserInfo,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key int64) (*usermanage.UserInfo, error) {
 			ret, err := pm.UserInfoRead(ctx, &sys.UserInfoReadReq{UserID: key})
@@ -62,7 +63,7 @@ type TenantCacheT = *caches.Cache[tenant.Info, string]
 
 func NewTenantInfoCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (TenantCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[tenant.Info, string]{
-		KeyType:   eventBus.ServerCacheKeySysTenantInfo,
+		KeyType:   topics.ServerCacheKeySysTenantInfo,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key string) (*tenant.Info, error) {
 			ret, err := pm.TenantInfoRead(ctx, &sys.WithIDCode{Code: key})
@@ -75,7 +76,7 @@ type WebHookCacheT = *caches.Cache[sys.TenantOpenWebHook, string]
 
 func NewTenantOpenWebhookCache(pm tenantmanage.TenantManage, fastEvent *eventBus.FastEvent) (WebHookCacheT, error) {
 	return caches.NewCache(caches.CacheConfig[sys.TenantOpenWebHook, string]{
-		KeyType:   eventBus.ServerCacheKeySysTenantOpenWebhook,
+		KeyType:   topics.ServerCacheKeySysTenantOpenWebhook,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key string) (*sys.TenantOpenWebHook, error) {
 			t := strings.Split(key, ":")

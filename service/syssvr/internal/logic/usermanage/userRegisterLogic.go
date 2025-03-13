@@ -8,10 +8,10 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
@@ -123,7 +123,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	if err != nil {
 		return nil, err
 	}
-	e := l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserCreate, def.IDs{IDs: []int64{ui.UserID}})
+	e := l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{ui.UserID}})
 	if e != nil {
 		l.Errorf("Publish CoreUserCreate %v err:%v", ui, e)
 	}

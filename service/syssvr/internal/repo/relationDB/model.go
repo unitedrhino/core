@@ -94,15 +94,17 @@ func (SysDeptInfo) TableName() string {
 }
 
 type SysDeptUser struct {
-	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`      // id编号
-	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"`         // 租户编码
-	UserID     int64               `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 用户ID
-	DeptID     int64               `gorm:"column:dept_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"` // 角色ID
-	DeptIDPath string              `gorm:"column:dept_id_path;type:varchar(100);NOT NULL"`        // 1-2-3-的格式记录顶级区域到当前id的路径
-	Dept       *SysDeptInfo        `gorm:"foreignKey:ID;references:DeptID"`
-	User       *SysUserInfo        `gorm:"foreignKey:UserID;references:UserID"`
+	ID             int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`       // id编号
+	TenantCode     dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"`          // 租户编码
+	UserID         int64               `gorm:"column:user_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`  // 用户ID
+	DeptID         int64               `gorm:"column:dept_id;uniqueIndex:ri_mi;NOT NULL;type:BIGINT"`  // 角色ID
+	DeptIDPath     string              `gorm:"column:dept_id_path;type:varchar(100);NOT NULL"`         // 1-2-3-的格式记录顶级区域到当前id的路径
+	AuthType       def.AuthType        `gorm:"column:auth_type;type:bigint;NOT NULL"`                  // 授权类型 1 管理员(可以调整本区域及旗下区域的设备区域规划)  2 读写授权(可以对该区域及旗下区域的设备进行管理) 3 只读授权()
+	IsAuthChildren int64               `gorm:"column:is_auth_children;type:bigint;default:1;NOT NULL"` //是否同时授权子节点
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:ri_mi"`
+	Dept        *SysDeptInfo       `gorm:"foreignKey:ID;references:DeptID"`
+	User        *SysUserInfo       `gorm:"foreignKey:UserID;references:UserID"`
 }
 
 func (m *SysDeptUser) TableName() string {

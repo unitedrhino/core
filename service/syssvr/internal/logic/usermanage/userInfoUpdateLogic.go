@@ -7,9 +7,9 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
 	"gitee.com/unitedrhino/share/utils"
@@ -121,7 +121,7 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 		}
 	}
 	l.svcCtx.UserCache.SetData(l.ctx, ui.UserID, nil)
-	err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreUserUpdate, def.IDs{IDs: []int64{ui.UserID}})
+	err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{ui.UserID}})
 	if err != nil {
 		l.Errorf("Publish CoreUserUpdate %v err:%v", ui, err)
 	}

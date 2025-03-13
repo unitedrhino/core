@@ -3,10 +3,10 @@ package projectmanagelogic
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 
@@ -68,7 +68,7 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		return err
 	})
 	if err == nil {
-		err = l.svcCtx.FastEvent.Publish(l.ctx, eventBus.CoreProjectInfoDelete, in.ProjectID)
+		err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreProjectInfoDelete, in.ProjectID)
 		if err != nil {
 			l.Error(err)
 		}

@@ -22,11 +22,11 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	coreCache "gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"os"
@@ -137,7 +137,7 @@ func InitSync(svcCtx *svc.ServiceContext) {
 func InitCache(svcCtx *svc.ServiceContext) {
 	{
 		tenantCache, err := caches.NewCache(caches.CacheConfig[tenant.Info, string]{
-			KeyType:   eventBus.ServerCacheKeySysTenantInfo,
+			KeyType:   topics.ServerCacheKeySysTenantInfo,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key string) (*tenant.Info, error) {
 				db := relationDB.NewTenantInfoRepo(ctx)
@@ -156,7 +156,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 	}
 	{
 		tenantCache, err := caches.NewCache(caches.CacheConfig[sys.TenantConfig, string]{
-			KeyType:   eventBus.ServerCacheKeySysTenantConfig,
+			KeyType:   topics.ServerCacheKeySysTenantConfig,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key string) (*sys.TenantConfig, error) {
 				db := relationDB.NewTenantConfigRepo(ctx)
@@ -175,7 +175,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 	}
 	{
 		userCache, err := caches.NewCache(caches.CacheConfig[sys.UserInfo, int64]{
-			KeyType:   eventBus.ServerCacheKeySysUserInfo,
+			KeyType:   topics.ServerCacheKeySysUserInfo,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key int64) (*sys.UserInfo, error) {
 				db := relationDB.NewUserInfoRepo(ctx)
@@ -193,7 +193,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 	}
 	{
 		AreaCache, err := caches.NewCache(caches.CacheConfig[sys.AreaInfo, int64]{
-			KeyType:   eventBus.ServerCacheKeySysAreaInfo,
+			KeyType:   topics.ServerCacheKeySysAreaInfo,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key int64) (*sys.AreaInfo, error) {
 				db := relationDB.NewAreaInfoRepo(ctx)
@@ -211,7 +211,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 	}
 	{
 		projectCache, err := caches.NewCache(caches.CacheConfig[sys.ProjectInfo, int64]{
-			KeyType:   eventBus.ServerCacheKeySysProjectInfo,
+			KeyType:   topics.ServerCacheKeySysProjectInfo,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key int64) (*sys.ProjectInfo, error) {
 				db := relationDB.NewProjectInfoRepo(ctx)
@@ -230,7 +230,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 
 	{
 		c, err := caches.NewCache(caches.CacheConfig[relationDB.SysApiInfo, string]{
-			KeyType:   eventBus.ServerCacheKeySysAccessApi,
+			KeyType:   topics.ServerCacheKeySysAccessApi,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key string) (*relationDB.SysApiInfo, error) {
 				method, path, _ := strings.Cut(key, ":")
@@ -250,7 +250,7 @@ func InitCache(svcCtx *svc.ServiceContext) {
 
 	{
 		c, err := caches.NewCache(caches.CacheConfig[map[int64]struct{}, string]{
-			KeyType:   eventBus.ServerCacheKeySysRoleAccess,
+			KeyType:   topics.ServerCacheKeySysRoleAccess,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key string) (*map[int64]struct{}, error) {
 				db := relationDB.NewRoleAccessRepo(ctx)
@@ -279,11 +279,11 @@ func InitCache(svcCtx *svc.ServiceContext) {
 }
 
 func InitEventBus(svcCtx *svc.ServiceContext) {
-	err := svcCtx.FastEvent.QueueSubscribe(eventBus.CoreSyncHalfHour, func(ctx context.Context, t time.Time, body []byte) error {
+	err := svcCtx.FastEvent.QueueSubscribe(topics.CoreSyncHalfHour, func(ctx context.Context, t time.Time, body []byte) error {
 		return deptSync.NewDeptSync(ctxs.WithRoot(ctx), svcCtx).Timing()
 	})
 	logx.Must(err)
-	err = svcCtx.FastEvent.QueueSubscribe(eventBus.CoreSyncDay, func(ctx context.Context, t time.Time, body []byte) error {
+	err = svcCtx.FastEvent.QueueSubscribe(topics.CoreSyncDay, func(ctx context.Context, t time.Time, body []byte) error {
 		return day.NewDaySync(ctxs.WithRoot(ctx), svcCtx).Handle()
 	})
 	logx.Must(err)
@@ -292,28 +292,28 @@ func InitEventBus(svcCtx *svc.ServiceContext) {
 func TimerInit(svcCtx *svc.ServiceContext) {
 	ctx := context.Background()
 	_, err := svcCtx.TimedM.TaskInfoCreate(ctx, &timedmanage.TaskInfo{
-		GroupCode: def.TimedUnitedRhinoQueueGroupCode,                                    //组编码
-		Type:      1,                                                                     //任务类型 1 定时任务 2 延时任务
-		Name:      "联犀中台半小时同步",                                                           // 任务名称
-		Code:      "coreSyncHalfHour",                                                    //任务编码
-		Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, eventBus.CoreSyncHalfHour), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
-		CronExpr:  "@every 30m",                                                          // cron执行表达式
-		Status:    def.StatusWaitRun,                                                     // 状态
-		Priority:  3,                                                                     //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
+		GroupCode: def.TimedUnitedRhinoQueueGroupCode,                                  //组编码
+		Type:      1,                                                                   //任务类型 1 定时任务 2 延时任务
+		Name:      "联犀中台半小时同步",                                                         // 任务名称
+		Code:      "coreSyncHalfHour",                                                  //任务编码
+		Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.CoreSyncHalfHour), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
+		CronExpr:  "@every 30m",                                                        // cron执行表达式
+		Status:    def.StatusWaitRun,                                                   // 状态
+		Priority:  3,                                                                   //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
 	})
 	if err != nil && !errors.Cmp(errors.Fmt(err), errors.Duplicate) {
 		logx.Must(err)
 	}
 	{
 		_, err := svcCtx.TimedM.TaskInfoCreate(ctx, &timedmanage.TaskInfo{
-			GroupCode: def.TimedUnitedRhinoQueueGroupCode,                               //组编码
-			Type:      1,                                                                //任务类型 1 定时任务 2 延时任务
-			Name:      "联犀中台一天同步",                                                       // 任务名称
-			Code:      "coreSyncDay",                                                    //任务编码
-			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, eventBus.CoreSyncDay), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
-			CronExpr:  "1 0 * * *",                                                      // cron执行表达式 0点01 分进行统计
-			Status:    def.StatusWaitRun,                                                // 状态
-			Priority:  3,                                                                //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
+			GroupCode: def.TimedUnitedRhinoQueueGroupCode,                             //组编码
+			Type:      1,                                                              //任务类型 1 定时任务 2 延时任务
+			Name:      "联犀中台一天同步",                                                     // 任务名称
+			Code:      "coreSyncDay",                                                  //任务编码
+			Params:    fmt.Sprintf(`{"topic":"%s","payload":""}`, topics.CoreSyncDay), // 任务参数,延时任务如果没有传任务参数会拿数据库的参数来执行
+			CronExpr:  "1 0 * * *",                                                    // cron执行表达式 0点01 分进行统计
+			Status:    def.StatusWaitRun,                                              // 状态
+			Priority:  3,                                                              //优先级: 10:critical 最高优先级  3: default 普通优先级 1:low 低优先级
 		})
 		if err != nil && !errors.Cmp(errors.Fmt(err), errors.Duplicate) {
 			logx.Must(err)

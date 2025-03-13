@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -181,5 +182,6 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	if err != nil {
 		l.Error(err)
 	}
-	return &sys.WithID{Id: po.ID}, err
+	l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreTenantCreate, po.Code)
+	return &sys.WithID{Id: po.ID}, nil
 }

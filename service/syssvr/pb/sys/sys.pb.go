@@ -9151,6 +9151,8 @@ type UserCheckTokenResp struct {
 	AppCode      string                 `protobuf:"bytes,9,opt,name=appCode,proto3" json:"appCode,omitempty"`            //应用code
 	Account      string                 `protobuf:"bytes,10,opt,name=account,proto3" json:"account,omitempty"`           //账号
 	ProjectAuth  map[int64]*ProjectAuth `protobuf:"bytes,11,rep,name=projectAuth,proto3" json:"projectAuth,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	DeptAuth     map[int64]int64        `protobuf:"bytes,12,rep,name=deptAuth,proto3" json:"deptAuth,omitempty" protobuf_key:"varint,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`        //value是授权类型
+	DeptPathAuth map[string]int64       `protobuf:"bytes,13,rep,name=deptPathAuth,proto3" json:"deptPathAuth,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"` //value是授权类型
 }
 
 func (x *UserCheckTokenResp) Reset() {
@@ -9258,6 +9260,20 @@ func (x *UserCheckTokenResp) GetAccount() string {
 func (x *UserCheckTokenResp) GetProjectAuth() map[int64]*ProjectAuth {
 	if x != nil {
 		return x.ProjectAuth
+	}
+	return nil
+}
+
+func (x *UserCheckTokenResp) GetDeptAuth() map[int64]int64 {
+	if x != nil {
+		return x.DeptAuth
+	}
+	return nil
+}
+
+func (x *UserCheckTokenResp) GetDeptPathAuth() map[string]int64 {
+	if x != nil {
+		return x.DeptPathAuth
 	}
 	return nil
 }
@@ -18120,7 +18136,7 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x70, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x61, 0x70, 0x70,
 	0x43, 0x6f, 0x64, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x61, 0x75, 0x74, 0x68, 0x54, 0x79, 0x70, 0x65,
 	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x61, 0x75, 0x74, 0x68, 0x54, 0x79, 0x70, 0x65,
-	0x22, 0xc8, 0x03, 0x0a, 0x12, 0x55, 0x73, 0x65, 0x72, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f,
+	0x22, 0xd8, 0x05, 0x0a, 0x12, 0x55, 0x73, 0x65, 0x72, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f,
 	0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
 	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x16, 0x0a,
 	0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x44, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x75,
@@ -18143,11 +18159,28 @@ var file_proto_sys_proto_rawDesc = []byte{
 	0x28, 0x0b, 0x32, 0x28, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x43, 0x68, 0x65,
 	0x63, 0x6b, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x50, 0x72, 0x6f, 0x6a,
 	0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x0b, 0x70, 0x72,
-	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68, 0x1a, 0x50, 0x0a, 0x10, 0x50, 0x72, 0x6f,
-	0x6a, 0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a,
-	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
-	0x26, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10,
-	0x2e, 0x73, 0x79, 0x73, 0x2e, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68,
+	0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68, 0x12, 0x41, 0x0a, 0x08, 0x64, 0x65, 0x70,
+	0x74, 0x41, 0x75, 0x74, 0x68, 0x18, 0x0c, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x25, 0x2e, 0x73, 0x79,
+	0x73, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x54, 0x6f, 0x6b, 0x65, 0x6e,
+	0x52, 0x65, 0x73, 0x70, 0x2e, 0x44, 0x65, 0x70, 0x74, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x08, 0x64, 0x65, 0x70, 0x74, 0x41, 0x75, 0x74, 0x68, 0x12, 0x4d, 0x0a, 0x0c,
+	0x64, 0x65, 0x70, 0x74, 0x50, 0x61, 0x74, 0x68, 0x41, 0x75, 0x74, 0x68, 0x18, 0x0d, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x29, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x43, 0x68, 0x65,
+	0x63, 0x6b, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x44, 0x65, 0x70, 0x74,
+	0x50, 0x61, 0x74, 0x68, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x0c, 0x64,
+	0x65, 0x70, 0x74, 0x50, 0x61, 0x74, 0x68, 0x41, 0x75, 0x74, 0x68, 0x1a, 0x50, 0x0a, 0x10, 0x50,
+	0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12,
+	0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x6b, 0x65,
+	0x79, 0x12, 0x26, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x10, 0x2e, 0x73, 0x79, 0x73, 0x2e, 0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x75,
+	0x74, 0x68, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x3b, 0x0a,
+	0x0d, 0x44, 0x65, 0x70, 0x74, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10,
+	0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x6b, 0x65, 0x79,
+	0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x3f, 0x0a, 0x11, 0x44, 0x65,
+	0x70, 0x74, 0x50, 0x61, 0x74, 0x68, 0x41, 0x75, 0x74, 0x68, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12,
+	0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65,
+	0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
 	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x8b, 0x02, 0x0a, 0x0b,
 	0x50, 0x72, 0x6f, 0x6a, 0x65, 0x63, 0x74, 0x41, 0x75, 0x74, 0x68, 0x12, 0x2e, 0x0a, 0x04, 0x61,
 	0x72, 0x65, 0x61, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x73, 0x79, 0x73, 0x2e,
@@ -19813,7 +19846,7 @@ func file_proto_sys_proto_rawDescGZIP() []byte {
 	return file_proto_sys_proto_rawDescData
 }
 
-var file_proto_sys_proto_msgTypes = make([]protoimpl.MessageInfo, 248)
+var file_proto_sys_proto_msgTypes = make([]protoimpl.MessageInfo, 250)
 var file_proto_sys_proto_goTypes = []interface{}{
 	(*SendOption)(nil),                            // 0: sys.SendOption
 	(*ThirdAppConfig)(nil),                        // 1: sys.ThirdAppConfig
@@ -20058,14 +20091,16 @@ var file_proto_sys_proto_goTypes = []interface{}{
 	nil,                                           // 240: sys.SlotInfo.HandlerEntry
 	nil,                                           // 241: sys.UserInfo.TagsEntry
 	nil,                                           // 242: sys.UserCheckTokenResp.ProjectAuthEntry
-	nil,                                           // 243: sys.ProjectAuth.AreaEntry
-	nil,                                           // 244: sys.ProjectAuth.AreaPathEntry
-	nil,                                           // 245: sys.UserRegisterReq.ExpandEntry
-	nil,                                           // 246: sys.DeptSyncJob.FieldMapEntry
-	nil,                                           // 247: sys.OpsWorkOrder.ParamsEntry
-	(*wrapperspb.StringValue)(nil),                // 248: google.protobuf.StringValue
-	(*wrapperspb.Int64Value)(nil),                 // 249: google.protobuf.Int64Value
-	(*wrapperspb.FloatValue)(nil),                 // 250: google.protobuf.FloatValue
+	nil,                                           // 243: sys.UserCheckTokenResp.DeptAuthEntry
+	nil,                                           // 244: sys.UserCheckTokenResp.DeptPathAuthEntry
+	nil,                                           // 245: sys.ProjectAuth.AreaEntry
+	nil,                                           // 246: sys.ProjectAuth.AreaPathEntry
+	nil,                                           // 247: sys.UserRegisterReq.ExpandEntry
+	nil,                                           // 248: sys.DeptSyncJob.FieldMapEntry
+	nil,                                           // 249: sys.OpsWorkOrder.ParamsEntry
+	(*wrapperspb.StringValue)(nil),                // 250: google.protobuf.StringValue
+	(*wrapperspb.Int64Value)(nil),                 // 251: google.protobuf.Int64Value
+	(*wrapperspb.FloatValue)(nil),                 // 252: google.protobuf.FloatValue
 }
 var file_proto_sys_proto_depIdxs = []int32{
 	233, // 0: sys.NotifyConfig.params:type_name -> sys.NotifyConfig.ParamsEntry
@@ -20097,14 +20132,14 @@ var file_proto_sys_proto_depIdxs = []int32{
 	236, // 26: sys.NotifyConfigSendReq.params:type_name -> sys.NotifyConfigSendReq.ParamsEntry
 	42,  // 27: sys.TenantInfoCreateReq.info:type_name -> sys.TenantInfo
 	119, // 28: sys.TenantInfoCreateReq.adminUserInfo:type_name -> sys.UserInfo
-	248, // 29: sys.TenantInfo.desc:type_name -> google.protobuf.StringValue
-	248, // 30: sys.TenantInfo.backgroundDesc:type_name -> google.protobuf.StringValue
+	250, // 29: sys.TenantInfo.desc:type_name -> google.protobuf.StringValue
+	250, // 30: sys.TenantInfo.backgroundDesc:type_name -> google.protobuf.StringValue
 	66,  // 31: sys.TenantInfoIndexReq.page:type_name -> sys.PageInfo
 	42,  // 32: sys.TenantInfoIndexResp.list:type_name -> sys.TenantInfo
-	249, // 33: sys.TenantConfig.deviceLimit:type_name -> google.protobuf.Int64Value
+	251, // 33: sys.TenantConfig.deviceLimit:type_name -> google.protobuf.Int64Value
 	46,  // 34: sys.TenantConfig.registerAutoCreateProject:type_name -> sys.TenantConfigRegisterAutoCreateProject
-	249, // 35: sys.TenantConfig.operLogKeepDays:type_name -> google.protobuf.Int64Value
-	249, // 36: sys.TenantConfig.loginLogKeepDays:type_name -> google.protobuf.Int64Value
+	251, // 35: sys.TenantConfig.operLogKeepDays:type_name -> google.protobuf.Int64Value
+	251, // 36: sys.TenantConfig.loginLogKeepDays:type_name -> google.protobuf.Int64Value
 	47,  // 37: sys.TenantConfigRegisterAutoCreateProject.areas:type_name -> sys.TenantConfigRegisterAutoCreateArea
 	53,  // 38: sys.TenantAppInfo.modules:type_name -> sys.TenantAppModule
 	1,   // 39: sys.TenantAppInfo.dingMini:type_name -> sys.ThirdAppConfig
@@ -20121,20 +20156,20 @@ var file_proto_sys_proto_depIdxs = []int32{
 	61,  // 50: sys.TenantAppMenu.children:type_name -> sys.TenantAppMenu
 	237, // 51: sys.PageInfo.orders:type_name -> sys.PageInfo.OrderBy
 	64,  // 52: sys.ProjectInfo.Position:type_name -> sys.Point
-	250, // 53: sys.ProjectInfo.area:type_name -> google.protobuf.FloatValue
-	248, // 54: sys.ProjectInfo.desc:type_name -> google.protobuf.StringValue
-	248, // 55: sys.ProjectInfo.address:type_name -> google.protobuf.StringValue
-	249, // 56: sys.ProjectInfo.deviceCount:type_name -> google.protobuf.Int64Value
+	252, // 53: sys.ProjectInfo.area:type_name -> google.protobuf.FloatValue
+	250, // 54: sys.ProjectInfo.desc:type_name -> google.protobuf.StringValue
+	250, // 55: sys.ProjectInfo.address:type_name -> google.protobuf.StringValue
+	251, // 56: sys.ProjectInfo.deviceCount:type_name -> google.protobuf.Int64Value
 	81,  // 57: sys.ProjectInfo.areas:type_name -> sys.AreaInfo
 	238, // 58: sys.ProjectInfo.tags:type_name -> sys.ProjectInfo.TagsEntry
 	75,  // 59: sys.ProjectProfileIndexResp.profiles:type_name -> sys.ProjectProfile
 	66,  // 60: sys.ProjectInfoIndexReq.page:type_name -> sys.PageInfo
 	74,  // 61: sys.ProjectInfoIndexResp.list:type_name -> sys.ProjectInfo
 	64,  // 62: sys.AreaInfo.Position:type_name -> sys.Point
-	248, // 63: sys.AreaInfo.desc:type_name -> google.protobuf.StringValue
+	250, // 63: sys.AreaInfo.desc:type_name -> google.protobuf.StringValue
 	81,  // 64: sys.AreaInfo.children:type_name -> sys.AreaInfo
-	249, // 65: sys.AreaInfo.deviceCount:type_name -> google.protobuf.Int64Value
-	249, // 66: sys.AreaInfo.groupCount:type_name -> google.protobuf.Int64Value
+	251, // 65: sys.AreaInfo.deviceCount:type_name -> google.protobuf.Int64Value
+	251, // 66: sys.AreaInfo.groupCount:type_name -> google.protobuf.Int64Value
 	239, // 67: sys.AreaInfo.tags:type_name -> sys.AreaInfo.TagsEntry
 	83,  // 68: sys.AreaProfileIndexResp.profiles:type_name -> sys.AreaProfile
 	66,  // 69: sys.AreaInfoIndexReq.page:type_name -> sys.PageInfo
@@ -20151,487 +20186,489 @@ var file_proto_sys_proto_depIdxs = []int32{
 	112, // 80: sys.LoginLogIndexResp.list:type_name -> sys.LoginLogInfo
 	66,  // 81: sys.OperLogIndexReq.page:type_name -> sys.PageInfo
 	115, // 82: sys.OperLogIndexResp.list:type_name -> sys.OperLogInfo
-	248, // 83: sys.UserInfo.email:type_name -> google.protobuf.StringValue
-	248, // 84: sys.UserInfo.phone:type_name -> google.protobuf.StringValue
+	250, // 83: sys.UserInfo.email:type_name -> google.protobuf.StringValue
+	250, // 84: sys.UserInfo.phone:type_name -> google.protobuf.StringValue
 	241, // 85: sys.UserInfo.tags:type_name -> sys.UserInfo.TagsEntry
 	242, // 86: sys.UserCheckTokenResp.projectAuth:type_name -> sys.UserCheckTokenResp.ProjectAuthEntry
-	243, // 87: sys.ProjectAuth.area:type_name -> sys.ProjectAuth.AreaEntry
-	244, // 88: sys.ProjectAuth.areaPath:type_name -> sys.ProjectAuth.AreaPathEntry
-	119, // 89: sys.UserInfoCreateReq.info:type_name -> sys.UserInfo
-	66,  // 90: sys.UserInfoIndexReq.page:type_name -> sys.PageInfo
-	68,  // 91: sys.UserInfoIndexReq.updatedTime:type_name -> sys.CompareInt64
-	119, // 92: sys.UserInfoIndexResp.list:type_name -> sys.UserInfo
-	119, // 93: sys.userInfoUpdateReq.info:type_name -> sys.UserInfo
-	119, // 94: sys.UserLoginResp.info:type_name -> sys.UserInfo
-	135, // 95: sys.UserLoginResp.token:type_name -> sys.JwtToken
-	119, // 96: sys.UserRegisterReq.info:type_name -> sys.UserInfo
-	245, // 97: sys.UserRegisterReq.expand:type_name -> sys.UserRegisterReq.ExpandEntry
-	208, // 98: sys.UserRoleIndexResp.list:type_name -> sys.RoleInfo
-	194, // 99: sys.UserDeptIndexResp.list:type_name -> sys.DeptInfo
-	119, // 100: sys.DeptUserIndexResp.list:type_name -> sys.UserInfo
-	208, // 101: sys.DeptRoleIndexResp.list:type_name -> sys.RoleInfo
-	66,  // 102: sys.DataProjectIndexReq.page:type_name -> sys.PageInfo
-	159, // 103: sys.DataProjectIndexResp.list:type_name -> sys.DataProject
-	166, // 104: sys.DataAreaMultiUpdateReq.areas:type_name -> sys.DataArea
-	66,  // 105: sys.DataAreaIndexReq.page:type_name -> sys.PageInfo
-	166, // 106: sys.DataAreaIndexResp.list:type_name -> sys.DataArea
-	66,  // 107: sys.UserAreaApplyIndexReq.page:type_name -> sys.PageInfo
-	173, // 108: sys.UserAreaApplyIndexResp.list:type_name -> sys.UserAreaApplyInfo
-	248, // 109: sys.DictInfo.desc:type_name -> google.protobuf.StringValue
-	248, // 110: sys.DictInfo.body:type_name -> google.protobuf.StringValue
-	66,  // 111: sys.DictInfoIndexReq.page:type_name -> sys.PageInfo
-	176, // 112: sys.DictInfoIndexResp.list:type_name -> sys.DictInfo
-	248, // 113: sys.DictDetail.desc:type_name -> google.protobuf.StringValue
-	248, // 114: sys.DictDetail.body:type_name -> google.protobuf.StringValue
-	181, // 115: sys.DictDetail.parent:type_name -> sys.DictDetail
-	181, // 116: sys.DictDetail.children:type_name -> sys.DictDetail
-	66,  // 117: sys.DictDetailIndexReq.page:type_name -> sys.PageInfo
-	181, // 118: sys.DictDetailIndexResp.list:type_name -> sys.DictDetail
-	181, // 119: sys.DictDetailMultiCreateReq.list:type_name -> sys.DictDetail
-	1,   // 120: sys.DeptSyncJob.thirdConfig:type_name -> sys.ThirdAppConfig
-	246, // 121: sys.DeptSyncJob.fieldMap:type_name -> sys.DeptSyncJob.FieldMapEntry
-	66,  // 122: sys.DeptSyncJobIndexReq.page:type_name -> sys.PageInfo
-	186, // 123: sys.DeptSyncJobIndexResp.list:type_name -> sys.DeptSyncJob
-	66,  // 124: sys.ThirdDeptInfoIndexReq.page:type_name -> sys.PageInfo
-	1,   // 125: sys.ThirdDeptInfoIndexReq.thirdConfig:type_name -> sys.ThirdAppConfig
-	1,   // 126: sys.ThirdDeptInfoReadReq.thirdConfig:type_name -> sys.ThirdAppConfig
-	248, // 127: sys.DeptInfo.desc:type_name -> google.protobuf.StringValue
-	194, // 128: sys.DeptInfo.parent:type_name -> sys.DeptInfo
-	194, // 129: sys.DeptInfo.children:type_name -> sys.DeptInfo
-	66,  // 130: sys.DeptInfoIndexReq.page:type_name -> sys.PageInfo
-	194, // 131: sys.DeptInfoIndexResp.list:type_name -> sys.DeptInfo
-	248, // 132: sys.ModuleInfo.desc:type_name -> google.protobuf.StringValue
-	248, // 133: sys.ModuleInfo.body:type_name -> google.protobuf.StringValue
-	66,  // 134: sys.ModuleInfoIndexReq.page:type_name -> sys.PageInfo
-	197, // 135: sys.ModuleInfoIndexResp.list:type_name -> sys.ModuleInfo
-	248, // 136: sys.AppInfo.desc:type_name -> google.protobuf.StringValue
-	66,  // 137: sys.AppInfoIndexReq.page:type_name -> sys.PageInfo
-	200, // 138: sys.AppInfoIndexResp.list:type_name -> sys.AppInfo
-	66,  // 139: sys.RoleInfoIndexReq.page:type_name -> sys.PageInfo
-	208, // 140: sys.RoleInfoIndexResp.list:type_name -> sys.RoleInfo
-	248, // 141: sys.RoleInfo.desc:type_name -> google.protobuf.StringValue
-	248, // 142: sys.MenuInfo.body:type_name -> google.protobuf.StringValue
-	215, // 143: sys.MenuInfo.children:type_name -> sys.MenuInfo
-	215, // 144: sys.MenuInfoIndexResp.list:type_name -> sys.MenuInfo
-	217, // 145: sys.configResp.map:type_name -> sys.Map
-	66,  // 146: sys.ApiInfoIndexReq.page:type_name -> sys.PageInfo
-	220, // 147: sys.ApiInfoIndexResp.list:type_name -> sys.ApiInfo
-	66,  // 148: sys.AccessInfoIndexReq.page:type_name -> sys.PageInfo
-	220, // 149: sys.AccessInfo.Apis:type_name -> sys.ApiInfo
-	225, // 150: sys.AccessInfoIndexResp.list:type_name -> sys.AccessInfo
-	247, // 151: sys.OpsWorkOrder.params:type_name -> sys.OpsWorkOrder.ParamsEntry
-	66,  // 152: sys.OpsWorkOrderIndexReq.page:type_name -> sys.PageInfo
-	227, // 153: sys.OpsWorkOrderIndexResp.list:type_name -> sys.OpsWorkOrder
-	66,  // 154: sys.OpsFeedbackIndexReq.page:type_name -> sys.PageInfo
-	230, // 155: sys.OpsFeedbackIndexResp.list:type_name -> sys.OpsFeedback
-	123, // 156: sys.UserCheckTokenResp.ProjectAuthEntry.value:type_name -> sys.ProjectAuth
-	129, // 157: sys.UserManage.userInfoCreate:input_type -> sys.UserInfoCreateReq
-	130, // 158: sys.UserManage.userInfoIndex:input_type -> sys.UserInfoIndexReq
-	132, // 159: sys.UserManage.userInfoUpdate:input_type -> sys.userInfoUpdateReq
-	133, // 160: sys.UserManage.userInfoRead:input_type -> sys.UserInfoReadReq
-	134, // 161: sys.UserManage.userInfoDelete:input_type -> sys.UserInfoDeleteReq
-	142, // 162: sys.UserManage.userLogin:input_type -> sys.UserLoginReq
-	138, // 163: sys.UserManage.userForgetPwd:input_type -> sys.UserForgetPwdReq
-	136, // 164: sys.UserManage.userCaptcha:input_type -> sys.UserCaptchaReq
-	121, // 165: sys.UserManage.userCheckToken:input_type -> sys.UserCheckTokenReq
-	144, // 166: sys.UserManage.userRegister:input_type -> sys.UserRegisterReq
-	141, // 167: sys.UserManage.userChangePwd:input_type -> sys.UserChangePwdReq
-	139, // 168: sys.UserManage.userCodeToUserID:input_type -> sys.UserCodeToUserIDReq
-	146, // 169: sys.UserManage.userBindAccount:input_type -> sys.UserBindAccountReq
-	147, // 170: sys.UserManage.userRoleIndex:input_type -> sys.UserRoleIndexReq
-	149, // 171: sys.UserManage.userRoleMultiUpdate:input_type -> sys.UserRoleMultiUpdateReq
-	149, // 172: sys.UserManage.userRoleMultiCreate:input_type -> sys.UserRoleMultiUpdateReq
-	150, // 173: sys.UserManage.userDeptIndex:input_type -> sys.UserDeptIndexReq
-	152, // 174: sys.UserManage.userDeptMultiDelete:input_type -> sys.UserDeptMultiSaveReq
-	152, // 175: sys.UserManage.userDeptMultiCreate:input_type -> sys.UserDeptMultiSaveReq
-	171, // 176: sys.UserManage.userAreaApplyCreate:input_type -> sys.UserAreaApplyCreateReq
-	3,   // 177: sys.UserManage.userMessageMultiIsRead:input_type -> sys.IDList
-	38,  // 178: sys.UserManage.userMessageIndex:input_type -> sys.UserMessageIndexReq
-	65,  // 179: sys.UserManage.userMessageStatistics:input_type -> sys.Empty
-	71,  // 180: sys.UserManage.userProfileRead:input_type -> sys.WithCode
-	32,  // 181: sys.UserManage.userProfileUpdate:input_type -> sys.UserProfile
-	33,  // 182: sys.UserManage.userProfileIndex:input_type -> sys.UserProfileIndexReq
-	162, // 183: sys.DataManage.dataProjectCreate:input_type -> sys.DataProjectSaveReq
-	163, // 184: sys.DataManage.dataProjectMultiCreate:input_type -> sys.DataProjectMultiSaveReq
-	160, // 185: sys.DataManage.dataProjectDelete:input_type -> sys.DataProjectDeleteReq
-	161, // 186: sys.DataManage.dataProjectMultiDelete:input_type -> sys.DataProjectMultiDeleteReq
-	164, // 187: sys.DataManage.dataProjectIndex:input_type -> sys.DataProjectIndexReq
-	167, // 188: sys.DataManage.dataAreaMultiUpdate:input_type -> sys.DataAreaMultiUpdateReq
-	168, // 189: sys.DataManage.dataAreaIndex:input_type -> sys.DataAreaIndexReq
-	170, // 190: sys.DataManage.dataAreaMultiDelete:input_type -> sys.DataAreaMultiDeleteReq
-	172, // 191: sys.DataManage.userAreaApplyIndex:input_type -> sys.UserAreaApplyIndexReq
-	175, // 192: sys.DataManage.userAreaApplyDeal:input_type -> sys.UserAreaApplyDealReq
-	30,  // 193: sys.DataManage.dataOpenAccessIndex:input_type -> sys.OpenAccessIndexReq
-	69,  // 194: sys.DataManage.dataOpenAccessRead:input_type -> sys.WithID
-	29,  // 195: sys.DataManage.dataOpenAccessUpdate:input_type -> sys.OpenAccess
-	29,  // 196: sys.DataManage.dataOpenAccessCreate:input_type -> sys.OpenAccess
-	69,  // 197: sys.DataManage.dataOpenAccessDelete:input_type -> sys.WithID
-	17,  // 198: sys.NotifyManage.messageInfoSend:input_type -> sys.MessageInfoSendReq
-	15,  // 199: sys.NotifyManage.messageInfoIndex:input_type -> sys.MessageInfoIndexReq
-	18,  // 200: sys.NotifyManage.messageInfoUpdate:input_type -> sys.MessageInfo
-	69,  // 201: sys.NotifyManage.messageInfoDelete:input_type -> sys.WithID
-	70,  // 202: sys.NotifyManage.notifyConfigRead:input_type -> sys.WithIDCode
-	4,   // 203: sys.NotifyManage.notifyConfigCreate:input_type -> sys.NotifyConfig
-	4,   // 204: sys.NotifyManage.notifyConfigUpdate:input_type -> sys.NotifyConfig
-	5,   // 205: sys.NotifyManage.notifyConfigIndex:input_type -> sys.NotifyConfigIndexReq
-	69,  // 206: sys.NotifyManage.notifyConfigDelete:input_type -> sys.WithID
-	40,  // 207: sys.NotifyManage.notifyConfigSend:input_type -> sys.NotifyConfigSendReq
-	69,  // 208: sys.NotifyManage.notifyTemplateRead:input_type -> sys.WithID
-	7,   // 209: sys.NotifyManage.notifyTemplateCreate:input_type -> sys.NotifyTemplate
-	7,   // 210: sys.NotifyManage.notifyTemplateUpdate:input_type -> sys.NotifyTemplate
-	13,  // 211: sys.NotifyManage.notifyTemplateIndex:input_type -> sys.NotifyTemplateIndexReq
-	69,  // 212: sys.NotifyManage.notifyTemplateDelete:input_type -> sys.WithID
-	22,  // 213: sys.NotifyManage.notifyConfigTemplateUpdate:input_type -> sys.NotifyConfigTemplate
-	19,  // 214: sys.NotifyManage.notifyConfigTemplateDelete:input_type -> sys.NotifyConfigTemplateDeleteReq
-	20,  // 215: sys.NotifyManage.notifyConfigTemplateIndex:input_type -> sys.NotifyConfigTemplateIndexReq
-	69,  // 216: sys.NotifyManage.notifyChannelRead:input_type -> sys.WithID
-	8,   // 217: sys.NotifyManage.notifyChannelCreate:input_type -> sys.NotifyChannel
-	8,   // 218: sys.NotifyManage.notifyChannelUpdate:input_type -> sys.NotifyChannel
-	9,   // 219: sys.NotifyManage.notifyChannelIndex:input_type -> sys.NotifyChannelIndexReq
-	69,  // 220: sys.NotifyManage.notifyChannelDelete:input_type -> sys.WithID
-	220, // 221: sys.AccessManage.apiInfoCreate:input_type -> sys.ApiInfo
-	219, // 222: sys.AccessManage.apiInfoIndex:input_type -> sys.ApiInfoIndexReq
-	220, // 223: sys.AccessManage.apiInfoUpdate:input_type -> sys.ApiInfo
-	69,  // 224: sys.AccessManage.apiInfoDelete:input_type -> sys.WithID
-	222, // 225: sys.AccessManage.accessInfoMultiImport:input_type -> sys.AccessInfoMultiImportReq
-	225, // 226: sys.AccessManage.accessInfoCreate:input_type -> sys.AccessInfo
-	224, // 227: sys.AccessManage.accessInfoIndex:input_type -> sys.AccessInfoIndexReq
-	225, // 228: sys.AccessManage.accessInfoUpdate:input_type -> sys.AccessInfo
-	69,  // 229: sys.AccessManage.accessInfoDelete:input_type -> sys.WithID
-	208, // 230: sys.RoleManage.roleInfoCreate:input_type -> sys.RoleInfo
-	206, // 231: sys.RoleManage.roleInfoIndex:input_type -> sys.RoleInfoIndexReq
-	208, // 232: sys.RoleManage.roleInfoUpdate:input_type -> sys.RoleInfo
-	69,  // 233: sys.RoleManage.roleInfoDelete:input_type -> sys.WithID
-	103, // 234: sys.RoleManage.roleMenuIndex:input_type -> sys.RoleMenuIndexReq
-	126, // 235: sys.RoleManage.roleMenuMultiUpdate:input_type -> sys.RoleMenuMultiUpdateReq
-	105, // 236: sys.RoleManage.roleAppIndex:input_type -> sys.RoleAppIndexReq
-	124, // 237: sys.RoleManage.roleAppMultiUpdate:input_type -> sys.RoleAppMultiUpdateReq
-	107, // 238: sys.RoleManage.roleModuleIndex:input_type -> sys.RoleModuleIndexReq
-	125, // 239: sys.RoleManage.roleModuleMultiUpdate:input_type -> sys.RoleModuleMultiUpdateReq
-	127, // 240: sys.RoleManage.roleApiAuth:input_type -> sys.RoleApiAuthReq
-	100, // 241: sys.RoleManage.roleAccessMultiUpdate:input_type -> sys.RoleAccessMultiUpdateReq
-	101, // 242: sys.RoleManage.roleAccessIndex:input_type -> sys.RoleAccessIndexReq
-	200, // 243: sys.AppManage.appInfoCreate:input_type -> sys.AppInfo
-	201, // 244: sys.AppManage.appInfoIndex:input_type -> sys.AppInfoIndexReq
-	200, // 245: sys.AppManage.appInfoUpdate:input_type -> sys.AppInfo
-	70,  // 246: sys.AppManage.appInfoDelete:input_type -> sys.WithIDCode
-	70,  // 247: sys.AppManage.appInfoRead:input_type -> sys.WithIDCode
-	204, // 248: sys.AppManage.appModuleIndex:input_type -> sys.AppModuleIndexReq
-	203, // 249: sys.AppManage.appModuleMultiUpdate:input_type -> sys.AppModuleMultiUpdateReq
-	197, // 250: sys.ModuleManage.moduleInfoCreate:input_type -> sys.ModuleInfo
-	198, // 251: sys.ModuleManage.moduleInfoIndex:input_type -> sys.ModuleInfoIndexReq
-	197, // 252: sys.ModuleManage.moduleInfoUpdate:input_type -> sys.ModuleInfo
-	70,  // 253: sys.ModuleManage.moduleInfoDelete:input_type -> sys.WithIDCode
-	70,  // 254: sys.ModuleManage.moduleInfoRead:input_type -> sys.WithIDCode
-	215, // 255: sys.ModuleManage.moduleMenuCreate:input_type -> sys.MenuInfo
-	214, // 256: sys.ModuleManage.moduleMenuIndex:input_type -> sys.MenuInfoIndexReq
-	215, // 257: sys.ModuleManage.moduleMenuUpdate:input_type -> sys.MenuInfo
-	69,  // 258: sys.ModuleManage.moduleMenuDelete:input_type -> sys.WithID
-	210, // 259: sys.ModuleManage.moduleMenuMultiImport:input_type -> sys.MenuMultiImportReq
-	212, // 260: sys.ModuleManage.moduleMenuMultiExport:input_type -> sys.MenuMultiExportReq
-	176, // 261: sys.DictManage.dictInfoCreate:input_type -> sys.DictInfo
-	178, // 262: sys.DictManage.dictInfoIndex:input_type -> sys.DictInfoIndexReq
-	176, // 263: sys.DictManage.dictInfoUpdate:input_type -> sys.DictInfo
-	69,  // 264: sys.DictManage.dictInfoDelete:input_type -> sys.WithID
-	177, // 265: sys.DictManage.dictInfoRead:input_type -> sys.DictInfoReadReq
-	180, // 266: sys.DictManage.dictDetailRead:input_type -> sys.DictDetailReadReq
-	181, // 267: sys.DictManage.dictDetailCreate:input_type -> sys.DictDetail
-	184, // 268: sys.DictManage.dictDetailMultiCreate:input_type -> sys.DictDetailMultiCreateReq
-	182, // 269: sys.DictManage.dictDetailIndex:input_type -> sys.DictDetailIndexReq
-	181, // 270: sys.DictManage.dictDetailUpdate:input_type -> sys.DictDetail
-	69,  // 271: sys.DictManage.dictDetailDelete:input_type -> sys.WithID
-	189, // 272: sys.DepartmentManage.deptInfoRead:input_type -> sys.DeptInfoReadReq
-	194, // 273: sys.DepartmentManage.deptInfoCreate:input_type -> sys.DeptInfo
-	195, // 274: sys.DepartmentManage.deptInfoIndex:input_type -> sys.DeptInfoIndexReq
-	194, // 275: sys.DepartmentManage.deptInfoUpdate:input_type -> sys.DeptInfo
-	69,  // 276: sys.DepartmentManage.deptInfoDelete:input_type -> sys.WithID
-	153, // 277: sys.DepartmentManage.deptUserIndex:input_type -> sys.DeptUserIndexReq
-	155, // 278: sys.DepartmentManage.deptUserMultiDelete:input_type -> sys.DeptUserMultiSaveReq
-	155, // 279: sys.DepartmentManage.deptUserMultiCreate:input_type -> sys.DeptUserMultiSaveReq
-	156, // 280: sys.DepartmentManage.deptRoleIndex:input_type -> sys.DeptRoleIndexReq
-	158, // 281: sys.DepartmentManage.deptRoleMultiDelete:input_type -> sys.DeptRoleMultiSaveReq
-	158, // 282: sys.DepartmentManage.deptRoleMultiCreate:input_type -> sys.DeptRoleMultiSaveReq
-	190, // 283: sys.DepartmentManage.deptSyncJobExecute:input_type -> sys.DeptSyncJobExecuteReq
-	185, // 284: sys.DepartmentManage.deptSyncJobRead:input_type -> sys.DeptSyncJobReadReq
-	186, // 285: sys.DepartmentManage.deptSyncJobCreate:input_type -> sys.DeptSyncJob
-	187, // 286: sys.DepartmentManage.deptSyncJobIndex:input_type -> sys.DeptSyncJobIndexReq
-	186, // 287: sys.DepartmentManage.deptSyncJobUpdate:input_type -> sys.DeptSyncJob
-	69,  // 288: sys.DepartmentManage.deptSyncJobDelete:input_type -> sys.WithID
-	65,  // 289: sys.Common.config:input_type -> sys.Empty
-	95,  // 290: sys.Common.QRCodeRead:input_type -> sys.QRCodeReadReq
-	93,  // 291: sys.Common.WeatherRead:input_type -> sys.WeatherReadReq
-	97,  // 292: sys.Common.slotInfoIndex:input_type -> sys.SlotInfoIndexReq
-	91,  // 293: sys.Common.slotInfoCreate:input_type -> sys.SlotInfo
-	91,  // 294: sys.Common.slotInfoUpdate:input_type -> sys.SlotInfo
-	69,  // 295: sys.Common.slotInfoDelete:input_type -> sys.WithID
-	69,  // 296: sys.Common.slotInfoRead:input_type -> sys.WithID
-	71,  // 297: sys.Common.serviceInfoRead:input_type -> sys.WithCode
-	90,  // 298: sys.Common.serviceInfoUpdate:input_type -> sys.ServiceInfo
-	193, // 299: sys.Common.thirdDeptRead:input_type -> sys.ThirdDeptInfoReadReq
-	192, // 300: sys.Common.thirdDeptIndex:input_type -> sys.ThirdDeptInfoIndexReq
-	111, // 301: sys.Log.loginLogIndex:input_type -> sys.LoginLogIndexReq
-	114, // 302: sys.Log.operLogIndex:input_type -> sys.OperLogIndexReq
-	117, // 303: sys.Log.loginLogCreate:input_type -> sys.LoginLogCreateReq
-	118, // 304: sys.Log.operLogCreate:input_type -> sys.OperLogCreateReq
-	74,  // 305: sys.ProjectManage.projectInfoCreate:input_type -> sys.ProjectInfo
-	74,  // 306: sys.ProjectManage.projectInfoUpdate:input_type -> sys.ProjectInfo
-	73,  // 307: sys.ProjectManage.projectInfoDelete:input_type -> sys.ProjectWithID
-	73,  // 308: sys.ProjectManage.projectInfoRead:input_type -> sys.ProjectWithID
-	79,  // 309: sys.ProjectManage.projectInfoIndex:input_type -> sys.ProjectInfoIndexReq
-	76,  // 310: sys.ProjectManage.projectProfileRead:input_type -> sys.ProjectProfileReadReq
-	75,  // 311: sys.ProjectManage.projectProfileUpdate:input_type -> sys.ProjectProfile
-	77,  // 312: sys.ProjectManage.projectProfileIndex:input_type -> sys.ProjectProfileIndexReq
-	81,  // 313: sys.AreaManage.areaInfoCreate:input_type -> sys.AreaInfo
-	81,  // 314: sys.AreaManage.areaInfoUpdate:input_type -> sys.AreaInfo
-	82,  // 315: sys.AreaManage.areaInfoDelete:input_type -> sys.AreaWithID
-	87,  // 316: sys.AreaManage.areaInfoRead:input_type -> sys.AreaInfoReadReq
-	88,  // 317: sys.AreaManage.areaInfoIndex:input_type -> sys.AreaInfoIndexReq
-	84,  // 318: sys.AreaManage.areaProfileRead:input_type -> sys.AreaProfileReadReq
-	83,  // 319: sys.AreaManage.areaProfileUpdate:input_type -> sys.AreaProfile
-	85,  // 320: sys.AreaManage.areaProfileIndex:input_type -> sys.AreaProfileIndexReq
-	41,  // 321: sys.TenantManage.tenantInfoCreate:input_type -> sys.TenantInfoCreateReq
-	42,  // 322: sys.TenantManage.tenantInfoUpdate:input_type -> sys.TenantInfo
-	70,  // 323: sys.TenantManage.tenantInfoDelete:input_type -> sys.WithIDCode
-	70,  // 324: sys.TenantManage.tenantInfoRead:input_type -> sys.WithIDCode
-	43,  // 325: sys.TenantManage.tenantInfoIndex:input_type -> sys.TenantInfoIndexReq
-	45,  // 326: sys.TenantManage.tenantConfigUpdate:input_type -> sys.TenantConfig
-	71,  // 327: sys.TenantManage.tenantConfigRead:input_type -> sys.WithCode
-	48,  // 328: sys.TenantManage.tenantAccessMultiDelete:input_type -> sys.TenantAccessMultiSaveReq
-	48,  // 329: sys.TenantManage.tenantAccessMultiCreate:input_type -> sys.TenantAccessMultiSaveReq
-	48,  // 330: sys.TenantManage.tenantAccessMultiUpdate:input_type -> sys.TenantAccessMultiSaveReq
-	49,  // 331: sys.TenantManage.tenantAccessIndex:input_type -> sys.TenantAccessIndexReq
-	54,  // 332: sys.TenantManage.tenantAppIndex:input_type -> sys.TenantAppIndexReq
-	51,  // 333: sys.TenantManage.tenantAppCreate:input_type -> sys.TenantAppInfo
-	52,  // 334: sys.TenantManage.tenantAppRead:input_type -> sys.TenantAppWithIDOrCode
-	51,  // 335: sys.TenantManage.tenantAppUpdate:input_type -> sys.TenantAppInfo
-	52,  // 336: sys.TenantManage.tenantAppDelete:input_type -> sys.TenantAppWithIDOrCode
-	51,  // 337: sys.TenantManage.tenantAppModuleMultiCreate:input_type -> sys.TenantAppInfo
-	62,  // 338: sys.TenantManage.tenantAppModuleCreate:input_type -> sys.TenantModuleCreateReq
-	57,  // 339: sys.TenantManage.tenantAppModuleIndex:input_type -> sys.TenantModuleIndexReq
-	63,  // 340: sys.TenantManage.tenantAppModuleDelete:input_type -> sys.TenantModuleWithIDOrCode
-	61,  // 341: sys.TenantManage.tenantAppMenuCreate:input_type -> sys.TenantAppMenu
-	59,  // 342: sys.TenantManage.tenantAppMenuIndex:input_type -> sys.TenantAppMenuIndexReq
-	61,  // 343: sys.TenantManage.tenantAppMenuUpdate:input_type -> sys.TenantAppMenu
-	72,  // 344: sys.TenantManage.tenantAppMenuDelete:input_type -> sys.WithAppCodeID
-	26,  // 345: sys.TenantManage.tenantOpenCheckToken:input_type -> sys.TenantOpenCheckTokenReq
-	71,  // 346: sys.TenantManage.tenantOpenWebHook:input_type -> sys.WithCode
-	24,  // 347: sys.TenantManage.tenantAgreementIndex:input_type -> sys.TenantAgreementIndexReq
-	23,  // 348: sys.TenantManage.tenantAgreementUpdate:input_type -> sys.TenantAgreement
-	23,  // 349: sys.TenantManage.tenantAgreementCreate:input_type -> sys.TenantAgreement
-	70,  // 350: sys.TenantManage.tenantAgreementRead:input_type -> sys.WithIDCode
-	69,  // 351: sys.TenantManage.tenantAgreementDelete:input_type -> sys.WithID
-	227, // 352: sys.ops.opsWorkOrderCreate:input_type -> sys.OpsWorkOrder
-	227, // 353: sys.ops.opsWorkOrderUpdate:input_type -> sys.OpsWorkOrder
-	228, // 354: sys.ops.opsWorkOrderIndex:input_type -> sys.OpsWorkOrderIndexReq
-	230, // 355: sys.ops.opsFeedbackCreate:input_type -> sys.OpsFeedback
-	230, // 356: sys.ops.opsFeedbackUpdate:input_type -> sys.OpsFeedback
-	231, // 357: sys.ops.opsFeedbackIndex:input_type -> sys.OpsFeedbackIndexReq
-	120, // 358: sys.UserManage.userInfoCreate:output_type -> sys.UserCreateResp
-	131, // 359: sys.UserManage.userInfoIndex:output_type -> sys.UserInfoIndexResp
-	65,  // 360: sys.UserManage.userInfoUpdate:output_type -> sys.Empty
-	119, // 361: sys.UserManage.userInfoRead:output_type -> sys.UserInfo
-	65,  // 362: sys.UserManage.userInfoDelete:output_type -> sys.Empty
-	143, // 363: sys.UserManage.userLogin:output_type -> sys.UserLoginResp
-	65,  // 364: sys.UserManage.userForgetPwd:output_type -> sys.Empty
-	137, // 365: sys.UserManage.userCaptcha:output_type -> sys.UserCaptchaResp
-	122, // 366: sys.UserManage.userCheckToken:output_type -> sys.UserCheckTokenResp
-	145, // 367: sys.UserManage.userRegister:output_type -> sys.UserRegisterResp
-	65,  // 368: sys.UserManage.userChangePwd:output_type -> sys.Empty
-	140, // 369: sys.UserManage.userCodeToUserID:output_type -> sys.UserCodeToUserIDResp
-	65,  // 370: sys.UserManage.userBindAccount:output_type -> sys.Empty
-	148, // 371: sys.UserManage.userRoleIndex:output_type -> sys.UserRoleIndexResp
-	65,  // 372: sys.UserManage.userRoleMultiUpdate:output_type -> sys.Empty
-	65,  // 373: sys.UserManage.userRoleMultiCreate:output_type -> sys.Empty
-	151, // 374: sys.UserManage.userDeptIndex:output_type -> sys.UserDeptIndexResp
-	65,  // 375: sys.UserManage.userDeptMultiDelete:output_type -> sys.Empty
-	65,  // 376: sys.UserManage.userDeptMultiCreate:output_type -> sys.Empty
-	65,  // 377: sys.UserManage.userAreaApplyCreate:output_type -> sys.Empty
-	65,  // 378: sys.UserManage.userMessageMultiIsRead:output_type -> sys.Empty
-	39,  // 379: sys.UserManage.userMessageIndex:output_type -> sys.UserMessageIndexResp
-	36,  // 380: sys.UserManage.userMessageStatistics:output_type -> sys.UserMessageStatisticsResp
-	32,  // 381: sys.UserManage.userProfileRead:output_type -> sys.UserProfile
-	65,  // 382: sys.UserManage.userProfileUpdate:output_type -> sys.Empty
-	34,  // 383: sys.UserManage.userProfileIndex:output_type -> sys.UserProfileIndexResp
-	65,  // 384: sys.DataManage.dataProjectCreate:output_type -> sys.Empty
-	65,  // 385: sys.DataManage.dataProjectMultiCreate:output_type -> sys.Empty
-	65,  // 386: sys.DataManage.dataProjectDelete:output_type -> sys.Empty
-	65,  // 387: sys.DataManage.dataProjectMultiDelete:output_type -> sys.Empty
-	165, // 388: sys.DataManage.dataProjectIndex:output_type -> sys.DataProjectIndexResp
-	65,  // 389: sys.DataManage.dataAreaMultiUpdate:output_type -> sys.Empty
-	169, // 390: sys.DataManage.dataAreaIndex:output_type -> sys.DataAreaIndexResp
-	65,  // 391: sys.DataManage.dataAreaMultiDelete:output_type -> sys.Empty
-	174, // 392: sys.DataManage.userAreaApplyIndex:output_type -> sys.UserAreaApplyIndexResp
-	65,  // 393: sys.DataManage.userAreaApplyDeal:output_type -> sys.Empty
-	31,  // 394: sys.DataManage.dataOpenAccessIndex:output_type -> sys.OpenAccessIndexResp
-	29,  // 395: sys.DataManage.dataOpenAccessRead:output_type -> sys.OpenAccess
-	65,  // 396: sys.DataManage.dataOpenAccessUpdate:output_type -> sys.Empty
-	69,  // 397: sys.DataManage.dataOpenAccessCreate:output_type -> sys.WithID
-	65,  // 398: sys.DataManage.dataOpenAccessDelete:output_type -> sys.Empty
-	69,  // 399: sys.NotifyManage.messageInfoSend:output_type -> sys.WithID
-	16,  // 400: sys.NotifyManage.messageInfoIndex:output_type -> sys.MessageInfoIndexResp
-	65,  // 401: sys.NotifyManage.messageInfoUpdate:output_type -> sys.Empty
-	65,  // 402: sys.NotifyManage.messageInfoDelete:output_type -> sys.Empty
-	4,   // 403: sys.NotifyManage.notifyConfigRead:output_type -> sys.NotifyConfig
-	69,  // 404: sys.NotifyManage.notifyConfigCreate:output_type -> sys.WithID
-	65,  // 405: sys.NotifyManage.notifyConfigUpdate:output_type -> sys.Empty
-	6,   // 406: sys.NotifyManage.notifyConfigIndex:output_type -> sys.NotifyConfigIndexResp
-	65,  // 407: sys.NotifyManage.notifyConfigDelete:output_type -> sys.Empty
-	65,  // 408: sys.NotifyManage.notifyConfigSend:output_type -> sys.Empty
-	7,   // 409: sys.NotifyManage.notifyTemplateRead:output_type -> sys.NotifyTemplate
-	69,  // 410: sys.NotifyManage.notifyTemplateCreate:output_type -> sys.WithID
-	65,  // 411: sys.NotifyManage.notifyTemplateUpdate:output_type -> sys.Empty
-	14,  // 412: sys.NotifyManage.notifyTemplateIndex:output_type -> sys.NotifyTemplateIndexResp
-	65,  // 413: sys.NotifyManage.notifyTemplateDelete:output_type -> sys.Empty
-	65,  // 414: sys.NotifyManage.notifyConfigTemplateUpdate:output_type -> sys.Empty
-	65,  // 415: sys.NotifyManage.notifyConfigTemplateDelete:output_type -> sys.Empty
-	21,  // 416: sys.NotifyManage.notifyConfigTemplateIndex:output_type -> sys.NotifyConfigTemplateIndexResp
-	8,   // 417: sys.NotifyManage.notifyChannelRead:output_type -> sys.NotifyChannel
-	69,  // 418: sys.NotifyManage.notifyChannelCreate:output_type -> sys.WithID
-	65,  // 419: sys.NotifyManage.notifyChannelUpdate:output_type -> sys.Empty
-	10,  // 420: sys.NotifyManage.notifyChannelIndex:output_type -> sys.NotifyChannelIndexResp
-	65,  // 421: sys.NotifyManage.notifyChannelDelete:output_type -> sys.Empty
-	69,  // 422: sys.AccessManage.apiInfoCreate:output_type -> sys.WithID
-	221, // 423: sys.AccessManage.apiInfoIndex:output_type -> sys.ApiInfoIndexResp
-	65,  // 424: sys.AccessManage.apiInfoUpdate:output_type -> sys.Empty
-	65,  // 425: sys.AccessManage.apiInfoDelete:output_type -> sys.Empty
-	223, // 426: sys.AccessManage.accessInfoMultiImport:output_type -> sys.AccessInfoMultiImportResp
-	69,  // 427: sys.AccessManage.accessInfoCreate:output_type -> sys.WithID
-	226, // 428: sys.AccessManage.accessInfoIndex:output_type -> sys.AccessInfoIndexResp
-	65,  // 429: sys.AccessManage.accessInfoUpdate:output_type -> sys.Empty
-	65,  // 430: sys.AccessManage.accessInfoDelete:output_type -> sys.Empty
-	69,  // 431: sys.RoleManage.roleInfoCreate:output_type -> sys.WithID
-	207, // 432: sys.RoleManage.roleInfoIndex:output_type -> sys.RoleInfoIndexResp
-	65,  // 433: sys.RoleManage.roleInfoUpdate:output_type -> sys.Empty
-	65,  // 434: sys.RoleManage.roleInfoDelete:output_type -> sys.Empty
-	104, // 435: sys.RoleManage.roleMenuIndex:output_type -> sys.RoleMenuIndexResp
-	65,  // 436: sys.RoleManage.roleMenuMultiUpdate:output_type -> sys.Empty
-	106, // 437: sys.RoleManage.roleAppIndex:output_type -> sys.RoleAppIndexResp
-	65,  // 438: sys.RoleManage.roleAppMultiUpdate:output_type -> sys.Empty
-	108, // 439: sys.RoleManage.roleModuleIndex:output_type -> sys.RoleModuleIndexResp
-	65,  // 440: sys.RoleManage.roleModuleMultiUpdate:output_type -> sys.Empty
-	128, // 441: sys.RoleManage.roleApiAuth:output_type -> sys.RoleApiAuthResp
-	65,  // 442: sys.RoleManage.roleAccessMultiUpdate:output_type -> sys.Empty
-	102, // 443: sys.RoleManage.roleAccessIndex:output_type -> sys.RoleAccessIndexResp
-	69,  // 444: sys.AppManage.appInfoCreate:output_type -> sys.WithID
-	202, // 445: sys.AppManage.appInfoIndex:output_type -> sys.AppInfoIndexResp
-	65,  // 446: sys.AppManage.appInfoUpdate:output_type -> sys.Empty
-	65,  // 447: sys.AppManage.appInfoDelete:output_type -> sys.Empty
-	200, // 448: sys.AppManage.appInfoRead:output_type -> sys.AppInfo
-	205, // 449: sys.AppManage.appModuleIndex:output_type -> sys.AppModuleIndexResp
-	65,  // 450: sys.AppManage.appModuleMultiUpdate:output_type -> sys.Empty
-	69,  // 451: sys.ModuleManage.moduleInfoCreate:output_type -> sys.WithID
-	199, // 452: sys.ModuleManage.moduleInfoIndex:output_type -> sys.ModuleInfoIndexResp
-	65,  // 453: sys.ModuleManage.moduleInfoUpdate:output_type -> sys.Empty
-	65,  // 454: sys.ModuleManage.moduleInfoDelete:output_type -> sys.Empty
-	197, // 455: sys.ModuleManage.moduleInfoRead:output_type -> sys.ModuleInfo
-	69,  // 456: sys.ModuleManage.moduleMenuCreate:output_type -> sys.WithID
-	216, // 457: sys.ModuleManage.moduleMenuIndex:output_type -> sys.MenuInfoIndexResp
-	65,  // 458: sys.ModuleManage.moduleMenuUpdate:output_type -> sys.Empty
-	65,  // 459: sys.ModuleManage.moduleMenuDelete:output_type -> sys.Empty
-	211, // 460: sys.ModuleManage.moduleMenuMultiImport:output_type -> sys.MenuMultiImportResp
-	213, // 461: sys.ModuleManage.moduleMenuMultiExport:output_type -> sys.MenuMultiExportResp
-	69,  // 462: sys.DictManage.dictInfoCreate:output_type -> sys.WithID
-	179, // 463: sys.DictManage.dictInfoIndex:output_type -> sys.DictInfoIndexResp
-	65,  // 464: sys.DictManage.dictInfoUpdate:output_type -> sys.Empty
-	65,  // 465: sys.DictManage.dictInfoDelete:output_type -> sys.Empty
-	176, // 466: sys.DictManage.dictInfoRead:output_type -> sys.DictInfo
-	181, // 467: sys.DictManage.dictDetailRead:output_type -> sys.DictDetail
-	69,  // 468: sys.DictManage.dictDetailCreate:output_type -> sys.WithID
-	65,  // 469: sys.DictManage.dictDetailMultiCreate:output_type -> sys.Empty
-	183, // 470: sys.DictManage.dictDetailIndex:output_type -> sys.DictDetailIndexResp
-	65,  // 471: sys.DictManage.dictDetailUpdate:output_type -> sys.Empty
-	65,  // 472: sys.DictManage.dictDetailDelete:output_type -> sys.Empty
-	194, // 473: sys.DepartmentManage.deptInfoRead:output_type -> sys.DeptInfo
-	69,  // 474: sys.DepartmentManage.deptInfoCreate:output_type -> sys.WithID
-	196, // 475: sys.DepartmentManage.deptInfoIndex:output_type -> sys.DeptInfoIndexResp
-	65,  // 476: sys.DepartmentManage.deptInfoUpdate:output_type -> sys.Empty
-	65,  // 477: sys.DepartmentManage.deptInfoDelete:output_type -> sys.Empty
-	154, // 478: sys.DepartmentManage.deptUserIndex:output_type -> sys.DeptUserIndexResp
-	65,  // 479: sys.DepartmentManage.deptUserMultiDelete:output_type -> sys.Empty
-	65,  // 480: sys.DepartmentManage.deptUserMultiCreate:output_type -> sys.Empty
-	157, // 481: sys.DepartmentManage.deptRoleIndex:output_type -> sys.DeptRoleIndexResp
-	65,  // 482: sys.DepartmentManage.deptRoleMultiDelete:output_type -> sys.Empty
-	65,  // 483: sys.DepartmentManage.deptRoleMultiCreate:output_type -> sys.Empty
-	191, // 484: sys.DepartmentManage.deptSyncJobExecute:output_type -> sys.DeptSyncJobExecuteResp
-	186, // 485: sys.DepartmentManage.deptSyncJobRead:output_type -> sys.DeptSyncJob
-	69,  // 486: sys.DepartmentManage.deptSyncJobCreate:output_type -> sys.WithID
-	188, // 487: sys.DepartmentManage.deptSyncJobIndex:output_type -> sys.DeptSyncJobIndexResp
-	65,  // 488: sys.DepartmentManage.deptSyncJobUpdate:output_type -> sys.Empty
-	65,  // 489: sys.DepartmentManage.deptSyncJobDelete:output_type -> sys.Empty
-	218, // 490: sys.Common.config:output_type -> sys.configResp
-	96,  // 491: sys.Common.QRCodeRead:output_type -> sys.QRCodeReadResp
-	94,  // 492: sys.Common.WeatherRead:output_type -> sys.WeatherReadResp
-	98,  // 493: sys.Common.slotInfoIndex:output_type -> sys.SlotInfoIndexResp
-	69,  // 494: sys.Common.slotInfoCreate:output_type -> sys.WithID
-	65,  // 495: sys.Common.slotInfoUpdate:output_type -> sys.Empty
-	65,  // 496: sys.Common.slotInfoDelete:output_type -> sys.Empty
-	91,  // 497: sys.Common.slotInfoRead:output_type -> sys.SlotInfo
-	90,  // 498: sys.Common.serviceInfoRead:output_type -> sys.ServiceInfo
-	65,  // 499: sys.Common.serviceInfoUpdate:output_type -> sys.Empty
-	194, // 500: sys.Common.thirdDeptRead:output_type -> sys.DeptInfo
-	196, // 501: sys.Common.thirdDeptIndex:output_type -> sys.DeptInfoIndexResp
-	113, // 502: sys.Log.loginLogIndex:output_type -> sys.LoginLogIndexResp
-	116, // 503: sys.Log.operLogIndex:output_type -> sys.OperLogIndexResp
-	65,  // 504: sys.Log.loginLogCreate:output_type -> sys.Empty
-	65,  // 505: sys.Log.operLogCreate:output_type -> sys.Empty
-	73,  // 506: sys.ProjectManage.projectInfoCreate:output_type -> sys.ProjectWithID
-	65,  // 507: sys.ProjectManage.projectInfoUpdate:output_type -> sys.Empty
-	65,  // 508: sys.ProjectManage.projectInfoDelete:output_type -> sys.Empty
-	74,  // 509: sys.ProjectManage.projectInfoRead:output_type -> sys.ProjectInfo
-	80,  // 510: sys.ProjectManage.projectInfoIndex:output_type -> sys.ProjectInfoIndexResp
-	75,  // 511: sys.ProjectManage.projectProfileRead:output_type -> sys.ProjectProfile
-	65,  // 512: sys.ProjectManage.projectProfileUpdate:output_type -> sys.Empty
-	78,  // 513: sys.ProjectManage.projectProfileIndex:output_type -> sys.ProjectProfileIndexResp
-	82,  // 514: sys.AreaManage.areaInfoCreate:output_type -> sys.AreaWithID
-	65,  // 515: sys.AreaManage.areaInfoUpdate:output_type -> sys.Empty
-	65,  // 516: sys.AreaManage.areaInfoDelete:output_type -> sys.Empty
-	81,  // 517: sys.AreaManage.areaInfoRead:output_type -> sys.AreaInfo
-	89,  // 518: sys.AreaManage.areaInfoIndex:output_type -> sys.AreaInfoIndexResp
-	83,  // 519: sys.AreaManage.areaProfileRead:output_type -> sys.AreaProfile
-	65,  // 520: sys.AreaManage.areaProfileUpdate:output_type -> sys.Empty
-	86,  // 521: sys.AreaManage.areaProfileIndex:output_type -> sys.AreaProfileIndexResp
-	69,  // 522: sys.TenantManage.tenantInfoCreate:output_type -> sys.WithID
-	65,  // 523: sys.TenantManage.tenantInfoUpdate:output_type -> sys.Empty
-	65,  // 524: sys.TenantManage.tenantInfoDelete:output_type -> sys.Empty
-	42,  // 525: sys.TenantManage.tenantInfoRead:output_type -> sys.TenantInfo
-	44,  // 526: sys.TenantManage.tenantInfoIndex:output_type -> sys.TenantInfoIndexResp
-	65,  // 527: sys.TenantManage.tenantConfigUpdate:output_type -> sys.Empty
-	45,  // 528: sys.TenantManage.tenantConfigRead:output_type -> sys.TenantConfig
-	65,  // 529: sys.TenantManage.tenantAccessMultiDelete:output_type -> sys.Empty
-	65,  // 530: sys.TenantManage.tenantAccessMultiCreate:output_type -> sys.Empty
-	65,  // 531: sys.TenantManage.tenantAccessMultiUpdate:output_type -> sys.Empty
-	50,  // 532: sys.TenantManage.tenantAccessIndex:output_type -> sys.TenantAccessIndexResp
-	55,  // 533: sys.TenantManage.tenantAppIndex:output_type -> sys.TenantAppIndexResp
-	65,  // 534: sys.TenantManage.tenantAppCreate:output_type -> sys.Empty
-	51,  // 535: sys.TenantManage.tenantAppRead:output_type -> sys.TenantAppInfo
-	65,  // 536: sys.TenantManage.tenantAppUpdate:output_type -> sys.Empty
-	65,  // 537: sys.TenantManage.tenantAppDelete:output_type -> sys.Empty
-	65,  // 538: sys.TenantManage.tenantAppModuleMultiCreate:output_type -> sys.Empty
-	65,  // 539: sys.TenantManage.tenantAppModuleCreate:output_type -> sys.Empty
-	58,  // 540: sys.TenantManage.tenantAppModuleIndex:output_type -> sys.TenantModuleIndexResp
-	65,  // 541: sys.TenantManage.tenantAppModuleDelete:output_type -> sys.Empty
-	69,  // 542: sys.TenantManage.tenantAppMenuCreate:output_type -> sys.WithID
-	60,  // 543: sys.TenantManage.tenantAppMenuIndex:output_type -> sys.TenantAppMenuIndexResp
-	65,  // 544: sys.TenantManage.tenantAppMenuUpdate:output_type -> sys.Empty
-	65,  // 545: sys.TenantManage.tenantAppMenuDelete:output_type -> sys.Empty
-	27,  // 546: sys.TenantManage.tenantOpenCheckToken:output_type -> sys.TenantOpenCheckTokenResp
-	28,  // 547: sys.TenantManage.tenantOpenWebHook:output_type -> sys.TenantOpenWebHook
-	25,  // 548: sys.TenantManage.tenantAgreementIndex:output_type -> sys.TenantAgreementIndexResp
-	65,  // 549: sys.TenantManage.tenantAgreementUpdate:output_type -> sys.Empty
-	69,  // 550: sys.TenantManage.tenantAgreementCreate:output_type -> sys.WithID
-	23,  // 551: sys.TenantManage.tenantAgreementRead:output_type -> sys.TenantAgreement
-	65,  // 552: sys.TenantManage.tenantAgreementDelete:output_type -> sys.Empty
-	69,  // 553: sys.ops.opsWorkOrderCreate:output_type -> sys.WithID
-	65,  // 554: sys.ops.opsWorkOrderUpdate:output_type -> sys.Empty
-	229, // 555: sys.ops.opsWorkOrderIndex:output_type -> sys.OpsWorkOrderIndexResp
-	69,  // 556: sys.ops.opsFeedbackCreate:output_type -> sys.WithID
-	65,  // 557: sys.ops.opsFeedbackUpdate:output_type -> sys.Empty
-	232, // 558: sys.ops.opsFeedbackIndex:output_type -> sys.OpsFeedbackIndexResp
-	358, // [358:559] is the sub-list for method output_type
-	157, // [157:358] is the sub-list for method input_type
-	157, // [157:157] is the sub-list for extension type_name
-	157, // [157:157] is the sub-list for extension extendee
-	0,   // [0:157] is the sub-list for field type_name
+	243, // 87: sys.UserCheckTokenResp.deptAuth:type_name -> sys.UserCheckTokenResp.DeptAuthEntry
+	244, // 88: sys.UserCheckTokenResp.deptPathAuth:type_name -> sys.UserCheckTokenResp.DeptPathAuthEntry
+	245, // 89: sys.ProjectAuth.area:type_name -> sys.ProjectAuth.AreaEntry
+	246, // 90: sys.ProjectAuth.areaPath:type_name -> sys.ProjectAuth.AreaPathEntry
+	119, // 91: sys.UserInfoCreateReq.info:type_name -> sys.UserInfo
+	66,  // 92: sys.UserInfoIndexReq.page:type_name -> sys.PageInfo
+	68,  // 93: sys.UserInfoIndexReq.updatedTime:type_name -> sys.CompareInt64
+	119, // 94: sys.UserInfoIndexResp.list:type_name -> sys.UserInfo
+	119, // 95: sys.userInfoUpdateReq.info:type_name -> sys.UserInfo
+	119, // 96: sys.UserLoginResp.info:type_name -> sys.UserInfo
+	135, // 97: sys.UserLoginResp.token:type_name -> sys.JwtToken
+	119, // 98: sys.UserRegisterReq.info:type_name -> sys.UserInfo
+	247, // 99: sys.UserRegisterReq.expand:type_name -> sys.UserRegisterReq.ExpandEntry
+	208, // 100: sys.UserRoleIndexResp.list:type_name -> sys.RoleInfo
+	194, // 101: sys.UserDeptIndexResp.list:type_name -> sys.DeptInfo
+	119, // 102: sys.DeptUserIndexResp.list:type_name -> sys.UserInfo
+	208, // 103: sys.DeptRoleIndexResp.list:type_name -> sys.RoleInfo
+	66,  // 104: sys.DataProjectIndexReq.page:type_name -> sys.PageInfo
+	159, // 105: sys.DataProjectIndexResp.list:type_name -> sys.DataProject
+	166, // 106: sys.DataAreaMultiUpdateReq.areas:type_name -> sys.DataArea
+	66,  // 107: sys.DataAreaIndexReq.page:type_name -> sys.PageInfo
+	166, // 108: sys.DataAreaIndexResp.list:type_name -> sys.DataArea
+	66,  // 109: sys.UserAreaApplyIndexReq.page:type_name -> sys.PageInfo
+	173, // 110: sys.UserAreaApplyIndexResp.list:type_name -> sys.UserAreaApplyInfo
+	250, // 111: sys.DictInfo.desc:type_name -> google.protobuf.StringValue
+	250, // 112: sys.DictInfo.body:type_name -> google.protobuf.StringValue
+	66,  // 113: sys.DictInfoIndexReq.page:type_name -> sys.PageInfo
+	176, // 114: sys.DictInfoIndexResp.list:type_name -> sys.DictInfo
+	250, // 115: sys.DictDetail.desc:type_name -> google.protobuf.StringValue
+	250, // 116: sys.DictDetail.body:type_name -> google.protobuf.StringValue
+	181, // 117: sys.DictDetail.parent:type_name -> sys.DictDetail
+	181, // 118: sys.DictDetail.children:type_name -> sys.DictDetail
+	66,  // 119: sys.DictDetailIndexReq.page:type_name -> sys.PageInfo
+	181, // 120: sys.DictDetailIndexResp.list:type_name -> sys.DictDetail
+	181, // 121: sys.DictDetailMultiCreateReq.list:type_name -> sys.DictDetail
+	1,   // 122: sys.DeptSyncJob.thirdConfig:type_name -> sys.ThirdAppConfig
+	248, // 123: sys.DeptSyncJob.fieldMap:type_name -> sys.DeptSyncJob.FieldMapEntry
+	66,  // 124: sys.DeptSyncJobIndexReq.page:type_name -> sys.PageInfo
+	186, // 125: sys.DeptSyncJobIndexResp.list:type_name -> sys.DeptSyncJob
+	66,  // 126: sys.ThirdDeptInfoIndexReq.page:type_name -> sys.PageInfo
+	1,   // 127: sys.ThirdDeptInfoIndexReq.thirdConfig:type_name -> sys.ThirdAppConfig
+	1,   // 128: sys.ThirdDeptInfoReadReq.thirdConfig:type_name -> sys.ThirdAppConfig
+	250, // 129: sys.DeptInfo.desc:type_name -> google.protobuf.StringValue
+	194, // 130: sys.DeptInfo.parent:type_name -> sys.DeptInfo
+	194, // 131: sys.DeptInfo.children:type_name -> sys.DeptInfo
+	66,  // 132: sys.DeptInfoIndexReq.page:type_name -> sys.PageInfo
+	194, // 133: sys.DeptInfoIndexResp.list:type_name -> sys.DeptInfo
+	250, // 134: sys.ModuleInfo.desc:type_name -> google.protobuf.StringValue
+	250, // 135: sys.ModuleInfo.body:type_name -> google.protobuf.StringValue
+	66,  // 136: sys.ModuleInfoIndexReq.page:type_name -> sys.PageInfo
+	197, // 137: sys.ModuleInfoIndexResp.list:type_name -> sys.ModuleInfo
+	250, // 138: sys.AppInfo.desc:type_name -> google.protobuf.StringValue
+	66,  // 139: sys.AppInfoIndexReq.page:type_name -> sys.PageInfo
+	200, // 140: sys.AppInfoIndexResp.list:type_name -> sys.AppInfo
+	66,  // 141: sys.RoleInfoIndexReq.page:type_name -> sys.PageInfo
+	208, // 142: sys.RoleInfoIndexResp.list:type_name -> sys.RoleInfo
+	250, // 143: sys.RoleInfo.desc:type_name -> google.protobuf.StringValue
+	250, // 144: sys.MenuInfo.body:type_name -> google.protobuf.StringValue
+	215, // 145: sys.MenuInfo.children:type_name -> sys.MenuInfo
+	215, // 146: sys.MenuInfoIndexResp.list:type_name -> sys.MenuInfo
+	217, // 147: sys.configResp.map:type_name -> sys.Map
+	66,  // 148: sys.ApiInfoIndexReq.page:type_name -> sys.PageInfo
+	220, // 149: sys.ApiInfoIndexResp.list:type_name -> sys.ApiInfo
+	66,  // 150: sys.AccessInfoIndexReq.page:type_name -> sys.PageInfo
+	220, // 151: sys.AccessInfo.Apis:type_name -> sys.ApiInfo
+	225, // 152: sys.AccessInfoIndexResp.list:type_name -> sys.AccessInfo
+	249, // 153: sys.OpsWorkOrder.params:type_name -> sys.OpsWorkOrder.ParamsEntry
+	66,  // 154: sys.OpsWorkOrderIndexReq.page:type_name -> sys.PageInfo
+	227, // 155: sys.OpsWorkOrderIndexResp.list:type_name -> sys.OpsWorkOrder
+	66,  // 156: sys.OpsFeedbackIndexReq.page:type_name -> sys.PageInfo
+	230, // 157: sys.OpsFeedbackIndexResp.list:type_name -> sys.OpsFeedback
+	123, // 158: sys.UserCheckTokenResp.ProjectAuthEntry.value:type_name -> sys.ProjectAuth
+	129, // 159: sys.UserManage.userInfoCreate:input_type -> sys.UserInfoCreateReq
+	130, // 160: sys.UserManage.userInfoIndex:input_type -> sys.UserInfoIndexReq
+	132, // 161: sys.UserManage.userInfoUpdate:input_type -> sys.userInfoUpdateReq
+	133, // 162: sys.UserManage.userInfoRead:input_type -> sys.UserInfoReadReq
+	134, // 163: sys.UserManage.userInfoDelete:input_type -> sys.UserInfoDeleteReq
+	142, // 164: sys.UserManage.userLogin:input_type -> sys.UserLoginReq
+	138, // 165: sys.UserManage.userForgetPwd:input_type -> sys.UserForgetPwdReq
+	136, // 166: sys.UserManage.userCaptcha:input_type -> sys.UserCaptchaReq
+	121, // 167: sys.UserManage.userCheckToken:input_type -> sys.UserCheckTokenReq
+	144, // 168: sys.UserManage.userRegister:input_type -> sys.UserRegisterReq
+	141, // 169: sys.UserManage.userChangePwd:input_type -> sys.UserChangePwdReq
+	139, // 170: sys.UserManage.userCodeToUserID:input_type -> sys.UserCodeToUserIDReq
+	146, // 171: sys.UserManage.userBindAccount:input_type -> sys.UserBindAccountReq
+	147, // 172: sys.UserManage.userRoleIndex:input_type -> sys.UserRoleIndexReq
+	149, // 173: sys.UserManage.userRoleMultiUpdate:input_type -> sys.UserRoleMultiUpdateReq
+	149, // 174: sys.UserManage.userRoleMultiCreate:input_type -> sys.UserRoleMultiUpdateReq
+	150, // 175: sys.UserManage.userDeptIndex:input_type -> sys.UserDeptIndexReq
+	152, // 176: sys.UserManage.userDeptMultiDelete:input_type -> sys.UserDeptMultiSaveReq
+	152, // 177: sys.UserManage.userDeptMultiCreate:input_type -> sys.UserDeptMultiSaveReq
+	171, // 178: sys.UserManage.userAreaApplyCreate:input_type -> sys.UserAreaApplyCreateReq
+	3,   // 179: sys.UserManage.userMessageMultiIsRead:input_type -> sys.IDList
+	38,  // 180: sys.UserManage.userMessageIndex:input_type -> sys.UserMessageIndexReq
+	65,  // 181: sys.UserManage.userMessageStatistics:input_type -> sys.Empty
+	71,  // 182: sys.UserManage.userProfileRead:input_type -> sys.WithCode
+	32,  // 183: sys.UserManage.userProfileUpdate:input_type -> sys.UserProfile
+	33,  // 184: sys.UserManage.userProfileIndex:input_type -> sys.UserProfileIndexReq
+	162, // 185: sys.DataManage.dataProjectCreate:input_type -> sys.DataProjectSaveReq
+	163, // 186: sys.DataManage.dataProjectMultiCreate:input_type -> sys.DataProjectMultiSaveReq
+	160, // 187: sys.DataManage.dataProjectDelete:input_type -> sys.DataProjectDeleteReq
+	161, // 188: sys.DataManage.dataProjectMultiDelete:input_type -> sys.DataProjectMultiDeleteReq
+	164, // 189: sys.DataManage.dataProjectIndex:input_type -> sys.DataProjectIndexReq
+	167, // 190: sys.DataManage.dataAreaMultiUpdate:input_type -> sys.DataAreaMultiUpdateReq
+	168, // 191: sys.DataManage.dataAreaIndex:input_type -> sys.DataAreaIndexReq
+	170, // 192: sys.DataManage.dataAreaMultiDelete:input_type -> sys.DataAreaMultiDeleteReq
+	172, // 193: sys.DataManage.userAreaApplyIndex:input_type -> sys.UserAreaApplyIndexReq
+	175, // 194: sys.DataManage.userAreaApplyDeal:input_type -> sys.UserAreaApplyDealReq
+	30,  // 195: sys.DataManage.dataOpenAccessIndex:input_type -> sys.OpenAccessIndexReq
+	69,  // 196: sys.DataManage.dataOpenAccessRead:input_type -> sys.WithID
+	29,  // 197: sys.DataManage.dataOpenAccessUpdate:input_type -> sys.OpenAccess
+	29,  // 198: sys.DataManage.dataOpenAccessCreate:input_type -> sys.OpenAccess
+	69,  // 199: sys.DataManage.dataOpenAccessDelete:input_type -> sys.WithID
+	17,  // 200: sys.NotifyManage.messageInfoSend:input_type -> sys.MessageInfoSendReq
+	15,  // 201: sys.NotifyManage.messageInfoIndex:input_type -> sys.MessageInfoIndexReq
+	18,  // 202: sys.NotifyManage.messageInfoUpdate:input_type -> sys.MessageInfo
+	69,  // 203: sys.NotifyManage.messageInfoDelete:input_type -> sys.WithID
+	70,  // 204: sys.NotifyManage.notifyConfigRead:input_type -> sys.WithIDCode
+	4,   // 205: sys.NotifyManage.notifyConfigCreate:input_type -> sys.NotifyConfig
+	4,   // 206: sys.NotifyManage.notifyConfigUpdate:input_type -> sys.NotifyConfig
+	5,   // 207: sys.NotifyManage.notifyConfigIndex:input_type -> sys.NotifyConfigIndexReq
+	69,  // 208: sys.NotifyManage.notifyConfigDelete:input_type -> sys.WithID
+	40,  // 209: sys.NotifyManage.notifyConfigSend:input_type -> sys.NotifyConfigSendReq
+	69,  // 210: sys.NotifyManage.notifyTemplateRead:input_type -> sys.WithID
+	7,   // 211: sys.NotifyManage.notifyTemplateCreate:input_type -> sys.NotifyTemplate
+	7,   // 212: sys.NotifyManage.notifyTemplateUpdate:input_type -> sys.NotifyTemplate
+	13,  // 213: sys.NotifyManage.notifyTemplateIndex:input_type -> sys.NotifyTemplateIndexReq
+	69,  // 214: sys.NotifyManage.notifyTemplateDelete:input_type -> sys.WithID
+	22,  // 215: sys.NotifyManage.notifyConfigTemplateUpdate:input_type -> sys.NotifyConfigTemplate
+	19,  // 216: sys.NotifyManage.notifyConfigTemplateDelete:input_type -> sys.NotifyConfigTemplateDeleteReq
+	20,  // 217: sys.NotifyManage.notifyConfigTemplateIndex:input_type -> sys.NotifyConfigTemplateIndexReq
+	69,  // 218: sys.NotifyManage.notifyChannelRead:input_type -> sys.WithID
+	8,   // 219: sys.NotifyManage.notifyChannelCreate:input_type -> sys.NotifyChannel
+	8,   // 220: sys.NotifyManage.notifyChannelUpdate:input_type -> sys.NotifyChannel
+	9,   // 221: sys.NotifyManage.notifyChannelIndex:input_type -> sys.NotifyChannelIndexReq
+	69,  // 222: sys.NotifyManage.notifyChannelDelete:input_type -> sys.WithID
+	220, // 223: sys.AccessManage.apiInfoCreate:input_type -> sys.ApiInfo
+	219, // 224: sys.AccessManage.apiInfoIndex:input_type -> sys.ApiInfoIndexReq
+	220, // 225: sys.AccessManage.apiInfoUpdate:input_type -> sys.ApiInfo
+	69,  // 226: sys.AccessManage.apiInfoDelete:input_type -> sys.WithID
+	222, // 227: sys.AccessManage.accessInfoMultiImport:input_type -> sys.AccessInfoMultiImportReq
+	225, // 228: sys.AccessManage.accessInfoCreate:input_type -> sys.AccessInfo
+	224, // 229: sys.AccessManage.accessInfoIndex:input_type -> sys.AccessInfoIndexReq
+	225, // 230: sys.AccessManage.accessInfoUpdate:input_type -> sys.AccessInfo
+	69,  // 231: sys.AccessManage.accessInfoDelete:input_type -> sys.WithID
+	208, // 232: sys.RoleManage.roleInfoCreate:input_type -> sys.RoleInfo
+	206, // 233: sys.RoleManage.roleInfoIndex:input_type -> sys.RoleInfoIndexReq
+	208, // 234: sys.RoleManage.roleInfoUpdate:input_type -> sys.RoleInfo
+	69,  // 235: sys.RoleManage.roleInfoDelete:input_type -> sys.WithID
+	103, // 236: sys.RoleManage.roleMenuIndex:input_type -> sys.RoleMenuIndexReq
+	126, // 237: sys.RoleManage.roleMenuMultiUpdate:input_type -> sys.RoleMenuMultiUpdateReq
+	105, // 238: sys.RoleManage.roleAppIndex:input_type -> sys.RoleAppIndexReq
+	124, // 239: sys.RoleManage.roleAppMultiUpdate:input_type -> sys.RoleAppMultiUpdateReq
+	107, // 240: sys.RoleManage.roleModuleIndex:input_type -> sys.RoleModuleIndexReq
+	125, // 241: sys.RoleManage.roleModuleMultiUpdate:input_type -> sys.RoleModuleMultiUpdateReq
+	127, // 242: sys.RoleManage.roleApiAuth:input_type -> sys.RoleApiAuthReq
+	100, // 243: sys.RoleManage.roleAccessMultiUpdate:input_type -> sys.RoleAccessMultiUpdateReq
+	101, // 244: sys.RoleManage.roleAccessIndex:input_type -> sys.RoleAccessIndexReq
+	200, // 245: sys.AppManage.appInfoCreate:input_type -> sys.AppInfo
+	201, // 246: sys.AppManage.appInfoIndex:input_type -> sys.AppInfoIndexReq
+	200, // 247: sys.AppManage.appInfoUpdate:input_type -> sys.AppInfo
+	70,  // 248: sys.AppManage.appInfoDelete:input_type -> sys.WithIDCode
+	70,  // 249: sys.AppManage.appInfoRead:input_type -> sys.WithIDCode
+	204, // 250: sys.AppManage.appModuleIndex:input_type -> sys.AppModuleIndexReq
+	203, // 251: sys.AppManage.appModuleMultiUpdate:input_type -> sys.AppModuleMultiUpdateReq
+	197, // 252: sys.ModuleManage.moduleInfoCreate:input_type -> sys.ModuleInfo
+	198, // 253: sys.ModuleManage.moduleInfoIndex:input_type -> sys.ModuleInfoIndexReq
+	197, // 254: sys.ModuleManage.moduleInfoUpdate:input_type -> sys.ModuleInfo
+	70,  // 255: sys.ModuleManage.moduleInfoDelete:input_type -> sys.WithIDCode
+	70,  // 256: sys.ModuleManage.moduleInfoRead:input_type -> sys.WithIDCode
+	215, // 257: sys.ModuleManage.moduleMenuCreate:input_type -> sys.MenuInfo
+	214, // 258: sys.ModuleManage.moduleMenuIndex:input_type -> sys.MenuInfoIndexReq
+	215, // 259: sys.ModuleManage.moduleMenuUpdate:input_type -> sys.MenuInfo
+	69,  // 260: sys.ModuleManage.moduleMenuDelete:input_type -> sys.WithID
+	210, // 261: sys.ModuleManage.moduleMenuMultiImport:input_type -> sys.MenuMultiImportReq
+	212, // 262: sys.ModuleManage.moduleMenuMultiExport:input_type -> sys.MenuMultiExportReq
+	176, // 263: sys.DictManage.dictInfoCreate:input_type -> sys.DictInfo
+	178, // 264: sys.DictManage.dictInfoIndex:input_type -> sys.DictInfoIndexReq
+	176, // 265: sys.DictManage.dictInfoUpdate:input_type -> sys.DictInfo
+	69,  // 266: sys.DictManage.dictInfoDelete:input_type -> sys.WithID
+	177, // 267: sys.DictManage.dictInfoRead:input_type -> sys.DictInfoReadReq
+	180, // 268: sys.DictManage.dictDetailRead:input_type -> sys.DictDetailReadReq
+	181, // 269: sys.DictManage.dictDetailCreate:input_type -> sys.DictDetail
+	184, // 270: sys.DictManage.dictDetailMultiCreate:input_type -> sys.DictDetailMultiCreateReq
+	182, // 271: sys.DictManage.dictDetailIndex:input_type -> sys.DictDetailIndexReq
+	181, // 272: sys.DictManage.dictDetailUpdate:input_type -> sys.DictDetail
+	69,  // 273: sys.DictManage.dictDetailDelete:input_type -> sys.WithID
+	189, // 274: sys.DepartmentManage.deptInfoRead:input_type -> sys.DeptInfoReadReq
+	194, // 275: sys.DepartmentManage.deptInfoCreate:input_type -> sys.DeptInfo
+	195, // 276: sys.DepartmentManage.deptInfoIndex:input_type -> sys.DeptInfoIndexReq
+	194, // 277: sys.DepartmentManage.deptInfoUpdate:input_type -> sys.DeptInfo
+	69,  // 278: sys.DepartmentManage.deptInfoDelete:input_type -> sys.WithID
+	153, // 279: sys.DepartmentManage.deptUserIndex:input_type -> sys.DeptUserIndexReq
+	155, // 280: sys.DepartmentManage.deptUserMultiDelete:input_type -> sys.DeptUserMultiSaveReq
+	155, // 281: sys.DepartmentManage.deptUserMultiCreate:input_type -> sys.DeptUserMultiSaveReq
+	156, // 282: sys.DepartmentManage.deptRoleIndex:input_type -> sys.DeptRoleIndexReq
+	158, // 283: sys.DepartmentManage.deptRoleMultiDelete:input_type -> sys.DeptRoleMultiSaveReq
+	158, // 284: sys.DepartmentManage.deptRoleMultiCreate:input_type -> sys.DeptRoleMultiSaveReq
+	190, // 285: sys.DepartmentManage.deptSyncJobExecute:input_type -> sys.DeptSyncJobExecuteReq
+	185, // 286: sys.DepartmentManage.deptSyncJobRead:input_type -> sys.DeptSyncJobReadReq
+	186, // 287: sys.DepartmentManage.deptSyncJobCreate:input_type -> sys.DeptSyncJob
+	187, // 288: sys.DepartmentManage.deptSyncJobIndex:input_type -> sys.DeptSyncJobIndexReq
+	186, // 289: sys.DepartmentManage.deptSyncJobUpdate:input_type -> sys.DeptSyncJob
+	69,  // 290: sys.DepartmentManage.deptSyncJobDelete:input_type -> sys.WithID
+	65,  // 291: sys.Common.config:input_type -> sys.Empty
+	95,  // 292: sys.Common.QRCodeRead:input_type -> sys.QRCodeReadReq
+	93,  // 293: sys.Common.WeatherRead:input_type -> sys.WeatherReadReq
+	97,  // 294: sys.Common.slotInfoIndex:input_type -> sys.SlotInfoIndexReq
+	91,  // 295: sys.Common.slotInfoCreate:input_type -> sys.SlotInfo
+	91,  // 296: sys.Common.slotInfoUpdate:input_type -> sys.SlotInfo
+	69,  // 297: sys.Common.slotInfoDelete:input_type -> sys.WithID
+	69,  // 298: sys.Common.slotInfoRead:input_type -> sys.WithID
+	71,  // 299: sys.Common.serviceInfoRead:input_type -> sys.WithCode
+	90,  // 300: sys.Common.serviceInfoUpdate:input_type -> sys.ServiceInfo
+	193, // 301: sys.Common.thirdDeptRead:input_type -> sys.ThirdDeptInfoReadReq
+	192, // 302: sys.Common.thirdDeptIndex:input_type -> sys.ThirdDeptInfoIndexReq
+	111, // 303: sys.Log.loginLogIndex:input_type -> sys.LoginLogIndexReq
+	114, // 304: sys.Log.operLogIndex:input_type -> sys.OperLogIndexReq
+	117, // 305: sys.Log.loginLogCreate:input_type -> sys.LoginLogCreateReq
+	118, // 306: sys.Log.operLogCreate:input_type -> sys.OperLogCreateReq
+	74,  // 307: sys.ProjectManage.projectInfoCreate:input_type -> sys.ProjectInfo
+	74,  // 308: sys.ProjectManage.projectInfoUpdate:input_type -> sys.ProjectInfo
+	73,  // 309: sys.ProjectManage.projectInfoDelete:input_type -> sys.ProjectWithID
+	73,  // 310: sys.ProjectManage.projectInfoRead:input_type -> sys.ProjectWithID
+	79,  // 311: sys.ProjectManage.projectInfoIndex:input_type -> sys.ProjectInfoIndexReq
+	76,  // 312: sys.ProjectManage.projectProfileRead:input_type -> sys.ProjectProfileReadReq
+	75,  // 313: sys.ProjectManage.projectProfileUpdate:input_type -> sys.ProjectProfile
+	77,  // 314: sys.ProjectManage.projectProfileIndex:input_type -> sys.ProjectProfileIndexReq
+	81,  // 315: sys.AreaManage.areaInfoCreate:input_type -> sys.AreaInfo
+	81,  // 316: sys.AreaManage.areaInfoUpdate:input_type -> sys.AreaInfo
+	82,  // 317: sys.AreaManage.areaInfoDelete:input_type -> sys.AreaWithID
+	87,  // 318: sys.AreaManage.areaInfoRead:input_type -> sys.AreaInfoReadReq
+	88,  // 319: sys.AreaManage.areaInfoIndex:input_type -> sys.AreaInfoIndexReq
+	84,  // 320: sys.AreaManage.areaProfileRead:input_type -> sys.AreaProfileReadReq
+	83,  // 321: sys.AreaManage.areaProfileUpdate:input_type -> sys.AreaProfile
+	85,  // 322: sys.AreaManage.areaProfileIndex:input_type -> sys.AreaProfileIndexReq
+	41,  // 323: sys.TenantManage.tenantInfoCreate:input_type -> sys.TenantInfoCreateReq
+	42,  // 324: sys.TenantManage.tenantInfoUpdate:input_type -> sys.TenantInfo
+	70,  // 325: sys.TenantManage.tenantInfoDelete:input_type -> sys.WithIDCode
+	70,  // 326: sys.TenantManage.tenantInfoRead:input_type -> sys.WithIDCode
+	43,  // 327: sys.TenantManage.tenantInfoIndex:input_type -> sys.TenantInfoIndexReq
+	45,  // 328: sys.TenantManage.tenantConfigUpdate:input_type -> sys.TenantConfig
+	71,  // 329: sys.TenantManage.tenantConfigRead:input_type -> sys.WithCode
+	48,  // 330: sys.TenantManage.tenantAccessMultiDelete:input_type -> sys.TenantAccessMultiSaveReq
+	48,  // 331: sys.TenantManage.tenantAccessMultiCreate:input_type -> sys.TenantAccessMultiSaveReq
+	48,  // 332: sys.TenantManage.tenantAccessMultiUpdate:input_type -> sys.TenantAccessMultiSaveReq
+	49,  // 333: sys.TenantManage.tenantAccessIndex:input_type -> sys.TenantAccessIndexReq
+	54,  // 334: sys.TenantManage.tenantAppIndex:input_type -> sys.TenantAppIndexReq
+	51,  // 335: sys.TenantManage.tenantAppCreate:input_type -> sys.TenantAppInfo
+	52,  // 336: sys.TenantManage.tenantAppRead:input_type -> sys.TenantAppWithIDOrCode
+	51,  // 337: sys.TenantManage.tenantAppUpdate:input_type -> sys.TenantAppInfo
+	52,  // 338: sys.TenantManage.tenantAppDelete:input_type -> sys.TenantAppWithIDOrCode
+	51,  // 339: sys.TenantManage.tenantAppModuleMultiCreate:input_type -> sys.TenantAppInfo
+	62,  // 340: sys.TenantManage.tenantAppModuleCreate:input_type -> sys.TenantModuleCreateReq
+	57,  // 341: sys.TenantManage.tenantAppModuleIndex:input_type -> sys.TenantModuleIndexReq
+	63,  // 342: sys.TenantManage.tenantAppModuleDelete:input_type -> sys.TenantModuleWithIDOrCode
+	61,  // 343: sys.TenantManage.tenantAppMenuCreate:input_type -> sys.TenantAppMenu
+	59,  // 344: sys.TenantManage.tenantAppMenuIndex:input_type -> sys.TenantAppMenuIndexReq
+	61,  // 345: sys.TenantManage.tenantAppMenuUpdate:input_type -> sys.TenantAppMenu
+	72,  // 346: sys.TenantManage.tenantAppMenuDelete:input_type -> sys.WithAppCodeID
+	26,  // 347: sys.TenantManage.tenantOpenCheckToken:input_type -> sys.TenantOpenCheckTokenReq
+	71,  // 348: sys.TenantManage.tenantOpenWebHook:input_type -> sys.WithCode
+	24,  // 349: sys.TenantManage.tenantAgreementIndex:input_type -> sys.TenantAgreementIndexReq
+	23,  // 350: sys.TenantManage.tenantAgreementUpdate:input_type -> sys.TenantAgreement
+	23,  // 351: sys.TenantManage.tenantAgreementCreate:input_type -> sys.TenantAgreement
+	70,  // 352: sys.TenantManage.tenantAgreementRead:input_type -> sys.WithIDCode
+	69,  // 353: sys.TenantManage.tenantAgreementDelete:input_type -> sys.WithID
+	227, // 354: sys.ops.opsWorkOrderCreate:input_type -> sys.OpsWorkOrder
+	227, // 355: sys.ops.opsWorkOrderUpdate:input_type -> sys.OpsWorkOrder
+	228, // 356: sys.ops.opsWorkOrderIndex:input_type -> sys.OpsWorkOrderIndexReq
+	230, // 357: sys.ops.opsFeedbackCreate:input_type -> sys.OpsFeedback
+	230, // 358: sys.ops.opsFeedbackUpdate:input_type -> sys.OpsFeedback
+	231, // 359: sys.ops.opsFeedbackIndex:input_type -> sys.OpsFeedbackIndexReq
+	120, // 360: sys.UserManage.userInfoCreate:output_type -> sys.UserCreateResp
+	131, // 361: sys.UserManage.userInfoIndex:output_type -> sys.UserInfoIndexResp
+	65,  // 362: sys.UserManage.userInfoUpdate:output_type -> sys.Empty
+	119, // 363: sys.UserManage.userInfoRead:output_type -> sys.UserInfo
+	65,  // 364: sys.UserManage.userInfoDelete:output_type -> sys.Empty
+	143, // 365: sys.UserManage.userLogin:output_type -> sys.UserLoginResp
+	65,  // 366: sys.UserManage.userForgetPwd:output_type -> sys.Empty
+	137, // 367: sys.UserManage.userCaptcha:output_type -> sys.UserCaptchaResp
+	122, // 368: sys.UserManage.userCheckToken:output_type -> sys.UserCheckTokenResp
+	145, // 369: sys.UserManage.userRegister:output_type -> sys.UserRegisterResp
+	65,  // 370: sys.UserManage.userChangePwd:output_type -> sys.Empty
+	140, // 371: sys.UserManage.userCodeToUserID:output_type -> sys.UserCodeToUserIDResp
+	65,  // 372: sys.UserManage.userBindAccount:output_type -> sys.Empty
+	148, // 373: sys.UserManage.userRoleIndex:output_type -> sys.UserRoleIndexResp
+	65,  // 374: sys.UserManage.userRoleMultiUpdate:output_type -> sys.Empty
+	65,  // 375: sys.UserManage.userRoleMultiCreate:output_type -> sys.Empty
+	151, // 376: sys.UserManage.userDeptIndex:output_type -> sys.UserDeptIndexResp
+	65,  // 377: sys.UserManage.userDeptMultiDelete:output_type -> sys.Empty
+	65,  // 378: sys.UserManage.userDeptMultiCreate:output_type -> sys.Empty
+	65,  // 379: sys.UserManage.userAreaApplyCreate:output_type -> sys.Empty
+	65,  // 380: sys.UserManage.userMessageMultiIsRead:output_type -> sys.Empty
+	39,  // 381: sys.UserManage.userMessageIndex:output_type -> sys.UserMessageIndexResp
+	36,  // 382: sys.UserManage.userMessageStatistics:output_type -> sys.UserMessageStatisticsResp
+	32,  // 383: sys.UserManage.userProfileRead:output_type -> sys.UserProfile
+	65,  // 384: sys.UserManage.userProfileUpdate:output_type -> sys.Empty
+	34,  // 385: sys.UserManage.userProfileIndex:output_type -> sys.UserProfileIndexResp
+	65,  // 386: sys.DataManage.dataProjectCreate:output_type -> sys.Empty
+	65,  // 387: sys.DataManage.dataProjectMultiCreate:output_type -> sys.Empty
+	65,  // 388: sys.DataManage.dataProjectDelete:output_type -> sys.Empty
+	65,  // 389: sys.DataManage.dataProjectMultiDelete:output_type -> sys.Empty
+	165, // 390: sys.DataManage.dataProjectIndex:output_type -> sys.DataProjectIndexResp
+	65,  // 391: sys.DataManage.dataAreaMultiUpdate:output_type -> sys.Empty
+	169, // 392: sys.DataManage.dataAreaIndex:output_type -> sys.DataAreaIndexResp
+	65,  // 393: sys.DataManage.dataAreaMultiDelete:output_type -> sys.Empty
+	174, // 394: sys.DataManage.userAreaApplyIndex:output_type -> sys.UserAreaApplyIndexResp
+	65,  // 395: sys.DataManage.userAreaApplyDeal:output_type -> sys.Empty
+	31,  // 396: sys.DataManage.dataOpenAccessIndex:output_type -> sys.OpenAccessIndexResp
+	29,  // 397: sys.DataManage.dataOpenAccessRead:output_type -> sys.OpenAccess
+	65,  // 398: sys.DataManage.dataOpenAccessUpdate:output_type -> sys.Empty
+	69,  // 399: sys.DataManage.dataOpenAccessCreate:output_type -> sys.WithID
+	65,  // 400: sys.DataManage.dataOpenAccessDelete:output_type -> sys.Empty
+	69,  // 401: sys.NotifyManage.messageInfoSend:output_type -> sys.WithID
+	16,  // 402: sys.NotifyManage.messageInfoIndex:output_type -> sys.MessageInfoIndexResp
+	65,  // 403: sys.NotifyManage.messageInfoUpdate:output_type -> sys.Empty
+	65,  // 404: sys.NotifyManage.messageInfoDelete:output_type -> sys.Empty
+	4,   // 405: sys.NotifyManage.notifyConfigRead:output_type -> sys.NotifyConfig
+	69,  // 406: sys.NotifyManage.notifyConfigCreate:output_type -> sys.WithID
+	65,  // 407: sys.NotifyManage.notifyConfigUpdate:output_type -> sys.Empty
+	6,   // 408: sys.NotifyManage.notifyConfigIndex:output_type -> sys.NotifyConfigIndexResp
+	65,  // 409: sys.NotifyManage.notifyConfigDelete:output_type -> sys.Empty
+	65,  // 410: sys.NotifyManage.notifyConfigSend:output_type -> sys.Empty
+	7,   // 411: sys.NotifyManage.notifyTemplateRead:output_type -> sys.NotifyTemplate
+	69,  // 412: sys.NotifyManage.notifyTemplateCreate:output_type -> sys.WithID
+	65,  // 413: sys.NotifyManage.notifyTemplateUpdate:output_type -> sys.Empty
+	14,  // 414: sys.NotifyManage.notifyTemplateIndex:output_type -> sys.NotifyTemplateIndexResp
+	65,  // 415: sys.NotifyManage.notifyTemplateDelete:output_type -> sys.Empty
+	65,  // 416: sys.NotifyManage.notifyConfigTemplateUpdate:output_type -> sys.Empty
+	65,  // 417: sys.NotifyManage.notifyConfigTemplateDelete:output_type -> sys.Empty
+	21,  // 418: sys.NotifyManage.notifyConfigTemplateIndex:output_type -> sys.NotifyConfigTemplateIndexResp
+	8,   // 419: sys.NotifyManage.notifyChannelRead:output_type -> sys.NotifyChannel
+	69,  // 420: sys.NotifyManage.notifyChannelCreate:output_type -> sys.WithID
+	65,  // 421: sys.NotifyManage.notifyChannelUpdate:output_type -> sys.Empty
+	10,  // 422: sys.NotifyManage.notifyChannelIndex:output_type -> sys.NotifyChannelIndexResp
+	65,  // 423: sys.NotifyManage.notifyChannelDelete:output_type -> sys.Empty
+	69,  // 424: sys.AccessManage.apiInfoCreate:output_type -> sys.WithID
+	221, // 425: sys.AccessManage.apiInfoIndex:output_type -> sys.ApiInfoIndexResp
+	65,  // 426: sys.AccessManage.apiInfoUpdate:output_type -> sys.Empty
+	65,  // 427: sys.AccessManage.apiInfoDelete:output_type -> sys.Empty
+	223, // 428: sys.AccessManage.accessInfoMultiImport:output_type -> sys.AccessInfoMultiImportResp
+	69,  // 429: sys.AccessManage.accessInfoCreate:output_type -> sys.WithID
+	226, // 430: sys.AccessManage.accessInfoIndex:output_type -> sys.AccessInfoIndexResp
+	65,  // 431: sys.AccessManage.accessInfoUpdate:output_type -> sys.Empty
+	65,  // 432: sys.AccessManage.accessInfoDelete:output_type -> sys.Empty
+	69,  // 433: sys.RoleManage.roleInfoCreate:output_type -> sys.WithID
+	207, // 434: sys.RoleManage.roleInfoIndex:output_type -> sys.RoleInfoIndexResp
+	65,  // 435: sys.RoleManage.roleInfoUpdate:output_type -> sys.Empty
+	65,  // 436: sys.RoleManage.roleInfoDelete:output_type -> sys.Empty
+	104, // 437: sys.RoleManage.roleMenuIndex:output_type -> sys.RoleMenuIndexResp
+	65,  // 438: sys.RoleManage.roleMenuMultiUpdate:output_type -> sys.Empty
+	106, // 439: sys.RoleManage.roleAppIndex:output_type -> sys.RoleAppIndexResp
+	65,  // 440: sys.RoleManage.roleAppMultiUpdate:output_type -> sys.Empty
+	108, // 441: sys.RoleManage.roleModuleIndex:output_type -> sys.RoleModuleIndexResp
+	65,  // 442: sys.RoleManage.roleModuleMultiUpdate:output_type -> sys.Empty
+	128, // 443: sys.RoleManage.roleApiAuth:output_type -> sys.RoleApiAuthResp
+	65,  // 444: sys.RoleManage.roleAccessMultiUpdate:output_type -> sys.Empty
+	102, // 445: sys.RoleManage.roleAccessIndex:output_type -> sys.RoleAccessIndexResp
+	69,  // 446: sys.AppManage.appInfoCreate:output_type -> sys.WithID
+	202, // 447: sys.AppManage.appInfoIndex:output_type -> sys.AppInfoIndexResp
+	65,  // 448: sys.AppManage.appInfoUpdate:output_type -> sys.Empty
+	65,  // 449: sys.AppManage.appInfoDelete:output_type -> sys.Empty
+	200, // 450: sys.AppManage.appInfoRead:output_type -> sys.AppInfo
+	205, // 451: sys.AppManage.appModuleIndex:output_type -> sys.AppModuleIndexResp
+	65,  // 452: sys.AppManage.appModuleMultiUpdate:output_type -> sys.Empty
+	69,  // 453: sys.ModuleManage.moduleInfoCreate:output_type -> sys.WithID
+	199, // 454: sys.ModuleManage.moduleInfoIndex:output_type -> sys.ModuleInfoIndexResp
+	65,  // 455: sys.ModuleManage.moduleInfoUpdate:output_type -> sys.Empty
+	65,  // 456: sys.ModuleManage.moduleInfoDelete:output_type -> sys.Empty
+	197, // 457: sys.ModuleManage.moduleInfoRead:output_type -> sys.ModuleInfo
+	69,  // 458: sys.ModuleManage.moduleMenuCreate:output_type -> sys.WithID
+	216, // 459: sys.ModuleManage.moduleMenuIndex:output_type -> sys.MenuInfoIndexResp
+	65,  // 460: sys.ModuleManage.moduleMenuUpdate:output_type -> sys.Empty
+	65,  // 461: sys.ModuleManage.moduleMenuDelete:output_type -> sys.Empty
+	211, // 462: sys.ModuleManage.moduleMenuMultiImport:output_type -> sys.MenuMultiImportResp
+	213, // 463: sys.ModuleManage.moduleMenuMultiExport:output_type -> sys.MenuMultiExportResp
+	69,  // 464: sys.DictManage.dictInfoCreate:output_type -> sys.WithID
+	179, // 465: sys.DictManage.dictInfoIndex:output_type -> sys.DictInfoIndexResp
+	65,  // 466: sys.DictManage.dictInfoUpdate:output_type -> sys.Empty
+	65,  // 467: sys.DictManage.dictInfoDelete:output_type -> sys.Empty
+	176, // 468: sys.DictManage.dictInfoRead:output_type -> sys.DictInfo
+	181, // 469: sys.DictManage.dictDetailRead:output_type -> sys.DictDetail
+	69,  // 470: sys.DictManage.dictDetailCreate:output_type -> sys.WithID
+	65,  // 471: sys.DictManage.dictDetailMultiCreate:output_type -> sys.Empty
+	183, // 472: sys.DictManage.dictDetailIndex:output_type -> sys.DictDetailIndexResp
+	65,  // 473: sys.DictManage.dictDetailUpdate:output_type -> sys.Empty
+	65,  // 474: sys.DictManage.dictDetailDelete:output_type -> sys.Empty
+	194, // 475: sys.DepartmentManage.deptInfoRead:output_type -> sys.DeptInfo
+	69,  // 476: sys.DepartmentManage.deptInfoCreate:output_type -> sys.WithID
+	196, // 477: sys.DepartmentManage.deptInfoIndex:output_type -> sys.DeptInfoIndexResp
+	65,  // 478: sys.DepartmentManage.deptInfoUpdate:output_type -> sys.Empty
+	65,  // 479: sys.DepartmentManage.deptInfoDelete:output_type -> sys.Empty
+	154, // 480: sys.DepartmentManage.deptUserIndex:output_type -> sys.DeptUserIndexResp
+	65,  // 481: sys.DepartmentManage.deptUserMultiDelete:output_type -> sys.Empty
+	65,  // 482: sys.DepartmentManage.deptUserMultiCreate:output_type -> sys.Empty
+	157, // 483: sys.DepartmentManage.deptRoleIndex:output_type -> sys.DeptRoleIndexResp
+	65,  // 484: sys.DepartmentManage.deptRoleMultiDelete:output_type -> sys.Empty
+	65,  // 485: sys.DepartmentManage.deptRoleMultiCreate:output_type -> sys.Empty
+	191, // 486: sys.DepartmentManage.deptSyncJobExecute:output_type -> sys.DeptSyncJobExecuteResp
+	186, // 487: sys.DepartmentManage.deptSyncJobRead:output_type -> sys.DeptSyncJob
+	69,  // 488: sys.DepartmentManage.deptSyncJobCreate:output_type -> sys.WithID
+	188, // 489: sys.DepartmentManage.deptSyncJobIndex:output_type -> sys.DeptSyncJobIndexResp
+	65,  // 490: sys.DepartmentManage.deptSyncJobUpdate:output_type -> sys.Empty
+	65,  // 491: sys.DepartmentManage.deptSyncJobDelete:output_type -> sys.Empty
+	218, // 492: sys.Common.config:output_type -> sys.configResp
+	96,  // 493: sys.Common.QRCodeRead:output_type -> sys.QRCodeReadResp
+	94,  // 494: sys.Common.WeatherRead:output_type -> sys.WeatherReadResp
+	98,  // 495: sys.Common.slotInfoIndex:output_type -> sys.SlotInfoIndexResp
+	69,  // 496: sys.Common.slotInfoCreate:output_type -> sys.WithID
+	65,  // 497: sys.Common.slotInfoUpdate:output_type -> sys.Empty
+	65,  // 498: sys.Common.slotInfoDelete:output_type -> sys.Empty
+	91,  // 499: sys.Common.slotInfoRead:output_type -> sys.SlotInfo
+	90,  // 500: sys.Common.serviceInfoRead:output_type -> sys.ServiceInfo
+	65,  // 501: sys.Common.serviceInfoUpdate:output_type -> sys.Empty
+	194, // 502: sys.Common.thirdDeptRead:output_type -> sys.DeptInfo
+	196, // 503: sys.Common.thirdDeptIndex:output_type -> sys.DeptInfoIndexResp
+	113, // 504: sys.Log.loginLogIndex:output_type -> sys.LoginLogIndexResp
+	116, // 505: sys.Log.operLogIndex:output_type -> sys.OperLogIndexResp
+	65,  // 506: sys.Log.loginLogCreate:output_type -> sys.Empty
+	65,  // 507: sys.Log.operLogCreate:output_type -> sys.Empty
+	73,  // 508: sys.ProjectManage.projectInfoCreate:output_type -> sys.ProjectWithID
+	65,  // 509: sys.ProjectManage.projectInfoUpdate:output_type -> sys.Empty
+	65,  // 510: sys.ProjectManage.projectInfoDelete:output_type -> sys.Empty
+	74,  // 511: sys.ProjectManage.projectInfoRead:output_type -> sys.ProjectInfo
+	80,  // 512: sys.ProjectManage.projectInfoIndex:output_type -> sys.ProjectInfoIndexResp
+	75,  // 513: sys.ProjectManage.projectProfileRead:output_type -> sys.ProjectProfile
+	65,  // 514: sys.ProjectManage.projectProfileUpdate:output_type -> sys.Empty
+	78,  // 515: sys.ProjectManage.projectProfileIndex:output_type -> sys.ProjectProfileIndexResp
+	82,  // 516: sys.AreaManage.areaInfoCreate:output_type -> sys.AreaWithID
+	65,  // 517: sys.AreaManage.areaInfoUpdate:output_type -> sys.Empty
+	65,  // 518: sys.AreaManage.areaInfoDelete:output_type -> sys.Empty
+	81,  // 519: sys.AreaManage.areaInfoRead:output_type -> sys.AreaInfo
+	89,  // 520: sys.AreaManage.areaInfoIndex:output_type -> sys.AreaInfoIndexResp
+	83,  // 521: sys.AreaManage.areaProfileRead:output_type -> sys.AreaProfile
+	65,  // 522: sys.AreaManage.areaProfileUpdate:output_type -> sys.Empty
+	86,  // 523: sys.AreaManage.areaProfileIndex:output_type -> sys.AreaProfileIndexResp
+	69,  // 524: sys.TenantManage.tenantInfoCreate:output_type -> sys.WithID
+	65,  // 525: sys.TenantManage.tenantInfoUpdate:output_type -> sys.Empty
+	65,  // 526: sys.TenantManage.tenantInfoDelete:output_type -> sys.Empty
+	42,  // 527: sys.TenantManage.tenantInfoRead:output_type -> sys.TenantInfo
+	44,  // 528: sys.TenantManage.tenantInfoIndex:output_type -> sys.TenantInfoIndexResp
+	65,  // 529: sys.TenantManage.tenantConfigUpdate:output_type -> sys.Empty
+	45,  // 530: sys.TenantManage.tenantConfigRead:output_type -> sys.TenantConfig
+	65,  // 531: sys.TenantManage.tenantAccessMultiDelete:output_type -> sys.Empty
+	65,  // 532: sys.TenantManage.tenantAccessMultiCreate:output_type -> sys.Empty
+	65,  // 533: sys.TenantManage.tenantAccessMultiUpdate:output_type -> sys.Empty
+	50,  // 534: sys.TenantManage.tenantAccessIndex:output_type -> sys.TenantAccessIndexResp
+	55,  // 535: sys.TenantManage.tenantAppIndex:output_type -> sys.TenantAppIndexResp
+	65,  // 536: sys.TenantManage.tenantAppCreate:output_type -> sys.Empty
+	51,  // 537: sys.TenantManage.tenantAppRead:output_type -> sys.TenantAppInfo
+	65,  // 538: sys.TenantManage.tenantAppUpdate:output_type -> sys.Empty
+	65,  // 539: sys.TenantManage.tenantAppDelete:output_type -> sys.Empty
+	65,  // 540: sys.TenantManage.tenantAppModuleMultiCreate:output_type -> sys.Empty
+	65,  // 541: sys.TenantManage.tenantAppModuleCreate:output_type -> sys.Empty
+	58,  // 542: sys.TenantManage.tenantAppModuleIndex:output_type -> sys.TenantModuleIndexResp
+	65,  // 543: sys.TenantManage.tenantAppModuleDelete:output_type -> sys.Empty
+	69,  // 544: sys.TenantManage.tenantAppMenuCreate:output_type -> sys.WithID
+	60,  // 545: sys.TenantManage.tenantAppMenuIndex:output_type -> sys.TenantAppMenuIndexResp
+	65,  // 546: sys.TenantManage.tenantAppMenuUpdate:output_type -> sys.Empty
+	65,  // 547: sys.TenantManage.tenantAppMenuDelete:output_type -> sys.Empty
+	27,  // 548: sys.TenantManage.tenantOpenCheckToken:output_type -> sys.TenantOpenCheckTokenResp
+	28,  // 549: sys.TenantManage.tenantOpenWebHook:output_type -> sys.TenantOpenWebHook
+	25,  // 550: sys.TenantManage.tenantAgreementIndex:output_type -> sys.TenantAgreementIndexResp
+	65,  // 551: sys.TenantManage.tenantAgreementUpdate:output_type -> sys.Empty
+	69,  // 552: sys.TenantManage.tenantAgreementCreate:output_type -> sys.WithID
+	23,  // 553: sys.TenantManage.tenantAgreementRead:output_type -> sys.TenantAgreement
+	65,  // 554: sys.TenantManage.tenantAgreementDelete:output_type -> sys.Empty
+	69,  // 555: sys.ops.opsWorkOrderCreate:output_type -> sys.WithID
+	65,  // 556: sys.ops.opsWorkOrderUpdate:output_type -> sys.Empty
+	229, // 557: sys.ops.opsWorkOrderIndex:output_type -> sys.OpsWorkOrderIndexResp
+	69,  // 558: sys.ops.opsFeedbackCreate:output_type -> sys.WithID
+	65,  // 559: sys.ops.opsFeedbackUpdate:output_type -> sys.Empty
+	232, // 560: sys.ops.opsFeedbackIndex:output_type -> sys.OpsFeedbackIndexResp
+	360, // [360:561] is the sub-list for method output_type
+	159, // [159:360] is the sub-list for method input_type
+	159, // [159:159] is the sub-list for extension type_name
+	159, // [159:159] is the sub-list for extension extendee
+	0,   // [0:159] is the sub-list for field type_name
 }
 
 func init() { file_proto_sys_proto_init() }
@@ -23455,7 +23492,7 @@ func file_proto_sys_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_sys_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   248,
+			NumMessages:   250,
 			NumExtensions: 0,
 			NumServices:   15,
 		},
