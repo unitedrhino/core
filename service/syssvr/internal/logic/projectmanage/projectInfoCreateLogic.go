@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -116,5 +117,9 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		return nil, err
 	}
 	cache.ClearProjectAuth(uc.UserID)
+	err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreProjectInfoCreate, po.ProjectID)
+	if err != nil {
+		l.Error(err)
+	}
 	return &sys.ProjectWithID{ProjectID: int64(po.ProjectID)}, nil
 }

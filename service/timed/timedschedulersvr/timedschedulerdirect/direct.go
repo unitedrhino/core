@@ -9,10 +9,10 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/pb/timedscheduler"
 	"gitee.com/unitedrhino/share/interceptors"
+	"gitee.com/unitedrhino/share/services"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
-	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"sync"
@@ -47,7 +47,7 @@ func RunServer(svcCtx *svc.ServiceContext) {
 
 func Run(svcCtx *svc.ServiceContext) {
 	c := svcCtx.Config
-	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
+	s := services.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		timedscheduler.RegisterTimedschedulerServer(grpcServer, schedulerServer.NewTimedschedulerServer(svcCtx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {

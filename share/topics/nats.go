@@ -1,7 +1,9 @@
 package topics
 
 const (
-	CoreProjectInfoDelete  = "server.core.project.info.delete"
+	CoreProjectInfoDelete = "server.core.project.info.delete"
+	CoreProjectInfoCreate = "server.core.project.info.create"
+
 	CoreAreaInfoDelete     = "server.core.area.info.delete"
 	CoreOpsWorkOrderFinish = "server.core.ops.workOrder.finish"
 	CoreSyncHalfHour       = "server.core.sync.halfHour" //半小时统计
