@@ -59,7 +59,7 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 			LoginLocation: tools.GetCityByIp(ctxs.GetUserCtx(l.ctx).IP),
 			Browser:       browser,
 			Os:            os,
-			Msg:           er.Error(),
+			Msg:           er.GetMsg(),
 			Code:          er.Code,
 		})
 		return nil, er
