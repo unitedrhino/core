@@ -37,7 +37,11 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 	)
 	uc := ctxs.GetUserCtx(l.ctx)
 	if in.ProjectID != 0 {
-		uc.ProjectID = in.ProjectID
+		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
+			uc.ProjectID = in.ProjectID
+		} else {
+			return nil, errors.Permissions
+		}
 	} else {
 		in.ProjectID = uc.ProjectID
 	}
@@ -47,11 +51,7 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 	if uc.AllProject {
 		in.ProjectID = 0
 	}
-	if in.ProjectID != 0 {
-		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
-			in.ProjectID = in.ProjectID
-		}
-	}
+
 	filter := relationDB.DataProjectFilter{
 		ProjectID: in.ProjectID,
 		AuthType:  in.AuthType,

@@ -4,7 +4,6 @@ import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/share/oss/common"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -48,18 +47,18 @@ func (d *Day) Handle() error {
 	return nil
 }
 
-func (d *Day) HandleOss() error {
-	var now = time.Now()
-	for i := 0; i < 10; i++ {
-		now = now.AddDate(0, 0, -1)
-		path := utils.ToYYMMdd2(now.UnixMilli()) + "/"
-		err := d.svcCtx.OssClient.Delete(d.ctx, path, common.OptionKv{})
-		if err != nil {
-			d.Error("%v", err)
-		}
-	}
-	return nil
-}
+//func (d *Day) HandleOss() error {
+//	var now = time.Now()
+//	for i := 0; i < 10; i++ {
+//		now = now.AddDate(0, 0, -1)
+//		path := utils.ToYYMMdd2(now.UnixMilli()) + "/"
+//		err := d.svcCtx.OssClient.Delete(d.ctx, path, common.OptionKv{})
+//		if err != nil {
+//			d.Error("%v", err)
+//		}
+//	}
+//	return nil
+//}
 
 func (d *Day) HandleLog() error {
 	cs, err := relationDB.NewTenantConfigRepo(d.ctx).FindByFilter(d.ctx, relationDB.TenantConfigFilter{}, nil)

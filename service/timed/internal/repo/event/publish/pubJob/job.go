@@ -34,10 +34,10 @@ func NewPubJob(c conf.EventConf) (*PubJob, error) {
 }
 func (p *PubJob) Publish(ctx context.Context, pubType string, topic string, payload []byte) error {
 	return p.nats.Publish(ctx, topic, payload)
-	if pubType == conf.EventModeNatsJs {
-		return p.natsJs.Publish(ctx, topic, payload)
-	} else {
-
-	}
-	return nil
+	//if pubType == conf.EventModeNatsJs {
+	//	return p.natsJs.Publish(ctx, topic, payload)
+	//} else {
+	//
+	//}
+	//return nil
 }

@@ -1,7 +1,6 @@
 package websocket
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -15,9 +14,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/core/trace"
-	"io"
 	"net/http"
-	"net/url"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -326,55 +323,55 @@ func isDataComplete(wsType WsType, body WsReq) error {
 	return nil
 }
 
-func downControl(c *connection, body WsReq) {
-	reqBody, err := getRequestBody(body.Body)
-	if err != nil {
-		// 处理编码错误
-	}
-	bodyBytes, err := json.Marshal(body.Body)
-	length := len(bodyBytes)
-	header := c.r.Header
-	header.Set("Content-Type", "application/json")
-	header.Set("Content-Length", strconv.Itoa(length))
-	r := &http.Request{
-		Method: body.Method,
-		Host:   c.r.Host,
-		URL: &url.URL{
-			Path: body.Path,
-		},
-		Header:        header,
-		Body:          reqBody,
-		ContentLength: int64(length),
-	}
-	w := response{req: &body, resp: WsResp{WsBody: WsBody{Handler: map[string]string{}, Type: ControlRet}}}
-	c.server.ServeHTTP(&w, r)
-	if token := w.Header().Get(ctxs.UserSetTokenKey); token != "" { //登录态保持更新
-		c.r.Header.Set(ctxs.UserSetTokenKey, token)
-	}
-	c.sendMessage(w.resp)
-}
-
-// 将请求体转换为io.ReadCloser类型
-func getRequestBody(body interface{}) (io.ReadCloser, error) {
-	var reqBody io.ReadCloser
-	if body != nil {
-		switch body.(type) {
-		case string:
-			reqBody = io.NopCloser(bytes.NewBufferString(body.(string)))
-		case []byte:
-			reqBody = io.NopCloser(bytes.NewBuffer(body.([]byte)))
-		case map[string]interface{}:
-			bodyBytes, err := json.Marshal(body)
-			if err != nil {
-				return nil, err
-			}
-			reqBody = io.NopCloser(bytes.NewReader(bodyBytes))
-		default:
-			// 处理其他类型
-		}
-	}
-	return reqBody, nil
-}
+//func downControl(c *connection, body WsReq) {
+//	reqBody, err := getRequestBody(body.Body)
+//	if err != nil {
+//		// 处理编码错误
+//	}
+//	bodyBytes, err := json.Marshal(body.Body)
+//	length := len(bodyBytes)
+//	header := c.r.Header
+//	header.Set("Content-Type", "application/json")
+//	header.Set("Content-Length", strconv.Itoa(length))
+//	r := &http.Request{
+//		Method: body.Method,
+//		Host:   c.r.Host,
+//		URL: &url.URL{
+//			Path: body.Path,
+//		},
+//		Header:        header,
+//		Body:          reqBody,
+//		ContentLength: int64(length),
+//	}
+//	w := response{req: &body, resp: WsResp{WsBody: WsBody{Handler: map[string]string{}, Type: ControlRet}}}
+//	c.server.ServeHTTP(&w, r)
+//	if token := w.Header().Get(ctxs.UserSetTokenKey); token != "" { //登录态保持更新
+//		c.r.Header.Set(ctxs.UserSetTokenKey, token)
+//	}
+//	c.sendMessage(w.resp)
+//}
+//
+//// 将请求体转换为io.ReadCloser类型
+//func getRequestBody(body interface{}) (io.ReadCloser, error) {
+//	var reqBody io.ReadCloser
+//	if body != nil {
+//		switch body.(type) {
+//		case string:
+//			reqBody = io.NopCloser(bytes.NewBufferString(body.(string)))
+//		case []byte:
+//			reqBody = io.NopCloser(bytes.NewBuffer(body.([]byte)))
+//		case map[string]interface{}:
+//			bodyBytes, err := json.Marshal(body)
+//			if err != nil {
+//				return nil, err
+//			}
+//			reqBody = io.NopCloser(bytes.NewReader(bodyBytes))
+//		default:
+//			// 处理其他类型
+//		}
+//	}
+//	return reqBody, nil
+//}
 
 // 开启发送进程
 func (c *connection) StartWrite() {
@@ -397,7 +394,7 @@ func (c *connection) StartWrite() {
 				err = c.pongSend()
 			}
 			if err != nil {
-				logx.Errorf("websocket pingPong keepAliveType:%v  userID:%v,connectID:%v writeMessage:%v err:%v",
+				logx.Errorf("websocket pingPong keepAliveType:%v  userID:%v,connectID:%v err:%v",
 					keepAliveType, c.userID, c.connectID, err)
 				c.Close("connection timeout")
 				return

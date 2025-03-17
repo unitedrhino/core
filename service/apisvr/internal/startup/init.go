@@ -17,7 +17,8 @@ type retStu struct {
 func Init(svcCtx *svc.ServiceContext) {
 
 	ws.RegisterSubscribeCheck2(func(ctx context.Context, in *ws.SubscribeInfo) ([]map[string]any, error) {
-		ctx, _ = context.WithTimeout(ctx, 2*time.Second)
+		ctx, c := context.WithTimeout(ctx, 2*time.Second)
+		defer c()
 		sl, err := svcCtx.Slot.GetData(ctx, sysExport.GenSlotCacheKey(slot.CodeUserSubscribe, in.Code))
 		if err != nil {
 			return nil, err

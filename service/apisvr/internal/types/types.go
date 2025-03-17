@@ -930,10 +930,10 @@ type RoleInfo struct {
 }
 
 type RoleInfoIndexReq struct {
-	Page   *PageInfo `json:"page,optional"`    //分页信息,只获取一个则不填
-	Name   string    `json:"name,optional "`   //按名称查找角色
-	Status int64     `json:"status,optional "` //按状态查找角色
-	Codes  []string  `json:"codes,optional"`   //角色编码过滤
+	Page   *PageInfo `json:"page,optional"`   //分页信息,只获取一个则不填
+	Name   string    `json:"name,optional"`   //按名称查找角色
+	Status int64     `json:"status,optional"` //按状态查找角色
+	Codes  []string  `json:"codes,optional"`  //角色编码过滤
 	IDs    []int64   `json:"ids,optional"`
 }
 
@@ -1035,13 +1035,13 @@ type SysLogLoginInfo struct {
 }
 
 type SysLogOperIndexReq struct {
-	Page         *PageInfo `json:"page,optional"`                 //分页信息,只获取一个则不填
-	OperName     string    `json:"operName,optional "`            //按操作名称查找
-	OperUserName string    `json:"operUserName,optional "`        //按操作人员名称查找
-	BusinessType int64     `json:"businessType,string,optional "` //按业务类型（1新增 2修改 3删除 4查询）查找
-	AppCode      string    `json:"appCode,optional"`              // 应用编号
-	OperUserID   int64     `json:"operUserID,string,optional"`    // 操作用户id
-	Code         int64     `json:"code,string,optional"`          //登录状态（200成功 其它失败）
+	Page         *PageInfo `json:"page,optional"`                //分页信息,只获取一个则不填
+	OperName     string    `json:"operName,optional"`            //按操作名称查找
+	OperUserName string    `json:"operUserName,optional"`        //按操作人员名称查找
+	BusinessType int64     `json:"businessType,string,optional"` //按业务类型（1新增 2修改 3删除 4查询）查找
+	AppCode      string    `json:"appCode,optional"`             // 应用编号
+	OperUserID   int64     `json:"operUserID,string,optional"`   // 操作用户id
+	Code         int64     `json:"code,string,optional"`         //登录状态（200成功 其它失败）
 }
 
 type SysLogOperIndexResp struct {

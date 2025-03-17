@@ -93,7 +93,7 @@ func ToPageInfo(info *timedjob.PageInfo, defaultOrders ...stores.OrderBy) *store
 		orders = make([]stores.OrderBy, 0, len(infoOrders))
 		for _, infoOd := range infoOrders {
 			if infoOd.GetFiled() != "" {
-				orders = append(orders, stores.OrderBy{infoOd.GetFiled(), infoOd.GetSort()})
+				orders = append(orders, stores.OrderBy{Field: infoOd.GetFiled(), Sort: infoOd.GetSort()})
 			}
 		}
 	}

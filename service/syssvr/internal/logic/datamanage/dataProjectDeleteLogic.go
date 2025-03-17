@@ -34,14 +34,13 @@ func (l *DataProjectDeleteLogic) DataProjectDelete(in *sys.DataProjectDeleteReq)
 	}
 	uc := ctxs.GetUserCtx(l.ctx)
 	if in.ProjectID != 0 {
-		uc.ProjectID = in.ProjectID
+		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
+			uc.ProjectID = in.ProjectID
+		} else {
+			return nil, errors.Permissions
+		}
 	} else {
 		in.ProjectID = uc.ProjectID
-	}
-	if in.ProjectID != 0 {
-		if uc.IsAdmin || uc.ProjectAuth[in.ProjectID] != nil {
-			in.ProjectID = in.ProjectID
-		}
 	}
 
 	project, err := relationDB.NewProjectInfoRepo(l.ctx).FindOne(ctxs.WithRoot(l.ctx), in.ProjectID)

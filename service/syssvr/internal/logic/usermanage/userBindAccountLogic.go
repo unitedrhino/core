@@ -76,9 +76,9 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 			return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
 		}
 		if ret.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{ret.UnionID, true}
+			ui.WechatUnionID = sql.NullString{String: ret.UnionID, Valid: true}
 		}
-		ui.WechatOpenID = sql.NullString{ret.OpenID, true}
+		ui.WechatOpenID = sql.NullString{String: ret.OpenID, Valid: true}
 	case users.RegWxOpen:
 		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
 			return &sys.Empty{}, errors.BindAccount
@@ -91,9 +91,9 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 			return nil, errors.System.AddDetail(er)
 		}
 		if at.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{at.UnionID, true}
+			ui.WechatUnionID = sql.NullString{String: at.UnionID, Valid: true}
 		}
-		ui.WechatOpenID = sql.NullString{at.OpenID, true}
+		ui.WechatOpenID = sql.NullString{String: at.OpenID, Valid: true}
 
 	case users.RegDingApp:
 		if cli.DingMini == nil {
@@ -106,7 +106,7 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		if ret.Code != 0 {
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
-		ui.DingTalkUserID = sql.NullString{ret.UserInfo.UserId, true}
+		ui.DingTalkUserID = sql.NullString{String: ret.UserInfo.UserId, Valid: true}
 	}
 	err = relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, ui)
 	return &sys.Empty{}, err

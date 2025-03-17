@@ -50,7 +50,6 @@ func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserRegi
 	default:
 		return nil, errors.NotRealize.AddMsgf(in.RegType)
 	}
-	return &sys.UserRegisterResp{}, nil
 }
 
 func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
