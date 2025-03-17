@@ -44,6 +44,7 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		Code:      req.Code,
 		CodeID:    req.CodeID,
 		Ip:        ctxs.GetUserCtx(l.ctx).IP,
+		DeviceID:  ctxs.GetUserCtx(l.ctx).DeviceID,
 	})
 
 	if err != nil {

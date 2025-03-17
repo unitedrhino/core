@@ -4,10 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"

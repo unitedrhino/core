@@ -2,8 +2,8 @@ package usermanagelogic
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/users"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"

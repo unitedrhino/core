@@ -3,11 +3,11 @@ package relationDB
 import (
 	"context"
 	"database/sql"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
-	"gitee.com/unitedrhino/share/users"
 	"github.com/spf13/cast"
 	"gorm.io/gorm/clause"
 )

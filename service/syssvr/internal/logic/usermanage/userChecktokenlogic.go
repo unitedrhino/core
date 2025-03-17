@@ -6,10 +6,10 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
-	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/maypok86/otter"
@@ -149,6 +149,9 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		l.Errorf("%s parse token fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
+	if claim.DeviceID != "" && claim.DeviceID != in.DeviceID {
+		return nil, errors.TokenInvalid.AddMsg("token不可以跨设备使用")
+	}
 	var token string
 
 	ui, err := l.svcCtx.UsersCache.GetData(l.ctx, claim.UserID)
@@ -161,8 +164,11 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
-	if tc.IsSsl == def.True && ui.LastTokenID != "" && claim.ID != ui.LastTokenID {
-		return nil, errors.AccountKickedOut
+	if tc.IsSsl == def.True {
+		err := l.svcCtx.UserToken.CheckToken(l.ctx, claim)
+		if err != nil {
+			return nil, err
+		}
 	}
 	if (claim.ExpiresAt.Unix()-time.Now().Unix())*2 < l.svcCtx.Config.UserToken.AccessExpire {
 		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, l.svcCtx.Config.UserToken.AccessExpire)

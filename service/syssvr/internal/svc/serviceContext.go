@@ -57,6 +57,7 @@ type ServiceContext struct {
 	AreaCache          *caches.Cache[sys.AreaInfo, int64]
 	ApiCache           *caches.Cache[relationDB.SysApiInfo, string]
 	RoleAccessCache    *caches.Cache[map[int64]struct{}, string]
+	UserToken          *cache.UserToken
 	Sms                *smsClient.Sms
 	DingStreamMap      map[string]*dingClient.StreamClient //key是租户号,value是需要同步的stream
 	DingStreamMapMutex sync.RWMutex
@@ -112,6 +113,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		FastEvent:     serverMsg,
 		Captcha:       cache.NewCaptcha(store),
 		Slot:          cache.NewSlot(),
+		UserToken:     cache.NewUserToken(),
 		Cm:            NewClients(c),
 		Config:        c,
 		CaptchaLimit:  cl,

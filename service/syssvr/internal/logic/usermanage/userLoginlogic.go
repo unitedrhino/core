@@ -9,12 +9,12 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/topics"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
-	"gitee.com/unitedrhino/share/users"
 	"gitee.com/unitedrhino/share/utils"
 	"sync/atomic"
 	"time"
@@ -79,8 +79,8 @@ func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*
 	id := genID(l.ctx, l.svcCtx.NodeID)
 	now := time.Now()
 	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
-	jwtToken, err := users.GetLoginJwtToken(l.svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
-		ui.UserID, uc.AppCode, id)
+	jwtToken, claims, err := users.GetLoginJwtToken(l.svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
+		ui.UserID, uc.AppCode, id, in.DeviceID)
 	if err != nil {
 		l.Error(err)
 		return nil, errors.System.AddDetail(err)
@@ -93,10 +93,7 @@ func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*
 			RefreshAfter: now.Unix() + accessExpire/2,
 		},
 	}
-	err = relationDB.NewUserInfoRepo(l.ctx).UpdateWithField(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{ui.UserID}}, map[string]any{
-		"last_ip":       in.Ip,
-		"last_token_id": id,
-	})
+	err = l.svcCtx.UserToken.Login(l.ctx, claims)
 	if err != nil {
 		return nil, err
 	}

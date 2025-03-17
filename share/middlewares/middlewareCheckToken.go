@@ -74,39 +74,15 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 			userCtx *ctxs.UserCtx
 			err     error
 			//isOpen   bool
-			token    string
-			strIP, _        = utils.GetIP(r)
-			authType        = "user"
-			appCode  string = ctxs.GetHandle(r, ctxs.UserAppCodeKey, ctxs.UserAppCodeKey2)
 		)
-		authHeader := ctxs.GetHandle(r, "Authorization")
-		// 检查"Authorization"字段是否存在并且以"Bearer "为前缀
-		if strings.HasPrefix(authHeader, "Bearer ") {
-			authType = "open"
-			token = strings.TrimPrefix(authHeader, "Bearer ")
-		} else {
-			token = ctxs.GetHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
-			if token == "" {
-				logx.WithContext(r.Context()).Errorf("%s.CheckTokenWare ip=%s not find token",
-					utils.FuncName(), strIP)
-				result.HttpErr(w, r, http.StatusUnauthorized, errors.NotLogin.AddMsg("用户请求失败"))
-				return
-			}
-			authType = "user"
-		}
-		userCtx, err = m.Auth(r.Context(), w, token, strIP, authType)
+		userCtx, err = m.Auth(r.Context(), w, r)
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
 			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("认证失败"))
 			return
 		}
-		if userCtx.AppCode != "" && userCtx.AppCode != appCode {
-			result.HttpErr(w, r, http.StatusUnauthorized, errors.Permissions.AddMsg("认证失败,应用不一致"))
-			return
-		}
 		userCtx.Os = ctxs.GetHandle(r, "User-Agent")
 		userCtx.AcceptLanguage = ctxs.GetHandle(r, "Accept-Language")
-		userCtx.Token = token
 		strProjectID := ctxs.GetHandle(r, ctxs.UserProjectID, ctxs.UserProjectID2)
 		projectID := cast.ToInt64(strProjectID)
 		if projectID == 0 {
@@ -155,16 +131,41 @@ func (m *CheckTokenWareMiddleware) OpenAuth(r *http.Request, token string) (*ctx
 		Account:    resp.UserName,
 	}, nil
 }
-func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWriter, strToken string, strIP string, authType string) (*ctxs.UserCtx, error) {
+func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWriter, r *http.Request) (*ctxs.UserCtx, error) {
+	var (
+		err error
+		//isOpen   bool
+		token    string
+		strIP, _        = utils.GetIP(r)
+		authType        = "user"
+		appCode  string = ctxs.GetHandle(r, ctxs.UserAppCodeKey, ctxs.UserAppCodeKey2)
+		deviceID string = ctxs.GetHandle(r, ctxs.UserDeviceIDKey)
+	)
+	authHeader := ctxs.GetHandle(r, "Authorization")
+	// 检查"Authorization"字段是否存在并且以"Bearer "为前缀
+	if strings.HasPrefix(authHeader, "Bearer ") {
+		authType = "open"
+		token = strings.TrimPrefix(authHeader, "Bearer ")
+	} else {
+		token = ctxs.GetHandle(r, ctxs.UserTokenKey, ctxs.UserToken2Key)
+		if token == "" {
+			logx.WithContext(r.Context()).Errorf("%s.CheckTokenWare ip=%s not find token",
+				utils.FuncName(), strIP)
+			return nil, errors.NotLogin.AddMsg("用户请求失败")
+		}
+		authType = "user"
+	}
 	resp, err := m.UserRpc.UserCheckToken(ctx, &user.UserCheckTokenReq{
 		Ip:       strIP,
-		Token:    strToken,
+		Token:    token,
 		AuthType: authType,
+		AppCode:  appCode,
+		DeviceID: deviceID,
 	})
 	if err != nil {
 		er := errors.Fmt(err)
 		logx.WithContext(ctx).Errorf("%s.CheckTokenWare ip=%s token=%s return=%s",
-			utils.FuncName(), strIP, strToken, err)
+			utils.FuncName(), strIP, token, err)
 		return nil, er
 	}
 
@@ -173,7 +174,7 @@ func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWrit
 		w.Header().Set(ctxs.UserSetTokenKey, resp.Token)
 	}
 	logx.WithContext(ctx).Debugf("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
-		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
+		utils.FuncName(), strIP, token, utils.Fmt(resp))
 	return &ctxs.UserCtx{
 		IsOpen:       authType == "open",
 		TenantCode:   resp.TenantCode,
@@ -185,6 +186,7 @@ func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWrit
 		IsSuperAdmin: resp.IsSuperAdmin,
 		IsAllData:    resp.IsAllData == def.True,
 		Account:      resp.Account,
+		Token:        token,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
 	}, nil
 }

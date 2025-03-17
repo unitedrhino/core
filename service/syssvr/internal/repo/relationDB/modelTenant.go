@@ -3,8 +3,8 @@ package relationDB
 import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/tenant"
 	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/stores"
-	"gitee.com/unitedrhino/share/users"
 )
 
 // 租户信息表

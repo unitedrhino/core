@@ -1289,6 +1289,7 @@ message UserCheckTokenReq{
   string ip = 2;
   string appCode = 3;
   string authType =4; //user(普通用户),open(开放第三方认证)
+  string deviceID =5;//设备ID 如果登录的时候传了设备ID,那么后面会话的时候都会检查设备ID是否一致
 }
 
 message UserCheckTokenResp{
@@ -1441,6 +1442,7 @@ message UserLoginReq{
     string code = 5;//验证码    微信登录填code
     string codeID = 6;//验证码编号 微信登录填state
     string ip = 7;//透传请求的 ip
+    string deviceID =8;//设备ID 可选
 }
 
 message UserLoginResp{
