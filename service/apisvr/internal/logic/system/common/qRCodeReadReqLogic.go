@@ -26,7 +26,7 @@ func NewQRCodeReadReqLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QRC
 }
 
 func (l *QRCodeReadReqLogic) QRCodeReadReq(req *types.QRCodeReadReq) (resp *types.QRCodeReadResp, err error) {
-	ret, err := l.svcCtx.Common.QRCodeRead(l.ctx, utils.Copy[sys.QRCodeReadReq](req))
+	ret, err := l.svcCtx.Common.QrCodeRead(l.ctx, utils.Copy[sys.QRCodeReadReq](req))
 	if err != nil {
 		return nil, err
 	}

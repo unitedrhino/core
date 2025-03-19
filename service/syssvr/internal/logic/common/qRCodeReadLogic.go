@@ -18,7 +18,7 @@ type QRCodeReadLogic struct {
 	logx.Logger
 }
 
-func NewQRCodeReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QRCodeReadLogic {
+func NewQrCodeReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QRCodeReadLogic {
 	return &QRCodeReadLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
@@ -26,7 +26,7 @@ func NewQRCodeReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QRCode
 	}
 }
 
-func (l *QRCodeReadLogic) QRCodeRead(in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
+func (l *QRCodeReadLogic) QrCodeRead(in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
 	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 	if er != nil || cli.MiniProgram == nil {
 		return nil, errors.System.AddDetail(er)
