@@ -9265,6 +9265,10 @@
           "format": "int64",
           "description": "登录未注册是否自动注册"
         },
+        "config": {
+          "type": "string",
+          "description": "自定义配置json"
+        },
         "android": {
           "$ref": "#/definitions/ThirdApp"
         },
@@ -13354,6 +13358,10 @@
           "type": "integer",
           "format": "int64",
           "description": "登录未注册是否自动注册"
+        },
+        "config": {
+          "type": "string",
+          "description": "自定义配置json"
         }
       },
       "title": "TenantAppInfo",

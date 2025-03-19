@@ -28,9 +28,9 @@ func (s *CommonServer) Config(ctx context.Context, in *sys.Empty) (*sys.ConfigRe
 	return l.Config(in)
 }
 
-func (s *CommonServer) QRCodeRead(ctx context.Context, in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
-	l := commonlogic.NewQRCodeReadLogic(ctx, s.svcCtx)
-	return l.QRCodeRead(in)
+func (s *CommonServer) QrCodeRead(ctx context.Context, in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
+	l := commonlogic.NewQrCodeReadLogic(ctx, s.svcCtx)
+	return l.QrCodeRead(in)
 }
 
 func (s *CommonServer) WeatherRead(ctx context.Context, in *sys.WeatherReadReq) (*sys.WeatherReadResp, error) {

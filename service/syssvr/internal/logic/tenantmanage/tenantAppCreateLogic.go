@@ -40,12 +40,14 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empt
 	err := conn.Transaction(func(tx *gorm.DB) error {
 		//todo 需要检查租户是否存在
 		err := relationDB.NewTenantAppRepo(tx).Insert(l.ctx, &relationDB.SysTenantApp{
-			TenantCode: dataType.TenantCode(in.Code),
-			AppCode:    in.AppCode,
-			WxMini:     utils.Copy[relationDB.SysTenantThird](in.WxMini),
-			WxOpen:     utils.Copy[relationDB.SysTenantThird](in.WxOpen),
-			DingMini:   utils.Copy[relationDB.SysTenantThird](in.DingMini),
-			Android:    utils.Copy[relationDB.SysThirdApp](in.Android),
+			TenantCode:     dataType.TenantCode(in.Code),
+			AppCode:        in.AppCode,
+			WxMini:         utils.Copy[relationDB.SysTenantThird](in.WxMini),
+			WxOpen:         utils.Copy[relationDB.SysTenantThird](in.WxOpen),
+			DingMini:       utils.Copy[relationDB.SysTenantThird](in.DingMini),
+			Android:        utils.Copy[relationDB.SysThirdApp](in.Android),
+			IsAutoRegister: in.IsAutoRegister,
+			Config:         in.Config,
 		})
 		if err != nil {
 			return err

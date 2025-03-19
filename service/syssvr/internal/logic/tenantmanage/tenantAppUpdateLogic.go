@@ -77,6 +77,12 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.LoginTypes != nil {
 		old.LoginTypes = in.LoginTypes
 	}
+	if in.IsAutoRegister != 0 {
+		old.IsAutoRegister = in.IsAutoRegister
+	}
+	if in.Config != "" {
+		old.Config = in.Config
+	}
 	err = relationDB.NewTenantAppRepo(l.ctx).Update(ctxs.WithRoot(l.ctx), old)
 	if err == nil {
 		ctx := l.ctx

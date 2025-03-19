@@ -252,7 +252,7 @@ type (
 
 	Common interface {
 		Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
-		QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
+		QrCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
 		WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error)
 		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 		SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
@@ -297,13 +297,13 @@ func (d *directCommon) Config(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return d.svr.Config(ctx, in)
 }
 
-func (m *defaultCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+func (m *defaultCommon) QrCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
 	client := sys.NewCommonClient(m.cli.Conn())
-	return client.QRCodeRead(ctx, in, opts...)
+	return client.QrCodeRead(ctx, in, opts...)
 }
 
-func (d *directCommon) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
-	return d.svr.QRCodeRead(ctx, in)
+func (d *directCommon) QrCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+	return d.svr.QrCodeRead(ctx, in)
 }
 
 func (m *defaultCommon) WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error) {

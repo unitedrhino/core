@@ -5389,8 +5389,8 @@ var DepartmentManage_ServiceDesc = grpc.ServiceDesc{
 
 const (
 	Common_Config_FullMethodName            = "/sys.Common/config"
-	Common_QRCodeRead_FullMethodName        = "/sys.Common/QRCodeRead"
-	Common_WeatherRead_FullMethodName       = "/sys.Common/WeatherRead"
+	Common_QrCodeRead_FullMethodName        = "/sys.Common/qrCodeRead"
+	Common_WeatherRead_FullMethodName       = "/sys.Common/weatherRead"
 	Common_SlotInfoIndex_FullMethodName     = "/sys.Common/slotInfoIndex"
 	Common_SlotInfoCreate_FullMethodName    = "/sys.Common/slotInfoCreate"
 	Common_SlotInfoUpdate_FullMethodName    = "/sys.Common/slotInfoUpdate"
@@ -5407,7 +5407,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommonClient interface {
 	Config(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ConfigResp, error)
-	QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
+	QrCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error)
 	WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error)
 	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 	SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
@@ -5437,9 +5437,9 @@ func (c *commonClient) Config(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *commonClient) QRCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
+func (c *commonClient) QrCodeRead(ctx context.Context, in *QRCodeReadReq, opts ...grpc.CallOption) (*QRCodeReadResp, error) {
 	out := new(QRCodeReadResp)
-	err := c.cc.Invoke(ctx, Common_QRCodeRead_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Common_QrCodeRead_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -5541,7 +5541,7 @@ func (c *commonClient) ThirdDeptIndex(ctx context.Context, in *ThirdDeptInfoInde
 // for forward compatibility
 type CommonServer interface {
 	Config(context.Context, *Empty) (*ConfigResp, error)
-	QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error)
+	QrCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error)
 	WeatherRead(context.Context, *WeatherReadReq) (*WeatherReadResp, error)
 	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
 	SlotInfoCreate(context.Context, *SlotInfo) (*WithID, error)
@@ -5562,8 +5562,8 @@ type UnimplementedCommonServer struct {
 func (UnimplementedCommonServer) Config(context.Context, *Empty) (*ConfigResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Config not implemented")
 }
-func (UnimplementedCommonServer) QRCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method QRCodeRead not implemented")
+func (UnimplementedCommonServer) QrCodeRead(context.Context, *QRCodeReadReq) (*QRCodeReadResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QrCodeRead not implemented")
 }
 func (UnimplementedCommonServer) WeatherRead(context.Context, *WeatherReadReq) (*WeatherReadResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WeatherRead not implemented")
@@ -5626,20 +5626,20 @@ func _Common_Config_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Common_QRCodeRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Common_QrCodeRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QRCodeReadReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CommonServer).QRCodeRead(ctx, in)
+		return srv.(CommonServer).QrCodeRead(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Common_QRCodeRead_FullMethodName,
+		FullMethod: Common_QrCodeRead_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CommonServer).QRCodeRead(ctx, req.(*QRCodeReadReq))
+		return srv.(CommonServer).QrCodeRead(ctx, req.(*QRCodeReadReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -5836,11 +5836,11 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Common_Config_Handler,
 		},
 		{
-			MethodName: "QRCodeRead",
-			Handler:    _Common_QRCodeRead_Handler,
+			MethodName: "qrCodeRead",
+			Handler:    _Common_QrCodeRead_Handler,
 		},
 		{
-			MethodName: "WeatherRead",
+			MethodName: "weatherRead",
 			Handler:    _Common_WeatherRead_Handler,
 		},
 		{
