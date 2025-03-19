@@ -63,6 +63,8 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 			val.Android = utils.Copy[types.ThirdApp](ta.Android)
 		}
 		val.LoginTypes = ta.LoginTypes
+		val.IsAutoRegister = ta.IsAutoRegister
+		val.Config = ta.Config
 		retList = append(retList, val)
 	}
 	return &types.TenantAppIndexResp{

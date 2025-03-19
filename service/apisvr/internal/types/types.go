@@ -1106,11 +1106,13 @@ type TenantAgreementIndexResp struct {
 
 type TenantApp struct {
 	AppInfo
-	DingMini   *ThirdAppConfig `json:"dingMini,optional"` //钉钉小程序
-	WxOpen     *ThirdAppConfig `json:"wxOpen,optional"`   //微信开放 web app需要填写
-	WxMini     *ThirdAppConfig `json:"wxMini,optional"`
-	Android    *ThirdApp       `json:"android,optional"`
-	LoginTypes []string        `json:"loginTypes,optional"` //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	DingMini       *ThirdAppConfig `json:"dingMini,optional"` //钉钉小程序
+	WxOpen         *ThirdAppConfig `json:"wxOpen,optional"`   //微信开放 web app需要填写
+	WxMini         *ThirdAppConfig `json:"wxMini,optional"`
+	Android        *ThirdApp       `json:"android,optional"`
+	LoginTypes     []string        `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	IsAutoRegister int64           `json:"isAutoRegister,optional"` //登录未注册是否自动注册
+	Config         string          `json:"config,optional"`         //自定义配置json
 }
 
 type TenantAppIndexReq struct {

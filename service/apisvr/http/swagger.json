@@ -13273,6 +13273,15 @@
             "type": "string"
           },
           "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOpen\": 微信开放平台登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
+        },
+        "isAutoRegister": {
+          "type": "integer",
+          "format": "int64",
+          "description": "登录未注册是否自动注册"
+        },
+        "config": {
+          "type": "string",
+          "description": "自定义配置json"
         }
       },
       "title": "TenantApp"
