@@ -11,27 +11,7 @@ buildone: buildback moduleupdate
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
 
-packone:  buildone  toremote
 
-packback:  buildback  toremote
-
-packbackzhou:  buildback  toremotezhou
-
-
-toremote:
-	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@rsync -r -v ./cmd/* root@120.79.205.165:/root/git/iThings/core
-	ssh root@120.79.205.165 'cd /root/git/iThings/;./run.sh;sleep 1;'
-toremotezhou:
-	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@rsync -r -v ./cmd/* root@139.159.188.223:/root/ithings/core
-
-
-moduleupdate:
-	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@git submodule update --init --recursive
-	@git submodule foreach git checkout master
-	@git submodule foreach git pull
 
 
 killall:

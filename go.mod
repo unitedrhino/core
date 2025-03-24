@@ -24,7 +24,7 @@ require (
 	github.com/samber/lo v1.47.0
 	github.com/silenceper/wechat/v2 v2.1.5
 	github.com/spf13/cast v1.7.1
-	github.com/zeromicro/go-zero v1.7.2
+	github.com/zeromicro/go-zero v1.8.1
 	github.com/zhaoyunxing92/dingtalk/v2 v2.1.0
 	golang.org/x/sync v0.10.0
 	golang.org/x/time v0.9.0

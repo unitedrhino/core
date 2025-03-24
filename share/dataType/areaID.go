@@ -75,13 +75,6 @@ func (sd AreaClause) ModifyStatement(stmt *gorm.Statement) { //查询的时候�
 	if uc.IsAdmin || uc.AllArea || authType <= def.AuthReadWrite {
 		return
 	}
-	areaIDPathF := stmt.Schema.FieldsByName["AreaIDPath"]
-	var areaPathExpr []clause.Expression
-	if areaIDPathF != nil && len(areaIDPaths) > 0 {
-		for _, v := range areaIDPaths {
-			areaPathExpr = append(areaPathExpr, clause.Like{Column: clause.Column{Table: clause.CurrentTable, Name: areaIDPathF.DBName}, Value: v + "%"})
-		}
-	}
 	switch sd.Opt {
 	case stores.Create:
 	case stores.Update, stores.Delete, stores.Select:
@@ -98,43 +91,52 @@ func (sd AreaClause) ModifyStatement(stmt *gorm.Statement) { //查询的时候�
 					}
 				}
 			}
-			if len(areaIDs) == 0 { //如果没有权限
-				//stmt.Error = errors.Permissions.WithMsg("区域权限不足")
-				if areaIDPathF != nil {
-					or := []clause.Expression{
-						clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: nil},
+			var expression []clause.Expression
+			func() { //区域授权
+				areaIDPathF := stmt.Schema.FieldsByName["AreaIDPath"]
+				if areaIDPathF != nil && len(areaIDPaths) > 0 {
+					for _, v := range areaIDPaths {
+						expression = append(expression, clause.Like{Column: clause.Column{Table: clause.CurrentTable, Name: areaIDPathF.DBName}, Value: v + "%"})
 					}
-					or = append(or, areaPathExpr...)
-					if len(or) > 1 {
-						stmt.AddClause(clause.Where{Exprs: []clause.Expression{
-							clause.OrConditions{Exprs: or},
-						}})
-					} else {
-						stmt.AddClause(clause.Where{Exprs: or})
-					}
-
-				} else {
-					stmt.AddClause(clause.Where{Exprs: []clause.Expression{
-						clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: nil},
-					}})
 				}
-				stmt.Clauses[sd.GenAuthKey()] = clause.Clause{}
+				if len(areaIDs) == 0 { //如果没有权限
+					return
+				}
+				var values = []any{def.NotClassified}
+				for _, v := range areaIDs {
+					values = append(values, v)
+				}
+				expression = append(expression, clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values})
+			}()
+			func() { //部门授权
 				return
-			}
-			var values = []any{def.NotClassified}
-			for _, v := range areaIDs {
-				values = append(values, v)
-			}
-			w := []clause.Expression{
-				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},
-			}
-			w = append(w, areaPathExpr...)
-			if len(w) > 1 {
+				deptIDPathF := stmt.Schema.FieldsByName["DeptIDPath"]
+				if deptIDPathF != nil {
+					for _, v := range areaIDPaths {
+						expression = append(expression, clause.Like{Column: clause.Column{Table: clause.CurrentTable, Name: deptIDPathF.DBName}, Value: v + "%"})
+					}
+				}
+				deptIDF := stmt.Schema.FieldsByName["DeptID"]
+				if deptIDF != nil {
+					depts := utils.SetToSlice(uc.Dept)
+					if len(depts) == 0 {
+						return
+					}
+					var values = []any{}
+					for _, v := range depts {
+						values = append(values, v)
+					}
+					expression = append(expression, clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: deptIDF.DBName}, Values: values})
+				}
+			}()
+			if len(expression) == 0 {
 				stmt.AddClause(clause.Where{Exprs: []clause.Expression{
-					clause.OrConditions{Exprs: w},
+					clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: nil},
 				}})
 			} else {
-				stmt.AddClause(clause.Where{Exprs: w})
+				stmt.AddClause(clause.Where{Exprs: []clause.Expression{
+					clause.OrConditions{Exprs: expression},
+				}})
 			}
 			stmt.Clauses[sd.GenAuthKey()] = clause.Clause{}
 		}
