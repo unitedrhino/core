@@ -93,6 +93,14 @@ func (SysDeptInfo) TableName() string {
 	return "sys_dept_info"
 }
 
+type Company struct {
+	LegalName   string `gorm:"column:legal_name;type:varchar(255);comment:法人名字;default:'';"`
+	Code        string `gorm:"column:code;type:varchar(255);comment:统一社会信用代码;default:'';"`
+	Address     string `gorm:"column:address;type:varchar(255);comment:地址;default:''"`
+	BankName    string `gorm:"column:bank_name;type:varchar(255);comment:开户银行;default:''"`
+	BankAccount string `gorm:"column:bank_account;type:varchar(255);comment:银行账户;default:''"`
+}
+
 type SysDeptUser struct {
 	ID             int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`       // id编号
 	TenantCode     dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"`          // 租户编码

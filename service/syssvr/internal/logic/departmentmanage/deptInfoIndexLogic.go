@@ -4,6 +4,7 @@ import (
 	"context"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -27,6 +28,9 @@ func NewDeptInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dep
 }
 
 func (l *DeptInfoIndexLogic) DeptInfoIndex(in *sys.DeptInfoIndexReq) (*sys.DeptInfoIndexResp, error) {
+	if in.TenantCode != "" && ctxs.IsRoot(l.ctx) != nil {
+		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
+	}
 	f := relationDB.DeptInfoFilter{
 		Name:        in.Name,
 		ParentID:    in.ParentID,

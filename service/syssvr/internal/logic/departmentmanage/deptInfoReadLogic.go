@@ -29,6 +29,9 @@ func NewDeptInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dept
 }
 
 func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo, error) {
+	if in.TenantCode != "" && ctxs.IsRoot(l.ctx) != nil {
+		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
+	}
 	var po *relationDB.SysDeptInfo
 	var err error
 	po = &relationDB.SysDeptInfo{

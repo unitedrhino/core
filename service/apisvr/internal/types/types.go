@@ -179,6 +179,7 @@ type AreaInfoIndexReq struct {
 	AreaIDs       []int64       `json:"areaIDs,string,optional"`   //项目区域ids
 	ParentAreaID  int64         `json:"parentAreaID,string,optional"`
 	IsRetTopLevel bool          `json:"isRetTopLevel,optional"` //如果该参数为true则返回除了root节点的有权限的最高层的区域列表
+	TenantCode    string        `json:"tenantCode,optional"`
 	DeviceCount   *CompareInt64 `json:"deviceCount,optional"`
 	GroupCount    *CompareInt64 `json:"groupCount,optional"`
 }
@@ -189,9 +190,10 @@ type AreaInfoIndexResp struct {
 }
 
 type AreaInfoReadReq struct {
-	AreaID       int64 `json:"areaID,string"`             //项目区域id
-	ProjectID    int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
-	WithChildren bool  `json:"withChildren,optional"`
+	AreaID       int64  `json:"areaID,string"` //项目区域id
+	TenantCode   string `json:"tenantCode,optional"`
+	ProjectID    int64  `json:"projectID,string,optional"` //项目id 不填选默认项目
+	WithChildren bool   `json:"withChildren,optional"`
 }
 
 type AreaProfile struct {
@@ -374,6 +376,7 @@ type DeptInfoIndexReq struct {
 	DingTalkIDs []int64   `json:"dingTalkIDs,string,optional"` //钉钉的部门ID
 	Status      int64     `json:"status,optional"`             // 状态  1:启用,2:禁用
 	Name        string    `json:"name,optional"`               // 名称
+	TenantCode  string    `json:"tenantCode,optional"`
 }
 
 type DeptInfoIndexResp struct {
@@ -382,9 +385,10 @@ type DeptInfoIndexResp struct {
 }
 
 type DeptInfoReadReq struct {
-	ID           int64 `json:"id,optional,string"`    // 编号
-	WithFather   bool  `json:"withFather,optional"`   //是否返回父级
-	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
+	ID           int64  `json:"id,optional,string"` // 编号
+	TenantCode   string `json:"tenantCode,optional"`
+	WithFather   bool   `json:"withFather,optional"`   //是否返回父级
+	WithChildren bool   `json:"withChildren,optional"` //是否返回子级
 }
 
 type DeptSyncJob struct {

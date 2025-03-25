@@ -9554,6 +9554,9 @@
           "format": "boolean",
           "description": "如果该参数为true则返回除了root节点的有权限的最高层的区域列表"
         },
+        "tenantCode": {
+          "type": "string"
+        },
         "deviceCount": {
           "$ref": "#/definitions/CompareInt64"
         },
@@ -9590,6 +9593,9 @@
         "areaID": {
           "type": "string",
           "description": "项目区域id"
+        },
+        "tenantCode": {
+          "type": "string"
         },
         "projectID": {
           "type": "string",
@@ -10303,6 +10309,9 @@
         "name": {
           "type": "string",
           "description": " 名称"
+        },
+        "tenantCode": {
+          "type": "string"
         }
       },
       "title": "DeptInfoIndexReq"
@@ -10343,6 +10352,9 @@
         "id": {
           "type": "string",
           "description": " 编号"
+        },
+        "tenantCode": {
+          "type": "string"
         },
         "withFather": {
           "type": "boolean",

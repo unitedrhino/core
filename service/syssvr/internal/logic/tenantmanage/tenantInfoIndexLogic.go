@@ -29,7 +29,12 @@ func NewTenantInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *T
 // 获取区域信息列表
 func (l *TenantInfoIndexLogic) TenantInfoIndex(in *sys.TenantInfoIndexReq) (*sys.TenantInfoIndexResp, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
-		return nil, err
+		ret, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx,
+			relationDB.TenantInfoFilter{Code: ctxs.GetUserCtx(l.ctx).TenantCode})
+		if err != nil {
+			return nil, err
+		}
+		return &sys.TenantInfoIndexResp{List: []*sys.TenantInfo{logic.ToTenantInfoRpc(l.ctx, l.svcCtx, ret)}, Total: 1}, nil
 	}
 	ctxs.GetUserCtx(l.ctx).AllTenant = true
 	defer func() {

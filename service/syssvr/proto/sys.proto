@@ -983,6 +983,7 @@ message AreaInfoReadReq {
   int64 projectID = 1; //项目ids
   int64 areaID = 2; //项目区域id
   bool withChildren = 3;//是否返回子节点
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
 }
 
 message AreaInfoIndexReq {
@@ -994,6 +995,7 @@ message AreaInfoIndexReq {
   int64 isLeaf =7;//是否是叶子节点
   CompareInt64 deviceCount =8;
   CompareInt64 groupCount =9;
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
 }
 
 message AreaInfoIndexResp {
@@ -1756,6 +1758,7 @@ message DeptInfoReadReq{
   int64 id = 1;
   bool withFather = 2;//是否返回父级
   bool withChildren =3;//是否返回子级
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
 }
 
 message DeptSyncJobExecuteReq{
@@ -1801,6 +1804,7 @@ message DeptInfoIndexReq{
   int64 parentID =2;//父节点
   int64 status = 3; // 状态  1:启用,2:禁用
   string name = 4;  // 部门名称
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
   repeated int64 dingTalkIDs = 11;// 钉钉的部门ID
 }
 
