@@ -1,17 +1,21 @@
 # -*- coding:utf-8 -*-
-.PHOmakeNY: build
+.PHONY: build
 
 build:build.clean mod cp.etc build.api   build.sys  build.timedjob build.timedscheduler
 
 buildback: build.clean mod cp.etc build.api
 
 
-buildone: buildback moduleupdate
+buildone: buildback
+
+packback: buildback toremote
 
 
 runall:  run.timedjob run.timedscheduler run.sys  run.api run.view
 
-
+toremote:
+	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>tormote cmd<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+	@rsync -r -v ./cmd/* root@47.94.112.109:/root/run/core
 
 
 killall:
