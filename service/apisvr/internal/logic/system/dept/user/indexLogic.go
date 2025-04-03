@@ -1,4 +1,4 @@
-package info
+package user
 
 import (
 	"context"
@@ -18,7 +18,7 @@ type IndexLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-// 获取部门列表
+// 获取部门授权列表
 func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic {
 	return &IndexLogic{
 		Logger: logx.WithContext(ctx),
@@ -27,13 +27,21 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 	}
 }
 
-func (l *IndexLogic) Index(req *types.DeptInfoIndexReq) (resp *types.DeptInfoIndexResp, err error) {
-	ret, err := l.svcCtx.DeptM.DeptInfoIndex(l.ctx, utils.Copy[sys.DeptInfoIndexReq](req))
+func (l *IndexLogic) Index(req *types.DeptUserIndexReq) (resp *types.DeptUserIndexResp, err error) {
+	ret, err := l.svcCtx.DeptM.DeptUserIndex(l.ctx, utils.Copy[sys.DeptUserIndexReq](req))
 	if err != nil {
 		return nil, err
 	}
-	return &types.DeptInfoIndexResp{
+	list := utils.CopySlice[types.DeptUser](ret.List)
+	for i, v := range list {
+		user, err := l.svcCtx.UserCache.GetData(l.ctx, v.UserID)
+		if err != nil {
+			l.Error(err)
+		}
+		list[i].User = utils.Copy[types.UserCore](user)
+	}
+	return &types.DeptUserIndexResp{
 		PageResp: logic.ToPageResp(req.Page, ret.Total),
-		List:     utils.CopySlice[types.DeptInfo](ret.List),
+		List:     list,
 	}, nil
 }

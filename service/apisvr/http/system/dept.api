@@ -52,6 +52,35 @@ service api {
 
 
 @server(
+    group: system/dept/user
+    prefix: /api/v1/system/dept/user
+    accessCodePrefix: "systemDeptUser"
+    accessNamePrefix: "部门用户"
+    accessGroup: "部门管理"
+    middleware:  CheckTokenWare,InitCtxsWare
+)
+
+service api {
+    @doc(
+        summary: "批量授权部门用户"
+    )
+    @handler multiCreate
+    post /multi-create (DeptUserMultiCreateReq) returns ()
+    @doc(
+        summary: "批量取消授权部门用户"
+        authType: "admin"
+        isNeedAuth: "true"
+    )
+    @handler multiDelete
+    post /multi-delete (DeptUserMultiDeleteReq) returns ()
+
+    @doc "获取部门授权列表"
+    @handler index
+    post /index (DeptUserIndexReq) returns (DeptUserIndexResp)
+
+}
+
+@server(
     group: system/dept/syncJob
     prefix: /api/v1/system/dept/sync-job
     accessCodePrefix: "systemDeptManage"
@@ -104,7 +133,35 @@ service api {
     post /execute (DeptSyncJobExecuteReq) returns ()
 }
 
-
+type (
+    DeptUser{
+        ID int64 `json:"id,optional,string"`
+        UserID int64 `json:"userID,optional,string"`
+        DeptID int64 `json:"deptID,optional,string"`
+        DeptIDPath string `json:"deptIdPath,optional"`
+        AuthType int64 `json:"authType,optional"` //授权类型: 1 //管理权限,可以修改该部门及修改部门人员的授权 2 普通权限
+        IsAuthChildren int64 `json:"isAuthChildren,optional"`//同时授权子节点
+        User *UserCore `json:"user,optional"` //用户信息
+    }
+    DeptUserMultiDeleteReq{
+        DeptID int64 `json:"deptID,string"`
+        IDs []int64  `json:"ids,string"`
+    }
+    DeptUserMultiCreateReq{
+        DeptID int64 `json:"deptID,optional,string"`
+        UserIDs []int64 `json:"userIDs,string"`
+        AuthType int64 `json:"authType"` //授权类型: 1 //管理权限,可以修改该部门及修改部门人员的授权 2 普通权限
+        IsAuthChildren int64 `json:"isAuthChildren"`//同时授权子节点
+    }
+    DeptUserIndexReq{
+        Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
+        DeptID int64 `json:"deptID,optional,string"`
+    }
+    DeptUserIndexResp{
+        PageResp
+        List []*DeptUser `json:"list"`
+    }
+)
 
 type (
     DeptSyncJobExecuteReq{
@@ -134,7 +191,7 @@ type (
         ThirdType string `json:"thirdType,optional"`//同步的类型
         ThirdConfig *ThirdAppConfig `json:"thirdConfig,optional"`//第三方配置
         FieldMap map[string]string `json:"fieldMap,optional"` //用户字段映射,左边是联犀的字段,右边是第三方的,不填写就是全量映射
-        SyncDeptIDs []int64 `json:"syncDeptIDs,string,optional"` //同步的第三方部门id列表,不填为同步全部
+        SyncDeptIDs []string `json:"syncDeptIDs,optional"` //同步的第三方部门id列表,不填为同步全部
         IsAddSync int64 `json:"isAddSync,optional"`//新增人员自动同步,默认为1
         SyncMode int64 `json:"syncMode,optional"`//同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步
         CreatedTime int64 `json:"createdTime,optional"`//创建时间
@@ -153,7 +210,7 @@ type (
     DeptInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         ParentID int64 `json:"parentID,string,optional"`//父节点
-        DingTalkIDs []int64  `json:"dingTalkIDs,string,optional"` //钉钉的部门ID
+        DingTalkIDs []string  `json:"dingTalkIDs,optional"` //钉钉的部门ID
         Status int64 `json:"status,optional"` // 状态  1:启用,2:禁用
         Name string `json:"name,optional"`           // 名称
         TenantCode string  `json:"tenantCode,optional"`

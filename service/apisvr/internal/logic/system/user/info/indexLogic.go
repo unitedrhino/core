@@ -92,7 +92,7 @@ func (l *IndexLogic) Index(req *types.UserInfoIndexReq) (resp *types.UserInfoInd
 		userInfo = append(userInfo, user.UserInfoToApi(i, user.UserOpt{Roles: roles, Depts: depts}))
 	}
 
-	return &types.UserInfoIndexResp{List: userInfo, Total: total}, nil
+	return &types.UserInfoIndexResp{List: userInfo, PageResp: logic.ToPageResp(req.Page, total)}, nil
 }
 func Cover(in *wrapperspb.StringValue) *wrapperspb.StringValue {
 	if in == nil {

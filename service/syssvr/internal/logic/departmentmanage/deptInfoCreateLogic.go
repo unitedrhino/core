@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -61,11 +62,11 @@ func (l *DeptInfoCreateLogic) DeptInfoCreate(in *sys.DeptInfo) (*sys.WithID, err
 		}
 		return nil, err
 	}
-	po.IDPath = fmt.Sprintf("%s%v-", parent.IDPath, po.ID)
+	po.IDPath = dataType.DeptIDPath(fmt.Sprintf("%s%v-", parent.IDPath, po.ID))
 	err = relationDB.NewDeptInfoRepo(l.ctx).Update(l.ctx, &po)
 	if err != nil {
 		return nil, err
 	}
 
-	return &sys.WithID{Id: po.ID}, err
+	return &sys.WithID{Id: int64(po.ID)}, err
 }

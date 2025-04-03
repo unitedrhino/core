@@ -18,6 +18,7 @@ import (
 	systemdataproject "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/data/project"
 	systemdeptinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/info"
 	systemdeptsyncJob "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/syncJob"
+	systemdeptuser "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dept/user"
 	systemdictdetail "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dict/detail"
 	systemdictinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/dict/info"
 	systemjobtask "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/job/task"
@@ -534,6 +535,33 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/dept/sync-job"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 获取部门授权列表
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemdeptuser.IndexHandler(serverCtx),
+				},
+				{
+					// 批量授权部门用户
+					Method:  http.MethodPost,
+					Path:    "/multi-create",
+					Handler: systemdeptuser.MultiCreateHandler(serverCtx),
+				},
+				{
+					// 批量取消授权部门用户
+					Method:  http.MethodPost,
+					Path:    "/multi-delete",
+					Handler: systemdeptuser.MultiDeleteHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/system/dept/user"),
 	)
 
 	server.AddRoutes(

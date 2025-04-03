@@ -53,12 +53,12 @@ func (s *DepartmentManageServer) DeptUserIndex(ctx context.Context, in *sys.Dept
 	return l.DeptUserIndex(in)
 }
 
-func (s *DepartmentManageServer) DeptUserMultiDelete(ctx context.Context, in *sys.DeptUserMultiSaveReq) (*sys.Empty, error) {
+func (s *DepartmentManageServer) DeptUserMultiDelete(ctx context.Context, in *sys.DeptUserMultiDeleteReq) (*sys.Empty, error) {
 	l := departmentmanagelogic.NewDeptUserMultiDeleteLogic(ctx, s.svcCtx)
 	return l.DeptUserMultiDelete(in)
 }
 
-func (s *DepartmentManageServer) DeptUserMultiCreate(ctx context.Context, in *sys.DeptUserMultiSaveReq) (*sys.Empty, error) {
+func (s *DepartmentManageServer) DeptUserMultiCreate(ctx context.Context, in *sys.DeptUserMultiCreateReq) (*sys.Empty, error) {
 	l := departmentmanagelogic.NewDeptUserMultiCreateLogic(ctx, s.svcCtx)
 	return l.DeptUserMultiCreate(in)
 }

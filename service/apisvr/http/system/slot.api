@@ -44,7 +44,7 @@ type (
     }
 
     SlotInfoIndexResp  {
-        Total int64 `json:"total,optional"`  //拥有的总数
+        PageResp
         List []*SlotInfo `json:"list"`    //项目列表
     }
     SlotInfo{

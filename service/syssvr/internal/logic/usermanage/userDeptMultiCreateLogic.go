@@ -46,8 +46,8 @@ func (l *UserDeptMultiCreateLogic) UserDeptMultiCreate(in *sys.UserDeptMultiSave
 			return nil, errors.Parameter.WithMsg("有部门不存咋")
 		}
 		for _, v := range rs {
-			idMap[v.ID] = v.IDPath
-			idPaths = append(idPaths, v.IDPath)
+			idMap[int64(v.ID)] = string(v.IDPath)
+			idPaths = append(idPaths, string(v.IDPath))
 		}
 	}
 	var datas []*relationDB.SysDeptUser

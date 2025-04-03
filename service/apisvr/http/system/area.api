@@ -118,7 +118,7 @@ type (
     }
 
     AreaInfoIndexResp  {
-        Total int64 `json:"total,optional"`  //拥有的总数
+        PageResp
         List []*AreaInfo `json:"list"`    //项目区域列表
     }
 )
