@@ -195,6 +195,7 @@ var (
 		{AppCode: "core", ModuleCode: "systemManage"},
 		{AppCode: "core", ModuleCode: "things"},
 		{AppCode: "core", ModuleCode: "myThings"},
+		{AppCode: "core", ModuleCode: "lowcode"},
 	}
 	MigrateTenantApp = []SysTenantApp{
 		{TenantCode: def.TenantCodeDefault, AppCode: "core", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
@@ -204,6 +205,7 @@ var (
 	MigrateTenantAppModule = []SysTenantAppModule{
 		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "systemManage"}},
 		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "things"}},
+		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "lowcode"}},
 		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "myThings"}},
 	}
 
