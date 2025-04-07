@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,7 +34,9 @@ func (l *AreaInfoIndexLogic) AreaInfoIndex(in *sys.AreaInfoIndexReq) (*sys.AreaI
 		f     = relationDB.AreaInfoFilter{
 			ProjectID: in.ProjectID, AreaIDs: in.AreaIDs, ParentAreaID: in.ParentAreaID, IsLeaf: in.IsLeaf}
 	)
-
+	if in.TenantCode != "" && ctxs.IsRoot(l.ctx) != nil {
+		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
+	}
 	if in.DeviceCount != nil {
 		f.DeviceCount = stores.GetCmp(in.DeviceCount.CmpType, in.DeviceCount.Value)
 	}

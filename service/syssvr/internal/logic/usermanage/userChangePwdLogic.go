@@ -39,7 +39,7 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 		if account == "" {
 			return nil, errors.Captcha
 		}
-		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{account}})
+		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{account}})
 		if err != nil {
 			return nil, err
 		}
@@ -49,7 +49,7 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 		if account == "" {
 			return nil, errors.Captcha
 		}
-		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{account}})
+		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{account}})
 		if err != nil {
 			return nil, err
 		}
@@ -59,7 +59,7 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 		if account == "" {
 			return nil, errors.Captcha
 		}
-		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{account}})
+		ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{account}})
 		if err != nil {
 			return nil, err
 		}

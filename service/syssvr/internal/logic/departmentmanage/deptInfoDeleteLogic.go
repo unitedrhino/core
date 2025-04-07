@@ -33,10 +33,10 @@ func (l *DeptInfoDeleteLogic) DeptInfoDelete(in *sys.WithID) (*sys.Empty, error)
 	if err != nil {
 		return nil, err
 	}
-	err = relationDB.NewDeptInfoRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DeptInfoFilter{IDPath: old.IDPath})
+	err = relationDB.NewDeptInfoRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DeptInfoFilter{IDPath: string(old.IDPath)})
 	if err != nil {
 		return nil, err
 	}
-	err = relationDB.NewDeptUserRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DeptUserFilter{DeptIDPath: old.IDPath})
+	err = relationDB.NewDeptUserRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.DeptUserFilter{DeptIDPath: string(old.IDPath)})
 	return &sys.Empty{}, err
 }

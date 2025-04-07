@@ -179,19 +179,21 @@ type AreaInfoIndexReq struct {
 	AreaIDs       []int64       `json:"areaIDs,string,optional"`   //项目区域ids
 	ParentAreaID  int64         `json:"parentAreaID,string,optional"`
 	IsRetTopLevel bool          `json:"isRetTopLevel,optional"` //如果该参数为true则返回除了root节点的有权限的最高层的区域列表
+	TenantCode    string        `json:"tenantCode,optional"`
 	DeviceCount   *CompareInt64 `json:"deviceCount,optional"`
 	GroupCount    *CompareInt64 `json:"groupCount,optional"`
 }
 
 type AreaInfoIndexResp struct {
-	Total int64       `json:"total,optional"` //拥有的总数
-	List  []*AreaInfo `json:"list"`           //项目区域列表
+	PageResp
+	List []*AreaInfo `json:"list"` //项目区域列表
 }
 
 type AreaInfoReadReq struct {
-	AreaID       int64 `json:"areaID,string"`             //项目区域id
-	ProjectID    int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
-	WithChildren bool  `json:"withChildren,optional"`
+	AreaID       int64  `json:"areaID,string"` //项目区域id
+	TenantCode   string `json:"tenantCode,optional"`
+	ProjectID    int64  `json:"projectID,string,optional"` //项目id 不填选默认项目
+	WithChildren bool   `json:"withChildren,optional"`
 }
 
 type AreaProfile struct {
@@ -369,11 +371,12 @@ type DeptInfo struct {
 }
 
 type DeptInfoIndexReq struct {
-	Page        *PageInfo `json:"page,optional"`               // 分页信息,只获取一个则不填
-	ParentID    int64     `json:"parentID,string,optional"`    //父节点
-	DingTalkIDs []int64   `json:"dingTalkIDs,string,optional"` //钉钉的部门ID
-	Status      int64     `json:"status,optional"`             // 状态  1:启用,2:禁用
-	Name        string    `json:"name,optional"`               // 名称
+	Page        *PageInfo `json:"page,optional"`            // 分页信息,只获取一个则不填
+	ParentID    int64     `json:"parentID,string,optional"` //父节点
+	DingTalkIDs []string  `json:"dingTalkIDs,optional"`     //钉钉的部门ID
+	Status      int64     `json:"status,optional"`          // 状态  1:启用,2:禁用
+	Name        string    `json:"name,optional"`            // 名称
+	TenantCode  string    `json:"tenantCode,optional"`
 }
 
 type DeptInfoIndexResp struct {
@@ -382,21 +385,22 @@ type DeptInfoIndexResp struct {
 }
 
 type DeptInfoReadReq struct {
-	ID           int64 `json:"id,optional,string"`    // 编号
-	WithFather   bool  `json:"withFather,optional"`   //是否返回父级
-	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
+	ID           int64  `json:"id,optional,string"` // 编号
+	TenantCode   string `json:"tenantCode,optional"`
+	WithFather   bool   `json:"withFather,optional"`   //是否返回父级
+	WithChildren bool   `json:"withChildren,optional"` //是否返回子级
 }
 
 type DeptSyncJob struct {
-	ID          int64             `json:"id,string,optional"`          // 编号
-	Direction   int64             `json:"direction,optional"`          // 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
-	ThirdType   string            `json:"thirdType,optional"`          //同步的类型
-	ThirdConfig *ThirdAppConfig   `json:"thirdConfig,optional"`        //第三方配置
-	FieldMap    map[string]string `json:"fieldMap,optional"`           //用户字段映射,左边是联犀的字段,右边是第三方的,不填写就是全量映射
-	SyncDeptIDs []int64           `json:"syncDeptIDs,string,optional"` //同步的第三方部门id列表,不填为同步全部
-	IsAddSync   int64             `json:"isAddSync,optional"`          //新增人员自动同步,默认为1
-	SyncMode    int64             `json:"syncMode,optional"`           //同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步
-	CreatedTime int64             `json:"createdTime,optional"`        //创建时间
+	ID          int64             `json:"id,string,optional"`   // 编号
+	Direction   int64             `json:"direction,optional"`   // 同步的方向,1上游同步到联犀(默认),2联犀同步到下游
+	ThirdType   string            `json:"thirdType,optional"`   //同步的类型
+	ThirdConfig *ThirdAppConfig   `json:"thirdConfig,optional"` //第三方配置
+	FieldMap    map[string]string `json:"fieldMap,optional"`    //用户字段映射,左边是联犀的字段,右边是第三方的,不填写就是全量映射
+	SyncDeptIDs []string          `json:"syncDeptIDs,optional"` //同步的第三方部门id列表,不填为同步全部
+	IsAddSync   int64             `json:"isAddSync,optional"`   //新增人员自动同步,默认为1
+	SyncMode    int64             `json:"syncMode,optional"`    //同步模式: 1:手动(默认) 2: 定时同步(半小时) 3: 实时同步
+	CreatedTime int64             `json:"createdTime,optional"` //创建时间
 }
 
 type DeptSyncJobExecuteReq struct {
@@ -420,6 +424,38 @@ type DeptSyncJobReadReq struct {
 	ID           int64 `json:"id,optional,string"`    // 编号
 	WithFather   bool  `json:"withFather,optional"`   //是否返回父级
 	WithChildren bool  `json:"withChildren,optional"` //是否返回子级
+}
+
+type DeptUser struct {
+	ID             int64     `json:"id,optional,string"`
+	UserID         int64     `json:"userID,optional,string"`
+	DeptID         int64     `json:"deptID,optional,string"`
+	DeptIDPath     string    `json:"deptIdPath,optional"`
+	AuthType       int64     `json:"authType,optional"`       //授权类型: 1 //管理权限,可以修改该部门及修改部门人员的授权 2 普通权限
+	IsAuthChildren int64     `json:"isAuthChildren,optional"` //同时授权子节点
+	User           *UserCore `json:"user,optional"`           //用户信息
+}
+
+type DeptUserIndexReq struct {
+	Page   *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	DeptID int64     `json:"deptID,optional,string"`
+}
+
+type DeptUserIndexResp struct {
+	PageResp
+	List []*DeptUser `json:"list"`
+}
+
+type DeptUserMultiCreateReq struct {
+	DeptID         int64   `json:"deptID,optional,string"`
+	UserIDs        []int64 `json:"userIDs,string"`
+	AuthType       int64   `json:"authType"`       //授权类型: 1 //管理权限,可以修改该部门及修改部门人员的授权 2 普通权限
+	IsAuthChildren int64   `json:"isAuthChildren"` //同时授权子节点
+}
+
+type DeptUserMultiDeleteReq struct {
+	DeptID int64   `json:"deptID,string"`
+	IDs    []int64 `json:"ids,string"`
 }
 
 type DeviceCore struct {
@@ -861,8 +897,8 @@ type ProjectInfoIndexReq struct {
 }
 
 type ProjectInfoIndexResp struct {
-	Total int64          `json:"total,optional"` //拥有的总数
-	List  []*ProjectInfo `json:"list"`           //项目列表
+	PageResp
+	List []*ProjectInfo `json:"list"` //项目列表
 }
 
 type ProjectProfile struct {
@@ -1002,8 +1038,8 @@ type SlotInfoIndexReq struct {
 }
 
 type SlotInfoIndexResp struct {
-	Total int64       `json:"total,optional"` //拥有的总数
-	List  []*SlotInfo `json:"list"`           //项目列表
+	PageResp
+	List []*SlotInfo `json:"list"` //项目列表
 }
 
 type SysLogLoginIndexReq struct {
@@ -1175,16 +1211,16 @@ type TenantAppWithIDOrCode struct {
 }
 
 type TenantConfig struct {
-	TenantCode                string                                   `json:"tenantCode,optional"`                   // 租户编码
-	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`               //注册分配的角色id
-	WeatherKey                string                                   `json:"weatherKey,optional"`                   //和风天气秘钥 参考: https://dev.qweather.com/
-	OperLogKeepDays           *int64                                   `json:"operLogKeepDays,optional"`              //操作日志保留时间,如果为0则为永久
-	LoginLogKeepDays          *int64                                   `json:"loginLogKeepDays,optional"`             //登录日志保留时间,如果为0则为永久
-	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`              //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
-	IsSsl                     int64                                    `json:"isSsl,optional"`                        //是否单会话登录(默认为2) Single Session Login
-	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`                  //租户下的设备数量限制,0为不限制
-	FeedbackNotifyUserIDs     []int64                                  `json:"feedbackNotifyUserIDs,optional,string"` //产生问题反馈通知的用户ID列表
-	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"`    //注册自动创建项目和区域
+	TenantCode                string                                   `json:"tenantCode,optional"`                // 租户编码
+	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`            //注册分配的角色id
+	WeatherKey                string                                   `json:"weatherKey,optional"`                //和风天气秘钥 参考: https://dev.qweather.com/
+	OperLogKeepDays           *int64                                   `json:"operLogKeepDays,optional"`           //操作日志保留时间,如果为0则为永久
+	LoginLogKeepDays          *int64                                   `json:"loginLogKeepDays,optional"`          //登录日志保留时间,如果为0则为永久
+	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`           //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	IsSsl                     int64                                    `json:"isSsl,optional"`                     //是否单会话登录(默认为2) Single Session Login
+	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`               //租户下的设备数量限制,0为不限制
+	FeedbackNotifyUserIDs     []string                                 `json:"feedbackNotifyUserIDs,optional"`     //产生问题反馈通知的用户ID列表
+	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"` //注册自动创建项目和区域
 }
 
 type TenantConfigRegisterAutoCreateArea struct {
@@ -1602,7 +1638,7 @@ type UserInfo struct {
 	Role            int64             `json:"role,optional"`                      // 用户角色默认
 	Sex             int64             `json:"sex,optional"`                       // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 	IsAllData       int64             `json:"isAllData,optional,omitempty"`       // 是否所有数据权限（1是，2否）
-	DeptIDs         []int64           `json:"deptIDs,optional,string,omitempty"`  //部门ID列表
+	DeptIDs         []string          `json:"deptIDs,optional,omitempty"`         //部门ID列表
 	Status          int64             `json:"status,optional"`
 	Tags            map[string]string `json:"tags,optional,omitempty"` //标签对象
 	MessageNotRead  map[string]int64  `json:"messageNotRead,optional,omitempty"`
@@ -1637,8 +1673,8 @@ type UserInfoIndexReq struct {
 }
 
 type UserInfoIndexResp struct {
-	List  []*UserInfo `json:"list,omitempty"`           //用户信息列表
-	Total int64       `json:"total,optional,omitempty"` //总数
+	List []*UserInfo `json:"list,omitempty"` //用户信息列表
+	PageResp
 }
 
 type UserInfoReadReq struct {

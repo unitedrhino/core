@@ -57,7 +57,7 @@ func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectI
 	}
 
 	return &types.ProjectInfoIndexResp{
-		Total: dmResp.Total,
-		List:  list,
+		PageResp: logic.ToPageResp(req.Page, dmResp.Total),
+		List:     list,
 	}, nil
 }

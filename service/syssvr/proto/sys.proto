@@ -187,8 +187,8 @@ service DepartmentManage{
 
 
   rpc deptUserIndex(DeptUserIndexReq) returns (DeptUserIndexResp); //获取用户部门列表
-  rpc deptUserMultiDelete(DeptUserMultiSaveReq) returns(Empty); //添加部门
-  rpc deptUserMultiCreate(DeptUserMultiSaveReq) returns(Empty); //添加部门
+  rpc deptUserMultiDelete(DeptUserMultiDeleteReq) returns(Empty); //添加部门
+  rpc deptUserMultiCreate(DeptUserMultiCreateReq) returns(Empty); //添加部门
 
   rpc deptRoleIndex(DeptRoleIndexReq) returns (DeptRoleIndexResp); //获取用户部门列表
   rpc deptRoleMultiDelete(DeptRoleMultiSaveReq) returns(Empty); //添加部门
@@ -983,6 +983,7 @@ message AreaInfoReadReq {
   int64 projectID = 1; //项目ids
   int64 areaID = 2; //项目区域id
   bool withChildren = 3;//是否返回子节点
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
 }
 
 message AreaInfoIndexReq {
@@ -994,6 +995,7 @@ message AreaInfoIndexReq {
   int64 isLeaf =7;//是否是叶子节点
   CompareInt64 deviceCount =8;
   CompareInt64 groupCount =9;
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
 }
 
 message AreaInfoIndexResp {
@@ -1506,17 +1508,34 @@ message UserDeptMultiSaveReq{
 
 
 message DeptUserIndexReq{
-  int64 deptID = 1;
+  PageInfo page =1;
+  int64 deptID = 2;
 }
 
 message DeptUserIndexResp{
   int64 total = 1;
-  repeated UserInfo list = 2;//部门列表
+  repeated DeptUser list = 2;//部门列表
 }
 
-message DeptUserMultiSaveReq{
+message DeptUser{
+  int64 id =1;
+  int64  userID = 2;
+  int64 deptID =3;
+  string deptIDPath=4;
+  int64 authType =5;//授权类型
+  int64 isAuthChildren =6;//同时授权子节点
+}
+
+message DeptUserMultiDeleteReq{
   int64 deptID = 1;
-  repeated int64 userIDs = 2;//API列表数据
+  repeated int64 ids = 2;//需要删除的id列表
+}
+
+message DeptUserMultiCreateReq{
+  int64 deptID = 1;
+  repeated int64 userIDs = 2;
+  int64 authType =3;//授权类型
+  int64 isAuthChildren =4;//同时授权子节点
 }
 
 message DeptRoleIndexReq{
@@ -1756,6 +1775,7 @@ message DeptInfoReadReq{
   int64 id = 1;
   bool withFather = 2;//是否返回父级
   bool withChildren =3;//是否返回子级
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
 }
 
 message DeptSyncJobExecuteReq{
@@ -1794,6 +1814,7 @@ message DeptInfo{
   string idPath = 9;
   int64 userCount = 10;//只读,用户统计,包含下级部门的人数
   int64 dingTalkID = 11;// 钉钉的部门ID
+  int64 adminUserID =12;//管理员账号
 }
 
 message DeptInfoIndexReq{
@@ -1801,6 +1822,7 @@ message DeptInfoIndexReq{
   int64 parentID =2;//父节点
   int64 status = 3; // 状态  1:启用,2:禁用
   string name = 4;  // 部门名称
+  string tenantCode =10;//指定租户,只有超级管理员可以操作
   repeated int64 dingTalkIDs = 11;// 钉钉的部门ID
 }
 

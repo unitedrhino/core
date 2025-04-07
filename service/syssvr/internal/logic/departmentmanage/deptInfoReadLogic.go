@@ -29,6 +29,9 @@ func NewDeptInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dept
 }
 
 func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo, error) {
+	if in.TenantCode != "" && ctxs.IsRoot(l.ctx) != nil {
+		l.ctx = ctxs.BindTenantCode(l.ctx, in.TenantCode, 0)
+	}
 	var po *relationDB.SysDeptInfo
 	var err error
 	po = &relationDB.SysDeptInfo{
@@ -59,7 +62,7 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 	}
 	ret := utils.Copy[sys.DeptInfo](po)
 	if in.WithChildren {
-		children, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDPath: po.IDPath}, &stores.PageInfo{Size: 2000})
+		children, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDPath: string(po.IDPath)}, &stores.PageInfo{Size: 2000})
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +76,7 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 		FillChildren(ret, fsMap)
 	}
 	if po.ID != def.RootNode && in.WithFather {
-		fatherIDs := utils.GetIDPath(po.IDPath)
+		fatherIDs := utils.GetIDPath(string(po.IDPath))
 		if len(fatherIDs) > 1 {
 			fs, err := relationDB.NewDeptInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DeptInfoFilter{IDs: fatherIDs}, nil)
 			if err != nil {
@@ -81,7 +84,7 @@ func (l *DeptInfoReadLogic) DeptInfoRead(in *sys.DeptInfoReadReq) (*sys.DeptInfo
 			}
 			var fsMap = map[int64]*sys.DeptInfo{}
 			for _, v := range fs {
-				fsMap[v.ID] = utils.Copy[sys.DeptInfo](v)
+				fsMap[int64(v.ID)] = utils.Copy[sys.DeptInfo](v)
 			}
 			FillFather(ret, fsMap)
 		}

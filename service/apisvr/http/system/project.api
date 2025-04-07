@@ -103,7 +103,7 @@ type (
     }
 
     ProjectInfoIndexResp  {
-        Total int64 `json:"total,optional"`  //拥有的总数
+        PageResp
         List []*ProjectInfo `json:"list"`    //项目列表
     }
 )

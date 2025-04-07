@@ -44,7 +44,7 @@ func (l *UserDeptMultiDeleteLogic) UserDeptMultiDelete(in *sys.UserDeptMultiSave
 		return nil, err
 	}
 	for _, v := range rs {
-		idPaths = append(idPaths, v.IDPath)
+		idPaths = append(idPaths, string(v.IDPath))
 	}
 	FillDeptUserCount(l.ctx, l.svcCtx, idPaths...)
 	return &sys.Empty{}, err

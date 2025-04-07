@@ -55,7 +55,7 @@ type SysDictDetail struct {
 	Desc     string `gorm:"column:desc;comment:描述"`                                                  // 描述
 	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                          // 自定义数据
 	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                               // 1-2-3-的格式记录顶级区域到当前id的路径
-	ParentID int64  `gorm:"column:parent_id;type:BIGINT"`                                            // id编号
+	ParentID int64  `gorm:"column:parent_id;uniqueIndex:value;type:BIGINT"`                          // id编号
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:value"`
 	Children    []*SysDictDetail   `gorm:"foreignKey:parent_id;references:id"`
@@ -67,7 +67,7 @@ func (SysDictDetail) TableName() string {
 }
 
 type SysDeptInfo struct {
-	ID             int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                   // id编号
+	ID             dataType.DeptID     `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                   // id编号
 	TenantCode     dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`                       // 租户编码
 	ParentID       int64               `gorm:"column:parent_id;uniqueIndex:name;type:BIGINT"`                      // id编号
 	Name           string              `gorm:"column:name;type:VARCHAR(256);uniqueIndex:name;default:'';NOT NULL"` // 部门名称
@@ -79,7 +79,7 @@ type SysDeptInfo struct {
 	DeviceCount    int64               `gorm:"column:device_count;default:0;comment:部门自己的设备总数"`
 	AllDeviceCount int64               `gorm:"column:all_device_count;default:0;comment:部门及其下级的设备总数"`
 	ChildrenCount  int64               `gorm:"column:children_count;default:0;comment:部门下级数量"`
-	IDPath         string              `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
+	IDPath         dataType.DeptIDPath `gorm:"column:id_path;type:varchar(100);NOT NULL"` // 1-2-3-的格式记录顶级区域到当前id的路径
 	DingTalkID     int64               `gorm:"column:ding_talk_id;default:0;"`            //钉钉的部门ID
 	Tags           map[string]string   `gorm:"column:tags;type:json;serializer:json"`     //部门标签
 	AdminUser      *SysUserInfo        `gorm:"foreignKey:user_id;references:AdminUserID"`
@@ -91,6 +91,14 @@ type SysDeptInfo struct {
 
 func (SysDeptInfo) TableName() string {
 	return "sys_dept_info"
+}
+
+type Company struct {
+	LegalName   string `gorm:"column:legal_name;type:varchar(255);comment:法人名字;default:'';"`
+	Code        string `gorm:"column:code;type:varchar(255);comment:统一社会信用代码;default:'';"`
+	Address     string `gorm:"column:address;type:varchar(255);comment:地址;default:''"`
+	BankName    string `gorm:"column:bank_name;type:varchar(255);comment:开户银行;default:''"`
+	BankAccount string `gorm:"column:bank_account;type:varchar(255);comment:银行账户;default:''"`
 }
 
 type SysDeptUser struct {

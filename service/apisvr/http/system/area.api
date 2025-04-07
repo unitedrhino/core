@@ -99,6 +99,7 @@ type (
 
     AreaInfoReadReq  {
         AreaID int64 `json:"areaID,string"` //项目区域id
+        TenantCode string  `json:"tenantCode,optional"`
         ProjectID int64 `json:"projectID,string,optional"` //项目id 不填选默认项目
         WithChildren bool `json:"withChildren,optional"`
 //        WithDeviceInfoCount bool `json:"withDeviceInfoCount,optional"`//同时返回设备统计信息
@@ -110,13 +111,14 @@ type (
         AreaIDs []int64 `json:"areaIDs,string,optional"`          //项目区域ids
         ParentAreaID int64 `json:"parentAreaID,string,optional"`
         IsRetTopLevel bool  `json:"isRetTopLevel,optional"`//如果该参数为true则返回除了root节点的有权限的最高层的区域列表
+        TenantCode string  `json:"tenantCode,optional"`
         DeviceCount *CompareInt64 `json:"deviceCount,optional"`
         GroupCount *CompareInt64 `json:"groupCount,optional"`
 //        WithDeviceInfoCount bool `json:"withDeviceInfoCount,optional"`//同时返回设备统计信息
     }
 
     AreaInfoIndexResp  {
-        Total int64 `json:"total,optional"`  //拥有的总数
+        PageResp
         List []*AreaInfo `json:"list"`    //项目区域列表
     }
 )

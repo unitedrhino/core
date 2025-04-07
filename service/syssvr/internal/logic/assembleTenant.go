@@ -12,6 +12,9 @@ import (
 )
 
 func ToTenantInfoRpc(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysTenantInfo) *sys.TenantInfo {
+	if in == nil {
+		return nil
+	}
 	if in.BackgroundImg != "" {
 		var err error
 		in.BackgroundImg, err = svcCtx.OssClient.PublicBucket().SignedGetUrl(ctx, in.BackgroundImg, 24*60*60, common.OptionKv{})

@@ -23,7 +23,7 @@ func NewDeptUserMultiCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *DeptUserMultiCreateLogic) DeptUserMultiCreate(in *sys.DeptUserMultiSaveReq) (*sys.Empty, error) {
+func (l *DeptUserMultiCreateLogic) DeptUserMultiCreate(in *sys.DeptUserMultiCreateReq) (*sys.Empty, error) {
 	// todo: add your logic here and delete this line
 
 	return &sys.Empty{}, nil

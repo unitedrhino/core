@@ -736,6 +736,69 @@
       ],
       "authType": "admin"
     },
+    "systemDeptUserAdd": {
+      "name": "新增部门用户",
+      "code": "systemDeptUserAdd",
+      "group": "部门管理",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptUserAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dept/user/multi-create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptUserDelete": {
+      "name": "删除部门用户",
+      "code": "systemDeptUserDelete",
+      "group": "部门管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptUserDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dept/user/multi-delete",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemDeptUserFind": {
+      "name": "查询部门用户",
+      "code": "systemDeptUserFind",
+      "group": "部门管理",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptUserFind",
+          "method": "POST",
+          "route": "/api/v1/system/dept/user/index",
+          "name": "获取部门授权列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
     "systemDictManageAdd": {
       "name": "新增字典管理",
       "code": "systemDictManageAdd",

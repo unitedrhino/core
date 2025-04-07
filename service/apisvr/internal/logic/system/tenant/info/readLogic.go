@@ -3,7 +3,6 @@ package info
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
@@ -34,11 +33,9 @@ func (l *ReadLogic) Read(req *types.WithIDOrCode) (resp *types.TenantInfo, err e
 	if err != nil {
 		return nil, err
 	}
-	user, err := l.svcCtx.UserRpc.UserInfoRead(ctxs.WithRoot(l.ctx), &sys.UserInfoReadReq{
-		UserID: ret.AdminUserID,
-	})
+	user, err := l.svcCtx.UserCache.GetData(ctxs.WithRoot(l.ctx), ret.AdminUserID)
 	if err != nil {
-		return nil, err
+		l.Error(err)
 	}
 
 	return system.ToTenantInfoTypes(ret, user, nil), err

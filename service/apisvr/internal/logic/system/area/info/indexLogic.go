@@ -2,6 +2,7 @@ package info
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -33,7 +34,7 @@ func (l *IndexLogic) Index(req *types.AreaInfoIndexReq) (resp *types.AreaInfoInd
 	}
 
 	return &types.AreaInfoIndexResp{
-		Total: dmResp.Total,
-		List:  ToAreaInfosTypes(dmResp.List),
+		PageResp: logic.ToPageResp(req.Page, dmResp.Total),
+		List:     ToAreaInfosTypes(dmResp.List),
 	}, nil
 }

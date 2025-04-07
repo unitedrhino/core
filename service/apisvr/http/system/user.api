@@ -65,7 +65,7 @@ type (
         Role        int64  `json:"role,optional"`                       // 用户角色默认
         Sex         int64  `json:"sex,optional"`               // 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
 		IsAllData   int64  `json:"isAllData,optional,omitempty"`  	   // 是否所有数据权限（1是，2否）
-		DeptIDs 		[]int64 `json:"deptIDs,optional,string,omitempty"` //部门ID列表
+		DeptIDs 		[]string `json:"deptIDs,optional,omitempty"` //部门ID列表
 		Status int64  `json:"status,optional"`
 		Tags    map[string]string       `json:"tags,optional,omitempty"` //标签对象
 		MessageNotRead map[string]int64  `json:"messageNotRead,optional,omitempty"`
@@ -103,7 +103,7 @@ type (
 
 	UserInfoIndexResp {
 		List  []*UserInfo `json:"list,omitempty"`           //用户信息列表
-		Total int64       `json:"total,optional,omitempty"` //总数
+		PageResp
 	}
 
 	UserInfoReadReq{

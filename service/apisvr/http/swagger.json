@@ -2434,6 +2434,126 @@
         ]
       }
     },
+    "/api/v1/system/dept/user/index": {
+      "post": {
+        "summary": "获取部门授权列表",
+        "operationId": "postApiV1SystemDeptUserIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DeptUserIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptUserIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/user",
+          "systemDeptUser"
+        ]
+      }
+    },
+    "/api/v1/system/dept/user/multi-create": {
+      "post": {
+        "summary": "批量授权部门用户",
+        "operationId": "postApiV1SystemDeptUserMulti-create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptUserMultiCreateReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/user",
+          "systemDeptUser"
+        ]
+      }
+    },
+    "/api/v1/system/dept/user/multi-delete": {
+      "post": {
+        "summary": "批量取消授权部门用户",
+        "operationId": "postApiV1SystemDeptUserMulti-delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeptUserMultiDeleteReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dept/user",
+          "systemDeptUser"
+        ]
+      }
+    },
     "/api/v1/system/dict/detail/create": {
       "post": {
         "summary": "添加字典详情",
@@ -9554,6 +9674,9 @@
           "format": "boolean",
           "description": "如果该参数为true则返回除了root节点的有权限的最高层的区域列表"
         },
+        "tenantCode": {
+          "type": "string"
+        },
         "deviceCount": {
           "$ref": "#/definitions/CompareInt64"
         },
@@ -9566,10 +9689,19 @@
     "AreaInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "拥有的总数"
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -9590,6 +9722,9 @@
         "areaID": {
           "type": "string",
           "description": "项目区域id"
+        },
+        "tenantCode": {
+          "type": "string"
         },
         "projectID": {
           "type": "string",
@@ -10303,6 +10438,9 @@
         "name": {
           "type": "string",
           "description": " 名称"
+        },
+        "tenantCode": {
+          "type": "string"
         }
       },
       "title": "DeptInfoIndexReq"
@@ -10343,6 +10481,9 @@
         "id": {
           "type": "string",
           "description": " 编号"
+        },
+        "tenantCode": {
+          "type": "string"
         },
         "withFather": {
           "type": "boolean",
@@ -10493,6 +10634,129 @@
         }
       },
       "title": "DeptSyncJobReadReq"
+    },
+    "DeptUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "string"
+        },
+        "deptID": {
+          "type": "string"
+        },
+        "deptIdPath": {
+          "type": "string"
+        },
+        "authType": {
+          "type": "integer",
+          "format": "int64",
+          "description": "授权类型: 1 管理权限,可以修改该部门及修改部门人员的授权 2 普通权限"
+        },
+        "isAuthChildren": {
+          "type": "integer",
+          "format": "int64",
+          "description": "同时授权子节点"
+        },
+        "user": {
+          "$ref": "#/definitions/UserCore",
+          "description": "用户信息"
+        }
+      },
+      "title": "DeptUser"
+    },
+    "DeptUserIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": " 分页信息,只获取一个则不填"
+        },
+        "deptID": {
+          "type": "string"
+        }
+      },
+      "title": "DeptUserIndexReq"
+    },
+    "DeptUserIndexResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeptUser"
+          }
+        }
+      },
+      "title": "DeptUserIndexResp",
+      "required": [
+        "list"
+      ]
+    },
+    "DeptUserMultiCreateReq": {
+      "type": "object",
+      "properties": {
+        "deptID": {
+          "type": "string"
+        },
+        "userIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "authType": {
+          "type": "integer",
+          "format": "int64",
+          "description": "授权类型: 1 管理权限,可以修改该部门及修改部门人员的授权 2 普通权限"
+        },
+        "isAuthChildren": {
+          "type": "integer",
+          "format": "int64",
+          "description": "同时授权子节点"
+        }
+      },
+      "title": "DeptUserMultiCreateReq",
+      "required": [
+        "userIDs",
+        "authType",
+        "isAuthChildren"
+      ]
+    },
+    "DeptUserMultiDeleteReq": {
+      "type": "object",
+      "properties": {
+        "deptID": {
+          "type": "string"
+        },
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeptUserMultiDeleteReq",
+      "required": [
+        "deptID",
+        "ids"
+      ]
     },
     "DeviceCore": {
       "type": "object",
@@ -12229,10 +12493,19 @@
     "ProjectInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "拥有的总数"
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -12789,10 +13062,19 @@
     "SlotInfoIndexResp": {
       "type": "object",
       "properties": {
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "拥有的总数"
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         },
         "list": {
           "type": "array",
@@ -15463,10 +15745,19 @@
           },
           "description": "用户信息列表"
         },
-        "total": {
+        "page": {
           "type": "integer",
           "format": "int64",
-          "description": "总数"
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "UserInfoIndexResp"

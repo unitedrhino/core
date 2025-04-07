@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -107,7 +108,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 				}
 				var idPaths []string
 				for _, d := range needSyncDepts {
-					idPaths = append(idPaths, d.IDPath)
+					idPaths = append(idPaths, string(d.IDPath))
 				}
 				depts, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{IDPaths: idPaths}, nil)
 				if err != nil {
@@ -116,13 +117,13 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 				needSyncDepts = append(needSyncDepts, depts...)
 			}
 			for _, d := range needSyncDepts {
-				needSyncDeptMap[d.ID] = d
+				needSyncDeptMap[int64(d.ID)] = d
 			}
 			logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v start sync user ", po.ID)
 			var syncedUserSet = map[string]struct{}{}
 			for _, d := range needSyncDeptMap {
 				dd := d
-				deptIDPaths = append(deptIDPaths, d.IDPath)
+				deptIDPaths = append(deptIDPaths, string(d.IDPath))
 				err := SyncDeptUserDing(ctx, l.svcCtx, syncedUserSet, cli, dd)
 				if err != nil {
 					l.Error(dd, err)
@@ -241,8 +242,8 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 			for _, d := range ds {
 				dus = append(dus, &relationDB.SysDeptUser{
 					UserID:     uc.UserID,
-					DeptID:     d.ID,
-					DeptIDPath: d.IDPath,
+					DeptID:     int64(d.ID),
+					DeptIDPath: string(d.IDPath),
 				})
 			}
 			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
@@ -272,7 +273,7 @@ func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationD
 		return errors.System.AddDetail(err)
 	}
 
-	old, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{ParentID: info.ID}, nil)
+	old, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{ParentID: int64(info.ID)}, nil)
 	if err != nil {
 		return errors.System.AddDetail(err)
 	}
@@ -295,7 +296,7 @@ func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationD
 		delete(deptNameMap, ding.Name)
 		if po == nil {
 			newOne := &relationDB.SysDeptInfo{
-				ParentID:   info.ID,
+				ParentID:   int64(info.ID),
 				Name:       ding.Name,
 				Status:     def.True,
 				IDPath:     info.IDPath,
@@ -305,7 +306,7 @@ func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationD
 			if err != nil {
 				return err
 			}
-			newOne.IDPath = info.IDPath + fmt.Sprintf("%d-", newOne.ID)
+			newOne.IDPath = dataType.DeptIDPath(string(info.IDPath) + fmt.Sprintf("%d-", newOne.ID))
 			err = relationDB.NewDeptInfoRepo(ctx).Update(ctx, newOne)
 			if err != nil {
 				return err
@@ -325,13 +326,13 @@ func SyncDeptDing(ctx context.Context, cli *dingClient.DingTalk, info *relationD
 	}
 	if len(deptIDMap) > 0 { //如果存在删除的情况
 		for _, one := range deptIDMap {
-			err := relationDB.NewDeptInfoRepo(ctx).Delete(ctx, one.ID)
+			err := relationDB.NewDeptInfoRepo(ctx).Delete(ctx, int64(one.ID))
 			if err != nil {
 				return err
 			}
 		}
 	}
-	old, err = relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{ParentID: info.ID}, nil)
+	old, err = relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{ParentID: int64(info.ID)}, nil)
 	if err != nil {
 		return err
 	}

@@ -68,9 +68,11 @@ type (
 	DeptSyncJobIndexReq                   = sys.DeptSyncJobIndexReq
 	DeptSyncJobIndexResp                  = sys.DeptSyncJobIndexResp
 	DeptSyncJobReadReq                    = sys.DeptSyncJobReadReq
+	DeptUser                              = sys.DeptUser
 	DeptUserIndexReq                      = sys.DeptUserIndexReq
 	DeptUserIndexResp                     = sys.DeptUserIndexResp
-	DeptUserMultiSaveReq                  = sys.DeptUserMultiSaveReq
+	DeptUserMultiCreateReq                = sys.DeptUserMultiCreateReq
+	DeptUserMultiDeleteReq                = sys.DeptUserMultiDeleteReq
 	DictDetail                            = sys.DictDetail
 	DictDetailIndexReq                    = sys.DictDetailIndexReq
 	DictDetailIndexResp                   = sys.DictDetailIndexResp

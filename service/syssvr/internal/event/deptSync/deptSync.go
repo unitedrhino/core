@@ -232,7 +232,7 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 			return err
 		}
 		for _, v := range dis {
-			_, err = departmentmanagelogic.NewDeptInfoDeleteLogic(d.ctx, d.svcCtx).DeptInfoDelete(&sys.WithID{Id: v.ID})
+			_, err = departmentmanagelogic.NewDeptInfoDeleteLogic(d.ctx, d.svcCtx).DeptInfoDelete(&sys.WithID{Id: int64(v.ID)})
 			if err != nil {
 				d.Error(err)
 				continue

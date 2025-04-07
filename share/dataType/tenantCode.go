@@ -28,9 +28,15 @@ func (t TenantCode) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Exp
 		stmt.Error = errors.Parameter.AddDetail("tenantCode is empty")
 		return
 	}
-	if t != "" && uc.TenantCode == def.TenantCodeDefault && uc.AllTenant {
-		expr = clause.Expr{SQL: "?", Vars: []interface{}{string(t)}}
-		return
+	if t != "" {
+		if uc.TenantCode == def.TenantCodeDefault && uc.AllTenant { //指定租户的只有root权限可以做
+			expr = clause.Expr{SQL: "?", Vars: []interface{}{string(t)}}
+			return
+		}
+		if string(t) != uc.TenantCode { //如果其他租户修改租户号会报错
+			stmt.Error = errors.Parameter.AddDetailf("tenantCode not eq uc:%v t:%v", uc.TenantCode, string(t))
+			return
+		}
 	}
 	expr = clause.Expr{SQL: "?", Vars: []interface{}{uc.TenantCode}}
 	return

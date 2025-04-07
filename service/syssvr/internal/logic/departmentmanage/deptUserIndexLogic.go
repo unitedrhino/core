@@ -2,7 +2,6 @@ package departmentmanagelogic
 
 import (
 	"context"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
@@ -24,7 +23,8 @@ func NewDeptUserIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dep
 }
 
 func (l *DeptUserIndexLogic) DeptUserIndex(in *sys.DeptUserIndexReq) (*sys.DeptUserIndexResp, error) {
-	// todo: add your logic here and delete this line
+	//uc:=ctxs.GetUserCtx(l.ctx)
+	//if uc.Dept
 
 	return &sys.DeptUserIndexResp{}, nil
 }
