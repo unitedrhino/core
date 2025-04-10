@@ -168,6 +168,7 @@ type (
 	SlotInfo                              = sys.SlotInfo
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
+	SlotInfoMultiCreateReq                = sys.SlotInfoMultiCreateReq
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
 	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq

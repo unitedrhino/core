@@ -99,6 +99,6 @@ func (p SlotInfoRepo) FindOne(ctx context.Context, id int64) (*SysSlotInfo, erro
 
 // 批量插入 LightStrategyDevice 记录
 func (p SlotInfoRepo) MultiInsert(ctx context.Context, data []*SysSlotInfo) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysSlotInfo{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Model(&SysSlotInfo{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

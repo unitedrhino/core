@@ -155,7 +155,7 @@ require (
 	github.com/suifengtec/gocoord v0.0.0-20210116135606-a0cd8c71c959 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.985 // indirect
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.898 // indirect
-	github.com/tidwall/gjson v1.14.1 // indirect
+	github.com/tidwall/gjson v1.14.2 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/tjfoc/gmsm v1.3.2 // indirect

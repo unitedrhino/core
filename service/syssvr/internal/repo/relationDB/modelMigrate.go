@@ -218,14 +218,7 @@ var (
 		{Group: "系统公告", Code: "sysAnnouncement", Name: "系统公告", SupportTypes: []def.NotifyType{"sms", "email", "wxMini"}, IsRecord: def.True, Params: map[string]string{"body": "内容", "title": "标题"}},
 	}
 
-	MigrateSlotInfo = []SysSlotInfo{
-		{Code: "areaInfo", SubCode: "create", SlotCode: "ithings", Uri: "/api/v1/things/slot/area/create", Hosts: []string{"http://localhost:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, AuthType: def.AppCore},
-		{Code: "areaInfo", SubCode: "delete", SlotCode: "ithings", Uri: "/api/v1/things/slot/area/delete", Hosts: []string{"http://localhost:7788"}, Body: `{"projectID":"{{.ProjectID}}","areaID":"{{.AreaID}}","parentAreaID":"{{.ParentAreaID}}"}`, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: def.UserSubscribeDevicePropertyReport2, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: def.UserSubscribeDeviceConn, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
-		{Code: "userSubscribe", SubCode: def.UserSubscribeDeviceOtaReport, SlotCode: "ithings", Uri: "/api/v1/things/slot/user/subscribe", Hosts: []string{"http://localhost:7788"}, AuthType: def.AppCore},
-	}
+	MigrateSlotInfo = []SysSlotInfo{}
 
 	MigrateRoleInfo = []SysRoleInfo{
 		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "管理员", Code: def.RoleCodeAdmin},

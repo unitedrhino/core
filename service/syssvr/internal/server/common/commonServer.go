@@ -48,6 +48,11 @@ func (s *CommonServer) SlotInfoCreate(ctx context.Context, in *sys.SlotInfo) (*s
 	return l.SlotInfoCreate(in)
 }
 
+func (s *CommonServer) SlotInfoMultiCreate(ctx context.Context, in *sys.SlotInfoMultiCreateReq) (*sys.Empty, error) {
+	l := commonlogic.NewSlotInfoMultiCreateLogic(ctx, s.svcCtx)
+	return l.SlotInfoMultiCreate(in)
+}
+
 func (s *CommonServer) SlotInfoUpdate(ctx context.Context, in *sys.SlotInfo) (*sys.Empty, error) {
 	l := commonlogic.NewSlotInfoUpdateLogic(ctx, s.svcCtx)
 	return l.SlotInfoUpdate(in)

@@ -209,6 +209,8 @@ service Common {
 
   rpc slotInfoIndex(SlotInfoIndexReq) returns(SlotInfoIndexResp);//获取插槽列表
   rpc slotInfoCreate(SlotInfo) returns(WithID); //添加角色
+  rpc slotInfoMultiCreate(SlotInfoMultiCreateReq) returns(Empty); //添加角色
+
   rpc slotInfoUpdate(SlotInfo) returns(Empty); //更新角色
   rpc slotInfoDelete(WithID) returns(Empty); //删除角色
   rpc slotInfoRead(WithID) returns(SlotInfo);   //获取详情接口
@@ -1084,6 +1086,10 @@ message QRCodeReadReq{
 
 message QRCodeReadResp{
   bytes buffer =1;
+}
+
+message SlotInfoMultiCreateReq{
+  repeated SlotInfo list=1;
 }
 
 message SlotInfoIndexReq{

@@ -168,6 +168,7 @@ type (
 	SlotInfo                              = sys.SlotInfo
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
+	SlotInfoMultiCreateReq                = sys.SlotInfoMultiCreateReq
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
 	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
@@ -258,6 +259,7 @@ type (
 		WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error)
 		SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 		SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
+		SlotInfoMultiCreate(ctx context.Context, in *SlotInfoMultiCreateReq, opts ...grpc.CallOption) (*Empty, error)
 		SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
 		SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 		SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
@@ -333,6 +335,15 @@ func (m *defaultCommon) SlotInfoCreate(ctx context.Context, in *SlotInfo, opts .
 
 func (d *directCommon) SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error) {
 	return d.svr.SlotInfoCreate(ctx, in)
+}
+
+func (m *defaultCommon) SlotInfoMultiCreate(ctx context.Context, in *SlotInfoMultiCreateReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewCommonClient(m.cli.Conn())
+	return client.SlotInfoMultiCreate(ctx, in, opts...)
+}
+
+func (d *directCommon) SlotInfoMultiCreate(ctx context.Context, in *SlotInfoMultiCreateReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.SlotInfoMultiCreate(ctx, in)
 }
 
 func (m *defaultCommon) SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error) {

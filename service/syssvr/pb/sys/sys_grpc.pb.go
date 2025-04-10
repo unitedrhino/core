@@ -5388,18 +5388,19 @@ var DepartmentManage_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Common_Config_FullMethodName            = "/sys.Common/config"
-	Common_QrCodeRead_FullMethodName        = "/sys.Common/qrCodeRead"
-	Common_WeatherRead_FullMethodName       = "/sys.Common/weatherRead"
-	Common_SlotInfoIndex_FullMethodName     = "/sys.Common/slotInfoIndex"
-	Common_SlotInfoCreate_FullMethodName    = "/sys.Common/slotInfoCreate"
-	Common_SlotInfoUpdate_FullMethodName    = "/sys.Common/slotInfoUpdate"
-	Common_SlotInfoDelete_FullMethodName    = "/sys.Common/slotInfoDelete"
-	Common_SlotInfoRead_FullMethodName      = "/sys.Common/slotInfoRead"
-	Common_ServiceInfoRead_FullMethodName   = "/sys.Common/serviceInfoRead"
-	Common_ServiceInfoUpdate_FullMethodName = "/sys.Common/serviceInfoUpdate"
-	Common_ThirdDeptRead_FullMethodName     = "/sys.Common/thirdDeptRead"
-	Common_ThirdDeptIndex_FullMethodName    = "/sys.Common/thirdDeptIndex"
+	Common_Config_FullMethodName              = "/sys.Common/config"
+	Common_QrCodeRead_FullMethodName          = "/sys.Common/qrCodeRead"
+	Common_WeatherRead_FullMethodName         = "/sys.Common/weatherRead"
+	Common_SlotInfoIndex_FullMethodName       = "/sys.Common/slotInfoIndex"
+	Common_SlotInfoCreate_FullMethodName      = "/sys.Common/slotInfoCreate"
+	Common_SlotInfoMultiCreate_FullMethodName = "/sys.Common/slotInfoMultiCreate"
+	Common_SlotInfoUpdate_FullMethodName      = "/sys.Common/slotInfoUpdate"
+	Common_SlotInfoDelete_FullMethodName      = "/sys.Common/slotInfoDelete"
+	Common_SlotInfoRead_FullMethodName        = "/sys.Common/slotInfoRead"
+	Common_ServiceInfoRead_FullMethodName     = "/sys.Common/serviceInfoRead"
+	Common_ServiceInfoUpdate_FullMethodName   = "/sys.Common/serviceInfoUpdate"
+	Common_ThirdDeptRead_FullMethodName       = "/sys.Common/thirdDeptRead"
+	Common_ThirdDeptIndex_FullMethodName      = "/sys.Common/thirdDeptIndex"
 )
 
 // CommonClient is the client API for Common service.
@@ -5411,6 +5412,7 @@ type CommonClient interface {
 	WeatherRead(ctx context.Context, in *WeatherReadReq, opts ...grpc.CallOption) (*WeatherReadResp, error)
 	SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, opts ...grpc.CallOption) (*SlotInfoIndexResp, error)
 	SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error)
+	SlotInfoMultiCreate(ctx context.Context, in *SlotInfoMultiCreateReq, opts ...grpc.CallOption) (*Empty, error)
 	SlotInfoUpdate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*Empty, error)
 	SlotInfoDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
 	SlotInfoRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*SlotInfo, error)
@@ -5467,6 +5469,15 @@ func (c *commonClient) SlotInfoIndex(ctx context.Context, in *SlotInfoIndexReq, 
 func (c *commonClient) SlotInfoCreate(ctx context.Context, in *SlotInfo, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
 	err := c.cc.Invoke(ctx, Common_SlotInfoCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commonClient) SlotInfoMultiCreate(ctx context.Context, in *SlotInfoMultiCreateReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Common_SlotInfoMultiCreate_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -5545,6 +5556,7 @@ type CommonServer interface {
 	WeatherRead(context.Context, *WeatherReadReq) (*WeatherReadResp, error)
 	SlotInfoIndex(context.Context, *SlotInfoIndexReq) (*SlotInfoIndexResp, error)
 	SlotInfoCreate(context.Context, *SlotInfo) (*WithID, error)
+	SlotInfoMultiCreate(context.Context, *SlotInfoMultiCreateReq) (*Empty, error)
 	SlotInfoUpdate(context.Context, *SlotInfo) (*Empty, error)
 	SlotInfoDelete(context.Context, *WithID) (*Empty, error)
 	SlotInfoRead(context.Context, *WithID) (*SlotInfo, error)
@@ -5573,6 +5585,9 @@ func (UnimplementedCommonServer) SlotInfoIndex(context.Context, *SlotInfoIndexRe
 }
 func (UnimplementedCommonServer) SlotInfoCreate(context.Context, *SlotInfo) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoCreate not implemented")
+}
+func (UnimplementedCommonServer) SlotInfoMultiCreate(context.Context, *SlotInfoMultiCreateReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoMultiCreate not implemented")
 }
 func (UnimplementedCommonServer) SlotInfoUpdate(context.Context, *SlotInfo) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SlotInfoUpdate not implemented")
@@ -5694,6 +5709,24 @@ func _Common_SlotInfoCreate_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CommonServer).SlotInfoCreate(ctx, req.(*SlotInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Common_SlotInfoMultiCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SlotInfoMultiCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommonServer).SlotInfoMultiCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Common_SlotInfoMultiCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommonServer).SlotInfoMultiCreate(ctx, req.(*SlotInfoMultiCreateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -5850,6 +5883,10 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "slotInfoCreate",
 			Handler:    _Common_SlotInfoCreate_Handler,
+		},
+		{
+			MethodName: "slotInfoMultiCreate",
+			Handler:    _Common_SlotInfoMultiCreate_Handler,
 		},
 		{
 			MethodName: "slotInfoUpdate",
