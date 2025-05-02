@@ -150,8 +150,7 @@ func migrateTableColumn() error {
 		return err
 	}
 
-	db.Create(&SysDeptInfo{ID: 3, Name: "锚点"})
-	db.Delete(&SysDeptInfo{ID: 3, Name: "锚点"})
+	db.Create(&SysDeptInfo{ID: 3, Name: ""})
 	return nil
 }
 

@@ -19,6 +19,8 @@ Proxy:
       Dest: http://localhost:8000
     - Router: /api/v1/lowcode/
       Dest: http://localhost:7788
+    - Router: /api/v1/ai/
+      Dest: http://localhost:7788
     - Router: /api/v1/things/
       Dest: http://localhost:7788
     - Router: /api/v1/protocol/cloud/tencent/
