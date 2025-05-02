@@ -42,7 +42,7 @@ cp.etc:
 
 build.api:
 	@echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>making $@<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
-	@go build -ldflags="-s -w"  -tags no_k8s -o ./cmd/coresvr ./service/apisvr
+	@go build   -tags no_k8s -o ./cmd/coresvr ./service/apisvr
 
 
 build.data:
