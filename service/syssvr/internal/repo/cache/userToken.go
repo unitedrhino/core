@@ -20,6 +20,9 @@ func NewUserToken() *UserToken {
 func (u *UserToken) GenKey(claims users.LoginClaims) string {
 	return fmt.Sprintf("userToken:%v", claims.UserID)
 }
+func (u *UserToken) GenKey3(userID int64) string {
+	return fmt.Sprintf("userToken:%v", userID)
+}
 
 func (u *UserToken) GenKey2(claims users.LoginClaims) string {
 	return fmt.Sprintf("userToken:%v", claims.AppCode)
@@ -45,6 +48,13 @@ func (u *UserToken) CheckToken(ctx context.Context, claims users.LoginClaims) er
 	}
 	if tkStu.ID != claims.ID { //其他账号登录了,该账号被踢出
 		return errors.AccountKickedOut
+	}
+	return nil
+}
+func (u *UserToken) KickedOut(ctx context.Context, userID int64) error {
+	_, err := caches.GetStore().Del(u.GenKey3(userID))
+	if err != nil {
+		return errors.System.AddDetail(err)
 	}
 	return nil
 }

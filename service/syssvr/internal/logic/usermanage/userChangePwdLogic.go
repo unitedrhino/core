@@ -82,5 +82,9 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 	if err != nil {
 		return nil, err
 	}
+	e := l.svcCtx.UserToken.KickedOut(l.ctx, oldUi.UserID)
+	if e != nil {
+		l.Error(e)
+	}
 	return &sys.Empty{}, nil
 }
