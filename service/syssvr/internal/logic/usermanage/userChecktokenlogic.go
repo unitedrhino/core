@@ -164,12 +164,11 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
-	if tc.IsSsl == def.True {
-		err := l.svcCtx.UserToken.CheckToken(l.ctx, claim)
-		if err != nil {
-			return nil, err
-		}
+	err = l.svcCtx.UserToken.CheckToken(l.ctx, claim, tc.IsSsl == def.True)
+	if err != nil {
+		return nil, err
 	}
+
 	if (claim.ExpiresAt.Unix()-time.Now().Unix())*2 < l.svcCtx.Config.UserToken.AccessExpire {
 		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, l.svcCtx.Config.UserToken.AccessExpire)
 	}

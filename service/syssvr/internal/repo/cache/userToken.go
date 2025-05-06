@@ -36,7 +36,7 @@ func (u *UserToken) Login(ctx context.Context, claims users.LoginClaims) error {
 	return nil
 }
 
-func (u *UserToken) CheckToken(ctx context.Context, claims users.LoginClaims) error {
+func (u *UserToken) CheckToken(ctx context.Context, claims users.LoginClaims, isSsl bool) error {
 	tk, err := caches.GetStore().Hget(u.GenKey(claims), claims.AppCode)
 	if err != nil {
 		return errors.NotLogin
@@ -45,6 +45,9 @@ func (u *UserToken) CheckToken(ctx context.Context, claims users.LoginClaims) er
 	err = json.Unmarshal([]byte(tk), &tkStu)
 	if err != nil {
 		return errors.NotLogin
+	}
+	if !isSsl {
+		return nil
 	}
 	if tkStu.ID != claims.ID { //其他账号登录了,该账号被踢出
 		return errors.AccountKickedOut
