@@ -12,7 +12,6 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/sysdirect"
 	"gitee.com/unitedrhino/core/share/middlewares"
 	"gitee.com/unitedrhino/share/conf"
-	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
@@ -54,7 +53,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:         c,
 		CheckTokenWare: middlewares.NewCheckTokenWareMiddleware(UserRpc, AuthRpc, TenantRpc, LogRpc).Handle,
-		InitCtxsWare:   ctxs.InitMiddleware,
+		InitCtxsWare:   middlewares.InitMiddleware,
 		Slot:           Slot,
 	}
 }

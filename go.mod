@@ -5,13 +5,13 @@ go 1.23.0
 toolchain go1.23.8
 
 require (
-	gitee.com/unitedrhino/share v1.4.7
+	gitee.com/unitedrhino/share v1.4.9
 	gitee.com/unitedrhino/squirrel v1.20.5
 	github.com/alibabacloud-go/tea v1.2.2
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dop251/goja v0.0.0-20231024180952-594410467bc6
 	github.com/gogf/gf/v2 v2.7.2
-	github.com/golang-jwt/jwt/v5 v5.2.1
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/golang/protobuf v1.5.4
 	github.com/gorilla/websocket v1.5.1
 	github.com/hibiken/asynq v0.24.1
