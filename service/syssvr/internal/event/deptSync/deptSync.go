@@ -156,6 +156,7 @@ func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
 						uc.Tags = tags
 					}
 				}
+				uc.Status = def.True //离职会变成false
 				err = relationDB.NewUserInfoRepo(d.ctx).Update(d.ctx, uc)
 				if err != nil {
 					return err
