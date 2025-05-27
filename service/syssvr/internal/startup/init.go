@@ -82,12 +82,16 @@ func TableInit(svcCtx *svc.ServiceContext) {
 			if err != nil {
 				return err
 			}
-			_, err = dictmanagelogic.NewDictMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).DictMultiImport(&sys.DictMultiImportReq{
+			ret, err := dictmanagelogic.NewDictMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).DictMultiImport(&sys.DictMultiImportReq{
 				Dicts: string(body),
 			})
-			return err
+			logx.Info("DictMultiImport", info.Name(), ret, err)
+
+			return nil
 		})
-		logx.Error(err)
+		if err != nil {
+			logx.Error(err)
+		}
 	}
 	{
 		root := "./etc/init/module/"
@@ -106,14 +110,18 @@ func TableInit(svcCtx *svc.ServiceContext) {
 				return err
 			}
 			moduleCode, _ := strings.CutSuffix(info.Name(), ".json")
-			_, err = modulemanagelogic.NewModuleMenuMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).ModuleMenuMultiImport(&sys.MenuMultiImportReq{
+			ret, err := modulemanagelogic.NewModuleMenuMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).ModuleMenuMultiImport(&sys.MenuMultiImportReq{
 				ModuleCode: moduleCode,
 				Mode:       module.MenuImportModeAll,
 				Menu:       string(body),
 			})
-			return err
+			logx.Info("ModuleMenuMultiImport", info.Name(), ret, err)
+
+			return nil
 		})
-		logx.Error(err)
+		if err != nil {
+			logx.Error(err)
+		}
 	}
 	{
 		root := "./etc/init/access/"
@@ -132,13 +140,16 @@ func TableInit(svcCtx *svc.ServiceContext) {
 				return err
 			}
 			moduleCode, _ := strings.CutSuffix(info.Name(), ".json")
-			_, err = accessmanagelogic.NewAccessInfoMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).AccessInfoMultiImport(&sys.AccessInfoMultiImportReq{
+			ret, err := accessmanagelogic.NewAccessInfoMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).AccessInfoMultiImport(&sys.AccessInfoMultiImportReq{
 				Module: moduleCode,
 				Access: string(body),
 			})
-			return err
+			logx.Info("CommonSchemaMultiImport", info.Name(), ret, err)
+			return nil
 		})
-		logx.Error(err)
+		if err != nil {
+			logx.Error(err)
+		}
 	}
 
 	return
