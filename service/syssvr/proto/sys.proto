@@ -151,6 +151,9 @@ service ModuleManage{
   rpc moduleInfoUpdate(ModuleInfo) returns(Empty); //更新角色
   rpc moduleInfoDelete(WithIDCode) returns(Empty); //删除角色
   rpc moduleInfoRead(WithIDCode) returns(ModuleInfo);   //获取详情接口
+  rpc moduleMultiImport(ModuleMultiImportReq) returns(ModuleMultiImportResp); //删除菜单
+  rpc moduleMultiExport(ModuleMultiExportReq) returns(ModuleMultiExportResp); //删除菜单
+
 
   rpc moduleMenuCreate(MenuInfo) returns(WithID); //添加菜单
   rpc moduleMenuIndex(MenuInfoIndexReq) returns(MenuInfoIndexResp); //获取菜单列表
@@ -1959,6 +1962,26 @@ message RoleInfo{
 message RoleAppUpdateReq{
   int64 id = 1;
   repeated string appCodes = 2;
+}
+
+
+message ModuleMultiImportReq{
+  string modules =1; //导出的模块
+}
+
+message ModuleMultiImportResp{
+  int64 total =1;                                 //导入总接口数
+  int64  errCount =2; //失败数
+  int64  ignoreCount =3; //忽略数
+  int64  succCount =4; //成功数
+}
+
+message ModuleMultiExportReq{
+  repeated string  moduleCodes =1;                               // 应用编号
+}
+
+message ModuleMultiExportResp{
+  string modules =1; //导出的模块
 }
 
 

@@ -35,6 +35,10 @@ func (l *ModuleMenuMultiExportLogic) ModuleMenuMultiExport(in *sys.MenuMultiExpo
 	if err != nil {
 		return nil, err
 	}
+	info := genMenuTree(pos)
+	return &sys.MenuMultiExportResp{Menu: utils.MarshalNoErr(info)}, nil
+}
+func genMenuTree(pos []*relationDB.SysModuleMenu) []*sys.MenuInfo {
 	var (
 		pidMap = make(map[int64][]*sys.MenuInfo, len(pos))
 		idMap  = make(map[int64]*sys.MenuInfo, len(pos))
@@ -51,5 +55,5 @@ func (l *ModuleMenuMultiExportLogic) ModuleMenuMultiExport(in *sys.MenuMultiExpo
 		pidMap[i.ParentID] = append(pidMap[i.ParentID], i)
 	}
 	fillChildren(info, pidMap)
-	return &sys.MenuMultiExportResp{Menu: utils.MarshalNoErr(info)}, nil
+	return info
 }

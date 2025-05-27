@@ -63,9 +63,9 @@ func VersionUpdate(svcCtx *svc.ServiceContext) {
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
-	if !relationDB.NeedInitColumn {
-		return
-	}
+	//if !relationDB.NeedInitColumn {
+	//	return
+	//}
 	{
 		root := "./etc/init/dict/"
 		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
@@ -85,7 +85,35 @@ func TableInit(svcCtx *svc.ServiceContext) {
 			ret, err := dictmanagelogic.NewDictMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).DictMultiImport(&sys.DictMultiImportReq{
 				Dicts: string(body),
 			})
-			logx.Info("DictMultiImport", info.Name(), ret, err)
+			logx.Info("DictMultiImport ", info.Name(), ret, err)
+
+			return nil
+		})
+		if err != nil {
+			logx.Error(err)
+		}
+	}
+
+	{
+		root := "./etc/init/module/"
+		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+			if !strings.HasSuffix(info.Name(), ".json") {
+				return nil
+			}
+			body, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			ret, err := modulemanagelogic.NewModuleMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).ModuleMultiImport(&sys.ModuleMultiImportReq{
+				Modules: string(body),
+			})
+			logx.Info("ModuleMultiImport ", info.Name(), ret, err)
 
 			return nil
 		})
@@ -94,7 +122,7 @@ func TableInit(svcCtx *svc.ServiceContext) {
 		}
 	}
 	{
-		root := "./etc/init/module/"
+		root := "./etc/init/moduleMenu/"
 		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return err
@@ -115,7 +143,7 @@ func TableInit(svcCtx *svc.ServiceContext) {
 				Mode:       module.MenuImportModeAll,
 				Menu:       string(body),
 			})
-			logx.Info("ModuleMenuMultiImport", info.Name(), ret, err)
+			logx.Info("ModuleMenuMultiImport ", info.Name(), ret, err)
 
 			return nil
 		})
@@ -144,7 +172,7 @@ func TableInit(svcCtx *svc.ServiceContext) {
 				Module: moduleCode,
 				Access: string(body),
 			})
-			logx.Info("CommonSchemaMultiImport", info.Name(), ret, err)
+			logx.Info("CommonSchemaMultiImport ", info.Name(), ret, err)
 			return nil
 		})
 		if err != nil {

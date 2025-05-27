@@ -108,6 +108,10 @@ type (
 	ModuleInfo                            = sys.ModuleInfo
 	ModuleInfoIndexReq                    = sys.ModuleInfoIndexReq
 	ModuleInfoIndexResp                   = sys.ModuleInfoIndexResp
+	ModuleMultiExportReq                  = sys.ModuleMultiExportReq
+	ModuleMultiExportResp                 = sys.ModuleMultiExportResp
+	ModuleMultiImportReq                  = sys.ModuleMultiImportReq
+	ModuleMultiImportResp                 = sys.ModuleMultiImportResp
 	NotifyChannel                         = sys.NotifyChannel
 	NotifyChannelIndexReq                 = sys.NotifyChannelIndexReq
 	NotifyChannelIndexResp                = sys.NotifyChannelIndexResp

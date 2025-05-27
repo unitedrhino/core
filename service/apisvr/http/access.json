@@ -1301,6 +1301,38 @@
       ],
       "authType": "supper"
     },
+    "systemModuleInfoOther": {
+      "name": "操作模块信息",
+      "code": "systemModuleInfoOther",
+      "group": "模块管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemModuleInfoOther",
+          "method": "POST",
+          "route": "/api/v1/system/module/info/multi-export",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "supper",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemModuleInfoOther",
+          "method": "POST",
+          "route": "/api/v1/system/module/info/multi-import",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "supper",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "supper"
+    },
     "systemModuleMenuAdd": {
       "name": "新增模块菜单",
       "code": "systemModuleMenuAdd",

@@ -690,6 +690,25 @@ type ModuleInfoIndexResp struct {
 	PageResp
 }
 
+type ModuleMultiExportReq struct {
+	ModuleCodes []string `json:"moduleCodes,optional"` // 应用编号
+}
+
+type ModuleMultiExportResp struct {
+	Modules string `json:"modules"` //菜单json
+}
+
+type ModuleMultiImportReq struct {
+	Modules string `json:"modules"` //菜单json
+}
+
+type ModuleMultiImportResp struct {
+	Total       int64 `json:"total"`       //导入总接口数
+	ErrCount    int64 `json:"errCount"`    //失败数
+	IgnoreCount int64 `json:"ignoreCount"` //忽略数
+	SuccCount   int64 `json:"succCount"`   //成功数
+}
+
 type NotifyChannel struct {
 	ID      int64             `json:"id,optional"`      // id编号
 	Name    string            `json:"name,optional"`    //通知的命名

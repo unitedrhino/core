@@ -48,6 +48,16 @@ func (s *ModuleManageServer) ModuleInfoRead(ctx context.Context, in *sys.WithIDC
 	return l.ModuleInfoRead(in)
 }
 
+func (s *ModuleManageServer) ModuleMultiImport(ctx context.Context, in *sys.ModuleMultiImportReq) (*sys.ModuleMultiImportResp, error) {
+	l := modulemanagelogic.NewModuleMultiImportLogic(ctx, s.svcCtx)
+	return l.ModuleMultiImport(in)
+}
+
+func (s *ModuleManageServer) ModuleMultiExport(ctx context.Context, in *sys.ModuleMultiExportReq) (*sys.ModuleMultiExportResp, error) {
+	l := modulemanagelogic.NewModuleMultiExportLogic(ctx, s.svcCtx)
+	return l.ModuleMultiExport(in)
+}
+
 func (s *ModuleManageServer) ModuleMenuCreate(ctx context.Context, in *sys.MenuInfo) (*sys.WithID, error) {
 	l := modulemanagelogic.NewModuleMenuCreateLogic(ctx, s.svcCtx)
 	return l.ModuleMenuCreate(in)

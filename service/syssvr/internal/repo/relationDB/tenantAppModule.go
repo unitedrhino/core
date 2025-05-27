@@ -37,7 +37,7 @@ func (p TenantAppModuleRepo) fmtFilter(ctx context.Context, f TenantAppModuleFil
 		db = db.Preload("Module")
 	}
 	if f.AppCode != "" {
-		db = db.Where("app_code like ?", "%"+f.AppCode+"%")
+		db = db.Where("app_code = ?", f.AppCode)
 	}
 	if f.ID != 0 {
 		db = db.Where("id =?", f.ID)

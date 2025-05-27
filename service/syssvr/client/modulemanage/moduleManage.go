@@ -108,6 +108,10 @@ type (
 	ModuleInfo                            = sys.ModuleInfo
 	ModuleInfoIndexReq                    = sys.ModuleInfoIndexReq
 	ModuleInfoIndexResp                   = sys.ModuleInfoIndexResp
+	ModuleMultiExportReq                  = sys.ModuleMultiExportReq
+	ModuleMultiExportResp                 = sys.ModuleMultiExportResp
+	ModuleMultiImportReq                  = sys.ModuleMultiImportReq
+	ModuleMultiImportResp                 = sys.ModuleMultiImportResp
 	NotifyChannel                         = sys.NotifyChannel
 	NotifyChannelIndexReq                 = sys.NotifyChannelIndexReq
 	NotifyChannelIndexResp                = sys.NotifyChannelIndexResp
@@ -263,6 +267,8 @@ type (
 		ModuleInfoUpdate(ctx context.Context, in *ModuleInfo, opts ...grpc.CallOption) (*Empty, error)
 		ModuleInfoDelete(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*Empty, error)
 		ModuleInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*ModuleInfo, error)
+		ModuleMultiImport(ctx context.Context, in *ModuleMultiImportReq, opts ...grpc.CallOption) (*ModuleMultiImportResp, error)
+		ModuleMultiExport(ctx context.Context, in *ModuleMultiExportReq, opts ...grpc.CallOption) (*ModuleMultiExportResp, error)
 		ModuleMenuCreate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*WithID, error)
 		ModuleMenuIndex(ctx context.Context, in *MenuInfoIndexReq, opts ...grpc.CallOption) (*MenuInfoIndexResp, error)
 		ModuleMenuUpdate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -337,6 +343,24 @@ func (m *defaultModuleManage) ModuleInfoRead(ctx context.Context, in *WithIDCode
 
 func (d *directModuleManage) ModuleInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*ModuleInfo, error) {
 	return d.svr.ModuleInfoRead(ctx, in)
+}
+
+func (m *defaultModuleManage) ModuleMultiImport(ctx context.Context, in *ModuleMultiImportReq, opts ...grpc.CallOption) (*ModuleMultiImportResp, error) {
+	client := sys.NewModuleManageClient(m.cli.Conn())
+	return client.ModuleMultiImport(ctx, in, opts...)
+}
+
+func (d *directModuleManage) ModuleMultiImport(ctx context.Context, in *ModuleMultiImportReq, opts ...grpc.CallOption) (*ModuleMultiImportResp, error) {
+	return d.svr.ModuleMultiImport(ctx, in)
+}
+
+func (m *defaultModuleManage) ModuleMultiExport(ctx context.Context, in *ModuleMultiExportReq, opts ...grpc.CallOption) (*ModuleMultiExportResp, error) {
+	client := sys.NewModuleManageClient(m.cli.Conn())
+	return client.ModuleMultiExport(ctx, in, opts...)
+}
+
+func (d *directModuleManage) ModuleMultiExport(ctx context.Context, in *ModuleMultiExportReq, opts ...grpc.CallOption) (*ModuleMultiExportResp, error) {
+	return d.svr.ModuleMultiExport(ctx, in)
 }
 
 func (m *defaultModuleManage) ModuleMenuCreate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*WithID, error) {

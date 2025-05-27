@@ -43,6 +43,22 @@ service api {
     @handler delete
     post /delete (WithIDOrCode) returns ()
 
+
+    @doc(
+        summary: "批量导入模块"
+        isNeedAuth: "true"
+        authType: "supper"
+    )
+    @handler multiImport
+    post /multi-import (ModuleMultiImportReq) returns (ModuleMultiImportResp)
+
+    @doc(
+        summary: "批量导出模块"
+        isNeedAuth: "true"
+        authType: "supper"
+    )
+    @handler multiExport
+    post /multi-export (ModuleMultiExportReq) returns (ModuleMultiExportResp)
 }
 
 type (
@@ -60,5 +76,21 @@ type (
         List []*ModuleInfo `json:"list"` //菜单列表
         PageResp
     }
+    ModuleMultiImportReq {
+        Modules string `json:"modules"` //菜单json
+    }
+    ModuleMultiImportResp {
+        Total int64 `json:"total"`                                 //导入总接口数
+        ErrCount int64  `json:"errCount"` //失败数
+        IgnoreCount int64  `json:"ignoreCount"` //忽略数
+        SuccCount int64  `json:"succCount"` //成功数
+    }
 
+    ModuleMultiExportReq {
+        ModuleCodes []string `json:"moduleCodes,optional"`                               // 应用编号
+    }
+    ModuleMultiExportResp {
+        Modules string `json:"modules"` //菜单json
+    }
 )
+

@@ -3791,6 +3791,8 @@ const (
 	ModuleManage_ModuleInfoUpdate_FullMethodName      = "/sys.ModuleManage/moduleInfoUpdate"
 	ModuleManage_ModuleInfoDelete_FullMethodName      = "/sys.ModuleManage/moduleInfoDelete"
 	ModuleManage_ModuleInfoRead_FullMethodName        = "/sys.ModuleManage/moduleInfoRead"
+	ModuleManage_ModuleMultiImport_FullMethodName     = "/sys.ModuleManage/moduleMultiImport"
+	ModuleManage_ModuleMultiExport_FullMethodName     = "/sys.ModuleManage/moduleMultiExport"
 	ModuleManage_ModuleMenuCreate_FullMethodName      = "/sys.ModuleManage/moduleMenuCreate"
 	ModuleManage_ModuleMenuIndex_FullMethodName       = "/sys.ModuleManage/moduleMenuIndex"
 	ModuleManage_ModuleMenuUpdate_FullMethodName      = "/sys.ModuleManage/moduleMenuUpdate"
@@ -3808,6 +3810,8 @@ type ModuleManageClient interface {
 	ModuleInfoUpdate(ctx context.Context, in *ModuleInfo, opts ...grpc.CallOption) (*Empty, error)
 	ModuleInfoDelete(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*Empty, error)
 	ModuleInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*ModuleInfo, error)
+	ModuleMultiImport(ctx context.Context, in *ModuleMultiImportReq, opts ...grpc.CallOption) (*ModuleMultiImportResp, error)
+	ModuleMultiExport(ctx context.Context, in *ModuleMultiExportReq, opts ...grpc.CallOption) (*ModuleMultiExportResp, error)
 	ModuleMenuCreate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*WithID, error)
 	ModuleMenuIndex(ctx context.Context, in *MenuInfoIndexReq, opts ...grpc.CallOption) (*MenuInfoIndexResp, error)
 	ModuleMenuUpdate(ctx context.Context, in *MenuInfo, opts ...grpc.CallOption) (*Empty, error)
@@ -3863,6 +3867,24 @@ func (c *moduleManageClient) ModuleInfoDelete(ctx context.Context, in *WithIDCod
 func (c *moduleManageClient) ModuleInfoRead(ctx context.Context, in *WithIDCode, opts ...grpc.CallOption) (*ModuleInfo, error) {
 	out := new(ModuleInfo)
 	err := c.cc.Invoke(ctx, ModuleManage_ModuleInfoRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moduleManageClient) ModuleMultiImport(ctx context.Context, in *ModuleMultiImportReq, opts ...grpc.CallOption) (*ModuleMultiImportResp, error) {
+	out := new(ModuleMultiImportResp)
+	err := c.cc.Invoke(ctx, ModuleManage_ModuleMultiImport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moduleManageClient) ModuleMultiExport(ctx context.Context, in *ModuleMultiExportReq, opts ...grpc.CallOption) (*ModuleMultiExportResp, error) {
+	out := new(ModuleMultiExportResp)
+	err := c.cc.Invoke(ctx, ModuleManage_ModuleMultiExport_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -3932,6 +3954,8 @@ type ModuleManageServer interface {
 	ModuleInfoUpdate(context.Context, *ModuleInfo) (*Empty, error)
 	ModuleInfoDelete(context.Context, *WithIDCode) (*Empty, error)
 	ModuleInfoRead(context.Context, *WithIDCode) (*ModuleInfo, error)
+	ModuleMultiImport(context.Context, *ModuleMultiImportReq) (*ModuleMultiImportResp, error)
+	ModuleMultiExport(context.Context, *ModuleMultiExportReq) (*ModuleMultiExportResp, error)
 	ModuleMenuCreate(context.Context, *MenuInfo) (*WithID, error)
 	ModuleMenuIndex(context.Context, *MenuInfoIndexReq) (*MenuInfoIndexResp, error)
 	ModuleMenuUpdate(context.Context, *MenuInfo) (*Empty, error)
@@ -3959,6 +3983,12 @@ func (UnimplementedModuleManageServer) ModuleInfoDelete(context.Context, *WithID
 }
 func (UnimplementedModuleManageServer) ModuleInfoRead(context.Context, *WithIDCode) (*ModuleInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModuleInfoRead not implemented")
+}
+func (UnimplementedModuleManageServer) ModuleMultiImport(context.Context, *ModuleMultiImportReq) (*ModuleMultiImportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModuleMultiImport not implemented")
+}
+func (UnimplementedModuleManageServer) ModuleMultiExport(context.Context, *ModuleMultiExportReq) (*ModuleMultiExportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModuleMultiExport not implemented")
 }
 func (UnimplementedModuleManageServer) ModuleMenuCreate(context.Context, *MenuInfo) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModuleMenuCreate not implemented")
@@ -4077,6 +4107,42 @@ func _ModuleManage_ModuleInfoRead_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ModuleManageServer).ModuleInfoRead(ctx, req.(*WithIDCode))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModuleManage_ModuleMultiImport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModuleMultiImportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModuleManageServer).ModuleMultiImport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ModuleManage_ModuleMultiImport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModuleManageServer).ModuleMultiImport(ctx, req.(*ModuleMultiImportReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ModuleManage_ModuleMultiExport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModuleMultiExportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ModuleManageServer).ModuleMultiExport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ModuleManage_ModuleMultiExport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ModuleManageServer).ModuleMultiExport(ctx, req.(*ModuleMultiExportReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -4215,6 +4281,14 @@ var ModuleManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "moduleInfoRead",
 			Handler:    _ModuleManage_ModuleInfoRead_Handler,
+		},
+		{
+			MethodName: "moduleMultiImport",
+			Handler:    _ModuleManage_ModuleMultiImport_Handler,
+		},
+		{
+			MethodName: "moduleMultiExport",
+			Handler:    _ModuleManage_ModuleMultiExport_Handler,
 		},
 		{
 			MethodName: "moduleMenuCreate",

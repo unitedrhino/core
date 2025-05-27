@@ -3778,6 +3778,90 @@
         ]
       }
     },
+    "/api/v1/system/module/info/multi-export": {
+      "post": {
+        "summary": "批量导出模块",
+        "operationId": "postApiV1SystemModuleInfoMulti-export",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ModuleMultiExportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModuleMultiExportReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/module/info",
+          "systemModuleInfo"
+        ]
+      }
+    },
+    "/api/v1/system/module/info/multi-import": {
+      "post": {
+        "summary": "批量导入模块",
+        "operationId": "postApiV1SystemModuleInfoMulti-import",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ModuleMultiImportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModuleMultiImportReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/module/info",
+          "systemModuleInfo"
+        ]
+      }
+    },
     "/api/v1/system/module/info/read": {
       "post": {
         "summary": "获取模块详情",
@@ -11765,6 +11849,77 @@
       "title": "ModuleInfoIndexResp",
       "required": [
         "list"
+      ]
+    },
+    "ModuleMultiExportReq": {
+      "type": "object",
+      "properties": {
+        "moduleCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 应用编号"
+        }
+      },
+      "title": "ModuleMultiExportReq"
+    },
+    "ModuleMultiExportResp": {
+      "type": "object",
+      "properties": {
+        "modules": {
+          "type": "string",
+          "description": "菜单json"
+        }
+      },
+      "title": "ModuleMultiExportResp",
+      "required": [
+        "modules"
+      ]
+    },
+    "ModuleMultiImportReq": {
+      "type": "object",
+      "properties": {
+        "modules": {
+          "type": "string",
+          "description": "菜单json"
+        }
+      },
+      "title": "ModuleMultiImportReq",
+      "required": [
+        "modules"
+      ]
+    },
+    "ModuleMultiImportResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "导入总接口数"
+        },
+        "errCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "失败数"
+        },
+        "ignoreCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "忽略数"
+        },
+        "succCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "成功数"
+        }
+      },
+      "title": "ModuleMultiImportResp",
+      "required": [
+        "total",
+        "errCount",
+        "ignoreCount",
+        "succCount"
       ]
     },
     "NotifyChannel": {

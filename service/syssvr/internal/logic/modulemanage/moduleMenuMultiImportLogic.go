@@ -33,7 +33,7 @@ func NewModuleMenuMultiImportLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
-func (l *ModuleMenuMultiImportLogic) menuFmt(moduleCode string, in []*sys.MenuInfo) error {
+func menuFmt(moduleCode string, in []*sys.MenuInfo) error {
 	var path = map[string]struct{}{}
 	for _, m := range in {
 		m.Id = 0
@@ -45,7 +45,7 @@ func (l *ModuleMenuMultiImportLogic) menuFmt(moduleCode string, in []*sys.MenuIn
 		}
 		path[m.Path] = struct{}{}
 		if len(m.Children) > 0 {
-			err := l.menuFmt(moduleCode, m.Children)
+			err := menuFmt(moduleCode, m.Children)
 			if err != nil {
 				return err
 			}
@@ -54,13 +54,13 @@ func (l *ModuleMenuMultiImportLogic) menuFmt(moduleCode string, in []*sys.MenuIn
 	return nil
 }
 
-func (l *ModuleMenuMultiImportLogic) Handle(tx *gorm.DB, in *sys.MenuMultiImportReq, parentID int64, menus []*sys.MenuInfo) error {
+func (l *ModuleMenuMultiImportLogic) Handle(tx *gorm.DB, ModuleCode string, Mode int64, parentID int64, menus []*sys.MenuInfo) error {
 	l.resp.Total += int64(len(menus))
 	db := relationDB.NewMenuInfoRepo(tx)
 	paths := utils.ToSliceWithFunc(menus, func(in *sys.MenuInfo) string {
 		return in.Path
 	})
-	olds, err := db.FindByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: in.ModuleCode, ParentID: parentID, Paths: paths}, nil)
+	olds, err := db.FindByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: ModuleCode, ParentID: parentID, Paths: paths}, nil)
 	if err != nil {
 		return err
 	}
@@ -77,21 +77,21 @@ func (l *ModuleMenuMultiImportLogic) Handle(tx *gorm.DB, in *sys.MenuMultiImport
 				return err
 			}
 			if len(menu.Children) > 0 {
-				err = l.Handle(tx, in, id, menu.Children)
+				err = l.Handle(tx, ModuleCode, Mode, id, menu.Children)
 				if err != nil {
 					return err
 				}
 			}
 			continue
 		}
-		if in.Mode != module.MenuImportModeAdd { //如果只新增则不用处理这条
+		if Mode != module.MenuImportModeAdd { //如果只新增则不用处理这条
 			err = updateMenu(l.ctx, tx, menu, old)
 			if err != nil {
 				return err
 			}
 		}
 		if len(menu.Children) > 0 {
-			err = l.Handle(tx, in, old.ID, menu.Children)
+			err = l.Handle(tx, ModuleCode, Mode, old.ID, menu.Children)
 			if err != nil {
 				return err
 			}
@@ -109,32 +109,36 @@ func (l *ModuleMenuMultiImportLogic) ModuleMenuMultiImport(in *sys.MenuMultiImpo
 	if err != nil {
 		return nil, errors.Parameter.AddMsg("导入的菜单格式不对").AddDetail(err)
 	}
-	err = l.menuFmt(in.ModuleCode, dos)
+	err = l.menuImport(in.ModuleCode, in.Mode, dos)
+
+	return &l.resp, err
+}
+func (l *ModuleMenuMultiImportLogic) menuImport(ModuleCode string, Mode int64, dos []*sys.MenuInfo) error {
+	err := menuFmt(ModuleCode, dos)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	if err := CheckModule(l.ctx, in.ModuleCode); err != nil {
-		return nil, err
+	if err := CheckModule(l.ctx, ModuleCode); err != nil {
+		return err
 	}
 
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		if in.Mode == module.MenuImportModeAll {
+		if Mode == module.MenuImportModeAll {
 			db := relationDB.NewMenuInfoRepo(tx)
-			err = db.DeleteByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: in.ModuleCode})
+			err = db.DeleteByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: ModuleCode})
 			if err != nil {
 				return err
 			}
-			err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppMenuFilter{ModuleCode: in.ModuleCode})
+			err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppMenuFilter{ModuleCode: ModuleCode})
 			if err != nil {
 				return err
 			}
 		}
-		err := l.Handle(tx, in, def.RootNode, dos)
+		err := l.Handle(tx, ModuleCode, Mode, def.RootNode, dos)
 		if err != nil {
 			return err
 		}
 		return nil
 	})
-
-	return &l.resp, err
+	return err
 }

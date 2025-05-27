@@ -33,7 +33,7 @@ func (l *DictMultiImportLogic) DictMultiImport(in *sys.DictMultiImportReq) (*sys
 	if err != nil {
 		return nil, err
 	}
-	var resp sys.DictMultiImportResp
+	var resp = sys.DictMultiImportResp{Total: int64(len(pos))}
 	for _, v := range pos {
 		_, err := NewDictInfoCreateLogic(l.ctx, l.svcCtx).DictInfoCreate(utils.Copy[sys.DictInfo](v))
 		if err != nil && !errors.Cmp(err, errors.Duplicate) {
@@ -41,6 +41,7 @@ func (l *DictMultiImportLogic) DictMultiImport(in *sys.DictMultiImportReq) (*sys
 			l.Error(v, err)
 			continue
 		}
+		resp.SuccCount++
 		if len(v.Details) > 0 {
 			_, err := NewDictDetailMultiCreateLogic(l.ctx, l.svcCtx).DictDetailMultiCreate(&sys.DictDetailMultiCreateReq{
 				DictCode: v.Code,

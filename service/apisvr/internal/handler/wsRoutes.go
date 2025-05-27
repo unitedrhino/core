@@ -784,6 +784,18 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemmoduleinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 批量导出模块
+					Method:  http.MethodPost,
+					Path:    "/multi-export",
+					Handler: systemmoduleinfo.MultiExportHandler(serverCtx),
+				},
+				{
+					// 批量导入模块
+					Method:  http.MethodPost,
+					Path:    "/multi-import",
+					Handler: systemmoduleinfo.MultiImportHandler(serverCtx),
+				},
+				{
 					// 获取模块详情
 					Method:  http.MethodPost,
 					Path:    "/read",
