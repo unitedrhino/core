@@ -172,7 +172,7 @@ func TableInit(svcCtx *svc.ServiceContext) {
 				Module: moduleCode,
 				Access: string(body),
 			})
-			logx.Info("CommonSchemaMultiImport ", info.Name(), ret, err)
+			logx.Info("AccessInfoMultiImport ", info.Name(), ret, err)
 			return nil
 		})
 		if err != nil {
