@@ -176,6 +176,9 @@ service DictManage{
   rpc dictDetailIndex(DictDetailIndexReq) returns(DictDetailIndexResp); //获取角色列表
   rpc dictDetailUpdate(DictDetail) returns(Empty); //更新角色
   rpc dictDetailDelete(WithID) returns(Empty); //删除角色
+
+  rpc dictMultiImport(DictMultiImportReq) returns(DictMultiImportResp); //删除菜单
+  rpc dictMultiExport(DictMultiExportReq) returns(DictMultiExportResp); //删除菜单
 }
 
 service DepartmentManage{
@@ -1709,6 +1712,22 @@ message DictDetailReadReq{
   string value = 3;           // 字典值
   bool withFather = 4;//是否返回父级
   bool withChildren =5;//是否返回子级
+}
+
+message DictMultiImportReq{
+  string dicts =1; //导出的菜单json文件
+}
+message DictMultiImportResp{
+  int64 total =1;                                 //导入总接口数
+  int64  errCount =2; //失败数
+  int64  ignoreCount =3; //忽略数
+  int64  succCount =4; //成功数
+}
+message DictMultiExportReq{
+  repeated string dictCodes= 1;         // 关联标记
+}
+message DictMultiExportResp{
+  string dicts =1; //导出的菜单json文件
 }
 
 

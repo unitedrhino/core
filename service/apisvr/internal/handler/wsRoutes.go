@@ -625,6 +625,18 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemdictinfo.IndexHandler(serverCtx),
 				},
 				{
+					// 批量导出字典信息
+					Method:  http.MethodPost,
+					Path:    "/multi-export",
+					Handler: systemdictinfo.MultiExportHandler(serverCtx),
+				},
+				{
+					// 批量导入字典信息
+					Method:  http.MethodPost,
+					Path:    "/multi-import",
+					Handler: systemdictinfo.MultiImportHandler(serverCtx),
+				},
+				{
 					// 获取字典信息详情
 					Method:  http.MethodPost,
 					Path:    "/read",

@@ -11,6 +11,7 @@ import (
 	accessmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/accessmanage"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
 	departmentmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/departmentmanage"
+	dictmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/dictmanage"
 	modulemanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/modulemanage"
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	tenantmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/tenantmanage"
@@ -64,6 +65,29 @@ func VersionUpdate(svcCtx *svc.ServiceContext) {
 func TableInit(svcCtx *svc.ServiceContext) {
 	if !relationDB.NeedInitColumn {
 		return
+	}
+	{
+		root := "./etc/init/dict/"
+		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+			if !strings.HasSuffix(info.Name(), ".json") {
+				return nil
+			}
+			body, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			_, err = dictmanagelogic.NewDictMultiImportLogic(ctxs.WithRoot(context.TODO()), svcCtx).DictMultiImport(&sys.DictMultiImportReq{
+				Dicts: string(body),
+			})
+			return err
+		})
+		logx.Error(err)
 	}
 	{
 		root := "./etc/init/module/"

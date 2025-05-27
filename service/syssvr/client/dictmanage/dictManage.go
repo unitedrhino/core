@@ -82,6 +82,10 @@ type (
 	DictInfoIndexReq                      = sys.DictInfoIndexReq
 	DictInfoIndexResp                     = sys.DictInfoIndexResp
 	DictInfoReadReq                       = sys.DictInfoReadReq
+	DictMultiExportReq                    = sys.DictMultiExportReq
+	DictMultiExportResp                   = sys.DictMultiExportResp
+	DictMultiImportReq                    = sys.DictMultiImportReq
+	DictMultiImportResp                   = sys.DictMultiImportResp
 	Empty                                 = sys.Empty
 	IDList                                = sys.IDList
 	JwtToken                              = sys.JwtToken
@@ -265,6 +269,8 @@ type (
 		DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
 		DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Empty, error)
 		DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		DictMultiImport(ctx context.Context, in *DictMultiImportReq, opts ...grpc.CallOption) (*DictMultiImportResp, error)
+		DictMultiExport(ctx context.Context, in *DictMultiExportReq, opts ...grpc.CallOption) (*DictMultiExportResp, error)
 	}
 
 	defaultDictManage struct {
@@ -387,4 +393,22 @@ func (m *defaultDictManage) DictDetailDelete(ctx context.Context, in *WithID, op
 
 func (d *directDictManage) DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.DictDetailDelete(ctx, in)
+}
+
+func (m *defaultDictManage) DictMultiImport(ctx context.Context, in *DictMultiImportReq, opts ...grpc.CallOption) (*DictMultiImportResp, error) {
+	client := sys.NewDictManageClient(m.cli.Conn())
+	return client.DictMultiImport(ctx, in, opts...)
+}
+
+func (d *directDictManage) DictMultiImport(ctx context.Context, in *DictMultiImportReq, opts ...grpc.CallOption) (*DictMultiImportResp, error) {
+	return d.svr.DictMultiImport(ctx, in)
+}
+
+func (m *defaultDictManage) DictMultiExport(ctx context.Context, in *DictMultiExportReq, opts ...grpc.CallOption) (*DictMultiExportResp, error) {
+	client := sys.NewDictManageClient(m.cli.Conn())
+	return client.DictMultiExport(ctx, in, opts...)
+}
+
+func (d *directDictManage) DictMultiExport(ctx context.Context, in *DictMultiExportReq, opts ...grpc.CallOption) (*DictMultiExportResp, error) {
+	return d.svr.DictMultiExport(ctx, in)
 }

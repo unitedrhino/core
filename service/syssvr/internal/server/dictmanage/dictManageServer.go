@@ -77,3 +77,13 @@ func (s *DictManageServer) DictDetailDelete(ctx context.Context, in *sys.WithID)
 	l := dictmanagelogic.NewDictDetailDeleteLogic(ctx, s.svcCtx)
 	return l.DictDetailDelete(in)
 }
+
+func (s *DictManageServer) DictMultiImport(ctx context.Context, in *sys.DictMultiImportReq) (*sys.DictMultiImportResp, error) {
+	l := dictmanagelogic.NewDictMultiImportLogic(ctx, s.svcCtx)
+	return l.DictMultiImport(in)
+}
+
+func (s *DictManageServer) DictMultiExport(ctx context.Context, in *sys.DictMultiExportReq) (*sys.DictMultiExportResp, error) {
+	l := dictmanagelogic.NewDictMultiExportLogic(ctx, s.svcCtx)
+	return l.DictMultiExport(in)
+}

@@ -2881,6 +2881,90 @@
         ]
       }
     },
+    "/api/v1/system/dict/info/multi-export": {
+      "post": {
+        "summary": "批量导出字典信息",
+        "operationId": "postApiV1SystemDictInfoMulti-export",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DictInfoMultExportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DictInfoMultExportReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dict/info",
+          "systemDictInfo"
+        ]
+      }
+    },
+    "/api/v1/system/dict/info/multi-import": {
+      "post": {
+        "summary": "批量导入字典信息",
+        "operationId": "postApiV1SystemDictInfoMulti-import",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DictInfoMultImportResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DictInfoMultImportReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/dict/info",
+          "systemDictInfo"
+        ]
+      }
+    },
     "/api/v1/system/dict/info/read": {
       "post": {
         "summary": "获取字典信息详情",
@@ -11024,6 +11108,74 @@
       "title": "DictInfoIndexResp",
       "required": [
         "list"
+      ]
+    },
+    "DictInfoMultExportReq": {
+      "type": "object",
+      "properties": {
+        "dictCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DictInfoMultExportReq"
+    },
+    "DictInfoMultExportResp": {
+      "type": "object",
+      "properties": {
+        "dicts": {
+          "type": "string"
+        }
+      },
+      "title": "DictInfoMultExportResp",
+      "required": [
+        "dicts"
+      ]
+    },
+    "DictInfoMultImportReq": {
+      "type": "object",
+      "properties": {
+        "dicts": {
+          "type": "string"
+        }
+      },
+      "title": "DictInfoMultImportReq",
+      "required": [
+        "dicts"
+      ]
+    },
+    "DictInfoMultImportResp": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int64",
+          "description": "导入总接口数"
+        },
+        "errCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "失败数"
+        },
+        "ignoreCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "忽略数"
+        },
+        "succCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "成功数"
+        }
+      },
+      "title": "DictInfoMultImportResp",
+      "required": [
+        "total",
+        "errCount",
+        "ignoreCount",
+        "succCount"
       ]
     },
     "DictInfoReadReq": {

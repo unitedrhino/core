@@ -523,6 +523,25 @@ type DictInfoIndexResp struct {
 	List []*DictInfo `json:"list"` //菜单列表
 }
 
+type DictInfoMultExportReq struct {
+	DictCodes []string `json:"dictCodes,optional"`
+}
+
+type DictInfoMultExportResp struct {
+	Dicts string `json:"dicts"`
+}
+
+type DictInfoMultImportReq struct {
+	Dicts string `json:"dicts"`
+}
+
+type DictInfoMultImportResp struct {
+	Total       int64 `json:"total"`       //导入总接口数
+	ErrCount    int64 `json:"errCount"`    //失败数
+	IgnoreCount int64 `json:"ignoreCount"` //忽略数
+	SuccCount   int64 `json:"succCount"`   //成功数
+}
+
 type DictInfoReadReq struct {
 	ID   int64  `json:"id"`            // 编号
 	Code string `json:"code,optional"` // 编码

@@ -4257,6 +4257,8 @@ const (
 	DictManage_DictDetailIndex_FullMethodName       = "/sys.DictManage/dictDetailIndex"
 	DictManage_DictDetailUpdate_FullMethodName      = "/sys.DictManage/dictDetailUpdate"
 	DictManage_DictDetailDelete_FullMethodName      = "/sys.DictManage/dictDetailDelete"
+	DictManage_DictMultiImport_FullMethodName       = "/sys.DictManage/dictMultiImport"
+	DictManage_DictMultiExport_FullMethodName       = "/sys.DictManage/dictMultiExport"
 )
 
 // DictManageClient is the client API for DictManage service.
@@ -4274,6 +4276,8 @@ type DictManageClient interface {
 	DictDetailIndex(ctx context.Context, in *DictDetailIndexReq, opts ...grpc.CallOption) (*DictDetailIndexResp, error)
 	DictDetailUpdate(ctx context.Context, in *DictDetail, opts ...grpc.CallOption) (*Empty, error)
 	DictDetailDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	DictMultiImport(ctx context.Context, in *DictMultiImportReq, opts ...grpc.CallOption) (*DictMultiImportResp, error)
+	DictMultiExport(ctx context.Context, in *DictMultiExportReq, opts ...grpc.CallOption) (*DictMultiExportResp, error)
 }
 
 type dictManageClient struct {
@@ -4383,6 +4387,24 @@ func (c *dictManageClient) DictDetailDelete(ctx context.Context, in *WithID, opt
 	return out, nil
 }
 
+func (c *dictManageClient) DictMultiImport(ctx context.Context, in *DictMultiImportReq, opts ...grpc.CallOption) (*DictMultiImportResp, error) {
+	out := new(DictMultiImportResp)
+	err := c.cc.Invoke(ctx, DictManage_DictMultiImport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dictManageClient) DictMultiExport(ctx context.Context, in *DictMultiExportReq, opts ...grpc.CallOption) (*DictMultiExportResp, error) {
+	out := new(DictMultiExportResp)
+	err := c.cc.Invoke(ctx, DictManage_DictMultiExport_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DictManageServer is the server API for DictManage service.
 // All implementations must embed UnimplementedDictManageServer
 // for forward compatibility
@@ -4398,6 +4420,8 @@ type DictManageServer interface {
 	DictDetailIndex(context.Context, *DictDetailIndexReq) (*DictDetailIndexResp, error)
 	DictDetailUpdate(context.Context, *DictDetail) (*Empty, error)
 	DictDetailDelete(context.Context, *WithID) (*Empty, error)
+	DictMultiImport(context.Context, *DictMultiImportReq) (*DictMultiImportResp, error)
+	DictMultiExport(context.Context, *DictMultiExportReq) (*DictMultiExportResp, error)
 	mustEmbedUnimplementedDictManageServer()
 }
 
@@ -4437,6 +4461,12 @@ func (UnimplementedDictManageServer) DictDetailUpdate(context.Context, *DictDeta
 }
 func (UnimplementedDictManageServer) DictDetailDelete(context.Context, *WithID) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DictDetailDelete not implemented")
+}
+func (UnimplementedDictManageServer) DictMultiImport(context.Context, *DictMultiImportReq) (*DictMultiImportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictMultiImport not implemented")
+}
+func (UnimplementedDictManageServer) DictMultiExport(context.Context, *DictMultiExportReq) (*DictMultiExportResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DictMultiExport not implemented")
 }
 func (UnimplementedDictManageServer) mustEmbedUnimplementedDictManageServer() {}
 
@@ -4649,6 +4679,42 @@ func _DictManage_DictDetailDelete_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DictManage_DictMultiImport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictMultiImportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictMultiImport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictMultiImport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictMultiImport(ctx, req.(*DictMultiImportReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DictManage_DictMultiExport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DictMultiExportReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DictManageServer).DictMultiExport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DictManage_DictMultiExport_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DictManageServer).DictMultiExport(ctx, req.(*DictMultiExportReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DictManage_ServiceDesc is the grpc.ServiceDesc for DictManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -4699,6 +4765,14 @@ var DictManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "dictDetailDelete",
 			Handler:    _DictManage_DictDetailDelete_Handler,
+		},
+		{
+			MethodName: "dictMultiImport",
+			Handler:    _DictManage_DictMultiImport_Handler,
+		},
+		{
+			MethodName: "dictMultiExport",
+			Handler:    _DictManage_DictMultiExport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

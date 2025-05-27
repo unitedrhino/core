@@ -82,6 +82,10 @@ type (
 	DictInfoIndexReq                      = sys.DictInfoIndexReq
 	DictInfoIndexResp                     = sys.DictInfoIndexResp
 	DictInfoReadReq                       = sys.DictInfoReadReq
+	DictMultiExportReq                    = sys.DictMultiExportReq
+	DictMultiExportResp                   = sys.DictMultiExportResp
+	DictMultiImportReq                    = sys.DictMultiImportReq
+	DictMultiImportResp                   = sys.DictMultiImportResp
 	Empty                                 = sys.Empty
 	IDList                                = sys.IDList
 	JwtToken                              = sys.JwtToken

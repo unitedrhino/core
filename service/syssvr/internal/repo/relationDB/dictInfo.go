@@ -24,10 +24,12 @@ func NewDictInfoRepo(in any) *DictInfoRepo {
 }
 
 type DictInfoFilter struct {
-	ID    int64
-	Name  string
-	Group string
-	Code  string
+	ID          int64
+	Name        string
+	Group       string
+	Code        string
+	Codes       []string
+	WithDetails bool
 }
 
 func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB {
@@ -40,6 +42,12 @@ func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB 
 	}
 	if f.Code != "" {
 		db = db.Where("code = ?", f.Code)
+	}
+	if len(f.Codes) > 0 {
+		db = db.Where("code in  ?", f.Codes)
+	}
+	if f.WithDetails {
+		db = db.Preload("Details")
 	}
 	if f.Group != "" {
 		db = db.Where(fmt.Sprintf("%s = ?", stores.Col("group")), f.Group)

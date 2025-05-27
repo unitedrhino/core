@@ -44,9 +44,39 @@ service api {
     )
     @handler delete
     post /delete (WithID) returns ()
+
+    @doc(
+        summary: "批量导入字典信息"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
+    @handler multiImport
+    post /multi-import (DictInfoMultImportReq) returns (DictInfoMultImportResp)
+
+    @doc(
+        summary: "批量导出字典信息"
+        authType: "supper"
+        isNeedAuth: "true"
+    )
+    @handler multiExport
+    post /multi-export (DictInfoMultExportReq) returns (DictInfoMultExportResp)
 }
 type (
-
+    DictInfoMultImportReq{
+        Dicts string  `json:"dicts"`
+    }
+    DictInfoMultImportResp{
+        Total int64 `json:"total"`                                 //导入总接口数
+        ErrCount int64  `json:"errCount"` //失败数
+        IgnoreCount int64  `json:"ignoreCount"` //忽略数
+        SuccCount int64  `json:"succCount"` //成功数
+    }
+    DictInfoMultExportReq{
+        DictCodes []string `json:"dictCodes,optional"`
+    }
+    DictInfoMultExportResp{
+        Dicts string  `json:"dicts"`
+    }
     DictInfoIndexReq  {
         Page *PageInfo `json:"page,optional"`                   // 分页信息,只获取一个则不填
         Status int64 `json:"status,optional"`

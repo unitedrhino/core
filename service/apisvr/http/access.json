@@ -949,6 +949,38 @@
       ],
       "authType": "supper"
     },
+    "systemDictManageOther": {
+      "name": "操作字典管理",
+      "code": "systemDictManageOther",
+      "group": "字典管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDictManageOther",
+          "method": "POST",
+          "route": "/api/v1/system/dict/info/multi-export",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "supper",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemDictManageOther",
+          "method": "POST",
+          "route": "/api/v1/system/dict/info/multi-import",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "other",
+          "desc": "",
+          "authType": "supper",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "supper"
+    },
     "systemJobManageAdd": {
       "name": "新增任务管理",
       "code": "systemJobManageAdd",
