@@ -63,9 +63,9 @@ func VersionUpdate(svcCtx *svc.ServiceContext) {
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
-	//if !relationDB.NeedInitColumn {
-	//	return
-	//}
+	if !relationDB.NeedInitColumn {
+		return
+	}
 	{
 		root := "./etc/init/dict/"
 		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
