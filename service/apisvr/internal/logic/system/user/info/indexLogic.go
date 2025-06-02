@@ -111,7 +111,10 @@ func maskPhoneNumberOrEmail(input string) string {
 		// 假设输入是一个邮箱
 		localPart := strings.Split(input, "@")[0]
 		domainPart := strings.Split(input, "@")[1]
-		return localPart[len(localPart)-4:] + "@" + "****" + domainPart[len(domainPart)-4:]
+		// 邮箱掩码规则：长度>=5时处理，否则不处理
+		if len(localPart) >= 5 {
+			return localPart[:4] + "****" + "@" + domainPart
+		}
 	}
 	return input
 }
