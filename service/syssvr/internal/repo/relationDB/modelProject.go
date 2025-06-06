@@ -16,7 +16,7 @@ type SysProjectInfo struct {
 	Address      string            `gorm:"column:address;type:varchar(512);"`                // 项目详细地址
 	AreaCount    int64             `gorm:"column:area_count;type:bigint;default:0;NOT NULL"` //所属区域的数量统计
 	UserCount    int64             `gorm:"column:user_count;type:bigint;default:0;NOT NULL"`
-	Position     stores.Point      `gorm:"column:position;NOT NULL"` // 项目地址
+	Position     stores.Point      `gorm:"column:position;"` // 项目地址
 	DeviceCount  int64             `gorm:"column:device_count;type:bigint;default:0"`
 	Area         float32           `gorm:"column:area;default:0"`
 	Ppsm         int64             `gorm:"column:ppsm;type:bigint;default:0"`                           //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
@@ -58,7 +58,7 @@ type SysAreaInfo struct {
 	AreaName        string              `gorm:"column:area_name;index;type:varchar(100);NOT NULL"`              // 区域名称
 	AreaImg         string              `gorm:"column:area_img;type:varchar(1024);NOT NULL"`
 	ConfigFile      string              `gorm:"column:config_file;type:varchar(1024);NOT NULL"`
-	Position        stores.Point        `gorm:"column:position;NOT NULL"`                                // 区域定位(默认火星坐标系)
+	Position        stores.Point        `gorm:"column:position;"`                                        // 区域定位(默认火星坐标系)
 	Desc            string              `gorm:"column:desc;type:varchar(100);NOT NULL"`                  // 区域备注
 	LowerLevelCount int64               `gorm:"column:lower_level_count;type:bigint;default:0;NOT NULL"` //下级区域的数量统计
 	DeviceCount     int64               `gorm:"column:device_count;type:bigint;default:0;"`
