@@ -1,4 +1,4 @@
-FROM golang:alpine as go-builder
+FROM docker.unitedrhino.com/unitedrhino/golang:1.23.4-alpine3.21 as go-builder
 ARG frontFile
 WORKDIR /unitedrhino/
 COPY ./ ./
