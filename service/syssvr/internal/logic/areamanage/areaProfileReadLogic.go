@@ -33,6 +33,7 @@ func (l *AreaProfileReadLogic) AreaProfileRead(in *sys.AreaProfileReadReq) (*sys
 	})
 	if errors.Cmp(err, errors.NotFind) {
 		return &sys.AreaProfile{
+			AreaID: in.AreaID,
 			Code:   in.Code,
 			Params: "",
 		}, nil
