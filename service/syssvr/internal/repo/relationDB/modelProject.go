@@ -34,13 +34,13 @@ func (m *SysProjectInfo) TableName() string {
 
 // 区域配置表
 type SysProjectProfile struct {
-	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                // 编号
-	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:tc_un;"` // 租户编码
-	ProjectID  dataType.ProjectID  `gorm:"column:project_id;uniqueIndex:tc_un;type:bigint;NOT NULL"`        // 所属项目ID(雪花ID)
-	Code       string              `gorm:"column:code;type:VARCHAR(50);uniqueIndex:tc_un;NOT NULL"`         //配置code
+	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                    // 编号
+	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:idx_tc_un;"` // 租户编码
+	ProjectID  dataType.ProjectID  `gorm:"column:project_id;uniqueIndex:idx_tc_un;type:bigint;NOT NULL"`        // 所属项目ID(雪花ID)
+	Code       string              `gorm:"column:code;type:VARCHAR(50);uniqueIndex:idx_tc_un;NOT NULL"`         //配置code
 	Params     string              `gorm:"column:params;type:text;NOT NULL"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_un;"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_tc_un;"`
 }
 
 func (m *SysProjectProfile) TableName() string {
@@ -80,14 +80,14 @@ func (m *SysAreaInfo) TableName() string {
 
 // 区域配置表
 type SysAreaProfile struct {
-	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                // 编号
-	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:tc_un;"` // 租户编码
-	ProjectID  dataType.ProjectID  `gorm:"column:project_id;uniqueIndex:tc_un;type:bigint;NOT NULL"`        // 所属项目ID(雪花ID)
-	AreaID     dataType.AreaID     `gorm:"column:area_id;uniqueIndex:tc_un;type:bigint;NOT NULL"`           // 区域ID(雪花ID)
-	Code       string              `gorm:"column:code;type:VARCHAR(50);uniqueIndex:tc_un;NOT NULL"`         //配置code
+	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                    // 编号
+	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:idx_tc_un;"` // 租户编码
+	ProjectID  dataType.ProjectID  `gorm:"column:project_id;uniqueIndex:idx_tc_un;type:bigint;NOT NULL"`        // 所属项目ID(雪花ID)
+	AreaID     dataType.AreaID     `gorm:"column:area_id;uniqueIndex:idx_tc_un;type:bigint;NOT NULL"`           // 区域ID(雪花ID)
+	Code       string              `gorm:"column:code;type:VARCHAR(50);uniqueIndex:idx_tc_un;NOT NULL"`         //配置code
 	Params     string              `gorm:"column:params;type:text;NOT NULL"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:tc_un;"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_tc_un;"`
 }
 
 func (m *SysAreaProfile) TableName() string {

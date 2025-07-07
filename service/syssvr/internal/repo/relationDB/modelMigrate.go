@@ -149,8 +149,7 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
 		return err
 	}
-
-	db.Create(&SysDeptInfo{ID: 3, Name: ""})
+	db.CreateInBatches([]SysDeptInfo{{ID: 3}}, 100)
 	return nil
 }
 

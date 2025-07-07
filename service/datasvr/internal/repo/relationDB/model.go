@@ -49,7 +49,7 @@ type DataStatisticsInfo struct {
 	IsFilterArea    int64                     `gorm:"column:is_filter_area;type:BIGINT;default:1;"`                  //是否要过滤区域
 	FilterRoles     string                    `gorm:"column:filter_roles;type:VARCHAR(120);default:'';"`             //是否要过滤区域
 	IsSoftDelete    int64                     `gorm:"column:is_soft_delete;type:BIGINT;default:1;"`                  //是否是软删除,是的话会默认加过滤
-	Code            string                    `gorm:"column:code;type:VARCHAR(120);not null;uniqueIndex:key"`        //查询的code
+	Code            string                    `gorm:"column:code;type:VARCHAR(120);not null;uniqueIndex:idx_key"`    //查询的code
 	Type            string                    `gorm:"column:type;type:VARCHAR(120);not null"`                        //查询的类别: sql:sql模板替换查询   table: 直接查表
 	Table           string                    `gorm:"column:table;type:VARCHAR(120);default:''"`                     //table类型查询的表名
 	Omits           string                    `gorm:"column:omits;type:VARCHAR(120);default:''"`                     //忽略的字段列表,table类型需要
@@ -59,7 +59,7 @@ type DataStatisticsInfo struct {
 	Filter          map[string]FilterKeywords `gorm:"column:filter;type:json;serializer:json;NOT NULL;default:'{}'"`
 	FilterSlotCode  string                    `gorm:"column:filter_slot_code;type:VARCHAR(120);default:''"` //第三方过滤插槽code
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:key"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_key"`
 }
 
 func (m *DataStatisticsInfo) TableName() string {
