@@ -37,23 +37,7 @@ func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {
 }
 
 func ToMenuInfoApi(i *sys.MenuInfo) *types.MenuInfo {
-	return &types.MenuInfo{
-		ModuleCode: i.ModuleCode,
-		ID:         i.Id,
-		Name:       i.Name,
-		ParentID:   i.ParentID,
-		Type:       i.Type,
-		Path:       i.Path,
-		Component:  i.Component,
-		Icon:       i.Icon,
-		Redirect:   i.Redirect,
-		CreateTime: i.CreateTime,
-		Order:      i.Order,
-		HideInMenu: i.HideInMenu,
-		Body:       utils.ToNullString(i.Body),
-		IsCommon:   i.IsCommon,
-		Children:   ToMenuInfosApi(i.Children),
-	}
+	return utils.Copy[types.MenuInfo](i)
 }
 func ToMenuInfosApi(i []*sys.MenuInfo) (ret []*types.MenuInfo) {
 	if i == nil {

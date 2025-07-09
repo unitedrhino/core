@@ -10,7 +10,7 @@ import (
 type SysAccessInfo struct {
 	ID         int64           `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                 // 编号
 	Name       string          `gorm:"column:name;type:VARCHAR(100);NOT NULL"`                           // 请求名称
-	Module     string          `gorm:"column:module;type:VARCHAR(100);default:'系统管理'"`               //所属模块
+	Module     string          `gorm:"column:module;type:VARCHAR(100);default:'系统管理'"`                   //所属模块
 	Code       string          `gorm:"column:code;type:VARCHAR(100);uniqueIndex:idx_app_route;NOT NULL"` // 请求名称
 	Group      string          `gorm:"column:group;type:VARCHAR(100);NOT NULL"`                          // 接口组
 	IsNeedAuth int64           `gorm:"column:is_need_auth;type:BIGINT;default:1;NOT NULL"`               // 是否需要认证（1是 2否）
