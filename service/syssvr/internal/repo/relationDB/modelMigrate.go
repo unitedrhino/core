@@ -113,9 +113,9 @@ func migrateTableColumn() error {
 		return err
 	}
 
-	//if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
-	//	return err
-	//}
+	if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
+		return err
+	}
 	if err := db.CreateInBatches(&MigrateDataProject, 100).Error; err != nil {
 		return err
 	}
