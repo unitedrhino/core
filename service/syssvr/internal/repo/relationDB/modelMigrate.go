@@ -113,9 +113,9 @@ func migrateTableColumn() error {
 		return err
 	}
 
-	if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
-		return err
-	}
+	//if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
+	//	return err
+	//}
 	if err := db.CreateInBatches(&MigrateDataProject, 100).Error; err != nil {
 		return err
 	}
@@ -183,28 +183,28 @@ var (
 		{Code: "client-app-android", Name: "客户端安卓", Type: "app", SubType: "android"},
 		{Code: "client-app-ios", Name: "客户端苹果", Type: "app", SubType: "ios"},
 	}
-	MigrateModuleInfo = []SysModuleInfo{
-		{Code: "systemManage", Type: 1, Order: 2, Name: "系统管理", Path: "system", Url: "", Icon: "icon-menu-xitong", Body: `{}`, HideInMenu: 2, SubType: 3, Tag: 1},
-		{Code: "things", Type: 1, Order: 1, Name: "物联网", Path: "things", Url: "/app/things", Icon: "icon-menu-yingyong2", Body: `{"microAppUrl":"/app/things","microAppName":"物联网","microAppBaseroute":"things"}`, HideInMenu: 2, SubType: 1, Tag: 1},
-		{Code: "myThings", Desc: "企业版", Type: 1, Order: 8, Name: "我的物联", Path: "myThings", Url: "/app/my-things", Icon: "icon-menu-haoyou", Body: `{"microAppUrl":"/app/my-things","microAppName":"我的物联","microAppBaseroute":"myThings"}`, HideInMenu: 2, SubType: 1, Tag: 1},
-		{Code: "lowcode", Desc: "企业版", Type: 1, Order: 8, Name: "低代码", Path: "lowcode", Url: "/app/lowcode", Icon: "icon-menu-yingyong1", Body: `{"microAppUrl":"/app/lowcode","microAppName":"低代码","microAppBaseroute":"lowcode"}`, HideInMenu: 2, SubType: 1, Tag: 1},
+	MigrateModuleInfo = []SysModuleInfo{ //后续都通过配置文件去初始化
+		//{Code: "systemManage", Type: 1, Order: 2, Name: "系统管理", Path: "system", Url: "", Icon: "icon-menu-xitong", Body: `{}`, HideInMenu: 2, SubType: 3, Tag: 1},
+		//{Code: "things", Type: 1, Order: 1, Name: "物联网", Path: "things", Url: "/app/things", Icon: "icon-menu-yingyong2", Body: `{"microAppUrl":"/app/things","microAppName":"物联网","microAppBaseroute":"things"}`, HideInMenu: 2, SubType: 1, Tag: 1},
+		//{Code: "myThings", Desc: "企业版", Type: 1, Order: 8, Name: "我的物联", Path: "myThings", Url: "/app/my-things", Icon: "icon-menu-haoyou", Body: `{"microAppUrl":"/app/my-things","microAppName":"我的物联","microAppBaseroute":"myThings"}`, HideInMenu: 2, SubType: 1, Tag: 1},
+		//{Code: "lowcode", Desc: "企业版", Type: 1, Order: 8, Name: "低代码", Path: "lowcode", Url: "/app/lowcode", Icon: "icon-menu-yingyong1", Body: `{"microAppUrl":"/app/lowcode","microAppName":"低代码","microAppBaseroute":"lowcode"}`, HideInMenu: 2, SubType: 1, Tag: 1},
 	}
-	MigrateAppModule = []SysAppModule{
-		{AppCode: "core", ModuleCode: "systemManage"},
-		{AppCode: "core", ModuleCode: "things"},
-		{AppCode: "core", ModuleCode: "myThings"},
-		{AppCode: "core", ModuleCode: "lowcode"},
+	MigrateAppModule = []SysAppModule{ //后续都通过配置文件去初始化
+		//{AppCode: "core", ModuleCode: "systemManage"},
+		//{AppCode: "core", ModuleCode: "things"},
+		//{AppCode: "core", ModuleCode: "myThings"},
+		//{AppCode: "core", ModuleCode: "lowcode"},
 	}
 	MigrateTenantApp = []SysTenantApp{
 		{TenantCode: def.TenantCodeDefault, AppCode: "core", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
 		{TenantCode: def.TenantCodeDefault, AppCode: "client-mini-wx", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
 		{TenantCode: def.TenantCodeDefault, AppCode: "client-app-android", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
 	}
-	MigrateTenantAppModule = []SysTenantAppModule{
-		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "systemManage"}},
-		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "things"}},
-		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "lowcode"}},
-		{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "myThings"}},
+	MigrateTenantAppModule = []SysTenantAppModule{ //后续都通过配置文件去初始化
+		//{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "systemManage"}},
+		//{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "things"}},
+		//{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "lowcode"}},
+		//{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "myThings"}},
 	}
 
 	MigrateNotifyConfig = []SysNotifyConfig{

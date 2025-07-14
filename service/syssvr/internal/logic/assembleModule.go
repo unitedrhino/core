@@ -34,27 +34,6 @@ func ToModuleInfosPb(in []*relationDB.SysModuleInfo) (ret []*sys.ModuleInfo) {
 //	}
 //}
 
-func ToMenuInfoPo(in *sys.MenuInfo) *relationDB.SysModuleMenu {
-	if in == nil {
-		return nil
-	}
-	return &relationDB.SysModuleMenu{
-		ID:         in.Id,
-		ModuleCode: in.ModuleCode,
-		ParentID:   in.ParentID,
-		Type:       in.Type,
-		IsCommon:   in.IsCommon,
-		Order:      in.Order,
-		Name:       in.Name,
-		Path:       in.Path,
-		Component:  in.Component,
-		Icon:       in.Icon,
-		Redirect:   in.Redirect,
-		Body:       in.Body.GetValue(),
-		HideInMenu: in.HideInMenu,
-	}
-}
-
 func ToTenantAppMenuPo(in *sys.TenantAppMenu) *relationDB.SysTenantAppMenu {
 	if in == nil || in.Info == nil {
 		return nil
@@ -67,25 +46,7 @@ func ToTenantAppMenuPo(in *sys.TenantAppMenu) *relationDB.SysTenantAppMenu {
 }
 
 func ToMenuInfoPb(in *relationDB.SysModuleMenu) *sys.MenuInfo {
-	if in == nil {
-		return nil
-	}
-	return &sys.MenuInfo{
-		Id:         in.ID,
-		ModuleCode: in.ModuleCode,
-		ParentID:   in.ParentID,
-		Type:       in.Type,
-		Order:      in.Order,
-		Name:       in.Name,
-		Path:       in.Path,
-		Component:  in.Component,
-		Icon:       in.Icon,
-		IsCommon:   in.IsCommon,
-		Redirect:   in.Redirect,
-		Body:       utils.ToRpcNullString(in.Body),
-		HideInMenu: in.HideInMenu,
-		CreateTime: in.CreatedTime.Unix(),
-	}
+	return utils.Copy[sys.MenuInfo](in)
 }
 
 func ToTenantAppMenuInfoPb(in *relationDB.SysTenantAppMenu) *sys.TenantAppMenu {
