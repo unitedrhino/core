@@ -72,7 +72,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	stores.InitConn(c.Database)
 	err := relationDB.Migrate(c.Database)
 	if err != nil {
-		logx.Error("syssvr 数据库初始化失败 err", err)
+		logx.Errorf("syssvr 数据库初始化失败 cfg:%v  err:%v", utils.Fmt(c.Database), err)
 		os.Exit(-1)
 	}
 	// 自动迁移数据库
@@ -84,11 +84,14 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	store := kv.NewStore(c.CacheRedis)
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
-		logx.Errorf("NewOss err err:%v", err)
+		logx.Errorf("NewOss err cfg:%v err:%v", utils.Fmt(c.OssConf), err)
 		os.Exit(-1)
 	}
 	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name, nodeID)
-	logx.Must(err)
+	if err != nil {
+		logx.Errorf("NewFastEvent err cfg:%v err:%v", utils.Fmt(c.Event), err)
+		os.Exit(-1)
+	}
 	sms, err := smsClient.NewSms(c.Sms)
 	logx.Must(err)
 
