@@ -111,6 +111,6 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		return err
 	}
 	err = relationDB.NewTenantAppModuleRepo(tx).Insert(ctx, &relationDB.SysTenantAppModule{
-		TenantCode: dataType.TenantCode(tenantCode), SysAppModule: relationDB.SysAppModule{AppCode: appCode, ModuleCode: moduleCode}})
+		TenantCode: dataType.TenantCode(tenantCode), AppCode: appCode, ModuleCode: moduleCode})
 	return err
 }
