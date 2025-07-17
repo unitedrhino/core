@@ -11419,6 +11419,11 @@
           "format": "int64",
           "description": " 是否常用菜单 1-是 2-否"
         },
+        "isAllTenant": {
+          "type": "integer",
+          "format": "int64",
+          "description": "菜单是否提供给所有租户 1-是 2-否"
+        },
         "body": {
           "type": "string",
           "description": "前端自定义字段"
@@ -14036,6 +14041,11 @@
           "type": "integer",
           "format": "int64",
           "description": " 是否常用菜单 1-是 2-否"
+        },
+        "isAllTenant": {
+          "type": "integer",
+          "format": "int64",
+          "description": "菜单是否提供给所有租户 1-是 2-否"
         },
         "body": {
           "type": "string",

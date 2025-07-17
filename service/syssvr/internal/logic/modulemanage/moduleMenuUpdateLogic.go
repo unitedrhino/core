@@ -37,6 +37,9 @@ func updateMenu(ctx context.Context, tx *gorm.DB, in *sys.MenuInfo, old *relatio
 		old.Order = in.Order
 		tenantMenu.Order = in.Order
 	}
+	if in.IsAllTenant != 0 && in.IsAllTenant != old.IsAllTenant {
+		old.IsAllTenant = in.IsAllTenant
+	}
 	if in.Name != "" && in.Name != old.Name {
 		old.Name = in.Name
 		tenantMenu.Name = in.Name

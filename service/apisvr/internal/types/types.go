@@ -572,21 +572,22 @@ type Map struct {
 }
 
 type MenuInfo struct {
-	ID         int64       `json:"id,optional"`                 // 编号
-	ModuleCode string      `json:"moduleCode"`                  // 模块编号
-	Name       string      `json:"name,optional"`               // 菜单名称
-	ParentID   int64       `json:"parentID,optional"`           // 父菜单ID，一级菜单为1
-	Type       int64       `json:"type,optional"`               // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Path       string      `json:"path,optional"`               // 系统的path
-	Component  string      `json:"component,optional"`          // 页面
-	Icon       string      `json:"icon,optional"`               // 菜单图标
-	Redirect   string      `json:"redirect,optional"`           // 路由重定向
-	Order      int64       `json:"order,optional"`              // 左侧table排序序号
-	HideInMenu int64       `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
-	IsCommon   int64       `json:"isCommon,optional"`           // 是否常用菜单 1-是 2-否
-	Body       *string     `json:"body,optional"`               //前端自定义字段
-	CreateTime int64       `json:"createTime,optional"`         // 创建时间
-	Children   []*MenuInfo `json:"children,optional,omitempty"` //子节点
+	ID          int64       `json:"id,optional"`                 // 编号
+	ModuleCode  string      `json:"moduleCode"`                  // 模块编号
+	Name        string      `json:"name,optional"`               // 菜单名称
+	ParentID    int64       `json:"parentID,optional"`           // 父菜单ID，一级菜单为1
+	Type        int64       `json:"type,optional"`               // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	Path        string      `json:"path,optional"`               // 系统的path
+	Component   string      `json:"component,optional"`          // 页面
+	Icon        string      `json:"icon,optional"`               // 菜单图标
+	Redirect    string      `json:"redirect,optional"`           // 路由重定向
+	Order       int64       `json:"order,optional"`              // 左侧table排序序号
+	HideInMenu  int64       `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
+	IsCommon    int64       `json:"isCommon,optional"`           // 是否常用菜单 1-是 2-否
+	IsAllTenant int64       `json:"isAllTenant,optional"`        //菜单是否提供给所有租户 1-是 2-否
+	Body        *string     `json:"body,optional"`               //前端自定义字段
+	CreateTime  int64       `json:"createTime,optional"`         // 创建时间
+	Children    []*MenuInfo `json:"children,optional,omitempty"` //子节点
 }
 
 type MenuInfoIndexReq struct {

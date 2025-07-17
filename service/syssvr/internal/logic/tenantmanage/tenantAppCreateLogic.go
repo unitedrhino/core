@@ -7,6 +7,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
@@ -81,10 +82,13 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		allMenu = true
 	}
 	for _, m := range mi.Menus {
-		menuMap[m.ID] = m
 		if allMenu {
+			if m.IsAllTenant == def.False { //如果菜单不是给所有租户用的则跳过
+				continue
+			}
 			menuIDs = append(menuIDs, m.ID)
 		}
+		menuMap[m.ID] = m
 	}
 	var (
 		insertMenus []*relationDB.SysTenantAppMenu
@@ -107,6 +111,6 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		return err
 	}
 	err = relationDB.NewTenantAppModuleRepo(tx).Insert(ctx, &relationDB.SysTenantAppModule{
-		TenantCode: dataType.TenantCode(tenantCode), SysAppModule: relationDB.SysAppModule{AppCode: appCode, ModuleCode: moduleCode}})
+		TenantCode: dataType.TenantCode(tenantCode), AppCode: appCode, ModuleCode: moduleCode})
 	return err
 }

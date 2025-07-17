@@ -2009,6 +2009,7 @@ message MenuInfoIndexReq{
   repeated int64 menuIDs = 2;
   bool isRetTree = 3;
   int64 isCommon =4;//是否常用菜单 1-是 2-否
+  int64 isAllTenant = 16;//菜单是否提供给所有租户 1-是 2-否
 }
 
 message MenuInfo{
@@ -2025,6 +2026,7 @@ message MenuInfo{
   int64 order = 10;
   int64 hideInMenu = 11;
   int64 isCommon =15;//是否常用菜单 1-是 2-否
+  int64 isAllTenant = 16;//菜单是否提供给所有租户 1-是 2-否
   google.protobuf.StringValue body = 13;
   repeated MenuInfo children = 14;
 }
