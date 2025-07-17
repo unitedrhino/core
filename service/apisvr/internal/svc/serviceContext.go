@@ -96,7 +96,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	caches.InitStore(c.CacheRedis)
 	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
 	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name, nodeID)
-	logx.Must(err)
+	if err != nil {
+		logx.Errorf("NewServiceContext:NewEvent cfg:%v err: %v", utils.Fmt(c.Event), err)
+		os.Exit(1)
+	}
 	ws.StartWsDp(false, nodeID, serverMsg, c.CacheRedis)
 	if c.SysRpc.Enable {
 		if c.SysRpc.Mode == conf.ClientModeGrpc {
@@ -152,7 +155,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	logx.Must(err)
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
-		logx.Errorf("NewOss err err:%v", err)
+		logx.Errorf("NewOssClient err err:%v", err)
 		os.Exit(-1)
 	}
 	userCache, err := sysExport.NewUserInfoCache(ur, serverMsg)
