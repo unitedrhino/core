@@ -3,11 +3,11 @@ package startup
 import (
 	"context"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/event"
-	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/repo/event/subscribe"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/timer"
 	"gitee.com/unitedrhino/share/clients"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/events/topics"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
@@ -19,11 +19,10 @@ func Init(svcCtx *svc.ServiceContext) error {
 }
 
 func Subscribe(svcCtx *svc.ServiceContext) {
-	subAppCli, err := subscribe.NewSubServer(svcCtx.Config.Event, svcCtx.NodeID)
-	logx.Must(err)
-	err = subAppCli.Subscribe(func(ctx context.Context) subscribe.ServerEvent {
-		return event.NewEventServer(ctx, svcCtx)
+	err := svcCtx.FastEvent.QueueSubscribe(topics.TimedJobClean, func(ctx context.Context, t time.Time, body []byte) error {
+		return event.NewEventServer(ctx, svcCtx).DataClean()
 	})
+	logx.Must(err)
 }
 
 func InitTimer(svcCtx *svc.ServiceContext) error {

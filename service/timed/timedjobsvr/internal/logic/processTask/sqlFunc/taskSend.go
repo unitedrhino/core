@@ -4,7 +4,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
 	"gitee.com/unitedrhino/share/errors"
 	"github.com/dop251/goja"
-	"github.com/gogf/gf/v2/util/gconv"
+	"github.com/mitchellh/mapstructure"
 )
 
 type TaskSend struct {
@@ -24,7 +24,7 @@ func (s *SqlFunc) TaskSendSqlJs() func(in goja.FunctionCall) goja.Value {
 			panic(errors.Parameter.AddMsg("TaskSend param not rigth"))
 		}
 		var task TaskSend
-		err := gconv.Struct(taskMap, &task)
+		err := mapstructure.Decode(taskMap, &task)
 		if err != nil {
 			s.Errorf("timed.SetFunc.TaskSend gconv.Struct err:%v",
 				err)
