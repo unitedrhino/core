@@ -155,7 +155,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	logx.Must(err)
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
-		logx.Errorf("NewOss err err:%v", err)
+		logx.Errorf("NewOssClient err err:%v", err)
 		os.Exit(-1)
 	}
 	userCache, err := sysExport.NewUserInfoCache(ur, serverMsg)
