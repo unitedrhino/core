@@ -26,7 +26,8 @@ func NewDictMultiExportLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 }
 
 func (l *DictMultiExportLogic) DictMultiExport(in *sys.DictMultiExportReq) (*sys.DictMultiExportResp, error) {
-	pos, err := relationDB.NewDictInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DictInfoFilter{Codes: in.DictCodes, WithDetails: true}, nil)
+	//adcode太大了,不给导出
+	pos, err := relationDB.NewDictInfoRepo(l.ctx).FindByFilter(l.ctx, relationDB.DictInfoFilter{Codes: in.DictCodes, NoCodes: []string{"adcode"}, WithDetails: true}, nil)
 	if err != nil {
 		return nil, err
 	}

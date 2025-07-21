@@ -29,6 +29,7 @@ type DictInfoFilter struct {
 	Group       string
 	Code        string
 	Codes       []string
+	NoCodes     []string
 	WithDetails bool
 }
 
@@ -45,6 +46,9 @@ func (p DictInfoRepo) fmtFilter(ctx context.Context, f DictInfoFilter) *gorm.DB 
 	}
 	if len(f.Codes) > 0 {
 		db = db.Where("code in  ?", f.Codes)
+	}
+	if len(f.NoCodes) > 0 {
+		db = db.Where("code not in  ?", f.NoCodes)
 	}
 	if f.WithDetails {
 		db = db.Preload("Details")

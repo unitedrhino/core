@@ -149,7 +149,7 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
 		return err
 	}
-	db.CreateInBatches([]SysDeptInfo{{ID: 3}}, 100)
+	db.CreateInBatches([]SysDeptInfo{{DeletedTime: 666}, {DeletedTime: 777}, {DeletedTime: 888}}, 100)
 	return nil
 }
 
@@ -178,7 +178,6 @@ var (
 	}
 	MigrateAppInfo = []SysAppInfo{
 		{Code: "core", Name: "管理后台", Type: "web", SubType: "web"},
-		{Code: "client-mini-wx", Name: "c端微信小程序", Type: "mini", SubType: "wx"},
 		{Code: "client-mini-wx", Name: "c端微信小程序", Type: "mini", SubType: "wx"},
 		{Code: "client-app-android", Name: "客户端安卓", Type: "app", SubType: "android"},
 		{Code: "client-app-ios", Name: "客户端苹果", Type: "app", SubType: "ios"},

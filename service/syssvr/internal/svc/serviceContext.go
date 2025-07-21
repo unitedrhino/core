@@ -79,8 +79,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
 	ProjectID := utils.NewSnowFlake(nodeID)
 	AreaID := utils.NewSnowFlake(nodeID)
-	nodeId := utils.GetNodeID(c.CacheRedis, c.Name)
-	UserID := utils.NewSnowFlake(nodeId)
+	UserID := utils.NewSnowFlake(nodeID)
 	store := kv.NewStore(c.CacheRedis)
 	ossClient, err := oss.NewOssClient(c.OssConf)
 	if err != nil {
