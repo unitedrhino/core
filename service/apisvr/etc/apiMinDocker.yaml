@@ -1,7 +1,20 @@
 #api网关接口代理模块-apisvr
 Name: api
+Host: 0.0.0.0
+CpuThreshold: 0
+Timeout: 1000000
+MaxBytes: 1000000000
 Port: 7777
-
+NodeID: 1
+Log:
+  Encoding: plain
+  #Mode: file
+CacheRedis:
+  - Host: redis:6379
+    Pass:
+    Type: node
+Middlewares:
+  Prometheus: false
 Rej:
   AccessSecret: ad879037-c7a4-4063-9236-6bfc35d54b7d
   AccessExpire: 600     #过期时间单位秒
@@ -18,24 +31,22 @@ Proxy:
     - Router: /api/v1/app/
       Dest: http://localhost:8000
     - Router: /api/v1/lowcode/
-      Dest: http://localhost:7788
+      Dest: http://things:7788
+    - Router: /api/v1/ai/
+      Dest: http://things:7788
     - Router: /api/v1/things/
-      Dest: http://localhost:7788
+      Dest: http://things:7788
     - Router: /api/v1/protocol/cloud/tencent/
-      Dest: http://localhost:9363
+      Dest: http://tencent:9363
     - Router: /api/v1/video/
-      Dest: http://localhost:7800
+      Dest: http://video:7800
     - Router: /api/v1/media/
-      Dest: http://localhost:8088
+      Dest: http://media:8088
     - Router: /api/v1/data/
       Dest: http://localhost:9218
-    - Router: /api/v1/sale/
-      Dest: http://localhost:9283
-    - Router: /api/v1/tunnel/
-      Dest: http://localhost:8533
     - Router: /oss/
       DeletePrefix: true
-      Dest: http://localhost:9000
-    - Router: /iot
-      DeletePrefix: false
-      Dest: http://localhost:9119
+      Dest: http://minio:9000
+Event:
+  Nats:
+    Url: nats://nats:4222
