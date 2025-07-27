@@ -125,7 +125,8 @@ func (g DataAreaRepo) FindOne(ctx context.Context, id int64) (*SysDataArea, erro
 
 // 批量插入 LightStrategyDevice 记录
 func (m DataAreaRepo) MultiInsert(ctx context.Context, data []*SysDataArea) error {
-	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDataArea{}).Create(data).Error
+	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(m.db, &SysDataArea{}, "idx_sys_data_area_ri_mi")}).Model(&SysDataArea{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
 func (g DataAreaRepo) MultiUpdate(ctx context.Context, target *Target, projectID int64, areas []*userDataAuth.Area) error {

@@ -135,6 +135,7 @@ func (p DictDetailRepo) FindOne(ctx context.Context, id int64) (*SysDictDetail, 
 
 // 批量插入 LightStrategyDevice 记录
 func (p DictDetailRepo) MultiInsert(ctx context.Context, data []*SysDictDetail) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDictDetail{}).CreateInBatches(data, 100).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &SysDictDetail{}, "idx_sys_dict_detail_value")}).Model(&SysDictDetail{}).CreateInBatches(data, 100).Error
 	return stores.ErrFmt(err)
 }

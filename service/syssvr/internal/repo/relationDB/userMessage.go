@@ -162,6 +162,7 @@ func (p UserMessageRepo) FindOne(ctx context.Context, id int64) (*SysUserMessage
 
 // 批量插入 LightStrategyDevice 记录
 func (p UserMessageRepo) MultiInsert(ctx context.Context, data []*SysUserMessage) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysUserMessage{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &SysUserMessage{}, "idx_sys_user_message_ri_mi")}).Model(&SysUserMessage{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

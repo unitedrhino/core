@@ -96,7 +96,8 @@ func (p UserRoleRepo) FindOne(ctx context.Context, id int64) (*SysUserRole, erro
 
 // 批量插入 LightStrategyDevice 记录
 func (p UserRoleRepo) MultiInsert(ctx context.Context, data []*SysUserRole) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysUserRole{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &SysUserRole{}, "idx_sys_user_role_ri_mi")}).Model(&SysUserRole{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
 

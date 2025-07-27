@@ -122,7 +122,8 @@ func (p TenantApiRepo) FindOne(ctx context.Context, id int64) (*SysTenantAccess,
 
 // 批量插入 LightStrategyDevice 记录
 func (p TenantApiRepo) MultiInsert(ctx context.Context, data []*SysTenantAccess) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysTenantAccess{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &SysTenantAccess{}, "idx_sys_tenant_access_tenant_scope")}).Model(&SysTenantAccess{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
 

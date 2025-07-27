@@ -120,6 +120,7 @@ func (p TaskRepo) FindOne(ctx context.Context, id int64) (*TimedTaskInfo, error)
 
 // 批量插入 LightStrategyDevice 记录
 func (p TaskRepo) MultiInsert(ctx context.Context, data []*TimedTaskInfo) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&TimedTaskInfo{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &TimedTaskInfo{}, "idx_group_task")}).Model(&TimedTaskInfo{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

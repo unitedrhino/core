@@ -126,6 +126,7 @@ func (p TenantAppMenuRepo) MultiInsert(ctx context.Context, data []*SysTenantApp
 	if len(data) == 0 {
 		return nil
 	}
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysTenantAppMenu{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &SysTenantAppMenu{}, "idx_sys_tenant_app_menu_template_id")}).Model(&SysTenantAppMenu{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

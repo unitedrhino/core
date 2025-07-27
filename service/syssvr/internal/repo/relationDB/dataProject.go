@@ -133,7 +133,7 @@ func (g DataProjectRepo) FindOne(ctx context.Context, targetType string, targetI
 
 // 批量插入 LightStrategyDevice 记录
 func (m DataProjectRepo) MultiInsert(ctx context.Context, data []*SysDataProject) error {
-	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDataProject{}).Create(data).Error
+	err := m.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true, Columns: stores.SetColumnsWithPg(m.db, &SysDataProject{}, "idx_sys_data_project_ri_mi")}).Model(&SysDataProject{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
 

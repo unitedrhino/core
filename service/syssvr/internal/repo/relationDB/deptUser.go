@@ -108,7 +108,8 @@ func (p DeptUserRepo) FindOne(ctx context.Context, id int64) (*SysDeptUser, erro
 
 // 批量插入 LightStrategyDevice 记录
 func (p DeptUserRepo) MultiInsert(ctx context.Context, data []*SysDeptUser) error {
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&SysDeptUser{}).Create(data).Error
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+		Columns: stores.SetColumnsWithPg(p.db, &SysDeptUser{}, "idx_sys_dept_user_ri_mi")}).Model(&SysDeptUser{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
 
