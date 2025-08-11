@@ -78,14 +78,6 @@ func Migrate(c conf.Database) error {
 
 	if NeedInitColumn {
 		return migrateTableColumn()
-	} else {
-		db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-		if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
-			return err
-		}
-		if err := db.CreateInBatches(&MigrateDictDetail, 100).Error; err != nil {
-			return err
-		}
 	}
 	return err
 }
@@ -98,11 +90,9 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateRoleInfo, 100).Error; err != nil {
 		return err
 	}
-
 	if err := db.CreateInBatches(&MigrateUserRole, 100).Error; err != nil {
 		return err
 	}
-
 	if err := db.CreateInBatches(&MigrateTenantInfo, 100).Error; err != nil {
 		return err
 	}
@@ -112,21 +102,18 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateTenantConfig, 100).Error; err != nil {
 		return err
 	}
-
 	if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateDataProject, 100).Error; err != nil {
 		return err
 	}
-
 	if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateDictDetail, 100).Error; err != nil {
 		return err
 	}
-
 	if err := db.CreateInBatches(&MigrateAppInfo, 100).Error; err != nil {
 		return err
 	}
@@ -145,7 +132,6 @@ func migrateTableColumn() error {
 	if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
 		return err
 	}
-
 	if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
 		return err
 	}
@@ -178,9 +164,9 @@ var (
 	}
 	MigrateAppInfo = []SysAppInfo{
 		{Code: "core", Name: "管理后台", Type: "web", SubType: "web"},
-		{Code: "client-mini-wx", Name: "c端微信小程序", Type: "mini", SubType: "wx"},
-		{Code: "client-app-android", Name: "客户端安卓", Type: "app", SubType: "android"},
-		{Code: "client-app-ios", Name: "客户端苹果", Type: "app", SubType: "ios"},
+		//{Code: "client-mini-wx", Name: "c端微信小程序", Type: "mini", SubType: "wx"},
+		//{Code: "client-app-android", Name: "客户端安卓", Type: "app", SubType: "android"},
+		//{Code: "client-app-ios", Name: "客户端苹果", Type: "app", SubType: "ios"},
 	}
 	MigrateModuleInfo = []SysModuleInfo{ //后续都通过配置文件去初始化
 		//{Code: "systemManage", Type: 1, Order: 2, Name: "系统管理", Path: "system", Url: "", Icon: "icon-menu-xitong", Body: `{}`, HideInMenu: 2, SubType: 3, Tag: 1},
@@ -196,8 +182,8 @@ var (
 	}
 	MigrateTenantApp = []SysTenantApp{
 		{TenantCode: def.TenantCodeDefault, AppCode: "core", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
-		{TenantCode: def.TenantCodeDefault, AppCode: "client-mini-wx", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
-		{TenantCode: def.TenantCodeDefault, AppCode: "client-app-android", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
+		//{TenantCode: def.TenantCodeDefault, AppCode: "client-mini-wx", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
+		//{TenantCode: def.TenantCodeDefault, AppCode: "client-app-android", LoginTypes: []users.RegType{users.RegPwd}, IsAutoRegister: 1},
 	}
 	MigrateTenantAppModule = []SysTenantAppModule{ //后续都通过配置文件去初始化
 		//{TenantCode: def.TenantCodeDefault, SysAppModule: SysAppModule{AppCode: "core", ModuleCode: "systemManage"}},

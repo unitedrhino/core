@@ -27,6 +27,7 @@ func UserInfoToApi(ui *sys.UserInfo, opt UserOpt) *types.UserInfo {
 		return nil
 	}
 	ret := utils.Copy[types.UserInfo](ui)
+	ret.Password = "xxxx"
 	ret.Roles = role.ToRoleInfosTypes(opt.Roles)
 	ret.Tenant = system.ToTenantInfoTypes(opt.Tenant, nil, nil)
 	ret.Depts = utils.CopySlice[types.DeptInfo](opt.Depts)
