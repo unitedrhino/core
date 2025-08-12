@@ -14,6 +14,8 @@ const (
 	RegWxOfficial         = "wxOfficial" //微信公众号登录
 	RegDingApp            = "dingApp"    //钉钉应用(包含小程序,h5等方式)
 	RegPwd                = "pwd"        //账号密码注册
+	RegGoogle             = "google"     //google
+	RegGithub             = "github"     //github
 )
 
 type UserInfoType uint8
