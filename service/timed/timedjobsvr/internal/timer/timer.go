@@ -16,6 +16,7 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/logx"
+	"go.opentelemetry.io/otel/trace"
 	"time"
 )
 
@@ -28,7 +29,8 @@ func (t Timed) ProcessTask(ctx context.Context, Task *asynq.Task) error {
 		defer utils.Recover(ctx)
 		ctx, cancel := context.WithTimeout(context.Background(), 500*time.Second)
 		defer cancel()
-		ctx, span := ctxs.StartSpan(ctx, "timedJob.Process", "")
+		var span trace.Span
+		ctx, span = ctxs.StartSpan(ctx, "timedJob.Process", "")
 		defer span.End()
 		utils.Recover(ctx)
 		err := func() error {
