@@ -3,6 +3,7 @@ package projectmanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -82,6 +83,21 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 		if pb.DeviceCount != nil {
 			po.DeviceCount = pb.DeviceCount.Value
 		}
+		if pb.DeviceOnlineCount != nil {
+			po.DeviceOnlineCount = pb.DeviceOnlineCount.Value
+		}
+		if pb.AlarmStatus != 0 {
+			po.AlarmStatus = pb.AlarmStatus
+		}
+		if pb.Status != 0 {
+			po.Status = pb.Status
+		}
+		if pb.Type != "" {
+			po.Type = pb.Type
+		}
+	}
+	if pb.Sort != 0 {
+		po.Sort = pb.Sort
 	}
 	if pb.Tags != nil {
 		po.Tags = pb.Tags

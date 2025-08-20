@@ -2,6 +2,7 @@ package info
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/def"
@@ -44,6 +45,7 @@ func (l *CreateLogic) Create(req *types.AreaInfo) (*types.AreaWithID, error) {
 		Tags:            req.Tags,
 		IsUpdateAreaImg: req.IsUpdateAreaImg,
 		IsSysCreated:    req.IsSysCreated,
+		Sort:            req.Sort,
 	}
 	resp, err := l.svcCtx.AreaM.AreaInfoCreate(l.ctx, dmReq)
 	if er := errors.Fmt(err); er != nil {

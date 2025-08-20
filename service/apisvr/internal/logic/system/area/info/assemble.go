@@ -31,6 +31,7 @@ func ToAreaInfoTypes(root *sys.AreaInfo) *types.AreaInfo {
 		ConfigFile:      root.ConfigFile,
 		DeviceCount:     root.DeviceCount.GetValue(),
 		GroupCount:      root.GroupCount.GetValue(),
+		Sort:            root.Sort,
 	}
 	if len(root.Children) > 0 {
 		for _, child := range root.Children {

@@ -3,6 +3,7 @@ package projectmanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -61,6 +62,8 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		Address:  utils.ToEmptyString(in.Address),
 		Position: logic.ToStorePoint(in.Position),
 		Desc:     utils.ToEmptyString(in.Desc),
+		Sort:     in.Sort,
+		Status:   in.Status,
 	}
 	po.Tags = in.Tags
 	if po.Tags == nil {

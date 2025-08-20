@@ -163,6 +163,7 @@ type AreaInfo struct {
 	GroupCount         int64             `json:"groupCount,optional"`          //分组数量统计(只读)
 	UseBy              string            `json:"useBy,optional"`               //用途: commonSpace default
 	IsLeaf             int64             `json:"isLeaf,optional"`              //是否是子节点（只读）
+	Sort               int64             `json:"sort,optional"`                // 排序标记,默认为1
 	IsSysCreated       int64             `json:"isSysCreated,optional"`        //是否是系统创建的,系统创建的只有管理员可以删除
 	AreaIDPath         string            `json:"areaIDPath,optional"`          //项目区域ids（只读）
 	AreaNamePath       string            `json:"areaNamePath,optional"`        //（只读）
@@ -470,7 +471,7 @@ type DictDetail struct {
 	IDPath   string        `json:"idPath,optional"`             //1-2-3-的格式记录顶级区域到当前id的路径
 	Label    string        `json:"label,optional"`              // 展示值
 	Value    string        `json:"value,optional"`              // 字典值
-	Sort     int64         `json:"sort,optional"`               // 排序标记
+	Sort     int64         `json:"sort,optional"`               // 排序标记,默认为1
 	Desc     *string       `json:"desc,optional"`               // 模块描述
 	Status   int64         `json:"status,optional"`             // 状态  1:启用,2:禁用
 	Body     *string       `json:"body,optional,omitempty"`     // 自定义数据
@@ -914,15 +915,20 @@ type ProjectInfo struct {
 	ProjectImg         string            `json:"projectImg,optional"`
 	IsSysCreated       int64             `json:"isSysCreated,optional"` //是否是系统创建的,系统创建的只有管理员可以删除
 	IsUpdateProjectImg bool              `json:"isUpdateProjectImg,optional"`
-	Desc               *string           `json:"desc,optional"`                //项目备注（读写）
-	Tags               map[string]string `json:"tags,optional,omitempty"`      //自定义标签
-	AreaCount          int64             `json:"areaCount,optional"`           //项目下的区域统计(只读)
-	UserCount          int64             `json:"userCount,optional"`           //项目下的用户统计(只读)
-	DeviceCount        int64             `json:"deviceCount,optional"`         //项目下的设备统计(只读)
-	Ppsm               int64             `json:"ppsm,optional,omitempty"`      //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
-	Area               *float32          `json:"area,optional,omitempty"`      //建筑面积(单位平米)
-	AdminUser          *UserCore         `json:"adminUser,optional,omitempty"` //管理员信息
+	Desc               *string           `json:"desc,optional"`                  //项目备注（读写）
+	Tags               map[string]string `json:"tags,optional,omitempty"`        //自定义标签
+	AreaCount          int64             `json:"areaCount,optional"`             //项目下的区域统计(只读)
+	UserCount          int64             `json:"userCount,optional"`             //项目下的用户统计(只读)
+	DeviceCount        int64             `json:"deviceCount,optional"`           //项目下的设备统计(只读)
+	DeviceOnlineCount  int64             `json:"deviceOnlineCount,optional"`     //项目下的设备在线统计(只读)
+	AlarmStatus        int64             `json:"alarmStatus,optional,omitempty"` //报警状态(只读) （1正常 2提醒 3一般 4严重 5紧急 6超紧急）
+	Status             int64             `json:"status,optional,omitempty"`      //项目状态  1 正常，2-禁用，3-过期
+	Type               string            `json:"type,optional,omitempty"`        //项目类型
+	Ppsm               int64             `json:"ppsm,optional,omitempty"`        //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
+	Area               *float32          `json:"area,optional,omitempty"`        //建筑面积(单位平米)
+	AdminUser          *UserCore         `json:"adminUser,optional,omitempty"`   //管理员信息
 	Areas              []*AreaInfo       `json:"areas,optional,omitempty"`
+	Sort               int64             `json:"sort,optional"` // 排序标记,默认为1
 }
 
 type ProjectInfoIndexReq struct {

@@ -2,6 +2,7 @@ package departmentmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -42,7 +43,7 @@ func (l *DeptInfoIndexLogic) DeptInfoIndex(in *sys.DeptInfoIndexReq) (*sys.DeptI
 	if err != nil {
 		return nil, err
 	}
-	pos, err := repo.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
+	pos, err := repo.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page).WithDefaultSort())
 	if err != nil {
 		return nil, err
 	}

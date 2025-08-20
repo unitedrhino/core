@@ -3,6 +3,8 @@ package areamanagelogic
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -16,7 +18,6 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
-	"strings"
 )
 
 type AreaInfoUpdateLogic struct {
@@ -114,6 +115,9 @@ func (l *AreaInfoUpdateLogic) setPoByPb(po *relationDB.SysAreaInfo, pb *sys.Area
 	}
 	if pb.UseBy != "" {
 		po.UseBy = pb.UseBy
+	}
+	if pb.Sort != 0 {
+		po.Sort = pb.Sort
 	}
 	if pb.IsUpdateAreaImg {
 		if po.AreaImg != "" && !oss.IsCommonFile(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, po.AreaImg) {

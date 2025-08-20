@@ -2,6 +2,7 @@ package areamanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -44,7 +45,7 @@ func (l *AreaInfoIndexLogic) AreaInfoIndex(in *sys.AreaInfoIndexReq) (*sys.AreaI
 		f.GroupCount = stores.GetCmp(in.GroupCount.CmpType, in.GroupCount.Value)
 	}
 	poArr, err := l.AiDB.FindByFilter(l.ctx,
-		f, logic.ToPageInfo(in.Page))
+		f, logic.ToPageInfo(in.Page).WithDefaultSort())
 	if err != nil {
 		l.Errorf("AreaInfoIndex find menu_info err,menuIds:%d,err:%v", in.AreaIDs, err)
 		return nil, err

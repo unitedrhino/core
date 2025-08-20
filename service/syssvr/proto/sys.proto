@@ -889,6 +889,10 @@ message ProjectInfo {
   google.protobuf.StringValue desc = 8; //项目备注（读写）
   google.protobuf.StringValue address = 11;//项目详细地址
   google.protobuf.Int64Value deviceCount=12;//设备统计
+  google.protobuf.Int64Value deviceOnlineCount=23;//设备统计
+  int64 alarmStatus=24;//报警状态 （1正常 2提醒 3一般 4严重 5紧急 6超紧急）
+  int64 status=25;//项目状态  1 正常，2-禁用，3-过期
+  string type =26;//项目类型
   int64 areaCount =9;//项目下的区域统计(只读)
   int64 userCount =17;//项目下用户统计
   string projectImg =15;//项目图片
@@ -896,6 +900,7 @@ message ProjectInfo {
   int64 isSysCreated =18; //是否是系统创建的,系统创建的只有管理员可以删除
   repeated AreaInfo areas =19;//
   map<string, string> tags = 21;
+  int64 sort = 22;          // 排序标记,不能为0,默认为1
 }
 
 
@@ -958,6 +963,7 @@ message AreaInfo {
   string configFile =21;//区域配置文件
   bool isUpdateConfigFile=22;
   map<string, string> tags = 23;
+  int64 sort = 24;          // 排序标记
 }
 
 

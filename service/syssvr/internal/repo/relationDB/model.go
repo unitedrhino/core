@@ -2,11 +2,12 @@ package relationDB
 
 import (
 	"database/sql"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
-	"time"
 )
 
 // 示例
@@ -51,7 +52,7 @@ type SysDictDetail struct {
 	Label    string `gorm:"column:label;comment:展示值"`                                                                    // 展示值
 	Value    string `gorm:"column:value;uniqueIndex:idx_sys_dict_detail_value;comment:字典值"`                              // 字典值
 	Status   int64  `gorm:"column:status;type:SMALLINT;default:1"`                                                       // 状态  1:启用,2:禁用
-	Sort     int64  `gorm:"column:sort;comment:排序标记"`                                                                    // 排序标记
+	Sort     int64  `gorm:"column:sort;comment:排序标记;default:1"`                                                          // 排序标记
 	Desc     string `gorm:"column:desc;comment:描述"`                                                                      // 描述
 	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                                              // 自定义数据
 	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                                                   // 1-2-3-的格式记录顶级区域到当前id的路径

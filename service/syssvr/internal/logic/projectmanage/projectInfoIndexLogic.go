@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -52,7 +53,7 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 		return nil, err
 	}
 
-	poArr, err := l.PiDB.FindByFilter(l.ctx, filter, logic.ToPageInfo(in.Page))
+	poArr, err := l.PiDB.FindByFilter(l.ctx, filter, logic.ToPageInfo(in.Page).WithDefaultSort())
 	if err != nil {
 		return nil, err
 	}

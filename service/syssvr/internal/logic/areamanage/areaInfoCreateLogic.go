@@ -3,6 +3,7 @@ package areamanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -76,6 +77,7 @@ func (l *AreaInfoCreateLogic) AreaInfoCreate(in *sys.AreaInfo) (*sys.AreaWithID,
 		IsLeaf:       def.True,
 		UseBy:        in.UseBy,
 		IsSysCreated: in.IsSysCreated,
+		Sort:         in.Sort,
 	}
 	areaPo.Tags = in.Tags
 	if areaPo.Tags == nil {

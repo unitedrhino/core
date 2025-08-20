@@ -2,6 +2,7 @@ package info
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/errors"
@@ -41,6 +42,7 @@ func (l *UpdateLogic) Update(req *types.AreaInfo) error {
 		Tags:               req.Tags,
 		ConfigFile:         req.ConfigFile,
 		IsUpdateConfigFile: req.IsUpdateConfigFile,
+		Sort:               req.Sort,
 	}
 	_, err := l.svcCtx.AreaM.AreaInfoUpdate(l.ctx, dmReq)
 	if err != nil {

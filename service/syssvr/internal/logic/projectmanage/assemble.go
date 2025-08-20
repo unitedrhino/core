@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -25,23 +26,28 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		}
 	}
 	pb := &sys.ProjectInfo{
-		TenantCode:   string(po.TenantCode),
-		CreatedTime:  po.CreatedTime.Unix(),
-		ProjectID:    int64(po.ProjectID),
-		ProjectName:  po.ProjectName,
-		ProjectImg:   po.ProjectImg,
-		AdminUserID:  po.AdminUserID,
-		IsSysCreated: po.IsSysCreated,
-		Ppsm:         po.Ppsm,
-		Tags:         po.Tags,
-		Area:         &wrapperspb.FloatValue{Value: po.Area},
-		Desc:         utils.ToRpcNullString(po.Desc),
-		Position:     logic.ToSysPoint(po.Position),
-		AreaCount:    po.AreaCount,
-		UserCount:    po.UserCount,
-		Address:      utils.ToRpcNullString(po.Address),
-		DeviceCount:  utils.ToRpcNullInt64(po.DeviceCount),
-		Areas:        areamanagelogic.AreaInfosToPb(ctx, svcCtx, po.Areas),
+		TenantCode:        string(po.TenantCode),
+		CreatedTime:       po.CreatedTime.Unix(),
+		ProjectID:         int64(po.ProjectID),
+		ProjectName:       po.ProjectName,
+		ProjectImg:        po.ProjectImg,
+		AdminUserID:       po.AdminUserID,
+		IsSysCreated:      po.IsSysCreated,
+		Ppsm:              po.Ppsm,
+		Tags:              po.Tags,
+		Area:              &wrapperspb.FloatValue{Value: po.Area},
+		Desc:              utils.ToRpcNullString(po.Desc),
+		Position:          logic.ToSysPoint(po.Position),
+		AreaCount:         po.AreaCount,
+		UserCount:         po.UserCount,
+		Address:           utils.ToRpcNullString(po.Address),
+		DeviceCount:       utils.ToRpcNullInt64(po.DeviceCount),
+		Areas:             areamanagelogic.AreaInfosToPb(ctx, svcCtx, po.Areas),
+		Sort:              po.Sort,
+		Status:            po.Status,
+		AlarmStatus:       po.AlarmStatus,
+		Type:              po.Type,
+		DeviceOnlineCount: utils.ToRpcNullInt64(po.DeviceOnlineCount),
 	}
 	return pb
 }

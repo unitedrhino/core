@@ -9778,6 +9778,11 @@
           "format": "int64",
           "description": "是否是子节点（只读）"
         },
+        "sort": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序标记,默认为1"
+        },
         "isSysCreated": {
           "type": "integer",
           "format": "int64",
@@ -10975,7 +10980,7 @@
         "sort": {
           "type": "integer",
           "format": "int64",
-          "description": " 排序标记"
+          "description": " 排序标记,默认为1"
         },
         "desc": {
           "type": "string",
@@ -12738,6 +12743,25 @@
           "format": "int64",
           "description": "项目下的设备统计(只读)"
         },
+        "deviceOnlineCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目下的设备在线统计(只读)"
+        },
+        "alarmStatus": {
+          "type": "integer",
+          "format": "int64",
+          "description": "报警状态(只读) （1正常 2提醒 3一般 4严重 5紧急 6超紧急）"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目状态  1 正常，2-禁用，3-过期"
+        },
+        "type": {
+          "type": "string",
+          "description": "项目类型"
+        },
         "ppsm": {
           "type": "integer",
           "format": "int64",
@@ -12757,6 +12781,11 @@
           "items": {
             "$ref": "#/definitions/AreaInfo"
           }
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 排序标记,默认为1"
         }
       },
       "title": "ProjectInfo"
