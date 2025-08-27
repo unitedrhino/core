@@ -40,18 +40,18 @@ func ToStorePoint(point *sys.Point) stores.Point {
 
 func MenuInfoToPb(ui *relationDB.SysModuleMenu) *sys.MenuInfo {
 	return &sys.MenuInfo{
-		Id:         ui.ID,
-		Body:       utils.ToRpcNullString(ui.Body),
-		ModuleCode: ui.ModuleCode,
-		Name:       ui.Name,
-		ParentID:   ui.ParentID,
-		Type:       ui.Type,
-		Path:       ui.Path,
-		Component:  ui.Component,
-		Icon:       ui.Icon,
-		Redirect:   ui.Redirect,
-		CreateTime: ui.CreatedTime.Unix(),
-		Order:      ui.Order,
-		HideInMenu: ui.HideInMenu,
+		Id:          ui.ID,
+		Body:        utils.ToRpcNullString(ui.Body),
+		ModuleCode:  ui.ModuleCode,
+		Name:        ui.Name,
+		ParentID:    ui.ParentID,
+		Type:        ui.Type,
+		Path:        ui.Path,
+		Component:   ui.Component,
+		Icon:        ui.Icon,
+		Redirect:    ui.Redirect,
+		CreatedTime: ui.CreatedTime.Unix(),
+		Order:       ui.Order,
+		HideInMenu:  ui.HideInMenu,
 	}
 }

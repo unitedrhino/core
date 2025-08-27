@@ -81,7 +81,7 @@ type (
         IsCommon   int64 `json:"isCommon,optional"`  // 是否常用菜单 1-是 2-否
         IsAllTenant int64 `json:"isAllTenant,optional"` //菜单是否提供给所有租户 1-是 2-否
         Body *string  `json:"body,optional"` //前端自定义字段
-        CreateTime int64 `json:"createTime,optional"`           // 创建时间
+        CreatedTime int64 `json:"createdTime,string,optional"`           // 创建时间
         Children []*MenuInfo `json:"children,optional,omitempty"` //子节点
     }
     ModuleInfo  {

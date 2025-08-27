@@ -3,6 +3,9 @@ package timer
 import (
 	"context"
 	"fmt"
+	"sync"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/timed/internal/domain"
 	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
@@ -13,8 +16,6 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/nats-io/nats.go"
 	"github.com/zeromicro/go-zero/core/logx"
-	"sync"
-	"time"
 )
 
 type QueueTrigger struct {
@@ -101,9 +102,10 @@ func QueueTaskStatusRunCheck(ctx context.Context, svcCtx *svc.ServiceContext, wa
 		Task: task,
 	}
 	for _, topic := range task.Topics {
-		sub, err := svcCtx.Queue.SubscribeWithConsumer(topic, fmt.Sprintf("%s_%s", svcCtx.Config.Name, taskCode), func(ctx context.Context, msg []byte, natsMsg *nats.Msg) error {
-			return QueueSendTask(ctx, svcCtx, natsMsg.Subject, string(msg), task)
-		})
+		sub, err := svcCtx.Queue.SubscribeWithConsumer(topic, fmt.Sprintf("%s_%s", svcCtx.Config.Name, taskCode),
+			func(ctx context.Context, ts time.Time, msg []byte, natsMsg *nats.Msg) error {
+				return QueueSendTask(ctx, svcCtx, natsMsg.Subject, string(msg), task)
+			})
 		if err != nil {
 			logx.WithContext(ctx).Errorf("QueueTaskStatusRunCheck.QueueSubscribe err:%v", err)
 			continue

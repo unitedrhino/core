@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.8
 
 require (
-	gitee.com/unitedrhino/share v1.5.10
+	gitee.com/unitedrhino/share v1.5.16
 	gitee.com/unitedrhino/squirrel v1.20.7
 	github.com/alibabacloud-go/tea v1.3.9
 	github.com/dgraph-io/ristretto v0.1.1
@@ -67,6 +67,7 @@ require (
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/dolthub/maphash v0.1.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
+	github.com/eclipse/paho.mqtt.golang v1.5.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.11.0 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect

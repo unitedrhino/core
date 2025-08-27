@@ -11433,9 +11433,8 @@
           "type": "string",
           "description": "前端自定义字段"
         },
-        "createTime": {
-          "type": "integer",
-          "format": "int64",
+        "createdTime": {
+          "type": "string",
           "description": " 创建时间"
         },
         "children": {
@@ -14080,7 +14079,7 @@
           "type": "string",
           "description": "前端自定义字段"
         },
-        "createTime": {
+        "createdTime": {
           "type": "integer",
           "format": "int64",
           "description": " 创建时间"
