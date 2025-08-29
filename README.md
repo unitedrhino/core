@@ -5,6 +5,8 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/unitedrhino/core.svg)](https://pkg.go.dev/github.com/unitedrhino/core)
 ![GitHub Repo stars](https://img.shields.io/github/stars/unitedrhino/core)
 
+> 📖 [中文](README.md) | [English](README.en.md)
+
 ## 🚀 产品简介
 
 **联犀 Core** 是联犀物联网平台的SaaS中台核心模块，提供完整的多租户、多项目、多应用管理能力。这是联犀平台最为核心的模块，所有与具体业务无关的基础功能都在这里实现，如租户管理、项目管理、用户管理、角色权限、应用管理等。
