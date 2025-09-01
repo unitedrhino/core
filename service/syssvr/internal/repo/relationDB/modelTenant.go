@@ -12,11 +12,10 @@ type SysTenantInfo struct {
 	ID               int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                            // id编号
 	Code             dataType.TenantCode `gorm:"column:code;uniqueIndex:idx_sys_tenant_info_code;type:VARCHAR(100);NOT NULL"` // 租户编码
 	Name             string              `gorm:"column:name;uniqueIndex:idx_sys_tenant_info_name;type:VARCHAR(100);NOT NULL"` // 租户名称
+	Desc             string              `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                                      //应用描述
 	AdminUserID      int64               `gorm:"column:admin_user_id;type:BIGINT;NOT NULL"`                                   // 超级管理员id
 	AdminRoleID      int64               `gorm:"column:admin_role_id;type:BIGINT;NOT NULL"`                                   // 超级角色
-	Desc             string              `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                                      //应用描述
 	DefaultProjectID int64               `gorm:"column:default_project_id;type:BIGINT;NOT NULL"`
-	DefaultAreaID    int64               `gorm:"column:default_area_id;type:BIGINT;NOT NULL"`
 	UserCount        int64               `gorm:"column:user_count;type:bigint;default:0;"` //租户下用户统计
 	SysTenantOem
 	Status int64 `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
@@ -36,6 +35,28 @@ type SysTenantOem struct {
 
 func (m *SysTenantInfo) TableName() string {
 	return "sys_tenant_info"
+}
+
+type SysTenantConfig struct {
+	ID                        int64                               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                     // id编号
+	TenantCode                dataType.TenantCode                 `gorm:"column:tenant_code;uniqueIndex:idx_sys_tenant_config_ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	RegisterRoleID            int64                               `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                                         //注册分配的角色id
+	DeviceLimit               int64                               `gorm:"column:device_limit;type:BIGINT;default:0"`                                            // 租户下的设备数量限制,0为不限制
+	UserLimit                 int64                               `gorm:"column:user_limit;type:BIGINT;default:0"`                                              // 租户下的用户数量限制,0为不限制
+	ProjectLimit              int64                               `gorm:"column:project_limit;type:BIGINT;default:0"`                                           // 租户下的项目数量限制,0为不限制
+	CheckUserDelete           int64                               `gorm:"column:check_user_delete;type:BIGINT;default:2"`                                       // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
+	WeatherKey                string                              `gorm:"column:weather_key;type:VARCHAR(50);default:'';"`                                      //参考: https://dev.qweather.com/
+	OperLogKeepDays           int64                               `gorm:"column:oper_log_keep_days;default:0;"`                                                 //操作日志保留时间,如果为0则为永久
+	LoginLogKeepDays          int64                               `gorm:"column:login_log_keep_days;default:0;"`                                                //登录日志保留时间,如果为0则为永久
+	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
+	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json;default:'[]'"` //产生问题反馈通知的用户ID列表
+	IsSsl                     int64                               `gorm:"column:is_ssl;default:2"`                                                //是否单会话登录 Single Session Login
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_tenant_config_ri_mi"`
+}
+
+func (m *SysTenantConfig) TableName() string {
+	return "sys_tenant_config"
 }
 
 // 租户开放认证
@@ -124,21 +145,6 @@ func (m *SysTenantAppMenu) TableName() string {
 }
 
 // 租户下的邮箱配置
-type SysTenantConfig struct {
-	ID                        int64                               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                     // id编号
-	TenantCode                dataType.TenantCode                 `gorm:"column:tenant_code;uniqueIndex:idx_sys_tenant_config_ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	RegisterRoleID            int64                               `gorm:"column:register_role_id;type:BIGINT;NOT NULL"`                                         //注册分配的角色id
-	DeviceLimit               int64                               `gorm:"column:device_limit;type:BIGINT;default:0"`                                            // 租户下的设备数量限制,0为不限制
-	CheckUserDelete           int64                               `gorm:"column:check_user_delete;type:BIGINT;default:2"`                                       // 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
-	WeatherKey                string                              `gorm:"column:weather_key;type:VARCHAR(50);default:'';"`                                      //参考: https://dev.qweather.com/
-	OperLogKeepDays           int64                               `gorm:"column:oper_log_keep_days;default:0;"`                                                 //操作日志保留时间,如果为0则为永久
-	LoginLogKeepDays          int64                               `gorm:"column:login_log_keep_days;default:0;"`                                                //登录日志保留时间,如果为0则为永久
-	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
-	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json;default:'[]'"` //产生问题反馈通知的用户ID列表
-	IsSsl                     int64                               `gorm:"column:is_ssl;default:2"`                                                //是否单会话登录 Single Session Login
-	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_tenant_config_ri_mi"`
-}
 
 type SysTenantEmail struct {
 	From     string `gorm:"column:from;type:VARCHAR(50);default:'';NOT NULL"`     // 发件人  你自己要发邮件的邮箱
@@ -171,10 +177,6 @@ type SysThirdApp struct {
 	Version     string `gorm:"column:version;type:varchar(64);"`       // 应用版本
 	FilePath    string `gorm:"column:file_path;type:varchar(256);"`    // 文件路径,拿来下载文件
 	VersionDesc string `gorm:"column:version_desc;type:VARCHAR(100);"` //版本说明
-}
-
-func (m *SysTenantConfig) TableName() string {
-	return "sys_tenant_config"
 }
 
 type SysTenantAgreement struct {

@@ -657,7 +657,7 @@ message TenantInfo{
   int64 adminRoleID = 5;
   google.protobuf.StringValue desc = 6;
   int64 defaultProjectID = 7;
-  int64 defaultAreaID = 8;
+//  int64 defaultAreaID = 8;
   string backgroundImg =9;
   bool isUpdateBackgroundImg = 10;
   string backgroundColour =15;//背景颜色
@@ -689,14 +689,17 @@ message TenantConfig{
   string name = 2;
   string tenantCode = 3;//租户编码
   int64 registerRoleID=4;//注册分配的角色id
-  string weatherKey =7;//和风天气秘钥 参考: https://dev.qweather.com/
-  int64 isSsl =12;//是否单会话登录(默认为2) Single Session Login
+//  string weatherKey =7;//和风天气秘钥 参考: https://dev.qweather.com/
   int64 checkUserDelete=5;//1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
-  google.protobuf.Int64Value deviceLimit = 8;//租户下的设备数量限制,0为不限制
+  google.protobuf.Int64Value deviceLimit = 8;//租户下的设备数量限制,0为不限制(root可修改)
+  google.protobuf.Int64Value userLimit = 13;//租户下的用户数量限制,0为不限制(root可修改)
+  google.protobuf.Int64Value projectLimit = 14;//租户下的项目数量限制,0为不限制(root可修改)
+
   repeated  TenantConfigRegisterAutoCreateProject registerAutoCreateProject =6;//注册自动创建项目
   repeated int64 feedbackNotifyUserIDs = 9;//产生问题反馈通知的用户ID列表
-  google.protobuf.Int64Value operLogKeepDays =10;//操作日志保留时间,如果为0则为永久
-  google.protobuf.Int64Value loginLogKeepDays =11;//登录日志保留时间,如果为0则为永久
+  google.protobuf.Int64Value operLogKeepDays =10;//操作日志保留时间,如果为0则为永久(root可修改)
+  google.protobuf.Int64Value loginLogKeepDays =11;//登录日志保留时间,如果为0则为永久(root可修改)
+  int64 isSsl =12;//是否单会话登录(默认为2) Single Session Login
 
 }
 

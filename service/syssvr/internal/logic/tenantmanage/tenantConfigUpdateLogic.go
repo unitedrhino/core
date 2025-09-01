@@ -2,6 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/tenant"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -42,53 +43,74 @@ func (l *TenantConfigUpdateLogic) TenantConfigUpdate(in *sys.TenantConfig) (*sys
 	if err != nil {
 		return nil, err
 	}
-	oldPMap, maxProjectID := tenant.RegisterAutoCreateProjectToMap(old.RegisterAutoCreateProject)
-	for _, v := range in.RegisterAutoCreateProject {
-		if v.Id == 0 {
-			maxProjectID++
-			v.Id = maxProjectID
-		}
-		oldP := oldPMap[v.Id]
-		if oldP == nil {
-			oldP = &tenant.RegisterAutoCreateProject{
-				ID:           v.Id,
-				ProjectName:  v.ProjectName,
-				IsSysCreated: v.IsSysCreated,
+	if in.RegisterAutoCreateProject != nil {
+		oldPMap, maxProjectID := tenant.RegisterAutoCreateProjectToMap(old.RegisterAutoCreateProject)
+		for _, v := range in.RegisterAutoCreateProject {
+			if v.Id == 0 {
+				maxProjectID++
+				v.Id = maxProjectID
 			}
-		}
-		maxAreaID := oldP.MaxAreaID
-		for _, a := range v.Areas {
-			if a.Id == 0 {
-				maxAreaID++
-				a.Id = maxAreaID
-			}
-			oldA := oldP.AreaMap[a.Id]
-			if a.IsUpdateAreaImg == true && a.AreaImg != "" {
-				nwePath := oss.GenCommonFilePath(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, oss.GetFileNameWithPath(a.AreaImg))
-				path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(a.AreaImg, nwePath)
-				if err != nil {
-					l.Error(err)
-				} else {
-					a.AreaImg = path
+			oldP := oldPMap[v.Id]
+			if oldP == nil {
+				oldP = &tenant.RegisterAutoCreateProject{
+					ID:           v.Id,
+					ProjectName:  v.ProjectName,
+					IsSysCreated: v.IsSysCreated,
 				}
 			}
-			if !a.IsUpdateAreaImg && oldA != nil { //更新类型
-				a.AreaImg = oldA.AreaImg
+			maxAreaID := oldP.MaxAreaID
+			for _, a := range v.Areas {
+				if a.Id == 0 {
+					maxAreaID++
+					a.Id = maxAreaID
+				}
+				oldA := oldP.AreaMap[a.Id]
+				if a.IsUpdateAreaImg == true && a.AreaImg != "" {
+					nwePath := oss.GenCommonFilePath(l.svcCtx.Config.Name, oss.BusinessArea, oss.SceneHeadIng, oss.GetFileNameWithPath(a.AreaImg))
+					path, err := l.svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(a.AreaImg, nwePath)
+					if err != nil {
+						l.Error(err)
+					} else {
+						a.AreaImg = path
+					}
+				}
+				if !a.IsUpdateAreaImg && oldA != nil { //更新类型
+					a.AreaImg = oldA.AreaImg
+				}
 			}
 		}
+		old.RegisterAutoCreateProject = utils.CopySlice[tenant.RegisterAutoCreateProject](in.RegisterAutoCreateProject)
+	}
+	if ctxs.IsRoot(l.ctx) == nil {
+		if in.DeviceLimit != nil {
+			old.DeviceLimit = in.DeviceLimit.GetValue()
+		}
+		if in.LoginLogKeepDays != nil {
+			old.LoginLogKeepDays = in.LoginLogKeepDays.GetValue()
+		}
+		if in.OperLogKeepDays != nil {
+			old.OperLogKeepDays = in.OperLogKeepDays.GetValue()
+		}
+		if in.UserLimit != nil {
+			old.UserLimit = in.UserLimit.GetValue()
+		}
+		if in.ProjectLimit != nil {
+			old.ProjectLimit = in.ProjectLimit.GetValue()
+		}
+	}
+	if in.FeedbackNotifyUserIDs != nil {
+		old.FeedbackNotifyUserIDs = in.FeedbackNotifyUserIDs
+	}
+	if in.RegisterRoleID != 0 {
+		old.RegisterRoleID = in.RegisterRoleID
+	}
+	if in.CheckUserDelete != 0 {
+		old.CheckUserDelete = in.CheckUserDelete
 	}
 
-	newPo := utils.Copy[relationDB.SysTenantConfig](in)
-	newPo.NoDelTime = old.NoDelTime
-	newPo.ID = old.ID
-	if err := ctxs.IsRoot(l.ctx); err != nil {
-		newPo.DeviceLimit = old.DeviceLimit
-		newPo.OperLogKeepDays = old.OperLogKeepDays
-		newPo.LoginLogKeepDays = old.LoginLogKeepDays
-	}
-	err = relationDB.NewTenantConfigRepo(l.ctx).Update(l.ctx, newPo)
+	err = relationDB.NewTenantConfigRepo(l.ctx).Update(l.ctx, old)
 	if err == nil {
-		l.svcCtx.TenantConfigCache.SetData(l.ctx, string(newPo.TenantCode), nil)
+		l.svcCtx.TenantConfigCache.SetData(l.ctx, string(old.TenantCode), nil)
 	}
 	return &sys.Empty{}, err
 }

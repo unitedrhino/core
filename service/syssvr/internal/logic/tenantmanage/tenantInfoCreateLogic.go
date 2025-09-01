@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -67,6 +68,9 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	password := utils.MakePwd(userInfo.Password, userID, false)
 	if userInfo.Phone == nil && userInfo.Email == nil {
 		return nil, errors.Parameter.AddMsgf("手机号和邮箱必须填写一个")
+	}
+	if utils.SliceIn(in.Info.Code, def.TenantCodeCommon, def.TenantCodeDefault) {
+		return nil, errors.Parameter.AddMsgf("租户编码不能为内置的 %s或%s", def.TenantCodeCommon, def.TenantCodeDefault)
 	}
 	ui := relationDB.SysUserInfo{
 		TenantCode: dataType.TenantCode(in.Info.Code),

@@ -18,9 +18,8 @@ type Config struct {
 	OssConf  conf.OssConf `json:",optional"`
 	Event    conf.EventConf
 	Register struct {
-		NeedDetail   bool   `json:",default=true"` //注册的时候是否需要填写用户信息,账号密码
-		SecondSecret string //第二步需要的token秘钥
-		SecondExpire int64  //token过期时间 单位:秒
+		CreateTenant bool `json:",optional"` //注册的时候是否创建租户
+
 	} `json:",optional"`
 	TimedJobRpc conf.RpcClientConf `json:",optional"`
 	UserOpt     struct {
@@ -35,7 +34,7 @@ type Config struct {
 	}
 	Sms conf.Sms
 	//WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
-
+	WeatherKey               string       `json:",optional"` //和风天气秘钥 参考: https://dev.qweather.com/
 	CaptchaPhoneIpLimit      []conf.Limit `json:",optional"`
 	CaptchaPhoneAccountLimit []conf.Limit `json:",optional"`
 	CaptchaEmailIpLimit      []conf.Limit `json:",optional"`
@@ -54,4 +53,9 @@ var DefaultAccountLimit = []conf.Limit{
 	{Timeout: 5 * 60, TriggerTime: 3, ForbiddenTime: 5 * 60},                       //5分钟内错误3次,封禁5分钟
 	{Timeout: 60 * 60, TriggerTime: 10, ForbiddenTime: 60 * 60 * 24},               //1个小时内错误10次,封禁一天
 	{Timeout: 60 * 60 * 24 * 5, TriggerTime: 20, ForbiddenTime: 60 * 60 * 24 * 30}, //5天内错误20次,封禁30天
+}
+
+type RegisterConf struct {
+	CreateTenant bool `json:",optional"` //注册的时候是否创建租户
+
 }

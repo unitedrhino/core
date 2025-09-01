@@ -2,6 +2,8 @@ package usermanagelogic
 
 import (
 	"context"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -14,7 +16,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/maypok86/otter"
 	"github.com/spf13/cast"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -116,7 +117,7 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		}
 	}
 
-	if ui.Tenant != nil && (utils.SliceIn(ui.Tenant.AdminRoleID, rolses...) || ui.Tenant.AdminUserID == ui.UserID) {
+	if ui.TenantConfig != nil && (utils.SliceIn(ui.TenantInfo.AdminRoleID, rolses...) || ui.TenantInfo.AdminUserID == ui.UserID) {
 		isAdmin = def.True
 	}
 	var account = ui.UserName.String

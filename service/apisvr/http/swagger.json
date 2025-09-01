@@ -14223,19 +14223,15 @@
           "format": "int64",
           "description": "注册分配的角色id"
         },
-        "weatherKey": {
-          "type": "string",
-          "description": "和风天气秘钥 参考: https:dev.qweather.com/"
-        },
         "operLogKeepDays": {
           "type": "integer",
           "format": "int64",
-          "description": "操作日志保留时间,如果为0则为永久"
+          "description": "操作日志保留时间,如果为0则为永久(root可修改)"
         },
         "loginLogKeepDays": {
           "type": "integer",
           "format": "int64",
-          "description": "登录日志保留时间,如果为0则为永久"
+          "description": "登录日志保留时间,如果为0则为永久(root可修改)"
         },
         "checkUserDelete": {
           "type": "integer",
@@ -14250,7 +14246,17 @@
         "deviceLimit": {
           "type": "integer",
           "format": "int64",
-          "description": "租户下的设备数量限制,0为不限制"
+          "description": "租户下的设备数量限制,0为不限制(root可修改)"
+        },
+        "projectLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户下的项目数量限制,0为不限制(root可修改)"
+        },
+        "userLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户下的用户数量限制,0为不限制(root可修改)"
         },
         "feedbackNotifyUserIDs": {
           "type": "array",

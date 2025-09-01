@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -54,7 +55,7 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		return nil, errors.Permissions.WithMsg("只有管理员可以删除")
 	}
 
-	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
+	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, ctxs.GetUserCtx(l.ctx).TenantCode)
 	if err != nil {
 		return nil, err
 	}

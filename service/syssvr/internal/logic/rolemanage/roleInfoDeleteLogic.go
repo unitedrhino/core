@@ -2,6 +2,7 @@ package rolemanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
@@ -32,7 +33,7 @@ func (l *RoleInfoDeleteLogic) RoleInfoDelete(in *sys.WithID) (*sys.Empty, error)
 	if err := ctxs.IsAdmin(l.ctx); err != nil {
 		return nil, err
 	}
-	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{Code: ctxs.GetUserCtx(l.ctx).TenantCode})
+	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, ctxs.GetUserCtx(l.ctx).TenantCode)
 	if err != nil {
 		return nil, err
 	}
