@@ -1483,6 +1483,7 @@ message UserRegisterReq{
   string password =5;
   UserInfo info = 6;//填写用户信息
   map<string,string> expand =7; //拓展, 微信登录方式 phoneCode:获取手机号code
+  bool isAdmin =8;//管理员的方式注册,如果配置了创建新建租户,则会创建个租户
 }
 
 message UserRegisterResp{

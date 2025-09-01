@@ -31,10 +31,10 @@ type SysConfigSms struct {
 
 type SysDictInfo struct {
 	ID         int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                    // id编号
-	Name       string `gorm:"column:name;uniqueIndex:idx_sys_dict_info_name;comment:字典名"`                          // 字典名（中）
+	Name       string `gorm:"column:name;uniqueIndex:idx_sys_dict_info_name;comment:字典名"`                       // 字典名（中）
 	Code       string `gorm:"column:code;uniqueIndex:idx_sys_dict_info_code;type:VARCHAR(50);default:'';NOT NULL"` //编码
 	Group      string `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                                   //字典分组
-	Desc       string `gorm:"column:desc;comment:描述"`                                                              // 描述
+	Desc       string `gorm:"column:desc;comment:描述"`                                                            // 描述
 	Body       string `gorm:"column:body;type:VARCHAR(1024)"`                                                      // 自定义数据
 	StructType int64  `gorm:"column:struct_type;type:BIGINT;default:1"`                                            //结构类型(不可修改) 1:列表(默认) 2:树型
 	stores.NoDelTime
@@ -49,11 +49,11 @@ func (SysDictInfo) TableName() string {
 type SysDictDetail struct {
 	ID       int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                            // id编号
 	DictCode string `gorm:"column:dict_code;uniqueIndex:idx_sys_dict_detail_value;type:VARCHAR(50);default:'';NOT NULL"` // 关联标记
-	Label    string `gorm:"column:label;comment:展示值"`                                                                    // 展示值
-	Value    string `gorm:"column:value;uniqueIndex:idx_sys_dict_detail_value;comment:字典值"`                              // 字典值
+	Label    string `gorm:"column:label;comment:展示值"`                                                                 // 展示值
+	Value    string `gorm:"column:value;uniqueIndex:idx_sys_dict_detail_value;comment:字典值"`                           // 字典值
 	Status   int64  `gorm:"column:status;type:SMALLINT;default:1"`                                                       // 状态  1:启用,2:禁用
-	Sort     int64  `gorm:"column:sort;comment:排序标记;default:1"`                                                          // 排序标记
-	Desc     string `gorm:"column:desc;comment:描述"`                                                                      // 描述
+	Sort     int64  `gorm:"column:sort;comment:排序标记;default:1"`                                                      // 排序标记
+	Desc     string `gorm:"column:desc;comment:描述"`                                                                    // 描述
 	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                                              // 自定义数据
 	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                                                   // 1-2-3-的格式记录顶级区域到当前id的路径
 	ParentID int64  `gorm:"column:parent_id;uniqueIndex:idx_sys_dict_detail_value;type:BIGINT"`                          // id编号
@@ -74,8 +74,8 @@ type SysDeptInfo struct {
 	Name           string              `gorm:"column:name;type:VARCHAR(256);uniqueIndex:idx_sys_dept_info_name;default:'';NOT NULL"` // 部门名称
 	AdminUserID    int64               `gorm:"column:admin_user_id;comment:管理员账号;NOT NULL"`
 	Status         int64               `gorm:"column:status;type:SMALLINT;default:1"` // 状态  1:启用,2:禁用
-	Sort           int64               `gorm:"column:sort;comment:排序标记"`              // 排序标记
-	Desc           string              `gorm:"column:desc;comment:描述"`                // 描述
+	Sort           int64               `gorm:"column:sort;comment:排序标记"`          // 排序标记
+	Desc           string              `gorm:"column:desc;comment:描述"`              // 描述
 	UserCount      int64               `gorm:"column:user_count;comment:用户统计,包含下级部门的人数"`
 	DeviceCount    int64               `gorm:"column:device_count;default:0;comment:部门自己的设备总数"`
 	AllDeviceCount int64               `gorm:"column:all_device_count;default:0;comment:部门及其下级的设备总数"`
@@ -254,40 +254,49 @@ func (m *SysModuleMenu) TableName() string {
 
 // 用户登录信息表
 type SysUserInfo struct {
-	TenantCode      dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"` // 租户编码
-	UserID          int64               `gorm:"column:user_id;primary_key;AUTO_INCREMENT;type:BIGINT;NOT NULL"`                                                                                                                                                                                                                // 用户id
-	UserName        sql.NullString      `gorm:"column:user_name;uniqueIndex:idx_sys_user_info_tc_un;type:VARCHAR(20)"`                                                                                                                                                                                                         // 登录用户名
-	NickName        string              `gorm:"column:nick_name;type:VARCHAR(60);NOT NULL"`                                                                                                                                                                                                                                    // 用户的昵称
-	Password        string              `gorm:"column:password;type:CHAR(32);NOT NULL"`                                                                                                                                                                                                                                        // 登录密码
-	Email           sql.NullString      `gorm:"column:email;uniqueIndex:idx_sys_user_info_tc_email;type:VARCHAR(255)"`                                                                                                                                                                                                         // 邮箱
-	Phone           sql.NullString      `gorm:"column:phone;uniqueIndex:idx_sys_user_info_tc_phone;type:VARCHAR(20)"`                                                                                                                                                                                                          // 手机号
-	WechatUnionID   sql.NullString      `gorm:"column:wechat_union_id;uniqueIndex:idx_sys_user_info_tc_wui;type:VARCHAR(128)"`                                                                                                                                                                                                 // 微信union id
-	WechatOpenID    sql.NullString      `gorm:"column:wechat_open_id;uniqueIndex:idx_sys_user_info_tc_woi;type:VARCHAR(128)"`                                                                                                                                                                                                  // 微信union id
-	DingTalkUserID  sql.NullString      `gorm:"column:ding_talk_user_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
-	DingTalkUnionID sql.NullString      `gorm:"column:ding_talk_union_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
-	LastIP          string              `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`                   // 最后登录ip
-	LastTokenID     string              `gorm:"column:last_token_id;type:VARCHAR(128);default:''"`           // 最后登录的token ID
-	RegIP           string              `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`                    // 注册ip
-	Sex             int64               `gorm:"column:sex;type:SMALLINT;default:3;NOT NULL"`                 // 用户的性别，值为1时是男性，值为2时是女性，其他值为未知
-	City            string              `gorm:"column:city;type:VARCHAR(50);NOT NULL"`                       // 用户所在城市
-	Country         string              `gorm:"column:country;type:VARCHAR(50);NOT NULL"`                    // 用户所在国家
-	Province        string              `gorm:"column:province;type:VARCHAR(50);NOT NULL"`                   // 用户所在省份
-	Language        string              `gorm:"column:language;type:VARCHAR(50);NOT NULL"`                   // 用户的语言，简体中文为zh_CN
-	HeadImg         string              `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`                  // 用户头像
-	Role            int64               `gorm:"column:role;type:BIGINT;NOT NULL"`                            // 用户默认角色（默认使用该角色）
-	Tags            map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 产品标签
-	IsAllData       int64               `gorm:"column:is_all_data;type:SMALLINT;default:1;NOT NULL"`         // 是否所有数据权限（1是，2否）
-	DeviceCount     int64               `gorm:"column:device_count;default:0"`                               //用户所拥有的设备数量统计
-	Roles           []*SysUserRole      `gorm:"foreignKey:UserID;references:UserID"`
-	TenantInfo      *SysTenantInfo      `gorm:"foreignKey:Code;references:tenantInfoCode"`
-	TenantConfig    *SysTenantConfig    `gorm:"foreignKey:Code;references:tenantInfoCode"`
-	Status          int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
+	UserID      int64             `gorm:"column:user_id;primary_key;AUTO_INCREMENT;type:BIGINT;NOT NULL"`        // 用户id
+	UserName    sql.NullString    `gorm:"column:user_name;uniqueIndex:idx_sys_user_info_tc_un;type:VARCHAR(20)"` // 登录用户名
+	NickName    string            `gorm:"column:nick_name;type:VARCHAR(60);NOT NULL"`                            // 用户的昵称
+	Password    string            `gorm:"column:password;type:CHAR(32);NOT NULL"`                                // 登录密码
+	Email       sql.NullString    `gorm:"column:email;uniqueIndex:idx_sys_user_info_tc_email;type:VARCHAR(255)"` // 邮箱
+	Phone       sql.NullString    `gorm:"column:phone;uniqueIndex:idx_sys_user_info_tc_phone;type:VARCHAR(20)"`  // 手机号
+	LastIP      string            `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`                             // 最后登录ip
+	LastTokenID string            `gorm:"column:last_token_id;type:VARCHAR(128);default:''"`                     // 最后登录的token ID
+	RegIP       string            `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`                              // 注册ip
+	Sex         int64             `gorm:"column:sex;type:SMALLINT;default:3;NOT NULL"`                           // 用户的性别，值为1时是男性，值为2时是女性，其他值为未知
+	City        string            `gorm:"column:city;type:VARCHAR(50);NOT NULL"`                                 // 用户所在城市
+	Country     string            `gorm:"column:country;type:VARCHAR(50);NOT NULL"`                              // 用户所在国家
+	Province    string            `gorm:"column:province;type:VARCHAR(50);NOT NULL"`                             // 用户所在省份
+	Language    string            `gorm:"column:language;type:VARCHAR(50);NOT NULL"`                             // 用户的语言，简体中文为zh_CN
+	HeadImg     string            `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`                            // 用户头像
+	Tags        map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"`           // 产品标签
+	Tenants     []*SysUserTenant  `gorm:"foreignKey:UserID;references:UserID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
 }
 
 func (m *SysUserInfo) TableName() string {
 	return "sys_user_info"
+}
+
+type SysUserTenant struct {
+	TenantCode      dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"` // 租户编码
+	UserID          int64               `gorm:"column:user_id;primary_key;AUTO_INCREMENT;type:BIGINT;NOT NULL"`                                                                                                                                                                                                                // 用户id
+	WechatUnionID   sql.NullString      `gorm:"column:wechat_union_id;uniqueIndex:idx_sys_user_info_tc_wui;type:VARCHAR(128)"`                                                                                                                                                                                                 // 微信union id
+	WechatOpenID    sql.NullString      `gorm:"column:wechat_open_id;uniqueIndex:idx_sys_user_info_tc_woi;type:VARCHAR(128)"`                                                                                                                                                                                                  // 微信union id
+	DingTalkUserID  sql.NullString      `gorm:"column:ding_talk_user_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
+	DingTalkUnionID sql.NullString      `gorm:"column:ding_talk_union_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
+	DeviceCount     int64               `gorm:"column:device_count;default:0"` //用户所拥有的设备数量统计
+	Roles           []*SysUserRole      `gorm:"foreignKey:UserID;references:UserID"`
+	TenantInfo      *SysTenantInfo      `gorm:"foreignKey:Code;references:tenantInfoCode"`
+	TenantConfig    *SysTenantConfig    `gorm:"foreignKey:Code;references:tenantInfoCode"`
+	Status          int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //用户状态: 1启用 2禁用
+	stores.NoDelTime
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
+}
+
+func (m *SysUserTenant) TableName() string {
+	return "sys_user_tenant"
 }
 
 // 应用菜单关联表
