@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -29,9 +30,11 @@ type TenantAppFilter struct {
 	TenantCode string
 	IDs        []int64
 	AppCodes   []string
+	AppCode    string
 	Type       string
 	SubType    string
 	AppID      string
+	WithApp    bool
 	//todo 添加过滤字段
 }
 
@@ -42,6 +45,12 @@ func (p TenantAppRepo) fmtFilter(ctx context.Context, f TenantAppFilter) *gorm.D
 	}
 	if len(f.IDs) > 0 {
 		db = db.Where("id in ?", f.IDs)
+	}
+	if f.WithApp {
+		db = db.Preload("App")
+	}
+	if f.AppCode != "" {
+		db = db.Where("app_code =?", f.AppCode)
 	}
 	if len(f.AppCodes) > 0 {
 		db = db.Where("app_code in ?", f.AppCodes)
@@ -90,7 +99,11 @@ func (p TenantAppRepo) Update(ctx context.Context, data *SysTenantApp) error {
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
 	return stores.ErrFmt(err)
 }
-
+func (d TenantAppRepo) UpdateWithField(ctx context.Context, f TenantAppFilter, updates map[string]any) error {
+	db := d.fmtFilter(ctx, f)
+	err := db.Model(&SysTenantApp{}).Updates(updates).Error
+	return stores.ErrFmt(err)
+}
 func (p TenantAppRepo) DeleteByFilter(ctx context.Context, f TenantAppFilter) error {
 	db := p.fmtFilter(ctx, f)
 	err := db.Delete(&SysTenantApp{}).Error

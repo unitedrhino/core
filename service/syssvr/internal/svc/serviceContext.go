@@ -1,6 +1,9 @@
 package svc
 
 import (
+	"os"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/config"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -8,6 +11,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/smsClient"
@@ -20,8 +24,6 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/zrpc"
-	"os"
-	"sync"
 )
 
 type CaptchaLimit struct {
@@ -45,6 +47,7 @@ type ServiceContext struct {
 	OssClient          *oss.Client
 	Store              kv.Store
 	Captcha            *cache.Captcha
+	ThirdClientsManage *cache.ThirdClientsManage
 	CaptchaLimit       CaptchaLimit
 	LoginLimit         LoginLimit
 	Cm                 *ClientsManage
@@ -53,7 +56,7 @@ type ServiceContext struct {
 	TenantCache        *caches.Cache[tenant.Info, string]
 	TenantConfigCache  *caches.Cache[sys.TenantConfig, string]
 	ProjectCache       *caches.Cache[sys.ProjectInfo, int64]
-	UserCache          *caches.Cache[sys.UserInfo, int64]
+	UserCache          *caches.Cache[sys.UserInfo, users.UserTenantCore]
 	AreaCache          *caches.Cache[sys.AreaInfo, int64]
 	ApiCache           *caches.Cache[relationDB.SysApiInfo, string]
 	RoleAccessCache    *caches.Cache[map[int64]struct{}, string]
@@ -112,22 +115,23 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		}
 	}
 	return &ServiceContext{
-		FastEvent:     serverMsg,
-		Captcha:       cache.NewCaptcha(store),
-		Slot:          cache.NewSlot(),
-		UserToken:     cache.NewUserToken(),
-		Cm:            NewClients(c),
-		Config:        c,
-		CaptchaLimit:  cl,
-		LoginLimit:    ll,
-		ProjectID:     ProjectID,
-		OssClient:     ossClient,
-		AreaID:        AreaID,
-		UserID:        UserID,
-		Store:         store,
-		Sms:           sms,
-		NodeID:        nodeID,
-		TimedM:        timedJob,
-		DingStreamMap: make(map[string]*dingClient.StreamClient),
+		FastEvent:          serverMsg,
+		Captcha:            cache.NewCaptcha(store),
+		Slot:               cache.NewSlot(),
+		UserToken:          cache.NewUserToken(),
+		ThirdClientsManage: cache.NewThirdClientsManage(c.CacheRedis),
+		Cm:                 NewClients(c),
+		Config:             c,
+		CaptchaLimit:       cl,
+		LoginLimit:         ll,
+		ProjectID:          ProjectID,
+		OssClient:          ossClient,
+		AreaID:             AreaID,
+		UserID:             UserID,
+		Store:              store,
+		Sms:                sms,
+		NodeID:             nodeID,
+		TimedM:             timedJob,
+		DingStreamMap:      make(map[string]*dingClient.StreamClient),
 	}
 }

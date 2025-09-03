@@ -28,6 +28,7 @@ type UserTenantFilter struct {
 	DingTalkUnionID string
 	WithRoles       bool
 	WithTenant      bool
+	WithUser        bool
 	RoleCode        string
 	DeptID          int64
 	UpdatedTime     *stores.Cmp
@@ -55,6 +56,9 @@ func (p UserTenantRepo) fmtFilter(ctx context.Context, f UserTenantFilter) *gorm
 	if f.DeptID > 0 {
 		subQuery := p.db.Model(&SysDeptUser{}).Select("user_id").Where("dept_id=?", f.DeptID)
 		db = db.Where("user_id in (?)", subQuery)
+	}
+	if f.WithUser {
+		db = db.Preload("User")
 	}
 
 	if f.WithRoles {

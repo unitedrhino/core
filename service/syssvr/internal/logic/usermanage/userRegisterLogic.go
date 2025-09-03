@@ -3,6 +3,7 @@ package usermanagelogic
 import (
 	"context"
 	"database/sql"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -16,9 +17,10 @@ import (
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 
+	"time"
+
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -53,14 +55,67 @@ func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserRegi
 }
 
 func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
-	ui := relationDB.SysUserInfo{
-		UserID: l.svcCtx.UserID.GetSnowflakeId(),
+	thirdHandle := func(tx *stores.DB, ui *relationDB.SysUserInfo) error {
+		wxOpenCode := in.Expand["wxOpenCode"]
+		if wxOpenCode != "" && in.AppID != "" {
+			at, err := GetWxLoginResAccessToken(l.ctx, in.AppID, wxOpenCode)
+			if err != nil {
+				cli, er := l.svcCtx.ThirdClientsManage.GetWxOpenClient(l.ctx, l.uc.AppCode, in.AppID)
+				if er != nil {
+					return er
+				}
+				at2, er := cli.GetOauth().GetUserAccessToken(in.Code)
+				if er != nil {
+					return errors.System.AddDetail(er)
+				}
+				at = &at2
+			}
+			StoreWxRegisterResAccessToken(l.ctx, in.AppID, wxOpenCode, at)
+			_, err = relationDB.NewUserThirdRepo(tx).FindOneByFilter(l.ctx, relationDB.UserThirdFilter{AppID: in.AppID, UnionID: at.UnionID, OpenID: at.OpenID})
+			if err == nil {
+				return errors.BindAccount.WithMsg("微信已绑定其他账号")
+			}
+			if !errors.Cmp(err, errors.NotFind) {
+				return err
+			}
+			err = relationDB.NewUserThirdRepo(tx).Insert(l.ctx, &relationDB.SysUserThird{
+				TenantCode: "",
+				AppType:    def.ThirdTypeWxOpen,
+				AppID:      in.AppID,
+				UserID:     ui.UserID,
+				UnionID:    at.UnionID,
+				OpenID:     at.OpenID,
+			})
+			return err
+		}
+		return nil
 	}
-	ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
-	if in.Info != nil {
-		ui.NickName = in.Info.NickName
-		if in.Info.UserName == "" {
-			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+
+	old, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenant: true, Accounts: []string{in.Account}})
+	if err == nil {
+		if len(old.Tenants) != 0 {
+			return nil, errors.DuplicateRegister
+		}
+		err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+			err = thirdHandle(tx, old)
+			if err != nil {
+				return err
+			}
+			err = Register(l.ctx, l.svcCtx, old, true, nil)
+			return err
+		})
+		return &sys.UserRegisterResp{UserID: old.UserID}, err
+	}
+	ui := relationDB.SysUserInfo{}
+
+	uiInit := func() {
+		ui.UserID = l.svcCtx.UserID.GetSnowflakeId()
+		ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
+		if in.Info != nil {
+			ui.NickName = in.Info.NickName
+			if in.Info.UserName == "" {
+				ui.UserName = utils.AnyToNullString(in.Info.UserName)
+			}
 		}
 	}
 
@@ -70,6 +125,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		if email == "" || email != in.Account {
 			return nil, errors.Captcha
 		}
+		uiInit()
 		ui.Email = utils.AnyToNullString(in.Account)
 		ui.UserName = ui.Email
 	case users.RegPhone:
@@ -77,6 +133,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		if phone == "" || phone != in.Account {
 			return nil, errors.Captcha
 		}
+		uiInit()
 		ui.Phone = utils.AnyToNullString(in.Account)
 		ui.UserName = ui.Phone
 	}
@@ -86,39 +143,14 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 			return nil, err
 		}
 	}
-
-	wxOpenCode := in.Expand["wxOpenCode"]
-	if wxOpenCode != "" {
-		at, err := GetWxLoginResAccessToken(l.ctx, wxOpenCode)
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		err = thirdHandle(tx, old)
 		if err != nil {
-			cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-			if er != nil {
-				return nil, errors.System.AddDetail(er)
-			}
-			if cli.WxOfficial == nil {
-				return nil, errors.System.AddDetail(er)
-			}
-			at2, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
-			if er != nil {
-				return nil, errors.System.AddDetail(er)
-			}
-			at = &at2
+			return err
 		}
-		StoreWxRegisterResAccessToken(l.ctx, wxOpenCode, at)
-		_, err = relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
-		if err == nil {
-			return nil, errors.BindAccount.WithMsg("微信已绑定其他账号")
-		}
-		if !errors.Cmp(err, errors.NotFind) {
-			return nil, err
-		}
-		ui.WechatOpenID = sql.NullString{Valid: true, String: at.OpenID}
-		if at.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{Valid: true, String: at.UnionID}
-		}
-	}
-	conn := stores.GetTenantConn(l.ctx)
-	err := l.FillUserInfo(&ui, conn)
+		err = Register(l.ctx, l.svcCtx, old, true, nil)
+		return err
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -132,12 +164,11 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 }
 
 func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
-	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if err != nil || cli.MiniProgram == nil {
-		return nil, errors.System.AddDetail(err)
+	cli, err := l.svcCtx.ThirdClientsManage.GetWxMiniClient(l.ctx, l.uc.AppCode, in.AppID)
+	if err != nil {
+		return nil, err
 	}
-	auth := cli.MiniProgram.GetAuth()
-
+	auth := cli.GetAuth()
 	wxUid, err := auth.Code2SessionContext(l.ctx, in.Code)
 	if err != nil {
 		l.Errorf("%v.Code2SessionContext err:%v", err)
@@ -148,7 +179,6 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 	} else if wxUid.ErrCode != 0 {
 		return nil, errors.Parameter.AddDetail(wxUid.ErrMsg)
 	}
-
 	if in.Expand == nil || in.Expand["phoneCode"] == "" {
 		return nil, errors.Parameter.AddMsg("微信小程序注册需要填写expand.phoneCode")
 	}
@@ -161,11 +191,12 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		return nil, errors.Parameter.AddDetail(wxPhone.ErrMsg)
 	}
 	var userID int64
+	var isCreateUi bool
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx,
-			relationDB.UserInfoFilter{WechatUnionID: wxUid.UnionID, WechatOpenID: wxUid.OpenID})
+		_, err := relationDB.NewUserThirdRepo(tx).FindOneByFilter(l.ctx,
+			relationDB.UserThirdFilter{AppType: def.ThirdTypeWxMiniP, AppID: in.AppID, UnionID: wxUid.UnionID, OpenID: wxUid.OpenID})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister
 		}
@@ -179,54 +210,41 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 			}
 			userID = l.svcCtx.UserID.GetSnowflakeId()
 			ui = &relationDB.SysUserInfo{
-				UserID:       userID,
-				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+				UserID:   userID,
+				Phone:    sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+				UserName: sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 			}
-		} else if !(ui.WechatUnionID.Valid || ui.WechatOpenID.Valid) {
-			userID = l.svcCtx.UserID.GetSnowflakeId()
-			ui = &relationDB.SysUserInfo{
-				UserID:       userID,
-				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+			if in.Info != nil {
+				ui.NickName = in.Info.NickName
+				if in.Info.UserName != "" {
+					ui.UserName = utils.AnyToNullString(in.Info.UserName)
+				}
 			}
+			isCreateUi = true
 		}
-		userID = ui.UserID
-		phone, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phone: wxPhone.PhoneInfo.PurePhoneNumber})
-		if err == nil { //手机号注册过,绑定微信信息
-			phone.WechatOpenID = sql.NullString{Valid: true, String: wxUid.OpenID}
-			if wxUid.UnionID != "" {
-				phone.WechatUnionID = sql.NullString{Valid: true, String: wxUid.UnionID}
-			}
-			return uidb.Update(l.ctx, phone)
-		} else if !errors.Cmp(err, errors.NotFind) { //如果是数据库错误,则直接返回
+		err = relationDB.NewUserThirdRepo(tx).Insert(l.ctx, &relationDB.SysUserThird{
+			AppType: def.ThirdTypeWxMiniP,
+			AppID:   in.AppID,
+			UserID:  ui.UserID,
+			UnionID: wxUid.UnionID,
+			OpenID:  wxUid.OpenID,
+		})
+		if err != nil {
 			return err
 		}
 
-		if wxUid.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{Valid: true, String: wxUid.UnionID}
-		}
-		if in.Info != nil {
-			ui.NickName = in.Info.NickName
-			if in.Info.UserName != "" {
-				ui.UserName = utils.AnyToNullString(in.Info.UserName)
-			}
-		}
-		err = l.FillUserInfo(ui, tx)
+		err = l.FillUserInfo(ui, isCreateUi, tx)
 		return err
 	})
-
 	return &sys.UserRegisterResp{UserID: userID}, err
 }
 
 func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
-	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if err != nil || cli.DingMini == nil {
-		return nil, errors.System.AddDetail(err)
+	cli, err := l.svcCtx.ThirdClientsManage.GetDingAppClient(l.ctx, l.uc.AppCode, in.AppID)
+	if err != nil {
+		return nil, err
 	}
-	ret, err := cli.DingMini.GetUserInfoByCode(in.Code)
+	ret, err := cli.GetUserInfoByCode(in.Code)
 	if err != nil {
 		l.Errorf("%v.Code2SessionContext err:%v", err)
 		if ret.Code != 0 {
@@ -236,55 +254,75 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 	} else if ret.Code != 0 {
 		return nil, errors.Parameter.AddDetail(ret.Msg)
 	}
-	userID := l.svcCtx.UserID.GetSnowflakeId()
-	ui := relationDB.SysUserInfo{
-		UserID:         userID,
-		DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
-		NickName:       ret.UserInfo.Name,
-	}
-	if ret.UserInfo.UnionId != "" {
-		ui.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
-	}
-	if in.Info != nil {
-		ui.NickName = in.Info.NickName
-		if in.Info.UserName != "" {
-			ui.UserName = utils.AnyToNullString(in.Info.UserName)
-		}
-	}
-	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId})
+
+	var userID int64
+	var isCreateUi bool
+	conn := stores.GetTenantConn(l.ctx)
+	err = conn.Transaction(func(tx *gorm.DB) error {
+		_, err := relationDB.NewUserThirdRepo(tx).FindOneByFilter(l.ctx,
+			relationDB.UserThirdFilter{AppType: def.ThirdTypeDingApp, AppID: in.AppID, UnionID: ret.UserInfo.UnionId, OpenID: ret.UserInfo.UserId})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister
 		}
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
-		return l.FillUserInfo(&ui, tx)
+		userID = l.svcCtx.UserID.GetSnowflakeId()
+		ui := &relationDB.SysUserInfo{
+			UserID:   userID,
+			NickName: ret.UserInfo.Name,
+		}
+		if in.Info != nil {
+			ui.NickName = in.Info.NickName
+			if in.Info.UserName != "" {
+				ui.UserName = utils.AnyToNullString(in.Info.UserName)
+			}
+		}
+		isCreateUi = true
+		err = relationDB.NewUserThirdRepo(tx).Insert(l.ctx, &relationDB.SysUserThird{
+			AppType: def.ThirdTypeDingApp,
+			AppID:   in.AppID,
+			UserID:  ui.UserID,
+			UnionID: ret.UserInfo.UnionId,
+			OpenID:  ret.UserInfo.UserId,
+		})
+		if err != nil {
+			return err
+		}
+		err = l.FillUserInfo(ui, isCreateUi, tx)
+		return err
 	})
 	return &sys.UserRegisterResp{UserID: userID}, err
 }
 
-func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB) error {
-	err := Register(l.ctx, l.svcCtx, in, tx)
+func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, isCreateUi bool, tx *gorm.DB) error {
+	err := Register(l.ctx, l.svcCtx, in, isCreateUi, tx)
 	if err != nil && errors.Cmp(err, errors.Duplicate) { //已经注册过
 		return errors.DuplicateRegister
 	}
 	return err
 }
 
-func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, tx *gorm.DB) error {
+func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.SysUserInfo, isCreateUi bool, tx *gorm.DB) error {
 	ctx = ctxs.WithAdmin(ctx)
 	uc := ctxs.GetUserCtx(ctx)
 	cfg, err := svcCtx.TenantConfigCache.GetData(ctx, uc.TenantCode)
 	if err != nil {
 		return err
 	}
+	if tx == nil {
+		tx = stores.GetTenantConn(ctx)
+	}
 	err = tx.Transaction(func(tx *gorm.DB) error {
-		uidb := relationDB.NewUserInfoRepo(tx)
-		in.RegIP = uc.IP
-		in.Role = cfg.RegisterRoleID
-		err = uidb.Insert(ctx, in)
+		if isCreateUi {
+			uidb := relationDB.NewUserInfoRepo(tx)
+			in.RegIP = uc.IP
+			err = uidb.Insert(ctx, in)
+			if err != nil {
+				return err
+			}
+		}
+		err = relationDB.NewUserTenantRepo(tx).Insert(ctx, &relationDB.SysUserTenant{UserID: in.UserID, Status: def.True, Tags: make(map[string]string)})
 		if err != nil {
 			return err
 		}

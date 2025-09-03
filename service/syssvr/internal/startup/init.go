@@ -24,6 +24,7 @@ import (
 	coreCache "gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
 	"gitee.com/unitedrhino/core/share/topics"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -237,10 +238,10 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		svcCtx.TenantConfigCache = tenantCache
 	}
 	{
-		userCache, err := caches.NewCache(caches.CacheConfig[sys.UserInfo, int64]{
+		userCache, err := caches.NewCache(caches.CacheConfig[sys.UserInfo, users.UserTenantCore]{
 			KeyType:   topics.ServerCacheKeySysUserInfo,
 			FastEvent: svcCtx.FastEvent,
-			GetData: func(ctx context.Context, key int64) (*sys.UserInfo, error) {
+			GetData: func(ctx context.Context, key users.UserTenantCore) (*sys.UserInfo, error) {
 				db := relationDB.NewUserInfoRepo(ctx)
 				if key == 0 {
 					key = ctxs.GetUserCtxNoNil(ctx).UserID

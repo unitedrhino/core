@@ -2,7 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
-	"database/sql"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -31,14 +31,14 @@ func NewUserBindAccountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 }
 
 func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys.Empty, error) {
-	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if er != nil {
-		return nil, errors.System.AddDetail(er)
-	}
-	if !utils.SliceIn(in.Type, cli.Config.LoginTypes...) {
-		l.Errorf("不支持的登录方式:%v", in.Type)
-		return nil, errors.NotSupportLogin
-	}
+	//cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+	//if er != nil {
+	//	return nil, errors.System.AddDetail(er)
+	//}
+	//if !utils.SliceIn(in.Type, cli.Config.LoginTypes...) {
+	//	l.Errorf("不支持的登录方式:%v", in.Type)
+	//	return nil, errors.NotSupportLogin
+	//}
 	uc := ctxs.GetUserCtx(l.ctx)
 	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, uc.UserID)
 	if err != nil {
@@ -60,53 +60,54 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 			return nil, errors.Captcha
 		}
 		ui.Phone = utils.AnyToNullString(in.Account)
-	case users.RegWxMiniP:
-		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
-			return &sys.Empty{}, errors.BindAccount
-		}
-		if cli.MiniProgram == nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		auth := cli.MiniProgram.GetAuth()
-		ret, er := auth.Code2SessionContext(l.ctx, in.Code)
-		if er != nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		if ret.ErrCode != 0 {
-			return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
-		}
-		if ret.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{String: ret.UnionID, Valid: true}
-		}
-		ui.WechatOpenID = sql.NullString{String: ret.OpenID, Valid: true}
-	case users.RegWxOpen:
-		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
-			return &sys.Empty{}, errors.BindAccount
-		}
-		if cli.WxOfficial == nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
-		if er != nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		if at.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{String: at.UnionID, Valid: true}
-		}
-		ui.WechatOpenID = sql.NullString{String: at.OpenID, Valid: true}
-
-	case users.RegDingApp:
-		if cli.DingMini == nil {
-			return nil, errors.System.AddDetail(err)
-		}
-		ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
-		if er != nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		if ret.Code != 0 {
-			return nil, errors.Parameter.AddMsgf(ret.Msg)
-		}
-		ui.DingTalkUserID = sql.NullString{String: ret.UserInfo.UserId, Valid: true}
+		//todo
+		//case users.RegWxMiniP:
+		//	if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
+		//		return &sys.Empty{}, errors.BindAccount
+		//	}
+		//	if cli.MiniProgram == nil {
+		//		return nil, errors.System.AddDetail(er)
+		//	}
+		//	auth := cli.MiniProgram.GetAuth()
+		//	ret, er := auth.Code2SessionContext(l.ctx, in.Code)
+		//	if er != nil {
+		//		return nil, errors.System.AddDetail(er)
+		//	}
+		//	if ret.ErrCode != 0 {
+		//		return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
+		//	}
+		//	if ret.UnionID != "" {
+		//		ui.WechatUnionID = sql.NullString{String: ret.UnionID, Valid: true}
+		//	}
+		//	ui.WechatOpenID = sql.NullString{String: ret.OpenID, Valid: true}
+		//case users.RegWxOpen:
+		//	if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
+		//		return &sys.Empty{}, errors.BindAccount
+		//	}
+		//	if cli.WxOfficial == nil {
+		//		return nil, errors.System.AddDetail(er)
+		//	}
+		//	at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		//	if er != nil {
+		//		return nil, errors.System.AddDetail(er)
+		//	}
+		//	if at.UnionID != "" {
+		//		ui.WechatUnionID = sql.NullString{String: at.UnionID, Valid: true}
+		//	}
+		//	ui.WechatOpenID = sql.NullString{String: at.OpenID, Valid: true}
+		//
+		//case users.RegDingApp:
+		//	if cli.DingMini == nil {
+		//		return nil, errors.System.AddDetail(err)
+		//	}
+		//	ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
+		//	if er != nil {
+		//		return nil, errors.System.AddDetail(er)
+		//	}
+		//	if ret.Code != 0 {
+		//		return nil, errors.Parameter.AddMsgf(ret.Msg)
+		//	}
+		//	ui.DingTalkUserID = sql.NullString{String: ret.UserInfo.UserId, Valid: true}
 	}
 	err = relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, ui)
 	return &sys.Empty{}, err

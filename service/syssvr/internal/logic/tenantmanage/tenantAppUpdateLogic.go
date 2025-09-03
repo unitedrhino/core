@@ -3,16 +3,18 @@ package tenantmanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
+	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
-
-	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -43,14 +45,22 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if err != nil {
 		return nil, err
 	}
+	app, err := relationDB.NewAppInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.AppInfoFilter{Codes: []string{in.AppCode}})
+	if err != nil {
+		return nil, err
+	}
+	var thirdFields = map[string]any{}
 	if in.WxMini != nil {
 		old.WxMini = utils.Copy[relationDB.SysTenantThird](in.WxMini)
+		thirdFields["wx_mini_app_id"] = in.WxMini.AppID
 	}
 	if in.DingMini != nil {
 		old.DingMini = utils.Copy[relationDB.SysTenantThird](in.DingMini)
+		thirdFields["ding_mini_app_id"] = in.WxMini.AppID
 	}
 	if in.WxOpen != nil {
 		old.WxOpen = utils.Copy[relationDB.SysTenantThird](in.WxOpen)
+		thirdFields["wx_open_app_id"] = in.WxMini.AppID
 	}
 	if in.Android != nil {
 		if in.Android.IsUpdateFilePath {
@@ -73,7 +83,11 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 			}
 		}
 		old.Android = utils.Copy[relationDB.SysThirdApp](in.Android)
+		thirdFields["android_version"] = in.Android.Version
+		thirdFields["android_file_path"] = in.Android.FilePath
+		thirdFields["android_version_desc"] = in.Android.VersionDesc
 	}
+
 	if in.LoginTypes != nil {
 		old.LoginTypes = in.LoginTypes
 	}
@@ -83,7 +97,15 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.Config != "" {
 		old.Config = in.Config
 	}
-	err = relationDB.NewTenantAppRepo(l.ctx).Update(ctxs.WithRoot(l.ctx), old)
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		db := relationDB.NewTenantAppRepo(tx)
+		err = db.Update(ctxs.WithRoot(l.ctx), old)
+		if err != nil {
+			return err
+		}
+		err = db.UpdateWithField(ctxs.WithRoot(l.ctx), relationDB.TenantAppFilter{AppCodes: []string{in.AppCode}}, thirdFields)
+		return err
+	})
 	if err == nil {
 		ctx := l.ctx
 		if in.Code != "" {

@@ -184,7 +184,6 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		UserID:       claim.UserID,
 		RoleIDs:      ui.RoleIDs,
 		RoleCodes:    ui.RoleCodes,
-		IsAllData:    ui.IsAllData,
 		TenantCode:   ui.TenantCode,
 		IsSuperAdmin: ti.AdminUserID == ui.UserID || utils.SliceIn(ti.AdminRoleID, ui.RoleIDs...),
 		Account:      ui.Account,

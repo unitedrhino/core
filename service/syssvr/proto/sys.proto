@@ -736,10 +736,10 @@ message TenantAppInfo{
   string code = 1;
   string appCode = 2;
   repeated TenantAppModule modules = 3;//模块列表
-  ThirdAppConfig dingMini =4;//钉钉小程序
-  ThirdAppConfig wxMini =5;//微信小程序
-  ThirdAppConfig wxOpen =7;//微信开放 web app需要填写
-  ThirdApp android =10; //安卓应用
+  ThirdAppConfig dingMini =4;//钉钉小程序,如果应用是isCommon的,则无需填写
+  ThirdAppConfig wxMini =5;//微信小程序,如果应用是isCommon的,则无需填写
+  ThirdAppConfig wxOpen =7;//微信开放 web app需要填写 ,如果应用是isCommon的,则无需填写
+  ThirdApp android =10; //安卓应用 ,如果应用是isCommon的,则无需填写
   repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
   int64 isAutoRegister =9;//登录未注册是否自动注册
   string config =11;//自定义配置json
@@ -1280,8 +1280,6 @@ message UserInfo{
   string password =3;
   google.protobuf.StringValue email = 4;
   google.protobuf.StringValue phone =5;
-  string wechatUnionID = 6;
-  string wechatOpenID =23;
   string lastIP =7;
   string lastTokenID =27;
   string regIP =8;
@@ -1293,13 +1291,17 @@ message UserInfo{
   int64  createdTime =15;
   int64  role = 16;
   int64  sex =17;
-  int64  isAllData =18;
   string headImg =19;
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
-  int64 status =21;
-  map<string, string> tags = 24;//标签
-  repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
+}
+
+message UserTenant{
+  string tenantCode =22;
+  int64  userID = 1;
   int64 deviceCount =26; //拥有的设备统计
+  int64 status =21;
+  repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
+  map<string, string> tags = 24;//标签
 }
 
 
@@ -1321,7 +1323,6 @@ message UserCheckTokenResp{
   int64 userID = 2;
   repeated int64 roleIDs = 3;
   repeated string roleCodes = 4;
-  int64 isAllData = 5;
   string tenantCode = 6;//租户编码
   bool isAdmin = 7;//是否是管理员
   bool isSuperAdmin = 8;//是否是超级管理员(可以跨租户)
@@ -1467,11 +1468,13 @@ message UserLoginReq{
     string codeID = 6;//验证码编号 微信登录填state
     string ip = 7;//透传请求的 ip
     string deviceID =8;//设备ID 可选
+    string appID =9;//应用ID,第三方登录方式填写 钉钉 微信 oauth的其他
 }
 
 message UserLoginResp{
   UserInfo info = 1;
   JwtToken token =2;
+  repeated UserTenant tenants=3;
 }
 
 //登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册
@@ -1484,6 +1487,7 @@ message UserRegisterReq{
   UserInfo info = 6;//填写用户信息
   map<string,string> expand =7; //拓展, 微信登录方式 phoneCode:获取手机号code
   bool isAdmin =8;//管理员的方式注册,如果配置了创建新建租户,则会创建个租户
+  string appID =9;//应用ID,第三方登录方式填写 钉钉 微信 oauth的其他
 }
 
 message UserRegisterResp{
@@ -1913,6 +1917,10 @@ message AppInfo{
   string subType=10;//子类型  wx:微信小程序  ding:钉钉小程序
   string code = 3;          // 应用编码
   google.protobuf.StringValue desc = 4;        // 应用描述
+  int64 isCommon = 5;//是否是公共应用,公共应用所有租户共用,只有default租户能修改,其他租户只能读
+  int64 isSetDingMini = 6; //是否设置了钉钉小程序
+  int64 isSetWxMini = 8; //是否设置了微信小程序
+  int64 isSetWxOpen = 9; //是否设置了微信开放平台
 }
 
 message AppInfoIndexReq{

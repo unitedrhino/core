@@ -1,9 +1,10 @@
 package users
 
 import (
+	"time"
+
 	"gitee.com/unitedrhino/share/errors"
 	"github.com/golang-jwt/jwt/v5"
-	"time"
 )
 
 // Custom claims structure
@@ -12,6 +13,11 @@ type LoginClaims struct {
 	AppCode  string
 	DeviceID string `json:""`
 	jwt.RegisteredClaims
+}
+
+type UserTenantCore struct {
+	UserID     int64  `json:"userID,string"`
+	TenantCode string `json:"tenantCode"`
 }
 
 type UserInfo struct {

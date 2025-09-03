@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -23,14 +24,18 @@ func NewUserRoleRepo(in any) *UserRoleRepo {
 }
 
 type UserRoleFilter struct {
-	UserID   int64
-	WithRole bool
+	UserID     int64
+	WithRole   bool
+	TenantCode string
 }
 
 func (p UserRoleRepo) fmtFilter(ctx context.Context, f UserRoleFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.UserID != 0 {
 		db = db.Where("user_id =?", f.UserID)
+	}
+	if f.TenantCode != "" {
+		db = db.Where("tenant_code = ?", f.TenantCode)
 	}
 	if f.WithRole {
 		db = db.Preload("Role")

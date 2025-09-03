@@ -2,6 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -87,6 +88,10 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Empty
 			return err
 		}
 		err = relationDB.NewRoleAppRepo(tx).DeleteByFilter(l.ctx, relationDB.RoleAppFilter{TenantCode: string(ti.Code)})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewRoleInfoRepo(tx).DeleteByFilter(l.ctx, relationDB.RoleInfoFilter{TenantCode: string(ti.Code)})
 		if err != nil {
 			return err
 		}

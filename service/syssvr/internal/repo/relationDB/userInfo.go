@@ -17,28 +17,24 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
-	UserIDs         []int64
-	HasAccessAreas  []int64
-	TenantCode      string
-	UserNames       []string
-	UserName        string
-	NickName        string
-	Phone           string
-	Phones          []string
-	Email           string
-	Emails          []string
-	WechatOpenIDs   []string
-	Accounts        []string //账号查询 非模糊查询
-	WechatUnionID   string
-	WechatOpenID    string
-	DingTalkUserID  string
-	DingTalkUserIDs []string
-	DingTalkUnionID string
-	WithRoles       bool
-	WithTenant      bool
-	RoleCode        string
-	DeptID          int64
-	UpdatedTime     *stores.Cmp
+	UserIDs        []int64
+	HasAccessAreas []int64
+	TenantCode     string
+	UserNames      []string
+	UserName       string
+	NickName       string
+	Phone          string
+	Phones         []string
+	Email          string
+	Emails         []string
+	WechatOpenIDs  []string
+	Accounts       []string //账号查询 非模糊查询
+	WithRoles      bool
+	WithTenant     bool
+	TenantStatus   def.Bool
+	RoleCode       string
+	DeptID         int64
+	UpdatedTime    *stores.Cmp
 }
 
 func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
@@ -69,7 +65,12 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 		db = db.Preload("Tenants.Roles").Preload("Tenants.Roles.Role")
 	}
 	if f.WithTenant {
-		db = db.Preload("Tenants").Preload("Tenants.TenantInfo").Preload("Tenants.TenantConfig")
+		if f.TenantStatus != 0 {
+			db = db.Preload("Tenants")
+		} else {
+			db = db.Preload("Tenants", "status = ?", f.TenantStatus)
+		}
+		db = db.Preload("Tenants.TenantInfo").Preload("Tenants.TenantConfig")
 	}
 	if len(f.UserIDs) != 0 {
 		db = db.Where("user_id in?", f.UserIDs)
@@ -99,36 +100,36 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 		db = db.Where("email in ?", f.Emails)
 	}
 
-	dingOr := db
-	var isDing bool
-	if f.DingTalkUserID != "" {
-		isDing = true
-		dingOr = dingOr.Or("ding_talk_user_id = ?", f.DingTalkUserID)
-	}
-	if len(f.DingTalkUserIDs) != 0 {
-		isDing = true
-		dingOr = dingOr.Or("ding_talk_user_id in ?", f.DingTalkUserIDs)
-	}
-	if f.DingTalkUnionID != "" {
-		isDing = true
-		dingOr = dingOr.Or("ding_talk_union_id = ?", f.DingTalkUnionID)
-	}
-	if isDing {
-		db = db.Where(dingOr)
-	}
-	wechatOr := db
-	var isWechat bool
-	if f.WechatUnionID != "" {
-		isWechat = true
-		wechatOr = wechatOr.Or("wechat_union_id = ?", f.WechatUnionID)
-	}
-	if f.WechatOpenID != "" {
-		isWechat = true
-		wechatOr = wechatOr.Or("wechat_open_id = ?", f.WechatOpenID)
-	}
-	if isWechat {
-		db = db.Where(wechatOr)
-	}
+	//dingOr := db
+	//var isDing bool
+	//if f.DingTalkUserID != "" {
+	//	isDing = true
+	//	dingOr = dingOr.Or("ding_talk_user_id = ?", f.DingTalkUserID)
+	//}
+	//if len(f.DingTalkUserIDs) != 0 {
+	//	isDing = true
+	//	dingOr = dingOr.Or("ding_talk_user_id in ?", f.DingTalkUserIDs)
+	//}
+	//if f.DingTalkUnionID != "" {
+	//	isDing = true
+	//	dingOr = dingOr.Or("ding_talk_union_id = ?", f.DingTalkUnionID)
+	//}
+	//if isDing {
+	//	db = db.Where(dingOr)
+	//}
+	//wechatOr := db
+	//var isWechat bool
+	//if f.WechatUnionID != "" {
+	//	isWechat = true
+	//	wechatOr = wechatOr.Or("wechat_union_id = ?", f.WechatUnionID)
+	//}
+	//if f.WechatOpenID != "" {
+	//	isWechat = true
+	//	wechatOr = wechatOr.Or("wechat_open_id = ?", f.WechatOpenID)
+	//}
+	//if isWechat {
+	//	db = db.Where(wechatOr)
+	//}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)
 	}

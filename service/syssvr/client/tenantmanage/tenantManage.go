@@ -253,6 +253,7 @@ type (
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
+	UserTenant                            = sys.UserTenant
 	WeatherAir                            = sys.WeatherAir
 	WeatherReadReq                        = sys.WeatherReadReq
 	WeatherReadResp                       = sys.WeatherReadResp
