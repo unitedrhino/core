@@ -115,9 +115,10 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	//	return nil, errors.NotSupportLogin
 	//}
 	ucc := ctxs.GetUserCtx(l.ctx)
-	ta, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{TenantCode: ucc.TenantCode, AppCode: ucc.AppCode, WithApp: true})
+	ta, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(ctxs.CommonWithDefault(l.ctx),
+		relationDB.TenantAppFilter{AppCode: ucc.AppCode, WithApp: true})
 	if err != nil {
-		return nil, err
+		return nil, errors.NotEnable.WithMsg("未启用应用")
 	}
 	var isRegister bool
 	switch in.LoginType {
@@ -138,7 +139,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				l.svcCtx.LoginLimit.PwdIp.LimitIt(l.ctx, in.Ip)
 			}
 		}
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenant: true, TenantStatus: def.True, Accounts: []string{in.Account}})
+		uc, err = l.UiDB.FindOneByFilter(ctxs.CommonWithRoot(l.ctx), relationDB.UserInfoFilter{WithTenant: true, TenantStatus: def.True, Accounts: []string{in.Account}})
 		if err != nil {
 			limit()
 			if errors.Cmp(err, errors.NotFind) {
@@ -342,14 +343,6 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 
 func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error) {
 	l.Infof("%s req=%v", utils.FuncName(), utils.Fmt(in))
-	uc := ctxs.GetUserCtx(l.ctx)
-	cfg, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{AppCodes: []string{uc.AppCode}})
-	if err != nil {
-		return nil, err
-	}
-	if len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
-		return nil, errors.Parameter.WithMsgf("不支持的登录方式:%v", in.LoginType)
-	}
 	ui, err := l.GetUserInfo(in)
 	if err == nil {
 		//if ui.Status != def.True {

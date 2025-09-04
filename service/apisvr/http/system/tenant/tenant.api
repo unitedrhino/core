@@ -22,7 +22,7 @@ service api {
         summary: "添加租户"
     )
     @handler create
-    post /create (TenantInfoCreateReq) returns (WithID)
+    post /create (TenantInfo) returns (WithID)
 
     @doc(
         summary: "获取租户列表"
@@ -227,11 +227,6 @@ type(
 )
 
 type (
-
-    TenantInfoCreateReq{
-        Info *TenantInfo `json:"info"`
-        AdminUserID int64 `json:"adminUserID"`
-    }
 
     TenantInfoCreateResp{
         Code string `json:"code"`

@@ -17,24 +17,19 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
-	UserIDs        []int64
-	HasAccessAreas []int64
-	TenantCode     string
-	UserNames      []string
-	UserName       string
-	NickName       string
-	Phone          string
-	Phones         []string
-	Email          string
-	Emails         []string
-	WechatOpenIDs  []string
-	Accounts       []string //账号查询 非模糊查询
-	WithRoles      bool
-	WithTenant     bool
-	TenantStatus   def.Bool
-	RoleCode       string
-	DeptID         int64
-	UpdatedTime    *stores.Cmp
+	UserIDs      []int64
+	UserNames    []string
+	UserName     string
+	NickName     string
+	Phone        string
+	Phones       []string
+	Email        string
+	Emails       []string
+	Accounts     []string //账号查询 非模糊查询
+	WithRoles    bool
+	WithTenant   bool
+	TenantStatus def.Bool
+	UpdatedTime  *stores.Cmp
 }
 
 func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
@@ -47,19 +42,6 @@ func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
 func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	db = f.UpdatedTime.Where(db, "updated_time")
-	if f.HasAccessAreas != nil {
-		if len(f.HasAccessAreas) == 0 {
-			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=?", def.TargetUser)
-			db = db.Where("user_id in (?)", subQuery)
-		} else {
-			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=? and area_id in ?", def.TargetUser, f.HasAccessAreas)
-			db = db.Where("user_id in (?)", subQuery)
-		}
-	}
-	if f.DeptID > 0 {
-		subQuery := p.db.Model(&SysDeptUser{}).Select("user_id").Where("dept_id=?", f.DeptID)
-		db = db.Where("user_id in (?)", subQuery)
-	}
 
 	if f.WithRoles {
 		db = db.Preload("Tenants.Roles").Preload("Tenants.Roles.Role")
@@ -100,44 +82,6 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 		db = db.Where("email in ?", f.Emails)
 	}
 
-	//dingOr := db
-	//var isDing bool
-	//if f.DingTalkUserID != "" {
-	//	isDing = true
-	//	dingOr = dingOr.Or("ding_talk_user_id = ?", f.DingTalkUserID)
-	//}
-	//if len(f.DingTalkUserIDs) != 0 {
-	//	isDing = true
-	//	dingOr = dingOr.Or("ding_talk_user_id in ?", f.DingTalkUserIDs)
-	//}
-	//if f.DingTalkUnionID != "" {
-	//	isDing = true
-	//	dingOr = dingOr.Or("ding_talk_union_id = ?", f.DingTalkUnionID)
-	//}
-	//if isDing {
-	//	db = db.Where(dingOr)
-	//}
-	//wechatOr := db
-	//var isWechat bool
-	//if f.WechatUnionID != "" {
-	//	isWechat = true
-	//	wechatOr = wechatOr.Or("wechat_union_id = ?", f.WechatUnionID)
-	//}
-	//if f.WechatOpenID != "" {
-	//	isWechat = true
-	//	wechatOr = wechatOr.Or("wechat_open_id = ?", f.WechatOpenID)
-	//}
-	//if isWechat {
-	//	db = db.Where(wechatOr)
-	//}
-	if f.TenantCode != "" {
-		db = db.Where("tenant_code =?", f.TenantCode)
-	}
-	if f.RoleCode != "" {
-		subQuery1 := p.db.Model(&SysRoleInfo{}).Select("id").Where("code=?", f.RoleCode)
-		subQuery2 := p.db.Model(&SysUserRole{}).Select("user_id").Where("role_id in (?)", subQuery1)
-		db = db.Where("user_id in (?)", subQuery2)
-	}
 	return db
 }
 
@@ -201,7 +145,7 @@ func (p UserInfoRepo) Delete(ctx context.Context, userID int64) error {
 }
 func (p UserInfoRepo) FindOne(ctx context.Context, userID int64) (*SysUserInfo, error) {
 	var result SysUserInfo
-	err := p.db.WithContext(ctx).Where("user_id = ?", userID).First(&result).Error
+	err := p.db.WithContext(ctx).Preload("Tenants").Where("user_id = ?", userID).First(&result).Error
 	return &result, stores.ErrFmt(err)
 }
 

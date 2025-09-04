@@ -28,7 +28,7 @@ type SysUserInfo struct {
 	HeadImg     string           `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`                            // 用户头像
 	Tenants     []*SysUserTenant `gorm:"foreignKey:UserID;references:UserID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;"`
 }
 
 func (m *SysUserInfo) TableName() string {
@@ -43,8 +43,8 @@ type SysUserTenant struct {
 	Status       int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"`                //用户状态: 1启用 2禁用
 	Tags         map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 产品标签
 	User         *SysUserInfo        `gorm:"foreignKey:UserID;references:UserID"`
-	TenantInfo   *SysTenantInfo      `gorm:"foreignKey:Code;references:tenantInfoCode"`
-	TenantConfig *SysTenantConfig    `gorm:"foreignKey:Code;references:tenantInfoCode"`
+	TenantInfo   *SysTenantInfo      `gorm:"foreignKey:Code;references:TenantCode"`
+	TenantConfig *SysTenantConfig    `gorm:"foreignKey:TenantCode;references:TenantCode"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:sys_user_tenant_user_tenant;"`
 }

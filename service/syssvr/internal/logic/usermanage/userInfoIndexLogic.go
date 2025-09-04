@@ -2,13 +2,14 @@ package usermanagelogic
 
 import (
 	"context"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -17,7 +18,7 @@ type UserInfoIndexLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
-	UiDB *relationDB.UserInfoRepo
+	UiDB *relationDB.UserTenantRepo
 }
 
 func NewUserInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfoIndexLogic {
@@ -25,13 +26,13 @@ func NewUserInfoIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
-		UiDB:   relationDB.NewUserInfoRepo(ctx),
+		UiDB:   relationDB.NewUserTenantRepo(ctx),
 	}
 }
 
 func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserInfoIndexResp, error) {
 	l.Infof("%s req=%+v", utils.FuncName(), in)
-	f := relationDB.UserInfoFilter{
+	f := relationDB.UserTenantFilter{
 		UserName:       in.UserName,
 		NickName:       in.NickName,
 		Phone:          in.Phone,
@@ -40,6 +41,7 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 		HasAccessAreas: in.HasAccessAreas,
 		RoleCode:       in.RoleCode,
 		DeptID:         in.DeptID,
+		WithUser:       true,
 	}
 	if in.UpdatedTime != nil {
 		f.UpdatedTime = stores.GetCmp(in.UpdatedTime.CmpType, time.Unix(in.UpdatedTime.Value, 0))
@@ -60,7 +62,7 @@ func (l *UserInfoIndexLogic) UserInfoIndex(in *sys.UserInfoIndexReq) (*sys.UserI
 	}
 	info := make([]*sys.UserInfo, 0, len(ucs))
 	for _, uc := range ucs {
-		info = append(info, UserInfoToPb(l.ctx, uc, l.svcCtx))
+		info = append(info, UserInfoToPb(l.ctx, RevertUserTenant(uc), l.svcCtx))
 	}
 	return &sys.UserInfoIndexResp{
 		List:  info,

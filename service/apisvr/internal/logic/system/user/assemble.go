@@ -1,8 +1,6 @@
 package user
 
 import (
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
@@ -28,9 +26,10 @@ func UserInfoToApi(ui *sys.UserInfo, opt UserOpt) *types.UserInfo {
 	}
 	ret := utils.Copy[types.UserInfo](ui)
 	ret.Password = "xxxx"
-	ret.Roles = role.ToRoleInfosTypes(opt.Roles)
-	ret.Tenant = system.ToTenantInfoTypes(opt.Tenant, nil, nil)
-	ret.Depts = utils.CopySlice[types.DeptInfo](opt.Depts)
+	//todo
+	//ret.Roles = role.ToRoleInfosTypes(opt.Roles)
+	//ret.Tenant = system.ToTenantInfoTypes(opt.Tenant, nil, nil)
+	//ret.Depts = utils.CopySlice[types.DeptInfo](opt.Depts)
 	return ret
 }
 func UserInfoToRpc(ui *types.UserInfo) *sys.UserInfo {

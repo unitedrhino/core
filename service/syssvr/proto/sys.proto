@@ -276,7 +276,7 @@ service AreaManage {
 
 service TenantManage {
   //新增区域
-  rpc tenantInfoCreate (TenantInfoCreateReq) returns (WithID);
+  rpc tenantInfoCreate (TenantInfo) returns (WithID);
   //更新区域
   rpc tenantInfoUpdate (TenantInfo) returns (Empty);
   //删除区域
@@ -644,10 +644,7 @@ message NotifyConfigSendReq{
 
 //--------------------租户管理------------------------
 
-message TenantInfoCreateReq{
-  TenantInfo info = 1;
-  int64 adminUserID = 2;
-}
+
 
 message TenantInfo{
   int64 id = 1;

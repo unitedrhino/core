@@ -17,6 +17,15 @@ func NewUserTenantRepo(in any) *UserTenantRepo {
 }
 
 type UserTenantFilter struct {
+	UserNames []string
+	UserName  string
+	NickName  string
+	Phone     string
+	Phones    []string
+	Email     string
+	Emails    []string
+	Accounts  []string //账号查询 非模糊查询
+
 	UserIDs         []int64
 	HasAccessAreas  []int64
 	TenantCode      string
@@ -109,6 +118,31 @@ func (p UserTenantRepo) fmtFilter(ctx context.Context, f UserTenantFilter) *gorm
 		subQuery2 := p.db.Model(&SysUserRole{}).Select("user_id").Where("role_id in (?)", subQuery1)
 		db = db.Where("user_id in (?)", subQuery2)
 	}
+
+	if len(f.UserNames) != 0 {
+		db = db.Where("user_name in ?", f.UserNames)
+	}
+	if f.NickName != "" {
+		db = db.Where("nick_name like ?", "%"+f.NickName+"%")
+	}
+	if len(f.Accounts) != 0 {
+		db = p.accountsFilter(db, f.Accounts)
+	}
+	if f.UserName != "" {
+		db = db.Where("user_name like ?", "%"+f.UserName+"%")
+	}
+	if f.Phone != "" {
+		db = db.Where("phone like ?", "%"+f.Phone+"%")
+	}
+	if len(f.Phones) != 0 {
+		db = db.Where("phone in ?", f.Phones)
+	}
+	if f.Email != "" {
+		db = db.Where("email like ?", "%"+f.Email+"%")
+	}
+	if len(f.Emails) != 0 {
+		db = db.Where("email in ?", f.Emails)
+	}
 	return db
 }
 
@@ -172,16 +206,6 @@ func (p UserTenantRepo) Delete(ctx context.Context, userID int64) error {
 }
 func (p UserTenantRepo) FindOne(ctx context.Context, userID int64) (*SysUserTenant, error) {
 	var result SysUserTenant
-	err := p.db.WithContext(ctx).Where("user_id = ?", userID).First(&result).Error
+	err := p.db.WithContext(ctx).Preload("User").Where("user_id = ?", userID).First(&result).Error
 	return &result, stores.ErrFmt(err)
-}
-
-func (p UserTenantRepo) FindUserCore(ctx context.Context, f UserTenantFilter) (ret []*SysUserTenant, err error) {
-	var results []*SysUserTenant
-	db := p.fmtFilter(ctx, f).Model(&SysUserTenant{})
-	err = db.Select("user_id,user_name,email,phone,wechat_union_id,wechat_open_id,ding_talk_user_id").Find(&results).Error
-	if err != nil {
-		return nil, stores.ErrFmt(err)
-	}
-	return results, nil
 }

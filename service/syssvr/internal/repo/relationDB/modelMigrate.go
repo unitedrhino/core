@@ -39,6 +39,8 @@ func Migrate(c conf.Database) error {
 		&SysSlotInfo{},
 		&SysUserInfo{},
 		&SysRoleInfo{},
+		&SysUserTenant{},
+		&SysUserThird{},
 		&SysRoleMenu{},
 		&SysRoleAccess{},
 		&SysTenantAgreement{},
@@ -86,6 +88,9 @@ func Migrate(c conf.Database) error {
 func migrateTableColumn() error {
 	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
 	if err := db.CreateInBatches(&MigrateUserInfo, 100).Error; err != nil {
+		return err
+	}
+	if err := db.CreateInBatches(&MigrateUserTenant, 100).Error; err != nil {
 		return err
 	}
 	if err := db.CreateInBatches(&MigrateRoleInfo, 100).Error; err != nil {
@@ -157,6 +162,9 @@ var (
 	MigrateTenantInfo  = []SysTenantInfo{{Code: def.TenantCodeDefault, Name: "联犀平台", AdminUserID: adminUserID, AdminRoleID: 3, DefaultProjectID: defaultProjectID}}
 	MigrateUserInfo    = []SysUserInfo{
 		{UserID: adminUserID, UserName: sql.NullString{String: "administrator", Valid: true}, Password: "4f0fded4a38abe7a3ea32f898bb82298", NickName: "联犀管理员"},
+	}
+	MigrateUserTenant = []SysUserTenant{
+		{UserID: adminUserID, TenantCode: def.TenantCodeDefault},
 	}
 	MigrateUserRole = []SysUserRole{
 		{TenantCode: def.TenantCodeDefault, UserID: adminUserID, RoleID: 1},

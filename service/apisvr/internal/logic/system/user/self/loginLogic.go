@@ -3,7 +3,6 @@ package self
 import (
 	"context"
 
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
@@ -78,42 +77,16 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		Msg:           "登录成功",
 		Code:          errors.OK.GetCode(),
 	})
-	info, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
-		UserID: uResp.Info.UserID,
-	})
-	if err != nil {
-		return nil, err
-	}
-	var (
-		roles []*types.RoleInfo
-	)
-
-	roles = role.ToRoleInfosTypes(info.List)
-	return &types.UserLoginResp{
-		Info: types.UserInfo{
-			UserID:      uResp.Info.UserID,
-			UserName:    uResp.Info.UserName,
-			Password:    "",
-			Email:       utils.ToNullString(uResp.Info.Email),
-			Phone:       utils.ToNullString(uResp.Info.Phone),
-			LastIP:      uResp.Info.LastIP,
-			RegIP:       uResp.Info.RegIP,
-			NickName:    uResp.Info.NickName,
-			City:        uResp.Info.City,
-			Country:     uResp.Info.Country,
-			Province:    uResp.Info.Province,
-			Language:    uResp.Info.Language,
-			HeadImg:     uResp.Info.HeadImg,
-			CreatedTime: uResp.Info.CreatedTime,
-			//Role:        uResp.Info.Role,
-			Sex: uResp.Info.Sex,
-			//IsAllData:   uResp.Info.IsAllData,
-		},
-		Roles: roles,
-		Token: types.JwtToken{
-			AccessToken:  uResp.Token.AccessToken,
-			AccessExpire: uResp.Token.AccessExpire,
-			RefreshAfter: uResp.Token.RefreshAfter,
-		},
-	}, nil
+	//info, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
+	//	UserID: uResp.Info.UserID,
+	//})
+	//if err != nil {
+	//	return nil, err
+	//}
+	//var (
+	//	roles []*types.RoleInfo
+	//)
+	//
+	//roles = role.ToRoleInfosTypes(info.List)
+	return utils.Copy[types.UserLoginResp](uResp), nil
 }

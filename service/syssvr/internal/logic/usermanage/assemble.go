@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -9,6 +10,15 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 )
+
+func RevertUserTenant(in *relationDB.SysUserTenant) *relationDB.SysUserInfo {
+	if in == nil || in.User == nil {
+		return nil
+	}
+	ret := *in.User
+	ret.Tenants = append(ret.Tenants, in)
+	return &ret
+}
 
 func UserInfoToPb(ctx context.Context, ui *relationDB.SysUserInfo, svcCtx *svc.ServiceContext) *sys.UserInfo {
 	if ui.HeadImg != "" {

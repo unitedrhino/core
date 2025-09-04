@@ -97,11 +97,11 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		l.Errorf("%s parse token fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
-	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(ctxs.WithRoot(l.ctx), relationDB.UserInfoFilter{
-		TenantCode: claim.TenantCode,
+	ui, err := relationDB.NewUserTenantRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserTenantFilter{
 		UserIDs:    []int64{claim.UserID},
 		WithRoles:  true,
 		WithTenant: true,
+		WithUser:   true,
 	})
 	if err != nil {
 		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
@@ -120,17 +120,17 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	if ui.TenantConfig != nil && (utils.SliceIn(ui.TenantInfo.AdminRoleID, rolses...) || ui.TenantInfo.AdminUserID == ui.UserID) {
 		isAdmin = def.True
 	}
-	var account = ui.UserName.String
+	var account = ui.User.UserName.String
 	if account == "" {
-		account = ui.Phone.String
+		account = ui.User.Phone.String
 	}
 	if account == "" {
-		account = ui.Email.String
+		account = ui.User.Email.String
 	}
 	if account == "" {
 		account = cast.ToString(ui.UserID)
 	}
-	ret := sys.UserCheckTokenResp{UserID: claim.UserID, IsAllData: ui.IsAllData, RoleIDs: rolses, RoleCodes: roleCodes,
+	ret := sys.UserCheckTokenResp{UserID: claim.UserID, RoleIDs: rolses, RoleCodes: roleCodes,
 		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, roleCodes...) || (isAdmin == def.True),
 		Account:      account, TenantCode: claim.TenantCode}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, roleCodes...) || ret.IsSuperAdmin
@@ -155,7 +155,8 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	}
 	var token string
 
-	ui, err := l.svcCtx.UsersCache.GetData(l.ctx, claim.UserID)
+	ui, err := l.svcCtx.UsersCache.GetData(l.ctx,
+		users.UserTenantCore{TenantCode: ctxs.GetUserCtxNoNil(l.ctx).TenantCode, UserID: claim.UserID})
 	if err != nil {
 		l.Errorf("%s UsersCache.GetData fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
