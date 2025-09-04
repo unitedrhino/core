@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -104,9 +105,9 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 			Language:    uResp.Info.Language,
 			HeadImg:     uResp.Info.HeadImg,
 			CreatedTime: uResp.Info.CreatedTime,
-			Role:        uResp.Info.Role,
-			Sex:         uResp.Info.Sex,
-			IsAllData:   uResp.Info.IsAllData,
+			//Role:        uResp.Info.Role,
+			Sex: uResp.Info.Sex,
+			//IsAllData:   uResp.Info.IsAllData,
 		},
 		Roles: roles,
 		Token: types.JwtToken{

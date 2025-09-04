@@ -3,6 +3,11 @@ package startup
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/event/day"
@@ -24,17 +29,12 @@ import (
 	coreCache "gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
 	"gitee.com/unitedrhino/core/share/topics"
-	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
 func Init(svcCtx *svc.ServiceContext) {
@@ -238,10 +238,10 @@ func InitCache(svcCtx *svc.ServiceContext) {
 		svcCtx.TenantConfigCache = tenantCache
 	}
 	{
-		userCache, err := caches.NewCache(caches.CacheConfig[sys.UserInfo, users.UserTenantCore]{
+		userCache, err := caches.NewCache(caches.CacheConfig[sys.UserInfo, int64]{
 			KeyType:   topics.ServerCacheKeySysUserInfo,
 			FastEvent: svcCtx.FastEvent,
-			GetData: func(ctx context.Context, key users.UserTenantCore) (*sys.UserInfo, error) {
+			GetData: func(ctx context.Context, key int64) (*sys.UserInfo, error) {
 				db := relationDB.NewUserInfoRepo(ctx)
 				if key == 0 {
 					key = ctxs.GetUserCtxNoNil(ctx).UserID

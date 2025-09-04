@@ -2,11 +2,9 @@ package tenantmanagelogic
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
-	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/dataType"
@@ -48,46 +46,19 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	defer func() {
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
-	userInfo := in.AdminUserInfo
-	if userInfo.UserName != "" {
-		//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
-		err := usermanagelogic.CheckUserName(userInfo.UserName)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	//校验密码强度
-	err := usermanagelogic.CheckPwd(l.svcCtx, userInfo.Password)
-	if err != nil {
-		return nil, err
-	}
-	//1.生成uid
-	userID := l.svcCtx.UserID.GetSnowflakeId()
-	//2.对密码进行md5加密
-	password := utils.MakePwd(userInfo.Password, userID, false)
-	if userInfo.Phone == nil && userInfo.Email == nil {
-		return nil, errors.Parameter.AddMsgf("手机号和邮箱必须填写一个")
-	}
 	if utils.SliceIn(in.Info.Code, def.TenantCodeCommon, def.TenantCodeDefault) {
 		return nil, errors.Parameter.AddMsgf("租户编码不能为内置的 %s或%s", def.TenantCodeCommon, def.TenantCodeDefault)
 	}
-	ui := relationDB.SysUserInfo{
-		TenantCode: dataType.TenantCode(in.Info.Code),
-		UserID:     userID,
-		Phone:      utils.AnyToNullString(userInfo.Phone),
-		Email:      utils.AnyToNullString(userInfo.Email),
-		UserName:   sql.NullString{String: userInfo.UserName, Valid: true},
-		Password:   password,
-		NickName:   userInfo.NickName,
-		City:       userInfo.City,
-		Country:    userInfo.Country,
-		Province:   userInfo.Province,
-		Language:   userInfo.Language,
-		HeadImg:    userInfo.HeadImg,
-		Role:       userInfo.Role,
-		Sex:        userInfo.Sex,
-		IsAllData:  def.True,
+	_, err := l.svcCtx.TenantCache.GetData(l.ctx, string(in.Info.Code))
+	if err == nil {
+		return nil, errors.Duplicate.AddMsgf("租户编码已存在:%s", in.Info.Code)
+	}
+	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, in.AdminUserID)
+	if err != nil {
+		if errors.Cmp(err, errors.NotFind) {
+			return nil, errors.UnRegister.AddMsg("请先注册管理员账号")
+		}
+		return nil, err
 	}
 
 	projectPo := relationDB.SysProjectInfo{
@@ -95,7 +66,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		ProjectID:   dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName: in.Info.Name,
 		//CompanyName: utils.ToEmptyString(in.CompanyName),
-		AdminUserID: userID,
+		AdminUserID: ui.UserID,
 		//Region:      utils.ToEmptyString(in.Region),
 		//Address:     utils.ToEmptyString(in.Address),
 	}
@@ -135,8 +106,11 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		if err != nil {
 			return err
 		}
-		ui.Role = ris[0].ID
-		err = relationDB.NewUserInfoRepo(tx).Insert(l.ctx, &ui)
+		err = relationDB.NewUserTenantRepo(tx).Insert(l.ctx, &relationDB.SysUserTenant{
+			TenantCode: dataType.TenantCode(in.Info.Code),
+			UserID:     ui.UserID,
+			Status:     def.True,
+		})
 		if err != nil {
 			return err
 		}

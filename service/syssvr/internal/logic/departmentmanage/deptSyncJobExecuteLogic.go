@@ -2,9 +2,10 @@ package departmentmanagelogic
 
 import (
 	"context"
-	"database/sql"
-	"encoding/json"
 	"fmt"
+	"sync"
+	"time"
+
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -22,9 +23,6 @@ import (
 	"github.com/zeromicro/go-zero/core/timex"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"golang.org/x/time/rate"
-	"gorm.io/gorm"
-	"sync"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -145,120 +143,120 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 }
 
 func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUserSet map[string]struct{}, cli *dingClient.DingTalk, info *relationDB.SysDeptInfo) error {
-	c := 0
-	page := 100
-	var hasMore = true
-	for hasMore {
-		req := request.NewDeptDetailUserInfo(int(info.DingTalkID), c, page)
-		limit.Wait(ctx)
-		dings, err := cli.GetDeptDetailUserInfo(req.Build())
-		logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v dings:%#v err:%v", info.ID, dings, err)
-		if err != nil {
-			return errors.System.AddDetail(info, err)
-		}
-		hasMore = dings.Page.HasMore
-		c = dings.Page.NextCursor
-		for _, ding := range dings.Page.List {
-			if _, ok := syncedUserSet[ding.UserId]; ok { //一个员工只处理一次
-				continue
-			}
-			syncedUserSet[ding.UserId] = struct{}{}
-			uc, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{DingTalkUserID: ding.UserId, DingTalkUnionID: ding.UnionId})
-			if err != nil {
-				if !errors.Cmp(err, errors.NotFind) {
-					return err
-				}
-				uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Mobile}})
-				if err != nil && !errors.Cmp(err, errors.NotFind) {
-					return err
-				}
-			}
-			dingEmail := ding.Email
-			if ding.OrgEmail != "" {
-				dingEmail = ding.OrgEmail
-			}
-			if uc == nil {
-				userID := svcCtx.UserID.GetSnowflakeId()
-				uc = &relationDB.SysUserInfo{
-					UserID:         userID,
-					DingTalkUserID: sql.NullString{Valid: true, String: ding.UserId},
-					NickName:       ding.Name,
-				}
-				if ding.UnionId != "" {
-					uc.DingTalkUnionID = sql.NullString{Valid: true, String: ding.UnionId}
-				}
-				if dingEmail != "" {
-					uc.Email = sql.NullString{String: dingEmail, Valid: true}
-					uc.UserName = uc.Email
-				}
-				if ding.Mobile != "" {
-					uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
-					uc.UserName = uc.Phone
-				}
-				if ding.Extension != "" {
-					var tags = map[string]string{}
-					err = json.Unmarshal([]byte(ding.Extension), &tags)
-					if err == nil {
-						uc.Tags = tags
-					}
-				}
-				err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
-					return usermanagelogic.Register(ctx, svcCtx, uc, tx)
-				})
-			} else {
-				uc.NickName = ding.Name
-				uc.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
-				if dingEmail != "" {
-					uc.Email = sql.NullString{String: dingEmail, Valid: true}
-				}
-				if ding.Extension != "" {
-					var tags = map[string]string{}
-					err = json.Unmarshal([]byte(ding.Extension), &tags)
-					if err == nil {
-						uc.Tags = tags
-					}
-				}
-				if ding.Mobile != "" {
-					uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
-				}
-				err = relationDB.NewUserInfoRepo(ctx).Update(ctx, uc)
-				if err != nil {
-					return err
-				}
-			}
-			var dIDs []int64
-			for _, v := range ding.DeptIds {
-				dIDs = append(dIDs, int64(v))
-			}
-			if len(dIDs) == 0 {
-				continue
-			}
-			ds, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{DingTalkIDs: dIDs}, nil)
-			if err != nil {
-				logx.WithContext(ctx).Error(err)
-				continue
-			}
-			var dus []*relationDB.SysDeptUser
-			for _, d := range ds {
-				dus = append(dus, &relationDB.SysDeptUser{
-					UserID:     uc.UserID,
-					DeptID:     int64(d.ID),
-					DeptIDPath: string(d.IDPath),
-				})
-			}
-			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
-				err := relationDB.NewDeptUserRepo(tx).DeleteByFilter(ctx, relationDB.DeptUserFilter{UserID: uc.UserID})
-				if err != nil {
-					return err
-				}
-				return relationDB.NewDeptUserRepo(tx).MultiInsert(ctx, dus)
-			})
-			if err != nil {
-				logx.WithContext(ctx).Error(err)
-				continue
-			}
-		}
-	}
+	//c := 0
+	//page := 100
+	//var hasMore = true
+	//for hasMore {
+	//	req := request.NewDeptDetailUserInfo(int(info.DingTalkID), c, page)
+	//	limit.Wait(ctx)
+	//	dings, err := cli.GetDeptDetailUserInfo(req.Build())
+	//	logx.WithContext(ctx).Infof("DeptSyncJobExecute jobID:%v dings:%#v err:%v", info.ID, dings, err)
+	//	if err != nil {
+	//		return errors.System.AddDetail(info, err)
+	//	}
+	//	hasMore = dings.Page.HasMore
+	//	c = dings.Page.NextCursor
+	//	for _, ding := range dings.Page.List {
+	//		if _, ok := syncedUserSet[ding.UserId]; ok { //一个员工只处理一次
+	//			continue
+	//		}
+	//		syncedUserSet[ding.UserId] = struct{}{}
+	//		uc, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{DingTalkUserID: ding.UserId, DingTalkUnionID: ding.UnionId})
+	//		if err != nil {
+	//			if !errors.Cmp(err, errors.NotFind) {
+	//				return err
+	//			}
+	//			uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Mobile}})
+	//			if err != nil && !errors.Cmp(err, errors.NotFind) {
+	//				return err
+	//			}
+	//		}
+	//		dingEmail := ding.Email
+	//		if ding.OrgEmail != "" {
+	//			dingEmail = ding.OrgEmail
+	//		}
+	//		if uc == nil {
+	//			userID := svcCtx.UserID.GetSnowflakeId()
+	//			uc = &relationDB.SysUserInfo{
+	//				UserID:         userID,
+	//				DingTalkUserID: sql.NullString{Valid: true, String: ding.UserId},
+	//				NickName:       ding.Name,
+	//			}
+	//			if ding.UnionId != "" {
+	//				uc.DingTalkUnionID = sql.NullString{Valid: true, String: ding.UnionId}
+	//			}
+	//			if dingEmail != "" {
+	//				uc.Email = sql.NullString{String: dingEmail, Valid: true}
+	//				uc.UserName = uc.Email
+	//			}
+	//			if ding.Mobile != "" {
+	//				uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
+	//				uc.UserName = uc.Phone
+	//			}
+	//			if ding.Extension != "" {
+	//				var tags = map[string]string{}
+	//				err = json.Unmarshal([]byte(ding.Extension), &tags)
+	//				if err == nil {
+	//					uc.Tags = tags
+	//				}
+	//			}
+	//			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
+	//				return usermanagelogic.Register(ctx, svcCtx, uc, tx)
+	//			})
+	//		} else {
+	//			uc.NickName = ding.Name
+	//			uc.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
+	//			if dingEmail != "" {
+	//				uc.Email = sql.NullString{String: dingEmail, Valid: true}
+	//			}
+	//			if ding.Extension != "" {
+	//				var tags = map[string]string{}
+	//				err = json.Unmarshal([]byte(ding.Extension), &tags)
+	//				if err == nil {
+	//					uc.Tags = tags
+	//				}
+	//			}
+	//			if ding.Mobile != "" {
+	//				uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
+	//			}
+	//			err = relationDB.NewUserInfoRepo(ctx).Update(ctx, uc)
+	//			if err != nil {
+	//				return err
+	//			}
+	//		}
+	//		var dIDs []int64
+	//		for _, v := range ding.DeptIds {
+	//			dIDs = append(dIDs, int64(v))
+	//		}
+	//		if len(dIDs) == 0 {
+	//			continue
+	//		}
+	//		ds, err := relationDB.NewDeptInfoRepo(ctx).FindByFilter(ctx, relationDB.DeptInfoFilter{DingTalkIDs: dIDs}, nil)
+	//		if err != nil {
+	//			logx.WithContext(ctx).Error(err)
+	//			continue
+	//		}
+	//		var dus []*relationDB.SysDeptUser
+	//		for _, d := range ds {
+	//			dus = append(dus, &relationDB.SysDeptUser{
+	//				UserID:     uc.UserID,
+	//				DeptID:     int64(d.ID),
+	//				DeptIDPath: string(d.IDPath),
+	//			})
+	//		}
+	//		err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
+	//			err := relationDB.NewDeptUserRepo(tx).DeleteByFilter(ctx, relationDB.DeptUserFilter{UserID: uc.UserID})
+	//			if err != nil {
+	//				return err
+	//			}
+	//			return relationDB.NewDeptUserRepo(tx).MultiInsert(ctx, dus)
+	//		})
+	//		if err != nil {
+	//			logx.WithContext(ctx).Error(err)
+	//			continue
+	//		}
+	//	}
+	//}
 	return nil
 }
 

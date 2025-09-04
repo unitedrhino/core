@@ -230,7 +230,7 @@ type (
 
     TenantInfoCreateReq{
         Info *TenantInfo `json:"info"`
-        AdminUserInfo *UserInfo `json:"adminUserInfo"`
+        AdminUserID int64 `json:"adminUserID"`
     }
 
     TenantInfoCreateResp{

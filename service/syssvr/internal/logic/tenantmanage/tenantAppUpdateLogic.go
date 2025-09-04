@@ -45,10 +45,10 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if err != nil {
 		return nil, err
 	}
-	app, err := relationDB.NewAppInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.AppInfoFilter{Codes: []string{in.AppCode}})
-	if err != nil {
-		return nil, err
-	}
+	//app, err := relationDB.NewAppInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.AppInfoFilter{Codes: []string{in.AppCode}})
+	//if err != nil {
+	//	return nil, err
+	//}
 	var thirdFields = map[string]any{}
 	if in.WxMini != nil {
 		old.WxMini = utils.Copy[relationDB.SysTenantThird](in.WxMini)

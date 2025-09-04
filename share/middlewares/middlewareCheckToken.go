@@ -3,6 +3,11 @@ package middlewares
 import (
 	"bytes"
 	"context"
+	"io"
+	"net/http"
+	"strings"
+	"sync"
+
 	operLog "gitee.com/unitedrhino/core/service/syssvr/client/log"
 	role "gitee.com/unitedrhino/core/service/syssvr/client/rolemanage"
 	tenant "gitee.com/unitedrhino/core/service/syssvr/client/tenantmanage"
@@ -20,10 +25,6 @@ import (
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/zrpc"
-	"io"
-	"net/http"
-	"strings"
-	"sync"
 )
 
 type CheckTokenWareMiddleware struct {
@@ -127,7 +128,6 @@ func (m *CheckTokenWareMiddleware) OpenAuth(r *http.Request, token string) (*ctx
 		TenantCode: resp.TenantCode,
 		UserID:     resp.UserID,
 		IsAdmin:    resp.IsAdmin == def.True,
-		IsAllData:  true,
 		Account:    resp.UserName,
 	}, nil
 }
@@ -184,7 +184,6 @@ func (m *CheckTokenWareMiddleware) Auth(ctx context.Context, w http.ResponseWrit
 		RoleCodes:    resp.RoleCodes,
 		IsAdmin:      resp.IsAdmin || resp.IsSuperAdmin,
 		IsSuperAdmin: resp.IsSuperAdmin,
-		IsAllData:    resp.IsAllData == def.True,
 		Account:      resp.Account,
 		Token:        token,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
@@ -226,7 +225,6 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		RoleCodes:    resp.RoleCodes,
 		IsAdmin:      resp.IsAdmin || resp.IsSuperAdmin,
 		IsSuperAdmin: resp.IsSuperAdmin,
-		IsAllData:    resp.IsAllData == def.True,
 		Account:      resp.Account,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
 	}, nil

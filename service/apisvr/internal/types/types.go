@@ -1334,8 +1334,8 @@ type TenantInfo struct {
 }
 
 type TenantInfoCreateReq struct {
-	Info          *TenantInfo `json:"info"`
-	AdminUserInfo *UserInfo   `json:"adminUserInfo"`
+	Info        *TenantInfo `json:"info"`
+	AdminUserID int64       `json:"adminUserID"`
 }
 
 type TenantInfoCreateResp struct {

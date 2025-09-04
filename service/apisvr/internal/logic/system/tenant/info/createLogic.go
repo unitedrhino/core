@@ -2,9 +2,9 @@ package info
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -34,6 +34,6 @@ func (l *CreateLogic) Create(req *types.TenantInfoCreateReq) (*types.WithID, err
 	//if req.AdminUserInfo.UserName == "" {
 	//	return nil, errors.Parameter.AddMsgf("需要填写管理员账号")
 	//}
-	resp, err := l.svcCtx.TenantRpc.TenantInfoCreate(l.ctx, &sys.TenantInfoCreateReq{Info: system.ToTenantInfoRpc(req.Info), AdminUserInfo: user.UserInfoToRpc(req.AdminUserInfo)})
+	resp, err := l.svcCtx.TenantRpc.TenantInfoCreate(l.ctx, &sys.TenantInfoCreateReq{Info: system.ToTenantInfoRpc(req.Info), AdminUserID: req.AdminUserID})
 	return logic.SysToWithIDTypes(resp), err
 }

@@ -28,7 +28,6 @@ type UserInfo struct {
 	RoleCodes   []string
 	TenantCode  string `json:",string"`
 	IsAdmin     int64
-	IsAllData   int64
 }
 
 func GetLoginJwtToken(secretKey string, t time.Time, seconds int64, userID int64, appCode string, id string, deviceID string) (string, LoginClaims, error) {

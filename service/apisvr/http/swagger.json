@@ -14520,14 +14520,15 @@
         "info": {
           "$ref": "#/definitions/TenantInfo"
         },
-        "adminUserInfo": {
-          "$ref": "#/definitions/UserInfo"
+        "adminUserID": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "TenantInfoCreateReq",
       "required": [
         "info",
-        "adminUserInfo"
+        "adminUserID"
       ]
     },
     "TenantInfoCreateResp": {

@@ -11,7 +11,6 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
-	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/smsClient"
@@ -56,7 +55,7 @@ type ServiceContext struct {
 	TenantCache        *caches.Cache[tenant.Info, string]
 	TenantConfigCache  *caches.Cache[sys.TenantConfig, string]
 	ProjectCache       *caches.Cache[sys.ProjectInfo, int64]
-	UserCache          *caches.Cache[sys.UserInfo, users.UserTenantCore]
+	UserCache          *caches.Cache[sys.UserInfo, int64]
 	AreaCache          *caches.Cache[sys.AreaInfo, int64]
 	ApiCache           *caches.Cache[relationDB.SysApiInfo, string]
 	RoleAccessCache    *caches.Cache[map[int64]struct{}, string]
