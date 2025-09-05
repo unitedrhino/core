@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
+	"reflect"
+
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -12,7 +14,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"gorm.io/gorm/schema"
-	"reflect"
 )
 
 type TenantCode string
@@ -132,7 +133,7 @@ func (sd TenantCodeClause) ModifyStatement(stmt *gorm.Statement) { //查询的�
 		v = TenantCode(tenantCode)
 		field.Set(reflect.ValueOf(v))
 	case stores.Update, stores.Delete, stores.Select:
-		if uc.IsSuperAdmin && allTenant { //只有超管能修改其他租户
+		if uc.IsRoot() && allTenant { //只有超管能修改其他租户
 			return
 		}
 		if _, ok := stmt.Clauses[sd.GenAuthKey()]; !ok {

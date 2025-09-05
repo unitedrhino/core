@@ -2,6 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -37,19 +38,43 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empt
 	uc := ctxs.GetUserCtx(l.ctx)
 	uc.AllTenant = true
 	defer func() { uc.AllTenant = false }()
+	app, err := relationDB.NewAppInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.AppInfoFilter{Codes: []string{in.AppCode}})
+	if err != nil {
+		return nil, err
+	}
+
 	conn := stores.GetTenantConn(l.ctx)
-	err := conn.Transaction(func(tx *gorm.DB) error {
-		//todo 需要检查租户是否存在
-		err := relationDB.NewTenantAppRepo(tx).Insert(l.ctx, &relationDB.SysTenantApp{
-			TenantCode:     dataType.TenantCode(in.Code),
-			AppCode:        in.AppCode,
-			WxMini:         utils.Copy[relationDB.SysTenantThird](in.WxMini),
-			WxOpen:         utils.Copy[relationDB.SysTenantThird](in.WxOpen),
-			DingMini:       utils.Copy[relationDB.SysTenantThird](in.DingMini),
-			Android:        utils.Copy[relationDB.SysThirdApp](in.Android),
-			IsAutoRegister: in.IsAutoRegister,
-			Config:         in.Config,
-		})
+	po := relationDB.SysTenantApp{
+		TenantCode: dataType.TenantCode(in.Code),
+		AppCode:    in.AppCode,
+		//WxMini:         utils.Copy[relationDB.SysTenantThird](in.WxMini),
+		//WxOpen:         utils.Copy[relationDB.SysTenantThird](in.WxOpen),
+		//DingMini:       utils.Copy[relationDB.SysTenantThird](in.DingMini),
+		//Android:        utils.Copy[relationDB.SysThirdApp](in.Android),
+		IsAutoRegister: in.IsAutoRegister,
+		Config:         in.Config,
+	}
+	if app.IsCommon == def.True {
+		ta, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx,
+			relationDB.TenantAppFilter{TenantCode: def.TenantCodeDefault, AppCodes: []string{in.AppCode}})
+		if err != nil {
+			return nil, err
+		}
+		if ta.WxOpen != nil {
+			po.WxOpen = &relationDB.SysTenantThird{AppID: ta.WxOpen.AppID}
+		}
+		if ta.WxMini != nil {
+			po.WxMini = &relationDB.SysTenantThird{AppID: ta.WxMini.AppID}
+		}
+		if ta.DingMini != nil {
+			po.DingMini = &relationDB.SysTenantThird{AppID: ta.DingMini.AppID}
+		}
+		if ta.Android != nil {
+			po.Android = &relationDB.SysThirdApp{Version: ta.Android.Version}
+		}
+	}
+	err = conn.Transaction(func(tx *gorm.DB) error {
+		err := relationDB.NewTenantAppRepo(tx).Insert(l.ctx, &po)
 		if err != nil {
 			return err
 		}

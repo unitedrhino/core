@@ -44,11 +44,7 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	var (
 		areaPo *relationDB.SysAreaInfo
 	)
-	ti, err := relationDB.NewTenantInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantInfoFilter{})
-	if err != nil {
-		return nil, err
-	}
-	if ti.DefaultAreaID == in.AreaID || area.IsSysCreated == def.True {
+	if area.IsSysCreated == def.True {
 		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("默认区域禁止删除")
 	}
 	var areaIDs []int64

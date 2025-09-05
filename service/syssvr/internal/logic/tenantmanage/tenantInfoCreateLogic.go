@@ -2,10 +2,9 @@ package tenantmanagelogic
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
-	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/dataType"
@@ -39,7 +38,7 @@ func NewTenantInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 // 新增租户
-func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*sys.WithID, error) {
+func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithID, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -47,57 +46,33 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 	defer func() {
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
-	userInfo := in.AdminUserInfo
-	if userInfo.UserName != "" {
-		//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
-		err := usermanagelogic.CheckUserName(userInfo.UserName)
-		if err != nil {
-			return nil, err
-		}
+	if utils.SliceIn(in.Code, def.TenantCodeCommon, def.TenantCodeDefault) {
+		return nil, errors.Parameter.AddMsgf("租户编码不能为内置的 %s或%s", def.TenantCodeCommon, def.TenantCodeDefault)
 	}
-
-	//校验密码强度
-	err := usermanagelogic.CheckPwd(l.svcCtx, userInfo.Password)
+	_, err := l.svcCtx.TenantCache.GetData(l.ctx, string(in.Code))
+	if err == nil {
+		return nil, errors.Duplicate.AddMsgf("租户编码已存在:%s", in.Code)
+	}
+	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, in.AdminUserID)
 	if err != nil {
+		if errors.Cmp(err, errors.NotFind) {
+			return nil, errors.UnRegister.AddMsg("请先注册管理员账号")
+		}
 		return nil, err
-	}
-	//1.生成uid
-	userID := l.svcCtx.UserID.GetSnowflakeId()
-	//2.对密码进行md5加密
-	password := utils.MakePwd(userInfo.Password, userID, false)
-	if userInfo.Phone == nil && userInfo.Email == nil {
-		return nil, errors.Parameter.AddMsgf("手机号和邮箱必须填写一个")
-	}
-	ui := relationDB.SysUserInfo{
-		TenantCode: dataType.TenantCode(in.Info.Code),
-		UserID:     userID,
-		Phone:      utils.AnyToNullString(userInfo.Phone),
-		Email:      utils.AnyToNullString(userInfo.Email),
-		UserName:   sql.NullString{String: userInfo.UserName, Valid: true},
-		Password:   password,
-		NickName:   userInfo.NickName,
-		City:       userInfo.City,
-		Country:    userInfo.Country,
-		Province:   userInfo.Province,
-		Language:   userInfo.Language,
-		HeadImg:    userInfo.HeadImg,
-		Role:       userInfo.Role,
-		Sex:        userInfo.Sex,
-		IsAllData:  def.True,
 	}
 
 	projectPo := relationDB.SysProjectInfo{
-		TenantCode:  dataType.TenantCode(in.Info.Code),
+		TenantCode:  dataType.TenantCode(in.Code),
 		ProjectID:   dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
-		ProjectName: in.Info.Name,
+		ProjectName: in.Name,
 		//CompanyName: utils.ToEmptyString(in.CompanyName),
-		AdminUserID: userID,
+		AdminUserID: ui.UserID,
 		//Region:      utils.ToEmptyString(in.Region),
 		//Address:     utils.ToEmptyString(in.Address),
 	}
 
-	po := logic.ToTenantInfoPo(in.Info)
-	if po.BackgroundImg != "" && in.Info.IsUpdateBackgroundImg {
+	po := logic.ToTenantInfoPo(in)
+	if po.BackgroundImg != "" && in.IsUpdateBackgroundImg {
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneBackgroundImg,
 			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.BackgroundImg)))
 		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(po.BackgroundImg, nwePath)
@@ -106,7 +81,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		}
 		po.BackgroundImg = path
 	}
-	if po.LogoImg != "" && in.Info.IsUpdateLogoImg {
+	if po.LogoImg != "" && in.IsUpdateLogoImg {
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneLogoImg,
 			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.LogoImg)))
 		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(po.LogoImg, nwePath)
@@ -116,26 +91,22 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		po.LogoImg = path
 	}
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		ris := []*relationDB.SysRoleInfo{{TenantCode: dataType.TenantCode(in.Info.Code), Name: "超级管理员", Code: "supper"},
-			{TenantCode: dataType.TenantCode(in.Info.Code), Name: "管理员", Code: "admin"},
-			{TenantCode: dataType.TenantCode(in.Info.Code), Name: "普通用户", Code: "client"}}
+		ris := []*relationDB.SysRoleInfo{{TenantCode: dataType.TenantCode(in.Code), Name: "超级管理员", Code: "supper"},
+			{TenantCode: dataType.TenantCode(in.Code), Name: "管理员", Code: "admin"},
+			{TenantCode: dataType.TenantCode(in.Code), Name: "普通用户", Code: "client"}}
 		err = relationDB.NewRoleInfoRepo(tx).MultiInsert(l.ctx, ris)
 		if err != nil {
 			return err
 		}
 		err := relationDB.NewUserRoleRepo(tx).Insert(l.ctx, &relationDB.SysUserRole{
-			TenantCode: dataType.TenantCode(in.Info.Code),
+			TenantCode: dataType.TenantCode(in.Code),
 			UserID:     ui.UserID,
 			RoleID:     ris[0].ID,
 		})
 		if err != nil {
 			return err
 		}
-		ui.Role = ris[0].ID
-		err = relationDB.NewUserInfoRepo(tx).Insert(l.ctx, &ui)
-		if err != nil {
-			return err
-		}
+
 		err = relationDB.NewProjectInfoRepo(tx).Insert(l.ctx, &projectPo)
 		if err != nil {
 			return err
@@ -148,7 +119,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 			return err
 		}
 		err = relationDB.NewTenantConfigRepo(tx).Insert(l.ctx, &relationDB.SysTenantConfig{
-			TenantCode:     dataType.TenantCode(in.Info.Code),
+			TenantCode:     dataType.TenantCode(in.Code),
 			RegisterRoleID: ris[1].ID,
 		})
 		if err != nil {
@@ -156,13 +127,13 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*
 		}
 		err = relationDB.NewDataProjectRepo(tx).MultiInsert(l.ctx, []*relationDB.SysDataProject{
 			{
-				TenantCode: dataType.TenantCode(in.Info.Code),
+				TenantCode: dataType.TenantCode(in.Code),
 				ProjectID:  po.DefaultProjectID,
 				TargetType: def.TargetUser,
 				TargetID:   po.AdminUserID,
 				AuthType:   def.AuthAdmin,
 			}, {
-				TenantCode: dataType.TenantCode(in.Info.Code),
+				TenantCode: dataType.TenantCode(in.Code),
 				ProjectID:  po.DefaultProjectID,
 				TargetType: def.TargetRole,
 				TargetID:   po.AdminRoleID,

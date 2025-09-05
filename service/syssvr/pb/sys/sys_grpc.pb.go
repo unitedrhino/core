@@ -7027,7 +7027,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TenantManageClient interface {
 	// 新增区域
-	TenantInfoCreate(ctx context.Context, in *TenantInfoCreateReq, opts ...grpc.CallOption) (*WithID, error)
+	TenantInfoCreate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*WithID, error)
 	// 更新区域
 	TenantInfoUpdate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*Empty, error)
 	// 删除区域
@@ -7072,7 +7072,7 @@ func NewTenantManageClient(cc grpc.ClientConnInterface) TenantManageClient {
 	return &tenantManageClient{cc}
 }
 
-func (c *tenantManageClient) TenantInfoCreate(ctx context.Context, in *TenantInfoCreateReq, opts ...grpc.CallOption) (*WithID, error) {
+func (c *tenantManageClient) TenantInfoCreate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*WithID, error) {
 	out := new(WithID)
 	err := c.cc.Invoke(ctx, TenantManage_TenantInfoCreate_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -7356,7 +7356,7 @@ func (c *tenantManageClient) TenantAgreementDelete(ctx context.Context, in *With
 // for forward compatibility
 type TenantManageServer interface {
 	// 新增区域
-	TenantInfoCreate(context.Context, *TenantInfoCreateReq) (*WithID, error)
+	TenantInfoCreate(context.Context, *TenantInfo) (*WithID, error)
 	// 更新区域
 	TenantInfoUpdate(context.Context, *TenantInfo) (*Empty, error)
 	// 删除区域
@@ -7398,7 +7398,7 @@ type TenantManageServer interface {
 type UnimplementedTenantManageServer struct {
 }
 
-func (UnimplementedTenantManageServer) TenantInfoCreate(context.Context, *TenantInfoCreateReq) (*WithID, error) {
+func (UnimplementedTenantManageServer) TenantInfoCreate(context.Context, *TenantInfo) (*WithID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TenantInfoCreate not implemented")
 }
 func (UnimplementedTenantManageServer) TenantInfoUpdate(context.Context, *TenantInfo) (*Empty, error) {
@@ -7505,7 +7505,7 @@ func RegisterTenantManageServer(s grpc.ServiceRegistrar, srv TenantManageServer)
 }
 
 func _TenantManage_TenantInfoCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TenantInfoCreateReq)
+	in := new(TenantInfo)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -7517,7 +7517,7 @@ func _TenantManage_TenantInfoCreate_Handler(srv interface{}, ctx context.Context
 		FullMethod: TenantManage_TenantInfoCreate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TenantManageServer).TenantInfoCreate(ctx, req.(*TenantInfoCreateReq))
+		return srv.(TenantManageServer).TenantInfoCreate(ctx, req.(*TenantInfo))
 	}
 	return interceptor(ctx, in, info, handler)
 }

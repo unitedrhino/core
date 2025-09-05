@@ -74,6 +74,10 @@ func (l *TenantInfoDeleteLogic) TenantInfoDelete(in *sys.WithIDCode) (*sys.Empty
 		if err != nil {
 			return err
 		}
+		err = relationDB.NewUserThirdRepo(tx).DeleteByFilter(l.ctx, relationDB.UserThirdFilter{TenantCode: string(ti.Code)})
+		if err != nil {
+			return err
+		}
 		err = relationDB.NewUserInfoRepo(tx).DeleteByFilter(l.ctx, relationDB.UserInfoFilter{TenantCode: string(ti.Code)})
 		if err != nil {
 			return err

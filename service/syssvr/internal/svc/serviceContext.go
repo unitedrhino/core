@@ -1,6 +1,9 @@
 package svc
 
 import (
+	"os"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/config"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -20,8 +23,6 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/zrpc"
-	"os"
-	"sync"
 )
 
 type CaptchaLimit struct {
@@ -45,6 +46,7 @@ type ServiceContext struct {
 	OssClient          *oss.Client
 	Store              kv.Store
 	Captcha            *cache.Captcha
+	ThirdClientsManage *cache.ThirdClientsManage
 	CaptchaLimit       CaptchaLimit
 	LoginLimit         LoginLimit
 	Cm                 *ClientsManage
@@ -112,22 +114,23 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		}
 	}
 	return &ServiceContext{
-		FastEvent:     serverMsg,
-		Captcha:       cache.NewCaptcha(store),
-		Slot:          cache.NewSlot(),
-		UserToken:     cache.NewUserToken(),
-		Cm:            NewClients(c),
-		Config:        c,
-		CaptchaLimit:  cl,
-		LoginLimit:    ll,
-		ProjectID:     ProjectID,
-		OssClient:     ossClient,
-		AreaID:        AreaID,
-		UserID:        UserID,
-		Store:         store,
-		Sms:           sms,
-		NodeID:        nodeID,
-		TimedM:        timedJob,
-		DingStreamMap: make(map[string]*dingClient.StreamClient),
+		FastEvent:          serverMsg,
+		Captcha:            cache.NewCaptcha(store),
+		Slot:               cache.NewSlot(),
+		UserToken:          cache.NewUserToken(),
+		ThirdClientsManage: cache.NewThirdClientsManage(c.CacheRedis),
+		Cm:                 NewClients(c),
+		Config:             c,
+		CaptchaLimit:       cl,
+		LoginLimit:         ll,
+		ProjectID:          ProjectID,
+		OssClient:          ossClient,
+		AreaID:             AreaID,
+		UserID:             UserID,
+		Store:              store,
+		Sms:                sms,
+		NodeID:             nodeID,
+		TimedM:             timedJob,
+		DingStreamMap:      make(map[string]*dingClient.StreamClient),
 	}
 }

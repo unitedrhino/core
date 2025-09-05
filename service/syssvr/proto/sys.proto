@@ -276,7 +276,7 @@ service AreaManage {
 
 service TenantManage {
   //新增区域
-  rpc tenantInfoCreate (TenantInfoCreateReq) returns (WithID);
+  rpc tenantInfoCreate (TenantInfo) returns (WithID);
   //更新区域
   rpc tenantInfoUpdate (TenantInfo) returns (Empty);
   //删除区域
@@ -644,10 +644,7 @@ message NotifyConfigSendReq{
 
 //--------------------租户管理------------------------
 
-message TenantInfoCreateReq{
-  TenantInfo info = 1;
-  UserInfo adminUserInfo = 2;
-}
+
 
 message TenantInfo{
   int64 id = 1;
@@ -657,7 +654,7 @@ message TenantInfo{
   int64 adminRoleID = 5;
   google.protobuf.StringValue desc = 6;
   int64 defaultProjectID = 7;
-  int64 defaultAreaID = 8;
+//  int64 defaultAreaID = 8;
   string backgroundImg =9;
   bool isUpdateBackgroundImg = 10;
   string backgroundColour =15;//背景颜色
@@ -689,14 +686,17 @@ message TenantConfig{
   string name = 2;
   string tenantCode = 3;//租户编码
   int64 registerRoleID=4;//注册分配的角色id
-  string weatherKey =7;//和风天气秘钥 参考: https://dev.qweather.com/
-  int64 isSsl =12;//是否单会话登录(默认为2) Single Session Login
+//  string weatherKey =7;//和风天气秘钥 参考: https://dev.qweather.com/
   int64 checkUserDelete=5;//1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
-  google.protobuf.Int64Value deviceLimit = 8;//租户下的设备数量限制,0为不限制
+  google.protobuf.Int64Value deviceLimit = 8;//租户下的设备数量限制,0为不限制(root可修改)
+  google.protobuf.Int64Value userLimit = 13;//租户下的用户数量限制,0为不限制(root可修改)
+  google.protobuf.Int64Value projectLimit = 14;//租户下的项目数量限制,0为不限制(root可修改)
+
   repeated  TenantConfigRegisterAutoCreateProject registerAutoCreateProject =6;//注册自动创建项目
   repeated int64 feedbackNotifyUserIDs = 9;//产生问题反馈通知的用户ID列表
-  google.protobuf.Int64Value operLogKeepDays =10;//操作日志保留时间,如果为0则为永久
-  google.protobuf.Int64Value loginLogKeepDays =11;//登录日志保留时间,如果为0则为永久
+  google.protobuf.Int64Value operLogKeepDays =10;//操作日志保留时间,如果为0则为永久(root可修改)
+  google.protobuf.Int64Value loginLogKeepDays =11;//登录日志保留时间,如果为0则为永久(root可修改)
+  int64 isSsl =12;//是否单会话登录(默认为2) Single Session Login
 
 }
 
@@ -733,10 +733,10 @@ message TenantAppInfo{
   string code = 1;
   string appCode = 2;
   repeated TenantAppModule modules = 3;//模块列表
-  ThirdAppConfig dingMini =4;//钉钉小程序
-  ThirdAppConfig wxMini =5;//微信小程序
-  ThirdAppConfig wxOpen =7;//微信开放 web app需要填写
-  ThirdApp android =10; //安卓应用
+  ThirdAppConfig dingMini =4;//钉钉小程序,如果应用是isCommon的,则无需填写
+  ThirdAppConfig wxMini =5;//微信小程序,如果应用是isCommon的,则无需填写
+  ThirdAppConfig wxOpen =7;//微信开放 web app需要填写 ,如果应用是isCommon的,则无需填写
+  ThirdApp android =10; //安卓应用 ,如果应用是isCommon的,则无需填写
   repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
   int64 isAutoRegister =9;//登录未注册是否自动注册
   string config =11;//自定义配置json
@@ -1464,6 +1464,7 @@ message UserLoginReq{
     string codeID = 6;//验证码编号 微信登录填state
     string ip = 7;//透传请求的 ip
     string deviceID =8;//设备ID 可选
+    string appID =9;//应用ID,第三方登录方式填写 钉钉 微信 oauth的其他
 }
 
 message UserLoginResp{
@@ -1480,6 +1481,8 @@ message UserRegisterReq{
   string password =5;
   UserInfo info = 6;//填写用户信息
   map<string,string> expand =7; //拓展, 微信登录方式 phoneCode:获取手机号code
+  bool isAdmin =8;//管理员的方式注册,如果配置了创建新建租户,则会创建个租户
+  string appID =9;//应用ID,第三方登录方式填写 钉钉 微信 oauth的其他
 }
 
 message UserRegisterResp{
@@ -1909,6 +1912,10 @@ message AppInfo{
   string subType=10;//子类型  wx:微信小程序  ding:钉钉小程序
   string code = 3;          // 应用编码
   google.protobuf.StringValue desc = 4;        // 应用描述
+  int64 isCommon = 5;//是否是公共应用,公共应用所有租户共用,只有default租户能修改,其他租户只能读
+  int64 isSetDingMini = 6; //是否设置了钉钉小程序
+  int64 isSetWxMini = 8; //是否设置了微信小程序
+  int64 isSetWxOpen = 9; //是否设置了微信开放平台
 }
 
 message AppInfoIndexReq{

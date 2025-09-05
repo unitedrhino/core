@@ -38,6 +38,7 @@ func Migrate(c conf.Database) error {
 		&SysSlotInfo{},
 		&SysUserInfo{},
 		&SysRoleInfo{},
+		&SysUserThird{},
 		&SysRoleMenu{},
 		&SysRoleAccess{},
 		&SysTenantAgreement{},
