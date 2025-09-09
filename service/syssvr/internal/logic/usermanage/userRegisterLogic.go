@@ -3,6 +3,7 @@ package usermanagelogic
 import (
 	"context"
 	"database/sql"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -16,9 +17,10 @@ import (
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 
+	"time"
+
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -160,6 +162,12 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 	if wxPhone.ErrCode != 0 {
 		return nil, errors.Parameter.AddDetail(wxPhone.ErrMsg)
 	}
+	if in.Password != "" {
+		err := CheckPwd(l.svcCtx, in.Password)
+		if err != nil {
+			return nil, err
+		}
+	}
 	var userID int64
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
@@ -184,6 +192,9 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
 			}
+			if in.Password != "" {
+				ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
+			}
 		} else if !(ui.WechatUnionID.Valid || ui.WechatOpenID.Valid) {
 			userID = l.svcCtx.UserID.GetSnowflakeId()
 			ui = &relationDB.SysUserInfo{
@@ -191,6 +202,9 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+			}
+			if in.Password != "" {
+				ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
 			}
 		}
 		userID = ui.UserID
