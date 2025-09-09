@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
@@ -16,6 +17,7 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
+	UserID          int64
 	UserIDs         []int64
 	HasAccessAreas  []int64
 	TenantCode      string
@@ -69,6 +71,9 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	}
 	if f.WithTenant {
 		db = db.Preload("Tenant")
+	}
+	if f.UserID != 0 {
+		db = db.Where("user_id=?", f.UserID)
 	}
 	if len(f.UserIDs) != 0 {
 		db = db.Where("user_id in?", f.UserIDs)

@@ -106,7 +106,12 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 		if err != nil {
 			return err
 		}
-
+		if ui.TenantCode != def.TenantCodeCommon { //租户管理的账号是公共的
+			err := relationDB.NewUserInfoRepo(tx).UpdateWithField(ctxs.WithRoot(l.ctx), relationDB.UserInfoFilter{UserID: ui.UserID}, map[string]any{"tenant_code": def.TenantCodeCommon})
+			if err != nil {
+				return err
+			}
+		}
 		err = relationDB.NewProjectInfoRepo(tx).Insert(l.ctx, &projectPo)
 		if err != nil {
 			return err
