@@ -216,7 +216,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 				if uc.NickName == "" {
 					uc.NickName = ui.Name
 				}
-				
+
 			}
 
 			uc = &relationDB.SysUserInfo{
@@ -248,6 +248,8 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 				return nil, err
 			}
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId, WithRoles: true, WithTenant: true})
+		} else {
+			uc = ut.User
 		}
 	case users.RegWxOpen:
 		if cli.WxOfficial == nil {
