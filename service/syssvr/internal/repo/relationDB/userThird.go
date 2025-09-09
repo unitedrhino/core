@@ -46,6 +46,9 @@ func (p UserThirdRepo) fmtFilter(ctx context.Context, f UserThirdFilter) *gorm.D
 	if f.AppType != "" {
 		db = db.Where("app_type = ?", f.AppType)
 	}
+	if f.AppID != "" {
+		db = db.Where("app_id = ?", f.AppID)
+	}
 	var isThirdID bool
 	thirdOr := db
 	if f.OpenID != "" {

@@ -31,6 +31,7 @@ type LoginLogic struct {
 	svcCtx *svc.ServiceContext
 	logx.Logger
 	UiDB *relationDB.UserInfoRepo
+	UtDB *relationDB.UserThirdRepo
 }
 
 func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic {
@@ -39,6 +40,7 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLo
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 		UiDB:   relationDB.NewUserInfoRepo(ctx),
+		UtDB:   relationDB.NewUserThirdRepo(ctx),
 	}
 }
 
@@ -101,15 +103,15 @@ func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*
 	return resp, nil
 }
 
-func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserInfo, err error) {
-	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if er != nil {
-		return nil, errors.System.AddDetail(err)
-	}
-	if !utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
-		l.Errorf("不支持的登录方式:%v", in.LoginType)
-		return nil, errors.NotSupportLogin
-	}
+func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenantApp) (uc *relationDB.SysUserInfo, err error) {
+	//cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
+	//if er != nil {
+	//	return nil, errors.System.AddDetail(err)
+	//}
+	//if !utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
+	//	l.Errorf("不支持的登录方式:%v", in.LoginType)
+	//	return nil, errors.NotSupportLogin
+	//}
 	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
@@ -140,10 +142,11 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 		l.svcCtx.LoginLimit.PwdAccount.CleanLimit(l.ctx, in.Account)
 	case users.RegDingApp:
-		if cli.DingMini == nil {
-			return nil, errors.System.AddDetail(err)
+		cli, err := l.svcCtx.ThirdClientsManage.GetDingAppClient(l.ctx, ctxs.GetAppCode(l.ctx), in.AppID)
+		if err != nil {
+			return nil, err
 		}
-		ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
+		ret, er := cli.GetUserInfoByCode(in.Code)
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
@@ -152,7 +155,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId})
-		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+		if errors.Cmp(err, errors.NotFind) && cfg.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{

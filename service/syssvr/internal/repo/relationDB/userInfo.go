@@ -37,6 +37,7 @@ type UserInfoFilter struct {
 	DingTalkUnionID string
 	WithRoles       bool
 	WithTenant      bool
+	WithThird       bool
 	RoleCode        string
 	DeptID          int64
 	UpdatedTime     *stores.Cmp

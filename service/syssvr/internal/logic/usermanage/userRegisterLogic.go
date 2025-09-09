@@ -134,11 +134,11 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 }
 
 func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
-	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if err != nil || cli.MiniProgram == nil {
-		return nil, errors.System.AddDetail(err)
+	cli, err := l.svcCtx.ThirdClientsManage.GetWxMiniClient(l.ctx, ctxs.GetUserCtxNoNil(l.ctx).AppCode, in.AppID)
+	if err != nil {
+		return nil, err
 	}
-	auth := cli.MiniProgram.GetAuth()
+	auth := cli.GetAuth()
 
 	wxUid, err := auth.Code2SessionContext(l.ctx, in.Code)
 	if err != nil {
@@ -171,9 +171,10 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 	var userID int64
 	conn := stores.GetTenantConn(l.ctx)
 	err = conn.Transaction(func(tx *gorm.DB) error {
+		utdb := relationDB.NewUserThirdRepo(tx)
 		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx,
-			relationDB.UserInfoFilter{WechatUnionID: wxUid.UnionID, WechatOpenID: wxUid.OpenID})
+		_, err = utdb.FindOneByFilter(l.ctx,
+			relationDB.UserThirdFilter{AppType: def.ThirdTypeWxMiniP, AppID: in.AppID, UnionID: wxUid.UnionID, OpenID: wxUid.OpenID})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister
 		}
@@ -187,11 +188,17 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 			}
 			userID = l.svcCtx.UserID.GetSnowflakeId()
 			ui = &relationDB.SysUserInfo{
-				UserID:       userID,
-				Phone:        sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-				UserName:     sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
-				WechatOpenID: sql.NullString{Valid: true, String: wxUid.OpenID},
+				UserID:   userID,
+				Phone:    sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
+				UserName: sql.NullString{Valid: true, String: wxPhone.PhoneInfo.PurePhoneNumber},
 			}
+			relationDB.NewUserThirdRepo(tx).Insert(l.ctx, &relationDB.SysUserThird{
+				AppType: def.ThirdTypeWxMiniP,
+				AppID:   in.AppID,
+				UserID:  ui.UserID,
+				UnionID: wxUid.UnionID,
+				OpenID:  wxUid.OpenID,
+			})
 			if in.Password != "" {
 				ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
 			}
