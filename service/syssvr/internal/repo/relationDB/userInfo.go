@@ -146,6 +146,13 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 }
 
 func (p UserInfoRepo) Insert(ctx context.Context, data *SysUserInfo) error {
+	if len(data.Thirds) != 0 {
+		p.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+			t := data.Thirds
+			data.Thirds = nil
+			tx.Create(data)
+		})
+	}
 	result := p.db.WithContext(ctx).Create(data)
 	return stores.ErrFmt(result.Error)
 }

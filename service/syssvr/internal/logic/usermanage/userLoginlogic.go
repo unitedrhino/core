@@ -160,49 +160,65 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
 
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId})
+		ut, err := l.UtDB.FindOneByFilter(l.ctx, relationDB.UserThirdFilter{
+			WithUser: true, AppType: def.ThirdTypeDingApp, OpenID: ret.UserInfo.UserId, UnionID: ret.UserInfo.UnionId})
 		if errors.Cmp(err, errors.NotFind) && cfg.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
-			userID := l.svcCtx.UserID.GetSnowflakeId()
-			uc = &relationDB.SysUserInfo{
-				UserID:         userID,
-				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
-				NickName:       ret.UserInfo.Name,
-			}
-			if ret.UserInfo.UnionId != "" {
-				uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
-			}
-			ui, er := cli.DingMini.GetUserDetail(&request.UserDetail{
+			ui, er := cli.GetUserDetail(&request.UserDetail{
 				UserId: ret.UserInfo.UserId,
 			})
+			if er != nil {
+				return nil, errors.System.AddMsg("无法获取钉钉信息,需检查是否授权").AddDetail(er)
+			}
 			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), er)
-			if er == nil {
-				var accounts []string
+			var accounts []string
+			if ui.OrgEmail != "" {
+				accounts = append(accounts, ui.OrgEmail)
+			}
+			if ui.Mobile != "" {
+				accounts = append(accounts, ui.Mobile)
+			}
+			if len(accounts) == 0 {
+				return nil, errors.AccountDisable.AddMsg("钉钉需要先绑定邮箱或手机号")
+			}
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: accounts})
+			if err == nil {
 				if ui.OrgEmail != "" {
-					accounts = append(accounts, ui.OrgEmail)
+					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
 				}
 				if ui.Mobile != "" {
-					accounts = append(accounts, ui.Mobile)
+					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
 				}
-				uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: accounts})
-				if err == nil {
-					if ui.OrgEmail != "" {
-						uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
-					}
-					if ui.Mobile != "" {
-						uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
-					}
-					if uc.NickName == "" {
-						uc.NickName = ui.Name
-					}
-					uc.DingTalkUserID = sql.NullString{Valid: true, String: ret.UserInfo.UserId}
-					if ret.UserInfo.UnionId != "" {
-						uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
-					}
-					err = l.UiDB.Update(l.ctx, uc)
-					goto end
+				if uc.NickName == "" {
+					uc.NickName = ui.Name
 				}
+				uc.DingTalkUserID = sql.NullString{Valid: true, String: ret.UserInfo.UserId}
+				if ret.UserInfo.UnionId != "" {
+					uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+				}
+				err = l.UiDB.Update(l.ctx, uc)
+				goto end
+			} else {
+				if !errors.Cmp(err, errors.NotFind) {
+					return nil, err
+				}
+				userID := l.svcCtx.UserID.GetSnowflakeId()
+				uc = &relationDB.SysUserInfo{
+					UserID:   userID,
+					NickName: ret.UserInfo.Name,
+				}
+				if ui.OrgEmail != "" {
+					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+				}
+				if ui.Mobile != "" {
+					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+				}
+				if uc.NickName == "" {
+					uc.NickName = ui.Name
+				}
+				
 			}
+
 			uc = &relationDB.SysUserInfo{
 				UserID:         userID,
 				DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
