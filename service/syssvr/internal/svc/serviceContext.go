@@ -1,6 +1,9 @@
 package svc
 
 import (
+	"os"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/config"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -20,13 +23,13 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/zrpc"
-	"os"
-	"sync"
 )
 
 type CaptchaLimit struct {
 	PhoneIp      *tools.Limit
 	PhoneAccount *tools.Limit
+	PhoneGet     *tools.Limit
+	EmailGet     *tools.Limit
 	EmailIp      *tools.Limit
 	EmailAccount *tools.Limit
 }
@@ -34,6 +37,7 @@ type CaptchaLimit struct {
 type LoginLimit struct {
 	PwdIp      *tools.Limit
 	PwdAccount *tools.Limit
+	PwdCaptcha *tools.Limit
 }
 
 type ServiceContext struct {
@@ -96,13 +100,16 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	cl := CaptchaLimit{
 		PhoneIp:      tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "phone:ip", config.DefaultIpLimit),
-		PhoneAccount: tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "phone:account", config.DefaultAccountLimit),
-		EmailIp:      tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "email:ip", config.DefaultIpLimit),
-		EmailAccount: tools.NewLimit(c.CaptchaPhoneIpLimit, "captcha", "email:account", config.DefaultAccountLimit),
+		PhoneAccount: tools.NewLimit(c.CaptchaPhoneAccountLimit, "captcha", "phone:account", config.DefaultAccountLimit),
+		EmailIp:      tools.NewLimit(c.CaptchaEmailIpLimit, "captcha", "email:ip", config.DefaultIpLimit),
+		EmailAccount: tools.NewLimit(c.CaptchaEmailAccountLimit, "captcha", "email:account", config.DefaultAccountLimit),
+		PhoneGet:     tools.NewLimit(c.CaptchaPhoneGetLimit, "captcha", "phone:get", config.DefaultCaptchaLimit),
+		EmailGet:     tools.NewLimit(c.CaptchaEmailGetLimit, "captcha", "email:get", config.DefaultCaptchaLimit),
 	}
 	ll := LoginLimit{
 		PwdIp:      tools.NewLimit(c.LoginPwdIpLimit, "login", "pwd:ip", config.DefaultIpLimit),
 		PwdAccount: tools.NewLimit(c.LoginPwdAccountLimit, "login", "pwd:account", config.DefaultAccountLimit),
+		PwdCaptcha: tools.NewLimit(c.LoginPwdCaptchaLimit, "login", "pwd:captcha", config.DefaultCaptchaLimit),
 	}
 	if c.TimedJobRpc.Enable {
 		if c.TimedJobRpc.Mode == conf.ClientModeGrpc {

@@ -5,6 +5,9 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"sync/atomic"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -16,8 +19,6 @@ import (
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
-	"sync/atomic"
-	"time"
 
 	"github.com/silenceper/wechat/v2/officialaccount/oauth"
 	"github.com/spf13/cast"
@@ -113,9 +114,14 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
-		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
-			return nil, errors.Captcha
+		if in.Code != "" {
+			if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
+				return nil, errors.Captcha
+			}
+		} else if l.svcCtx.LoginLimit.PwdCaptcha.CheckLimit(l.ctx, in.Account) {
+			return nil, errors.NeedImgCaptcha
 		}
+		l.svcCtx.LoginLimit.PwdCaptcha.LimitIt(l.ctx, in.Account)
 		if l.svcCtx.LoginLimit.PwdAccount.CheckLimit(l.ctx, in.Account) {
 			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
 		}

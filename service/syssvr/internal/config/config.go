@@ -40,8 +40,14 @@ type Config struct {
 	CaptchaPhoneAccountLimit []conf.Limit `json:",optional"`
 	CaptchaEmailIpLimit      []conf.Limit `json:",optional"`
 	CaptchaEmailAccountLimit []conf.Limit `json:",optional"`
-	LoginPwdIpLimit          []conf.Limit `json:",optional"` //密码错误限制
-	LoginPwdAccountLimit     []conf.Limit `json:",optional"` //密码错误限制
+
+	CaptchaEmailGetLimit []conf.Limit `json:",optional"` //如果达到限制,需要输入验证码
+	CaptchaPhoneGetLimit []conf.Limit `json:",optional"` //如果达到限制,需要输入验证码
+
+	LoginPwdIpLimit      []conf.Limit `json:",optional"` //密码错误限制
+	LoginPwdAccountLimit []conf.Limit `json:",optional"` //密码错误限制
+	LoginPwdCaptchaLimit []conf.Limit `json:",optional"` //密码输入几次就要求输入验证码
+
 }
 
 var DefaultIpLimit = []conf.Limit{
@@ -51,6 +57,12 @@ var DefaultIpLimit = []conf.Limit{
 }
 
 var DefaultAccountLimit = []conf.Limit{
+	{Timeout: 5 * 60, TriggerTime: 8, ForbiddenTime: 5 * 60},                       //5分钟内错误3次,封禁5分钟
+	{Timeout: 60 * 60, TriggerTime: 12, ForbiddenTime: 60 * 60 * 24},               //1个小时内错误10次,封禁一天
+	{Timeout: 60 * 60 * 24 * 5, TriggerTime: 25, ForbiddenTime: 60 * 60 * 24 * 30}, //5天内错误20次,封禁30天
+}
+
+var DefaultCaptchaLimit = []conf.Limit{
 	{Timeout: 5 * 60, TriggerTime: 3, ForbiddenTime: 5 * 60},                       //5分钟内错误3次,封禁5分钟
 	{Timeout: 60 * 60, TriggerTime: 10, ForbiddenTime: 60 * 60 * 24},               //1个小时内错误10次,封禁一天
 	{Timeout: 60 * 60 * 24 * 5, TriggerTime: 20, ForbiddenTime: 60 * 60 * 24 * 30}, //5天内错误20次,封禁30天
