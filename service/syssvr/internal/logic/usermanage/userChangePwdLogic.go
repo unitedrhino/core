@@ -82,6 +82,8 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 			}
 		}
 		oldUi = ui
+	default:
+		return nil, errors.NotRealize
 	}
 	if oldUi.UserID != uc.UserID {
 		return nil, errors.Permissions.AddMsgf("只能修改自己的密码")

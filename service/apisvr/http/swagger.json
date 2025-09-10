@@ -15744,13 +15744,12 @@
         },
         "oldPassword": {
           "type": "string",
-          "description": "输入原密码修改密码(md5格式并需要输入图像验证码)"
+          "description": "pwd方式需要填写 如果原来没有设置过密码可以不填 输入原密码修改密码(md5格式并需要输入图像验证码)"
         }
       },
       "title": "UserChangePwdReq",
       "required": [
-        "type",
-        "code"
+        "type"
       ]
     },
     "UserCore": {
