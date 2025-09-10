@@ -3,6 +3,9 @@ package info
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/datasvr/internal/domain"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
@@ -15,8 +18,6 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
-	"strings"
-	"time"
 
 	"gitee.com/unitedrhino/core/service/datasvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/datasvr/internal/types"
@@ -218,9 +219,9 @@ func (l *ReadLogic) Handle(req *types.StaticsticsInfoReadReq) (resp *types.Stati
 		conn = utils.Copy[stores.PageInfo](req.Page).ToGorm(conn)
 	}
 
-	if (req.Page == nil || len(req.Page.Orders) == 0) && si.OrderBy != "" {
-		conn = conn.Order(si.OrderBy)
-	}
+	//if (req.Page == nil || len(req.Page.Orders) == 0) && si.OrderBy != "" {
+	//	conn = conn.Order(si.OrderBy)
+	//}
 	if si.IsFilterProject == def.True {
 		conn = dataType.GenProjectAuthScope(l.ctx, conn)
 		if si.IsFilterArea == def.True {
