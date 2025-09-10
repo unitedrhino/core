@@ -3,6 +3,9 @@ package notifymanagelogic
 import (
 	"bytes"
 	"context"
+	"strings"
+	"text/template"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/share/clients/dingClient"
@@ -18,8 +21,6 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
-	"strings"
-	"text/template"
 )
 
 type SendMsgConfig struct {
@@ -195,11 +196,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			return err
 		}
 		var userIDs []string
-		for _, v := range users {
-			if v.DingTalkUserID.Valid {
-				userIDs = append(userIDs, cast.ToString(v.DingTalkUserID.String))
-			}
-		}
+		//todo saas
+		//for _, v := range users {
+		//	if v.DingTalkUserID.Valid {
+		//		userIDs = append(userIDs, cast.ToString(v.DingTalkUserID.String))
+		//	}
+		//}
 		if len(userIDs) > 0 {
 			_, err = cli.SendCorpConvMessage(&request.CorpConvMessage{
 				AgentId:    cast.ToInt(channel.App.AppID),
@@ -221,12 +223,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if cli.MiniProgram == nil {
 			return errors.Parameter.AddMsg("没有配置微信小程序")
 		}
-		var userIDs []string
-		for _, v := range users {
-			if v.WechatOpenID.Valid {
-				userIDs = append(userIDs, cast.ToString(v.WechatOpenID.String))
-			}
-		}
+		var userIDs []string //todo saas
+		//for _, v := range users {
+		//	if v.WechatOpenID.Valid {
+		//		userIDs = append(userIDs, cast.ToString(v.WechatOpenID.String))
+		//	}
+		//}
 		if len(userIDs) > 0 {
 			for _, user := range userIDs {
 				err = cli.MiniProgram.GetSubscribe().Send(&subscribe.Message{
