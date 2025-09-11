@@ -2,10 +2,11 @@ package relationDB
 
 import (
 	"context"
+	"sync"
+
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm/clause"
-	"sync"
 )
 
 var once sync.Once
@@ -57,5 +58,6 @@ var (
 		{IsFilterTenant: 1, IsFilterProject: 2, IsFilterArea: 2, IsSoftDelete: 2, Code: "sysOperLog", Type: "table", Table: "sys_oper_log", Omits: "created_time,updated_time", OrderBy: "created_time desc", Filter: map[string]FilterKeywords{}},
 		{IsFilterTenant: 1, IsFilterProject: 2, IsFilterArea: 2, IsSoftDelete: 2, Code: "sysLoginLog", Type: "table", Table: "sys_login_log", Omits: "created_time,updated_time", OrderBy: "created_time desc", Filter: map[string]FilterKeywords{}},
 		{IsFilterTenant: 2, IsFilterProject: 2, IsFilterArea: 2, IsSoftDelete: 2, Code: "dmDeviceMsgCount", Type: "table", Table: "dm_device_msg_count", Omits: "created_time,updated_time", OrderBy: "created_time desc", Filter: map[string]FilterKeywords{}},
+		{IsFilterTenant: 1, IsFilterProject: 1, IsFilterArea: 2, IsSoftDelete: 1, Code: "sysProjectInfo", Type: "table", Table: "sys_project_info", Omits: "created_time,updated_time", Filter: map[string]FilterKeywords{}},
 	}
 )

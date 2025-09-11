@@ -33,6 +33,7 @@ func NewUserChangePwdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty, error) {
 	var account string
 	uc := ctxs.GetUserCtx(l.ctx)
+	var noKickedOut bool
 	var oldUi *relationDB.SysUserInfo
 	switch in.Type {
 	case def.CaptchaTypeEmail:
@@ -80,6 +81,8 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 			if password1 != ui.Password {
 				return nil, errors.Password
 			}
+		} else {
+			noKickedOut = true
 		}
 		oldUi = ui
 	default:
@@ -97,9 +100,11 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 	if err != nil {
 		return nil, err
 	}
-	e := l.svcCtx.UserToken.KickedOut(l.ctx, oldUi.UserID)
-	if e != nil {
-		l.Error(e)
+	if !noKickedOut {
+		e := l.svcCtx.UserToken.KickedOut(l.ctx, oldUi.UserID)
+		if e != nil {
+			l.Error(e)
+		}
 	}
 	return &sys.Empty{}, nil
 }
