@@ -1627,10 +1627,10 @@ type UserCaptchaResp struct {
 
 type UserChangePwdReq struct {
 	Type        string `json:"type,options=phone|email|pwd"` //验证方式:	phone手机号 email邮箱  pwd:原密码
-	Code        string `json:"code"`                         //验证码    微信登录填code 账号密码登录时填写密码
+	Code        string `json:"code,optional"`                //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID      string `json:"codeID,optional"`              //验证码编号 微信登录填state
 	Password    string `json:"password,optional"`            //密码
-	OldPassword string `json:"oldPassword,optional"`         //输入原密码修改密码(md5格式并需要输入图像验证码)
+	OldPassword string `json:"oldPassword,optional"`         //pwd方式需要填写 如果原来没有设置过密码可以不填 输入原密码修改密码(md5格式并需要输入图像验证码)
 }
 
 type UserCore struct {

@@ -20,7 +20,7 @@ type SysProjectInfo struct {
 	DeviceCount       int64             `gorm:"column:device_count;type:bigint;default:0"`        //总数
 	DeviceOnlineCount int64             `gorm:"column:device_online_count;type:bigint;default:0"` //在线数
 	AlarmStatus       int64             `gorm:"column:alarm_status;type:bigint;default:1"`        //报警状态 （1正常 2提醒 3一般 4严重 5紧急 6超紧急）
-	Type              string            `gorm:"column:type;type:varchar(100);default:''"`         //项目类型
+	Type              string            `gorm:"column:type;type:varchar(100);default:'default'"`  //项目类型,不填为默认
 	Status            int64             `gorm:"column:status;type:bigint;default:1"`              //项目状态  1 正常，2-禁用，3-过期
 	Area              float32           `gorm:"column:area;default:0"`
 	Ppsm              int64             `gorm:"column:ppsm;type:bigint;default:0"`                           //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter

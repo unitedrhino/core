@@ -3,6 +3,7 @@ package relationDB
 import (
 	"context"
 	"database/sql"
+
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
@@ -226,12 +227,18 @@ var (
 			Code:  "dictGroup",
 			Group: def.DictGroupBase,
 			Desc:  "字典的分组",
+		}, {
+			Name:  "项目类型",
+			Code:  "projectType",
+			Group: def.DictGroupBase,
+			Desc:  "",
 		},
 	}
 	MigrateDictDetail = []SysDictDetail{
 		{DictCode: "dictGroup", Label: "基础配置", Value: def.DictGroupBase},
 		{DictCode: "dictGroup", Label: "物联网", Value: def.DictGroupThings},
 		{DictCode: "dictGroup", Label: "系统管理", Value: def.DictGroupSystem},
+		{DictCode: "projectType", Label: "默认", Value: "default"},
 	}
 )
 
