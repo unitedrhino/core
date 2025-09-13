@@ -31,6 +31,7 @@ type UserThirdFilter struct {
 	UserID     int64
 	UnionID    string // 微信union id
 	OpenID     string // 钉钉里是UserID
+	OpenIDs    []string
 	WithUser   bool
 }
 
@@ -55,6 +56,10 @@ func (p UserThirdRepo) fmtFilter(ctx context.Context, f UserThirdFilter) *gorm.D
 		isThirdID = true
 		thirdOr = thirdOr.Or("open_id = ?", f.OpenID)
 	}
+	if len(f.OpenIDs) > 0 {
+		isThirdID = true
+		thirdOr = thirdOr.Or("open_id in ?", f.OpenIDs)
+	}
 	if f.UnionID != "" {
 		isThirdID = true
 		thirdOr = thirdOr.Or("union_id = ?", f.UnionID)
@@ -69,6 +74,11 @@ func (p UserThirdRepo) fmtFilter(ctx context.Context, f UserThirdFilter) *gorm.D
 }
 
 func (p UserThirdRepo) Insert(ctx context.Context, data *SysUserThird) error {
+	u := data.User
+	data.User = nil
+	defer func() {
+		data.User = u
+	}()
 	result := p.db.WithContext(ctx).Create(data)
 	return stores.ErrFmt(result.Error)
 }

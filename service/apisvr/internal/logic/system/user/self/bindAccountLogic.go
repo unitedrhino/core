@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
@@ -31,6 +32,7 @@ func (l *BindAccountLogic) BindAccount(req *types.UserBindAccountReq) error {
 		Type:    req.Type,
 		Code:    req.Code,
 		CodeID:  req.CodeID,
+		AppID:   req.AppID,
 	})
 	return err
 }

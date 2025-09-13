@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -43,6 +44,7 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		LoginType: req.LoginType,
 		Code:      req.Code,
 		CodeID:    req.CodeID,
+		AppID:     req.AppID,
 		Ip:        ctxs.GetUserCtx(l.ctx).IP,
 		DeviceID:  ctxs.GetUserCtx(l.ctx).DeviceID,
 	})

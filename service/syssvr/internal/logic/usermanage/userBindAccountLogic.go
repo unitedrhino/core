@@ -2,16 +2,15 @@ package usermanagelogic
 
 import (
 	"context"
-	"database/sql"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
+	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
-
-	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -61,13 +60,14 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		}
 		ui.Phone = utils.AnyToNullString(in.Account)
 	case users.RegWxMiniP:
-		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
-			return &sys.Empty{}, errors.BindAccount
+		if in.AppID == "" {
+			return nil, errors.Parameter.AddMsgf("appID is empty")
 		}
-		if cli.MiniProgram == nil {
-			return nil, errors.System.AddDetail(er)
+		cli, err := l.svcCtx.ThirdClientsManage.GetWxMiniClient(l.ctx, uc.AppCode, in.AppID)
+		if err != nil {
+			return nil, err
 		}
-		auth := cli.MiniProgram.GetAuth()
+		auth := cli.GetAuth()
 		ret, er := auth.Code2SessionContext(l.ctx, in.Code)
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
@@ -75,38 +75,103 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		if ret.ErrCode != 0 {
 			return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
 		}
-		if ret.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{String: ret.UnionID, Valid: true}
-		}
-		ui.WechatOpenID = sql.NullString{String: ret.OpenID, Valid: true}
-	case users.RegWxOpen:
-		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
+		_, err = relationDB.NewUserThirdRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserThirdFilter{
+			AppType:  def.ThirdTypeWx,
+			AppID:    in.AppID,
+			UserID:   uc.UserID,
+			UnionID:  ret.UnionID,
+			OpenID:   ret.OpenID,
+			WithUser: false,
+		})
+		if err == nil { //绑定过了
 			return &sys.Empty{}, errors.BindAccount
 		}
-		if cli.WxOfficial == nil {
-			return nil, errors.System.AddDetail(er)
+		if !errors.Cmp(err, errors.NotFind) {
+			return nil, err
 		}
-		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		err = relationDB.NewUserThirdRepo(l.ctx).Insert(l.ctx, &relationDB.SysUserThird{
+			AppType: def.ThirdTypeWx,
+			AppID:   in.AppID,
+			UserID:  uc.UserID,
+			UnionID: ret.UnionID,
+			OpenID:  ret.OpenID,
+		})
+		return &sys.Empty{}, err
+	case users.RegWxOpen:
+		if in.AppID == "" {
+			return nil, errors.Parameter.AddMsgf("appID is empty")
+		}
+		cli, err := l.svcCtx.ThirdClientsManage.GetWxOpenClient(l.ctx, uc.AppCode, in.AppID)
+		if err != nil {
+			return nil, err
+		}
+		ret, er := cli.GetOauth().GetUserAccessToken(in.Code)
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		if at.UnionID != "" {
-			ui.WechatUnionID = sql.NullString{String: at.UnionID, Valid: true}
+		if ret.ErrCode != 0 {
+			return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
 		}
-		ui.WechatOpenID = sql.NullString{String: at.OpenID, Valid: true}
+		_, err = relationDB.NewUserThirdRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserThirdFilter{
+			AppType:  def.ThirdTypeWx,
+			AppID:    in.AppID,
+			UserID:   uc.UserID,
+			UnionID:  ret.UnionID,
+			OpenID:   ret.OpenID,
+			WithUser: false,
+		})
+		if err == nil { //绑定过了
+			return &sys.Empty{}, errors.BindAccount
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return nil, err
+		}
+		err = relationDB.NewUserThirdRepo(l.ctx).Insert(l.ctx, &relationDB.SysUserThird{
+			AppType: def.ThirdTypeWx,
+			AppID:   in.AppID,
+			UserID:  uc.UserID,
+			UnionID: ret.UnionID,
+			OpenID:  ret.OpenID,
+		})
+		return &sys.Empty{}, err
 
 	case users.RegDingApp:
-		if cli.DingMini == nil {
-			return nil, errors.System.AddDetail(err)
+		if in.AppID == "" {
+			return nil, errors.Parameter.AddMsgf("appID is empty")
 		}
-		ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
+		cli, err := l.svcCtx.ThirdClientsManage.GetDingAppClient(l.ctx, uc.AppCode, in.AppID)
+		if err != nil {
+			return nil, err
+		}
+		ret, er := cli.GetUserInfoByCode(in.Code)
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
 		if ret.Code != 0 {
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
-		ui.DingTalkUserID = sql.NullString{String: ret.UserInfo.UserId, Valid: true}
+		_, err = relationDB.NewUserThirdRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserThirdFilter{
+			AppType:  def.ThirdTypeDingApp,
+			AppID:    in.AppID,
+			UserID:   uc.UserID,
+			UnionID:  ret.UserInfo.UnionId,
+			OpenID:   ret.UserInfo.UserId,
+			WithUser: false,
+		})
+		if err == nil { //绑定过了
+			return &sys.Empty{}, errors.BindAccount
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return nil, err
+		}
+		err = relationDB.NewUserThirdRepo(l.ctx).Insert(l.ctx, &relationDB.SysUserThird{
+			AppType: def.ThirdTypeDingApp,
+			AppID:   in.AppID,
+			UserID:  uc.UserID,
+			UnionID: ret.UserInfo.UnionId,
+			OpenID:  ret.UserInfo.UserId,
+		})
+		return &sys.Empty{}, err
 	}
 	err = relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, ui)
 	return &sys.Empty{}, err

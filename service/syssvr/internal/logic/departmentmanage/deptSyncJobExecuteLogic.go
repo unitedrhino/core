@@ -5,6 +5,9 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"sync"
+	"time"
+
 	usermanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -23,8 +26,6 @@ import (
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"golang.org/x/time/rate"
 	"gorm.io/gorm"
-	"sync"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -124,7 +125,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 			for _, d := range needSyncDeptMap {
 				dd := d
 				deptIDPaths = append(deptIDPaths, string(d.IDPath))
-				err := SyncDeptUserDing(ctx, l.svcCtx, syncedUserSet, cli, dd)
+				err := SyncDeptUserDing(ctx, l.svcCtx, syncedUserSet, cli, po.ThirdConfig.AppID, dd)
 				if err != nil {
 					l.Error(dd, err)
 				}
@@ -144,7 +145,7 @@ func (l *DeptSyncJobExecuteLogic) DeptSyncJobExecute(in *sys.DeptSyncJobExecuteR
 	return &sys.DeptSyncJobExecuteResp{}, nil
 }
 
-func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUserSet map[string]struct{}, cli *dingClient.DingTalk, info *relationDB.SysDeptInfo) error {
+func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUserSet map[string]struct{}, cli *dingClient.DingTalk, appID string, info *relationDB.SysDeptInfo) error {
 	c := 0
 	page := 100
 	var hasMore = true
@@ -163,15 +164,19 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 				continue
 			}
 			syncedUserSet[ding.UserId] = struct{}{}
-			uc, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{DingTalkUserID: ding.UserId, DingTalkUnionID: ding.UnionId})
+			var uc *relationDB.SysUserInfo
+			ut, err := relationDB.NewUserThirdRepo(ctx).FindOneByFilter(ctx, relationDB.UserThirdFilter{WithUser: true, AppID: appID, AppType: def.ThirdTypeDingApp, OpenID: ding.UserId, UnionID: ding.UnionId})
 			if err != nil {
 				if !errors.Cmp(err, errors.NotFind) {
 					return err
 				}
-				uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{Accounts: []string{ding.Email, ding.Mobile}})
+				uc, err = relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctx, relationDB.UserInfoFilter{WithThird: true, Accounts: []string{ding.Email, ding.Mobile}})
 				if err != nil && !errors.Cmp(err, errors.NotFind) {
 					return err
 				}
+			} else {
+				uc = ut.User
+				uc.Thirds = append(uc.Thirds, ut)
 			}
 			dingEmail := ding.Email
 			if ding.OrgEmail != "" {
@@ -180,12 +185,9 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 			if uc == nil {
 				userID := svcCtx.UserID.GetSnowflakeId()
 				uc = &relationDB.SysUserInfo{
-					UserID:         userID,
-					DingTalkUserID: sql.NullString{Valid: true, String: ding.UserId},
-					NickName:       ding.Name,
-				}
-				if ding.UnionId != "" {
-					uc.DingTalkUnionID = sql.NullString{Valid: true, String: ding.UnionId}
+					UserID:   userID,
+					NickName: ding.Name,
+					Thirds:   []*relationDB.SysUserThird{{AppType: def.ThirdTypeDingApp, AppID: appID, UserID: userID, UnionID: ding.UnionId, OpenID: ding.UserId}},
 				}
 				if dingEmail != "" {
 					uc.Email = sql.NullString{String: dingEmail, Valid: true}
@@ -207,7 +209,6 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 				})
 			} else {
 				uc.NickName = ding.Name
-				uc.DingTalkUserID = sql.NullString{String: ding.UserId, Valid: true}
 				if dingEmail != "" {
 					uc.Email = sql.NullString{String: dingEmail, Valid: true}
 				}
@@ -221,10 +222,34 @@ func SyncDeptUserDing(ctx context.Context, svcCtx *svc.ServiceContext, syncedUse
 				if ding.Mobile != "" {
 					uc.Phone = sql.NullString{String: ding.Mobile, Valid: true}
 				}
-				err = relationDB.NewUserInfoRepo(ctx).Update(ctx, uc)
-				if err != nil {
-					return err
+				var hasBind bool
+				for _, u := range uc.Thirds {
+					if u.AppID == appID {
+						hasBind = true
+					}
 				}
+				err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
+					uc.Thirds = nil
+					err = relationDB.NewUserInfoRepo(tx).Update(ctx, uc)
+					if err != nil {
+						return err
+					}
+					if !hasBind {
+						return relationDB.NewUserThirdRepo(tx).Insert(ctx, &relationDB.SysUserThird{
+							AppID:   appID,
+							AppType: def.ThirdTypeDingApp,
+							OpenID:  ding.UserId,
+							UnionID: ding.UnionId,
+							UserID:  uc.UserID,
+						})
+					}
+					return nil
+				})
+				if err != nil {
+					logx.WithContext(ctx).Error(err)
+					continue
+				}
+
 			}
 			var dIDs []int64
 			for _, v := range ding.DeptIds {

@@ -1494,6 +1494,7 @@ message UserBindAccountReq{
   string account = 2; //手机号,邮箱需要填写
   string code = 3;//验证码    微信登录填code
   string codeID = 4;//验证码编号 微信登录填state
+  string appID = 5;//应用ID,第三方登录方式填写 钉钉 微信 oauth的其他
 }
 
 message UserRoleIndexReq{

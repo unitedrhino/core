@@ -7719,7 +7719,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TenantInfoCreateReq"
+              "$ref": "#/definitions/TenantInfo"
             }
           }
         ],
@@ -14223,19 +14223,15 @@
           "format": "int64",
           "description": "注册分配的角色id"
         },
-        "weatherKey": {
-          "type": "string",
-          "description": "和风天气秘钥 参考: https:dev.qweather.com/"
-        },
         "operLogKeepDays": {
           "type": "integer",
           "format": "int64",
-          "description": "操作日志保留时间,如果为0则为永久"
+          "description": "操作日志保留时间,如果为0则为永久(root可修改)"
         },
         "loginLogKeepDays": {
           "type": "integer",
           "format": "int64",
-          "description": "登录日志保留时间,如果为0则为永久"
+          "description": "登录日志保留时间,如果为0则为永久(root可修改)"
         },
         "checkUserDelete": {
           "type": "integer",
@@ -14250,7 +14246,17 @@
         "deviceLimit": {
           "type": "integer",
           "format": "int64",
-          "description": "租户下的设备数量限制,0为不限制"
+          "description": "租户下的设备数量限制,0为不限制(root可修改)"
+        },
+        "projectLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户下的项目数量限制,0为不限制(root可修改)"
+        },
+        "userLimit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "租户下的用户数量限制,0为不限制(root可修改)"
         },
         "feedbackNotifyUserIDs": {
           "type": "array",
@@ -14506,22 +14512,6 @@
       "title": "TenantInfo",
       "required": [
         "code"
-      ]
-    },
-    "TenantInfoCreateReq": {
-      "type": "object",
-      "properties": {
-        "info": {
-          "$ref": "#/definitions/TenantInfo"
-        },
-        "adminUserInfo": {
-          "$ref": "#/definitions/UserInfo"
-        }
-      },
-      "title": "TenantInfoCreateReq",
-      "required": [
-        "info",
-        "adminUserInfo"
       ]
     },
     "TenantInfoCreateResp": {
@@ -15646,6 +15636,10 @@
         "codeID": {
           "type": "string",
           "description": "验证码编号 微信登录填state"
+        },
+        "appID": {
+          "type": "string",
+          "description": "第三方必填,微信钉钉,飞书等"
         }
       },
       "title": "UserBindAccountReq",
@@ -15745,6 +15739,10 @@
         "oldPassword": {
           "type": "string",
           "description": "pwd方式需要填写 如果原来没有设置过密码可以不填 输入原密码修改密码(md5格式并需要输入图像验证码)"
+        },
+        "appID": {
+          "type": "string",
+          "description": "第三方必填,微信钉钉,飞书等"
         }
       },
       "title": "UserChangePwdReq",
@@ -16165,6 +16163,10 @@
         "codeID": {
           "type": "string",
           "description": "验证码编号 微信邮箱验证登录填state"
+        },
+        "appID": {
+          "type": "string",
+          "description": "第三方必填,微信钉钉,飞书等"
         }
       },
       "title": "UserLoginReq",
@@ -16462,6 +16464,10 @@
         "expand": {
           "type": "object",
           "description": "拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code"
+        },
+        "appID": {
+          "type": "string",
+          "description": "第三方必填,微信钉钉,飞书等"
         },
         "info": {
           "$ref": "#/definitions/UserInfo",

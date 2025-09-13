@@ -156,7 +156,8 @@ type (
 		CodeID  string `json:"codeID,optional"`	//验证码编号 微信登录填state
 		Password  string `json:"password,optional"`	//密码
 		OldPassword string  `json:"oldPassword,optional"` //pwd方式需要填写 如果原来没有设置过密码可以不填 输入原密码修改密码(md5格式并需要输入图像验证码)
-	}
+        AppID string `json:"appID,optional"` //第三方必填,微信钉钉,飞书等
+    }
 	UserCaptchaReq  {
 		Account string `json:"account,optional"`               //短信验证时填写手机号,邮箱验证时填写邮箱
 		Type    string `json:"type,options=phone|image|email"` //验证方式:短信验证,图片验证码
@@ -177,7 +178,8 @@ type (
 		LoginType string `json:"loginType,options=phone|wxOpen|wxIn|wxMiniP|dingApp|pwd|email"` //验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱
 		Code      string `json:"code,optional"`                                 //验证码    微信邮箱验证登录填code
 		CodeID    string `json:"codeID,optional"`                               //验证码编号 微信邮箱验证登录填state
-	}
+        AppID string `json:"appID,optional"` //第三方必填,微信钉钉,飞书等
+    }
 
 	UserLoginResp {
 		Info  UserInfo `json:"info"`  //用户信息
@@ -254,7 +256,8 @@ type (
 		CodeID  string `json:"codeID,optional"`	//验证码编号 微信登录填state
 		Password  string `json:"password,optional"`	//密码
 		Expand map[string ]string `json:"expand,optional"`//拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
-		Info *UserInfo `json:"info,optional"` //用户信息
+        AppID string `json:"appID,optional"` //第三方必填,微信钉钉,飞书等
+        Info *UserInfo `json:"info,optional"` //用户信息
 	}
 
 	UserForgetPwdReq{
@@ -263,12 +266,13 @@ type (
 		Code    string `json:"code,optional"`  			//验证码    微信登录填code 账号密码登录时填写密码
 		CodeID  string `json:"codeID,optional"`   		//验证码编号 微信登录填state
 		Password  string `json:"password"`           	//密码
-	}
+    }
 
 	UserBindAccountReq{
 		Type string `json:"type,options=phone|email|wxOpen|wxIn|wxMiniP|dingApp"` 	//验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序
 		Account    string `json:"account,optional"`		//手机号注册时填写手机号 email填写邮箱
 		Code    string `json:"code,optional"`  			//验证码    微信登录填code 账号密码登录时填写密码
 		CodeID  string `json:"codeID,optional"`   		//验证码编号 微信登录填state
-	}
+        AppID string `json:"appID,optional"` //第三方必填,微信钉钉,飞书等
+    }
 )

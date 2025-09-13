@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
@@ -33,6 +34,7 @@ func (l *RegisterLogic) Register(req *types.UserRegisterReq) error {
 		CodeID:   req.CodeID,
 		Password: req.Password,
 		Expand:   req.Expand,
+		AppID:    req.AppID,
 		Info:     user.UserInfoToRpc(req.Info),
 	})
 	return err

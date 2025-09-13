@@ -1258,12 +1258,13 @@ type TenantAppWithIDOrCode struct {
 type TenantConfig struct {
 	TenantCode                string                                   `json:"tenantCode,optional"`                // 租户编码
 	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`            //注册分配的角色id
-	WeatherKey                string                                   `json:"weatherKey,optional"`                //和风天气秘钥 参考: https://dev.qweather.com/
-	OperLogKeepDays           *int64                                   `json:"operLogKeepDays,optional"`           //操作日志保留时间,如果为0则为永久
-	LoginLogKeepDays          *int64                                   `json:"loginLogKeepDays,optional"`          //登录日志保留时间,如果为0则为永久
+	OperLogKeepDays           *int64                                   `json:"operLogKeepDays,optional"`           //操作日志保留时间,如果为0则为永久(root可修改)
+	LoginLogKeepDays          *int64                                   `json:"loginLogKeepDays,optional"`          //登录日志保留时间,如果为0则为永久(root可修改)
 	CheckUserDelete           int64                                    `json:"checkUserDelete,optional"`           //是否检查用户注销 1(禁止项目管理员注销账号) 2(不禁止项目管理员注销账号)
 	IsSsl                     int64                                    `json:"isSsl,optional"`                     //是否单会话登录(默认为2) Single Session Login
-	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`               //租户下的设备数量限制,0为不限制
+	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`               //租户下的设备数量限制,0为不限制(root可修改)
+	ProjectLimit              *int64                                   `json:"projectLimit,optional"`              //租户下的项目数量限制,0为不限制(root可修改)
+	UserLimit                 *int64                                   `json:"userLimit,optional"`                 //租户下的用户数量限制,0为不限制(root可修改)
 	FeedbackNotifyUserIDs     []string                                 `json:"feedbackNotifyUserIDs,optional"`     //产生问题反馈通知的用户ID列表
 	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"` //注册自动创建项目和区域
 }
@@ -1330,11 +1331,6 @@ type TenantInfo struct {
 	UserCount             int64        `json:"userCount,optional"`               //租户下的用户统计
 	AdminUserInfo         *UserCore    `json:"adminUserInfo,optional,omitempty"` //管理员信息
 	DefaultProject        *ProjectInfo `json:"defaultProject,optional,omitempty"`
-}
-
-type TenantInfoCreateReq struct {
-	Info          *TenantInfo `json:"info"`
-	AdminUserInfo *UserInfo   `json:"adminUserInfo"`
 }
 
 type TenantInfoCreateResp struct {
@@ -1609,6 +1605,7 @@ type UserBindAccountReq struct {
 	Account string `json:"account,optional"`                                     //手机号注册时填写手机号 email填写邮箱
 	Code    string `json:"code,optional"`                                        //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID  string `json:"codeID,optional"`                                      //验证码编号 微信登录填state
+	AppID   string `json:"appID,optional"`                                       //第三方必填,微信钉钉,飞书等
 }
 
 type UserCaptchaReq struct {
@@ -1631,6 +1628,7 @@ type UserChangePwdReq struct {
 	CodeID      string `json:"codeID,optional"`              //验证码编号 微信登录填state
 	Password    string `json:"password,optional"`            //密码
 	OldPassword string `json:"oldPassword,optional"`         //pwd方式需要填写 如果原来没有设置过密码可以不填 输入原密码修改密码(md5格式并需要输入图像验证码)
+	AppID       string `json:"appID,optional"`               //第三方必填,微信钉钉,飞书等
 }
 
 type UserCore struct {
@@ -1736,6 +1734,7 @@ type UserLoginReq struct {
 	LoginType string `json:"loginType,options=phone|wxOpen|wxIn|wxMiniP|dingApp|pwd|email"` //验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱
 	Code      string `json:"code,optional"`                                                 //验证码    微信邮箱验证登录填code
 	CodeID    string `json:"codeID,optional"`                                               //验证码编号 微信邮箱验证登录填state
+	AppID     string `json:"appID,optional"`                                                //第三方必填,微信钉钉,飞书等
 }
 
 type UserLoginResp struct {
@@ -1816,6 +1815,7 @@ type UserRegisterReq struct {
 	CodeID   string            `json:"codeID,optional"`   //验证码编号 微信登录填state
 	Password string            `json:"password,optional"` //密码
 	Expand   map[string]string `json:"expand,optional"`   //拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
+	AppID    string            `json:"appID,optional"`    //第三方必填,微信钉钉,飞书等
 	Info     *UserInfo         `json:"info,optional"`     //用户信息
 }
 
