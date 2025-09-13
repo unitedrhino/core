@@ -932,13 +932,16 @@ type ProjectInfo struct {
 }
 
 type ProjectInfoIndexReq struct {
-	Page          *PageInfo `json:"page,optional"`          //进行数据分页（不传默认2000相当于全部）
-	ProjectName   string    `json:"projectName,optional"`   //过滤项目名称
-	IsGetAll      bool      `json:"isGetAll,optional"`      //是否获取所有(管理员获取所有)
-	ProjectIDs    []int64   `json:"projectIDs,optional"`    //过滤项目id列表
-	WithTopAreas  bool      `json:"withTopAreas,optional"`  //同时返回顶层的区域列表
-	WithAdminUser bool      `json:"withAdminUser,optional"` //同时获取管理员核心信息
-	TenantCode    string    `json:"tenantCode,optional"`    //指定租户(只有default租户下的管理员才有效)
+	Page          *PageInfo `json:"page,optional"`                  //进行数据分页（不传默认2000相当于全部）
+	ProjectName   string    `json:"projectName,optional"`           //过滤项目名称
+	IsGetAll      bool      `json:"isGetAll,optional"`              //是否获取所有(管理员获取所有)
+	ProjectIDs    []int64   `json:"projectIDs,optional"`            //过滤项目id列表
+	WithTopAreas  bool      `json:"withTopAreas,optional"`          //同时返回顶层的区域列表
+	WithAdminUser bool      `json:"withAdminUser,optional"`         //同时获取管理员核心信息
+	TenantCode    string    `json:"tenantCode,optional"`            //指定租户(只有default租户下的管理员才有效)
+	AlarmStatus   int64     `json:"alarmStatus,optional,omitempty"` //报警状态(只读) （1正常 2提醒 3一般 4严重 5紧急 6超紧急）
+	Status        int64     `json:"status,optional,omitempty"`      //项目状态  1 正常，2-禁用，3-过期
+	Type          string    `json:"type,optional,omitempty"`        //项目类型
 }
 
 type ProjectInfoIndexResp struct {

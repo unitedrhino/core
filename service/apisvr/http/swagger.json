@@ -12826,6 +12826,20 @@
         "tenantCode": {
           "type": "string",
           "description": "指定租户(只有default租户下的管理员才有效)"
+        },
+        "alarmStatus": {
+          "type": "integer",
+          "format": "int64",
+          "description": "报警状态(只读) （1正常 2提醒 3一般 4严重 5紧急 6超紧急）"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目状态  1 正常，2-禁用，3-过期"
+        },
+        "type": {
+          "type": "string",
+          "description": "项目类型"
         }
       },
       "title": "ProjectInfoIndexReq"
