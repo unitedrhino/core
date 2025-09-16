@@ -49,10 +49,10 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			return nil, errors.NeedImgCaptcha
 		}
 		if l.svcCtx.CaptchaLimit.PhoneAccount.CheckLimit(l.ctx, in.Account) {
-			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试").AddDetail("PhoneAccount")
 		}
 		if ip != "" && l.svcCtx.CaptchaLimit.PhoneIp.CheckLimit(l.ctx, ip) {
-			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试").AddDetail("PhoneIp")
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
@@ -83,10 +83,10 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			return nil, errors.NeedImgCaptcha
 		}
 		if l.svcCtx.CaptchaLimit.EmailAccount.CheckLimit(l.ctx, in.Account) {
-			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试").AddDetail("EmailAccount")
 		}
 		if ip != "" && l.svcCtx.CaptchaLimit.EmailIp.CheckLimit(l.ctx, ip) {
-			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试")
+			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试").AddDetail("CaptchaLimit")
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
 		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
