@@ -318,6 +318,9 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 	uc := ctxs.GetUserCtx(l.ctx)
 	cfg, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{AppCodes: []string{uc.AppCode}})
 	if err != nil {
+		if errors.Cmp(err, errors.NotFind) {
+			return nil, errors.Permissions.WithMsg("本租户无该应用")
+		}
 		return nil, err
 	}
 	if len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
