@@ -29,6 +29,7 @@ const (
 	UserManage_UserCaptcha_FullMethodName            = "/sys.UserManage/userCaptcha"
 	UserManage_UserCheckToken_FullMethodName         = "/sys.UserManage/userCheckToken"
 	UserManage_UserRegister_FullMethodName           = "/sys.UserManage/userRegister"
+	UserManage_UserTaRegister_FullMethodName         = "/sys.UserManage/userTaRegister"
 	UserManage_UserChangePwd_FullMethodName          = "/sys.UserManage/userChangePwd"
 	UserManage_UserCodeToUserID_FullMethodName       = "/sys.UserManage/userCodeToUserID"
 	UserManage_UserBindAccount_FullMethodName        = "/sys.UserManage/userBindAccount"
@@ -61,6 +62,7 @@ type UserManageClient interface {
 	UserCaptcha(ctx context.Context, in *UserCaptchaReq, opts ...grpc.CallOption) (*UserCaptchaResp, error)
 	UserCheckToken(ctx context.Context, in *UserCheckTokenReq, opts ...grpc.CallOption) (*UserCheckTokenResp, error)
 	UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
+	UserTaRegister(ctx context.Context, in *UserTaRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
 	UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 	UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error)
 	UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error)
@@ -171,6 +173,15 @@ func (c *userManageClient) UserCheckToken(ctx context.Context, in *UserCheckToke
 func (c *userManageClient) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
 	out := new(UserRegisterResp)
 	err := c.cc.Invoke(ctx, UserManage_UserRegister_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserTaRegister(ctx context.Context, in *UserTaRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
+	out := new(UserRegisterResp)
+	err := c.cc.Invoke(ctx, UserManage_UserTaRegister_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -335,6 +346,7 @@ type UserManageServer interface {
 	UserCaptcha(context.Context, *UserCaptchaReq) (*UserCaptchaResp, error)
 	UserCheckToken(context.Context, *UserCheckTokenReq) (*UserCheckTokenResp, error)
 	UserRegister(context.Context, *UserRegisterReq) (*UserRegisterResp, error)
+	UserTaRegister(context.Context, *UserTaRegisterReq) (*UserRegisterResp, error)
 	UserChangePwd(context.Context, *UserChangePwdReq) (*Empty, error)
 	UserCodeToUserID(context.Context, *UserCodeToUserIDReq) (*UserCodeToUserIDResp, error)
 	UserBindAccount(context.Context, *UserBindAccountReq) (*Empty, error)
@@ -387,6 +399,9 @@ func (UnimplementedUserManageServer) UserCheckToken(context.Context, *UserCheckT
 }
 func (UnimplementedUserManageServer) UserRegister(context.Context, *UserRegisterReq) (*UserRegisterResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
+}
+func (UnimplementedUserManageServer) UserTaRegister(context.Context, *UserTaRegisterReq) (*UserRegisterResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserTaRegister not implemented")
 }
 func (UnimplementedUserManageServer) UserChangePwd(context.Context, *UserChangePwdReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserChangePwd not implemented")
@@ -625,6 +640,24 @@ func _UserManage_UserRegister_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserManageServer).UserRegister(ctx, req.(*UserRegisterReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserTaRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserTaRegisterReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserTaRegister(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserTaRegister_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserTaRegister(ctx, req.(*UserTaRegisterReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -963,6 +996,10 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userRegister",
 			Handler:    _UserManage_UserRegister_Handler,
+		},
+		{
+			MethodName: "userTaRegister",
+			Handler:    _UserManage_UserTaRegister_Handler,
 		},
 		{
 			MethodName: "userChangePwd",

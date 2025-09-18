@@ -90,9 +90,14 @@ service api {
 	@handler login
 	post /login (UserLoginReq) returns (UserLoginResp)
 
-	@doc "用户注册"
+	@doc "普通用户注册"
 	@handler register
 	post /register (UserRegisterReq) returns ()
+
+    @doc "租户管理员用户注册(配置开启了才能用)"
+    @handler TaRegister
+    post /ta/register (UserTaRegisterReq) returns ()
+
 	@doc "忘记密码"
 	@handler forgetPwd
 	post /forget-pwd (UserForgetPwdReq) returns ()
@@ -247,7 +252,7 @@ type (
 )
 
 type (
-	//登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息
+	//登录信息注册
 	UserRegisterReq {
 		 //注册方式:	phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内登录 wxMiniP 微信小程序 pwd 账号密码注册
 		RegType string `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp"`
@@ -257,8 +262,20 @@ type (
 		Password  string `json:"password,optional"`	//密码
 		Expand map[string ]string `json:"expand,optional"`//拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
         AppID string `json:"appID,optional"` //第三方必填,微信钉钉,飞书等
-        Info *UserInfo `json:"info,optional"` //用户信息
-	}
+        NickName    string `json:"nickName,optional"`          // 用户的昵称
+    }
+
+    UserTaRegisterReq {
+        //注册方式
+        RegType string `json:"regType,options=phone|email"`
+        Account    string `json:"account,optional"`	//手机号注册时填写手机号 邮箱填写邮箱
+        UserName string `json:"userName"` //用户名,只能是英文数字加下划线,至少要有一个英文
+        Code    string `json:"code"`	//验证码    微信登录填code 账号密码登录时填写密码
+        CodeID  string `json:"codeID,optional"`	//验证码编号 微信登录填state
+        Password  string `json:"password,optional"`	//密码,明文
+        NickName    string `json:"nickName,optional"`          // 用户的昵称
+//        Expand map[string ]string `json:"expand,optional"`//拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
+    }
 
 	UserForgetPwdReq{
 		Type string `json:"type,options=phone|email"` 	//验证方式:	phone手机号 email邮箱

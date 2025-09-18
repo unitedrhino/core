@@ -73,6 +73,11 @@ func (s *UserManageServer) UserRegister(ctx context.Context, in *sys.UserRegiste
 	return l.UserRegister(in)
 }
 
+func (s *UserManageServer) UserTaRegister(ctx context.Context, in *sys.UserTaRegisterReq) (*sys.UserRegisterResp, error) {
+	l := usermanagelogic.NewUserTaRegisterLogic(ctx, s.svcCtx)
+	return l.UserTaRegister(in)
+}
+
 func (s *UserManageServer) UserChangePwd(ctx context.Context, in *sys.UserChangePwdReq) (*sys.Empty, error) {
 	l := usermanagelogic.NewUserChangePwdLogic(ctx, s.svcCtx)
 	return l.UserChangePwd(in)

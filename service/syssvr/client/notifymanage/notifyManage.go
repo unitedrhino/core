@@ -177,6 +177,7 @@ type (
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
 	SlotInfoMultiCreateReq                = sys.SlotInfoMultiCreateReq
+	TaRegisterConfig                      = sys.TaRegisterConfig
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
 	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
@@ -252,6 +253,7 @@ type (
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
+	UserTaRegisterReq                     = sys.UserTaRegisterReq
 	WeatherAir                            = sys.WeatherAir
 	WeatherReadReq                        = sys.WeatherReadReq
 	WeatherReadResp                       = sys.WeatherReadResp

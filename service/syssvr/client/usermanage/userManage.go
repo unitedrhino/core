@@ -177,6 +177,7 @@ type (
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
 	SlotInfoMultiCreateReq                = sys.SlotInfoMultiCreateReq
+	TaRegisterConfig                      = sys.TaRegisterConfig
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
 	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
@@ -252,6 +253,7 @@ type (
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
+	UserTaRegisterReq                     = sys.UserTaRegisterReq
 	WeatherAir                            = sys.WeatherAir
 	WeatherReadReq                        = sys.WeatherReadReq
 	WeatherReadResp                       = sys.WeatherReadResp
@@ -271,6 +273,7 @@ type (
 		UserCaptcha(ctx context.Context, in *UserCaptchaReq, opts ...grpc.CallOption) (*UserCaptchaResp, error)
 		UserCheckToken(ctx context.Context, in *UserCheckTokenReq, opts ...grpc.CallOption) (*UserCheckTokenResp, error)
 		UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
+		UserTaRegister(ctx context.Context, in *UserTaRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
 		UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 		UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error)
 		UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error)
@@ -400,6 +403,15 @@ func (m *defaultUserManage) UserRegister(ctx context.Context, in *UserRegisterRe
 
 func (d *directUserManage) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
 	return d.svr.UserRegister(ctx, in)
+}
+
+func (m *defaultUserManage) UserTaRegister(ctx context.Context, in *UserTaRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserTaRegister(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserTaRegister(ctx context.Context, in *UserTaRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
+	return d.svr.UserTaRegister(ctx, in)
 }
 
 func (m *defaultUserManage) UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error) {
