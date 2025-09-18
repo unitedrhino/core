@@ -45,10 +45,10 @@ func (m *SysUserInfo) TableName() string {
 
 // 应用菜单关联表
 type SysUserRole struct {
-	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                        // id编号
-	TenantCode dataType.TenantCode `gorm:"column:tenant_code;index;type:VARCHAR(50);NOT NULL;"`                     // 租户编码
-	UserID     int64               `gorm:"column:user_id;uniqueIndex:idx_sys_user_role_ri_mi;NOT NULL;type:BIGINT"` // 用户ID
-	RoleID     int64               `gorm:"column:role_id;uniqueIndex:idx_sys_user_role_ri_mi;NOT NULL;type:BIGINT"` // 角色ID
+	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                        // id编号
+	TenantCode dataType.TenantCode `gorm:"column:tenant_code;uniqueIndex:idx_sys_user_role_ri_mi;index;type:VARCHAR(50);NOT NULL;"` // 租户编码
+	UserID     int64               `gorm:"column:user_id;uniqueIndex:idx_sys_user_role_ri_mi;NOT NULL;type:BIGINT"`                 // 用户ID
+	RoleID     int64               `gorm:"column:role_id;uniqueIndex:idx_sys_user_role_ri_mi;NOT NULL;type:BIGINT"`                 // 角色ID
 	Role       *SysRoleInfo        `gorm:"foreignKey:ID;references:RoleID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_role_ri_mi"`

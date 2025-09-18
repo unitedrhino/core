@@ -61,14 +61,12 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 		return nil, err
 	}
 
-	projectPo := relationDB.SysProjectInfo{
-		TenantCode:  dataType.TenantCode(in.Code),
-		ProjectID:   dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
-		ProjectName: in.Name,
-		//CompanyName: utils.ToEmptyString(in.CompanyName),
-		AdminUserID: ui.UserID,
-		//Region:      utils.ToEmptyString(in.Region),
-		//Address:     utils.ToEmptyString(in.Address),
+	projectPo := &relationDB.SysProjectInfo{
+		TenantCode:   dataType.TenantCode(in.Code),
+		ProjectID:    dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
+		ProjectName:  in.Name,
+		IsSysCreated: def.True,
+		AdminUserID:  ui.UserID,
 	}
 
 	po := logic.ToTenantInfoPo(in)
@@ -90,74 +88,97 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 		}
 		po.LogoImg = path
 	}
-	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		ris := []*relationDB.SysRoleInfo{{TenantCode: dataType.TenantCode(in.Code), Name: "超级管理员", Code: "supper"},
-			{TenantCode: dataType.TenantCode(in.Code), Name: "管理员", Code: "admin"},
-			{TenantCode: dataType.TenantCode(in.Code), Name: "普通用户", Code: "client"}}
-		err = relationDB.NewRoleInfoRepo(tx).MultiInsert(l.ctx, ris)
-		if err != nil {
-			return err
-		}
-		err := relationDB.NewUserRoleRepo(tx).Insert(l.ctx, &relationDB.SysUserRole{
-			TenantCode: dataType.TenantCode(in.Code),
-			UserID:     ui.UserID,
-			RoleID:     ris[0].ID,
-		})
+	err = TenantCreate(l.ctx, l.svcCtx, projectPo, po, ui, false)
+	if err != nil {
+		return nil, err
+	}
+	return &sys.WithID{Id: po.ID}, nil
+}
+
+func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *relationDB.SysProjectInfo,
+	po *relationDB.SysTenantInfo, ui *relationDB.SysUserInfo, isCreateUser bool) error {
+	err := stores.GetCommonConn(ctx).Transaction(func(tx *gorm.DB) error {
+		ris := []*relationDB.SysRoleInfo{{TenantCode: po.Code, Name: "超级管理员", Code: "supper"},
+			{TenantCode: po.Code, Name: "管理员", Code: "admin"},
+			{TenantCode: po.Code, Name: "普通用户", Code: "client"}}
+		err := relationDB.NewRoleInfoRepo(tx).MultiInsert(ctxs.WithRoot(ctx), ris)
 		if err != nil {
 			return err
 		}
 		if ui.TenantCode != def.TenantCodeCommon { //租户管理的账号是公共的
-			err := relationDB.NewUserInfoRepo(tx).UpdateWithField(ctxs.WithRoot(l.ctx), relationDB.UserInfoFilter{UserID: ui.UserID}, map[string]any{"tenant_code": def.TenantCodeCommon})
+			err := relationDB.NewUserInfoRepo(tx).UpdateWithField(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{UserID: ui.UserID}, map[string]any{"tenant_code": def.TenantCodeCommon})
 			if err != nil {
 				return err
 			}
 		}
-		err = relationDB.NewProjectInfoRepo(tx).Insert(l.ctx, &projectPo)
+		err = relationDB.NewProjectInfoRepo(tx).Insert(ctxs.WithRoot(ctx), projectPo)
 		if err != nil {
 			return err
 		}
 		po.DefaultProjectID = int64(projectPo.ProjectID)
 		po.AdminUserID = ui.UserID
 		po.AdminRoleID = ris[0].ID
-		err = relationDB.NewTenantInfoRepo(tx).Insert(l.ctx, po)
+		err = relationDB.NewTenantInfoRepo(tx).Insert(ctxs.WithRoot(ctx), po)
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewTenantConfigRepo(tx).Insert(l.ctx, &relationDB.SysTenantConfig{
-			TenantCode:     dataType.TenantCode(in.Code),
+		err = relationDB.NewTenantConfigRepo(tx).Insert(ctxs.WithRoot(ctx), &relationDB.SysTenantConfig{
+			TenantCode:     po.Code,
 			RegisterRoleID: ris[1].ID,
 		})
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewDataProjectRepo(tx).MultiInsert(l.ctx, []*relationDB.SysDataProject{
+		err = relationDB.NewDataProjectRepo(tx).MultiInsert(ctxs.WithRoot(ctx), []*relationDB.SysDataProject{
 			{
-				TenantCode: dataType.TenantCode(in.Code),
+				TenantCode: po.Code,
 				ProjectID:  po.DefaultProjectID,
 				TargetType: def.TargetUser,
 				TargetID:   po.AdminUserID,
 				AuthType:   def.AuthAdmin,
 			}, {
-				TenantCode: dataType.TenantCode(in.Code),
+				TenantCode: po.Code,
 				ProjectID:  po.DefaultProjectID,
 				TargetType: def.TargetRole,
 				TargetID:   po.AdminRoleID,
 				AuthType:   def.AuthAdmin,
 			},
 		})
+		if !isCreateUser && ui.TenantCode != def.TenantCodeCommon {
+			err = relationDB.NewUserInfoRepo(tx).UpdateWithField(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{UserID: ui.UserID}, map[string]any{"tenant_code": def.TenantCodeCommon})
+			if err != nil {
+				return err
+			}
+		}
+		// 插入用户角色关联
+		err = relationDB.NewUserRoleRepo(tx).Insert(ctxs.WithRoot(ctx), &relationDB.SysUserRole{
+			TenantCode: po.Code,
+			UserID:     ui.UserID,
+			RoleID:     po.AdminRoleID,
+		})
+		if err != nil {
+			return err
+		}
+		if isCreateUser {
+			ui.TenantCode = def.TenantCodeCommon
+			err = relationDB.NewUserInfoRepo(tx).Insert(ctxs.WithRoot(ctx), ui)
+			if err != nil {
+				return err
+			}
+		}
 		return err
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = caches.SetTenant(l.ctx, logic.ToTenantInfoCache(po))
+	err = caches.SetTenant(ctx, logic.ToTenantInfoCache(po))
 	if err != nil {
-		l.Error(err)
+		logx.WithContext(ctx).Error(err)
 	}
-	err = l.svcCtx.TenantCache.SetData(l.ctx, string(po.Code), logic.ToTenantInfoCache(po))
+	err = svcCtx.TenantCache.SetData(ctx, string(po.Code), logic.ToTenantInfoCache(po))
 	if err != nil {
-		l.Error(err)
+		logx.WithContext(ctx).Error(err)
 	}
-	l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreTenantCreate, po.Code)
-	return &sys.WithID{Id: po.ID}, nil
+	svcCtx.FastEvent.Publish(ctx, topics.CoreTenantCreate, po.Code)
+	return nil
 }

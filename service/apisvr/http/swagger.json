@@ -8993,7 +8993,7 @@
     },
     "/api/v1/system/user/self/register": {
       "post": {
-        "summary": "用户注册",
+        "summary": "普通用户注册",
         "operationId": "postApiV1SystemUserSelfRegister",
         "responses": {
           "200": {
@@ -9017,11 +9017,50 @@
         "parameters": [
           {
             "name": "body",
-            "description": "登录信息注册,注册第一步(注册核心登录信息) 返回一个jwt用来第二步注册 第一步注册成功后就可以登录了,第二步注册是填写信息\r",
+            "description": "登录信息注册\r",
             "in": "body",
             "required": true,
             "schema": {
               "$ref": "#/definitions/UserRegisterReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/self",
+          "systemUserSelf"
+        ]
+      }
+    },
+    "/api/v1/system/user/self/ta/register": {
+      "post": {
+        "summary": "租户管理员用户注册(配置开启了才能用)",
+        "operationId": "postApiV1SystemUserSelfTaRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserTaRegisterReq"
             }
           }
         ],
@@ -16469,9 +16508,9 @@
           "type": "string",
           "description": "第三方必填,微信钉钉,飞书等"
         },
-        "info": {
-          "$ref": "#/definitions/UserInfo",
-          "description": "用户信息"
+        "nickName": {
+          "type": "string",
+          "description": " 用户的昵称"
         }
       },
       "title": "UserRegisterReq",
@@ -16671,6 +16710,51 @@
         }
       },
       "title": "UserSelfReadReq"
+    },
+    "UserTaRegisterReq": {
+      "type": "object",
+      "properties": {
+        "regType": {
+          "type": "string",
+          "enum": [
+            "phone",
+            "email"
+          ]
+        },
+        "account": {
+          "type": "string",
+          "description": "手机号注册时填写手机号 邮箱填写邮箱"
+        },
+        "userName": {
+          "type": "string",
+          "description": "用户名,只能是英文数字加下划线,至少要有一个英文"
+        },
+        "code": {
+          "type": "string",
+          "description": "验证码"
+        },
+        "codeID": {
+          "type": "string",
+          "description": "验证码编号"
+        },
+        "password": {
+          "type": "string",
+          "description": "密码,明文"
+        },
+        "nickName": {
+          "type": "string",
+          "description": " 用户的昵称"
+        }
+      },
+      "title": "UserTaRegisterReq",
+      "required": [
+        "regType",
+        "account",
+        "userName",
+        "code",
+        "codeID",
+        "password"
+      ]
     },
     "WeatherAir": {
       "type": "object",

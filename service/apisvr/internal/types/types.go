@@ -1816,7 +1816,7 @@ type UserRegisterReq struct {
 	Password string            `json:"password,optional"` //密码
 	Expand   map[string]string `json:"expand,optional"`   //拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
 	AppID    string            `json:"appID,optional"`    //第三方必填,微信钉钉,飞书等
-	Info     *UserInfo         `json:"info,optional"`     //用户信息
+	NickName string            `json:"nickName,optional"` // 用户的昵称
 }
 
 type UserResourceReadResp struct {
@@ -1867,6 +1867,16 @@ type UserSelfReadReq struct {
 	WithTenant   bool `json:"withTenant,optional"`
 	WithProjects bool `json:"withProjects,optional"`
 	WithDepts    bool `json:"withDepts,optional"`
+}
+
+type UserTaRegisterReq struct {
+	RegType  string `json:"regType,options=phone|email"`
+	Account  string `json:"account"`           //手机号注册时填写手机号 邮箱填写邮箱
+	UserName string `json:"userName"`          //用户名,只能是英文数字加下划线,至少要有一个英文
+	Code     string `json:"code"`              //验证码
+	CodeID   string `json:"codeID"`            //验证码编号
+	Password string `json:"password"`          //密码,明文
+	NickName string `json:"nickName,optional"` // 用户的昵称
 }
 
 type WeatherAir struct {

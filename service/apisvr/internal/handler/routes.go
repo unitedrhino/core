@@ -1859,10 +1859,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemuserself.LoginHandler(serverCtx),
 				},
 				{
-					// 用户注册
+					// 普通用户注册
 					Method:  http.MethodPost,
 					Path:    "/register",
 					Handler: systemuserself.RegisterHandler(serverCtx),
+				},
+				{
+					// 租户管理员用户注册(配置开启了才能用)
+					Method:  http.MethodPost,
+					Path:    "/ta/register",
+					Handler: systemuserself.TaRegisterHandler(serverCtx),
 				},
 			}...,
 		),
