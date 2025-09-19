@@ -17,6 +17,7 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
+	IsTenantAdmin  def.Bool // 是否是租户的管理员
 	UserID         int64
 	UserIDs        []int64
 	HasAccessAreas []int64
@@ -56,6 +57,9 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 			subQuery := p.db.Model(&SysDataArea{}).Select("target_id").Where("target_type=? and area_id in ?", def.TargetUser, f.HasAccessAreas)
 			db = db.Where("user_id in (?)", subQuery)
 		}
+	}
+	if f.IsTenantAdmin != 0 {
+		db = db.Where("is_tenant_admin=?", f.IsTenantAdmin)
 	}
 	if f.DeptID > 0 {
 		subQuery := p.db.Model(&SysDeptUser{}).Select("user_id").Where("dept_id=?", f.DeptID)

@@ -2,6 +2,7 @@ package common
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
@@ -34,5 +35,5 @@ func (l *ConfigLogic) Config() (resp *types.ConfigResp, err error) {
 		return nil, err
 	}
 	return &types.ConfigResp{Map: types.Map{Mode: rsp.Map.Mode, AccessKey: rsp.Map.AccessKey, AccessSecret: rsp.Map.AccessSecret},
-		Oss: types.Oss{Host: l.svcCtx.Config.OssConf.CustomHost}}, nil
+		Oss: types.Oss{Host: l.svcCtx.Config.OssConf.CustomHost}, IsEnableTaRegister: rsp.IsEnableTaRegister}, nil
 }

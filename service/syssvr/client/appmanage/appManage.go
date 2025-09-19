@@ -177,7 +177,6 @@ type (
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
 	SlotInfoMultiCreateReq                = sys.SlotInfoMultiCreateReq
-	TaRegisterConfig                      = sys.TaRegisterConfig
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
 	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
@@ -197,6 +196,7 @@ type (
 	TenantConfigRegisterAutoCreateArea    = sys.TenantConfigRegisterAutoCreateArea
 	TenantConfigRegisterAutoCreateProject = sys.TenantConfigRegisterAutoCreateProject
 	TenantInfo                            = sys.TenantInfo
+	TenantInfoCreateReq                   = sys.TenantInfoCreateReq
 	TenantInfoIndexReq                    = sys.TenantInfoIndexReq
 	TenantInfoIndexResp                   = sys.TenantInfoIndexResp
 	TenantModuleCreateReq                 = sys.TenantModuleCreateReq

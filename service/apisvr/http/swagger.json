@@ -7719,7 +7719,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/TenantInfo"
+              "$ref": "#/definitions/TenantInfoCreateReq"
             }
           }
         ],
@@ -10076,12 +10076,18 @@
         "oss": {
           "$ref": "#/definitions/Oss",
           "description": "oss相关配置"
+        },
+        "isEnableTaRegister": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "是否启用租户管理员注册"
         }
       },
       "title": "ConfigResp",
       "required": [
         "map",
-        "oss"
+        "oss",
+        "isEnableTaRegister"
       ]
     },
     "DataArea": {
@@ -14551,6 +14557,22 @@
       "title": "TenantInfo",
       "required": [
         "code"
+      ]
+    },
+    "TenantInfoCreateReq": {
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "#/definitions/TenantInfo"
+        },
+        "adminUserInfo": {
+          "$ref": "#/definitions/UserInfo"
+        }
+      },
+      "title": "TenantInfoCreateReq",
+      "required": [
+        "info",
+        "adminUserInfo"
       ]
     },
     "TenantInfoCreateResp": {

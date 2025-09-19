@@ -38,7 +38,7 @@ func NewTenantInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 // 新增租户
-func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithID, error) {
+func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfoCreateReq) (*sys.WithID, error) {
 	if err := ctxs.IsRoot(l.ctx); err != nil {
 		return nil, err
 	}
@@ -46,31 +46,47 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 	defer func() {
 		ctxs.GetUserCtx(l.ctx).AllTenant = false
 	}()
-	if utils.SliceIn(in.Code, def.TenantCodeCommon, def.TenantCodeDefault) {
+	if utils.SliceIn(in.Info.Code, def.TenantCodeCommon, def.TenantCodeDefault) {
 		return nil, errors.Parameter.AddMsgf("租户编码不能为内置的 %s或%s", def.TenantCodeCommon, def.TenantCodeDefault)
 	}
-	_, err := l.svcCtx.TenantCache.GetData(l.ctx, string(in.Code))
+	_, err := l.svcCtx.TenantCache.GetData(l.ctx, string(in.Info.Code))
 	if err == nil {
-		return nil, errors.Duplicate.AddMsgf("租户编码已存在:%s", in.Code)
+		return nil, errors.Duplicate.AddMsgf("租户编码已存在:%s", in.Info.Code)
 	}
-	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, in.AdminUserID)
+	var accounts []string
+	if in.AdminUserInfo.Email.GetValue() != "" {
+		accounts = append(accounts, in.AdminUserInfo.Email.GetValue())
+	}
+	if in.AdminUserInfo.Phone.GetValue() != "" {
+		accounts = append(accounts, in.AdminUserInfo.Phone.GetValue())
+	}
+	if len(accounts) == 0 {
+		return nil, errors.Parameter.AddMsg("邮箱和手机号至少填写一个")
+	}
+	err = CheckAdmin(l.ctx, l.svcCtx, in.AdminUserInfo.UserName, in.AdminUserInfo.NickName, in.AdminUserInfo.Password, accounts...)
 	if err != nil {
-		if errors.Cmp(err, errors.NotFind) {
-			return nil, errors.UnRegister.AddMsg("请先注册管理员账号")
-		}
 		return nil, err
+	}
+	userID := l.svcCtx.UserID.GetSnowflakeId()
+	ui := relationDB.SysUserInfo{
+		UserID:   userID,
+		NickName: in.AdminUserInfo.NickName,
+		UserName: utils.AnyToNullString(in.AdminUserInfo.UserName),
+		Password: utils.MakePwd(in.AdminUserInfo.Password, userID, false),
+		Email:    utils.AnyToNullString(in.AdminUserInfo.Email),
+		Phone:    utils.AnyToNullString(in.AdminUserInfo.Phone),
 	}
 
 	projectPo := &relationDB.SysProjectInfo{
-		TenantCode:   dataType.TenantCode(in.Code),
+		TenantCode:   dataType.TenantCode(in.Info.Code),
 		ProjectID:    dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
-		ProjectName:  in.Name,
+		ProjectName:  in.Info.Name,
 		IsSysCreated: def.True,
 		AdminUserID:  ui.UserID,
 	}
 
-	po := logic.ToTenantInfoPo(in)
-	if po.BackgroundImg != "" && in.IsUpdateBackgroundImg {
+	po := logic.ToTenantInfoPo(in.Info)
+	if po.BackgroundImg != "" && in.Info.IsUpdateBackgroundImg {
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneBackgroundImg,
 			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.BackgroundImg)))
 		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(po.BackgroundImg, nwePath)
@@ -79,7 +95,7 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 		}
 		po.BackgroundImg = path
 	}
-	if po.LogoImg != "" && in.IsUpdateLogoImg {
+	if po.LogoImg != "" && in.Info.IsUpdateLogoImg {
 		nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessTenantManage, oss.SceneLogoImg,
 			fmt.Sprintf("%s/%s", po.Code, oss.GetFileNameWithPath(po.LogoImg)))
 		path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(po.LogoImg, nwePath)
@@ -88,15 +104,61 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 		}
 		po.LogoImg = path
 	}
-	err = TenantCreate(l.ctx, l.svcCtx, projectPo, po, ui, false)
+	err = TenantCreate(l.ctx, l.svcCtx, projectPo, po, &ui)
 	if err != nil {
 		return nil, err
 	}
 	return &sys.WithID{Id: po.ID}, nil
 }
 
+func CheckAdmin(ctx context.Context, svcCtx *svc.ServiceContext, userName string, nickName string, password string, accounts ...string) error {
+	if userName == "" {
+		return errors.Parameter.AddMsg("用户名必填")
+	}
+	if password == "" {
+		return errors.Parameter.AddMsg("密码必填")
+	}
+	err := logic.CheckPwd(svcCtx, password)
+	if err != nil {
+		return err
+	}
+	err = logic.CheckUserName(userName)
+	if err != nil {
+		return err
+	}
+	_, err = relationDB.NewTenantInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.TenantInfoFilter{
+		Code: userName,
+	})
+	if err == nil {
+		return errors.Parameter.AddMsg("用户名已被使用")
+	}
+	if !errors.Cmp(err, errors.NotFind) {
+		return err
+	}
+
+	po, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{
+		IsTenantAdmin: def.True,
+		Accounts:      append([]string{userName}, accounts...),
+	})
+	if err == nil {
+		if po.UserName.Valid && po.UserName.String == userName {
+			return errors.Parameter.AddMsg("用户名已被使用")
+		}
+		if po.Email.Valid && utils.SliceIn(po.Email.String, accounts...) {
+			return errors.Parameter.AddMsg("邮箱已被使用")
+		}
+		if po.Phone.Valid && utils.SliceIn(po.Phone.String, accounts...) {
+			return errors.Parameter.AddMsg("手机号已被使用")
+		}
+	}
+	if !errors.Cmp(err, errors.NotFind) {
+		return err
+	}
+	return nil
+}
+
 func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *relationDB.SysProjectInfo,
-	po *relationDB.SysTenantInfo, ui *relationDB.SysUserInfo, isCreateUser bool) error {
+	po *relationDB.SysTenantInfo, ui *relationDB.SysUserInfo) error {
 	err := stores.GetCommonConn(ctx).Transaction(func(tx *gorm.DB) error {
 		ris := []*relationDB.SysRoleInfo{{TenantCode: po.Code, Name: "超级管理员", Code: "supper"},
 			{TenantCode: po.Code, Name: "管理员", Code: "admin"},
@@ -104,12 +166,6 @@ func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *re
 		err := relationDB.NewRoleInfoRepo(tx).MultiInsert(ctxs.WithRoot(ctx), ris)
 		if err != nil {
 			return err
-		}
-		if ui.TenantCode != def.TenantCodeCommon { //租户管理的账号是公共的
-			err := relationDB.NewUserInfoRepo(tx).UpdateWithField(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{UserID: ui.UserID}, map[string]any{"tenant_code": def.TenantCodeCommon})
-			if err != nil {
-				return err
-			}
 		}
 		err = relationDB.NewProjectInfoRepo(tx).Insert(ctxs.WithRoot(ctx), projectPo)
 		if err != nil {
@@ -123,8 +179,13 @@ func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *re
 			return err
 		}
 		err = relationDB.NewTenantConfigRepo(tx).Insert(ctxs.WithRoot(ctx), &relationDB.SysTenantConfig{
-			TenantCode:     po.Code,
-			RegisterRoleID: ris[1].ID,
+			TenantCode:       po.Code,
+			RegisterRoleID:   ris[1].ID,
+			DeviceLimit:      svcCtx.Config.TenantConfig.DeviceLimit,
+			UserLimit:        svcCtx.Config.TenantConfig.UserLimit,
+			ProjectLimit:     svcCtx.Config.TenantConfig.ProjectLimit,
+			OperLogKeepDays:  svcCtx.Config.TenantConfig.OperLogKeepDays,
+			LoginLogKeepDays: svcCtx.Config.TenantConfig.LoginLogKeepDays,
 		})
 		if err != nil {
 			return err
@@ -144,12 +205,7 @@ func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *re
 				AuthType:   def.AuthAdmin,
 			},
 		})
-		if !isCreateUser && ui.TenantCode != def.TenantCodeCommon {
-			err = relationDB.NewUserInfoRepo(tx).UpdateWithField(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{UserID: ui.UserID}, map[string]any{"tenant_code": def.TenantCodeCommon})
-			if err != nil {
-				return err
-			}
-		}
+
 		// 插入用户角色关联
 		err = relationDB.NewUserRoleRepo(tx).Insert(ctxs.WithRoot(ctx), &relationDB.SysUserRole{
 			TenantCode: po.Code,
@@ -159,13 +215,13 @@ func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *re
 		if err != nil {
 			return err
 		}
-		if isCreateUser {
-			ui.TenantCode = def.TenantCodeCommon
-			err = relationDB.NewUserInfoRepo(tx).Insert(ctxs.WithRoot(ctx), ui)
-			if err != nil {
-				return err
-			}
+		ui.TenantCode = po.Code
+		ui.IsTenantAdmin = def.True
+		err = relationDB.NewUserInfoRepo(tx).Insert(ctxs.WithRoot(ctx), ui)
+		if err != nil {
+			return err
 		}
+
 		return err
 	})
 	if err != nil {

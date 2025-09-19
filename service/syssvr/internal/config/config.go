@@ -32,7 +32,8 @@ type Config struct {
 		AccessKey    string
 		AccessSecret string
 	}
-	Sms conf.Sms
+	TenantConfig TenantConfig `json:",optional"`
+	Sms          conf.Sms
 	//WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
 	WeatherKey               string       `json:",optional"` //和风天气秘钥 参考: https://dev.qweather.com/
 	CaptchaPhoneIpLimit      []conf.Limit `json:",optional"`
@@ -67,7 +68,11 @@ var DefaultCaptchaLimit = []conf.Limit{
 	{Timeout: 60 * 60 * 24 * 5, TriggerTime: 20, ForbiddenTime: 60 * 60 * 24 * 30}, //5天内错误20次,封禁30天
 }
 
-type RegisterConf struct {
-	CreateTenant bool `json:",optional"` //注册的时候是否创建租户
-
+type TenantConfig struct {
+	IsEnableTaRegister bool  `json:"isEnable,default:false"`      //是否启用租户管理员注册
+	DeviceLimit        int64 `json:"deviceLimit,default:50"`      //设备数量限制
+	UserLimit          int64 `json:"userLimit,default:10"`        //用户数量限制
+	ProjectLimit       int64 `json:"projectLimit,default:10"`     // 项目数量限制
+	OperLogKeepDays    int64 `json:"operLogKeepDays.default:30"`  //操作日志保留时间,如果为0则为永久(root可修改)
+	LoginLogKeepDays   int64 `json:"loginLogKeepDays.default:30"` //登录日志保留时间,如果为0则为永久(root可修改)
 }

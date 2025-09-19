@@ -278,7 +278,7 @@ service AreaManage {
 
 service TenantManage {
   //新增区域
-  rpc tenantInfoCreate (TenantInfo) returns (WithID);
+  rpc tenantInfoCreate (TenantInfoCreateReq) returns (WithID);
   //更新区域
   rpc tenantInfoUpdate (TenantInfo) returns (Empty);
   //删除区域
@@ -646,7 +646,10 @@ message NotifyConfigSendReq{
 
 //--------------------租户管理------------------------
 
-
+message TenantInfoCreateReq{
+  TenantInfo info = 1;
+  UserInfo adminUserInfo = 2;
+}
 
 message TenantInfo{
   int64 id = 1;
@@ -2068,15 +2071,10 @@ message Map{
 }
 message ConfigResp{
   Map map = 1;           //设备地图相关配置
-  TaRegisterConfig taRegister =2;//是否启用租户管理员注册
+  bool isEnableTaRegister =2;//是否启用租户管理员注册
 }
 
-message TaRegisterConfig {
-  bool isEnable =1;//是否启用租户管理员注册
-  int64 deviceLimit =2;//设备数量限制
-  int64 userLimit =3;//用户数量限制
-  int64 projectLimit =4;// 项目数量限制
-}
+
 
 message ApiInfoIndexReq{
   PageInfo page = 1;// 分页信息

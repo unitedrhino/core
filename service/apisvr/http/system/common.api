@@ -145,6 +145,7 @@ type (
     ConfigResp  {
         Map Map `json:"map"`  //设备地图相关配置
         Oss Oss `json:"oss"`//oss相关配置
+        IsEnableTaRegister bool `json:"isEnableTaRegister"` //是否启用租户管理员注册
     }
     UploadUrlCreateReq  {
         Business string `json:"business"` //业务(如产品管理 productManage)

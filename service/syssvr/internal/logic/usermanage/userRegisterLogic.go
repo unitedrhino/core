@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -55,7 +56,7 @@ func (l *UserRegisterLogic) validatePassword(password string) error {
 	if password == "" {
 		return nil
 	}
-	err := CheckPwd(l.svcCtx, password)
+	err := logic.CheckPwd(l.svcCtx, password)
 	if err != nil {
 		return err
 	}

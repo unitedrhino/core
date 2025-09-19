@@ -5,6 +5,7 @@ import (
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/utils"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,9 +25,5 @@ func NewConfigLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ConfigLogi
 }
 
 func (l *ConfigLogic) Config(in *sys.Empty) (*sys.ConfigResp, error) {
-	return &sys.ConfigResp{Map: &sys.Map{
-		Mode:         l.svcCtx.Config.Map.Mode,
-		AccessKey:    l.svcCtx.Config.Map.AccessKey,
-		AccessSecret: l.svcCtx.Config.Map.AccessSecret,
-	}}, nil
+	return &sys.ConfigResp{Map: utils.Copy[sys.Map](l.svcCtx.Config.Map), IsEnableTaRegister: l.svcCtx.Config.TenantConfig.IsEnableTaRegister}, nil
 }

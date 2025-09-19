@@ -1,4 +1,4 @@
-package usermanagelogic
+package logic
 
 import (
 	"context"

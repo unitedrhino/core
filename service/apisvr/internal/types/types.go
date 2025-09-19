@@ -231,8 +231,9 @@ type CompareInt64 struct {
 }
 
 type ConfigResp struct {
-	Map Map `json:"map"` //设备地图相关配置
-	Oss Oss `json:"oss"` //oss相关配置
+	Map                Map  `json:"map"`                //设备地图相关配置
+	Oss                Oss  `json:"oss"`                //oss相关配置
+	IsEnableTaRegister bool `json:"isEnableTaRegister"` //是否启用租户管理员注册
 }
 
 type DataArea struct {
@@ -1331,6 +1332,11 @@ type TenantInfo struct {
 	UserCount             int64        `json:"userCount,optional"`               //租户下的用户统计
 	AdminUserInfo         *UserCore    `json:"adminUserInfo,optional,omitempty"` //管理员信息
 	DefaultProject        *ProjectInfo `json:"defaultProject,optional,omitempty"`
+}
+
+type TenantInfoCreateReq struct {
+	Info          *TenantInfo `json:"info"`
+	AdminUserInfo *UserInfo   `json:"adminUserInfo"`
 }
 
 type TenantInfoCreateResp struct {

@@ -2,6 +2,8 @@ package usermanagelogic
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -52,7 +54,7 @@ func (l *UserForgetPwdLogic) UserForgetPwd(in *sys.UserForgetPwdReq) (*sys.Empty
 		}
 		oldUi = ui
 	}
-	err := CheckPwd(l.svcCtx, in.Password)
+	err := logic.CheckPwd(l.svcCtx, in.Password)
 	if err != nil {
 		return nil, err
 	}

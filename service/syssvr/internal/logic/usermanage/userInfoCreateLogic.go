@@ -3,6 +3,8 @@ package usermanagelogic
 import (
 	"context"
 	"database/sql"
+
+	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -37,7 +39,7 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 	var userID int64
 	//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
 	if info.UserName != "" {
-		err := CheckUserName(info.UserName)
+		err := logic.CheckUserName(info.UserName)
 		if err != nil && !utils.SliceIn(info.UserName, info.Email.GetValue(), info.Phone.GetValue()) {
 			return 0, err
 		}
@@ -76,7 +78,7 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 		in.RoleIDs = []int64{t.RegisterRoleID}
 	}
 	//校验密码强度
-	err := CheckPwd(l.svcCtx, info.Password)
+	err := logic.CheckPwd(l.svcCtx, info.Password)
 	if err != nil {
 		return 0, err
 	}

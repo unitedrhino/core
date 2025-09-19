@@ -177,7 +177,6 @@ type (
 	SlotInfoIndexReq                      = sys.SlotInfoIndexReq
 	SlotInfoIndexResp                     = sys.SlotInfoIndexResp
 	SlotInfoMultiCreateReq                = sys.SlotInfoMultiCreateReq
-	TaRegisterConfig                      = sys.TaRegisterConfig
 	TenantAccessIndexReq                  = sys.TenantAccessIndexReq
 	TenantAccessIndexResp                 = sys.TenantAccessIndexResp
 	TenantAccessMultiSaveReq              = sys.TenantAccessMultiSaveReq
@@ -197,6 +196,7 @@ type (
 	TenantConfigRegisterAutoCreateArea    = sys.TenantConfigRegisterAutoCreateArea
 	TenantConfigRegisterAutoCreateProject = sys.TenantConfigRegisterAutoCreateProject
 	TenantInfo                            = sys.TenantInfo
+	TenantInfoCreateReq                   = sys.TenantInfoCreateReq
 	TenantInfoIndexReq                    = sys.TenantInfoIndexReq
 	TenantInfoIndexResp                   = sys.TenantInfoIndexResp
 	TenantModuleCreateReq                 = sys.TenantModuleCreateReq
@@ -264,7 +264,7 @@ type (
 
 	TenantManage interface {
 		// 新增区域
-		TenantInfoCreate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*WithID, error)
+		TenantInfoCreate(ctx context.Context, in *TenantInfoCreateReq, opts ...grpc.CallOption) (*WithID, error)
 		// 更新区域
 		TenantInfoUpdate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*Empty, error)
 		// 删除区域
@@ -325,13 +325,13 @@ func NewDirectTenantManage(svcCtx *svc.ServiceContext, svr sys.TenantManageServe
 }
 
 // 新增区域
-func (m *defaultTenantManage) TenantInfoCreate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*WithID, error) {
+func (m *defaultTenantManage) TenantInfoCreate(ctx context.Context, in *TenantInfoCreateReq, opts ...grpc.CallOption) (*WithID, error) {
 	client := sys.NewTenantManageClient(m.cli.Conn())
 	return client.TenantInfoCreate(ctx, in, opts...)
 }
 
 // 新增区域
-func (d *directTenantManage) TenantInfoCreate(ctx context.Context, in *TenantInfo, opts ...grpc.CallOption) (*WithID, error) {
+func (d *directTenantManage) TenantInfoCreate(ctx context.Context, in *TenantInfoCreateReq, opts ...grpc.CallOption) (*WithID, error) {
 	return d.svr.TenantInfoCreate(ctx, in)
 }
 

@@ -3,6 +3,7 @@ package usermanagelogic
 import (
 	"context"
 
+	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -91,7 +92,7 @@ func (l *UserChangePwdLogic) UserChangePwd(in *sys.UserChangePwdReq) (*sys.Empty
 	if oldUi.UserID != uc.UserID {
 		return nil, errors.Permissions.AddMsgf("只能修改自己的密码")
 	}
-	err := CheckPwd(l.svcCtx, in.Password)
+	err := logic.CheckPwd(l.svcCtx, in.Password)
 	if err != nil {
 		return nil, err
 	}
