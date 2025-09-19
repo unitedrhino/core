@@ -2,6 +2,8 @@ package usermanagelogic
 
 import (
 	"context"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -14,7 +16,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/maypok86/otter"
 	"github.com/spf13/cast"
-	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -87,7 +88,7 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 				}
 			}
 			if !match {
-				return nil, errors.Permissions
+				return nil, errors.Permissions.AddMsgf("ip不在访问白名单中")
 			}
 		}
 		return []byte(po.AccessSecret), nil

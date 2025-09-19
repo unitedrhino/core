@@ -44,6 +44,9 @@ func (l *ProjectInfoIndexLogic) ProjectInfoIndex(in *sys.ProjectInfoIndexReq) (*
 		ProjectIDs:   in.ProjectIDs,
 		ProjectName:  in.ProjectName,
 		WithTopAreas: in.WithTopAreas,
+		AlarmStatus:  in.AlarmStatus,
+		Status:       in.Status,
+		Type:         in.Type,
 	}
 	if in.IsGetAll && uc.IsAdmin {
 		l.ctx = ctxs.WithAllProject(l.ctx)

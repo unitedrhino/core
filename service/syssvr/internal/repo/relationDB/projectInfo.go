@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -21,6 +22,9 @@ type ProjectInfoFilter struct {
 	ProjectName  string
 	AdminUserID  int64
 	WithTopAreas bool `json:"withTopAreas,optional"` //同时返回顶层的区域列表
+	AlarmStatus  int64
+	Status       int64
+	Type         string
 }
 
 func (p ProjectInfoRepo) fmtFilter(ctx context.Context, f ProjectInfoFilter) *gorm.DB {
@@ -33,6 +37,15 @@ func (p ProjectInfoRepo) fmtFilter(ctx context.Context, f ProjectInfoFilter) *go
 	}
 	if f.ProjectID != 0 {
 		db = db.Where("project_id = ?", f.ProjectID)
+	}
+	if f.AlarmStatus != 0 {
+		db = db.Where("alarm_status = ?", f.AlarmStatus)
+	}
+	if f.Status != 0 {
+		db = db.Where("status = ?", f.Status)
+	}
+	if f.Type != "" {
+		db = db.Where(stores.Col("type")+" = ?", f.Type)
 	}
 	if f.AdminUserID != 0 {
 		db = db.Where("admin_user_id = ?", f.AdminUserID)

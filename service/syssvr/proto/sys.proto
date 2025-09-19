@@ -933,6 +933,9 @@ message ProjectInfoIndexReq {
   repeated int64 projectIDs = 3; //过滤条件: 过滤项目id列表
   bool withTopAreas =5;  //同时返回顶层的区域列表
   string tenantCode =6;//指定租户(只有default租户下的管理员才有效)
+  int64 alarmStatus=24;//报警状态 （1正常 2提醒 3一般 4严重 5紧急 6超紧急）
+  int64 status=25;//项目状态  1 正常，2-禁用，3-过期
+  string type =26;//项目类型
 }
 
 message ProjectInfoIndexResp {

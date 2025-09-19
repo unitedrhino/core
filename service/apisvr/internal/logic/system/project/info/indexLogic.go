@@ -2,6 +2,7 @@ package info
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -36,6 +37,9 @@ func (l *IndexLogic) Index(req *types.ProjectInfoIndexReq) (resp *types.ProjectI
 		IsGetAll:     req.IsGetAll,
 		WithTopAreas: req.WithTopAreas,
 		TenantCode:   req.TenantCode,
+		Status:       req.Status,
+		AlarmStatus:  req.AlarmStatus,
+		Type:         req.Type,
 	}
 	dmResp, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, dmReq)
 	if err != nil {
