@@ -17,24 +17,7 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
-	UserIDs      []int64
-	UserNames    []string
-	UserName     string
-	NickName     string
-	Phone        string
-	Phones       []string
-	Email        string
-	Emails       []string
-	Accounts     []string //账号查询 非模糊查询
-	WithRoles    bool
-	WithTenant   bool
-	TenantStatus def.Bool
-	UpdatedTime  *stores.Cmp
-	IsTenantAdmin  def.Bool // 是否是租户的管理员
-	UserID         int64
 	UserIDs        []int64
-	HasAccessAreas []int64
-	TenantCode     string
 	UserNames      []string
 	UserName       string
 	NickName       string
@@ -42,14 +25,19 @@ type UserInfoFilter struct {
 	Phones         []string
 	Email          string
 	Emails         []string
-	WechatOpenIDs  []string
 	Accounts       []string //账号查询 非模糊查询
 	WithRoles      bool
 	WithTenant     bool
+	TenantStatus   def.Bool
+	UpdatedTime    *stores.Cmp
+	IsTenantAdmin  def.Bool // 是否是租户的管理员
+	UserID         int64
+	HasAccessAreas []int64
+	TenantCode     string
+	WechatOpenIDs  []string
 	WithThird      bool
 	RoleCode       string
 	DeptID         int64
-	UpdatedTime    *stores.Cmp
 }
 
 func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {

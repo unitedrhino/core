@@ -27,6 +27,7 @@ type SysUserInfo struct {
 	Language    string           `gorm:"column:language;type:VARCHAR(50);NOT NULL"`                             // 用户的语言，简体中文为zh_CN
 	HeadImg     string           `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`                            // 用户头像
 	Tenants     []*SysUserTenant `gorm:"foreignKey:UserID;references:UserID"`
+	Thirds      []*SysUserThird  `gorm:"foreignKey:UserID;references:UserID"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;"`
 }
@@ -141,21 +142,4 @@ type SysUserProfile struct {
 
 func (m *SysUserProfile) TableName() string {
 	return "sys_user_profile"
-}
-
-type SysUserThird struct {
-	TenantCode dataType.TenantCode `gorm:"column:tenant_code;uniqueIndex:idx_sys_user_info_tc_wui;type:VARCHAR(50);NOT NULL;"` // 租户编码,如果是公共应用登录的,这里填写__common__
-	AppType    def.ThirdType       `gorm:"column:app_type;uniqueIndex:idx_sys_user_info_tc_wui;type:varchar(64);NOT NULL"`
-	AppID      string              `gorm:"column:app_id;type:VARCHAR(128);NOT NULL"`
-	UserID     int64               `gorm:"column:user_id;type:BIGINT;NOT NULL"`                                                    // 用户id
-	UnionID    string              `gorm:"column:union_id;index;type:VARCHAR(128);default:''"`                                     // 微信union id
-	OpenID     string              `gorm:"column:open_id;uniqueIndex:idx_sys_user_info_tc_wui;index;type:VARCHAR(128);default:''"` // 钉钉里是UserID
-	User       *SysUserInfo        `gorm:"foreignKey:UserID;references:UserID"`
-	//UserTenants []*SysUserTenant             `gorm:"foreignKey:UserID;references:UserID"`
-	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_wui;"`
-}
-
-func (m *SysUserThird) TableName() string {
-	return "sys_user_third"
 }

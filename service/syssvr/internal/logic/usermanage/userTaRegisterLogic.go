@@ -77,7 +77,6 @@ func (l *UserTaRegisterLogic) UserTaRegister(in *sys.UserTaRegisterReq) (*sys.Us
 		DefaultProjectID: int64(projectPo.ProjectID),
 		UserCount:        1,
 	}
-	ui.IsTenantAdmin = def.True
 	err = tenantmanagelogic.TenantCreate(l.ctx, l.svcCtx, projectPo, po, &ui)
 	return &sys.UserRegisterResp{UserID: userID}, err
 }

@@ -2,8 +2,6 @@ package usermanagelogic
 
 import (
 	"context"
-	"database/sql"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"

@@ -164,7 +164,51 @@ func (l *TenantInfoCreateLogic) TenantInfoCreate(in *sys.TenantInfo) (*sys.WithI
 	return &sys.WithID{Id: po.ID}, nil
 }
 
+func CheckAdmin(ctx context.Context, svcCtx *svc.ServiceContext, userName string, nickName string, password string, accounts ...string) error {
+	if userName == "" {
+		return errors.Parameter.AddMsg("用户名必填")
+	}
+	if password == "" {
+		return errors.Parameter.AddMsg("密码必填")
+	}
+	err := logic.CheckPwd(svcCtx, password)
+	if err != nil {
+		return err
+	}
+	err = logic.CheckUserName(userName)
+	if err != nil {
+		return err
+	}
+	_, err = relationDB.NewTenantInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.TenantInfoFilter{
+		Code: userName,
+	})
+	if err == nil {
+		return errors.Parameter.AddMsg("用户名已被使用")
+	}
+	if !errors.Cmp(err, errors.NotFind) {
+		return err
+	}
 
+	po, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{
+		IsTenantAdmin: def.True,
+		Accounts:      append([]string{userName}, accounts...),
+	})
+	if err == nil {
+		if po.UserName.Valid && po.UserName.String == userName {
+			return errors.Parameter.AddMsg("用户名已被使用")
+		}
+		if po.Email.Valid && utils.SliceIn(po.Email.String, accounts...) {
+			return errors.Parameter.AddMsg("邮箱已被使用")
+		}
+		if po.Phone.Valid && utils.SliceIn(po.Phone.String, accounts...) {
+			return errors.Parameter.AddMsg("手机号已被使用")
+		}
+	}
+	if !errors.Cmp(err, errors.NotFind) {
+		return err
+	}
+	return nil
+}
 
 func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *relationDB.SysProjectInfo,
 	po *relationDB.SysTenantInfo, ui *relationDB.SysUserInfo) error {
@@ -224,8 +268,7 @@ func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *re
 		if err != nil {
 			return err
 		}
-		ui.TenantCode = po.Code
-		ui.IsTenantAdmin = def.True
+
 		err = relationDB.NewUserInfoRepo(tx).Insert(ctxs.WithRoot(ctx), ui)
 		if err != nil {
 			return err

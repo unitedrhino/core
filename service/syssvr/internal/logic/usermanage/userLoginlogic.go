@@ -50,23 +50,21 @@ func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) er
 	//根据密码类型不同做不同处理
 	if in.PwdType == 0 {
 		//空密码情况暂不考虑
-		return errors.Password
+		return errors.UnRegister
 	} else if in.PwdType == 1 {
 		//明文密码，则对密码做MD5加密后再与数据库密码比对
+		//uid_temp := l.svcCtx.UserID.GetSnowflakeId()
 		password1 := utils.MakePwd(in.Password, uc.UserID, false) //对密码进行md5加密
 		if password1 != uc.Password {
 			return errors.Password
 		}
-		l.Infof("用户 %d 密码验证成功 (明文密码)", uc.UserID)
 	} else if in.PwdType == 2 {
 		//md5加密后的密码则通过二次md5加密再对比库中的密码
 		password1 := utils.MakePwd(in.Password, uc.UserID, true) //对密码进行md5加密
 		if password1 != uc.Password {
 			return errors.Password
 		}
-		l.Infof("用户 %d 密码验证成功 (MD5密码)", uc.UserID)
 	} else {
-		l.Errorf("用户 %d 使用了不支持的密码类型: %d", uc.UserID, in.PwdType)
 		return errors.Password
 	}
 	return nil
@@ -78,30 +76,6 @@ func genID(ctx context.Context, nodeID int64) string {
 	var token = uint32(nodeID) & 0xff
 	token += randID.Add(1) << 8 & 0xfff00
 	return fmt.Sprintf("%x", token)
-}
-
-// autoRegisterUser 自动注册用户的公共逻辑
-func (l *LoginLogic) autoRegisterUser(userInfo *relationDB.SysUserInfo) (*relationDB.SysUserInfo, error) {
-	userID := l.svcCtx.UserID.GetSnowflakeId()
-	userInfo.UserID = userID
-
-	err := stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		return Register(l.ctx, l.svcCtx, userInfo, tx)
-	})
-	if err != nil {
-		l.Errorf("用户自动注册失败: UserID=%d, error=%v", userID, err)
-		return nil, err
-	}
-
-	// 重新查询用户信息
-	uc, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{userID}})
-	if err != nil {
-		l.Errorf("查询新注册用户信息失败: UserID=%d, error=%v", userID, err)
-		return nil, err
-	}
-
-	l.Infof("用户自动注册成功: UserID=%d, NickName=%s", userID, uc.NickName)
-	return uc, nil
 }
 
 func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*sys.UserLoginResp, error) {
@@ -149,14 +123,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
-		if in.Code != "" {
-			if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
-				return nil, errors.Captcha
-			}
-		} else if l.svcCtx.LoginLimit.PwdCaptcha.CheckLimit(l.ctx, in.Account) {
-			return nil, errors.NeedImgCaptcha
+		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
+			return nil, errors.Captcha
 		}
-		l.svcCtx.LoginLimit.PwdCaptcha.LimitIt(l.ctx, in.Account)
 		if l.svcCtx.LoginLimit.PwdAccount.CheckLimit(l.ctx, in.Account) {
 			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
 		}
@@ -167,7 +136,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		limit := func() {
 			l.svcCtx.LoginLimit.PwdAccount.LimitIt(l.ctx, in.Account)
 			if ip != "" {
-				l.svcCtx.LoginLimit.PwdIp.LimitIt(l.ctx, ip)
+				l.svcCtx.LoginLimit.PwdIp.LimitIt(l.ctx, in.Ip)
 			}
 		}
 		uc, err = l.UiDB.FindOneByFilter(ctxs.CommonWithRoot(l.ctx), relationDB.UserInfoFilter{WithTenant: true, TenantStatus: def.True, Accounts: []string{in.Account}})
@@ -186,151 +155,138 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, err
 		}
 		l.svcCtx.LoginLimit.PwdAccount.CleanLimit(l.ctx, in.Account)
-	case users.RegDingApp:
-		cli, err := l.svcCtx.ThirdClientsManage.GetDingAppClient(l.ctx, ctxs.GetAppCode(l.ctx), in.AppID)
-		if err != nil {
-			l.Errorf("获取钉钉客户端失败: AppID=%s, error=%v", in.AppID, err)
-			return nil, err
-		}
-		ret, er := cli.GetUserInfoByCode(in.Code)
-		if er != nil {
-			l.Errorf("钉钉获取用户信息失败: Code=%s, error=%v", in.Code, er)
-			return nil, errors.System.AddDetail(er)
-		}
-		if ret.Code != 0 {
-			l.Errorf("钉钉API返回错误: Code=%d, Msg=%s", ret.Code, ret.Msg)
-			return nil, errors.Parameter.AddMsgf(ret.Msg)
-		}
+	case users.RegDingApp: //todo
+		//if cli.DingMini == nil {
+		//	return nil, errors.System.AddDetail(err)
+		//}
+		//ret, er := cli.DingMini.GetUserInfoByCode(in.Code)
+		//if er != nil {
+		//	return nil, errors.System.AddDetail(er)
+		//}
+		//if ret.Code != 0 {
+		//	return nil, errors.Parameter.AddMsgf(ret.Msg)
+		//}
+		//
+		//ut, err := l.UtDB.FindOneByFilter(l.ctx, relationDB.UserTenantFilter{
+		//	DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId, WithUser: true})
+		//if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+		//	err = nil
+		//	userID := l.svcCtx.UserID.GetSnowflakeId()
+		//	uc = &relationDB.SysUserInfo{
+		//		UserID:         userID,
+		//		DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
+		//		NickName:       ret.UserInfo.Name,
+		//	}
+		//	if ret.UserInfo.UnionId != "" {
+		//		uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+		//	}
+		//	ui, er := cli.DingMini.GetUserDetail(&request.UserDetail{
+		//		UserId: ret.UserInfo.UserId,
+		//	})
+		//	l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), er)
+		//	if er == nil {
+		//		var accounts []string
+		//		if ui.OrgEmail != "" {
+		//			accounts = append(accounts, ui.OrgEmail)
+		//		}
+		//		if ui.Mobile != "" {
+		//			accounts = append(accounts, ui.Mobile)
+		//		}
+		//		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: accounts})
+		//		if err == nil {
+		//			if ui.OrgEmail != "" {
+		//				uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+		//			}
+		//			if ui.Mobile != "" {
+		//				uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+		//			}
+		//			if uc.NickName == "" {
+		//				uc.NickName = ui.Name
+		//			}
+		//			uc.DingTalkUserID = sql.NullString{Valid: true, String: ret.UserInfo.UserId}
+		//			if ret.UserInfo.UnionId != "" {
+		//				uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+		//			}
+		//			err = l.UiDB.Update(l.ctx, uc)
+		//			goto end
+		//		}
+		//	}
+		//	uc = &relationDB.SysUserInfo{
+		//		UserID:         userID,
+		//		DingTalkUserID: sql.NullString{Valid: true, String: ret.UserInfo.UserId},
+		//		NickName:       ret.UserInfo.Name,
+		//	}
+		//	if ret.UserInfo.UnionId != "" {
+		//		uc.DingTalkUnionID = sql.NullString{Valid: true, String: ret.UserInfo.UnionId}
+		//	}
+		//	if ui.OrgEmail != "" {
+		//		uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+		//	}
+		//	if ui.Mobile != "" {
+		//		uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+		//	}
+		//	if len(ui.Extension) != 0 {
+		//		var tags = map[string]string{}
+		//		err = json.Unmarshal([]byte(ui.Extension), &tags)
+		//		if err == nil {
+		//			uc.Tags = tags
+		//		}
+		//	}
+		//	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		//		return Register(l.ctx, l.svcCtx, uc, tx)
+		//	})
+		//	isRegister = true
+		//	if err != nil {
+		//		return nil, err
+		//	}
+		//	uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId, WithRoles: true, WithTenant: true})
+		//}
+	case users.RegWxOpen: //todo
+		//if cli.WxOfficial == nil {
+		//	return nil, errors.System.AddDetail(er)
+		//}
+		//at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		//if er != nil {
+		//	at2, err := GetWxRegisterResAccessToken(l.ctx, in.Code)
+		//	if err != nil {
+		//		return nil, errors.Default.AddDetail(er)
+		//	}
+		//	at = *at2
+		//} else {
+		//	StoreWxLoginResAccessToken(l.ctx, in.Code, &at)
+		//}
+		//uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
+	case users.RegWxMiniP: //todo
+		//cli, err := l.svcCtx.ThirdClientsManage.GetWxMiniClient(l.ctx, ctxs.GetUserCtxNoNil(l.ctx).AppCode, in.AppID)
+		//if err == nil {
+		//	return nil, err
+		//}
+		//auth := cli.GetAuth()
+		//ret, er := auth.Code2SessionContext(l.ctx, in.Code)
+		//if er != nil {
+		//	return nil, errors.System.AddDetail(er)
+		//}
+		//if ret.ErrCode != 0 {
+		//	return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
+		//}
+		//var tk string
+		//
+		//uis, err := l.UttDB.FindByFilter(ctxs.WithDefaultRoot(l.ctx), relationDB.UserThirdFilter{WithUser: true, TenantCode: tk,
+		//	AppType: def.ThirdTypeWxMiniP, AppID: in.AppID, UnionID: ret.UnionID, OpenID: ret.OpenID}, nil)
+		//if err != nil {
+		//	return nil, err
+		//}
+		//if len(uis) == 0 {
+		//	return nil, errors.UnRegister
+		//}
+		//uc = uis[0].User
+		//var tenants []string
+		//
+		//var ts []*relationDB.SysUserTenant
+		//for _, u := range uis {
+		//	tenants = append(tenants, string(u.TenantCode))
+		//}
 
-		ut, err := l.UtDB.FindOneByFilter(l.ctx, relationDB.UserThirdFilter{
-			WithUser: true, AppType: def.ThirdTypeDingApp, OpenID: ret.UserInfo.UserId, UnionID: ret.UserInfo.UnionId})
-		if err != nil && !errors.Cmp(err, errors.NotFind) {
-			l.Errorf("查询钉钉第三方登录信息失败: OpenID=%s, UnionID=%s, error=%v", ret.UserInfo.UserId, ret.UserInfo.UnionId, err)
-			return nil, err
-		}
-		if err != nil && cfg.IsAutoRegister == def.True { //未注册,自动注册
-			err = nil
-			ui, er := cli.GetUserDetail(&request.UserDetail{
-				UserId: ret.UserInfo.UserId,
-			})
-			if er != nil {
-				return nil, errors.System.AddMsg("无法获取钉钉信息,需检查是否授权").AddDetail(er)
-			}
-			l.Infof("GetUserDetail ui:%v err:%v", utils.Fmt(ui), er)
-			var accounts []string
-			if ui.OrgEmail != "" {
-				accounts = append(accounts, ui.OrgEmail)
-			}
-			if ui.Mobile != "" {
-				accounts = append(accounts, ui.Mobile)
-			}
-			if len(accounts) == 0 {
-				return nil, errors.AccountDisable.AddMsg("钉钉需要先绑定邮箱或手机号")
-			}
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: accounts})
-			if err == nil {
-				// 更新现有用户信息
-				if ui.OrgEmail != "" {
-					uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
-				}
-				if ui.Mobile != "" {
-					uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
-				}
-				err = l.UiDB.Update(l.ctx, uc)
-				goto end
-			} else if !errors.Cmp(err, errors.NotFind) {
-				return nil, err
-			}
-			// 创建新用户
-			// 创建新用户信息
-			uc = &relationDB.SysUserInfo{
-				NickName: ret.UserInfo.Name,
-			}
-			// 设置邮箱和手机号
-			if ui.OrgEmail != "" {
-				uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
-			}
-			if ui.Mobile != "" {
-				uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
-			}
-			// 如果钉钉昵称为空，使用钉钉用户详情中的姓名
-			if uc.NickName == "" {
-				uc.NickName = ui.Name
-			}
-			// 处理扩展信息
-			if len(ui.Extension) != 0 {
-				var tags = map[string]string{}
-				err = json.Unmarshal([]byte(ui.Extension), &tags)
-				if err == nil {
-					uc.Tags = tags
-				}
-			}
-			// 设置第三方登录信息
-			uc.Thirds = []*relationDB.SysUserThird{
-				{AppType: def.ThirdTypeDingApp, AppID: in.AppID, UnionID: ui.UnionId, OpenID: ui.UserId},
-			}
-			// 自动注册用户
-			uc, err = l.autoRegisterUser(uc)
-			isRegister = true
-			if err != nil {
-				return nil, err
-			}
-			// 查询第三方登录关联
-			ut, err = l.UtDB.FindOneByFilter(l.ctx, relationDB.UserThirdFilter{
-				WithUser: true, AppType: def.ThirdTypeDingApp, OpenID: ret.UserInfo.UserId, UnionID: ret.UserInfo.UnionId})
-			if err != nil {
-				return nil, err
-			}
-			uc = ut.User
-		} else {
-			uc = ut.User
-		}
-	case users.RegWxOpen:
-		cli, err := l.svcCtx.ThirdClientsManage.GetWxOpenClient(l.ctx, ctxs.GetAppCode(l.ctx), in.AppID)
-		if err != nil {
-			l.Errorf("获取微信开放平台客户端失败: AppID=%s, error=%v", in.AppID, err)
-			return nil, err
-		}
-		at, er := cli.GetOauth().GetUserAccessToken(in.Code)
-		if er != nil {
-			l.Errorf("微信开放平台获取access token失败，尝试从注册缓存获取: Code=%s, error=%v", in.Code, er)
-			at2, err := GetWxRegisterResAccessToken(l.ctx, in.Code)
-			if err != nil {
-				l.Errorf("从注册缓存获取微信token失败: Code=%s, error=%v", in.Code, err)
-				return nil, errors.Default.AddDetail(er)
-			}
-			at = *at2
-		} else {
-			StoreWxLoginResAccessToken(l.ctx, in.Code, &at)
-		}
-		ut, err := l.UtDB.FindOneByFilter(l.ctx, relationDB.UserThirdFilter{AppType: def.ThirdTypeWx, UnionID: at.UnionID, OpenID: at.OpenID})
-		if err != nil {
-			l.Errorf("查询微信第三方登录信息失败: UnionID=%s, OpenID=%s, error=%v", at.UnionID, at.OpenID, err)
-			return nil, err
-		}
-		uc = ut.User
-	case users.RegWxMiniP:
-		cli, err := l.svcCtx.ThirdClientsManage.GetWxMiniClient(l.ctx, ctxs.GetAppCode(l.ctx), in.AppID)
-		if err != nil {
-			l.Errorf("获取微信小程序客户端失败: AppID=%s, error=%v", in.AppID, err)
-			return nil, err
-		}
-		auth := cli.GetAuth()
-		ret, er := auth.Code2SessionContext(l.ctx, in.Code)
-		if er != nil {
-			l.Errorf("微信小程序Code2Session失败: Code=%s, error=%v", in.Code, er)
-			return nil, errors.System.AddDetail(er)
-		}
-		if ret.ErrCode != 0 {
-			l.Errorf("微信小程序API返回错误: ErrCode=%d, ErrMsg=%s", ret.ErrCode, ret.ErrMsg)
-			return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
-		}
-		ut, err := l.UtDB.FindOneByFilter(l.ctx, relationDB.UserThirdFilter{AppType: def.ThirdTypeWx, UnionID: ret.UnionID, OpenID: ret.OpenID})
-		if err != nil {
-			l.Errorf("查询微信小程序第三方登录信息失败: UnionID=%s, OpenID=%s, error=%v", ret.UnionID, ret.OpenID, err)
-			return nil, err
-		}
-		uc = ut.User
 	case users.RegEmail:
 		email := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, def.CaptchaUseLogin, in.CodeID, in.Code)
 		if email == "" || email != in.Account {
@@ -338,22 +294,18 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenant: true, Emails: []string{in.Account}})
 		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
-		if err != nil && !errors.Cmp(err, errors.NotFind) {
-			l.Errorf("查询邮箱用户信息失败: Email=%s, error=%v", in.Account, err)
-			return nil, err
-		}
-		if errors.Cmp(err, errors.NotFind) && cfg.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
+				UserID:   userID,
 				Email:    sql.NullString{Valid: true, String: email},
 				UserName: sql.NullString{Valid: true, String: email},
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-				return Register(l.ctx, l.svcCtx, uc, true, tx)
+				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
-			uc, err = l.autoRegisterUser(uc)
 			isRegister = true
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
 		}
 	case users.RegPhone:
 		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseLogin, in.CodeID, in.Code)
@@ -361,28 +313,24 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			return nil, errors.Captcha
 		}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
-		if err != nil && !errors.Cmp(err, errors.NotFind) {
-			l.Errorf("查询手机号用户信息失败: Phone=%s, error=%v", in.Account, err)
-			return nil, err
-		}
-		if errors.Cmp(err, errors.NotFind) && cfg.IsAutoRegister == def.True { //未注册,自动注册
 		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
+				UserID:   userID,
 				Phone:    sql.NullString{Valid: true, String: phone},
 				UserName: sql.NullString{Valid: true, String: phone},
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-				return Register(l.ctx, l.svcCtx, uc, true, tx)
+				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
-			uc, err = l.autoRegisterUser(uc)
 			isRegister = true
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
 		}
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)
 		return nil, errors.Parameter
 	}
-end:
 	l.Infof("%s uc=%#v err=%+v", utils.FuncName(), uc, err)
 	if isRegister && err == nil {
 		e := l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{uc.UserID}})
@@ -395,18 +343,7 @@ end:
 
 func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error) {
 	l.Infof("%s req=%v", utils.FuncName(), utils.Fmt(in))
-	uc := ctxs.GetUserCtx(l.ctx)
-	cfg, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantAppFilter{AppCodes: []string{uc.AppCode}})
-	if err != nil {
-		if errors.Cmp(err, errors.NotFind) {
-			return nil, errors.Permissions.WithMsg("本租户无该应用")
-		}
-		return nil, err
-	}
-	if len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
-		return nil, errors.Parameter.WithMsgf("不支持的登录方式:%v", in.LoginType)
-	}
-	ui, err := l.GetUserInfo(in, cfg)
+	ui, err := l.GetUserInfo(in)
 	if err == nil {
 		//if ui.Status != def.True {
 		//	return nil, errors.AccountDisable

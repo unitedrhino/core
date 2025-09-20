@@ -196,7 +196,6 @@ type (
 	TenantConfigRegisterAutoCreateArea    = sys.TenantConfigRegisterAutoCreateArea
 	TenantConfigRegisterAutoCreateProject = sys.TenantConfigRegisterAutoCreateProject
 	TenantInfo                            = sys.TenantInfo
-	TenantInfoCreateReq                   = sys.TenantInfoCreateReq
 	TenantInfoIndexReq                    = sys.TenantInfoIndexReq
 	TenantInfoIndexResp                   = sys.TenantInfoIndexResp
 	TenantModuleCreateReq                 = sys.TenantModuleCreateReq
@@ -254,6 +253,7 @@ type (
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
 	UserTaRegisterReq                     = sys.UserTaRegisterReq
+	UserTenant                            = sys.UserTenant
 	WeatherAir                            = sys.WeatherAir
 	WeatherReadReq                        = sys.WeatherReadReq
 	WeatherReadResp                       = sys.WeatherReadResp
