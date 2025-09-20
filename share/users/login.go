@@ -1,9 +1,10 @@
 package users
 
 import (
+	"time"
+
 	"gitee.com/unitedrhino/share/errors"
 	"github.com/golang-jwt/jwt/v5"
-	"time"
 )
 
 // Custom claims structure
@@ -14,6 +15,11 @@ type LoginClaims struct {
 	jwt.RegisteredClaims
 }
 
+type UserTenantCore struct {
+	UserID     int64  `json:"userID,string"`
+	TenantCode string `json:"tenantCode"`
+}
+
 type UserInfo struct {
 	UserID      int64 `json:",string"`
 	LastTokenID string
@@ -22,7 +28,6 @@ type UserInfo struct {
 	RoleCodes   []string
 	TenantCode  string `json:",string"`
 	IsAdmin     int64
-	IsAllData   int64
 }
 
 func GetLoginJwtToken(secretKey string, t time.Time, seconds int64, userID int64, appCode string, id string, deviceID string) (string, LoginClaims, error) {

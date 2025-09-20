@@ -23,7 +23,6 @@ import (
 	"github.com/silenceper/wechat/v2/officialaccount/oauth"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
 )
 
@@ -31,8 +30,9 @@ type LoginLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
-	UiDB *relationDB.UserInfoRepo
-	UtDB *relationDB.UserThirdRepo
+	UiDB  *relationDB.UserInfoRepo
+	UttDB *relationDB.UserThirdRepo
+	UtDB  *relationDB.UserTenantRepo
 }
 
 func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic {
@@ -41,7 +41,8 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLo
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 		UiDB:   relationDB.NewUserInfoRepo(ctx),
-		UtDB:   relationDB.NewUserThirdRepo(ctx),
+		UttDB:  relationDB.NewUserThirdRepo(ctx),
+		UtDB:   relationDB.NewUserTenantRepo(ctx),
 	}
 }
 
@@ -130,7 +131,7 @@ func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*
 	return resp, nil
 }
 
-func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenantApp) (uc *relationDB.SysUserInfo, err error) {
+func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserInfo, err error) {
 	//cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 	//if er != nil {
 	//	return nil, errors.System.AddDetail(err)
@@ -139,6 +140,12 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 	//	l.Errorf("不支持的登录方式:%v", in.LoginType)
 	//	return nil, errors.NotSupportLogin
 	//}
+	ucc := ctxs.GetUserCtx(l.ctx)
+	ta, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(ctxs.CommonWithDefault(l.ctx),
+		relationDB.TenantAppFilter{AppCode: ucc.AppCode, WithApp: true})
+	if err != nil {
+		return nil, errors.NotEnable.WithMsg("未启用应用")
+	}
 	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
@@ -163,10 +170,16 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 				l.svcCtx.LoginLimit.PwdIp.LimitIt(l.ctx, ip)
 			}
 		}
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{in.Account}})
+		uc, err = l.UiDB.FindOneByFilter(ctxs.CommonWithRoot(l.ctx), relationDB.UserInfoFilter{WithTenant: true, TenantStatus: def.True, Accounts: []string{in.Account}})
 		if err != nil {
 			limit()
+			if errors.Cmp(err, errors.NotFind) {
+				return nil, errors.UnRegister
+			}
 			return nil, err
+		}
+		if len(uc.Tenants) == 0 {
+			return nil, errors.UnRegister
 		}
 		if err = l.getPwd(in, uc); err != nil {
 			limit()
@@ -323,6 +336,8 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 		if email == "" || email != in.Account {
 			return nil, errors.Captcha
 		}
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenant: true, Emails: []string{in.Account}})
+		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
 		if err != nil && !errors.Cmp(err, errors.NotFind) {
 			l.Errorf("查询邮箱用户信息失败: Email=%s, error=%v", in.Account, err)
@@ -334,6 +349,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 				Email:    sql.NullString{Valid: true, String: email},
 				UserName: sql.NullString{Valid: true, String: email},
 			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, true, tx)
+			})
 			uc, err = l.autoRegisterUser(uc)
 			isRegister = true
 		}
@@ -348,11 +366,15 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq, cfg *relationDB.SysTenant
 			return nil, err
 		}
 		if errors.Cmp(err, errors.NotFind) && cfg.IsAutoRegister == def.True { //未注册,自动注册
+		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			uc = &relationDB.SysUserInfo{
 				Phone:    sql.NullString{Valid: true, String: phone},
 				UserName: sql.NullString{Valid: true, String: phone},
 			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, true, tx)
+			})
 			uc, err = l.autoRegisterUser(uc)
 			isRegister = true
 		}
@@ -386,9 +408,9 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 	}
 	ui, err := l.GetUserInfo(in, cfg)
 	if err == nil {
-		if ui.Status != def.True {
-			return nil, errors.AccountDisable
-		}
+		//if ui.Status != def.True {
+		//	return nil, errors.AccountDisable
+		//}
 		return l.getRet(in, ui)
 	}
 	if errors.Cmp(err, errors.NotFind) {

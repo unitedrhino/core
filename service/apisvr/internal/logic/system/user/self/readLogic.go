@@ -2,11 +2,10 @@ package self
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user/info"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -37,14 +36,15 @@ func (l *ReadLogic) Read(req *types.UserSelfReadReq) (resp *types.UserInfo, err 
 		return nil, err
 	}
 	if req.WithProjects {
-		ret2, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, &sys.ProjectInfoIndexReq{Page: &sys.PageInfo{
-			Page: 1,
-			Size: 20,
-		}})
-		if err != nil {
-			return nil, err
-		}
-		resp.Projects = system.ProjectInfosToApi(ret2.List)
+		//ret2, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, &sys.ProjectInfoIndexReq{Page: &sys.PageInfo{
+		//	Page: 1,
+		//	Size: 20,
+		//}})
+		//if err != nil {
+		//	return nil, err
+		//}
+		// todo
+		//resp.Projects = system.ProjectInfosToApi(ret2.List)
 	}
 	return
 }

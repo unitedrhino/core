@@ -2,16 +2,9 @@ package deptSync
 
 import (
 	"context"
-	"encoding/json"
 
-	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	departmentmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/departmentmanage"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/clients/dingClient"
-	"gitee.com/unitedrhino/share/conf"
-	"gitee.com/unitedrhino/share/def"
 	"github.com/open-dingtalk/dingtalk-stream-sdk-go/payload"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -67,218 +60,209 @@ type userModifyOrg struct {
 }
 
 func (d DeptSync) HandleDing(jobID int64, df *payload.DataFrame) error {
-	po, err := relationDB.NewDeptSyncJobRepo(d.ctx).FindOne(d.ctx, jobID)
-	if err != nil {
-		return err
-	}
-	if po.SyncMode != dept.SyncModeRealTime {
-		return nil
-	}
-	var data userModifyOrg
-	err = json.Unmarshal([]byte(df.Data), &data)
-	if err != nil {
-		return err
-	}
-	eventType := df.GetHeader("eventType")
-	switch eventType {
-	case "user_leave_org": //用户离职
-		if len(data.UserId) == 0 {
-			return nil
-		}
-		us, err := relationDB.NewUserThirdRepo(d.ctx).FindByFilter(d.ctx, relationDB.UserThirdFilter{WithUser: true, AppType: def.ThirdTypeDingApp, AppID: po.ThirdConfig.AppID, OpenIDs: data.UserId}, nil)
-		if err != nil {
-			return err
-		}
-		var needUpdateUserIDs []int64
-		for _, u := range us {
-			if u.User.Status == def.True {
-				needUpdateUserIDs = append(needUpdateUserIDs, u.UserID)
-			}
-		}
-		if len(needUpdateUserIDs) > 0 {
-			err = relationDB.NewUserInfoRepo(d.ctx).UpdateWithField(d.ctx, relationDB.UserInfoFilter{UserIDs: needUpdateUserIDs},
-				map[string]any{
-					"status": def.False,
-				})
-		}
-		return err
-
-	case "user_add_org": //用户添加
-		if po.IsAddSync == def.False {
-			return nil
-		}
-		//cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
-		//	AppID:     po.ThirdConfig.AppID,
-		//	AppKey:    po.ThirdConfig.AppKey,
-		//	AppSecret: po.ThirdConfig.AppSecret,
-		//})
-		//if err != nil {
-		//	return err
-		//}
-		//for _, v := range data.UserId {
-		//	ui, er := cli.GetUserDetail(&request.UserDetail{
-		//		UserId: v,
-		//	})
-		//	if er != nil {
-		//		return er
-		//	}
-		//
-		//	userID := d.svcCtx.UserID.GetSnowflakeId()
-		//	uc := &relationDB.SysUserInfo{
-		//		UserID:         userID,
-		//		DingTalkUserID: sql.NullString{Valid: true, String: ui.UserId},
-		//		NickName:       ui.Name,
-		//	}
-		//	if ui.UnionId != "" {
-		//		uc.DingTalkUnionID = sql.NullString{Valid: true, String: ui.UnionId}
-		//	}
-		//	var accounts []string
-		//	if ui.OrgEmail != "" {
-		//		accounts = append(accounts, ui.OrgEmail)
-		//	}
-		//	if ui.Mobile != "" {
-		//		accounts = append(accounts, ui.Mobile)
-		//	}
-		//	uc, err = relationDB.NewUserInfoRepo(d.ctx).FindOneByFilter(d.ctx, relationDB.UserInfoFilter{Accounts: accounts})
-		//	if err == nil {
-		//		if ui.OrgEmail != "" {
-		//			uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
-		//		}
-		//		if ui.Mobile != "" {
-		//			uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
-		//		}
-		//		//uc.DingTalkUserID = sql.NullString{Valid: true, String: ui.UserId}
-		//		//if ui.UnionId != "" {
-		//		//	uc.DingTalkUnionID = sql.NullString{Valid: true, String: ui.UnionId}
-		//		//}
-		//		if len(ui.Extension) != 0 {
-		//			var tags = map[string]string{}
-		//			err = json.Unmarshal([]byte(ui.Extension), &tags)
-		//			if err == nil {
-		//				uc.Tags = tags
-		//			}
-		//		}
-		//		uc.Status = def.True //离职会变成false
-		//		err = relationDB.NewUserInfoRepo(d.ctx).Update(d.ctx, uc)
-		//		if err != nil {
-		//			return err
-		//		}
-		//		d.svcCtx.UserCache.SetData(d.ctx, uc.UserID, nil)
-		//		err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{uc.UserID}})
-		//		if err != nil {
-		//			d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
-		//		}
-		//		return err
-		//	}
-		//	if !errors.Cmp(err, errors.NotFind) {
-		//		return err
-		//	}
-		//	uc.NickName = ui.Name
-		//	if len(ui.Extension) != 0 {
-		//		var tags = map[string]string{}
-		//		err = json.Unmarshal([]byte(ui.Extension), &tags)
-		//		if err == nil {
-		//			uc.Tags = tags
-		//		}
-		//	}
-		//	err = stores.GetTenantConn(d.ctx).Transaction(func(tx *gorm.DB) error {
-		//		return usermanagelogic.Register(d.ctx, d.svcCtx, uc, tx)
-		//	})
-		//	if err != nil {
-		//		return err
-		//	}
-		//	err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{uc.UserID}})
-		//	if err != nil {
-		//		d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
-		//	}
-		//	return nil
-		//}
-
-	case "user_modify_org": //用户信息变更
-		//for _, v := range data.DiffInfo {
-		//	uis, err := relationDB.NewUserInfoRepo(d.ctx).FindByFilter(d.ctx, relationDB.UserInfoFilter{DingTalkUserID: v.Userid}, nil)
-		//	if err != nil {
-		//		return err
-		//	}
-		//	for _, ui := range uis {
-		//		if v.Prev.ExtFields != v.Curr.ExtFields {
-		//			var tags = map[string]string{}
-		//			err = json.Unmarshal([]byte(v.Curr.ExtFields), &tags)
-		//			if err == nil {
-		//				ui.Tags = tags
-		//			}
-		//		}
-		//		if v.Prev.Name != v.Curr.Name {
-		//			ui.NickName = v.Curr.Name
-		//		}
-		//		if v.Prev.Email != v.Curr.Email {
-		//			ui.Email = sql.NullString{Valid: true, String: v.Curr.Email}
-		//		}
-		//		err = relationDB.NewUserInfoRepo(d.ctx).Update(d.ctx, ui)
-		//		if err != nil {
-		//			d.Error(err)
-		//			continue
-		//		}
-		//		d.svcCtx.UserCache.SetData(d.ctx, ui.UserID, nil)
-		//		err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{ui.UserID}})
-		//		if err != nil {
-		//			d.Errorf("Publish CoreUserUpdate %v err:%v", ui, err)
-		//		}
-		//	}
-		//}
-	case "org_dept_remove": //部门删除
-		if len(data.DeptId) == 0 {
-			return nil
-		}
-		dis, err := relationDB.NewDeptInfoRepo(d.ctx).FindByFilter(d.ctx, relationDB.DeptInfoFilter{DingTalkIDs: data.DeptId}, nil)
-		if err != nil {
-			return err
-		}
-		for _, v := range dis {
-			_, err = departmentmanagelogic.NewDeptInfoDeleteLogic(d.ctx, d.svcCtx).DeptInfoDelete(&sys.WithID{Id: int64(v.ID)})
-			if err != nil {
-				d.Error(err)
-				continue
-			}
-		}
-	case "org_dept_create", "org_dept_modify":
-		if len(data.DeptId) == 0 {
-			return nil
-		}
-		cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
-			AppID:     po.ThirdConfig.AppID,
-			AppKey:    po.ThirdConfig.AppKey,
-			AppSecret: po.ThirdConfig.AppSecret,
-		})
-		if err != nil {
-			return err
-		}
-		err = departmentmanagelogic.SyncDeptDing(d.ctx, cli, &relationDB.SysDeptInfo{
-			ID:         def.RootNode,
-			Name:       "根节点",
-			Status:     def.True,
-			DingTalkID: def.RootNode,
-		})
-		if err != nil {
-			return err
-		}
-	}
+	//po, err := relationDB.NewDeptSyncJobRepo(d.ctx).FindOne(d.ctx, jobID)
+	//if err != nil {
+	//	return err
+	//}
+	//if po.SyncMode != dept.SyncModeRealTime {
+	//	return nil
+	//}
+	//var data userModifyOrg
+	//err = json.Unmarshal([]byte(df.Data), &data)
+	//if err != nil {
+	//	return err
+	//}
+	//eventType := df.GetHeader("eventType")
+	//switch eventType {
+	//case "user_leave_org": //用户离职
+	//	if len(data.UserId) == 0 {
+	//		return nil
+	//	}
+	//	err = relationDB.NewUserInfoRepo(d.ctx).UpdateWithField(d.ctx, relationDB.UserInfoFilter{DingTalkUserIDs: data.UserId},
+	//		map[string]any{
+	//			"status": def.False,
+	//		})
+	//	if err != nil {
+	//		return err
+	//	}
+	//	return err
+	//
+	//case "user_add_org": //用户添加
+	//	if po.IsAddSync == def.False {
+	//		return nil
+	//	}
+	//	cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
+	//		AppID:     po.ThirdConfig.AppID,
+	//		AppKey:    po.ThirdConfig.AppKey,
+	//		AppSecret: po.ThirdConfig.AppSecret,
+	//	})
+	//	if err != nil {
+	//		return err
+	//	}
+	//	for _, v := range data.UserId {
+	//		ui, er := cli.GetUserDetail(&request.UserDetail{
+	//			UserId: v,
+	//		})
+	//		if er != nil {
+	//			return er
+	//		}
+	//
+	//		userID := d.svcCtx.UserID.GetSnowflakeId()
+	//		uc := &relationDB.SysUserInfo{
+	//			UserID:         userID,
+	//			DingTalkUserID: sql.NullString{Valid: true, String: ui.UserId},
+	//			NickName:       ui.Name,
+	//		}
+	//		if ui.UnionId != "" {
+	//			uc.DingTalkUnionID = sql.NullString{Valid: true, String: ui.UnionId}
+	//		}
+	//		var accounts []string
+	//		if ui.OrgEmail != "" {
+	//			accounts = append(accounts, ui.OrgEmail)
+	//		}
+	//		if ui.Mobile != "" {
+	//			accounts = append(accounts, ui.Mobile)
+	//		}
+	//		uc, err = relationDB.NewUserInfoRepo(d.ctx).FindOneByFilter(d.ctx, relationDB.UserInfoFilter{Accounts: accounts})
+	//		if err == nil {
+	//			if ui.OrgEmail != "" {
+	//				uc.Email = sql.NullString{String: ui.OrgEmail, Valid: true}
+	//			}
+	//			if ui.Mobile != "" {
+	//				uc.Phone = sql.NullString{String: ui.Mobile, Valid: true}
+	//			}
+	//			uc.DingTalkUserID = sql.NullString{Valid: true, String: ui.UserId}
+	//			if ui.UnionId != "" {
+	//				uc.DingTalkUnionID = sql.NullString{Valid: true, String: ui.UnionId}
+	//			}
+	//			if len(ui.Extension) != 0 {
+	//				var tags = map[string]string{}
+	//				err = json.Unmarshal([]byte(ui.Extension), &tags)
+	//				if err == nil {
+	//					uc.Tags = tags
+	//				}
+	//			}
+	//			uc.Status = def.True //离职会变成false
+	//			err = relationDB.NewUserInfoRepo(d.ctx).Update(d.ctx, uc)
+	//			if err != nil {
+	//				return err
+	//			}
+	//			d.svcCtx.UserCache.SetData(d.ctx, uc.UserID, nil)
+	//			err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{uc.UserID}})
+	//			if err != nil {
+	//				d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
+	//			}
+	//			return err
+	//		}
+	//		if !errors.Cmp(err, errors.NotFind) {
+	//			return err
+	//		}
+	//		uc.NickName = ui.Name
+	//		if len(ui.Extension) != 0 {
+	//			var tags = map[string]string{}
+	//			err = json.Unmarshal([]byte(ui.Extension), &tags)
+	//			if err == nil {
+	//				uc.Tags = tags
+	//			}
+	//		}
+	//		err = stores.GetTenantConn(d.ctx).Transaction(func(tx *gorm.DB) error {
+	//			return usermanagelogic.Register(d.ctx, d.svcCtx, uc, tx)
+	//		})
+	//		if err != nil {
+	//			return err
+	//		}
+	//		err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{uc.UserID}})
+	//		if err != nil {
+	//			d.Errorf("Publish CoreUserUpdate %v err:%v", uc, err)
+	//		}
+	//		return nil
+	//	}
+	//
+	//case "user_modify_org": //用户信息变更
+	//	for _, v := range data.DiffInfo {
+	//		uis, err := relationDB.NewUserInfoRepo(d.ctx).FindByFilter(d.ctx, relationDB.UserInfoFilter{DingTalkUserID: v.Userid}, nil)
+	//		if err != nil {
+	//			return err
+	//		}
+	//		for _, ui := range uis {
+	//			if v.Prev.ExtFields != v.Curr.ExtFields {
+	//				var tags = map[string]string{}
+	//				err = json.Unmarshal([]byte(v.Curr.ExtFields), &tags)
+	//				if err == nil {
+	//					ui.Tags = tags
+	//				}
+	//			}
+	//			if v.Prev.Name != v.Curr.Name {
+	//				ui.NickName = v.Curr.Name
+	//			}
+	//			if v.Prev.Email != v.Curr.Email {
+	//				ui.Email = sql.NullString{Valid: true, String: v.Curr.Email}
+	//			}
+	//			err = relationDB.NewUserInfoRepo(d.ctx).Update(d.ctx, ui)
+	//			if err != nil {
+	//				d.Error(err)
+	//				continue
+	//			}
+	//			d.svcCtx.UserCache.SetData(d.ctx, ui.UserID, nil)
+	//			err = d.svcCtx.FastEvent.Publish(d.ctx, topics.CoreUserUpdate, def.IDs{IDs: []int64{ui.UserID}})
+	//			if err != nil {
+	//				d.Errorf("Publish CoreUserUpdate %v err:%v", ui, err)
+	//			}
+	//		}
+	//	}
+	//case "org_dept_remove": //部门删除
+	//	if len(data.DeptId) == 0 {
+	//		return nil
+	//	}
+	//	dis, err := relationDB.NewDeptInfoRepo(d.ctx).FindByFilter(d.ctx, relationDB.DeptInfoFilter{DingTalkIDs: data.DeptId}, nil)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	for _, v := range dis {
+	//		_, err = departmentmanagelogic.NewDeptInfoDeleteLogic(d.ctx, d.svcCtx).DeptInfoDelete(&sys.WithID{Id: int64(v.ID)})
+	//		if err != nil {
+	//			d.Error(err)
+	//			continue
+	//		}
+	//	}
+	//case "org_dept_create", "org_dept_modify":
+	//	if len(data.DeptId) == 0 {
+	//		return nil
+	//	}
+	//	cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
+	//		AppID:     po.ThirdConfig.AppID,
+	//		AppKey:    po.ThirdConfig.AppKey,
+	//		AppSecret: po.ThirdConfig.AppSecret,
+	//	})
+	//	if err != nil {
+	//		return err
+	//	}
+	//	err = departmentmanagelogic.SyncDeptDing(d.ctx, cli, &relationDB.SysDeptInfo{
+	//		ID:         def.RootNode,
+	//		Name:       "根节点",
+	//		Status:     def.True,
+	//		DingTalkID: def.RootNode,
+	//	})
+	//	if err != nil {
+	//		return err
+	//	}
+	//}
 
 	return nil
 }
 
 func (d DeptSync) Timing() error {
 	d.Infof("DeptSync Timing")
-	pos, err := relationDB.NewDeptSyncJobRepo(d.ctx).FindByFilter(d.ctx, relationDB.DeptSyncJobFilter{
-		Direction: dept.SyncDirectionFrom, SyncModes: []int64{dept.SyncModeTiming}}, nil)
-	if err != nil {
-		return err
-	}
-	for _, po := range pos {
-		_, err := departmentmanagelogic.NewDeptSyncJobExecuteLogic(d.ctx, d.svcCtx).DeptSyncJobExecute(&sys.DeptSyncJobExecuteReq{JobID: po.ID})
-		if err != nil {
-			d.Error(err)
-		}
-	}
+	//pos, err := relationDB.NewDeptSyncJobRepo(d.ctx).FindByFilter(d.ctx, relationDB.DeptSyncJobFilter{
+	//	Direction: dept.SyncDirectionFrom, SyncModes: []int64{dept.SyncModeTiming}}, nil)
+	//if err != nil {
+	//	return err
+	//}
+	//for _, po := range pos {
+	//	_, err := departmentmanagelogic.NewDeptSyncJobExecuteLogic(d.ctx, d.svcCtx).DeptSyncJobExecute(&sys.DeptSyncJobExecuteReq{JobID: po.ID})
+	//	if err != nil {
+	//		d.Error(err)
+	//	}
+	//}
 	return nil
 }

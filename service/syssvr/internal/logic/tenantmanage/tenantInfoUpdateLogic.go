@@ -3,11 +3,11 @@ package tenantmanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
@@ -53,13 +53,7 @@ func (l *TenantInfoUpdateLogic) TenantInfoUpdate(in *sys.TenantInfo) (*sys.Empty
 	if in.Name != "" {
 		old.Name = in.Name
 	}
-	if in.AdminUserID != 0 && in.AdminUserID != old.AdminUserID { //只有default的超管才有权限修改管理员
-		err := logic.IsSupperAdmin(l.ctx, def.TenantCodeDefault)
-		if err != nil {
-			return nil, err
-		}
-		old.AdminUserID = in.AdminUserID
-	}
+
 	if in.BackgroundImg != "" && in.IsUpdateBackgroundImg {
 		if old.BackgroundImg != "" {
 			err := l.svcCtx.OssClient.PublicBucket().Delete(l.ctx, old.BackgroundImg, common.OptionKv{})

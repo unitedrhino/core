@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 
@@ -15,7 +16,7 @@ type UserInfoReadLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
-	UiDB *relationDB.UserInfoRepo
+	UiDB *relationDB.UserTenantRepo
 }
 
 func NewUserInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfoReadLogic {
@@ -23,7 +24,7 @@ func NewUserInfoReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
-		UiDB:   relationDB.NewUserInfoRepo(ctx),
+		UiDB:   relationDB.NewUserTenantRepo(ctx),
 	}
 }
 
@@ -40,5 +41,5 @@ func (l *UserInfoReadLogic) UserInfoRead(in *sys.UserInfoReadReq) (*sys.UserInfo
 		return nil, err
 	}
 
-	return UserInfoToPb(l.ctx, ui, l.svcCtx), nil
+	return UserInfoToPb(l.ctx, RevertUserTenant(ui), l.svcCtx), nil
 }

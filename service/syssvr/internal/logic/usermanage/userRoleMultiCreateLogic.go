@@ -2,8 +2,10 @@ package usermanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -50,7 +52,7 @@ func (l *UserRoleMultiCreateLogic) UserRoleMultiCreate(in *sys.UserRoleMultiUpda
 	}
 	err := relationDB.NewUserRoleRepo(l.ctx).MultiInsert(l.ctx, datas)
 	if err == nil {
-		l.svcCtx.UsersCache.SetData(l.ctx, in.UserID, nil)
+		l.svcCtx.UsersCache.SetData(l.ctx, users.UserTenantCore{TenantCode: ctxs.GetUserCtxNoNil(l.ctx).TenantCode, UserID: in.UserID}, nil)
 		cache.ClearProjectAuth(in.UserID)
 	}
 

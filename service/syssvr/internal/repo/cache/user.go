@@ -2,6 +2,8 @@ package cache
 
 import (
 	"context"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
@@ -11,23 +13,30 @@ import (
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/spf13/cast"
-	"time"
 )
 
 type UserCache struct {
-	*caches.Cache[users.UserInfo, int64]
+	*caches.Cache[users.UserInfo, users.UserTenantCore]
 }
 
 func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenant.Info, string], userCache *caches.Cache[sys.UserInfo, int64]) (*UserCache, error) {
-	c, err := caches.NewCache(caches.CacheConfig[users.UserInfo, int64]{
+	c, err := caches.NewCache(caches.CacheConfig[users.UserInfo, users.UserTenantCore]{
 		KeyType:   eventBus.ServerCacheKeySysUserTokenInfo,
 		FastEvent: FastEvent,
-		GetData: func(ctx context.Context, key int64) (*users.UserInfo, error) {
-			ui, err := userCache.GetData(ctx, key)
+		GetData: func(ctx context.Context, key users.UserTenantCore) (*users.UserInfo, error) {
+			ui, err := userCache.GetData(ctx, key.UserID)
 			if err != nil {
 				return nil, err
 			}
-			roles, err := relationDB.NewUserRoleRepo(ctx).FindByFilter(ctx, relationDB.UserRoleFilter{UserID: key, WithRole: true}, nil)
+			var ut = ui.Tenants[0]
+			for _, v := range ui.Tenants {
+				if v.TenantCode == key.TenantCode {
+					ut = v
+					break
+				}
+			}
+			roles, err := relationDB.NewUserRoleRepo(ctx).FindByFilter(ctx,
+				relationDB.UserRoleFilter{TenantCode: key.TenantCode, UserID: key.UserID, WithRole: true}, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -40,7 +49,7 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 					roleCodes = append(roleCodes, v.Role.Code)
 				}
 			}
-			Tenant, err := tenantCache.GetData(ctx, ui.TenantCode)
+			Tenant, err := tenantCache.GetData(ctx, ut.TenantCode)
 			if err != nil {
 				return nil, err
 			}
@@ -63,9 +72,8 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 				Account:     account,
 				RoleIDs:     rolses,
 				RoleCodes:   roleCodes,
-				TenantCode:  string(ui.TenantCode),
+				TenantCode:  string(ut.TenantCode),
 				IsAdmin:     isAdmin,
-				IsAllData:   ui.IsAllData,
 			}
 			return &uii, nil
 		},

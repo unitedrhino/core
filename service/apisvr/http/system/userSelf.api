@@ -188,8 +188,8 @@ type (
 
 	UserLoginResp {
 		Info  UserInfo `json:"info"`  //用户信息
-		Roles []*RoleInfo `json:"roles"` //角色列表
-		Depts []*DeptInfo `json:"depts,omitempty"`
+//		Roles []*RoleInfo `json:"roles"` //角色列表
+//		Depts []*DeptInfo `json:"depts,omitempty"`
 		Token JwtToken `json:"token"` //用户token
 	}
 

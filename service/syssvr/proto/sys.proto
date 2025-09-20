@@ -278,7 +278,7 @@ service AreaManage {
 
 service TenantManage {
   //新增区域
-  rpc tenantInfoCreate (TenantInfoCreateReq) returns (WithID);
+  rpc tenantInfoCreate (TenantInfo) returns (WithID);
   //更新区域
   rpc tenantInfoUpdate (TenantInfo) returns (Empty);
   //删除区域
@@ -646,10 +646,7 @@ message NotifyConfigSendReq{
 
 //--------------------租户管理------------------------
 
-message TenantInfoCreateReq{
-  TenantInfo info = 1;
-  UserInfo adminUserInfo = 2;
-}
+
 
 message TenantInfo{
   int64 id = 1;
@@ -1279,14 +1276,12 @@ message OperLogCreateReq{
 
 //用户属性信息
 message UserInfo{
-  string tenantCode =22;
+//  string tenantCode =22;
   int64  userID = 1;
   string userName =2;
   string password =3;
   google.protobuf.StringValue email = 4;
   google.protobuf.StringValue phone =5;
-  string wechatUnionID = 6;
-  string wechatOpenID =23;
   string lastIP =7;
   string lastTokenID =27;
   string regIP =8;
@@ -1296,15 +1291,20 @@ message UserInfo{
   string province =12;
   string language =13;
   int64  createdTime =15;
-  int64  role = 16;
   int64  sex =17;
-  int64  isAllData =18;
   string headImg =19;
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
-  int64 status =21;
-  map<string, string> tags = 24;//标签
-  repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
+
+  repeated UserTenant tenants=21;
+}
+
+message UserTenant{
+  string tenantCode =22;
+  int64  userID = 1;
   int64 deviceCount =26; //拥有的设备统计
+  int64 status =21;
+  repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
+  map<string, string> tags = 24;//标签
 }
 
 
@@ -1326,7 +1326,6 @@ message UserCheckTokenResp{
   int64 userID = 2;
   repeated int64 roleIDs = 3;
   repeated string roleCodes = 4;
-  int64 isAllData = 5;
   string tenantCode = 6;//租户编码
   bool isAdmin = 7;//是否是管理员
   bool isSuperAdmin = 8;//是否是超级管理员(可以跨租户)

@@ -3,6 +3,11 @@ package startup
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/event/day"
@@ -30,10 +35,6 @@ import (
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
 func Init(svcCtx *svc.ServiceContext) {

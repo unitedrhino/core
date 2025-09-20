@@ -17,6 +17,19 @@ func NewUserInfoRepo(in any) *UserInfoRepo {
 }
 
 type UserInfoFilter struct {
+	UserIDs      []int64
+	UserNames    []string
+	UserName     string
+	NickName     string
+	Phone        string
+	Phones       []string
+	Email        string
+	Emails       []string
+	Accounts     []string //账号查询 非模糊查询
+	WithRoles    bool
+	WithTenant   bool
+	TenantStatus def.Bool
+	UpdatedTime  *stores.Cmp
 	IsTenantAdmin  def.Bool // 是否是租户的管理员
 	UserID         int64
 	UserIDs        []int64
@@ -67,10 +80,15 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	}
 
 	if f.WithRoles {
-		db = db.Preload("Roles.Role")
+		db = db.Preload("Tenants.Roles").Preload("Tenants.Roles.Role")
 	}
 	if f.WithTenant {
-		db = db.Preload("Tenant")
+		if f.TenantStatus != 0 {
+			db = db.Preload("Tenants")
+		} else {
+			db = db.Preload("Tenants", "status = ?", f.TenantStatus)
+		}
+		db = db.Preload("Tenants.TenantInfo").Preload("Tenants.TenantConfig")
 	}
 	if f.UserID != 0 {
 		db = db.Where("user_id=?", f.UserID)
@@ -191,7 +209,7 @@ func (p UserInfoRepo) Delete(ctx context.Context, userID int64) error {
 }
 func (p UserInfoRepo) FindOne(ctx context.Context, userID int64) (*SysUserInfo, error) {
 	var result SysUserInfo
-	err := p.db.WithContext(ctx).Where("user_id = ?", userID).First(&result).Error
+	err := p.db.WithContext(ctx).Preload("Tenants").Where("user_id = ?", userID).First(&result).Error
 	return &result, stores.ErrFmt(err)
 }
 
