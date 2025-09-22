@@ -5575,6 +5575,210 @@
         ]
       }
     },
+    "/api/v1/system/project/crud/create": {
+      "post": {
+        "summary": "新增项目crud",
+        "operationId": "postApiV1SystemProjectCrudCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/WithIDStr"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectCrud"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/crud",
+          "systemProjectCrud"
+        ]
+      }
+    },
+    "/api/v1/system/project/crud/delete": {
+      "post": {
+        "summary": "删除项目crud",
+        "operationId": "postApiV1SystemProjectCrudDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithIDStr"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/crud",
+          "systemProjectCrud"
+        ]
+      }
+    },
+    "/api/v1/system/project/crud/index": {
+      "post": {
+        "summary": "获取项目crud列表",
+        "operationId": "postApiV1SystemProjectCrudIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ProjectCrudIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectCrudIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/crud",
+          "systemProjectCrud"
+        ]
+      }
+    },
+    "/api/v1/system/project/crud/read": {
+      "post": {
+        "summary": "获取项目crud详情",
+        "operationId": "postApiV1SystemProjectCrudRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/ProjectCrud"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WithIDStr"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/crud",
+          "systemProjectCrud"
+        ]
+      }
+    },
+    "/api/v1/system/project/crud/update": {
+      "post": {
+        "summary": "更新项目crud",
+        "operationId": "postApiV1SystemProjectCrudUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectCrud"
+            }
+          }
+        ],
+        "tags": [
+          "system/project/crud",
+          "systemProjectCrud"
+        ]
+      }
+    },
     "/api/v1/system/project/info/create": {
       "post": {
         "summary": "新增项目",
@@ -10049,10 +10253,32 @@
       },
       "title": "CommonResp"
     },
+    "Compare": {
+      "type": "object",
+      "properties": {
+        "cmpType": {
+          "type": "string",
+          "description": "\"=\":相等 \"!=\":不相等 \"\u003e\":大于\"\u003e=\":大于等于\"\u003c\":小于\"\u003c=\":小于等于 \"like\":模糊查询,只有string类型可以使用"
+        },
+        "value": {
+          "type": "string"
+        },
+        "castTo": {
+          "type": "string",
+          "description": "参数的类型(填写了会进行数据类型的转换): int float string"
+        }
+      },
+      "title": "Compare",
+      "required": [
+        "cmpType",
+        "value",
+        "castTo"
+      ]
+    },
     "CompareInt64": {
       "type": "object",
       "properties": {
-        "cmpTYpe": {
+        "cmpType": {
           "type": "string",
           "description": "\"=\":相等 \"!=\":不相等 \"\u003e\":大于\"\u003e=\":大于等于\"\u003c\":小于\"\u003c=\":小于等于 \"like\":模糊查询"
         },
@@ -10062,7 +10288,24 @@
       },
       "title": "CompareInt64",
       "required": [
-        "cmpTYpe",
+        "cmpType",
+        "value"
+      ]
+    },
+    "CompareString": {
+      "type": "object",
+      "properties": {
+        "cmpType": {
+          "type": "string",
+          "description": "\"=\":相等 \"!=\":不相等 \"\u003e\":大于\"\u003e=\":大于等于\"\u003c\":小于\"\u003c=\":小于等于 \"like\":模糊查询"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "CompareString",
+      "required": [
+        "cmpType",
         "value"
       ]
     },
@@ -12723,6 +12966,83 @@
       "required": [
         "longitude",
         "latitude"
+      ]
+    },
+    "ProjectCrud": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string",
+          "description": "用途 新增必填"
+        },
+        "params": {
+          "type": "object",
+          "description": "普通业务参数,如果是文件类型,则需要以 Img,File结尾,后端会进行文件的处理,上传方式可以参考设备图片"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int64",
+          "description": "排序"
+        },
+        "createdTime": {
+          "type": "string",
+          "description": "只读"
+        }
+      },
+      "title": "ProjectCrud"
+    },
+    "ProjectCrudIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": "进行数据分页（不传默认2000相当于全部）"
+        },
+        "purpose": {
+          "type": "string",
+          "description": "用途必填"
+        },
+        "params": {
+          "type": "object",
+          "description": "params过滤查询,key 是params的key, value是对象,说明: {\"cmpType\":\"比较类型(如=、\u003e、like)\",\"value\":\"比较值(需与类型匹配)\",\"castTo\":\"数据类型(int/float/string,选填，填则转换)\"}，其中 like 仅支持 string 类型，value 需以字符串格式传入 示例: {\"aaa\":{\"cmpType\":\"\u003e\",\"castTo\":\"int\",\"value\":\"100\"}"
+        }
+      },
+      "title": "ProjectCrudIndexReq",
+      "required": [
+        "purpose"
+      ]
+    },
+    "ProjectCrudIndexResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectCrud"
+          },
+          "description": "项目列表"
+        }
+      },
+      "title": "ProjectCrudIndexResp",
+      "required": [
+        "list"
       ]
     },
     "ProjectInfo": {

@@ -39,6 +39,7 @@ type (
 	AreaProfileReadReq                    = sys.AreaProfileReadReq
 	AreaWithID                            = sys.AreaWithID
 	AuthApiInfo                           = sys.AuthApiInfo
+	Compare                               = sys.Compare
 	CompareInt64                          = sys.CompareInt64
 	CompareString                         = sys.CompareString
 	ConfigResp                            = sys.ConfigResp
@@ -143,6 +144,9 @@ type (
 	PageInfo_OrderBy                      = sys.PageInfo_OrderBy
 	Point                                 = sys.Point
 	ProjectAuth                           = sys.ProjectAuth
+	ProjectCrud                           = sys.ProjectCrud
+	ProjectCrudIndexReq                   = sys.ProjectCrudIndexReq
+	ProjectCrudIndexResp                  = sys.ProjectCrudIndexResp
 	ProjectInfo                           = sys.ProjectInfo
 	ProjectInfoIndexReq                   = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp                  = sys.ProjectInfoIndexResp
@@ -276,6 +280,16 @@ type (
 		ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error)
 		ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error)
 		ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error)
+		// 新增项目crud
+		ProjectCrudCreate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*WithID, error)
+		// 更新项目crud
+		ProjectCrudUpdate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*Empty, error)
+		// 删除项目crud
+		ProjectCrudDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+		// 获取项目crud详情
+		ProjectCrudRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*ProjectCrud, error)
+		// 获取项目crud列表
+		ProjectCrudIndex(ctx context.Context, in *ProjectCrudIndexReq, opts ...grpc.CallOption) (*ProjectCrudIndexResp, error)
 	}
 
 	defaultProjectManage struct {
@@ -381,4 +395,59 @@ func (m *defaultProjectManage) ProjectProfileIndex(ctx context.Context, in *Proj
 
 func (d *directProjectManage) ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error) {
 	return d.svr.ProjectProfileIndex(ctx, in)
+}
+
+// 新增项目crud
+func (m *defaultProjectManage) ProjectCrudCreate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*WithID, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectCrudCreate(ctx, in, opts...)
+}
+
+// 新增项目crud
+func (d *directProjectManage) ProjectCrudCreate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*WithID, error) {
+	return d.svr.ProjectCrudCreate(ctx, in)
+}
+
+// 更新项目crud
+func (m *defaultProjectManage) ProjectCrudUpdate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectCrudUpdate(ctx, in, opts...)
+}
+
+// 更新项目crud
+func (d *directProjectManage) ProjectCrudUpdate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.ProjectCrudUpdate(ctx, in)
+}
+
+// 删除项目crud
+func (m *defaultProjectManage) ProjectCrudDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectCrudDelete(ctx, in, opts...)
+}
+
+// 删除项目crud
+func (d *directProjectManage) ProjectCrudDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.ProjectCrudDelete(ctx, in)
+}
+
+// 获取项目crud详情
+func (m *defaultProjectManage) ProjectCrudRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*ProjectCrud, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectCrudRead(ctx, in, opts...)
+}
+
+// 获取项目crud详情
+func (d *directProjectManage) ProjectCrudRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*ProjectCrud, error) {
+	return d.svr.ProjectCrudRead(ctx, in)
+}
+
+// 获取项目crud列表
+func (m *defaultProjectManage) ProjectCrudIndex(ctx context.Context, in *ProjectCrudIndexReq, opts ...grpc.CallOption) (*ProjectCrudIndexResp, error) {
+	client := sys.NewProjectManageClient(m.cli.Conn())
+	return client.ProjectCrudIndex(ctx, in, opts...)
+}
+
+// 获取项目crud列表
+func (d *directProjectManage) ProjectCrudIndex(ctx context.Context, in *ProjectCrudIndexReq, opts ...grpc.CallOption) (*ProjectCrudIndexResp, error) {
+	return d.svr.ProjectCrudIndex(ctx, in)
 }

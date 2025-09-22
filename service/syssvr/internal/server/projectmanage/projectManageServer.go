@@ -67,3 +67,33 @@ func (s *ProjectManageServer) ProjectProfileIndex(ctx context.Context, in *sys.P
 	l := projectmanagelogic.NewProjectProfileIndexLogic(ctx, s.svcCtx)
 	return l.ProjectProfileIndex(in)
 }
+
+// 新增项目crud
+func (s *ProjectManageServer) ProjectCrudCreate(ctx context.Context, in *sys.ProjectCrud) (*sys.WithID, error) {
+	l := projectmanagelogic.NewProjectCrudCreateLogic(ctx, s.svcCtx)
+	return l.ProjectCrudCreate(in)
+}
+
+// 更新项目crud
+func (s *ProjectManageServer) ProjectCrudUpdate(ctx context.Context, in *sys.ProjectCrud) (*sys.Empty, error) {
+	l := projectmanagelogic.NewProjectCrudUpdateLogic(ctx, s.svcCtx)
+	return l.ProjectCrudUpdate(in)
+}
+
+// 删除项目crud
+func (s *ProjectManageServer) ProjectCrudDelete(ctx context.Context, in *sys.WithID) (*sys.Empty, error) {
+	l := projectmanagelogic.NewProjectCrudDeleteLogic(ctx, s.svcCtx)
+	return l.ProjectCrudDelete(in)
+}
+
+// 获取项目crud详情
+func (s *ProjectManageServer) ProjectCrudRead(ctx context.Context, in *sys.WithID) (*sys.ProjectCrud, error) {
+	l := projectmanagelogic.NewProjectCrudReadLogic(ctx, s.svcCtx)
+	return l.ProjectCrudRead(in)
+}
+
+// 获取项目crud列表
+func (s *ProjectManageServer) ProjectCrudIndex(ctx context.Context, in *sys.ProjectCrudIndexReq) (*sys.ProjectCrudIndexResp, error) {
+	l := projectmanagelogic.NewProjectCrudIndexLogic(ctx, s.svcCtx)
+	return l.ProjectCrudIndex(in)
+}

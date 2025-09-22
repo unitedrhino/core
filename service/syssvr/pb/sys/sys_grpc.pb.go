@@ -6316,6 +6316,11 @@ const (
 	ProjectManage_ProjectProfileRead_FullMethodName   = "/sys.ProjectManage/projectProfileRead"
 	ProjectManage_ProjectProfileUpdate_FullMethodName = "/sys.ProjectManage/projectProfileUpdate"
 	ProjectManage_ProjectProfileIndex_FullMethodName  = "/sys.ProjectManage/projectProfileIndex"
+	ProjectManage_ProjectCrudCreate_FullMethodName    = "/sys.ProjectManage/projectCrudCreate"
+	ProjectManage_ProjectCrudUpdate_FullMethodName    = "/sys.ProjectManage/projectCrudUpdate"
+	ProjectManage_ProjectCrudDelete_FullMethodName    = "/sys.ProjectManage/projectCrudDelete"
+	ProjectManage_ProjectCrudRead_FullMethodName      = "/sys.ProjectManage/projectCrudRead"
+	ProjectManage_ProjectCrudIndex_FullMethodName     = "/sys.ProjectManage/projectCrudIndex"
 )
 
 // ProjectManageClient is the client API for ProjectManage service.
@@ -6335,6 +6340,16 @@ type ProjectManageClient interface {
 	ProjectProfileRead(ctx context.Context, in *ProjectProfileReadReq, opts ...grpc.CallOption) (*ProjectProfile, error)
 	ProjectProfileUpdate(ctx context.Context, in *ProjectProfile, opts ...grpc.CallOption) (*Empty, error)
 	ProjectProfileIndex(ctx context.Context, in *ProjectProfileIndexReq, opts ...grpc.CallOption) (*ProjectProfileIndexResp, error)
+	// 新增项目crud
+	ProjectCrudCreate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*WithID, error)
+	// 更新项目crud
+	ProjectCrudUpdate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*Empty, error)
+	// 删除项目crud
+	ProjectCrudDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error)
+	// 获取项目crud详情
+	ProjectCrudRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*ProjectCrud, error)
+	// 获取项目crud列表
+	ProjectCrudIndex(ctx context.Context, in *ProjectCrudIndexReq, opts ...grpc.CallOption) (*ProjectCrudIndexResp, error)
 }
 
 type projectManageClient struct {
@@ -6417,6 +6432,51 @@ func (c *projectManageClient) ProjectProfileIndex(ctx context.Context, in *Proje
 	return out, nil
 }
 
+func (c *projectManageClient) ProjectCrudCreate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*WithID, error) {
+	out := new(WithID)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectCrudCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectManageClient) ProjectCrudUpdate(ctx context.Context, in *ProjectCrud, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectCrudUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectManageClient) ProjectCrudDelete(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectCrudDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectManageClient) ProjectCrudRead(ctx context.Context, in *WithID, opts ...grpc.CallOption) (*ProjectCrud, error) {
+	out := new(ProjectCrud)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectCrudRead_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectManageClient) ProjectCrudIndex(ctx context.Context, in *ProjectCrudIndexReq, opts ...grpc.CallOption) (*ProjectCrudIndexResp, error) {
+	out := new(ProjectCrudIndexResp)
+	err := c.cc.Invoke(ctx, ProjectManage_ProjectCrudIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProjectManageServer is the server API for ProjectManage service.
 // All implementations must embed UnimplementedProjectManageServer
 // for forward compatibility
@@ -6434,6 +6494,16 @@ type ProjectManageServer interface {
 	ProjectProfileRead(context.Context, *ProjectProfileReadReq) (*ProjectProfile, error)
 	ProjectProfileUpdate(context.Context, *ProjectProfile) (*Empty, error)
 	ProjectProfileIndex(context.Context, *ProjectProfileIndexReq) (*ProjectProfileIndexResp, error)
+	// 新增项目crud
+	ProjectCrudCreate(context.Context, *ProjectCrud) (*WithID, error)
+	// 更新项目crud
+	ProjectCrudUpdate(context.Context, *ProjectCrud) (*Empty, error)
+	// 删除项目crud
+	ProjectCrudDelete(context.Context, *WithID) (*Empty, error)
+	// 获取项目crud详情
+	ProjectCrudRead(context.Context, *WithID) (*ProjectCrud, error)
+	// 获取项目crud列表
+	ProjectCrudIndex(context.Context, *ProjectCrudIndexReq) (*ProjectCrudIndexResp, error)
 	mustEmbedUnimplementedProjectManageServer()
 }
 
@@ -6464,6 +6534,21 @@ func (UnimplementedProjectManageServer) ProjectProfileUpdate(context.Context, *P
 }
 func (UnimplementedProjectManageServer) ProjectProfileIndex(context.Context, *ProjectProfileIndexReq) (*ProjectProfileIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProjectProfileIndex not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectCrudCreate(context.Context, *ProjectCrud) (*WithID, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectCrudCreate not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectCrudUpdate(context.Context, *ProjectCrud) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectCrudUpdate not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectCrudDelete(context.Context, *WithID) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectCrudDelete not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectCrudRead(context.Context, *WithID) (*ProjectCrud, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectCrudRead not implemented")
+}
+func (UnimplementedProjectManageServer) ProjectCrudIndex(context.Context, *ProjectCrudIndexReq) (*ProjectCrudIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProjectCrudIndex not implemented")
 }
 func (UnimplementedProjectManageServer) mustEmbedUnimplementedProjectManageServer() {}
 
@@ -6622,6 +6707,96 @@ func _ProjectManage_ProjectProfileIndex_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProjectManage_ProjectCrudCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectCrud)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectCrudCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectCrudCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectCrudCreate(ctx, req.(*ProjectCrud))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectManage_ProjectCrudUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectCrud)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectCrudUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectCrudUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectCrudUpdate(ctx, req.(*ProjectCrud))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectManage_ProjectCrudDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectCrudDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectCrudDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectCrudDelete(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectManage_ProjectCrudRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithID)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectCrudRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectCrudRead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectCrudRead(ctx, req.(*WithID))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectManage_ProjectCrudIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProjectCrudIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectManageServer).ProjectCrudIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProjectManage_ProjectCrudIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectManageServer).ProjectCrudIndex(ctx, req.(*ProjectCrudIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProjectManage_ServiceDesc is the grpc.ServiceDesc for ProjectManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -6660,6 +6835,26 @@ var ProjectManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "projectProfileIndex",
 			Handler:    _ProjectManage_ProjectProfileIndex_Handler,
+		},
+		{
+			MethodName: "projectCrudCreate",
+			Handler:    _ProjectManage_ProjectCrudCreate_Handler,
+		},
+		{
+			MethodName: "projectCrudUpdate",
+			Handler:    _ProjectManage_ProjectCrudUpdate_Handler,
+		},
+		{
+			MethodName: "projectCrudDelete",
+			Handler:    _ProjectManage_ProjectCrudDelete_Handler,
+		},
+		{
+			MethodName: "projectCrudRead",
+			Handler:    _ProjectManage_ProjectCrudRead_Handler,
+		},
+		{
+			MethodName: "projectCrudIndex",
+			Handler:    _ProjectManage_ProjectCrudIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

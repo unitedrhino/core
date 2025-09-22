@@ -39,6 +39,7 @@ type (
 	AreaProfileReadReq                    = sys.AreaProfileReadReq
 	AreaWithID                            = sys.AreaWithID
 	AuthApiInfo                           = sys.AuthApiInfo
+	Compare                               = sys.Compare
 	CompareInt64                          = sys.CompareInt64
 	CompareString                         = sys.CompareString
 	ConfigResp                            = sys.ConfigResp
@@ -143,6 +144,9 @@ type (
 	PageInfo_OrderBy                      = sys.PageInfo_OrderBy
 	Point                                 = sys.Point
 	ProjectAuth                           = sys.ProjectAuth
+	ProjectCrud                           = sys.ProjectCrud
+	ProjectCrudIndexReq                   = sys.ProjectCrudIndexReq
+	ProjectCrudIndexResp                  = sys.ProjectCrudIndexResp
 	ProjectInfo                           = sys.ProjectInfo
 	ProjectInfoIndexReq                   = sys.ProjectInfoIndexReq
 	ProjectInfoIndexResp                  = sys.ProjectInfoIndexResp

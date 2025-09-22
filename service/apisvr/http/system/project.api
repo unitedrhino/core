@@ -40,7 +40,6 @@ service api {
     )
     @handler index
     post /index (ProjectInfoIndexReq) returns (ProjectInfoIndexResp)
-
 }
 
 @server(
@@ -67,6 +66,57 @@ service api {
     post /index (ProjectProfileIndexReq) returns (ProjectProfileIndexResp)
 }
 
+@server(
+    group: system/project/crud
+    prefix: /api/v1/system/project/crud
+    accessCodePrefix: "systemProjectCrud"
+    accessNamePrefix: "项目下的curl业务"
+    accessGroup: "项目管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
+)
+service api {
+    @doc "新增项目crud"
+    @handler create
+    post /create (ProjectCrud) returns (WithIDStr)
+    @doc "更新项目crud"
+    @handler update
+    post /update (ProjectCrud) returns ()
+    @doc "删除项目crud"
+    @handler delete
+    post /delete (WithIDStr) returns ()
+    @doc(
+        summary: "获取项目crud详情"
+    )
+    @handler read
+    post /read (WithIDStr) returns (ProjectCrud)
+    @doc(
+        summary: "获取项目crud列表"
+    )
+    @handler index
+    post /index (ProjectCrudIndexReq) returns (ProjectCrudIndexResp)
+}
+
+
+type(
+    ProjectCrudIndexReq{
+        Page *PageInfo `json:"page,optional"`            //进行数据分页（不传默认2000相当于全部）
+        Purpose string `json:"purpose"`//用途必填
+        Params map[string]*Compare `json:"params,optional"`//params过滤查询,key 是params的key, value是对象,说明: {"cmpType":"比较类型(如=、>、like)","value":"比较值(需与类型匹配)","castTo":"数据类型(int/float/string,选填，填则转换)"}，其中 like 仅支持 string 类型，value 需以字符串格式传入 示例: {"aaa":{"cmpType":">","castTo":"int","value":"100"}
+    }
+    ProjectCrudIndexResp{
+        PageResp
+        List []*ProjectCrud `json:"list"`    //项目列表
+    }
+    ProjectCrud {
+        ID int64  `json:"id,string,optional"`
+        Purpose string `json:"purpose,optional"`//用途 新增必填
+        Params map[string]string `json:"params,optional"` //普通业务参数,如果是文件类型,则需要以 Img,File结尾,后端会进行文件的处理,上传方式可以参考设备图片
+        Sort int64  `json:"sort,optional,omitempty"` //排序
+        CreatedTime int64  `json:"createdTime,string,optional"`//只读
+    }
+)
 
 type (
     ProjectProfile{

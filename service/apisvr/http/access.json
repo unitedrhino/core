@@ -2073,6 +2073,101 @@
       ],
       "authType": "all"
     },
+    "systemProjectCrudAdd": {
+      "name": "新增项目下的curl业务",
+      "code": "systemProjectCrudAdd",
+      "group": "项目管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectCrudAdd",
+          "method": "POST",
+          "route": "/api/v1/system/project/crud/create",
+          "name": "新增项目crud",
+          "isNeedAuth": 1,
+          "businessType": "add",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemProjectCrudDelete": {
+      "name": "删除项目下的curl业务",
+      "code": "systemProjectCrudDelete",
+      "group": "项目管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectCrudDelete",
+          "method": "POST",
+          "route": "/api/v1/system/project/crud/delete",
+          "name": "删除项目crud",
+          "isNeedAuth": 1,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemProjectCrudFind": {
+      "name": "查询项目下的curl业务",
+      "code": "systemProjectCrudFind",
+      "group": "项目管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectCrudFind",
+          "method": "POST",
+          "route": "/api/v1/system/project/crud/index",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "find",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemProjectCrudFind",
+          "method": "POST",
+          "route": "/api/v1/system/project/crud/read",
+          "name": "",
+          "isNeedAuth": 1,
+          "businessType": "find",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "admin"
+    },
+    "systemProjectCrudModify": {
+      "name": "修改项目下的curl业务",
+      "code": "systemProjectCrudModify",
+      "group": "项目管理",
+      "isNeedAuth": 1,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectCrudModify",
+          "method": "POST",
+          "route": "/api/v1/system/project/crud/update",
+          "name": "更新项目crud",
+          "isNeedAuth": 1,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "admin"
+    },
     "systemProjectManageAdd": {
       "name": "新增项目管理",
       "code": "systemProjectManageAdd",
