@@ -99,7 +99,16 @@ type(
 
     }
     CompareInt64{
-        CmpTYpe string `json:"cmpTYpe"`//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+        CmpTYpe string `json:"cmpType"`//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
         Value int64 `json:"value,string"`
+    }
+    CompareString{
+        CmpTYpe string `json:"cmpType"`//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+        Value string `json:"value"`
+    }
+    Compare{
+        CmpTYpe string `json:"cmpType"`//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询,只有string类型可以使用
+        Value string `json:"value"`
+        CastTo string  `json:"castTo"` //参数的类型(填写了会进行数据类型的转换): int float string
     }
 )

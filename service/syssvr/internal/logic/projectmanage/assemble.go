@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+	"strings"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	areamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/areamanage"
@@ -13,6 +14,33 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
+
+func ProjectCrudsToPb(ctx context.Context, svcCtx *svc.ServiceContext, po []*relationDB.SysProjectCrud) []*sys.ProjectCrud {
+	var pbs []*sys.ProjectCrud
+	for _, p := range po {
+		pbs = append(pbs, ProjectCrudToPb(ctx, svcCtx, p))
+	}
+	return pbs
+}
+
+func ProjectCrudToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysProjectCrud) *sys.ProjectCrud {
+	if po == nil {
+		return nil
+	}
+	pb := utils.Copy[sys.ProjectCrud](po)
+	for k, v := range pb.Params {
+		if !(strings.HasSuffix(k, "Img") || strings.HasSuffix(k, "File")) {
+			continue
+		}
+		url, err := svcCtx.OssClient.SignedGetUrl(ctx, v, 24*60*60, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Error(po, k, v, err.Error())
+			continue
+		}
+		pb.Params[k] = url
+	}
+	return pb
+}
 
 func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysProjectInfo) *sys.ProjectInfo {
 	if po == nil {

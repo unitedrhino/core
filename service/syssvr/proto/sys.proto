@@ -252,6 +252,18 @@ service ProjectManage {
   rpc projectProfileRead(ProjectProfileReadReq)returns(ProjectProfile);
   rpc projectProfileUpdate(ProjectProfile)returns(Empty);
   rpc projectProfileIndex(ProjectProfileIndexReq)returns(ProjectProfileIndexResp);
+
+
+  // 新增项目crud
+  rpc projectCrudCreate (ProjectCrud) returns (WithID);
+  // 更新项目crud
+  rpc projectCrudUpdate (ProjectCrud) returns (Empty);
+  // 删除项目crud
+  rpc projectCrudDelete (WithID) returns (Empty);
+  // 获取项目crud详情
+  rpc projectCrudRead (WithID) returns (ProjectCrud);
+  // 获取项目crud列表
+  rpc projectCrudIndex (ProjectCrudIndexReq) returns (ProjectCrudIndexResp);
 }
 
 
@@ -840,7 +852,11 @@ message PageInfo {
         int64 sort = 2;
     }
 }
-
+message Compare{
+  string CmpType =1;//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+  string value =2;//值
+  string castTo =3; //参数的类型(填写了会进行数据类型的转换): int float string
+}
 message CompareString{
   string CmpType =1;//"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
   string value =2;//值
@@ -870,6 +886,29 @@ message WithAppCodeID{
 }
 
 //----------------------------------------------------------------------------------------------
+
+
+// 项目CRUD查询请求
+message ProjectCrudIndexReq {
+  PageInfo page = 1;                         // 分页信息（可选，不传默认2000条，相当于全部）
+  string purpose = 2;                        // 用途（必填）
+  map<string, Compare> params = 5;     // 参数过滤查询（可选）
+}
+
+// 项目信息
+message ProjectCrud {
+  int64 id = 1;                              // ID
+  string purpose = 2;                        // 用途（新增必填）
+  map<string, string> params = 5;            // 普通业务参数（可选）
+  int64 sort = 6;                            // 排序（可选）
+  int64 created_time = 7;                    // 创建时间（只读，可选）
+}
+
+// 项目CRUD查询响应
+message ProjectCrudIndexResp {
+  int64 total = 1;                    // 总数
+  repeated ProjectCrud list = 2;             // 项目列表
+}
 
 message ProjectWithID{
   int64 projectID = 1; //项目id（只读）

@@ -32,6 +32,7 @@ import (
 	systemopenaccess "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/open/access"
 	systemopsfeedback "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/ops/feedback"
 	systemopsworkOrder "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/ops/workOrder"
+	systemprojectcrud "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/project/crud"
 	systemprojectinfo "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/project/info"
 	systemprojectprofile "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/project/profile"
 	systemroleaccess "gitee.com/unitedrhino/core/service/apisvr/internal/handler/system/role/access"
@@ -1131,6 +1132,45 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 			}...,
 		),
 		ws.WithPrefix("/api/v1/system/ops"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.CheckTokenWare, serverCtx.InitCtxsWare},
+			[]rest.Route{
+				{
+					// 新增项目crud
+					Method:  http.MethodPost,
+					Path:    "/create",
+					Handler: systemprojectcrud.CreateHandler(serverCtx),
+				},
+				{
+					// 删除项目crud
+					Method:  http.MethodPost,
+					Path:    "/delete",
+					Handler: systemprojectcrud.DeleteHandler(serverCtx),
+				},
+				{
+					// 获取项目crud列表
+					Method:  http.MethodPost,
+					Path:    "/index",
+					Handler: systemprojectcrud.IndexHandler(serverCtx),
+				},
+				{
+					// 获取项目crud详情
+					Method:  http.MethodPost,
+					Path:    "/read",
+					Handler: systemprojectcrud.ReadHandler(serverCtx),
+				},
+				{
+					// 更新项目crud
+					Method:  http.MethodPost,
+					Path:    "/update",
+					Handler: systemprojectcrud.UpdateHandler(serverCtx),
+				},
+			}...,
+		),
+		ws.WithPrefix("/api/v1/system/project/crud"),
 	)
 
 	server.AddRoutes(

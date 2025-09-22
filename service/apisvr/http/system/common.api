@@ -86,7 +86,6 @@ type (
 
 
 type (
-
     ThirdDeptInfoReadReq{
         ID int64 `json:"id,optional,string"`                                  // 编号
         WithFather bool `json:"withFather,optional"`//是否返回父级
@@ -100,8 +99,6 @@ type (
         ThirdType string `json:"thirdType,optional"` //第三方的类型 ding:钉钉  wxE:企业微信
         ThirdConfig *ThirdAppConfig `json:"thirdConfig"` //
     }
-
-
 )
 
 type (

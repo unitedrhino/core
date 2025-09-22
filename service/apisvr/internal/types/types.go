@@ -225,9 +225,20 @@ type CommonResp struct {
 	ID int64 `json:"id,optional"` // id
 }
 
+type Compare struct {
+	CmpTYpe string `json:"cmpType"` //"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询,只有string类型可以使用
+	Value   string `json:"value"`
+	CastTo  string `json:"castTo"` //参数的类型(填写了会进行数据类型的转换): int float string
+}
+
 type CompareInt64 struct {
-	CmpTYpe string `json:"cmpTYpe"` //"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+	CmpTYpe string `json:"cmpType"` //"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
 	Value   int64  `json:"value,string"`
+}
+
+type CompareString struct {
+	CmpTYpe string `json:"cmpType"` //"=":相等 "!=":不相等 ">":大于">=":大于等于"<":小于"<=":小于等于 "like":模糊查询
+	Value   string `json:"value"`
 }
 
 type ConfigResp struct {
@@ -903,6 +914,25 @@ type PageResp struct {
 type Point struct {
 	Longitude float64 `json:"longitude,range=[0:180]"` //经度
 	Latitude  float64 `json:"latitude,range=[0:90]"`   //纬度
+}
+
+type ProjectCrud struct {
+	ID          int64             `json:"id,string,optional"`
+	Purpose     string            `json:"purpose,optional"`            //用途 新增必填
+	Params      map[string]string `json:"params,optional"`             //普通业务参数,如果是文件类型,则需要以 Img,File结尾,后端会进行文件的处理,上传方式可以参考设备图片
+	Sort        int64             `json:"sort,optional,omitempty"`     //排序
+	CreatedTime int64             `json:"createdTime,string,optional"` //只读
+}
+
+type ProjectCrudIndexReq struct {
+	Page    *PageInfo           `json:"page,optional"`   //进行数据分页（不传默认2000相当于全部）
+	Purpose string              `json:"purpose"`         //用途必填
+	Params  map[string]*Compare `json:"params,optional"` //params过滤查询,key 是params的key, value是对象,说明: {"cmpType":"比较类型(如=、>、like)","value":"比较值(需与类型匹配)","castTo":"数据类型(int/float/string,选填，填则转换)"}，其中 like 仅支持 string 类型，value 需以字符串格式传入 示例: {"aaa":{"cmpType":">","castTo":"int","value":"100"}
+}
+
+type ProjectCrudIndexResp struct {
+	PageResp
+	List []*ProjectCrud `json:"list"` //项目列表
 }
 
 type ProjectInfo struct {
