@@ -179,19 +179,19 @@ func CheckAdmin(ctx context.Context, svcCtx *svc.ServiceContext, userName string
 	if err != nil {
 		return err
 	}
-	_, err = relationDB.NewTenantInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.TenantInfoFilter{
-		Code: userName,
-	})
-	if err == nil {
-		return errors.Parameter.AddMsg("用户名已被使用")
-	}
-	if !errors.Cmp(err, errors.NotFind) {
-		return err
-	}
+	//_, err = relationDB.NewTenantInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.TenantInfoFilter{
+	//	Code: userName,
+	//})
+	//if err == nil {
+	//	return errors.Parameter.AddMsg("用户名已被使用")
+	//}
+	//if !errors.Cmp(err, errors.NotFind) {
+	//	return err
+	//}
 
 	po, err := relationDB.NewUserInfoRepo(ctx).FindOneByFilter(ctxs.WithRoot(ctx), relationDB.UserInfoFilter{
-		IsTenantAdmin: def.True,
-		Accounts:      append([]string{userName}, accounts...),
+		WithTenants: true,
+		Accounts:    append([]string{userName}, accounts...),
 	})
 	if err == nil {
 		if po.UserName.Valid && po.UserName.String == userName {
@@ -203,6 +203,7 @@ func CheckAdmin(ctx context.Context, svcCtx *svc.ServiceContext, userName string
 		if po.Phone.Valid && utils.SliceIn(po.Phone.String, accounts...) {
 			return errors.Parameter.AddMsg("手机号已被使用")
 		}
+		return errors.Parameter.AddMsg("账号已被占用")
 	}
 	if !errors.Cmp(err, errors.NotFind) {
 		return err
@@ -211,7 +212,7 @@ func CheckAdmin(ctx context.Context, svcCtx *svc.ServiceContext, userName string
 }
 
 func TenantCreate(ctx context.Context, svcCtx *svc.ServiceContext, projectPo *relationDB.SysProjectInfo,
-	po *relationDB.SysTenantInfo, ui *relationDB.SysUserInfo) error {
+	po *relationDB.SysTenantInfo, ui *relationDB.SysUserInfo, isCreateUser bool) error {
 	err := stores.GetCommonConn(ctx).Transaction(func(tx *gorm.DB) error {
 		ris := []*relationDB.SysRoleInfo{{TenantCode: po.Code, Name: "超级管理员", Code: "supper"},
 			{TenantCode: po.Code, Name: "管理员", Code: "admin"},

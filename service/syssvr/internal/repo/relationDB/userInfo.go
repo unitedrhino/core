@@ -27,10 +27,9 @@ type UserInfoFilter struct {
 	Emails         []string
 	Accounts       []string //账号查询 非模糊查询
 	WithRoles      bool
-	WithTenant     bool
+	WithTenants    bool
 	TenantStatus   def.Bool
 	UpdatedTime    *stores.Cmp
-	IsTenantAdmin  def.Bool // 是否是租户的管理员
 	UserID         int64
 	HasAccessAreas []int64
 	TenantCode     string
@@ -59,9 +58,6 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 			db = db.Where("user_id in (?)", subQuery)
 		}
 	}
-	if f.IsTenantAdmin != 0 {
-		db = db.Where("is_tenant_admin=?", f.IsTenantAdmin)
-	}
 	if f.DeptID > 0 {
 		subQuery := p.db.Model(&SysDeptUser{}).Select("user_id").Where("dept_id=?", f.DeptID)
 		db = db.Where("user_id in (?)", subQuery)
@@ -70,13 +66,13 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	if f.WithRoles {
 		db = db.Preload("Tenants.Roles").Preload("Tenants.Roles.Role")
 	}
-	if f.WithTenant {
+	if f.WithTenants {
 		if f.TenantStatus != 0 {
-			db = db.Preload("Tenants")
-		} else {
 			db = db.Preload("Tenants", "status = ?", f.TenantStatus)
+		} else {
+			db = db.Preload("Tenants")
 		}
-		db = db.Preload("Tenants.TenantInfo").Preload("Tenants.TenantConfig")
+		//db = db.Preload("Tenants.TenantInfo").Preload("Tenants.TenantConfig")
 	}
 	if f.UserID != 0 {
 		db = db.Where("user_id=?", f.UserID)
@@ -129,11 +125,27 @@ func (p UserInfoRepo) Insert(ctx context.Context, data *SysUserInfo) error {
 			if err != nil {
 				return err
 			}
-			err = NewUserThirdRepo(tx).MultiInsert(ctx, t)
-			if err != nil {
-				return err
+			if len(t) != 0 {
+				for _, v := range t {
+					v.UserID = data.UserID
+				}
+				err = NewUserThirdRepo(tx).MultiInsert(ctx, t)
+				if err != nil {
+					return err
+				}
 			}
 			data.Thirds = t
+			ts := data.Tenants
+			if len(ts) != 0 {
+				for _, v := range ts {
+					v.UserID = data.UserID
+				}
+				err = NewUserTenantRepo(tx).MultiInsert(ctx, ts)
+				if err != nil {
+					return err
+				}
+			}
+			data.Tenants = ts
 			return nil
 		})
 		return stores.ErrFmt(err)

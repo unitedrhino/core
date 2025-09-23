@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	"fmt"
 
 	tenantmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/tenantmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
@@ -43,6 +44,7 @@ func (l *UserTaRegisterLogic) UserTaRegister(in *sys.UserTaRegisterReq) (*sys.Us
 	userID := l.svcCtx.UserID.GetSnowflakeId()
 
 	ui := l.ur.createUserInfo(userID, in.NickName, in.UserName)
+
 	ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
 	// 验证验证码并设置账户信息
 	switch in.RegType {
@@ -61,9 +63,9 @@ func (l *UserTaRegisterLogic) UserTaRegister(in *sys.UserTaRegisterReq) (*sys.Us
 	default:
 		return nil, errors.Parameter.AddMsg("只支持手机号或邮箱的校验方式")
 	}
-
+	tk := fmt.Sprintf("u_%d", userID)
 	projectPo := &relationDB.SysProjectInfo{
-		TenantCode:   dataType.TenantCode(in.Code),
+		TenantCode:   dataType.TenantCode(tk),
 		ProjectID:    dataType.ProjectID(l.svcCtx.ProjectID.GetSnowflakeId()),
 		ProjectName:  "默认项目",
 		AdminUserID:  ui.UserID,
@@ -71,12 +73,17 @@ func (l *UserTaRegisterLogic) UserTaRegister(in *sys.UserTaRegisterReq) (*sys.Us
 	}
 
 	po := &relationDB.SysTenantInfo{
-		Code:             dataType.TenantCode(ui.UserName.String),
+		Code:             dataType.TenantCode(tk),
 		Name:             ui.UserName.String,
 		AdminUserID:      ui.UserID,
 		DefaultProjectID: int64(projectPo.ProjectID),
 		UserCount:        1,
 	}
-	err = tenantmanagelogic.TenantCreate(l.ctx, l.svcCtx, projectPo, po, &ui)
+	ui.Tenants = append(ui.Tenants, &relationDB.SysUserTenant{
+		TenantCode:    po.Code,
+		UserID:        ui.UserID,
+		IsTenantAdmin: def.True,
+	})
+	err = tenantmanagelogic.TenantCreate(l.ctx, l.svcCtx, projectPo, po, &ui, true)
 	return &sys.UserRegisterResp{UserID: userID}, err
 }

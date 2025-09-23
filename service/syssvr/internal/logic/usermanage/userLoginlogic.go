@@ -11,6 +11,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
@@ -123,9 +124,14 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	var isRegister bool
 	switch in.LoginType {
 	case users.RegPwd:
-		if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
-			return nil, errors.Captcha
+		if in.Code != "" {
+			if l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, def.CaptchaUseLogin, in.CodeID, in.Code) == "" {
+				return nil, errors.Captcha
+			}
+		} else if l.svcCtx.LoginLimit.PwdCaptcha.CheckLimit(l.ctx, in.Account) {
+			return nil, errors.NeedImgCaptcha
 		}
+		l.svcCtx.LoginLimit.PwdCaptcha.LimitIt(l.ctx, in.Account)
 		if l.svcCtx.LoginLimit.PwdAccount.CheckLimit(l.ctx, in.Account) {
 			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
 		}
@@ -139,16 +145,10 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				l.svcCtx.LoginLimit.PwdIp.LimitIt(l.ctx, in.Ip)
 			}
 		}
-		uc, err = l.UiDB.FindOneByFilter(ctxs.CommonWithRoot(l.ctx), relationDB.UserInfoFilter{WithTenant: true, TenantStatus: def.True, Accounts: []string{in.Account}})
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{in.Account}, WithTenants: true, TenantStatus: def.True})
 		if err != nil {
 			limit()
-			if errors.Cmp(err, errors.NotFind) {
-				return nil, errors.UnRegister
-			}
 			return nil, err
-		}
-		if len(uc.Tenants) == 0 {
-			return nil, errors.UnRegister
 		}
 		if err = l.getPwd(in, uc); err != nil {
 			limit()
@@ -239,7 +239,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		//	if err != nil {
 		//		return nil, err
 		//	}
-		//	uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId, WithRoles: true, WithTenant: true})
+		//	uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{DingTalkUserID: ret.UserInfo.UserId, DingTalkUnionID: ret.UserInfo.UnionId, WithRoles: true, WithTenants: true,TenantStatus: def.True})
 		//}
 	case users.RegWxOpen: //todo
 		//if cli.WxOfficial == nil {
@@ -292,7 +292,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if email == "" || email != in.Account {
 			return nil, errors.Captcha
 		}
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenant: true, Emails: []string{in.Account}})
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Emails: []string{in.Account}})
 		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
@@ -300,19 +300,25 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				UserID:   userID,
 				Email:    sql.NullString{Valid: true, String: email},
 				UserName: sql.NullString{Valid: true, String: email},
+				Tenants: []*relationDB.SysUserTenant{
+					{
+						TenantCode: dataType.TenantCode(ucc.TenantCode),
+						UserID:     userID,
+					},
+				},
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
 			isRegister = true
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{in.Account}})
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Emails: []string{in.Account}})
 		}
 	case users.RegPhone:
 		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseLogin, in.CodeID, in.Code)
 		if phone == "" || phone != in.Account {
 			return nil, errors.Captcha
 		}
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Phones: []string{in.Account}})
 		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
@@ -325,7 +331,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
 			isRegister = true
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Phones: []string{in.Account}})
 		}
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)

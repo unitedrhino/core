@@ -29,7 +29,7 @@ type SysUserInfo struct {
 	Tenants     []*SysUserTenant `gorm:"foreignKey:UserID;references:UserID"`
 	Thirds      []*SysUserThird  `gorm:"foreignKey:UserID;references:UserID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;"`
 }
 
 func (m *SysUserInfo) TableName() string {
@@ -37,15 +37,16 @@ func (m *SysUserInfo) TableName() string {
 }
 
 type SysUserTenant struct {
-	TenantCode   dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);uniqueIndex:sys_user_tenant_user_tenant;NOT NULL;"` // 租户编码
-	UserID       int64               `gorm:"column:user_id;uniqueIndex:sys_user_tenant_user_tenant;type:BIGINT;NOT NULL"`           // 用户id
-	DeviceCount  int64               `gorm:"column:device_count;default:0"`                                                         //用户所拥有的设备数量统计
-	Roles        []*SysUserRole      `gorm:"foreignKey:UserID;references:UserID"`
-	Status       int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"`                //用户状态: 1启用 2禁用
-	Tags         map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 产品标签
-	User         *SysUserInfo        `gorm:"foreignKey:UserID;references:UserID"`
-	TenantInfo   *SysTenantInfo      `gorm:"foreignKey:Code;references:TenantCode"`
-	TenantConfig *SysTenantConfig    `gorm:"foreignKey:TenantCode;references:TenantCode"`
+	TenantCode    dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);uniqueIndex:sys_user_tenant_user_tenant;NOT NULL;"` // 租户编码
+	UserID        int64               `gorm:"column:user_id;uniqueIndex:sys_user_tenant_user_tenant;type:BIGINT;NOT NULL"`           // 用户id
+	DeviceCount   int64               `gorm:"column:device_count;default:0"`                                                         //用户所拥有的设备数量统计
+	Roles         []*SysUserRole      `gorm:"foreignKey:UserID;references:UserID"`
+	IsTenantAdmin def.Bool            `gorm:"column:is_tenant_admin;default:2"`                            //是否是租户管理员
+	Status        int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"`                //用户状态: 1启用 2禁用
+	Tags          map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 产品标签
+	User          *SysUserInfo        `gorm:"foreignKey:UserID;references:UserID"`
+	TenantInfo    *SysTenantInfo      `gorm:"foreignKey:Code;references:TenantCode"`
+	TenantConfig  *SysTenantConfig    `gorm:"foreignKey:TenantCode;references:TenantCode"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:sys_user_tenant_user_tenant;"`
 }
@@ -56,15 +57,15 @@ func (m *SysUserTenant) TableName() string {
 
 type SysUserThird struct {
 	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;"` // 租户编码,如果是公共应用登录的,这里填写__common__
-	AppType    def.ThirdType       `gorm:"column:app_type;uniqueIndex:idx_sys_user_info_tc_wui;type:varchar(64);NOT NULL"`
-	AppID      string              `gorm:"column:app_id;uniqueIndex:idx_sys_user_info_tc_wui;type:VARCHAR(128);NOT NULL"`
-	UserID     int64               `gorm:"column:user_id;type:BIGINT;NOT NULL"`                                                    // 用户id
-	UnionID    string              `gorm:"column:union_id;index;type:VARCHAR(128);default:''"`                                     // 微信union id
-	OpenID     string              `gorm:"column:open_id;uniqueIndex:idx_sys_user_info_tc_wui;index;type:VARCHAR(128);default:''"` // 钉钉里是UserID
+	AppType    def.ThirdType       `gorm:"column:app_type;uniqueIndex:idx_sys_user_third_tc_wui;type:varchar(64);NOT NULL"`
+	AppID      string              `gorm:"column:app_id;uniqueIndex:idx_sys_user_third_tc_wui;type:VARCHAR(128);NOT NULL"`
+	UserID     int64               `gorm:"column:user_id;type:BIGINT;NOT NULL"`                                                     // 用户id
+	UnionID    string              `gorm:"column:union_id;index;type:VARCHAR(128);default:''"`                                      // 微信union id
+	OpenID     string              `gorm:"column:open_id;uniqueIndex:idx_sys_user_third_tc_wui;index;type:VARCHAR(128);default:''"` // 钉钉里是UserID
 	User       *SysUserInfo        `gorm:"foreignKey:UserID;references:UserID"`
 	//UserTenants []*SysUserTenant             `gorm:"foreignKey:UserID;references:UserID"`
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_wui;"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_third_tc_wui;"`
 }
 
 func (m *SysUserThird) TableName() string {

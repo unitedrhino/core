@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type UserTenantRepo struct {
@@ -149,6 +150,12 @@ func (p UserTenantRepo) fmtFilter(ctx context.Context, f UserTenantFilter) *gorm
 func (p UserTenantRepo) Insert(ctx context.Context, data *SysUserTenant) error {
 	result := p.db.WithContext(ctx).Create(data)
 	return stores.ErrFmt(result.Error)
+}
+
+// 批量插入 LightStrategyDevice 记录
+func (p UserTenantRepo) MultiInsert(ctx context.Context, data []*SysUserTenant) error {
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Model(&SysUserTenant{}).Create(data).Error
+	return stores.ErrFmt(err)
 }
 
 func (p UserTenantRepo) FindOneByFilter(ctx context.Context, f UserTenantFilter) (*SysUserTenant, error) {
