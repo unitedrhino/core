@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -36,7 +37,7 @@ func (l *MenuIndexLogic) MenuIndex(req *types.UserMenuIndexReq) (resp *types.Ten
 		}
 		menuIDs = ids.MenuIDs
 		if len(menuIDs) == 0 {
-			return nil, nil
+			return &types.TenantAppMenuIndexResp{}, nil
 		}
 	}
 
