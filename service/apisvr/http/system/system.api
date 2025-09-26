@@ -129,6 +129,7 @@ type (
         AdminUser *UserCore `json:"adminUser,optional,omitempty"` //管理员信息
         Areas []*AreaInfo `json:"areas,optional,omitempty"`
         Sort   int64                   `json:"sort,optional"`     // 排序标记,默认为1
+        Attachments []*Attachment `json:"attachments,optional,omitempty"` //附件
     }
     AreaInfo  {
         CreatedTime int64 `json:"createdTime,optional,string"`   //创建时间（只读）
@@ -187,5 +188,14 @@ type (
         AuthType int64 `json:"authType,optional,range=[0:3]"`        //   1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
         Desc string `json:"desc,optional"`                       // 备注
         Apis []*ApiInfo `json:"apis,optional,omitempty"` //接口信息
+    }
+
+
+    Attachment{
+        ID       int64  `json:"id"`            // 附件ID,前端自己生成,不重复即可
+        FileName string `json:"fileName,optional"` // 只读:文件名
+        FileUrl  string `json:"fileUrl,optional"`   // 只读:访问url
+        FilePath string `json:"filePath,optional,omitempty"` //更新的时候传
+        UseBy    string `json:"useBy,optional,omitempty"`       //用途,选填
     }
 )

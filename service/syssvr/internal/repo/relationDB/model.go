@@ -17,6 +17,12 @@ type SysConfig struct {
 	Sms *SysConfigSms `gorm:"embedded;embeddedPrefix:sms_"` //短信配置,全租户共用
 }
 
+type Attachment struct {
+	ID       int64  `json:"id"`
+	FilePath string `json:"filePath"`
+	UseBy    string `json:"useBy"`
+}
+
 type SysConfigSms struct {
 	From     string `gorm:"column:from;type:VARCHAR(50);default:'';NOT NULL"`     // 发件人  你自己要发邮件的邮箱
 	Host     string `gorm:"column:host;type:VARCHAR(50);default:'';NOT NULL"`     // 服务器地址 例如 smtp.qq.com  请前往QQ或者你要发邮件的邮箱查看其smtp协议

@@ -38,6 +38,7 @@ type (
 	AreaProfileIndexResp                  = sys.AreaProfileIndexResp
 	AreaProfileReadReq                    = sys.AreaProfileReadReq
 	AreaWithID                            = sys.AreaWithID
+	Attachment                            = sys.Attachment
 	AuthApiInfo                           = sys.AuthApiInfo
 	Compare                               = sys.Compare
 	CompareInt64                          = sys.CompareInt64
