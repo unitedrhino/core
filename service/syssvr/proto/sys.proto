@@ -908,7 +908,7 @@ message ProjectCrudIndexReq {
 message ProjectCrud {
   int64 id = 1;                              // ID
   string purpose = 2;                        // 用途（新增必填）
-  map<string, string> params = 5;            // 普通业务参数（可选）
+  string params = 5;            // 普通业务参数（可选）
   int64 sort = 6;                            // 排序（可选）
   int64 created_time = 7;                    // 创建时间（只读，可选）
 }

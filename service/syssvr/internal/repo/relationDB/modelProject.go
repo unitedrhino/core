@@ -59,7 +59,7 @@ type SysProjectCrud struct {
 	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;index:idx_sys_project_profile_tc_un;"` // 租户编码
 	ProjectID  dataType.ProjectID  `gorm:"column:project_id;index:idx_sys_project_profile_tc_un;type:bigint;NOT NULL"`        // 所属项目ID(雪花ID)
 	Purpose    string              `gorm:"column:purpose;type:VARCHAR(50);index:idx_sys_project_profile_tc_un;NOT NULL"`      //用途必填
-	Params     map[string]string   `gorm:"column:params;type:json;serializer:json;NOT NULL;default:'{}'"`
+	Params     string              `gorm:"column:params;type:json;NOT NULL;default:'{}'"`
 	Sort       int64               `gorm:"column:sort;type:bigint;default:1;default:1"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index;"`

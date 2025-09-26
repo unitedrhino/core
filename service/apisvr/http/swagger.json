@@ -12964,7 +12964,7 @@
           "description": "用途 新增必填"
         },
         "params": {
-          "type": "object",
+          "type": "string",
           "description": "普通业务参数,如果是文件类型,则需要以 Img,File结尾,后端会进行文件的处理,上传方式可以参考设备图片"
         },
         "sort": {
