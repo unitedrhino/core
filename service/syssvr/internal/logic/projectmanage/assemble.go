@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -53,6 +54,21 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 			logx.WithContext(ctx).Errorf("%s.SignedGetUrl err:%v", utils.FuncName(), err)
 		}
 	}
+	var at []*sys.Attachment
+
+	for _, att := range po.Attachments {
+		url, err := svcCtx.OssClient.PrivateBucket().SignedGetUrl(ctx, att.FilePath, 300, common.OptionKv{})
+		if err != nil {
+			logx.WithContext(ctx).Errorf("get url err:%v", err)
+			continue
+		}
+		at = append(at, &sys.Attachment{
+			Id:       att.ID,
+			UseBy:    att.UseBy,
+			FileUrl:  url,
+			FileName: oss.GetFileNameWithPath(att.FilePath),
+		})
+	}
 	pb := &sys.ProjectInfo{
 		TenantCode:        string(po.TenantCode),
 		CreatedTime:       po.CreatedTime.Unix(),
@@ -75,6 +91,7 @@ func ProjectInfoToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		Status:            po.Status,
 		AlarmStatus:       po.AlarmStatus,
 		Type:              po.Type,
+		Attachments:       at,
 		DeviceOnlineCount: utils.ToRpcNullInt64(po.DeviceOnlineCount),
 	}
 	return pb

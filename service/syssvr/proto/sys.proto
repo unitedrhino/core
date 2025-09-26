@@ -372,6 +372,15 @@ message IDList{
   repeated int64 ids=1;
 }
 
+
+message Attachment{
+  int64 id = 1; // 附件ID,前端自己生成,不重复即可
+  string fileName = 3; // 只读:文件名
+  string fileUrl = 5; // 只读:访问url
+  string filePath = 6;//更新的时候传
+  string useBy =7;//用途,选填
+}
+
 //消息中心
 
 message NotifyConfig{
@@ -940,6 +949,7 @@ message ProjectInfo {
   repeated AreaInfo areas =19;//
   map<string, string> tags = 21;
   int64 sort = 22;          // 排序标记,不能为0,默认为1
+  repeated Attachment attachments =27;//附件列表
 }
 
 
@@ -1006,6 +1016,7 @@ message AreaInfo {
   bool isUpdateConfigFile=22;
   map<string, string> tags = 23;
   int64 sort = 24;          // 排序标记
+  repeated Attachment attachments =25;//附件列表
 }
 
 

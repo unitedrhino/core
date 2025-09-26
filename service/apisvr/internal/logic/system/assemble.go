@@ -32,6 +32,7 @@ func ProjectInfoToApi(pb *sys.ProjectInfo, ui *sys.UserInfo) *types.ProjectInfo 
 		Status:            pb.Status,
 		AlarmStatus:       pb.AlarmStatus,
 		Type:              pb.Type,
+		Attachments:       utils.CopySlice[types.Attachment](pb.Attachments),
 	}
 }
 func ProjectInfosToApi(pb []*sys.ProjectInfo) (ret []*types.ProjectInfo) {

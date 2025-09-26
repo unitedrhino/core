@@ -221,6 +221,14 @@ type AreaWithID struct {
 	AreaID int64 `json:"areaID,string"` //项目区域id 只读
 }
 
+type Attachment struct {
+	ID       int64  `json:"id"`                          // 附件ID,前端自己生成,不重复即可
+	FileName string `json:"fileName,optional"`           // 只读:文件名
+	FileUrl  string `json:"fileUrl,optional"`            // 只读:访问url
+	FilePath string `json:"filePath,optional,omitempty"` //更新的时候传
+	UseBy    string `json:"useBy,optional,omitempty"`    //用途,选填
+}
+
 type CommonResp struct {
 	ID int64 `json:"id,optional"` // id
 }
@@ -958,7 +966,8 @@ type ProjectInfo struct {
 	Area               *float32          `json:"area,optional,omitempty"`        //建筑面积(单位平米)
 	AdminUser          *UserCore         `json:"adminUser,optional,omitempty"`   //管理员信息
 	Areas              []*AreaInfo       `json:"areas,optional,omitempty"`
-	Sort               int64             `json:"sort,optional"` // 排序标记,默认为1
+	Sort               int64             `json:"sort,optional"`                  // 排序标记,默认为1
+	Attachments        []*Attachment     `json:"attachments,optional,omitempty"` //附件
 }
 
 type ProjectInfoIndexReq struct {

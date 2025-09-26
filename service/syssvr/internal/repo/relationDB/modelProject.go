@@ -26,9 +26,11 @@ type SysProjectInfo struct {
 	Ppsm              int64             `gorm:"column:ppsm;type:bigint;default:0"`                           //w.h/m2 每平方米功耗 建筑定额能耗 Power per square meter
 	Desc              string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                      // 项目备注
 	IsSysCreated      int64             `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"`        //是否是系统创建的,系统创建的只有管理员可以删除
-	Sort              int64             `gorm:"column:sort;comment:排序标记;default:1"`                          // 排序标记
+	Sort              int64             `gorm:"column:sort;comment:排序标记;default:1"`                      // 排序标记
 	Tags              map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 设备标签
 	Areas             []*SysAreaInfo    `gorm:"foreignKey:ProjectID;references:ProjectID"`
+	Attachments       []*Attachment     `gorm:"column:attachments;type:json;serializer:json;comment:附件"`
+
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0"`
 }
@@ -88,7 +90,7 @@ type SysAreaInfo struct {
 	UseBy           string              `gorm:"column:use_by;type:varchar(100);default:''"`                  //用途
 	ChildrenAreaIDs []int64             `gorm:"column:children_area_ids;type:json;serializer:json"`          //所有的子区域的id列表
 	IsSysCreated    int64               `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"`        //是否是系统创建的,系统创建的只有管理员可以删除
-	Sort            int64               `gorm:"column:sort;comment:排序标记;default:1"`                          // 排序标记
+	Sort            int64               `gorm:"column:sort;comment:排序标记;default:1"`                      // 排序标记
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index"`
 	Children    []*SysAreaInfo     `gorm:"foreignKey:ParentAreaID;references:AreaID"`

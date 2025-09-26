@@ -6,14 +6,13 @@ import (
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
-
-	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -54,7 +53,10 @@ func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Em
 		return nil, errors.Parameter.AddDetail(in.ProjectID).WithMsg("检查项目不存在")
 	}
 	oldDevCount := po.DeviceCount
-	l.setPoByPb(po, in)
+	err = l.setPoByPb(po, in)
+	if err != nil {
+		return nil, err
+	}
 	err = l.PiDB.Update(l.ctx, po)
 	if err != nil {
 		return nil, err
@@ -71,10 +73,15 @@ func (l *ProjectInfoUpdateLogic) ProjectInfoUpdate(in *sys.ProjectInfo) (*sys.Em
 	}
 	return &sys.Empty{}, nil
 }
-func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sys.ProjectInfo) {
+func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sys.ProjectInfo) error {
 	if pb.ProjectName != "" {
 		po.ProjectName = pb.ProjectName
 	}
+	as, err := handAttachment(l.ctx, l.svcCtx, oss.BusinessProject, int64(po.ProjectID), po.Attachments, pb.Attachments)
+	if err != nil {
+		return err
+	}
+	po.Attachments = as
 	//if pb.CompanyName != nil {
 	//	po.CompanyName = pb.CompanyName.GetValue()
 	//}
@@ -138,9 +145,59 @@ func (l *ProjectInfoUpdateLogic) setPoByPb(po *relationDB.SysProjectInfo, pb *sy
 		} else {
 			po.ProjectImg = path
 		}
-
 	}
 	if pb.Desc != nil {
 		po.Desc = pb.Desc.GetValue()
 	}
+	return err
+}
+
+func handAttachment(ctx context.Context, svcCtx *svc.ServiceContext, business string, id int64, old []*relationDB.Attachment, in []*sys.Attachment) (ret []*relationDB.Attachment, err error) {
+	var oldA = map[int64]*relationDB.Attachment{}
+	for _, v := range old {
+		oldA[v.ID] = v
+	}
+	if len(in) != 0 {
+		var up []*relationDB.Attachment
+
+		for _, attachment := range in {
+			if attachment.FilePath != "" {
+				newPath := oss.GenFilePath(ctx, svcCtx.Config.Name, business, "attachment", fmt.Sprintf("%d/%d/%s", id, attachment.Id, oss.GetFileNameWithPath(attachment.FilePath)))
+				path, err := svcCtx.OssClient.PrivateBucket().CopyFromTempBucket(attachment.FilePath, newPath)
+				if err != nil {
+					return nil, errors.System.AddDetail(err)
+				}
+				up = append(up, &relationDB.Attachment{
+					ID:       attachment.Id,
+					FilePath: path,
+					UseBy:    attachment.UseBy,
+				})
+			} else {
+				o, ok := oldA[attachment.Id]
+				if ok { //如果存在则直接把老的复制进去即可,如果没查到,则丢弃
+					o.UseBy = attachment.UseBy
+					up = append(up, o)
+				}
+				delete(oldA, attachment.Id)
+			}
+		}
+		if len(up) != 0 {
+			ret = up
+		}
+	} else {
+		ret = []*relationDB.Attachment{}
+	}
+	if len(oldA) != 0 {
+		defer func() {
+			if err == nil {
+				for _, v := range oldA {
+					er := svcCtx.OssClient.Delete(ctx, v.FilePath, common.OptionKv{})
+					if er != nil {
+						logx.WithContext(ctx).Error(v, er)
+					}
+				}
+			}
+		}()
+	}
+	return
 }
