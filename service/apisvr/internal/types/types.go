@@ -926,11 +926,11 @@ type Point struct {
 }
 
 type ProjectCrud struct {
-	ID          int64             `json:"id,string,optional"`
-	Purpose     string            `json:"purpose,optional"`            //用途 新增必填
-	Params      map[string]string `json:"params,optional"`             //普通业务参数,如果是文件类型,则需要以 Img,File结尾,后端会进行文件的处理,上传方式可以参考设备图片
-	Sort        int64             `json:"sort,optional,omitempty"`     //排序
-	CreatedTime int64             `json:"createdTime,string,optional"` //只读
+	ID          int64  `json:"id,string,optional"`
+	Purpose     string `json:"purpose,optional"`            //用途 新增必填
+	Params      string `json:"params,optional"`             //普通业务参数,如果是文件类型,则需要以 Img,File结尾,后端会进行文件的处理,上传方式可以参考设备图片
+	Sort        int64  `json:"sort,optional,omitempty"`     //排序
+	CreatedTime int64  `json:"createdTime,string,optional"` //只读
 }
 
 type ProjectCrudIndexReq struct {

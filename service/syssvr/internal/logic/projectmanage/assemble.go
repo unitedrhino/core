@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
@@ -12,6 +13,7 @@ import (
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
 	"gitee.com/unitedrhino/share/utils"
+	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
@@ -29,17 +31,27 @@ func ProjectCrudToPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relati
 		return nil
 	}
 	pb := utils.Copy[sys.ProjectCrud](po)
-	for k, v := range pb.Params {
-		if !(strings.HasSuffix(k, "Img") || strings.HasSuffix(k, "File")) {
-			continue
-		}
-		url, err := svcCtx.OssClient.SignedGetUrl(ctx, v, 24*60*60, common.OptionKv{})
+	var params = map[string]interface{}{}
+	if len(pb.Params) > 0 {
+		err := json.Unmarshal([]byte(pb.Params), &params)
 		if err != nil {
-			logx.WithContext(ctx).Error(po, k, v, err.Error())
-			continue
+			logx.WithContext(ctx).Errorf("unmarshal params err:%v", err)
+			return pb
 		}
-		pb.Params[k] = url
+		for k, v := range params {
+			if !(strings.HasSuffix(k, "Img") || strings.HasSuffix(k, "File")) {
+				continue
+			}
+			url, err := svcCtx.OssClient.SignedGetUrl(ctx, cast.ToString(v), 24*60*60, common.OptionKv{})
+			if err != nil {
+				logx.WithContext(ctx).Error(po, k, v, err.Error())
+				continue
+			}
+			params[k] = url
+		}
+		pb.Params = utils.MarshalNoErr(params)
 	}
+
 	return pb
 }
 
