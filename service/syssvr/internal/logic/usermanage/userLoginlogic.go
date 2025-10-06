@@ -314,18 +314,24 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Emails: []string{in.Account}})
 		}
 	case users.RegPhone:
-		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseLogin, in.CodeID, in.Code)
-		if phone == "" || phone != in.Account {
-			return nil, errors.Captcha
-		}
+		//phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseLogin, in.CodeID, in.Code)
+		//if phone == "" || phone != in.Account {
+		//	return nil, errors.Captcha
+		//}
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Phones: []string{in.Account}})
-		if errors.Cmp(err, errors.NotFind) && ta.IsAutoRegister == def.True { //未注册,自动注册
+		if err != nil && !errors.Cmp(err, errors.NotFind) {
+			return nil, err
+		}
+		if ta.IsAutoRegister != def.True {
+			return uc, nil
+		}
+		if errors.Cmp(err, errors.NotFind) {
 			err = nil
 			userID := l.svcCtx.UserID.GetSnowflakeId()
 			uc = &relationDB.SysUserInfo{
 				UserID:   userID,
-				Phone:    sql.NullString{Valid: true, String: phone},
-				UserName: sql.NullString{Valid: true, String: phone},
+				Phone:    sql.NullString{Valid: true, String: in.Account},
+				UserName: sql.NullString{Valid: true, String: in.Account},
 			}
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
@@ -333,6 +339,15 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			isRegister = true
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WithTenants: true, TenantStatus: def.True, Phones: []string{in.Account}})
 		}
+		if ucc.TenantCode != "" {
+			for _, v := range uc.Tenants {
+				if string(v.TenantCode) == ucc.TenantCode {
+					return
+				}
+			}
+		}
+		//如果走到这里,在该租户下未注册过
+
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)
 		return nil, errors.Parameter
