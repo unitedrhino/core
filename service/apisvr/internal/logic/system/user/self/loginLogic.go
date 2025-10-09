@@ -66,18 +66,20 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 		return nil, er
 	}
 	//登录成功记录
-
-	_, err = l.svcCtx.LogRpc.LoginLogCreate(l.ctx, &sys.LoginLogCreateReq{
-		AppCode:       uc.AppCode,
-		UserID:        uResp.Info.UserID,
-		UserName:      uResp.Info.UserName,
-		IpAddr:        ctxs.GetUserCtx(l.ctx).IP,
-		LoginLocation: tools.GetCityByIp(ctxs.GetUserCtx(l.ctx).IP),
-		Browser:       browser,
-		Os:            os,
-		Msg:           "登录成功",
-		Code:          errors.OK.GetCode(),
+	ctxs.GoNewCtx(l.ctx, func(ctx context.Context) {
+		_, err = l.svcCtx.LogRpc.LoginLogCreate(ctx, &sys.LoginLogCreateReq{
+			AppCode:       uc.AppCode,
+			UserID:        uResp.Info.UserID,
+			UserName:      uResp.Info.UserName,
+			IpAddr:        ctxs.GetUserCtx(ctx).IP,
+			LoginLocation: tools.GetCityByIp(ctxs.GetUserCtx(ctx).IP),
+			Browser:       browser,
+			Os:            os,
+			Msg:           "登录成功",
+			Code:          errors.OK.GetCode(),
+		})
 	})
+
 	//info, err := l.svcCtx.UserRpc.UserRoleIndex(l.ctx, &sys.UserRoleIndexReq{
 	//	UserID: uResp.Info.UserID,
 	//})
