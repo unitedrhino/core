@@ -275,12 +275,6 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemcommon.ApiBatchAggHandler(serverCtx),
 				},
 				{
-					// 获取系统配置
-					Method:  http.MethodPost,
-					Path:    "/config",
-					Handler: systemcommon.ConfigHandler(serverCtx),
-				},
-				{
 					// 获取小程序二维码
 					Method:  http.MethodPost,
 					Path:    "/qr-code/read",
@@ -331,6 +325,12 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 		rest.WithMiddlewares(
 			[]rest.Middleware{serverCtx.InitCtxsWare},
 			[]rest.Route{
+				{
+					// 获取系统配置
+					Method:  http.MethodPost,
+					Path:    "/config",
+					Handler: systemcommon.ConfigHandler(serverCtx),
+				},
 				{
 					// debug
 					Method:  http.MethodPost,

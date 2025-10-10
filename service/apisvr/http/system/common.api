@@ -11,9 +11,7 @@ info(
     middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
-    @doc "获取系统配置"
-    @handler config
-    post /config () returns (ConfigResp)
+
     @doc "获取文件上传地址"
     @handler uploadUrlCreate
     post /upload-url/create (UploadUrlCreateReq) returns (UploadUrlCreateResp)
@@ -69,6 +67,10 @@ service api {
     @doc "下载本地文件"
     @handler downloadFile
     get /download-file(DownloadFileReq) returns ()
+
+    @doc "获取系统配置"
+    @handler config
+    post /config () returns (ConfigResp)
 }
 
 type (
