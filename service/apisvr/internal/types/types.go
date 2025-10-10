@@ -605,10 +605,6 @@ type MenuInfo struct {
 	HideInMenu  int64       `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
 	IsCommon    int64       `json:"isCommon,optional"`           // 是否常用菜单 1-是 2-否
 	IsAllTenant int64       `json:"isAllTenant,optional"`        //菜单是否提供给所有租户 1-是 2-否
-	IsPlatform  int64       `json:"isPlatform,optional"`         //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
-	IsProject   int64       `json:"isProject,optional"`          // 如果是项目模块,则需要选择项目,默认选择第一个
-	HomeMenuID  int64       `json:"homeMenuId,optional"`         // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
-	Home        *MenuInfo   `json:"home,optional,omitempty"`     //首页,如果没有返回则没有,首页不限菜单权限控制
 	Body        *string     `json:"body,optional"`               //前端自定义字段
 	CreatedTime int64       `json:"createdTime,string,optional"` // 创建时间
 	Children    []*MenuInfo `json:"children,optional,omitempty"` //子节点
@@ -687,18 +683,22 @@ type MessageInfoSendReq struct {
 }
 
 type ModuleInfo struct {
-	ID         int64   `json:"id,optional"`         // 编号
-	Code       string  `json:"code"`                // 应用编号
-	Name       string  `json:"name,optional"`       // 菜单名称
-	Type       int64   `json:"type,optional"`       // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	SubType    int64   `json:"subType,optional"`    // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Path       string  `json:"path,optional"`       // 系统的path
-	Desc       *string `json:"desc,optional"`       // 页面
-	Icon       string  `json:"icon,optional"`       // 菜单图标
-	Url        string  `json:"url,optional"`        // 路由重定向
-	Order      int64   `json:"order,optional"`      // 左侧table排序序号
-	HideInMenu int64   `json:"hideInMenu,optional"` // 菜单是否隐藏 1：是 2：否
-	Body       *string `json:"body,optional"`       //前端自定义字段
+	ID         int64     `json:"id,optional"`             // 编号
+	Code       string    `json:"code"`                    // 应用编号
+	Name       string    `json:"name,optional"`           // 菜单名称
+	Type       int64     `json:"type,optional"`           // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	SubType    int64     `json:"subType,optional"`        // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	Path       string    `json:"path,optional"`           // 系统的path
+	Desc       *string   `json:"desc,optional"`           // 页面
+	Icon       string    `json:"icon,optional"`           // 菜单图标
+	Url        string    `json:"url,optional"`            // 路由重定向
+	Order      int64     `json:"order,optional"`          // 左侧table排序序号
+	HideInMenu int64     `json:"hideInMenu,optional"`     // 菜单是否隐藏 1：是 2：否
+	IsPlatform int64     `json:"isPlatform,optional"`     //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
+	IsProject  int64     `json:"isProject,optional"`      // 如果是项目模块,则需要选择项目,默认选择第一个
+	HomeMenuID int64     `json:"homeMenuID,optional"`     // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
+	Home       *MenuInfo `json:"home,optional,omitempty"` //首页,如果没有返回则没有,首页不限菜单权限控制
+	Body       *string   `json:"body,optional"`           //前端自定义字段
 }
 
 type ModuleInfoIndexReq struct {
