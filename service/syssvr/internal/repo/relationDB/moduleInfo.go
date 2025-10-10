@@ -2,6 +2,8 @@ package relationDB
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -23,18 +25,27 @@ func NewModuleInfoRepo(in any) *ModuleInfoRepo {
 }
 
 type ModuleInfoFilter struct {
-	ID        int64
-	Codes     []string
-	Code      string
-	Name      string
-	WithMenus bool
-	Type      int64
+	ID         int64
+	Codes      []string
+	Code       string
+	Name       string
+	WithMenus  bool
+	Type       int64
+	IsPlatform def.Bool //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
+	IsProject  def.Bool // 如果是项目模块,则需要选择项目,默认选择第一个
+
 }
 
 func (p ModuleInfoRepo) fmtFilter(ctx context.Context, f ModuleInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.WithMenus {
 		db = db.Preload("Menus")
+	}
+	if f.IsPlatform != 0 {
+		db = db.Where("is_platform=?", f.IsPlatform)
+	}
+	if f.IsProject != 0 {
+		db = db.Where("is_project=?", f.IsProject)
 	}
 	if f.Type != 0 {
 		db = db.Where("type=?", f.Type)
@@ -62,7 +73,7 @@ func (p ModuleInfoRepo) Insert(ctx context.Context, data *SysModuleInfo) error {
 func (p ModuleInfoRepo) FindOneByFilter(ctx context.Context, f ModuleInfoFilter) (*SysModuleInfo, error) {
 	var result SysModuleInfo
 	db := p.fmtFilter(ctx, f)
-	err := db.First(&result).Error
+	err := db.Preload("Home").First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}
@@ -72,7 +83,7 @@ func (p ModuleInfoRepo) FindByFilter(ctx context.Context, f ModuleInfoFilter, pa
 	var results []*SysModuleInfo
 	db := p.fmtFilter(ctx, f).Model(&SysModuleInfo{})
 	db = page.ToGorm(db).Order(stores.Col("order"))
-	err := db.Find(&results).Error
+	err := db.Preload("Home").Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}
@@ -86,6 +97,7 @@ func (p ModuleInfoRepo) CountByFilter(ctx context.Context, f ModuleInfoFilter) (
 }
 
 func (p ModuleInfoRepo) Update(ctx context.Context, data *SysModuleInfo) error {
+	data.Home = nil
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
 	return stores.ErrFmt(err)
 }
@@ -102,7 +114,7 @@ func (p ModuleInfoRepo) Delete(ctx context.Context, id int64) error {
 }
 func (p ModuleInfoRepo) FindOne(ctx context.Context, id int64) (*SysModuleInfo, error) {
 	var result SysModuleInfo
-	err := p.db.WithContext(ctx).Where("id = ?", id).First(&result).Error
+	err := p.db.WithContext(ctx).Where("id = ?", id).Preload("Home").First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}

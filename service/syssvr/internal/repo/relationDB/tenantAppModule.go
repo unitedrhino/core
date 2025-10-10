@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -34,7 +35,7 @@ type TenantAppModuleFilter struct {
 func (p TenantAppModuleRepo) fmtFilter(ctx context.Context, f TenantAppModuleFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.WithModule {
-		db = db.Preload("Module")
+		db = db.Preload("Module").Preload("Module.Home")
 	}
 	if f.AppCode != "" {
 		db = db.Where("app_code = ?", f.AppCode)

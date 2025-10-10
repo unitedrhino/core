@@ -605,6 +605,10 @@ type MenuInfo struct {
 	HideInMenu  int64       `json:"hideInMenu,optional"`         // 菜单是否隐藏 1：是 2：否
 	IsCommon    int64       `json:"isCommon,optional"`           // 是否常用菜单 1-是 2-否
 	IsAllTenant int64       `json:"isAllTenant,optional"`        //菜单是否提供给所有租户 1-是 2-否
+	IsPlatform  int64       `json:"isPlatform,optional"`         //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
+	IsProject   int64       `json:"isProject,optional"`          // 如果是项目模块,则需要选择项目,默认选择第一个
+	HomeMenuID  int64       `json:"homeMenuId,optional"`         // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
+	Home        *MenuInfo   `json:"home,optional,omitempty"`     //首页,如果没有返回则没有,首页不限菜单权限控制
 	Body        *string     `json:"body,optional"`               //前端自定义字段
 	CreatedTime int64       `json:"createdTime,string,optional"` // 创建时间
 	Children    []*MenuInfo `json:"children,optional,omitempty"` //子节点
@@ -698,12 +702,14 @@ type ModuleInfo struct {
 }
 
 type ModuleInfoIndexReq struct {
-	Page    *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	Codes   []string  `json:"codes,optional"`
-	AppCode string    `json:"appCode,optional"` //应用绑定的code列表
-	Code    string    `json:"code,optional"`    // 应用编号模糊查询
-	Name    string    `json:"name,optional"`    // 按菜单名称筛选
-	Type    int64     `json:"type,optional"`
+	Page       *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Codes      []string  `json:"codes,optional"`
+	AppCode    string    `json:"appCode,optional"` //应用绑定的code列表
+	Code       string    `json:"code,optional"`    // 应用编号模糊查询
+	Name       string    `json:"name,optional"`    // 按菜单名称筛选
+	Type       int64     `json:"type,optional"`
+	IsPlatform int64     `json:"isPlatform,optional"` //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
+	IsProject  int64     `json:"isProject,optional"`  // 如果是项目模块,则需要选择项目,默认选择第一个
 }
 
 type ModuleInfoIndexResp struct {

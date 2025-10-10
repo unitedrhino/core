@@ -2,6 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -110,6 +111,7 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 	if err != nil {
 		return err
 	}
+
 	err = relationDB.NewTenantAppModuleRepo(tx).Insert(ctx, &relationDB.SysTenantAppModule{
 		TenantCode: dataType.TenantCode(tenantCode), AppCode: appCode, ModuleCode: moduleCode})
 	return err

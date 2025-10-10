@@ -2,8 +2,10 @@ package modulemanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -42,8 +44,26 @@ func (l *ModuleInfoUpdateLogic) ModuleInfoUpdate(in *sys.ModuleInfo) (*sys.Empty
 	old.HideInMenu = in.HideInMenu
 	old.Type = in.Type
 	old.SubType = in.SubType
+	if in.IsProject != 0 {
+		old.IsProject = in.IsProject
+	}
+	if in.IsPlatform != 0 {
+		old.IsPlatform = in.IsPlatform
+	}
 	if in.Desc != nil {
 		old.Desc = in.Desc.Value
+	}
+	if in.HomeMenuID == 1 {
+		old.HomeMenuID = in.HomeMenuID
+	}
+	if in.HomeMenuID > 1 {
+		_, err := relationDB.NewMenuInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.MenuInfoFilter{
+			ModuleCode: old.Code, MenuID: in.HomeMenuID,
+		})
+		if err != nil {
+			return nil, errors.Parameter.AddMsg("请选择模块下有的菜单")
+		}
+		old.HomeMenuID = in.HomeMenuID
 	}
 
 	err = relationDB.NewModuleInfoRepo(l.ctx).Update(l.ctx, old)

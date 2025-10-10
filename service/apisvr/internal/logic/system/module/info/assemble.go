@@ -7,39 +7,10 @@ import (
 )
 
 func ToModuleInfoRpc(in *types.ModuleInfo) *sys.ModuleInfo {
-	return &sys.ModuleInfo{
-		Id:         in.ID,
-		Code:       in.Code,
-		Name:       in.Name,
-		Type:       in.Type,
-		SubType:    in.SubType,
-		Path:       in.Path,
-		Desc:       utils.ToRpcNullString(in.Desc),
-		Icon:       in.Icon,
-		Url:        in.Url,
-		Order:      in.Order,
-		HideInMenu: in.HideInMenu,
-		Body:       utils.ToRpcNullString(in.Body),
-	}
+	return utils.Copy[sys.ModuleInfo](in)
 }
 func ToModuleInfoApi(in *sys.ModuleInfo) *types.ModuleInfo {
-	if in == nil {
-		return nil
-	}
-	return &types.ModuleInfo{
-		ID:         in.Id,
-		Code:       in.Code,
-		Name:       in.Name,
-		Type:       in.Type,
-		SubType:    in.SubType,
-		Path:       in.Path,
-		Desc:       utils.ToNullString(in.Desc),
-		Icon:       in.Icon,
-		Url:        in.Url,
-		Order:      in.Order,
-		HideInMenu: in.HideInMenu,
-		Body:       utils.ToNullString(in.Body),
-	}
+	return utils.Copy[types.ModuleInfo](in)
 
 }
 func ToModuleInfosApi(in []*sys.ModuleInfo) (ret []*types.ModuleInfo) {

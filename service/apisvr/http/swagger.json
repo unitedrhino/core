@@ -11702,6 +11702,25 @@
           "format": "int64",
           "description": "菜单是否提供给所有租户 1-是 2-否"
         },
+        "isPlatform": {
+          "type": "integer",
+          "format": "int64",
+          "description": "如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号"
+        },
+        "isProject": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 如果是项目模块,则需要选择项目,默认选择第一个"
+        },
+        "homeMenuId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有"
+        },
+        "home": {
+          "$ref": "#/definitions/MenuInfo",
+          "description": "首页,如果没有返回则没有,首页不限菜单权限控制"
+        },
         "body": {
           "type": "string",
           "description": "前端自定义字段"
@@ -12099,6 +12118,16 @@
         "type": {
           "type": "integer",
           "format": "int64"
+        },
+        "isPlatform": {
+          "type": "integer",
+          "format": "int64",
+          "description": "如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号"
+        },
+        "isProject": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 如果是项目模块,则需要选择项目,默认选择第一个"
         }
       },
       "title": "ModuleInfoIndexReq"
@@ -14445,6 +14474,25 @@
           "type": "integer",
           "format": "int64",
           "description": "菜单是否提供给所有租户 1-是 2-否"
+        },
+        "isPlatform": {
+          "type": "integer",
+          "format": "int64",
+          "description": "如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号"
+        },
+        "isProject": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 如果是项目模块,则需要选择项目,默认选择第一个"
+        },
+        "homeMenuId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有"
+        },
+        "home": {
+          "$ref": "#/definitions/MenuInfo",
+          "description": "首页,如果没有返回则没有,首页不限菜单权限控制"
         },
         "body": {
           "type": "string",
