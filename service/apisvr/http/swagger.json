@@ -8095,6 +8095,90 @@
         ]
       }
     },
+    "/api/v1/system/user/data/area/index": {
+      "post": {
+        "summary": "获取区域权限列表",
+        "operationId": "postApiV1SystemUserDataAreaIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/DataAreaIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDataAreaIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/data",
+          "systemUserData"
+        ]
+      }
+    },
+    "/api/v1/system/user/data/project/index": {
+      "post": {
+        "summary": "获取项目权限列表",
+        "operationId": "postApiV1SystemUserDataProjectIndex",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/UserDataProjectIndexResp"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDataProjectIndexReq"
+            }
+          }
+        ],
+        "tags": [
+          "system/user/data",
+          "systemUserData"
+        ]
+      }
+    },
     "/api/v1/system/user/dept/multi-create": {
       "post": {
         "summary": "新增用户的部门列表",
@@ -16226,6 +16310,106 @@
         }
       },
       "title": "UserCreateResp"
+    },
+    "UserDataAreaIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": "进行数据分页（不传默认2000相当于全部）"
+        },
+        "userID": {
+          "type": "string",
+          "description": "用户ID"
+        },
+        "projectID": {
+          "type": "string",
+          "description": "项目id"
+        }
+      },
+      "title": "UserDataAreaIndexReq",
+      "required": [
+        "userID"
+      ]
+    },
+    "UserDataProject": {
+      "type": "object",
+      "properties": {
+        "projectID": {
+          "type": "string",
+          "description": "权限数据ID"
+        },
+        "authType": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改"
+        },
+        "targetID": {
+          "type": "string",
+          "description": "用户ID"
+        },
+        "updatedTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "更新时间"
+        },
+        "project": {
+          "$ref": "#/definitions/ProjectInfo",
+          "description": "获取用户类型返回"
+        }
+      },
+      "title": "UserDataProject",
+      "required": [
+        "projectID",
+        "authType"
+      ]
+    },
+    "UserDataProjectIndexReq": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "$ref": "#/definitions/PageInfo",
+          "description": "进行数据分页（不传默认2000相当于全部）"
+        },
+        "userID": {
+          "type": "string",
+          "description": "用户ID"
+        }
+      },
+      "title": "UserDataProjectIndexReq",
+      "required": [
+        "userID"
+      ]
+    },
+    "UserDataProjectIndexResp": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 页码"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 每页大小"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserDataProject"
+          },
+          "description": "用户数据权限列表"
+        }
+      },
+      "title": "UserDataProjectIndexResp",
+      "required": [
+        "list"
+      ]
     },
     "UserDeptMultiSaveReq": {
       "type": "object",

@@ -45,6 +45,8 @@ const (
 	UserManage_UserProfileRead_FullMethodName        = "/sys.UserManage/userProfileRead"
 	UserManage_UserProfileUpdate_FullMethodName      = "/sys.UserManage/userProfileUpdate"
 	UserManage_UserProfileIndex_FullMethodName       = "/sys.UserManage/userProfileIndex"
+	UserManage_UserDataProjectIndex_FullMethodName   = "/sys.UserManage/userDataProjectIndex"
+	UserManage_UserDataAreaIndex_FullMethodName      = "/sys.UserManage/userDataAreaIndex"
 )
 
 // UserManageClient is the client API for UserManage service.
@@ -77,6 +79,8 @@ type UserManageClient interface {
 	UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
 	UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
 	UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
+	UserDataProjectIndex(ctx context.Context, in *UserDataProjectIndexReq, opts ...grpc.CallOption) (*UserDataProjectIndexResp, error)
+	UserDataAreaIndex(ctx context.Context, in *UserDataAreaIndexReq, opts ...grpc.CallOption) (*UserDataAreaIndexResp, error)
 }
 
 type userManageClient struct {
@@ -321,6 +325,24 @@ func (c *userManageClient) UserProfileIndex(ctx context.Context, in *UserProfile
 	return out, nil
 }
 
+func (c *userManageClient) UserDataProjectIndex(ctx context.Context, in *UserDataProjectIndexReq, opts ...grpc.CallOption) (*UserDataProjectIndexResp, error) {
+	out := new(UserDataProjectIndexResp)
+	err := c.cc.Invoke(ctx, UserManage_UserDataProjectIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserDataAreaIndex(ctx context.Context, in *UserDataAreaIndexReq, opts ...grpc.CallOption) (*UserDataAreaIndexResp, error) {
+	out := new(UserDataAreaIndexResp)
+	err := c.cc.Invoke(ctx, UserManage_UserDataAreaIndex_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserManageServer is the server API for UserManage service.
 // All implementations must embed UnimplementedUserManageServer
 // for forward compatibility
@@ -351,6 +373,8 @@ type UserManageServer interface {
 	UserProfileRead(context.Context, *WithCode) (*UserProfile, error)
 	UserProfileUpdate(context.Context, *UserProfile) (*Empty, error)
 	UserProfileIndex(context.Context, *UserProfileIndexReq) (*UserProfileIndexResp, error)
+	UserDataProjectIndex(context.Context, *UserDataProjectIndexReq) (*UserDataProjectIndexResp, error)
+	UserDataAreaIndex(context.Context, *UserDataAreaIndexReq) (*UserDataAreaIndexResp, error)
 	mustEmbedUnimplementedUserManageServer()
 }
 
@@ -435,6 +459,12 @@ func (UnimplementedUserManageServer) UserProfileUpdate(context.Context, *UserPro
 }
 func (UnimplementedUserManageServer) UserProfileIndex(context.Context, *UserProfileIndexReq) (*UserProfileIndexResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserProfileIndex not implemented")
+}
+func (UnimplementedUserManageServer) UserDataProjectIndex(context.Context, *UserDataProjectIndexReq) (*UserDataProjectIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDataProjectIndex not implemented")
+}
+func (UnimplementedUserManageServer) UserDataAreaIndex(context.Context, *UserDataAreaIndexReq) (*UserDataAreaIndexResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDataAreaIndex not implemented")
 }
 func (UnimplementedUserManageServer) mustEmbedUnimplementedUserManageServer() {}
 
@@ -917,6 +947,42 @@ func _UserManage_UserProfileIndex_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManage_UserDataProjectIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDataProjectIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserDataProjectIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserDataProjectIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserDataProjectIndex(ctx, req.(*UserDataProjectIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserDataAreaIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDataAreaIndexReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserDataAreaIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserDataAreaIndex_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserDataAreaIndex(ctx, req.(*UserDataAreaIndexReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserManage_ServiceDesc is the grpc.ServiceDesc for UserManage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1027,6 +1093,14 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userProfileIndex",
 			Handler:    _UserManage_UserProfileIndex_Handler,
+		},
+		{
+			MethodName: "userDataProjectIndex",
+			Handler:    _UserManage_UserDataProjectIndex_Handler,
+		},
+		{
+			MethodName: "userDataAreaIndex",
+			Handler:    _UserManage_UserDataAreaIndex_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

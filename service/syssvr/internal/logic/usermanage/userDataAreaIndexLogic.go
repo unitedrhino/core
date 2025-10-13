@@ -1,27 +1,27 @@
-package datamanagelogic
+package usermanagelogic
 
 import (
 	"context"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
+	datamanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/datamanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/ctxs"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/def"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type DataAreaIndexLogic struct {
+type UserDataAreaIndexLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 	UaaDB *relationDB.DataAreaRepo
 }
 
-func NewDataAreaIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DataAreaIndexLogic {
-	return &DataAreaIndexLogic{
+func NewUserDataAreaIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserDataAreaIndexLogic {
+	return &UserDataAreaIndexLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
@@ -29,21 +29,22 @@ func NewDataAreaIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Dat
 	}
 }
 
-func (l *DataAreaIndexLogic) DataAreaIndex(in *sys.DataAreaIndexReq) (*sys.DataAreaIndexResp, error) {
+func (l *UserDataAreaIndexLogic) UserDataAreaIndex(in *sys.UserDataAreaIndexReq) (*sys.UserDataAreaIndexResp, error) {
 	var (
 		list  []*sys.DataArea
 		total int64
 		err   error
 	)
-	uc := ctxs.GetUserCtx(l.ctx)
-	if in.ProjectID != 0 {
-		uc.ProjectID = in.ProjectID
-	} else {
-		in.ProjectID = uc.ProjectID
-	}
 	filter := relationDB.DataAreaFilter{
-		Targets:   []*relationDB.Target{{Type: in.TargetType, ID: in.TargetID}},
+		Targets:   []*relationDB.Target{{Type: def.TargetUser, ID: in.UserID}},
 		ProjectID: in.ProjectID,
+	}
+	rs, err := relationDB.NewUserRoleRepo(l.ctx).FindByFilter(l.ctx, relationDB.UserRoleFilter{UserID: in.UserID}, nil)
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range rs {
+		filter.Targets = append(filter.Targets, &relationDB.Target{Type: def.TargetUser, ID: v.ID})
 	}
 
 	total, err = l.UaaDB.CountByFilter(l.ctx, filter)
@@ -58,7 +59,7 @@ func (l *DataAreaIndexLogic) DataAreaIndex(in *sys.DataAreaIndexReq) (*sys.DataA
 
 	list = make([]*sys.DataArea, 0, len(poArr))
 	for _, po := range poArr {
-		list = append(list, AreaPoToPb(po))
+		list = append(list, datamanagelogic.AreaPoToPb(po))
 	}
-	return &sys.DataAreaIndexResp{List: list, Total: total}, nil
+	return &sys.UserDataAreaIndexResp{List: list, Total: total}, nil
 }

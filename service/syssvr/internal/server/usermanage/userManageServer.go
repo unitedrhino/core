@@ -152,3 +152,13 @@ func (s *UserManageServer) UserProfileIndex(ctx context.Context, in *sys.UserPro
 	l := usermanagelogic.NewUserProfileIndexLogic(ctx, s.svcCtx)
 	return l.UserProfileIndex(in)
 }
+
+func (s *UserManageServer) UserDataProjectIndex(ctx context.Context, in *sys.UserDataProjectIndexReq) (*sys.UserDataProjectIndexResp, error) {
+	l := usermanagelogic.NewUserDataProjectIndexLogic(ctx, s.svcCtx)
+	return l.UserDataProjectIndex(in)
+}
+
+func (s *UserManageServer) UserDataAreaIndex(ctx context.Context, in *sys.UserDataAreaIndexReq) (*sys.UserDataAreaIndexResp, error) {
+	l := usermanagelogic.NewUserDataAreaIndexLogic(ctx, s.svcCtx)
+	return l.UserDataAreaIndex(in)
+}

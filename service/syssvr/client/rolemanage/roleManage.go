@@ -232,6 +232,10 @@ type (
 	UserCodeToUserIDReq                   = sys.UserCodeToUserIDReq
 	UserCodeToUserIDResp                  = sys.UserCodeToUserIDResp
 	UserCreateResp                        = sys.UserCreateResp
+	UserDataAreaIndexReq                  = sys.UserDataAreaIndexReq
+	UserDataAreaIndexResp                 = sys.UserDataAreaIndexResp
+	UserDataProjectIndexReq               = sys.UserDataProjectIndexReq
+	UserDataProjectIndexResp              = sys.UserDataProjectIndexResp
 	UserDeptIndexReq                      = sys.UserDeptIndexReq
 	UserDeptIndexResp                     = sys.UserDeptIndexResp
 	UserDeptMultiSaveReq                  = sys.UserDeptMultiSaveReq

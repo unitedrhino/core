@@ -1,0 +1,54 @@
+info(
+    title: "用户数据权限管理模块"
+    desc: "用户数据权限管理接口"
+    author: "godLei6"
+    email: "603785348@qq.com"
+    version: "v1"
+)
+
+
+@server (
+    group: system/user/data
+    prefix: /api/v1/system/user/data
+    accessCodePrefix: "systemUserManage"
+    accessNamePrefix: "用户数据"
+    accessGroup: "用户管理"
+    defaultAuthType: "admin"
+    defaultNeedAuth: "true"
+    middleware:  CheckTokenWare,InitCtxsWare
+)
+service api {
+    @doc "获取项目权限列表"
+    @handler projectIndex
+    post /project/index (UserDataProjectIndexReq) returns (UserDataProjectIndexResp)
+    @doc "获取区域权限列表"
+    @handler areaIndex
+    post /area/index (UserDataAreaIndexReq) returns (DataAreaIndexResp)
+}
+
+
+//用户级权限控制
+type (
+    UserDataProject  {
+        ProjectID   int64 `json:"projectID,string"`     //权限数据ID
+        AuthType  int64 `json:"authType"`// 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
+        TargetID   int64 `json:"targetID,string,optional"`    //用户ID
+        UpdatedTime int64 `json:"updatedTime,optional"` //更新时间
+        Project *ProjectInfo `json:"project,optional"`//获取用户类型返回
+    }
+    UserDataProjectIndexReq  {
+        Page *PageInfo `json:"page,optional"`        //进行数据分页（不传默认2000相当于全部）
+        UserID   int64 `json:"userID,string"`    //用户ID
+    }
+
+    UserDataProjectIndexResp  {
+        PageResp
+        List  []*UserDataProject `json:"list"`    //用户数据权限列表
+    }
+
+    UserDataAreaIndexReq  {
+        Page *PageInfo `json:"page,optional"`        //进行数据分页（不传默认2000相当于全部）
+        UserID   int64 `json:"userID,string"`    //用户ID
+        ProjectID int64           `json:"projectID,string,optional"` //项目id
+    }
+)

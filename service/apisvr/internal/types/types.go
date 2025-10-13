@@ -1698,6 +1698,30 @@ type UserCreateResp struct {
 	UserID int64 `json:"userID,string,optional"` // 用户id
 }
 
+type UserDataAreaIndexReq struct {
+	Page      *PageInfo `json:"page,optional"`             //进行数据分页（不传默认2000相当于全部）
+	UserID    int64     `json:"userID,string"`             //用户ID
+	ProjectID int64     `json:"projectID,string,optional"` //项目id
+}
+
+type UserDataProject struct {
+	ProjectID   int64        `json:"projectID,string"`         //权限数据ID
+	AuthType    int64        `json:"authType"`                 // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
+	TargetID    int64        `json:"targetID,string,optional"` //用户ID
+	UpdatedTime int64        `json:"updatedTime,optional"`     //更新时间
+	Project     *ProjectInfo `json:"project,optional"`         //获取用户类型返回
+}
+
+type UserDataProjectIndexReq struct {
+	Page   *PageInfo `json:"page,optional"` //进行数据分页（不传默认2000相当于全部）
+	UserID int64     `json:"userID,string"` //用户ID
+}
+
+type UserDataProjectIndexResp struct {
+	PageResp
+	List []*UserDataProject `json:"list"` //用户数据权限列表
+}
+
 type UserDeptMultiSaveReq struct {
 	UserID  int64   `json:"userID,string"`  // 用户id
 	DeptIDs []int64 `json:"deptIDs,string"` //角色编号列表

@@ -3147,6 +3147,28 @@
         {
           "accessCode": "systemUserManageFind",
           "method": "POST",
+          "route": "/api/v1/system/user/data/area/index",
+          "name": "获取区域权限列表",
+          "isNeedAuth": 1,
+          "businessType": "find",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserManageFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/data/project/index",
+          "name": "获取项目权限列表",
+          "isNeedAuth": 1,
+          "businessType": "find",
+          "desc": "",
+          "authType": "admin",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserManageFind",
+          "method": "POST",
           "route": "/api/v1/system/user/info/index",
           "name": "查询用户信息列表",
           "isNeedAuth": 1,
