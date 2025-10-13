@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
@@ -224,8 +225,7 @@ type SysModuleInfo struct {
 	HideInMenu int64            `gorm:"column:hide_in_menu;type:BIGINT;default:2;NOT NULL"`                        // 是否隐藏菜单 1-是 2-否
 	Desc       string           `gorm:"column:desc;type:VARCHAR(100);NOT NULL"`                                    // 备注
 	Tag        int64            `gorm:"column:tag;type:BIGINT;default:1;NOT NULL"`                                 //标签: 1:通用 2:选配
-	IsPlatform def.Bool         `gorm:"column:is_platform;type:BIGINT;default:2;"`                                 //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
-	IsProject  def.Bool         `gorm:"column:is_project;type:BIGINT;default:2;"`                                  // 如果是项目模块,则需要选择项目,默认选择第一个
+	Purpose    module.Purpose   `gorm:"column:purpose;type:BIGINT;default:1;NOT NULL"`                             // platform(那么只有default租户可以看,然后平台模块http头里不用传租户号) normal project(需要选择项目,默认选择第一个)
 	HomeMenuID int64            `gorm:"column:home_menu_id;type:BIGINT;default:1;"`                                // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
 	Home       *SysModuleMenu   `gorm:"foreignKey:ID;references:HomeMenuID"`                                       // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
 	Menus      []*SysModuleMenu `gorm:"foreignKey:ModuleCode;references:Code"`

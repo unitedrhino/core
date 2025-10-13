@@ -1963,8 +1963,7 @@ message ModuleInfo{
   int64 hideInMenu = 10;
   google.protobuf.StringValue body = 11;
   int64 tag = 13;//标签: 1:通用 2:选配
-  int64 isPlatform =14;       //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
-  int64 isProject  =15;       // 如果是项目模块,则需要选择项目,默认选择第一个
+  int64 purpose =14;                             //normal普通:1 platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
   int64 homeMenuID =16;          // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
 }
 
@@ -1975,8 +1974,8 @@ message ModuleInfoIndexReq{
   repeated string codes =4;
   string appCode = 5;
   int64 type = 6;
-  int64 isPlatform =14;       //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
-  int64 isProject  =15;       // 如果是项目模块,则需要选择项目,默认选择第一个
+  int64 purpose =7;                             //normal普通:1 platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+  repeated int64 purposes =8;       //normal普通:1 platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
 }
 
 message ModuleInfoIndexResp{

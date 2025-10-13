@@ -3,7 +3,7 @@ package relationDB
 import (
 	"context"
 
-	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -25,15 +25,14 @@ func NewModuleInfoRepo(in any) *ModuleInfoRepo {
 }
 
 type ModuleInfoFilter struct {
-	ID         int64
-	Codes      []string
-	Code       string
-	Name       string
-	WithMenus  bool
-	Type       int64
-	IsPlatform def.Bool //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
-	IsProject  def.Bool // 如果是项目模块,则需要选择项目,默认选择第一个
-
+	ID        int64
+	Codes     []string
+	Code      string
+	Name      string
+	WithMenus bool
+	Type      int64
+	Purpose   module.Purpose
+	Purposes  []module.Purpose
 }
 
 func (p ModuleInfoRepo) fmtFilter(ctx context.Context, f ModuleInfoFilter) *gorm.DB {
@@ -41,11 +40,11 @@ func (p ModuleInfoRepo) fmtFilter(ctx context.Context, f ModuleInfoFilter) *gorm
 	if f.WithMenus {
 		db = db.Preload("Menus")
 	}
-	if f.IsPlatform != 0 {
-		db = db.Where("is_platform=?", f.IsPlatform)
+	if f.Purpose > 0 {
+		db = db.Where("purpose = ?", f.Purpose)
 	}
-	if f.IsProject != 0 {
-		db = db.Where("is_project=?", f.IsProject)
+	if len(f.Purposes) > 0 {
+		db = db.Where("purpose in ?", f.Purposes)
 	}
 	if f.Type != 0 {
 		db = db.Where("type=?", f.Type)

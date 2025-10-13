@@ -44,12 +44,10 @@ func (l *ModuleInfoUpdateLogic) ModuleInfoUpdate(in *sys.ModuleInfo) (*sys.Empty
 	old.HideInMenu = in.HideInMenu
 	old.Type = in.Type
 	old.SubType = in.SubType
-	if in.IsProject != 0 {
-		old.IsProject = in.IsProject
+	if in.Purpose != 0 {
+		old.Purpose = in.Purpose
 	}
-	if in.IsPlatform != 0 {
-		old.IsPlatform = in.IsPlatform
-	}
+
 	if in.Desc != nil {
 		old.Desc = in.Desc.Value
 	}

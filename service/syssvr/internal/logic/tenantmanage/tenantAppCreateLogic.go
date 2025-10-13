@@ -3,6 +3,7 @@ package tenantmanagelogic
 import (
 	"context"
 
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -73,6 +74,9 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		relationDB.ModuleInfoFilter{Codes: []string{moduleCode}, WithMenus: true})
 	if err != nil {
 		return err
+	}
+	if tenantCode != def.TenantCodeDefault && mi.Purpose == module.PurposePlatform {
+		return errors.Permissions.AddMsg("平台模块不能授权给其他租户")
 	}
 	var (
 		menuMap = make(map[int64]*relationDB.SysModuleMenu)

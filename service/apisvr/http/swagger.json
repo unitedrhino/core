@@ -12145,15 +12145,10 @@
           "format": "int64",
           "description": " 菜单是否隐藏 1：是 2：否"
         },
-        "isPlatform": {
+        "purpose": {
           "type": "integer",
           "format": "int64",
-          "description": "如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号"
-        },
-        "isProject": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 如果是项目模块,则需要选择项目,默认选择第一个"
+          "description": "normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)"
         },
         "homeMenuID": {
           "type": "integer",
@@ -12203,15 +12198,18 @@
           "type": "integer",
           "format": "int64"
         },
-        "isPlatform": {
+        "purpose": {
           "type": "integer",
           "format": "int64",
-          "description": "如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号"
+          "description": "normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)"
         },
-        "isProject": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 如果是项目模块,则需要选择项目,默认选择第一个"
+        "purposes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": "normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)"
         }
       },
       "title": "ModuleInfoIndexReq"
@@ -15205,15 +15203,10 @@
           "format": "int64",
           "description": " 菜单是否隐藏 1：是 2：否"
         },
-        "isPlatform": {
+        "purpose": {
           "type": "integer",
           "format": "int64",
-          "description": "如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号"
-        },
-        "isProject": {
-          "type": "integer",
-          "format": "int64",
-          "description": " 如果是项目模块,则需要选择项目,默认选择第一个"
+          "description": "normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)"
         },
         "homeMenuID": {
           "type": "integer",

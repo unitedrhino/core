@@ -5,6 +5,7 @@ import (
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
@@ -27,16 +28,7 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.ModuleInfoIndexReq) (resp *types.ModuleInfoIndexResp, err error) {
-	ret, err := l.svcCtx.ModuleRpc.ModuleInfoIndex(l.ctx, &sys.ModuleInfoIndexReq{
-		Name:       req.Name,
-		Page:       logic.ToSysPageRpc(req.Page),
-		Code:       req.Code,
-		Codes:      req.Codes,
-		AppCode:    req.AppCode,
-		Type:       req.Type,
-		IsPlatform: req.IsPlatform,
-		IsProject:  req.IsProject,
-	})
+	ret, err := l.svcCtx.ModuleRpc.ModuleInfoIndex(l.ctx, utils.Copy[sys.ModuleInfoIndexReq](req))
 	if err != nil {
 		return nil, err
 	}

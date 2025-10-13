@@ -70,8 +70,9 @@ type (
         code string `json:"code,optional"`                               // 应用编号模糊查询
         Name string `json:"name,optional"` // 按菜单名称筛选
         Type int64 `json:"type,optional"`
-        IsPlatform int64      `json:"isPlatform,optional"`                              //如果是平台模块,那么只有default租户可以看,然后平台模块http头里不用传租户号
-        IsProject  int64      `json:"isProject,optional"`                              // 如果是项目模块,则需要选择项目,默认选择第一个
+        Purpose int64 `json:"purpose,optional"`                             //normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+        Purposes []int64 `json:"purposes,optional"`                             //normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+
     }
 
     ModuleInfoIndexResp  {
