@@ -20,7 +20,6 @@ service UserManage {
   rpc userTaRegister(UserTaRegisterReq) returns(UserRegisterResp);//Tenant Admin register 只有开启了租户管理员注册才可使用
 
   rpc userChangePwd(UserChangePwdReq) returns(Empty);
-  rpc userCodeToUserID(UserCodeToUserIDReq)returns(UserCodeToUserIDResp);//第三方的code获取用户的id
   rpc userBindAccount(UserBindAccountReq)returns(Empty);
 
   rpc userRoleIndex(UserRoleIndexReq) returns (UserRoleIndexResp); //获取角色API权限列表
@@ -323,8 +322,6 @@ service TenantManage {
   rpc tenantAppMenuIndex(TenantAppMenuIndexReq) returns(TenantAppMenuIndexResp); //获取菜单列表
   rpc tenantAppMenuUpdate(TenantAppMenu) returns(Empty); //更新菜单
   rpc tenantAppMenuDelete(WithAppCodeID) returns(Empty); //删除菜单
-
-
 
   rpc tenantOpenCheckToken(TenantOpenCheckTokenReq) returns(TenantOpenCheckTokenResp);
 
@@ -1149,6 +1146,7 @@ message QRCodeReadReq{
   string page =1; //默认是主页，页面 page，例如 pages/index/index，根路径前不要填加 /，不能携带参数（参数请放在scene字段里），如果不填写这个字段，默认跳主页面。scancode_time为系统保留参数，不允许配置
   string scene=2; //        	最大32个可见字符，只支持数字，大小写英文以及部分特殊字符：!#$&'()*+,/:;=?@-._~，其它字符请自行编码为合法字符（因不支持%，中文无法使用 urlencode 处理，请使用其他编码方式）
   string envVersion=3; //要打开的小程序版本。正式版为 "release"，体验版为 "trial"，开发版为 "develop"。默认是正式版。
+  string appID = 4;//应用ID,第三方登录方式填写 钉钉 微信 oauth的其他
 }
 
 message QRCodeReadResp{
@@ -1494,15 +1492,7 @@ message UserForgetPwdReq{
   string codeID = 6;//验证码编号 微信登录填state
 }
 
-message UserCodeToUserIDReq{
-  string loginType =4;//验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码
-  string code = 5;//验证码    微信登录填code
-}
 
-message UserCodeToUserIDResp{
-  string openID =1;
-  string unionID =2;
-}
 
 message  UserChangePwdReq{
   string  type = 1;//验证类型: email:邮箱 phone:手机号 pwd:原密码

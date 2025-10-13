@@ -52,7 +52,6 @@ type ServiceContext struct {
 	ThirdClientsManage *cache.ThirdClientsManage
 	CaptchaLimit       CaptchaLimit
 	LoginLimit         LoginLimit
-	Cm                 *ClientsManage
 	FastEvent          *eventBus.FastEvent
 	UsersCache         *cache.UserCache
 	TenantCache        *caches.Cache[tenant.Info, string]
@@ -125,7 +124,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Slot:               cache.NewSlot(),
 		UserToken:          cache.NewUserToken(),
 		ThirdClientsManage: cache.NewThirdClientsManage(c.CacheRedis),
-		Cm:                 NewClients(c),
 		Config:             c,
 		CaptchaLimit:       cl,
 		LoginLimit:         ll,

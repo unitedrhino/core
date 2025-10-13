@@ -29,6 +29,7 @@ type UserThirdFilter struct {
 	AppType    def.ThirdType
 	AppID      string
 	UserID     int64
+	UserIDs    []int64
 	UnionID    string // 微信union id
 	OpenID     string // 钉钉里是UserID
 	OpenIDs    []string
@@ -43,6 +44,9 @@ func (p UserThirdRepo) fmtFilter(ctx context.Context, f UserThirdFilter) *gorm.D
 	}
 	if f.UserID != 0 {
 		db = db.Where("user_id = ?", f.UserID)
+	}
+	if len(f.UserIDs) > 0 {
+		db = db.Where("user_id IN ?", f.UserIDs)
 	}
 	if f.AppType != "" {
 		db = db.Where("app_type = ?", f.AppType)

@@ -30,14 +30,7 @@ func NewUserBindAccountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 }
 
 func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys.Empty, error) {
-	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if er != nil {
-		return nil, errors.System.AddDetail(er)
-	}
-	if !utils.SliceIn(in.Type, cli.Config.LoginTypes...) {
-		l.Errorf("不支持的登录方式:%v", in.Type)
-		return nil, errors.NotSupportLogin
-	}
+
 	uc := ctxs.GetUserCtx(l.ctx)
 	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, uc.UserID)
 	if err != nil {

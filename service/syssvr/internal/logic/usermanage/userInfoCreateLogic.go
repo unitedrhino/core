@@ -2,7 +2,13 @@ package usermanagelogic
 
 import (
 	"context"
+	"database/sql"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -32,6 +38,23 @@ func NewUserInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, error) {
 	info := in.Info
 	var userID int64
+	uc := ctxs.GetUserCtx(l.ctx)
+	if uc == nil {
+		return 0, errors.Permissions.WithMsg("无租户号")
+	}
+	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, uc.TenantCode)
+	if err != nil {
+		return 0, err
+	}
+	if tc.UserLimit != nil && tc.UserLimit.Value != 0 {
+		c, err := relationDB.NewUserTenantRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserTenantFilter{})
+		if err != nil {
+			return 0, err
+		}
+		if c >= tc.UserLimit.Value {
+			return 0, errors.Limit.WithMsgf("用户数已达上限:%v,需要增加请联系管理员", tc.UserLimit.Value)
+		}
+	}
 	//首先校验账号格式使用正则表达式，对用户账号做格式校验：只能是大小写字母，数字和下划线，减号
 	if info.UserName != "" {
 		err := logic.CheckUserName(info.UserName)
@@ -39,110 +62,123 @@ func (l *UserInfoCreateLogic) UserInfoInsert(in *sys.UserInfoCreateReq) (int64, 
 			return 0, err
 		}
 	}
-	//todo
-	//if info.Tags == nil {
-	//	info.Tags = map[string]string{}
-	//}
-	//if info.Phone.GetValue() != "" {
-	//	if !utils.IsPhone(info.Phone.GetValue()) {
-	//		return 0, errors.Parameter.AddMsgf("手机号格式错误")
-	//	}
-	//	if info.UserName == "" {
-	//		info.UserName = info.Phone.GetValue()
-	//	}
-	//}
-	//if info.Email.GetValue() != "" {
-	//	if !utils.IsEmail(info.Email.GetValue()) {
-	//		return 0, errors.Parameter.AddMsgf("邮箱格式错误")
-	//	}
-	//	if info.UserName == "" {
-	//		info.UserName = info.Email.GetValue()
-	//	}
-	//}
-	//if info.UserName == "" {
-	//	return 0, errors.Parameter.AddMsgf("用户名,手机号和邮箱至少要填一个")
-	//}
-	//uc := ctxs.GetUserCtx(l.ctx)
-	//if uc == nil {
-	//	return 0, errors.Permissions.WithMsg("无租户号")
-	//}
-	//if len(in.RoleIDs) == 0 { //填充默认角色
-	//	t, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
-	//	if err != nil {
-	//		return 0, err
-	//	}
-	//	in.RoleIDs = []int64{t.RegisterRoleID}
-	//}
-	////校验密码强度
-	//err := CheckPwd(l.svcCtx, info.Password)
-	//if err != nil {
-	//	return 0, err
-	//}
+
+	if info.Phone.GetValue() != "" {
+		if !utils.IsPhone(info.Phone.GetValue()) {
+			return 0, errors.Parameter.AddMsgf("手机号格式错误")
+		}
+		if info.UserName == "" {
+			info.UserName = info.Phone.GetValue()
+		}
+	}
+	if info.Email.GetValue() != "" {
+		if !utils.IsEmail(info.Email.GetValue()) {
+			return 0, errors.Parameter.AddMsgf("邮箱格式错误")
+		}
+		if info.UserName == "" {
+			info.UserName = info.Email.GetValue()
+		}
+	}
+	if info.UserName == "" {
+		return 0, errors.Parameter.AddMsgf("用户名,手机号和邮箱至少要填一个")
+	}
+
+	if len(in.RoleIDs) == 0 { //填充默认角色
+		t, err := relationDB.NewTenantConfigRepo(l.ctx).FindOne(l.ctx)
+		if err != nil {
+			return 0, err
+		}
+		in.RoleIDs = []int64{t.RegisterRoleID}
+	}
+	//校验密码强度
+	err = logic.CheckPwd(l.svcCtx, in.Info.Password)
+	if err != nil {
+		return 0, err
+	}
 	//if info.Role == 0 {
 	//	info.Role = in.RoleIDs[0]
 	//} else if !utils.SliceIn(info.Role, in.RoleIDs...) {
 	//	return 0, errors.Parameter.AddMsgf("用户默认角色不存在")
 	//}
-	//count, err := relationDB.NewRoleInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.RoleInfoFilter{IDs: in.RoleIDs})
-	//if err != nil {
-	//	return 0, err
-	//}
-	//if int(count) != len(in.RoleIDs) {
-	//	return 0, errors.Parameter.AddMsgf("角色有不存在的")
-	//}
-	//err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-	//	uidb := relationDB.NewUserInfoRepo(tx)
-	//	var account = []string{info.UserName}
-	//	if info.Phone.GetValue() != "" {
-	//		account = append(account, info.Phone.GetValue())
-	//	}
-	//	if info.Email.GetValue() != "" {
-	//		account = append(account, info.Email.GetValue())
-	//	}
-	//	_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: account})
-	//	if err == nil { //已注册
-	//		//提示重复注册
-	//		return errors.DuplicateRegister
-	//	}
-	//	if !errors.Cmp(err, errors.NotFind) {
-	//		return err
-	//	}
-	//	//1.生成uid
-	//	userID = l.svcCtx.UserID.GetSnowflakeId()
-	//
-	//	//2.对密码进行md5加密
-	//	password := utils.MakePwd(info.Password, userID, false)
-	//	ui := relationDB.SysUserInfo{
-	//		UserID:    userID,
-	//		UserName:  sql.NullString{String: info.UserName, Valid: true},
-	//		Password:  password,
-	//		NickName:  info.NickName,
-	//		Role:      info.Role,
-	//		IsAllData: info.IsAllData,
-	//	}
-	//	if info.Email.GetValue() != "" {
-	//		ui.Email = sql.NullString{String: info.Email.GetValue(), Valid: true}
-	//	}
-	//	if info.Phone.GetValue() != "" {
-	//		ui.Phone = sql.NullString{String: info.Phone.GetValue(), Valid: true}
-	//	}
-	//	err = uidb.Insert(l.ctx, &ui)
-	//	if err != nil { //并发情况下有可能重复所以需要再次判断一次
-	//		if errors.Cmp(err, errors.NotFind) {
-	//			return errors.DuplicateUsername.AddDetail(info.UserName)
-	//		}
-	//		l.Errorf("%s.Inserts err=%#v", utils.FuncName(), err)
-	//		return err
-	//	}
-	//	err := relationDB.NewUserRoleRepo(tx).MultiUpdate(l.ctx, ui.UserID, in.RoleIDs)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	return nil
-	//})
-	//if err != nil {
-	//	return 0, err
-	//}
+
+	count, err := relationDB.NewRoleInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.RoleInfoFilter{IDs: in.RoleIDs})
+	if err != nil {
+		return 0, err
+	}
+	if int(count) != len(in.RoleIDs) {
+		return 0, errors.Parameter.AddMsgf("角色有不存在的")
+	}
+	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		var account = []string{info.UserName}
+		if info.Phone.GetValue() != "" {
+			account = append(account, info.Phone.GetValue())
+		}
+		if info.Email.GetValue() != "" {
+			account = append(account, info.Email.GetValue())
+		}
+		ui, err := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: account, WithTenants: true})
+		if err == nil { //已注册
+			for _, t := range ui.Tenants {
+				if string(t.TenantCode) == uc.TenantCode {
+					//提示重复注册
+					return errors.DuplicateRegister
+				}
+			}
+		} else if !errors.Cmp(err, errors.NotFind) {
+			return err
+		}
+		tags := make(map[string]string)
+		if len(info.Tenants) > 0 && info.Tenants[0].Tags != nil {
+			tags = info.Tenants[0].Tags
+		}
+		if ui == nil {
+			//1.生成uid
+			userID = l.svcCtx.UserID.GetSnowflakeId()
+
+			//2.对密码进行md5加密
+			password := utils.MakePwd(info.Password, userID, false)
+
+			ui = &relationDB.SysUserInfo{
+				UserID:   userID,
+				UserName: sql.NullString{String: info.UserName, Valid: true},
+				Password: password,
+				NickName: info.NickName,
+				Tenants:  []*relationDB.SysUserTenant{{UserID: userID, Tags: tags}},
+			}
+			if info.Email.GetValue() != "" {
+				ui.Email = sql.NullString{String: info.Email.GetValue(), Valid: true}
+			}
+			if info.Phone.GetValue() != "" {
+				ui.Phone = sql.NullString{String: info.Phone.GetValue(), Valid: true}
+			}
+			err = uidb.Insert(l.ctx, ui)
+			if err != nil { //并发情况下有可能重复所以需要再次判断一次
+				if errors.Cmp(err, errors.NotFind) {
+					return errors.DuplicateUsername.AddDetail(info.UserName)
+				}
+				l.Errorf("%s.Inserts err=%#v", utils.FuncName(), err)
+				return err
+			}
+		} else {
+			err = relationDB.NewUserTenantRepo(tx).Insert(l.ctx, &relationDB.SysUserTenant{
+				UserID: ui.UserID,
+				Tags:   tags,
+			})
+			if err != nil {
+				l.Errorf("%s.NewUserTenantRepo.Inserts err=%#v", utils.FuncName(), err)
+				return err
+			}
+		}
+		err = relationDB.NewUserRoleRepo(tx).MultiUpdate(l.ctx, ui.UserID, in.RoleIDs)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return 0, err
+	}
 
 	return userID, nil
 }

@@ -228,8 +228,6 @@ type (
 	UserChangePwdReq                      = sys.UserChangePwdReq
 	UserCheckTokenReq                     = sys.UserCheckTokenReq
 	UserCheckTokenResp                    = sys.UserCheckTokenResp
-	UserCodeToUserIDReq                   = sys.UserCodeToUserIDReq
-	UserCodeToUserIDResp                  = sys.UserCodeToUserIDResp
 	UserCreateResp                        = sys.UserCreateResp
 	UserDeptIndexReq                      = sys.UserDeptIndexReq
 	UserDeptIndexResp                     = sys.UserDeptIndexResp
@@ -280,7 +278,6 @@ type (
 		UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
 		UserTaRegister(ctx context.Context, in *UserTaRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
 		UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
-		UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error)
 		UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error)
 		UserRoleIndex(ctx context.Context, in *UserRoleIndexReq, opts ...grpc.CallOption) (*UserRoleIndexResp, error)
 		UserRoleMultiUpdate(ctx context.Context, in *UserRoleMultiUpdateReq, opts ...grpc.CallOption) (*Empty, error)
@@ -426,15 +423,6 @@ func (m *defaultUserManage) UserChangePwd(ctx context.Context, in *UserChangePwd
 
 func (d *directUserManage) UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error) {
 	return d.svr.UserChangePwd(ctx, in)
-}
-
-func (m *defaultUserManage) UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error) {
-	client := sys.NewUserManageClient(m.cli.Conn())
-	return client.UserCodeToUserID(ctx, in, opts...)
-}
-
-func (d *directUserManage) UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error) {
-	return d.svr.UserCodeToUserID(ctx, in)
 }
 
 func (m *defaultUserManage) UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error) {

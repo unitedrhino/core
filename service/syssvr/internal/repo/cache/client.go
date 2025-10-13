@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/wxClient"
 	"gitee.com/unitedrhino/share/conf"
@@ -73,6 +74,10 @@ func (c *ThirdClientsManage) Init(ctx context.Context) error {
 		}
 	}
 	return nil
+}
+
+func (c *ThirdClientsManage) DelOne(ctx context.Context, tenantCode string, appCode string) error {
+	return c.SetOne(ctxs.BindTenantCode(ctx, tenantCode, 0), &relationDB.SysTenantApp{TenantCode: dataType.TenantCode(tenantCode), AppCode: appCode})
 }
 func (c *ThirdClientsManage) SetOne(ctx context.Context, ta *relationDB.SysTenantApp) error {
 	setAppConfig := func(i *appConfig) {
@@ -188,6 +193,9 @@ func (c *ThirdClientsManage) GetDingAppClient(ctx context.Context, appCode strin
 		return nil, errors.Parameter.AddMsg("未配置应用")
 	}
 	cfg := ac.(*appConfig)
+	if appCode == "" {
+		appCode = ctxs.GetUserCtxNoNil(ctx).AppCode
+	}
 	err := cfg.Validate(ctxs.GetUserCtxNoNil(ctx).TenantCode, appCode)
 	if err != nil {
 		return nil, err

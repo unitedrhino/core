@@ -2,6 +2,8 @@ package commonlogic
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"github.com/alibabacloud-go/tea/tea"
 
@@ -27,11 +29,12 @@ func NewQrCodeReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QRCode
 }
 
 func (l *QRCodeReadLogic) QrCodeRead(in *sys.QRCodeReadReq) (*sys.QRCodeReadResp, error) {
-	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if er != nil || cli.MiniProgram == nil {
+
+	cli, er := l.svcCtx.ThirdClientsManage.GetWxMiniClient(l.ctx, ctxs.GetUserCtx(l.ctx).AppCode, in.AppID)
+	if er != nil {
 		return nil, errors.System.AddDetail(er)
 	}
-	ret, err := cli.MiniProgram.GetQRCode().GetWXACodeUnlimit(qrcode.QRCoder{Page: in.Page, Scene: in.Scene, EnvVersion: in.EnvVersion, CheckPath: tea.Bool(false)})
+	ret, err := cli.GetQRCode().GetWXACodeUnlimit(qrcode.QRCoder{Page: in.Page, Scene: in.Scene, EnvVersion: in.EnvVersion, CheckPath: tea.Bool(false)})
 	if err != nil {
 		return nil, errors.System.AddDetail(err)
 	}

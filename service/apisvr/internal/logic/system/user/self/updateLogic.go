@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -31,7 +32,7 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 func (l *UpdateLogic) Update(req *types.UserInfo) error {
 	var uc = ctxs.GetUserCtx(l.ctx)
 	req.UserID = uc.UserID
-	_, err := l.svcCtx.UserRpc.UserInfoUpdate(l.ctx, &sys.UserInfoUpdateReq{Info: user.UserInfoToRpc(req)})
+	_, err := l.svcCtx.UserRpc.UserInfoUpdate(ctxs.WithRoot(l.ctx), &sys.UserInfoUpdateReq{Info: user.UserInfoToRpc(req)})
 	if err != nil {
 		er := errors.Fmt(err)
 		l.Errorf("%s.rpc.user.upadte failure err=%+v", utils.FuncName(), er)

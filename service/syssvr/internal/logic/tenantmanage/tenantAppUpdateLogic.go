@@ -111,9 +111,14 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 		if in.Code != "" {
 			ctx = ctxs.BindTenantCode(l.ctx, in.Code, def.RootNode)
 		}
-		err := l.svcCtx.Cm.ClearClients(ctx, in.AppCode)
+		po, err := relationDB.NewTenantAppRepo(l.ctx).FindOneByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppFilter{TenantCode: in.Code, AppCodes: []string{in.AppCode}})
 		if err != nil {
-			l.Error(err)
+			l.Errorf("NewTenantAppRepo.FindOneByFilter err:%v", err)
+		} else {
+			err = l.svcCtx.ThirdClientsManage.SetOne(ctx, po)
+			if err != nil {
+				l.Errorf("ThirdClientsManage.SetOne err:%v", err)
+			}
 		}
 	}
 	return &sys.Empty{}, err

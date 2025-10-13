@@ -259,13 +259,12 @@ func (l *UserRegisterLogic) handleWxminiP(in *sys.UserRegisterReq) (*sys.UserReg
 }
 
 func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
-
-	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if err != nil || cli.DingMini == nil {
+	cli, err := l.svcCtx.ThirdClientsManage.GetDingAppClient(l.ctx, "", in.AppID)
+	if err != nil {
 		l.Errorf("获取钉钉客户端失败: error=%v", err)
 		return nil, errors.System.AddDetail(err)
 	}
-	ret, err := cli.DingMini.GetUserInfoByCode(in.Code)
+	ret, err := cli.GetUserInfoByCode(in.Code)
 	if err != nil {
 		l.Errorf("钉钉获取用户信息失败: Code=%s, error=%v", in.Code, err)
 		return nil, errors.System.AddDetail(err)

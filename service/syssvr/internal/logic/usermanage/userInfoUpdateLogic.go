@@ -9,6 +9,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/topics"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/oss"
@@ -39,7 +40,9 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 	//var (
 	//	updateStatus bool
 	//)
-
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	ui, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: []int64{info.UserID}, WithRoles: true})
 	if err != nil {
 		l.Errorf("%s.FindOne UserID=%d err=%v", utils.FuncName(), info.UserID, err)

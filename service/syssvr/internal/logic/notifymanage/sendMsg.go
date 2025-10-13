@@ -16,7 +16,6 @@ import (
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
-	"github.com/silenceper/wechat/v2/miniprogram/subscribe"
 	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
@@ -216,32 +215,32 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if channel == nil {
 			return errors.Parameter.AddMsg("没有配置微信小程序")
 		}
-		cli, err := svcCtx.Cm.GetClients(ctx, channel.AppCode)
-		if err != nil {
-			return err
-		}
-		if cli.MiniProgram == nil {
-			return errors.Parameter.AddMsg("没有配置微信小程序")
-		}
-		var userIDs []string //todo saas
-		//for _, v := range users {
-		//	if v.WechatOpenID.Valid {
-		//		userIDs = append(userIDs, cast.ToString(v.WechatOpenID.String))
-		//	}
+		//cli, err := svcCtx.Cm.GetClients(ctx, channel.AppCode)
+		//if err != nil {
+		//	return err
 		//}
-		if len(userIDs) > 0 {
-			for _, user := range userIDs {
-				err = cli.MiniProgram.GetSubscribe().Send(&subscribe.Message{
-					ToUser:     user,
-					TemplateID: templateCode,
-					Data:       map[string]*subscribe.DataItem{},
-				})
-				if err != nil {
-					return err
-				}
-			}
-
-		}
+		//if cli.MiniProgram == nil {
+		//	return errors.Parameter.AddMsg("没有配置微信小程序")
+		//}
+		//var userIDs []string //todo saas
+		////for _, v := range users {
+		////	if v.WechatOpenID.Valid {
+		////		userIDs = append(userIDs, cast.ToString(v.WechatOpenID.String))
+		////	}
+		////}
+		//if len(userIDs) > 0 {
+		//	for _, user := range userIDs {
+		//		err = cli.MiniProgram.GetSubscribe().Send(&subscribe.Message{
+		//			ToUser:     user,
+		//			TemplateID: templateCode,
+		//			Data:       map[string]*subscribe.DataItem{},
+		//		})
+		//		if err != nil {
+		//			return err
+		//		}
+		//	}
+		//
+		//}
 	case def.NotifyTypeWxEWebhook:
 		if channel == nil || channel.WebHook == "" {
 			return errors.NotEnable.AddMsg("通道没有配置")

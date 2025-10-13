@@ -13359,13 +13359,18 @@
         "envVersion": {
           "type": "string",
           "description": "要打开的小程序版本。正式版为 \"release\"，体验版为 \"trial\"，开发版为 \"develop\"。默认是正式版。"
+        },
+        "appID": {
+          "type": "string",
+          "description": "应用ID"
         }
       },
       "title": "QRCodeReadReq",
       "required": [
         "page",
         "scene",
-        "envVersion"
+        "envVersion",
+        "appID"
       ]
     },
     "QRCodeReadResp": {

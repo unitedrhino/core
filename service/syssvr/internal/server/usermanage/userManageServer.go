@@ -83,11 +83,6 @@ func (s *UserManageServer) UserChangePwd(ctx context.Context, in *sys.UserChange
 	return l.UserChangePwd(in)
 }
 
-func (s *UserManageServer) UserCodeToUserID(ctx context.Context, in *sys.UserCodeToUserIDReq) (*sys.UserCodeToUserIDResp, error) {
-	l := usermanagelogic.NewUserCodeToUserIDLogic(ctx, s.svcCtx)
-	return l.UserCodeToUserID(in)
-}
-
 func (s *UserManageServer) UserBindAccount(ctx context.Context, in *sys.UserBindAccountReq) (*sys.Empty, error) {
 	l := usermanagelogic.NewUserBindAccountLogic(ctx, s.svcCtx)
 	return l.UserBindAccount(in)

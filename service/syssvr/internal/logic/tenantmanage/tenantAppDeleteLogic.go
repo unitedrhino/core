@@ -2,9 +2,9 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
-	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 
@@ -83,14 +83,14 @@ func (l *TenantAppDeleteLogic) TenantAppDelete(in *sys.TenantAppWithIDOrCode) (*
 		return nil
 	})
 	if err == nil {
-		ctx := l.ctx
-		if in.Code != "" {
-			ctx = ctxs.BindTenantCode(l.ctx, in.Code, def.RootNode)
-		}
-		err := l.svcCtx.Cm.ClearClients(ctx, in.AppCode)
+		err = l.svcCtx.ThirdClientsManage.DelOne(l.ctx, in.Code, in.AppCode)
 		if err != nil {
 			l.Error(err)
 		}
+		//err := l.svcCtx.Cm.ClearClients(ctx, in.AppCode)
+		//if err != nil {
+		//	l.Error(err)
+		//}
 	}
 	return &sys.Empty{}, err
 }
