@@ -16,9 +16,9 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-type TenantCodeWithCommon2 string //非root不可看不可写
+type TenantCodeWithCommonN string //非root不可看不可写
 
-func (t TenantCodeWithCommon2) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) { //更新的时候会调用此接口
+func (t TenantCodeWithCommonN) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) { //更新的时候会调用此接口
 	stmt := db.Statement
 	uc := ctxs.GetUserCtx(ctx)
 	if uc == nil { //系统初始化的时候会掉用这里
@@ -40,35 +40,35 @@ func (t TenantCodeWithCommon2) GormValue(ctx context.Context, db *gorm.DB) (expr
 	expr = clause.Expr{SQL: "?", Vars: []interface{}{uc.TenantCode}}
 	return
 }
-func (t *TenantCodeWithCommon2) Scan(value interface{}) error {
+func (t *TenantCodeWithCommonN) Scan(value interface{}) error {
 	ret := cast.ToString(value)
-	p := TenantCodeWithCommon2(ret)
+	p := TenantCodeWithCommonN(ret)
 	*t = p
 	return nil
 }
 
 // Value implements the driver Valuer interface.
-func (t TenantCodeWithCommon2) Value() (driver.Value, error) {
+func (t TenantCodeWithCommonN) Value() (driver.Value, error) {
 	return string(t), nil
 }
 
-func (t TenantCodeWithCommon2) QueryClauses(f *schema.Field) []clause.Interface {
+func (t TenantCodeWithCommonN) QueryClauses(f *schema.Field) []clause.Interface {
 	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Select}}
 }
 
-func (t TenantCodeWithCommon2) UpdateClauses(f *schema.Field) []clause.Interface {
+func (t TenantCodeWithCommonN) UpdateClauses(f *schema.Field) []clause.Interface {
 	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Update}}
 }
 
-func (t TenantCodeWithCommon2) CreateClauses(f *schema.Field) []clause.Interface {
+func (t TenantCodeWithCommonN) CreateClauses(f *schema.Field) []clause.Interface {
 	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Create}}
 }
 
-func (t TenantCodeWithCommon2) DeleteClauses(f *schema.Field) []clause.Interface {
+func (t TenantCodeWithCommonN) DeleteClauses(f *schema.Field) []clause.Interface {
 	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Delete}}
 }
 
-func (t TenantCodeWithCommon2) GetAuthIDs(f *schema.Field) stores.GetValues {
+func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
 	return func(stmt *gorm.Statement) (authIDs []any, isRoot bool, allData bool, err error) {
 		uc := ctxs.GetUserCtx(stmt.Context)
 		if uc == nil {
@@ -77,14 +77,14 @@ func (t TenantCodeWithCommon2) GetAuthIDs(f *schema.Field) stores.GetValues {
 		if uc.TenantCode == def.TenantCodeDefault { //只有core租户的可以修改其他租户的租户号
 			isRoot = true
 		}
-		return []any{TenantCodeWithCommon2(uc.TenantCode)}, isRoot, uc.AllTenant, nil
+		return []any{TenantCodeWithCommonN(uc.TenantCode)}, isRoot, uc.AllTenant, nil
 	}
 }
 
 type TenantCodeWithCommon2Clause struct {
 	stores.ClauseInterface
 	Field *schema.Field
-	T     TenantCodeWithCommon2
+	T     TenantCodeWithCommonN
 	Opt   stores.Opt
 }
 
@@ -107,12 +107,12 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 				}
 				field := dest.FieldByName(sd.Field.Name)
 				if field.IsZero() {
-					var v TenantCodeWithCommon2
-					v = TenantCodeWithCommon2(uc.TenantCode)
+					var v TenantCodeWithCommonN
+					v = TenantCodeWithCommonN(uc.TenantCode)
 					field.Set(reflect.ValueOf(v))
 					continue
 				}
-				vv := field.Interface().(TenantCodeWithCommon2)
+				vv := field.Interface().(TenantCodeWithCommonN)
 				if string(vv) == uc.TenantCode {
 					continue
 				}
@@ -128,12 +128,12 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 		}
 		field := destV.Elem().FieldByName(sd.Field.Name)
 		if field.IsZero() {
-			var v TenantCodeWithCommon2
-			v = TenantCodeWithCommon2(uc.TenantCode)
+			var v TenantCodeWithCommonN
+			v = TenantCodeWithCommonN(uc.TenantCode)
 			field.Set(reflect.ValueOf(v))
 			return
 		}
-		vv := field.Interface().(TenantCodeWithCommon2)
+		vv := field.Interface().(TenantCodeWithCommonN)
 		if string(vv) == uc.TenantCode {
 			return
 		}
