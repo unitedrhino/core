@@ -121,7 +121,6 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		} else if l.svcCtx.LoginLimit.PwdCaptcha.CheckLimit(l.ctx, in.Account) {
 			return nil, errors.NeedImgCaptcha
 		}
-		l.svcCtx.LoginLimit.PwdCaptcha.LimitIt(l.ctx, in.Account)
 		if l.svcCtx.LoginLimit.PwdAccount.CheckLimit(l.ctx, in.Account) {
 			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
 		}
@@ -129,6 +128,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if ip != "" && l.svcCtx.LoginLimit.PwdIp.CheckLimit(l.ctx, ip) {
 			return nil, errors.AccountOrIpForbidden.WithMsg("错误次数过多,请稍后再试")
 		}
+		l.svcCtx.LoginLimit.PwdCaptcha.LimitIt(l.ctx, in.Account)
 		limit := func() {
 			l.svcCtx.LoginLimit.PwdAccount.LimitIt(l.ctx, in.Account)
 			if ip != "" {
