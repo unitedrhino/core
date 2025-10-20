@@ -16567,21 +16567,69 @@
           "format": "boolean",
           "description": " 用户头像"
         },
+        "deviceCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "用户所拥有的设备数量统计"
+        },
         "createdTime": {
           "type": "string",
           "description": " 创建时间"
+        },
+        "role": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 用户角色默认"
         },
         "sex": {
           "type": "integer",
           "format": "int64",
           "description": " 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知"
         },
-        "tenants": {
+        "isAllData": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 是否所有数据权限（1是，2否）"
+        },
+        "deptIDs": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/UserTenant"
+            "type": "string"
           },
-          "description": "用户所在的租户信息"
+          "description": "部门ID列表"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "tags": {
+          "type": "object",
+          "description": "标签对象"
+        },
+        "messageNotRead": {
+          "type": "object"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleInfo"
+          }
+        },
+        "tenant": {
+          "$ref": "#/definitions/TenantInfo"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProjectInfo"
+          },
+          "description": "项目列表"
+        },
+        "depts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeptInfo"
+          }
         }
       },
       "title": "UserInfo"
@@ -17299,67 +17347,6 @@
         "code",
         "codeID",
         "password"
-      ]
-    },
-    "UserTenant": {
-      "type": "object",
-      "properties": {
-        "tenantCode": {
-          "type": "string"
-        },
-        "userID": {
-          "type": "string",
-          "description": " 用户id"
-        },
-        "status": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "tags": {
-          "type": "object",
-          "description": "标签对象"
-        },
-        "deptIDs": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "部门ID列表"
-        },
-        "deviceCount": {
-          "type": "integer",
-          "format": "int64",
-          "description": "用户所拥有的设备数量统计"
-        },
-        "messageNotRead": {
-          "type": "object"
-        },
-        "roles": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RoleInfo"
-          }
-        },
-        "tenant": {
-          "$ref": "#/definitions/TenantInfo"
-        },
-        "projects": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ProjectInfo"
-          },
-          "description": "项目列表"
-        },
-        "depts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DeptInfo"
-          }
-        }
-      },
-      "title": "UserTenant",
-      "required": [
-        "tenantCode"
       ]
     },
     "WeatherAir": {
