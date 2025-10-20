@@ -8,7 +8,7 @@ import (
 	"gitee.com/unitedrhino/core/share/domain/userDataAuth"
 )
 
-func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {
+func AreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {
 	return &sys.DataArea{
 		AreaID:         int64(po.AreaID),
 		AuthType:       po.AuthType,
@@ -19,7 +19,7 @@ func transAreaPoToPb(po *relationDB.SysDataArea) *sys.DataArea {
 	}
 }
 
-func transProjectPoToPb(po *relationDB.SysDataProject) *sys.DataProject {
+func ProjectPoToPb(po *relationDB.SysDataProject) *sys.DataProject {
 	return &sys.DataProject{
 		ProjectID:   int64(po.ProjectID),
 		AuthType:    po.AuthType,

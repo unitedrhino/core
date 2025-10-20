@@ -2,6 +2,8 @@ package relationDB
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/module"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -29,12 +31,20 @@ type ModuleInfoFilter struct {
 	Name      string
 	WithMenus bool
 	Type      int64
+	Purpose   module.Purpose
+	Purposes  []module.Purpose
 }
 
 func (p ModuleInfoRepo) fmtFilter(ctx context.Context, f ModuleInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.WithMenus {
 		db = db.Preload("Menus")
+	}
+	if f.Purpose > 0 {
+		db = db.Where("purpose = ?", f.Purpose)
+	}
+	if len(f.Purposes) > 0 {
+		db = db.Where("purpose in ?", f.Purposes)
 	}
 	if f.Type != 0 {
 		db = db.Where("type=?", f.Type)
@@ -62,7 +72,7 @@ func (p ModuleInfoRepo) Insert(ctx context.Context, data *SysModuleInfo) error {
 func (p ModuleInfoRepo) FindOneByFilter(ctx context.Context, f ModuleInfoFilter) (*SysModuleInfo, error) {
 	var result SysModuleInfo
 	db := p.fmtFilter(ctx, f)
-	err := db.First(&result).Error
+	err := db.Preload("Home").First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}
@@ -72,7 +82,7 @@ func (p ModuleInfoRepo) FindByFilter(ctx context.Context, f ModuleInfoFilter, pa
 	var results []*SysModuleInfo
 	db := p.fmtFilter(ctx, f).Model(&SysModuleInfo{})
 	db = page.ToGorm(db).Order(stores.Col("order"))
-	err := db.Find(&results).Error
+	err := db.Preload("Home").Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}
@@ -86,6 +96,7 @@ func (p ModuleInfoRepo) CountByFilter(ctx context.Context, f ModuleInfoFilter) (
 }
 
 func (p ModuleInfoRepo) Update(ctx context.Context, data *SysModuleInfo) error {
+	data.Home = nil
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
 	return stores.ErrFmt(err)
 }
@@ -102,7 +113,7 @@ func (p ModuleInfoRepo) Delete(ctx context.Context, id int64) error {
 }
 func (p ModuleInfoRepo) FindOne(ctx context.Context, id int64) (*SysModuleInfo, error) {
 	var result SysModuleInfo
-	err := p.db.WithContext(ctx).Where("id = ?", id).First(&result).Error
+	err := p.db.WithContext(ctx).Where("id = ?", id).Preload("Home").First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}

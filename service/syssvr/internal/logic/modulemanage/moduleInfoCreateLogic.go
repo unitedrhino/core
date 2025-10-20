@@ -2,6 +2,7 @@ package modulemanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -44,6 +45,7 @@ func (l *ModuleInfoCreateLogic) ModuleInfoCreate(in *sys.ModuleInfo) (*sys.WithI
 	}
 	po := logic.ToModuleInfoPo(in)
 	po.ID = 0
+	po.HomeMenuID = 0
 	err := stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		err := relationDB.NewModuleInfoRepo(tx).Insert(l.ctx, po)
 		if err != nil {
@@ -51,7 +53,7 @@ func (l *ModuleInfoCreateLogic) ModuleInfoCreate(in *sys.ModuleInfo) (*sys.WithI
 		}
 		//自动添加到全部模块中
 		err = relationDB.NewAppModuleRepo(tx).Insert(l.ctx, &relationDB.SysAppModule{
-			AppCode:    def.AppAll,
+			AppCode:    def.AppCore,
 			ModuleCode: in.Code,
 		})
 		return err

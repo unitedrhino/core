@@ -229,6 +229,10 @@ type (
 	UserCheckTokenReq                     = sys.UserCheckTokenReq
 	UserCheckTokenResp                    = sys.UserCheckTokenResp
 	UserCreateResp                        = sys.UserCreateResp
+	UserDataAreaIndexReq                  = sys.UserDataAreaIndexReq
+	UserDataAreaIndexResp                 = sys.UserDataAreaIndexResp
+	UserDataProjectIndexReq               = sys.UserDataProjectIndexReq
+	UserDataProjectIndexResp              = sys.UserDataProjectIndexResp
 	UserDeptIndexReq                      = sys.UserDeptIndexReq
 	UserDeptIndexResp                     = sys.UserDeptIndexResp
 	UserDeptMultiSaveReq                  = sys.UserDeptMultiSaveReq
@@ -292,6 +296,8 @@ type (
 		UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
 		UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
 		UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
+		UserDataProjectIndex(ctx context.Context, in *UserDataProjectIndexReq, opts ...grpc.CallOption) (*UserDataProjectIndexResp, error)
+		UserDataAreaIndex(ctx context.Context, in *UserDataAreaIndexReq, opts ...grpc.CallOption) (*UserDataAreaIndexResp, error)
 	}
 
 	defaultUserManage struct {
@@ -549,4 +555,22 @@ func (m *defaultUserManage) UserProfileIndex(ctx context.Context, in *UserProfil
 
 func (d *directUserManage) UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error) {
 	return d.svr.UserProfileIndex(ctx, in)
+}
+
+func (m *defaultUserManage) UserDataProjectIndex(ctx context.Context, in *UserDataProjectIndexReq, opts ...grpc.CallOption) (*UserDataProjectIndexResp, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserDataProjectIndex(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserDataProjectIndex(ctx context.Context, in *UserDataProjectIndexReq, opts ...grpc.CallOption) (*UserDataProjectIndexResp, error) {
+	return d.svr.UserDataProjectIndex(ctx, in)
+}
+
+func (m *defaultUserManage) UserDataAreaIndex(ctx context.Context, in *UserDataAreaIndexReq, opts ...grpc.CallOption) (*UserDataAreaIndexResp, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserDataAreaIndex(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserDataAreaIndex(ctx context.Context, in *UserDataAreaIndexReq, opts ...grpc.CallOption) (*UserDataAreaIndexResp, error) {
+	return d.svr.UserDataAreaIndex(ctx, in)
 }

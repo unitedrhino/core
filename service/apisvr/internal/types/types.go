@@ -684,27 +684,32 @@ type MessageInfoSendReq struct {
 }
 
 type ModuleInfo struct {
-	ID         int64   `json:"id,optional"`         // 编号
-	Code       string  `json:"code"`                // 应用编号
-	Name       string  `json:"name,optional"`       // 菜单名称
-	Type       int64   `json:"type,optional"`       // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	SubType    int64   `json:"subType,optional"`    // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
-	Path       string  `json:"path,optional"`       // 系统的path
-	Desc       *string `json:"desc,optional"`       // 页面
-	Icon       string  `json:"icon,optional"`       // 菜单图标
-	Url        string  `json:"url,optional"`        // 路由重定向
-	Order      int64   `json:"order,optional"`      // 左侧table排序序号
-	HideInMenu int64   `json:"hideInMenu,optional"` // 菜单是否隐藏 1：是 2：否
-	Body       *string `json:"body,optional"`       //前端自定义字段
+	ID         int64     `json:"id,optional"`             // 编号
+	Code       string    `json:"code"`                    // 应用编号
+	Name       string    `json:"name,optional"`           // 菜单名称
+	Type       int64     `json:"type,optional"`           // 类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	SubType    int64     `json:"subType,optional"`        // 子类型   1. 内部页面   2，iframe内嵌  3，外部链接跳转 4，微前端
+	Path       string    `json:"path,optional"`           // 系统的path
+	Desc       *string   `json:"desc,optional"`           // 页面
+	Icon       string    `json:"icon,optional"`           // 菜单图标
+	Url        string    `json:"url,optional"`            // 路由重定向
+	Order      int64     `json:"order,optional"`          // 左侧table排序序号
+	HideInMenu int64     `json:"hideInMenu,optional"`     // 菜单是否隐藏 1：是 2：否
+	Purpose    int64     `json:"purpose,optional"`        //normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+	HomeMenuID int64     `json:"homeMenuID,optional"`     // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
+	Home       *MenuInfo `json:"home,optional,omitempty"` //首页,如果没有返回则没有,首页不限菜单权限控制
+	Body       *string   `json:"body,optional"`           //前端自定义字段
 }
 
 type ModuleInfoIndexReq struct {
-	Page    *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
-	Codes   []string  `json:"codes,optional"`
-	AppCode string    `json:"appCode,optional"` //应用绑定的code列表
-	Code    string    `json:"code,optional"`    // 应用编号模糊查询
-	Name    string    `json:"name,optional"`    // 按菜单名称筛选
-	Type    int64     `json:"type,optional"`
+	Page     *PageInfo `json:"page,optional"` // 分页信息,只获取一个则不填
+	Codes    []string  `json:"codes,optional"`
+	AppCode  string    `json:"appCode,optional"` //应用绑定的code列表
+	Code     string    `json:"code,optional"`    // 应用编号模糊查询
+	Name     string    `json:"name,optional"`    // 按菜单名称筛选
+	Type     int64     `json:"type,optional"`
+	Purpose  int64     `json:"purpose,optional"`  //normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+	Purposes []int64   `json:"purposes,optional"` //normal普通:1(默认) platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
 }
 
 type ModuleInfoIndexResp struct {
@@ -1690,6 +1695,30 @@ type UserCore struct {
 
 type UserCreateResp struct {
 	UserID int64 `json:"userID,string,optional"` // 用户id
+}
+
+type UserDataAreaIndexReq struct {
+	Page      *PageInfo `json:"page,optional"`             //进行数据分页（不传默认2000相当于全部）
+	UserID    int64     `json:"userID,string"`             //用户ID
+	ProjectID int64     `json:"projectID,string,optional"` //项目id
+}
+
+type UserDataProject struct {
+	ProjectID   int64        `json:"projectID,string"`         //权限数据ID
+	AuthType    int64        `json:"authType"`                 // 1:管理权限,可以修改别人的权限,及读写权限 2:读写权限,可以读写该权限 3:读权限,只能读,不能修改
+	TargetID    int64        `json:"targetID,string,optional"` //用户ID
+	UpdatedTime int64        `json:"updatedTime,optional"`     //更新时间
+	Project     *ProjectInfo `json:"project,optional"`         //获取用户类型返回
+}
+
+type UserDataProjectIndexReq struct {
+	Page   *PageInfo `json:"page,optional"` //进行数据分页（不传默认2000相当于全部）
+	UserID int64     `json:"userID,string"` //用户ID
+}
+
+type UserDataProjectIndexResp struct {
+	PageResp
+	List []*UserDataProject `json:"list"` //用户数据权限列表
 }
 
 type UserDeptMultiSaveReq struct {

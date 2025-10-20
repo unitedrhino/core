@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -21,6 +22,7 @@ type MenuInfoFilter struct {
 	Path       string
 	Paths      []string
 	MenuIDs    []int64
+	MenuID     int64
 	ParentID   int64
 	ParentIDs  []int64
 	IsCommon   int64
@@ -51,6 +53,9 @@ func (p MenuInfoRepo) fmtFilter(ctx context.Context, f MenuInfoFilter) *gorm.DB 
 	}
 	if len(f.MenuIDs) != 0 {
 		db = db.Where("id in ?", f.MenuIDs)
+	}
+	if f.MenuID != 0 {
+		db = db.Where("id=?", f.MenuID)
 	}
 	return db
 }

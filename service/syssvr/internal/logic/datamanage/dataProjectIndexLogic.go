@@ -2,6 +2,7 @@ package datamanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -75,7 +76,7 @@ func (l *DataProjectIndexLogic) DataProjectIndex(in *sys.DataProjectIndexReq) (*
 
 	list = make([]*sys.DataProject, 0, len(poArr))
 	for _, po := range poArr {
-		list = append(list, transProjectPoToPb(po))
+		list = append(list, ProjectPoToPb(po))
 	}
 	return &sys.DataProjectIndexResp{List: list, Total: total}, nil
 }

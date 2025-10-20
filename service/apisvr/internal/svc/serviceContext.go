@@ -1,6 +1,9 @@
 package svc
 
 import (
+	"os"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/config"
 	"gitee.com/unitedrhino/core/service/syssvr/client/accessmanage"
 	app "gitee.com/unitedrhino/core/service/syssvr/client/appmanage"
@@ -34,8 +37,6 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
-	"os"
-	"time"
 )
 
 type SvrClient struct {
@@ -64,6 +65,8 @@ type ServiceContext struct {
 	Ws             *ws.Server
 	Config         config.Config
 	UserCache      sysExport.UserCacheT
+	ProjectCache   sysExport.ProjectCacheT
+	AreaCache      sysExport.AreaCacheT
 	CheckTokenWare rest.Middleware
 	InitCtxsWare   rest.Middleware
 	Captcha        *verify.Captcha
@@ -160,6 +163,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	}
 	userCache, err := sysExport.NewUserInfoCache(ur, serverMsg)
 	logx.Must(err)
+	projectCache, err := sysExport.NewProjectInfoCache(projectM, serverMsg)
+	logx.Must(err)
+	areaCache, err := sysExport.NewAreaInfoCache(areaM, serverMsg)
+	logx.Must(err)
 	captcha := verify.NewCaptcha(c.Captcha.ImgHeight, c.Captcha.ImgWidth,
 		c.Captcha.KeyLong, c.CacheRedis, time.Duration(c.Captcha.KeepTime)*time.Second)
 	return &ServiceContext{
@@ -167,6 +174,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		CheckTokenWare: middlewares.NewCheckTokenWareMiddleware(ur, ro, tenantM, lo).Handle,
 		InitCtxsWare:   middlewares.InitMiddleware,
 		UserCache:      userCache,
+		ProjectCache:   projectCache,
+		AreaCache:      areaCache,
 		Captcha:        captcha,
 		OssClient:      ossClient,
 		Ws:             ws.MustNewServer(c.RestConf),

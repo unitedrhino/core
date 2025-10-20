@@ -38,6 +38,10 @@ service UserManage {
   rpc userProfileRead(WithCode)returns(UserProfile);
   rpc userProfileUpdate(UserProfile)returns(Empty);
   rpc userProfileIndex(UserProfileIndexReq)returns(UserProfileIndexResp);
+
+  rpc userDataProjectIndex (UserDataProjectIndexReq) returns (UserDataProjectIndexResp); //获取用户数据权限列表
+  rpc userDataAreaIndex (UserDataAreaIndexReq) returns (UserDataAreaIndexResp); //获取用户数据权限列表
+
 }
 
 service DataManage {
@@ -601,6 +605,30 @@ message OpenAccessIndexResp{
 
 
 /* 用户相关 */
+
+
+message UserDataProjectIndexReq {
+  PageInfo page = 1 ; //进行数据分页（不传默认2000相当于全部）
+  int64 userID = 4;
+}
+
+message UserDataProjectIndexResp {
+  int64 total = 1;           //总数
+  repeated DataProject list = 2; //用户数据权限列表
+}
+
+message UserDataAreaIndexReq {
+  PageInfo page = 1 ; //进行数据分页（不传默认2000相当于全部）
+  int64 projectID = 3; //项目id 必选
+  int64 userID = 4;
+}
+
+message UserDataAreaIndexResp {
+  int64 total = 1;           //总数
+  repeated DataArea list = 2; //用户数据权限列表
+}
+
+
 
 message UserProfile{
   string code =1;
@@ -1942,6 +1970,8 @@ message ModuleInfo{
   int64 hideInMenu = 10;
   google.protobuf.StringValue body = 11;
   int64 tag = 13;//标签: 1:通用 2:选配
+  int64 purpose =14;                             //normal普通:1 platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+  int64 homeMenuID =16;          // 模块首页全屏菜单,点击应用左上角的logo会跳出这个页面及首次进入该模块的时候,如果为1 则是没有
 }
 
 message ModuleInfoIndexReq{
@@ -1951,6 +1981,8 @@ message ModuleInfoIndexReq{
   repeated string codes =4;
   string appCode = 5;
   int64 type = 6;
+  int64 purpose =7;                             //normal普通:1 platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
+  repeated int64 purposes =8;       //normal普通:1 platformo平台:2(那么只有default租户可以看,然后平台模块http头里不用传租户号)  project 项目:3(需要选择项目,默认选择第一个)
 }
 
 message ModuleInfoIndexResp{
