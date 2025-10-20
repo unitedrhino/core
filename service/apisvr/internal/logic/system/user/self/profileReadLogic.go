@@ -2,8 +2,10 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
@@ -36,8 +38,9 @@ func (l *ProfileReadLogic) ProfileRead(req *types.UserProfileReadReq) (resp *typ
 	}
 	if req.WithProjects {
 		ret2, err := l.svcCtx.ProjectM.ProjectInfoIndex(l.ctx, &sys.ProjectInfoIndexReq{Page: &sys.PageInfo{
-			Page: 1,
-			Size: 20,
+			Page:   1,
+			Size:   20,
+			Orders: []*sys.PageInfo_OrderBy{{Field: "createdTime", Sort: stores.OrderAsc}},
 		}})
 		if err != nil {
 			return nil, err
