@@ -1,0 +1,13 @@
+{
+  "sys.logic.dictmanage.dictNotDefine": "字典未定义",
+  "sys.logic.dictmanage.codeOrGroupEmpty": "编码或分组不能为空",
+  "sys.logic.notifymanage.typeNotSupport": "类型不支持",
+  "sys.logic.notifymanage.templateParseFailed": "模版解析失败",
+  "sys.logic.notifymanage.templateMatchFailed": "模版匹配失败",
+  "sys.logic.notifymanage.channelNotConfigured": "通道没有配置",
+  "sys.logic.notifymanage.wxMiniNotConfigured": "没有配置微信小程序",
+  "sys.logic.notifymanage.userIdsRequired": "需要用户ID",
+  "sys.logic.notifymanage.invalidUserIds": "需要填写正确的用户ID",
+  "sys.logic.notifymanage.idRequired": "ID必填",
+  "sys.logic.tenantmanage.platformModuleNotForOtherTenant": "平台模块不能授权给其他租户"
+}

@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.8
 
 require (
-	gitee.com/unitedrhino/share v1.5.25
+	gitee.com/unitedrhino/share v1.5.29
 	gitee.com/unitedrhino/squirrel v1.20.7
 	github.com/alibabacloud-go/tea v1.3.9
 	github.com/dgraph-io/ristretto v0.1.1
@@ -40,6 +40,7 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	gitee.com/unitedrhino/driver-go/v3 v3.30.2 // indirect
+	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.4 // indirect
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.6 // indirect

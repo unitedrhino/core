@@ -3,6 +3,8 @@ package sysdirect
 import (
 	"context"
 	"fmt"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/config"
 	accessmanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/accessmanage"
 	appmanageServer "gitee.com/unitedrhino/core/service/syssvr/internal/server/appmanage"
@@ -22,13 +24,13 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/startup"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/i18ns"
 	"gitee.com/unitedrhino/share/interceptors"
 	"gitee.com/unitedrhino/share/services"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"sync"
 )
 
 type Config = config.Config
@@ -43,6 +45,7 @@ var (
 func GetSvcCtx() *svc.ServiceContext {
 	svcOnce.Do(func() {
 		utils.ConfMustLoad("etc/sys.yaml", &c)
+		i18ns.InitWithFS("etc/i18n")
 		ctxSvc = svc.NewServiceContext(c)
 		startup.Init(ctxSvc)
 		logx.Infof("enabled syssvr")
