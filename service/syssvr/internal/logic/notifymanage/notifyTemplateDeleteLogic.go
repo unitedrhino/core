@@ -2,7 +2,9 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -25,6 +27,9 @@ func NewNotifyTemplateDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *NotifyTemplateDeleteLogic) NotifyTemplateDelete(in *sys.WithID) (*sys.Empty, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	err := relationDB.NewNotifyTemplateRepo(l.ctx).Delete(l.ctx, in.Id)
 
 	return &sys.Empty{}, err

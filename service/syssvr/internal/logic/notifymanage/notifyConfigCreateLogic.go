@@ -2,7 +2,9 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -26,6 +28,9 @@ func NewNotifyConfigCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *NotifyConfigCreateLogic) NotifyConfigCreate(in *sys.NotifyConfig) (*sys.WithID, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	po := utils.Copy[relationDB.SysNotifyConfig](in)
 	po.ID = 0
 	err := relationDB.NewNotifyConfigRepo(l.ctx).Insert(l.ctx, po)

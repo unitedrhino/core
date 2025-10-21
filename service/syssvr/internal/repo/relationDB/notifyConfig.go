@@ -3,6 +3,7 @@ package relationDB
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -28,7 +29,7 @@ type NotifyConfigFilter struct {
 	Code          string
 	Group         string
 	Name          string
-	WithTemplates bool
+	WithTemplates bool `protobuf:"varint,5,opt,name=withTemplates,proto3" json:"withTemplates,omitempty"`
 }
 
 func (p NotifyConfigRepo) fmtFilter(ctx context.Context, f NotifyConfigFilter) *gorm.DB {

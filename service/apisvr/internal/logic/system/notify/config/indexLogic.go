@@ -2,6 +2,8 @@ package config
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -27,5 +29,11 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 
 func (l *IndexLogic) Index(req *types.NotifyConfigIndexReq) (resp *types.NotifyConfigIndexResp, err error) {
 	ret, err := l.svcCtx.NotifyM.NotifyConfigIndex(l.ctx, utils.Copy[sys.NotifyConfigIndexReq](req))
-	return utils.Copy[types.NotifyConfigIndexResp](ret), err
+	if err != nil {
+		return nil, err
+	}
+	return &types.NotifyConfigIndexResp{
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     utils.CopySlice[types.NotifyConfig](ret.List),
+	}, nil
 }

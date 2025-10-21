@@ -2,6 +2,7 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/stores"
@@ -29,7 +30,7 @@ func NewMessageInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *MessageInfoDeleteLogic) MessageInfoDelete(in *sys.WithID) (*sys.Empty, error) {
 	if in.Id == 0 {
-		return nil, errors.Parameter.AddMsg("id 必填")
+		return nil, errors.Parameter.AddMsg("sys.logic.notifymanage.idRequired") // ID必填
 	}
 	err := stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		err := relationDB.NewMessageInfoRepo(l.ctx).Delete(l.ctx, in.Id)

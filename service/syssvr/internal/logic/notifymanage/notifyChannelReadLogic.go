@@ -2,9 +2,8 @@ package notifymanagelogic
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/utils"
 
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
@@ -27,5 +26,5 @@ func NewNotifyChannelReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *NotifyChannelReadLogic) NotifyChannelRead(in *sys.WithID) (*sys.NotifyChannel, error) {
 	po, err := relationDB.NewNotifyChannelRepo(l.ctx).FindOne(l.ctx, in.Id)
-	return utils.Copy[sys.NotifyChannel](po), err
+	return ChannelPoToPb(l.ctx, po), err
 }

@@ -737,14 +737,15 @@ type ModuleMultiImportResp struct {
 }
 
 type NotifyChannel struct {
-	ID      int64             `json:"id,optional"`      // id编号
-	Name    string            `json:"name,optional"`    //通知的命名
-	Type    string            `json:"type,optional"`    //对应的配置类型 通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
-	Desc    string            `json:"desc,optional"`    // 备注
-	WebHook string            `json:"webhook,optional"` //钉钉webhook及企微webhook
-	Email   *ThirdEmailConfig `json:"email,optional"`   //邮箱
-	App     *ThirdAppConfig   `json:"app,optional"`     //第三方应用配置
-	Sms     *ThirdSms         `json:"sms,optional"`     //短信配置
+	TenantCode string            `json:"tenantCode,optional"` //租户号,common 为公共的产品,公共的大家都可以看,但是只有default可以修改
+	ID         int64             `json:"id,optional"`         // id编号
+	Name       string            `json:"name,optional"`       //通知的命名
+	Type       string            `json:"type,optional"`       //对应的配置类型 通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
+	Desc       string            `json:"desc,optional"`       // 备注
+	WebHook    string            `json:"webhook,optional"`    //钉钉webhook及企微webhook
+	Email      *ThirdEmailConfig `json:"email,optional"`      //邮箱
+	App        *ThirdAppConfig   `json:"app,optional"`        //第三方应用配置
+	Sms        *ThirdSms         `json:"sms,optional"`        //短信配置
 }
 
 type NotifyChannelIndexReq struct {
@@ -759,22 +760,23 @@ type NotifyChannelIndexResp struct {
 }
 
 type NotifyConfig struct {
-	ID           int64             `json:"id,optional"`           // id编号
-	Group        string            `json:"group,optional"`        //分组
-	Code         string            `json:"code,optional"`         // 通知类型编码
-	Name         string            `json:"name,optional"`         //通知的命名
-	SupportTypes []string          `json:"supportTypes,optional"` //支持的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
-	EnableTypes  []string          `json:"enableTypes,optional"`  //启用的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
-	Desc         string            `json:"desc,optional"`         // 备注
-	IsRecord     int64             `json:"isRecord,optional"`     //是否记录该消息,是的情况下会将消息存一份到消息中心
-	Params       map[string]string `json:"params,optional"`       //变量属性 key是变量参数,value是变量描述
+	ID           int64                   `json:"id,optional"`                  // id编号
+	Group        string                  `json:"group,optional"`               //分组
+	Code         string                  `json:"code,optional"`                // 通知类型编码
+	Name         string                  `json:"name,optional"`                //通知的命名
+	SupportTypes []string                `json:"supportTypes,optional"`        //支持的通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)
+	Desc         string                  `json:"desc,optional"`                // 备注
+	IsRecord     int64                   `json:"isRecord,optional"`            //是否记录该消息,是的情况下会将消息存一份到消息中心
+	Params       map[string]string       `json:"params,optional"`              //变量属性 key是变量参数,value是变量描述
+	Templates    []*NotifyConfigTemplate `json:"templates,omitempty,optional"` //传withTemplates的时候返回,只读
 }
 
 type NotifyConfigIndexReq struct {
-	Page  *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
-	Name  string    `json:"name,optional"`  // 应用名称
-	Code  string    `json:"code,optional"`  // 应用编号
-	Group string    `json:"group,optional"` //分组
+	Page          *PageInfo               `json:"page,optional"`  // 分页信息,只获取一个则不填
+	Name          string                  `json:"name,optional"`  // 应用名称
+	Code          string                  `json:"code,optional"`  // 应用编号
+	Group         string                  `json:"group,optional"` //分组
+	WithTemplates []*NotifyConfigTemplate `json:"withTemplates,optional"`
 }
 
 type NotifyConfigIndexResp struct {
@@ -815,6 +817,7 @@ type NotifyGroupInfo struct {
 }
 
 type NotifyTemplate struct {
+	TenantCode   string         `json:"tenantCode,optional"`   //租户号,common 为公共的产品,公共的大家都可以看,但是只有default可以修改
 	ID           int64          `json:"id,optional"`           // id编号
 	Name         string         `json:"name,optional"`         //通知的命名
 	NotifyCode   string         `json:"notifyCode,optional"`   //对应的配置Code

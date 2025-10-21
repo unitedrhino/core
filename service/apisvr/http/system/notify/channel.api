@@ -74,6 +74,7 @@ type (
     }
 
     NotifyChannel{
+        TenantCode string `json:"tenantCode,optional"`//租户号,common 为公共的产品,公共的大家都可以看,但是只有default可以修改
         ID int64 `json:"id,optional"`  // id编号
         Name string `json:"name,optional"`  //通知的命名
         Type string `json:"type,optional"`  //对应的配置类型 通知类型 sms(短信),email(邮箱),dingTalk(钉钉机器人),dingWebhook(钉钉webhook),wxEWebHook(企业微信webhook)

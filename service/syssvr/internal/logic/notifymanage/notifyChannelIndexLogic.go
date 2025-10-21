@@ -2,10 +2,9 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/utils"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
@@ -37,6 +36,6 @@ func (l *NotifyChannelIndexLogic) NotifyChannelIndex(in *sys.NotifyChannelIndexR
 		return nil, err
 	}
 	pos, err := db.FindByFilter(l.ctx, f, logic.ToPageInfo(in.Page))
-	return &sys.NotifyChannelIndexResp{Total: total, List: utils.CopySlice[sys.NotifyChannel](pos)}, nil
+	return &sys.NotifyChannelIndexResp{Total: total, List: ChannelsPoToPb(l.ctx, pos)}, nil
 
 }

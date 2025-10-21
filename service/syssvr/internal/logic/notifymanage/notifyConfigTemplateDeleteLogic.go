@@ -2,11 +2,11 @@ package notifymanagelogic
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/stores"
 
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,6 +26,9 @@ func NewNotifyConfigTemplateDeleteLogic(ctx context.Context, svcCtx *svc.Service
 }
 
 func (l *NotifyConfigTemplateDeleteLogic) NotifyConfigTemplateDelete(in *sys.NotifyConfigTemplateDeleteReq) (*sys.Empty, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	err := relationDB.NewNotifyConfigTemplateRepo(l.ctx).DeleteByFilter(l.ctx, relationDB.NotifyConfigTemplateFilter{
 		NotifyCode: in.NotifyCode,
 		Type:       in.Type,
@@ -33,6 +36,6 @@ func (l *NotifyConfigTemplateDeleteLogic) NotifyConfigTemplateDelete(in *sys.Not
 	if err != nil {
 		return nil, err
 	}
-	err = InitConfigEnableTypes(l.ctx, stores.GetTenantConn(l.ctx), in.NotifyCode)
+	//err = InitConfigEnableTypes(l.ctx, stores.GetTenantConn(l.ctx), in.NotifyCode)
 	return &sys.Empty{}, err
 }

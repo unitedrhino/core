@@ -2,6 +2,8 @@ package notifymanagelogic
 
 import (
 	"context"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -9,7 +11,6 @@ import (
 	"gitee.com/unitedrhino/share/stores"
 	"gitee.com/unitedrhino/share/utils"
 	"gorm.io/gorm"
-	"time"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -60,14 +61,14 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 		return &sys.WithID{Id: po.ID}, nil
 	}
 	if len(in.UserIDs) == 0 {
-		return nil, errors.Parameter.AddMsg("need userIDs")
+		return nil, errors.Parameter.AddMsg("sys.logic.notifymanage.userIdsRequired") // 需要用户ID
 	}
 	userNum, err := relationDB.NewUserInfoRepo(l.ctx).CountByFilter(l.ctx, relationDB.UserInfoFilter{UserIDs: in.UserIDs})
 	if err != nil {
 		return nil, err
 	}
 	if userNum != int64(len(in.UserIDs)) {
-		return nil, errors.Parameter.AddMsg("需要填写正确的用户ID")
+		return nil, errors.Parameter.AddMsg("sys.logic.notifymanage.invalidUserIds") // 需要填写正确的用户ID
 	}
 
 	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {

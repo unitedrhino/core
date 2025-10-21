@@ -53,19 +53,19 @@ func (t TenantCodeWithCommonN) Value() (driver.Value, error) {
 }
 
 func (t TenantCodeWithCommonN) QueryClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Select}}
+	return []clause.Interface{TenantCodeWithCommonNClause{Field: f, T: t, Opt: stores.Select}}
 }
 
 func (t TenantCodeWithCommonN) UpdateClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Update}}
+	return []clause.Interface{TenantCodeWithCommonNClause{Field: f, T: t, Opt: stores.Update}}
 }
 
 func (t TenantCodeWithCommonN) CreateClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Create}}
+	return []clause.Interface{TenantCodeWithCommonNClause{Field: f, T: t, Opt: stores.Create}}
 }
 
 func (t TenantCodeWithCommonN) DeleteClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Delete}}
+	return []clause.Interface{TenantCodeWithCommonNClause{Field: f, T: t, Opt: stores.Delete}}
 }
 
 func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
@@ -81,18 +81,18 @@ func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
 	}
 }
 
-type TenantCodeWithCommon2Clause struct {
+type TenantCodeWithCommonNClause struct {
 	stores.ClauseInterface
 	Field *schema.Field
 	T     TenantCodeWithCommonN
 	Opt   stores.Opt
 }
 
-func (sd TenantCodeWithCommon2Clause) GenAuthKey() string { //查询的时候会调用此接口
+func (sd TenantCodeWithCommonNClause) GenAuthKey() string { //查询的时候会调用此接口
 	return fmt.Sprintf(stores.AuthModify, "tenantCode")
 }
 
-func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //查询的时候会调用此接口
+func (sd TenantCodeWithCommonNClause) ModifyStatement(stmt *gorm.Statement) { //查询的时候会调用此接口
 
 	uc := ctxs.GetUserCtxNoNil(stmt.Context)
 

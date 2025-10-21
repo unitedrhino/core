@@ -3,6 +3,7 @@ package dictmanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -37,7 +38,7 @@ func (l *DictDetailMultiCreateLogic) DictDetailMultiCreate(in *sys.DictDetailMul
 	_, err := relationDB.NewDictInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.DictInfoFilter{Code: in.GetDictCode()})
 	if err != nil {
 		if errors.Cmp(err, errors.NotFind) {
-			return nil, errors.Parameter.AddMsg("字典未定义")
+			return nil, errors.Parameter.AddMsg("sys.logic.dictmanage.dictNotDefine") // 字典未定义
 		}
 		return nil, err
 	}

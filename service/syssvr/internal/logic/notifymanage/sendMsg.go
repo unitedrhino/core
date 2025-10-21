@@ -91,24 +91,24 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 	{
 		tmpl, err := template.New(config.Code).Parse(body)
 		if err != nil {
-			return errors.System.AddMsg("模版解析失败").AddDetail(err)
+			return errors.System.AddMsg("sys.logic.notifymanage.templateParseFailed").AddDetail(err) // 模版解析失败
 		}
 		buffer := &bytes.Buffer{}
 		err = tmpl.Execute(buffer, cfg.Params)
 		if err != nil {
-			return errors.System.AddMsg("模版匹配失败").AddDetail(err)
+			return errors.System.AddMsg("sys.logic.notifymanage.templateMatchFailed").AddDetail(err) // 模版匹配失败
 		}
 		body = buffer.String()
 	}
 	{
 		tmpl, err := template.New(config.Code).Parse(subject)
 		if err != nil {
-			return errors.System.AddMsg("模版解析失败").AddDetail(err)
+			return errors.System.AddMsg("sys.logic.notifymanage.templateParseFailed").AddDetail(err) // 模版解析失败
 		}
 		buffer := &bytes.Buffer{}
 		err = tmpl.Execute(buffer, cfg.Params)
 		if err != nil {
-			return errors.System.AddMsg("模版匹配失败").AddDetail(err)
+			return errors.System.AddMsg("sys.logic.notifymanage.templateMatchFailed").AddDetail(err) // 模版匹配失败
 		}
 		subject = buffer.String()
 		if subject == "" {
@@ -178,14 +178,14 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		}
 	case def.NotifyTypeDingWebhook:
 		if channel == nil || channel.WebHook == "" {
-			return errors.NotEnable.AddMsg("通道没有配置")
+			return errors.NotEnable.AddMsg("sys.logic.notifymanage.channelNotConfigured") // 通道没有配置
 		}
 		cli := dingClient.NewDingRobotClient(channel.WebHook)
 		_, err := cli.SendRobotMsg(dingClient.NewTextMessage(body))
 		return err
 	case def.NotifyTypeDingTalk:
 		if channel == nil || channel.App == nil {
-			return errors.NotEnable.AddMsg("通道没有配置")
+			return errors.NotEnable.AddMsg("sys.logic.notifymanage.channelNotConfigured") // 通道没有配置
 		}
 		cli, err := dingClient.NewDingTalkClient(&conf.ThirdConf{
 			AppKey:    channel.App.AppKey,
@@ -213,7 +213,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		}
 	case def.NotifyTypeWxMini:
 		if channel == nil {
-			return errors.Parameter.AddMsg("没有配置微信小程序")
+			return errors.Parameter.AddMsg("sys.logic.notifymanage.wxMiniNotConfigured") // 没有配置微信小程序
 		}
 		//cli, err := svcCtx.Cm.GetClients(ctx, channel.AppCode)
 		//if err != nil {
@@ -243,7 +243,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		//}
 	case def.NotifyTypeWxEWebhook:
 		if channel == nil || channel.WebHook == "" {
-			return errors.NotEnable.AddMsg("通道没有配置")
+			return errors.NotEnable.AddMsg("sys.logic.notifymanage.channelNotConfigured") // 通道没有配置
 		}
 		err := wxClient.SendRobotMsg(ctx, channel.WebHook, body)
 		return err

@@ -2,6 +2,7 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/stores"
@@ -30,9 +31,10 @@ func NewNotifyConfigIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *NotifyConfigIndexLogic) NotifyConfigIndex(in *sys.NotifyConfigIndexReq) (*sys.NotifyConfigIndexResp, error) {
 	db := relationDB.NewNotifyConfigRepo(l.ctx)
 	f := relationDB.NotifyConfigFilter{
-		Code:  in.Code,
-		Group: in.Group,
-		Name:  in.Name,
+		Code:          in.Code,
+		Group:         in.Group,
+		Name:          in.Name,
+		WithTemplates: in.WithTemplates,
 	}
 	totaol, err := db.CountByFilter(l.ctx, f)
 	if err != nil {

@@ -2,6 +2,8 @@ package info
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -27,5 +29,11 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 
 func (l *IndexLogic) Index(req *types.MessageInfoIndexReq) (resp *types.MessageInfoIndexResp, err error) {
 	ret, err := l.svcCtx.NotifyM.MessageInfoIndex(l.ctx, utils.Copy[sys.MessageInfoIndexReq](req))
-	return utils.Copy[types.MessageInfoIndexResp](ret), err
+	if err != nil {
+		return nil, err
+	}
+	return &types.MessageInfoIndexResp{
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     utils.CopySlice[types.MessageInfo](ret.List),
+	}, nil
 }

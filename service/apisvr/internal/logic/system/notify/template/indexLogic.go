@@ -2,6 +2,8 @@ package template
 
 import (
 	"context"
+
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -27,5 +29,11 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 
 func (l *IndexLogic) Index(req *types.NotifyTemplateIndexReq) (resp *types.NotifyTemplateIndexResp, err error) {
 	ret, err := l.svcCtx.NotifyM.NotifyTemplateIndex(l.ctx, utils.Copy[sys.NotifyTemplateIndexReq](req))
-	return utils.Copy[types.NotifyTemplateIndexResp](ret), err
+	if err != nil {
+		return nil, err
+	}
+	return &types.NotifyTemplateIndexResp{
+		PageResp: logic.ToPageResp(req.Page, ret.Total),
+		List:     utils.CopySlice[types.NotifyTemplate](ret.List),
+	}, nil
 }

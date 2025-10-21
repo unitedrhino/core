@@ -392,10 +392,10 @@ message NotifyConfig{
   string code =3; // 通知类型编码
   string name =4; //通知的命名
   repeated string supportTypes =5; //支持的通知类型
-  repeated string enableTypes =8; //启用的通知类型
   string desc =6; // 项目备注
   int64 isRecord =7; //是否记录该消息,是的情况下会将消息存一份到消息中心
   map<string,string> params =12; //变量属性 key是参数,value是描述
+  repeated NotifyConfigTemplate templates =13;//绑定的模板信息列表
 }
 
 message NotifyConfigIndexReq{
@@ -403,6 +403,7 @@ message NotifyConfigIndexReq{
   string group =2; //分组
   string code =3; // 通知类型编码
   string name =4; //通知的命名
+  bool withTemplates =5;
 }
 message NotifyConfigIndexResp{
   repeated NotifyConfig list =1;
@@ -425,6 +426,7 @@ message NotifyTemplate{
 }
 
 message NotifyChannel{
+  string tenantCode =9;
   int64 id =1;  // id编号
   string name =2;  //通知的命名
   string type =3;  //对应的配置类型 sms email

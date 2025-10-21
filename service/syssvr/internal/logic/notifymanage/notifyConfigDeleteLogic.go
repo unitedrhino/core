@@ -2,7 +2,9 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -25,7 +27,9 @@ func NewNotifyConfigDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *NotifyConfigDeleteLogic) NotifyConfigDelete(in *sys.WithID) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	err := relationDB.NewNotifyConfigRepo(l.ctx).Delete(l.ctx, in.Id)
-	//todo 后续需要做好是否可以删除的检测
 	return &sys.Empty{}, err
 }

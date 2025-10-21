@@ -74,16 +74,17 @@ type (
     }
 
     NotifyTemplate{
-         ID int64 `json:"id,optional"`  // id编号
-         Name string `json:"name,optional"`  //通知的命名
-         NotifyCode string `json:"notifyCode,optional"`  //对应的配置Code
-         Type string `json:"type,optional"`  //对应的配置类型 sms email
-         TemplateCode string `json:"templateCode,optional"`  // 通知类型编码
-         SignName string `json:"signName,optional"`  //签名(短信)
-         Subject string `json:"subject,optional"`  //默认消息主题
-         Body string `json:"body,optional"`  //默认模版内容
-         Desc string `json:"desc,optional"`  // 备注
-         ChannelID int64 `json:"channelID,optional"`
-         Channel *NotifyChannel `json:"channel,optional"`
+        TenantCode string `json:"tenantCode,optional"`//租户号,common 为公共的产品,公共的大家都可以看,但是只有default可以修改
+        ID int64 `json:"id,optional"`  // id编号
+        Name string `json:"name,optional"`  //通知的命名
+        NotifyCode string `json:"notifyCode,optional"`  //对应的配置Code
+        Type string `json:"type,optional"`  //对应的配置类型 sms email
+        TemplateCode string `json:"templateCode,optional"`  // 通知类型编码
+        SignName string `json:"signName,optional"`  //签名(短信)
+        Subject string `json:"subject,optional"`  //默认消息主题
+        Body string `json:"body,optional"`  //默认模版内容
+        Desc string `json:"desc,optional"`  // 备注
+        ChannelID int64 `json:"channelID,optional"`
+        Channel *NotifyChannel `json:"channel,optional"`
     }
 )

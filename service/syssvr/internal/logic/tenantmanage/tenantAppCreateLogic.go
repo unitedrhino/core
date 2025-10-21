@@ -100,7 +100,7 @@ func ModuleCreate(ctx context.Context, tx *gorm.DB, tenantCode, appCode string, 
 		return err
 	}
 	if tenantCode != def.TenantCodeDefault && mi.Purpose == module.PurposePlatform {
-		return errors.Permissions.AddMsg("平台模块不能授权给其他租户")
+		return errors.Permissions.AddMsg("sys.logic.tenantmanage.platformModuleNotForOtherTenant") // 平台模块不能授权给其他租户
 	}
 	var (
 		menuMap = make(map[int64]*relationDB.SysModuleMenu)

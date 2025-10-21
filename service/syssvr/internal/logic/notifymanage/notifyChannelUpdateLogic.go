@@ -2,7 +2,10 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -29,6 +32,9 @@ func (l *NotifyChannelUpdateLogic) NotifyChannelUpdate(in *sys.NotifyChannel) (*
 	old, err := relationDB.NewNotifyChannelRepo(l.ctx).FindOne(l.ctx, in.Id)
 	if err != nil {
 		return nil, err
+	}
+	if !ctxs.CanHandTenant(l.ctx, old.TenantCode) || ctxs.IsAdmin(l.ctx) != nil {
+		return &sys.Empty{}, errors.Permissions
 	}
 	if in.Name != "" {
 		old.Name = in.Name

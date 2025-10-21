@@ -2,6 +2,7 @@ package dictmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -29,7 +30,7 @@ func (l *DictInfoCreateLogic) DictInfoCreate(in *sys.DictInfo) (*sys.WithID, err
 		return nil, err
 	}
 	if in.Code == "" || in.Group == "" {
-		return &sys.WithID{}, errors.Parameter.AddMsg("code or group is empty")
+		return &sys.WithID{}, errors.Parameter.AddMsg("sys.logic.dictmanage.codeOrGroupEmpty") // 编码或分组不能为空
 	}
 	po := &relationDB.SysDictInfo{
 		Group:      in.Group,

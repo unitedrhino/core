@@ -2,10 +2,10 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
-	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/stores"
-	"gitee.com/unitedrhino/share/utils"
 	"gorm.io/gorm"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -30,6 +30,9 @@ func NewNotifyConfigTemplateUpdateLogic(ctx context.Context, svcCtx *svc.Service
 
 // 租户通知配置
 func (l *NotifyConfigTemplateUpdateLogic) NotifyConfigTemplateUpdate(in *sys.NotifyConfigTemplate) (*sys.Empty, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	err := stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		db := relationDB.NewNotifyConfigTemplateRepo(tx)
 		err := db.DeleteByFilter(l.ctx, relationDB.NotifyConfigTemplateFilter{
@@ -48,25 +51,26 @@ func (l *NotifyConfigTemplateUpdateLogic) NotifyConfigTemplateUpdate(in *sys.Not
 		if err != nil {
 			return err
 		}
-		err = InitConfigEnableTypes(l.ctx, tx, in.NotifyCode)
+		//err = InitConfigEnableTypes(l.ctx, tx, in.NotifyCode)
 		return err
 	})
 
 	return &sys.Empty{}, err
 }
-func InitConfigEnableTypes(ctx context.Context, tx *gorm.DB, notifyCode string) error {
-	tps, err := relationDB.NewNotifyConfigTemplateRepo(tx).FindByFilter(ctx, relationDB.NotifyConfigTemplateFilter{NotifyCode: notifyCode}, nil)
-	if err != nil {
-		return err
-	}
-	var enableTypes = []def.NotifyType{}
-	for _, v := range tps {
-		if v.Template == nil {
-			continue
-		}
-		enableTypes = append(enableTypes, v.Template.Type)
-	}
-	return relationDB.NewNotifyConfigRepo(tx).UpdateWithField(ctx, relationDB.NotifyConfigFilter{Code: notifyCode}, map[string]any{
-		"enable_types": utils.MarshalNoErr(enableTypes),
-	})
-}
+
+//func InitConfigEnableTypes(ctx context.Context, tx *gorm.DB, notifyCode string) error {
+//	tps, err := relationDB.NewNotifyConfigTemplateRepo(tx).FindByFilter(ctx, relationDB.NotifyConfigTemplateFilter{NotifyCode: notifyCode}, nil)
+//	if err != nil {
+//		return err
+//	}
+//	var enableTypes = []def.NotifyType{}
+//	for _, v := range tps {
+//		if v.Template == nil {
+//			continue
+//		}
+//		enableTypes = append(enableTypes, v.Template.Type)
+//	}
+//	return relationDB.NewNotifyConfigRepo(tx).UpdateWithField(ctx, relationDB.NotifyConfigFilter{Code: notifyCode}, map[string]any{
+//		"enable_types": utils.MarshalNoErr(enableTypes),
+//	})
+//}

@@ -2,7 +2,9 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -26,6 +28,9 @@ func NewNotifyTemplateCreateLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *NotifyTemplateCreateLogic) NotifyTemplateCreate(in *sys.NotifyTemplate) (*sys.WithID, error) {
+	if err := ctxs.IsAdmin(l.ctx); err != nil {
+		return nil, err
+	}
 	po := utils.Copy[relationDB.SysNotifyTemplate](in)
 	po.ID = 0
 	err := relationDB.NewNotifyTemplateRepo(l.ctx).Insert(l.ctx, po)

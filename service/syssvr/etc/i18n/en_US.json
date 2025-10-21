@@ -1,0 +1,13 @@
+{
+  "sys.logic.dictmanage.dictNotDefine": "Dictionary not defined",
+  "sys.logic.dictmanage.codeOrGroupEmpty": "Code or group cannot be empty",
+  "sys.logic.notifymanage.typeNotSupport": "Type not supported",
+  "sys.logic.notifymanage.templateParseFailed": "Template parsing failed",
+  "sys.logic.notifymanage.templateMatchFailed": "Template matching failed",
+  "sys.logic.notifymanage.channelNotConfigured": "Channel not configured",
+  "sys.logic.notifymanage.wxMiniNotConfigured": "WeChat mini program not configured",
+  "sys.logic.notifymanage.userIdsRequired": "User IDs required",
+  "sys.logic.notifymanage.invalidUserIds": "Invalid user IDs provided",
+  "sys.logic.notifymanage.idRequired": "ID is required",
+  "sys.logic.tenantmanage.platformModuleNotForOtherTenant": "Platform module cannot be authorized to other tenants"
+}

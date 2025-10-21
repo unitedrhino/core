@@ -2,7 +2,9 @@ package notifymanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
@@ -29,10 +31,16 @@ func NewNotifyChannelCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 func (l *NotifyChannelCreateLogic) NotifyChannelCreate(in *sys.NotifyChannel) (*sys.WithID, error) {
 	po := utils.Copy[relationDB.SysNotifyChannel](in)
+	if po.TenantCode != "" && string(po.TenantCode) != ctxs.GetTenantCode(l.ctx) {
+		if !ctxs.CanHandTenant(l.ctx, po.TenantCode) {
+			return nil, errors.Permissions
+		}
+	}
 	po.ID = 0
+
 	if !utils.SliceIn(po.Type, def.NotifyTypeSms, def.NotifyTypeEmail, def.NotifyTypeDingTalk,
 		def.NotifyTypeDingWebhook, def.NotifyTypeWxMini, def.NotifyTypeMessage, def.NotifyTypeWxEWebhook) {
-		return nil, errors.Parameter.AddMsg("type not support")
+		return nil, errors.Parameter.AddMsg("sys.logic.notifymanage.typeNotSupport") // 类型不支持
 	}
 	err := relationDB.NewNotifyChannelRepo(l.ctx).Insert(l.ctx, po)
 	return &sys.WithID{Id: po.ID}, err
