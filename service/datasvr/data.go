@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"gitee.com/unitedrhino/share/i18ns"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 
@@ -18,6 +20,7 @@ func main() {
 	logx.DisableStat()
 	var c config.Config
 	utils.ConfMustLoad("etc/data.yaml", &c)
+	i18ns.InitWithFS("etc/i18n")
 
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()

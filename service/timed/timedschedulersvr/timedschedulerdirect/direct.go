@@ -3,11 +3,14 @@ package timedschedulerdirect
 import (
 	"flag"
 	"fmt"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/config"
 	schedulerServer "gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/server/timedscheduler"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/startup"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/pb/timedscheduler"
+	"gitee.com/unitedrhino/share/i18ns"
 	"gitee.com/unitedrhino/share/interceptors"
 	"gitee.com/unitedrhino/share/services"
 	"gitee.com/unitedrhino/share/utils"
@@ -15,7 +18,6 @@ import (
 	"github.com/zeromicro/go-zero/core/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"sync"
 )
 
 type Config = config.Config
@@ -31,6 +33,8 @@ func GetSvcCtx() *svc.ServiceContext {
 	svcOnce.Do(func() {
 		flag.Parse()
 		utils.ConfMustLoad("etc/timedscheduler.yaml", &c)
+		i18ns.InitWithFS("etc/i18n")
+
 		svcCtx = svc.NewServiceContext(c)
 		startup.Init(svcCtx)
 		logx.Infof("enabled timedschedulersvr")

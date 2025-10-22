@@ -3,6 +3,10 @@ package common
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"path/filepath"
+	"strings"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -10,9 +14,6 @@ import (
 	"gitee.com/unitedrhino/share/oss"
 	"gitee.com/unitedrhino/share/oss/common"
 	"gitee.com/unitedrhino/share/utils"
-	"net/http"
-	"path/filepath"
-	"strings"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -59,13 +60,14 @@ func (l *UploadFileLogic) UploadFile() (resp *types.UploadFileResp, err error) {
 
 // 定义一个禁止上传的文件后缀集合
 var forbiddenExtensions = map[string]struct{}{
-	"html": {}, "htm": {},
+	"html": {}, "htm": {}, "xml": {}, "xht": {}, "xhtml": {}, "svg": {},
 	"php": {}, "php5": {}, "php4": {}, "php3": {}, "php2": {}, "phtml": {}, "pht": {},
 	"asp": {}, "aspx": {}, "asa": {}, "asax": {}, "ascx": {}, "ashx": {}, "asmx": {}, "cer": {},
 	"jsp": {}, "jspa": {}, "jspx": {}, "jsw": {}, "jsv": {}, "jspf": {}, "jhtml": {},
 	"htaccess": {}, "swf": {},
 }
 
+// xml、xht、xhtml
 // 检查文件后缀是否被禁止
 func isForbiddenExtension(filename string) bool {
 	// 获取文件后缀
