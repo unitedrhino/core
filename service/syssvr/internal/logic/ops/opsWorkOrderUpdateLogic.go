@@ -3,13 +3,15 @@ package opslogic
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/domain/ops"
 	"gitee.com/unitedrhino/core/share/topics"
 	"github.com/zeromicro/go-zero/core/logx"
-	"time"
 )
 
 type OpsWorkOrderUpdateLogic struct {
@@ -49,7 +51,7 @@ func (l *OpsWorkOrderUpdateLogic) OpsWorkOrderUpdate(in *sys.OpsWorkOrder) (*sys
 	}
 	err = relationDB.NewOpsWorkOrderRepo(l.ctx).Update(l.ctx, old)
 	if err == nil && isFinish {
-		err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreOpsWorkOrderFinish, old.ID)
+		err = l.svcCtx.FastEvent.Publish(l.ctx, fmt.Sprintf(topics.CoreOpsWorkOrderFinish, old.TenantCode), old.ID)
 		if err != nil {
 			l.Error(err)
 		}

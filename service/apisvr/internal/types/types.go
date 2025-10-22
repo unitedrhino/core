@@ -772,11 +772,11 @@ type NotifyConfig struct {
 }
 
 type NotifyConfigIndexReq struct {
-	Page          *PageInfo               `json:"page,optional"`  // 分页信息,只获取一个则不填
-	Name          string                  `json:"name,optional"`  // 应用名称
-	Code          string                  `json:"code,optional"`  // 应用编号
-	Group         string                  `json:"group,optional"` //分组
-	WithTemplates []*NotifyConfigTemplate `json:"withTemplates,optional"`
+	Page          *PageInfo `json:"page,optional"`  // 分页信息,只获取一个则不填
+	Name          string    `json:"name,optional"`  // 应用名称
+	Code          string    `json:"code,optional"`  // 应用编号
+	Group         string    `json:"group,optional"` //分组
+	WithTemplates bool      `json:"withTemplates,optional"`
 }
 
 type NotifyConfigIndexResp struct {

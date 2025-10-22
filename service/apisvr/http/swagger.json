@@ -12520,10 +12520,8 @@
           "description": "分组"
         },
         "withTemplates": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/NotifyConfigTemplate"
-          }
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "NotifyConfigIndexReq"

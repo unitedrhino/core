@@ -2,6 +2,8 @@ package usermanagelogic
 
 import (
 	"context"
+	"fmt"
+
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/topics"
@@ -36,6 +38,9 @@ func NewUserInfoDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 }
 
 func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Empty, error) {
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		return nil, err
+	}
 	uc := ctxs.GetUserCtx(l.ctx)
 	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, uc.TenantCode)
 	if err != nil {
@@ -77,7 +82,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 				if err != nil {
 					return err
 				}
-				err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreProjectInfoDelete, v.ProjectID)
+				err = l.svcCtx.FastEvent.Publish(l.ctx, fmt.Sprintf(topics.CoreProjectInfoDelete, v.TenantCode), v.ProjectID)
 				if err != nil {
 					l.Error(err)
 				}

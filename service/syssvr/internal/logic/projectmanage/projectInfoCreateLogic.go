@@ -120,7 +120,7 @@ func (l *ProjectInfoCreateLogic) ProjectInfoCreate(in *sys.ProjectInfo) (*sys.Pr
 		return nil, err
 	}
 	cache.ClearProjectAuth(uc.UserID)
-	err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreProjectInfoCreate, po.ProjectID)
+	err = l.svcCtx.FastEvent.Publish(l.ctx, fmt.Sprintf(topics.CoreProjectInfoCreate, po.TenantCode), po.ProjectID)
 	if err != nil {
 		l.Error(err)
 	}

@@ -3,13 +3,14 @@ package websocket
 import (
 	"context"
 	"fmt"
+	"sync"
+	"time"
+
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/kv"
-	"sync"
-	"time"
 )
 
 const (

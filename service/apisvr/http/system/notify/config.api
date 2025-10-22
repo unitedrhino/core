@@ -132,7 +132,7 @@ type (
         Name string `json:"name,optional"`                     // 应用名称
         Code string `json:"code,optional"`                     // 应用编号
         Group string  `json:"group,optional"` //分组
-        WithTemplates []*NotifyConfigTemplate `json:"withTemplates,optional"`
+        WithTemplates bool `json:"withTemplates,optional"`
     }
 
 

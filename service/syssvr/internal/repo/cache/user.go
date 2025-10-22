@@ -7,6 +7,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
+	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/def"
@@ -21,7 +22,7 @@ type UserCache struct {
 
 func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenant.Info, string], userCache *caches.Cache[sys.UserInfo, int64]) (*UserCache, error) {
 	c, err := caches.NewCache(caches.CacheConfig[users.UserInfo, users.UserTenantCore]{
-		KeyType:   eventBus.ServerCacheKeySysUserTokenInfo,
+		KeyType:   topics.ServerCacheKeySysUserTokenInfo,
 		FastEvent: FastEvent,
 		GetData: func(ctx context.Context, key users.UserTenantCore) (*users.UserInfo, error) {
 			ui, err := userCache.GetData(ctx, key.UserID)

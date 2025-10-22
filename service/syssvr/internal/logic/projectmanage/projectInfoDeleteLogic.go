@@ -2,6 +2,7 @@ package projectmanagelogic
 
 import (
 	"context"
+	"fmt"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/topics"
@@ -69,7 +70,7 @@ func (l *ProjectInfoDeleteLogic) ProjectInfoDelete(in *sys.ProjectWithID) (*sys.
 		return err
 	})
 	if err == nil {
-		err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreProjectInfoDelete, in.ProjectID)
+		err = l.svcCtx.FastEvent.Publish(l.ctx, fmt.Sprintf(topics.CoreProjectInfoDelete, po.TenantCode), in.ProjectID)
 		if err != nil {
 			l.Error(err)
 		}
