@@ -15,6 +15,7 @@ type Config struct {
 		AccessSecret string
 		AccessExpire int64
 	}
+	Weather  Weather      `json:",optional"`
 	OssConf  conf.OssConf `json:",optional"`
 	Event    conf.EventConf
 	Register struct {
@@ -48,6 +49,11 @@ type Config struct {
 	LoginPwdAccountLimit []conf.Limit `json:",optional"` //密码错误限制
 	LoginPwdCaptchaLimit []conf.Limit `json:",optional"` //密码输入几次就要求输入验证码
 
+}
+
+type Weather struct {
+	ApiKey  string `json:",optional"` //参考: https://dev.qweather.com/
+	ApiHost string `json:",optional"` //参考: https://console.qweather.com/setting
 }
 
 var DefaultIpLimit = []conf.Limit{

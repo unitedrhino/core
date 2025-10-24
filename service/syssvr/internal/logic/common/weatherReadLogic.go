@@ -4,12 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/parnurzeal/gorequest"
-	"time"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -39,6 +40,9 @@ type respType[t any] struct {
 //var key = "b7de434f83c146e480d13ba6a565ce30"
 
 func (l *WeatherReadLogic) WeatherRead(in *sys.WeatherReadReq) (*sys.WeatherReadResp, error) {
+	if l.svcCtx.Config.Weather.ApiKey == "" || l.svcCtx.Config.Weather.ApiHost == "" {
+		return &sys.WeatherReadResp{}, errors.Parameter.AddMsg("请联系管理员配置天气秘钥")
+	}
 	uc := ctxs.GetUserCtx(l.ctx)
 	if in.Position == nil && in.ProjectID == 0 {
 		in.ProjectID = uc.ProjectID
@@ -54,31 +58,33 @@ func (l *WeatherReadLogic) WeatherRead(in *sys.WeatherReadReq) (*sys.WeatherRead
 		}
 	}
 	cacheKey := fmt.Sprintf("sys:common:weather:%.2f:%.2f", in.Position.Latitude, in.Position.Longitude)
-	ret, err := caches.GetStore().GetCtx(l.ctx, cacheKey)
+	ret, _ := caches.GetStore().GetCtx(l.ctx, cacheKey)
 	if ret != "" {
 		var rett sys.WeatherReadResp
 		json.Unmarshal([]byte(ret), &rett)
 		return &rett, nil
 	}
-	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, uc.TenantCode)
-	if err != nil {
-		return nil, err
-	}
-	key := tc.WeatherKey
+
 	var (
 		weather respType[sys.WeatherReadResp]
 		air     respType[sys.WeatherAir]
 		greq    = gorequest.New().Retry(3, time.Second*2)
 	)
 	//参考: https://dev.qweather.com/
-	resp, body, errs := greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/weather/now?location=%v,%v&key=%s",
-		in.Position.Longitude, in.Position.Latitude, key)).EndStruct(&weather)
+	resp, body, errs := greq.Get(fmt.Sprintf("https://%s/v7/weather/now?location=%.2f,%.2f&key=%s",
+		l.svcCtx.Config.Weather.ApiHost, in.Position.Longitude, in.Position.Latitude, l.svcCtx.Config.Weather.ApiKey)).EndStruct(&weather)
 	if errs != nil {
 		return nil, errors.System.AddDetail(string(body), resp, errs)
 	}
-	resp, body, errs = greq.Get(fmt.Sprintf("https://devapi.qweather.com/v7/air/now?location=%v,%v&key=%s",
-		in.Position.Longitude, in.Position.Latitude, key)).EndStruct(&air)
+	if resp.StatusCode != 200 {
+		return nil, errors.System.AddDetail(string(body), resp, errs)
+	}
+	resp, body, errs = greq.Get(fmt.Sprintf("https://%s/v7/air/now?location=%v,%v&key=%s",
+		l.svcCtx.Config.Weather.ApiHost, in.Position.Longitude, in.Position.Latitude, l.svcCtx.Config.Weather.ApiKey)).EndStruct(&air)
 	if errs != nil {
+		return nil, errors.System.AddDetail(string(body), resp, errs)
+	}
+	if resp.StatusCode != 200 {
 		return nil, errors.System.AddDetail(string(body), resp, errs)
 	}
 	weather.Now.Air = &air.Now
