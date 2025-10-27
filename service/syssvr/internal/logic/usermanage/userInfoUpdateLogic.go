@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -64,7 +65,9 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 			ui.Tags = info.Tags
 		}
 	}
-
+	if info.PubTags != nil {
+		ui.PubTags = info.PubTags
+	}
 	if info.NickName != "" {
 		ui.NickName = info.NickName
 	}

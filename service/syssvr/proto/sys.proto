@@ -1375,7 +1375,8 @@ message UserInfo{
   string headImg =19;
   bool isUpdateHeadImg = 20;//只有这个参数为true的时候才会更新图片,传参为图片的file path
   int64 status =21;
-  map<string, string> tags = 24;//标签
+  map<string, string> tags = 24;// 私有标签,只有管理员可以修改
+  map<string,string>pubTags =28;// 公共的标签,用户自己可以修改
   repeated int64 deptIDs =25;//部门ID列表,默认展示第一个
   int64 deviceCount =26; //拥有的设备统计
 }

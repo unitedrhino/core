@@ -16556,7 +16556,11 @@
         },
         "tags": {
           "type": "object",
-          "description": "标签对象"
+          "description": "私有标签,只有管理员可以修改"
+        },
+        "pubTags": {
+          "type": "object",
+          "description": " 公共的标签,用户自己可以修改"
         },
         "messageNotRead": {
           "type": "object"

@@ -1756,7 +1756,8 @@ type UserInfo struct {
 	IsAllData       int64             `json:"isAllData,optional,omitempty"`       // 是否所有数据权限（1是，2否）
 	DeptIDs         []string          `json:"deptIDs,optional,omitempty"`         //部门ID列表
 	Status          int64             `json:"status,optional"`
-	Tags            map[string]string `json:"tags,optional,omitempty"` //标签对象
+	Tags            map[string]string `json:"tags,optional,omitempty"`    //私有标签,只有管理员可以修改
+	PubTags         map[string]string `json:"pubTags,optional,omitempty"` // 公共的标签,用户自己可以修改
 	MessageNotRead  map[string]int64  `json:"messageNotRead,optional,omitempty"`
 	Roles           []*RoleInfo       `json:"roles,optional,omitempty"`
 	Tenant          *TenantInfo       `json:"tenant,optional,omitempty"`
