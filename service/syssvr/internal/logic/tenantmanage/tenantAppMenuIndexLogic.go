@@ -2,6 +2,7 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -42,7 +43,7 @@ func (l *TenantAppMenuIndexLogic) TenantAppMenuIndex(in *sys.TenantAppMenuIndexR
 		IsCommon:   in.IsCommon,
 	}
 	resp, err := relationDB.NewTenantAppMenuRepo(l.ctx).FindByFilter(l.ctx, f, &stores.PageInfo{Orders: []stores.OrderBy{
-		{Field: "hide_in_menu", Sort: stores.OrderDesc}, {Field: "order", Sort: stores.OrderAsc}}})
+		{Field: "parent_id", Sort: stores.OrderAsc}, {Field: "hide_in_menu", Sort: stores.OrderDesc}, {Field: "order", Sort: stores.OrderAsc}}})
 	if err != nil {
 		return nil, err
 	}

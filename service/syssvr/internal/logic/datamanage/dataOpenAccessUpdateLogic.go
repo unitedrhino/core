@@ -2,6 +2,7 @@ package datamanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -42,7 +43,7 @@ func (l *DataOpenAccessUpdateLogic) DataOpenAccessUpdate(in *sys.OpenAccess) (*s
 	if in.Desc != "" {
 		old.Desc = in.Desc
 	}
-	if in.IpRange != nil {
+	if in.IpRange != nil && !(len(in.IpRange) == 1 && in.IpRange[0] == "") { //兼容前端不规范传参
 		old.IpRange = in.IpRange
 	}
 	err = relationDB.NewDataOpenAccessRepo(l.ctx).Update(l.ctx, old)

@@ -2,6 +2,7 @@ package datamanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -41,6 +42,9 @@ func (l *DataOpenAccessCreateLogic) DataOpenAccessCreate(in *sys.OpenAccess) (*s
 	}
 	if !uc.IsAdmin || in.UserID == 0 {
 		in.UserID = uc.UserID
+	}
+	if len(in.IpRange) == 1 && in.IpRange[0] == "" { //兼容前端不规范传参
+		in.IpRange = nil
 	}
 	if !uc.IsAdmin && in.UserID != uc.UserID {
 		return nil, errors.Permissions
