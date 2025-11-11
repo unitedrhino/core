@@ -68,7 +68,7 @@ func (s *UserManageServer) UserCheckToken(ctx context.Context, in *sys.UserCheck
 	return l.UserCheckToken(in)
 }
 
-func (s *UserManageServer) UserRegister(ctx context.Context, in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
+func (s *UserManageServer) UserRegister(ctx context.Context, in *sys.UserRegisterReq) (*sys.UserLoginResp, error) {
 	l := usermanagelogic.NewUserRegisterLogic(ctx, s.svcCtx)
 	return l.UserRegister(in)
 }

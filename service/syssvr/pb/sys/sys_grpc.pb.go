@@ -62,7 +62,7 @@ type UserManageClient interface {
 	UserForgetPwd(ctx context.Context, in *UserForgetPwdReq, opts ...grpc.CallOption) (*Empty, error)
 	UserCaptcha(ctx context.Context, in *UserCaptchaReq, opts ...grpc.CallOption) (*UserCaptchaResp, error)
 	UserCheckToken(ctx context.Context, in *UserCheckTokenReq, opts ...grpc.CallOption) (*UserCheckTokenResp, error)
-	UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
+	UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserLoginResp, error)
 	UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 	UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error)
 	UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error)
@@ -172,8 +172,8 @@ func (c *userManageClient) UserCheckToken(ctx context.Context, in *UserCheckToke
 	return out, nil
 }
 
-func (c *userManageClient) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
-	out := new(UserRegisterResp)
+func (c *userManageClient) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
+	out := new(UserLoginResp)
 	err := c.cc.Invoke(ctx, UserManage_UserRegister_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -356,7 +356,7 @@ type UserManageServer interface {
 	UserForgetPwd(context.Context, *UserForgetPwdReq) (*Empty, error)
 	UserCaptcha(context.Context, *UserCaptchaReq) (*UserCaptchaResp, error)
 	UserCheckToken(context.Context, *UserCheckTokenReq) (*UserCheckTokenResp, error)
-	UserRegister(context.Context, *UserRegisterReq) (*UserRegisterResp, error)
+	UserRegister(context.Context, *UserRegisterReq) (*UserLoginResp, error)
 	UserChangePwd(context.Context, *UserChangePwdReq) (*Empty, error)
 	UserCodeToUserID(context.Context, *UserCodeToUserIDReq) (*UserCodeToUserIDResp, error)
 	UserBindAccount(context.Context, *UserBindAccountReq) (*Empty, error)
@@ -409,7 +409,7 @@ func (UnimplementedUserManageServer) UserCaptcha(context.Context, *UserCaptchaRe
 func (UnimplementedUserManageServer) UserCheckToken(context.Context, *UserCheckTokenReq) (*UserCheckTokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCheckToken not implemented")
 }
-func (UnimplementedUserManageServer) UserRegister(context.Context, *UserRegisterReq) (*UserRegisterResp, error) {
+func (UnimplementedUserManageServer) UserRegister(context.Context, *UserRegisterReq) (*UserLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
 }
 func (UnimplementedUserManageServer) UserChangePwd(context.Context, *UserChangePwdReq) (*Empty, error) {

@@ -41,20 +41,36 @@ func NewUserRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 	}
 }
 
-func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
+func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserLoginResp, error) {
+	var userID int64
+	var err error
 	switch in.RegType {
 	case users.RegDingApp:
-		return l.handleDingApp(in)
+		userID, err = l.handleDingApp(in)
 	case users.RegWxMiniP:
-		return l.handleWxminip(in)
+		userID, err = l.handleWxminip(in)
 	case users.RegEmail, users.RegPhone:
-		return l.handleEmailOrPhone(in)
+		userID, err = l.handleEmailOrPhone(in)
 	default:
 		return nil, errors.NotRealize.AddMsgf(in.RegType)
 	}
+	if err != nil {
+		return nil, err
+	}
+	ui, err := relationDB.NewUserInfoRepo(l.ctx).FindOne(l.ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	if !in.IsWithLogin {
+		resp := &sys.UserLoginResp{
+			Info: UserInfoToPb(l.ctx, ui, l.svcCtx),
+		}
+		return resp, nil
+	}
+	return GenLoginResp(l.ctx, l.svcCtx, in.DeviceID, ui)
 }
 
-func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
+func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (int64, error) {
 	ui := relationDB.SysUserInfo{
 		UserID: l.svcCtx.UserID.GetSnowflakeId(),
 	}
@@ -70,14 +86,14 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	case users.RegEmail:
 		email := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeEmail, def.CaptchaUseRegister, in.CodeID, in.Code)
 		if email == "" || email != in.Account {
-			return nil, errors.Captcha
+			return 0, errors.Captcha
 		}
 		ui.Email = utils.AnyToNullString(in.Account)
 		ui.UserName = ui.Email
 	case users.RegPhone:
 		phone := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypePhone, def.CaptchaUseRegister, in.CodeID, in.Code)
 		if phone == "" || phone != in.Account {
-			return nil, errors.Captcha
+			return 0, errors.Captcha
 		}
 		ui.Phone = utils.AnyToNullString(in.Account)
 		ui.UserName = ui.Phone
@@ -85,7 +101,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	if in.Password != "" {
 		err := CheckPwd(l.svcCtx, in.Password)
 		if err != nil {
-			return nil, err
+			return 0, err
 		}
 	}
 
@@ -95,24 +111,24 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 		if err != nil {
 			cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 			if er != nil {
-				return nil, errors.System.AddDetail(er)
+				return 0, errors.System.AddDetail(er)
 			}
 			if cli.WxOfficial == nil {
-				return nil, errors.System.AddDetail(er)
+				return 0, errors.System.AddDetail(er)
 			}
 			at2, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
 			if er != nil {
-				return nil, errors.System.AddDetail(er)
+				return 0, errors.System.AddDetail(er)
 			}
 			at = &at2
 		}
 		StoreWxRegisterResAccessToken(l.ctx, wxOpenCode, at)
 		_, err = relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{WechatUnionID: at.UnionID, WechatOpenID: at.OpenID})
 		if err == nil {
-			return nil, errors.BindAccount.WithMsg("微信已绑定其他账号")
+			return 0, errors.BindAccount.WithMsg("微信已绑定其他账号")
 		}
 		if !errors.Cmp(err, errors.NotFind) {
-			return nil, err
+			return 0, err
 		}
 		ui.WechatOpenID = sql.NullString{Valid: true, String: at.OpenID}
 		if at.UnionID != "" {
@@ -122,21 +138,19 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (*sys.Us
 	conn := stores.GetTenantConn(l.ctx)
 	err := l.FillUserInfo(&ui, conn)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 	e := l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{ui.UserID}})
 	if e != nil {
 		l.Errorf("Publish CoreUserCreate %v err:%v", ui, e)
 	}
-	return &sys.UserRegisterResp{
-		UserID: ui.UserID,
-	}, nil
+	return ui.UserID, nil
 }
 
-func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
+func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (int64, error) {
 	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
 	if err != nil || cli.MiniProgram == nil {
-		return nil, errors.System.AddDetail(err)
+		return 0, errors.System.AddDetail(err)
 	}
 	auth := cli.MiniProgram.GetAuth()
 
@@ -144,28 +158,28 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 	if err != nil {
 		l.Errorf("%v.Code2SessionContext err:%v", err)
 		if wxUid.ErrCode != 0 {
-			return nil, errors.System.AddDetail(wxUid.ErrMsg)
+			return 0, errors.System.AddDetail(wxUid.ErrMsg)
 		}
-		return nil, errors.System.AddDetail(err)
+		return 0, errors.System.AddDetail(err)
 	} else if wxUid.ErrCode != 0 {
-		return nil, errors.Parameter.AddDetail(wxUid.ErrMsg)
+		return 0, errors.Parameter.AddDetail(wxUid.ErrMsg)
 	}
 
 	if in.Expand == nil || in.Expand["phoneCode"] == "" {
-		return nil, errors.Parameter.AddMsg("微信小程序注册需要填写expand.phoneCode")
+		return 0, errors.Parameter.AddMsg("微信小程序注册需要填写expand.phoneCode")
 	}
 	phoneCode := in.Expand["phoneCode"]
 	wxPhone, err := auth.GetPhoneNumber(phoneCode)
 	if err != nil {
-		return nil, errors.System.AddDetail(err)
+		return 0, errors.System.AddDetail(err)
 	}
 	if wxPhone.ErrCode != 0 {
-		return nil, errors.Parameter.AddDetail(wxPhone.ErrMsg)
+		return 0, errors.Parameter.AddDetail(wxPhone.ErrMsg)
 	}
 	if in.Password != "" {
 		err := CheckPwd(l.svcCtx, in.Password)
 		if err != nil {
-			return nil, err
+			return 0, err
 		}
 	}
 	var userID int64
@@ -232,23 +246,23 @@ func (l *UserRegisterLogic) handleWxminip(in *sys.UserRegisterReq) (*sys.UserReg
 		return err
 	})
 
-	return &sys.UserRegisterResp{UserID: userID}, err
+	return userID, err
 }
 
-func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserRegisterResp, error) {
+func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (int64, error) {
 	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
 	if err != nil || cli.DingMini == nil {
-		return nil, errors.System.AddDetail(err)
+		return 0, errors.System.AddDetail(err)
 	}
 	ret, err := cli.DingMini.GetUserInfoByCode(in.Code)
 	if err != nil {
 		l.Errorf("%v.Code2SessionContext err:%v", err)
 		if ret.Code != 0 {
-			return nil, errors.System.AddDetail(ret.Msg)
+			return 0, errors.System.AddDetail(ret.Msg)
 		}
-		return nil, errors.System.AddDetail(err)
+		return 0, errors.System.AddDetail(err)
 	} else if ret.Code != 0 {
-		return nil, errors.Parameter.AddDetail(ret.Msg)
+		return 0, errors.Parameter.AddDetail(ret.Msg)
 	}
 	userID := l.svcCtx.UserID.GetSnowflakeId()
 	ui := relationDB.SysUserInfo{
@@ -276,7 +290,7 @@ func (l *UserRegisterLogic) handleDingApp(in *sys.UserRegisterReq) (*sys.UserReg
 		}
 		return l.FillUserInfo(&ui, tx)
 	})
-	return &sys.UserRegisterResp{UserID: userID}, err
+	return userID, err
 }
 
 func (l *UserRegisterLogic) FillUserInfo(in *relationDB.SysUserInfo, tx *gorm.DB) error {

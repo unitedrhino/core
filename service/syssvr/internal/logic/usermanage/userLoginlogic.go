@@ -75,30 +75,30 @@ func genID(ctx context.Context, nodeID int64) string {
 	return fmt.Sprintf("%x", token)
 }
 
-func (l *LoginLogic) getRet(in *sys.UserLoginReq, ui *relationDB.SysUserInfo) (*sys.UserLoginResp, error) {
-	uc := ctxs.GetUserCtx(l.ctx)
-	id := genID(l.ctx, l.svcCtx.NodeID)
+func GenLoginResp(ctx context.Context, svcCtx *svc.ServiceContext, deviceID string, ui *relationDB.SysUserInfo) (*sys.UserLoginResp, error) {
+	uc := ctxs.GetUserCtx(ctx)
+	id := genID(ctx, svcCtx.NodeID)
 	now := time.Now()
-	accessExpire := l.svcCtx.Config.UserToken.AccessExpire
-	jwtToken, claims, err := users.GetLoginJwtToken(l.svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
-		ui.UserID, uc.AppCode, id, in.DeviceID)
+	accessExpire := svcCtx.Config.UserToken.AccessExpire
+	jwtToken, claims, err := users.GetLoginJwtToken(svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
+		ui.UserID, uc.AppCode, id, deviceID)
 	if err != nil {
-		l.Error(err)
+		logx.WithContext(ctx).Error(err)
 		return nil, errors.System.AddDetail(err)
 	}
 	resp := &sys.UserLoginResp{
-		Info: UserInfoToPb(l.ctx, ui, l.svcCtx),
+		Info: UserInfoToPb(ctx, ui, svcCtx),
 		Token: &sys.JwtToken{
 			AccessToken:  jwtToken,
 			AccessExpire: now.Unix() + accessExpire,
 			RefreshAfter: now.Unix() + accessExpire/2,
 		},
 	}
-	err = l.svcCtx.UserToken.Login(l.ctx, claims)
+	err = svcCtx.UserToken.Login(ctx, claims)
 	if err != nil {
 		return nil, err
 	}
-	l.Infof("%s getRet=%+v", utils.FuncName(), resp)
+	logx.WithContext(ctx).Infof("%s GenLoginResp=%+v", utils.FuncName(), resp)
 	return resp, nil
 }
 
@@ -331,7 +331,7 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 		if ui.Status != def.True {
 			return nil, errors.AccountDisable
 		}
-		return l.getRet(in, ui)
+		return GenLoginResp(l.ctx, l.svcCtx, in.DeviceID, ui)
 	}
 	if errors.Cmp(err, errors.NotFind) {
 		return nil, errors.UnRegister

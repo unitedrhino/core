@@ -1882,13 +1882,14 @@ type UserProfileReadResp struct {
 }
 
 type UserRegisterReq struct {
-	RegType  string            `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp"`
-	Account  string            `json:"account,optional"`  //手机号注册时填写手机号 账号密码注册时填写userName
-	Code     string            `json:"code"`              //验证码    微信登录填code 账号密码登录时填写密码
-	CodeID   string            `json:"codeID,optional"`   //验证码编号 微信登录填state
-	Password string            `json:"password,optional"` //密码
-	Expand   map[string]string `json:"expand,optional"`   //拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
-	Info     *UserInfo         `json:"info,optional"`     //用户信息
+	RegType     string            `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp"`
+	Account     string            `json:"account,optional"`     //手机号注册时填写手机号 账号密码注册时填写userName
+	Code        string            `json:"code"`                 //验证码    微信登录填code 账号密码登录时填写密码
+	CodeID      string            `json:"codeID,optional"`      //验证码编号 微信登录填state
+	Password    string            `json:"password,optional"`    //密码
+	Expand      map[string]string `json:"expand,optional"`      //拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
+	Info        *UserInfo         `json:"info,optional"`        //用户信息
+	IsWithLogin bool              `json:"isWithLogin,optional"` //注册成功同时返回token,自动登录
 }
 
 type UserResourceReadResp struct {

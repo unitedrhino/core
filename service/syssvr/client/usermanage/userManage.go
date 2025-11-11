@@ -258,7 +258,6 @@ type (
 	UserProfileIndexReq                   = sys.UserProfileIndexReq
 	UserProfileIndexResp                  = sys.UserProfileIndexResp
 	UserRegisterReq                       = sys.UserRegisterReq
-	UserRegisterResp                      = sys.UserRegisterResp
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq
@@ -280,7 +279,7 @@ type (
 		UserForgetPwd(ctx context.Context, in *UserForgetPwdReq, opts ...grpc.CallOption) (*Empty, error)
 		UserCaptcha(ctx context.Context, in *UserCaptchaReq, opts ...grpc.CallOption) (*UserCaptchaResp, error)
 		UserCheckToken(ctx context.Context, in *UserCheckTokenReq, opts ...grpc.CallOption) (*UserCheckTokenResp, error)
-		UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error)
+		UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserLoginResp, error)
 		UserChangePwd(ctx context.Context, in *UserChangePwdReq, opts ...grpc.CallOption) (*Empty, error)
 		UserCodeToUserID(ctx context.Context, in *UserCodeToUserIDReq, opts ...grpc.CallOption) (*UserCodeToUserIDResp, error)
 		UserBindAccount(ctx context.Context, in *UserBindAccountReq, opts ...grpc.CallOption) (*Empty, error)
@@ -405,12 +404,12 @@ func (d *directUserManage) UserCheckToken(ctx context.Context, in *UserCheckToke
 	return d.svr.UserCheckToken(ctx, in)
 }
 
-func (m *defaultUserManage) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
+func (m *defaultUserManage) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
 	client := sys.NewUserManageClient(m.cli.Conn())
 	return client.UserRegister(ctx, in, opts...)
 }
 
-func (d *directUserManage) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserRegisterResp, error) {
+func (d *directUserManage) UserRegister(ctx context.Context, in *UserRegisterReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
 	return d.svr.UserRegister(ctx, in)
 }
 

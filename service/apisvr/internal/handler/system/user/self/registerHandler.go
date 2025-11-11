@@ -1,13 +1,14 @@
 package self
 
 import (
+	"net/http"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user/self"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/result"
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"net/http"
 )
 
 func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -18,7 +19,7 @@ func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 		l := self.NewRegisterLogic(r.Context(), svcCtx)
-		err := l.Register(&req)
-		result.Http(w, r, nil, err)
+		resp, err := l.Register(&req)
+		result.Http(w, r, resp, err)
 	}
 }

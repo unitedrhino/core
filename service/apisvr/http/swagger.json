@@ -9297,6 +9297,9 @@
                 "msg": {
                   "type": "string",
                   "title": "返回的消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/UserLoginResp"
                 }
               }
             }
@@ -17066,6 +17069,11 @@
         "info": {
           "$ref": "#/definitions/UserInfo",
           "description": "用户信息"
+        },
+        "isWithLogin": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "注册成功同时返回token,自动登录"
         }
       },
       "title": "UserRegisterReq",

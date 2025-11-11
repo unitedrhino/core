@@ -92,7 +92,7 @@ service api {
 
 	@doc "用户注册"
 	@handler register
-	post /register (UserRegisterReq) returns ()
+	post /register (UserRegisterReq) returns (UserLoginResp)
 	@doc "忘记密码"
 	@handler forgetPwd
 	post /forget-pwd (UserForgetPwdReq) returns ()
@@ -255,7 +255,8 @@ type (
 		Password  string `json:"password,optional"`	//密码
 		Expand map[string ]string `json:"expand,optional"`//拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code
 		Info *UserInfo `json:"info,optional"` //用户信息
-	}
+        IsWithLogin bool  `json:"isWithLogin,optional"`//注册成功同时返回token,自动登录
+    }
 
 	UserForgetPwdReq{
 		Type string `json:"type,options=phone|email"` 	//验证方式:	phone手机号 email邮箱

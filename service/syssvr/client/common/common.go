@@ -258,7 +258,6 @@ type (
 	UserProfileIndexReq                   = sys.UserProfileIndexReq
 	UserProfileIndexResp                  = sys.UserProfileIndexResp
 	UserRegisterReq                       = sys.UserRegisterReq
-	UserRegisterResp                      = sys.UserRegisterResp
 	UserRoleIndexReq                      = sys.UserRoleIndexReq
 	UserRoleIndexResp                     = sys.UserRoleIndexResp
 	UserRoleMultiUpdateReq                = sys.UserRoleMultiUpdateReq

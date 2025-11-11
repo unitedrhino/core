@@ -2,6 +2,7 @@ package self
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -86,13 +87,15 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 	var (
 		roles []*types.RoleInfo
 	)
-
+	if len(uResp.Info.Password) != 0 {
+		uResp.Info.Password = "xxxx"
+	}
 	roles = role.ToRoleInfosTypes(info.List)
 	return &types.UserLoginResp{
 		Info: types.UserInfo{
 			UserID:      uResp.Info.UserID,
 			UserName:    uResp.Info.UserName,
-			Password:    "",
+			Password:    uResp.Info.Password,
 			Email:       utils.ToNullString(uResp.Info.Email),
 			Phone:       utils.ToNullString(uResp.Info.Phone),
 			LastIP:      uResp.Info.LastIP,

@@ -16,7 +16,7 @@ service UserManage {
   rpc userForgetPwd(UserForgetPwdReq)returns(Empty);
   rpc userCaptcha(UserCaptchaReq)returns(UserCaptchaResp);
   rpc userCheckToken(UserCheckTokenReq) returns(UserCheckTokenResp);
-  rpc userRegister(UserRegisterReq) returns(UserRegisterResp);
+  rpc userRegister(UserRegisterReq) returns(UserLoginResp);
   rpc userChangePwd(UserChangePwdReq) returns(Empty);
   rpc userCodeToUserID(UserCodeToUserIDReq)returns(UserCodeToUserIDResp);//第三方的code获取用户的id
   rpc userBindAccount(UserBindAccountReq)returns(Empty);
@@ -1562,11 +1562,11 @@ message UserRegisterReq{
   string password =5;
   UserInfo info = 6;//填写用户信息
   map<string,string> expand =7; //拓展, 微信登录方式 phoneCode:获取手机号code
+  string deviceID =8;//设备ID 可选
+  bool isWithLogin =9;//注册成功同时返回token,自动登录
 }
 
-message UserRegisterResp{
-  int64 userID = 1;
-}
+
 
 message UserBindAccountReq{
   string type =1;//验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序
