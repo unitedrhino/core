@@ -34,13 +34,14 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(req *types.UserRegisterReq) (resp *types.UserLoginResp, err error) {
 	uResp, err := l.svcCtx.UserRpc.UserRegister(l.ctx, &sys.UserRegisterReq{
-		RegType:  req.RegType,
-		Account:  req.Account,
-		Code:     req.Code,
-		CodeID:   req.CodeID,
-		Password: req.Password,
-		Expand:   req.Expand,
-		Info:     user.UserInfoToRpc(req.Info),
+		RegType:     req.RegType,
+		Account:     req.Account,
+		Code:        req.Code,
+		CodeID:      req.CodeID,
+		Password:    req.Password,
+		Expand:      req.Expand,
+		Info:        user.UserInfoToRpc(req.Info),
+		IsWithLogin: req.IsWithLogin,
 	})
 	if err != nil {
 		return nil, err
