@@ -4,6 +4,7 @@ import (
 	"context"
 
 	notifymanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/notifymanage"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -40,6 +41,9 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 	switch in.Type {
 	case def.CaptchaTypeImage:
 	case def.CaptchaTypePhone:
+		if in.Account == "" {
+			return nil, errors.Parameter.AddMsg("请输入手机号")
+		}
 		if in.Code != "" {
 			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, in.Use, in.CodeID, in.Code)
 			if account == "" {
@@ -55,7 +59,15 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试").AddDetail("PhoneIp")
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
-		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
+		if in.Use == def.CaptchaUseRegister { //注册的时候要检查下是否已经注册了,如果注册了返回错误
+			u, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phone: in.Account})
+			if err != nil && !errors.Cmp(err, errors.NotFind) {
+				return nil, err
+			}
+			if u != nil {
+				return nil, errors.DuplicateRegister
+			}
+		} else {
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
 		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
@@ -74,6 +86,9 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			l.svcCtx.CaptchaLimit.PhoneIp.LimitIt(l.ctx, ip)
 		}
 	case def.CaptchaTypeEmail:
+		if in.Account == "" {
+			return nil, errors.Parameter.AddMsg("请输入邮箱")
+		}
 		if in.Code != "" {
 			account := l.svcCtx.Captcha.Verify(l.ctx, def.CaptchaTypeImage, in.Use, in.CodeID, in.Code)
 			if account == "" {
@@ -89,7 +104,15 @@ func (l *UserCaptchaLogic) UserCaptcha(in *sys.UserCaptchaReq) (*sys.UserCaptcha
 			return nil, errors.AccountOrIpForbidden.WithMsg("获取过于频繁,请稍后再试").AddDetail("CaptchaLimit")
 		}
 		var ConfigCode = def.NotifyCodeSysUserRegisterCaptcha
-		if !utils.SliceIn(in.Use, def.CaptchaUseRegister) {
+		if in.Use == def.CaptchaUseRegister { //注册的时候要检查下是否已经注册了,如果注册了返回错误
+			u, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Email: in.Account})
+			if err != nil && !errors.Cmp(err, errors.NotFind) {
+				return nil, err
+			}
+			if u != nil {
+				return nil, errors.DuplicateRegister
+			}
+		} else {
 			ConfigCode = def.NotifyCodeSysUserLoginCaptcha
 		}
 		err := notifymanagelogic.SendNotifyMsg(l.ctx, l.svcCtx, notifymanagelogic.SendMsgConfig{
