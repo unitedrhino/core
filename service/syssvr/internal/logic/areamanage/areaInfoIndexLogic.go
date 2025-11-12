@@ -55,6 +55,5 @@ func (l *AreaInfoIndexLogic) AreaInfoIndex(in *sys.AreaInfoIndexReq) (*sys.AreaI
 		l.Errorf("AreaInfoIndex find menu_info err,menuIds:%d,err:%v", in.AreaIDs, err)
 		return nil, err
 	}
-
 	return &sys.AreaInfoIndexResp{List: AreaInfosToPb(l.ctx, l.svcCtx, poArr), Total: total}, nil
 }

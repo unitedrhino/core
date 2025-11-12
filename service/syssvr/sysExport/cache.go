@@ -3,6 +3,8 @@ package sysExport
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"gitee.com/unitedrhino/core/service/syssvr/client/areamanage"
 	"gitee.com/unitedrhino/core/service/syssvr/client/common"
 	"gitee.com/unitedrhino/core/service/syssvr/client/projectmanage"
@@ -17,7 +19,6 @@ import (
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
-	"strings"
 )
 
 type AreaCacheT = *caches.Cache[areamanage.AreaInfo, int64]
@@ -27,7 +28,7 @@ func NewAreaInfoCache(pm areamanage.AreaManage, fastEvent *eventBus.FastEvent) (
 		KeyType:   topics.ServerCacheKeySysAreaInfo,
 		FastEvent: fastEvent,
 		GetData: func(ctx context.Context, key int64) (*areamanage.AreaInfo, error) {
-			ret, err := pm.AreaInfoRead(ctx, &sys.AreaInfoReadReq{ProjectID: ctxs.GetUserCtxNoNil(ctx).ProjectID, AreaID: key})
+			ret, err := pm.AreaInfoRead(ctx, &sys.AreaInfoReadReq{AreaID: key})
 			return ret, err
 		},
 	})
