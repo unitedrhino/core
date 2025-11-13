@@ -80,7 +80,7 @@ func GenLoginResp(ctx context.Context, svcCtx *svc.ServiceContext, deviceID stri
 	id := genID(ctx, svcCtx.NodeID)
 	now := time.Now()
 	accessExpire := svcCtx.Config.UserToken.AccessExpire
-	jwtToken, claims, err := users.GetLoginJwtToken(svcCtx.Config.UserToken.AccessSecret, now, accessExpire,
+	jwtToken, claims, err := users.GetLoginJwtToken(svcCtx.Config.UserToken.AccessSecret, now,
 		ui.UserID, uc.AppCode, id, deviceID)
 	if err != nil {
 		logx.WithContext(ctx).Error(err)
@@ -94,7 +94,12 @@ func GenLoginResp(ctx context.Context, svcCtx *svc.ServiceContext, deviceID stri
 			RefreshAfter: now.Unix() + accessExpire/2,
 		},
 	}
-	err = svcCtx.UserToken.Login(ctx, claims)
+	tc, err := svcCtx.TenantConfigCache.GetData(ctx, string(ui.TenantCode))
+	if err != nil {
+		logx.WithContext(ctx).Errorf("%s  err=%s", utils.FuncName(), err.Error())
+		return nil, err
+	}
+	err = svcCtx.UserToken.Login(ctx, claims, accessExpire, tc.IsSsl == def.True)
 	if err != nil {
 		return nil, err
 	}

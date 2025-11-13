@@ -1,9 +1,10 @@
 package users
 
 import (
+	"time"
+
 	"gitee.com/unitedrhino/share/errors"
 	"github.com/golang-jwt/jwt/v5"
-	"time"
 )
 
 // Custom claims structure
@@ -25,16 +26,15 @@ type UserInfo struct {
 	IsAllData   int64
 }
 
-func GetLoginJwtToken(secretKey string, t time.Time, seconds int64, userID int64, appCode string, id string, deviceID string) (string, LoginClaims, error) {
+func GetLoginJwtToken(secretKey string, t time.Time, userID int64, appCode string, id string, deviceID string) (string, LoginClaims, error) {
 	IssuedAt := jwt.NewNumericDate(t)
 	claims := LoginClaims{
 		UserID:   userID,
 		AppCode:  appCode,
 		DeviceID: deviceID,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(t.Add(time.Duration(seconds) * time.Second)),
-			IssuedAt:  IssuedAt,
-			ID:        id,
+			IssuedAt: IssuedAt,
+			ID:       id,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
@@ -16,6 +17,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/maypok86/otter"
 	"github.com/spf13/cast"
+	"github.com/zeromicro/go-zero/core/syncx"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -36,13 +38,24 @@ func NewUserCheckTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 	}
 }
 
+var sf syncx.SingleFlight
+
+func init() {
+	sf = syncx.NewSingleFlight()
+}
 func (l *CheckTokenLogic) UserCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCheckTokenResp, error) {
-	switch in.AuthType {
-	case "open":
-		return l.openCheckToken(in)
-	default:
-		return l.userCheckToken(in)
+	ret, err := sf.Do(fmt.Sprintf("%s:%s", in.AuthType, in.Token), func() (any, error) {
+		switch in.AuthType {
+		case "open":
+			return l.openCheckToken(in)
+		default:
+			return l.userCheckToken(in)
+		}
+	})
+	if err != nil {
+		return nil, err
 	}
+	return ret.(*sys.UserCheckTokenResp), nil
 }
 
 var (
@@ -153,25 +166,14 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	if claim.DeviceID != "" && claim.DeviceID != in.DeviceID {
 		return nil, errors.TokenInvalid.AddMsg("token不可以跨设备使用")
 	}
-	var token string
-
 	ui, err := l.svcCtx.UsersCache.GetData(l.ctx, claim.UserID)
 	if err != nil {
 		l.Errorf("%s UsersCache.GetData fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
 	}
-	tc, err := l.svcCtx.TenantConfigCache.GetData(l.ctx, ui.TenantCode)
-	if err != nil {
-		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
-		return nil, err
-	}
-	err = l.svcCtx.UserToken.CheckToken(l.ctx, claim, tc.IsSsl == def.True)
+	err = l.svcCtx.UserToken.CheckToken(l.ctx, claim, l.svcCtx.Config.UserToken.AccessExpire)
 	if err != nil {
 		return nil, err
-	}
-
-	if (claim.ExpiresAt.Unix()-time.Now().Unix())*2 < l.svcCtx.Config.UserToken.AccessExpire {
-		token, _ = users.RefreshLoginToken(in.Token, l.svcCtx.Config.UserToken.AccessSecret, l.svcCtx.Config.UserToken.AccessExpire)
 	}
 	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, ui.TenantCode)
 	if err != nil {
@@ -179,7 +181,6 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		return nil, err
 	}
 	ret := sys.UserCheckTokenResp{
-		Token:        token,
 		AppCode:      claim.AppCode,
 		UserID:       claim.UserID,
 		RoleIDs:      ui.RoleIDs,
