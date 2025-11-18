@@ -1763,6 +1763,7 @@ type UserInfo struct {
 	Tenant          *TenantInfo       `json:"tenant,optional,omitempty"`
 	Projects        []*ProjectInfo    `json:"projects,optional,omitempty"` //项目列表
 	Depts           []*DeptInfo       `json:"depts,optional,omitempty"`
+	BindThird       map[string]string `json:"bindThird,optional,omitempty"` //key为: wx:微信  ding: 钉钉 Value有值代表已绑定
 }
 
 type UserInfoCreateReq struct {

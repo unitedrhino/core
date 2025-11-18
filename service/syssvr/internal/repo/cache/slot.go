@@ -2,10 +2,11 @@ package cache
 
 import (
 	"context"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/domain/slot"
 	"github.com/dgraph-io/ristretto"
-	"time"
 )
 
 type Slot struct {
@@ -18,9 +19,9 @@ const (
 
 func NewSlot() *Slot {
 	cache, _ := ristretto.NewCache(&ristretto.Config{
-		NumCounters: 1e7,     // number of keys to track frequency of (10M).
-		MaxCost:     1 << 30, // maximum cost of cache (1GB).
-		BufferItems: 64,      // number of keys per Get buffer.
+		NumCounters: 1000,              // number of keys to track frequency of (10M).
+		MaxCost:     128 * 1024 * 1024, // 128MB
+		BufferItems: 64,                // number of keys per Get buffer.
 	})
 
 	return &Slot{

@@ -1360,6 +1360,8 @@ message UserInfo{
   google.protobuf.StringValue phone =5;
   string wechatUnionID = 6;
   string wechatOpenID =23;
+  string dingTalkUserID =29;
+  string dingTalkUnionID=30;
   string lastIP =7;
   string lastTokenID =27;
   string regIP =8;

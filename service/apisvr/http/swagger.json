@@ -16589,6 +16589,10 @@
           "items": {
             "$ref": "#/definitions/DeptInfo"
           }
+        },
+        "bindThird": {
+          "type": "object",
+          "description": "key为: wx:微信  ding: 钉钉 Value有值代表已绑定"
         }
       },
       "title": "UserInfo"

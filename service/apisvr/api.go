@@ -16,6 +16,7 @@ func main() {
 	logx.DisableStat()
 	apiCtx := coreExport.NewApi(coreExport.ApiCtx{})
 	apiCtx.Server.PrintRoutes()
+
 	fmt.Printf("Starting coreSvr at %s:%d...\n", apiCtx.SvcCtx.Config.Host, apiCtx.SvcCtx.Config.Port)
 	defer apiCtx.Server.Stop()
 	apiCtx.Server.Start()

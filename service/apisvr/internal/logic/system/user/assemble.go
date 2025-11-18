@@ -30,6 +30,19 @@ func UserInfoToApi(ui *sys.UserInfo, opt UserOpt) *types.UserInfo {
 	if len(ret.Password) != 0 {
 		ret.Password = "xxxx"
 	}
+	ret.BindThird = map[string]string{}
+	if ui.WechatOpenID != "" {
+		ret.BindThird["wx"] = ui.WechatOpenID
+	}
+	if ret.BindThird["wx"] == "" && ui.WechatUnionID != "" {
+		ret.BindThird["wx"] = ui.WechatUnionID
+	}
+	if ui.DingTalkUserID != "" {
+		ret.BindThird["ding"] = ui.DingTalkUserID
+	}
+	if ret.BindThird["ding"] == "" && ui.DingTalkUnionID != "" {
+		ret.BindThird["ding"] = ui.DingTalkUnionID
+	}
 	ret.Roles = role.ToRoleInfosTypes(opt.Roles)
 	ret.Tenant = system.ToTenantInfoTypes(opt.Tenant, nil, nil)
 	ret.Depts = utils.CopySlice[types.DeptInfo](opt.Depts)

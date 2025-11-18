@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/role"
+	"gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/user"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
@@ -92,25 +93,7 @@ func (l *LoginLogic) Login(req *types.UserLoginReq) (resp *types.UserLoginResp, 
 	}
 	roles = role.ToRoleInfosTypes(info.List)
 	return &types.UserLoginResp{
-		Info: types.UserInfo{
-			UserID:      uResp.Info.UserID,
-			UserName:    uResp.Info.UserName,
-			Password:    uResp.Info.Password,
-			Email:       utils.ToNullString(uResp.Info.Email),
-			Phone:       utils.ToNullString(uResp.Info.Phone),
-			LastIP:      uResp.Info.LastIP,
-			RegIP:       uResp.Info.RegIP,
-			NickName:    uResp.Info.NickName,
-			City:        uResp.Info.City,
-			Country:     uResp.Info.Country,
-			Province:    uResp.Info.Province,
-			Language:    uResp.Info.Language,
-			HeadImg:     uResp.Info.HeadImg,
-			CreatedTime: uResp.Info.CreatedTime,
-			Role:        uResp.Info.Role,
-			Sex:         uResp.Info.Sex,
-			IsAllData:   uResp.Info.IsAllData,
-		},
+		Info:  *user.UserInfoToApi(uResp.Info, user.UserOpt{}),
 		Roles: roles,
 		Token: types.JwtToken{
 			AccessToken:  uResp.Token.AccessToken,
