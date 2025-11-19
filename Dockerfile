@@ -10,7 +10,7 @@ RUN cd front&&ls -l
 RUN cd front&&rm -rf front.tgz
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod download
-RUN cd ./service/apisvr && go mod tidy && go build  -tags no_k8s -ldflags="-s -w" -o coresvr .
+RUN cd ./service/apisvr && go mod tidy && go build  -tags no_k8s  -o coresvr .
 
 FROM docker.unitedrhino.com/unitedrhino/alpine:3.20
 LABEL homepage="https://gitee.com/unitedrhino"

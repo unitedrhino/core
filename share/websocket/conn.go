@@ -4,6 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strconv"
+	"sync"
+	"sync/atomic"
+	"time"
+
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/eventBus"
@@ -14,11 +20,6 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/kv"
 	"github.com/zeromicro/go-zero/core/trace"
-	"net/http"
-	"strconv"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 var (
@@ -132,6 +133,32 @@ func newDp(s2cGzip bool) *dispatcher {
 		connPool:      make(map[int64]map[int64]*connection),
 		userSubscribe: map[string]map[int64]*connection{},
 	}
+	utils.Go(context.Background(), func() {
+		var (
+			t = time.NewTicker(time.Minute * 10) //10分钟统计一次
+		)
+		for range t.C {
+			var (
+				connNum int
+				subNum  int
+			)
+			func() {
+				d.mu.RLock()
+				defer d.mu.RUnlock()
+				for _, conn := range d.connPool {
+					connNum += len(conn)
+				}
+			}()
+			func() {
+				dp.userSubscribeMutex.RLock()
+				defer dp.userSubscribeMutex.RUnlock()
+				for _, sub := range d.userSubscribe {
+					subNum += len(sub)
+				}
+			}()
+			logx.Infof("websocket count connNum:%v subNum:%v", connNum, subNum)
+		}
+	})
 	return d
 }
 
@@ -207,7 +234,7 @@ func NewConn(ctx context.Context, userID int64, server *Server, r *http.Request,
 		userID:        userID,
 		userSubscribe: map[string]map[string]struct{}{},
 		connectID:     connectID.Add(1),
-		send:          make(chan []byte, 10000),
+		send:          make(chan []byte, 20),
 	}
 	AddConnPool(userID, conn)
 	logx.Infof("websocket 创建连接成功 RemoteAddr::%s userID:%v connectID:%v uc:%v",
@@ -396,7 +423,7 @@ func (c *connection) StartWrite() {
 			if err != nil {
 				logx.Errorf("websocket pingPong keepAliveType:%v  userID:%v,connectID:%v err:%v",
 					keepAliveType, c.userID, c.connectID, err)
-				c.Close("connection timeout")
+				c.Close("write connection timeout")
 				return
 			}
 		//发送信息
@@ -408,7 +435,7 @@ func (c *connection) StartWrite() {
 			if err := c.writeMessage(websocket.TextMessage, message); err != nil {
 				logx.Errorf("websocket StartWrite  userID:%v,connectID:%v writeMessage:%v err:%v",
 					c.userID, c.connectID, string(message), err)
-				c.Close("send message error")
+				c.Close("write send message error")
 				return
 			}
 		}
@@ -422,13 +449,6 @@ func (c *connection) Close(msg string) {
 	_, ok := dp.connPool[c.userID]
 	if ok || !c.closed {
 		c.closed = true
-		func() {
-			defer func() {
-				recover()
-			}()
-			close(c.send)
-
-		}()
 		delete(dp.connPool[c.userID], c.connectID)
 		if len(dp.connPool[c.userID]) == 0 {
 			delete(dp.connPool, c.userID)
