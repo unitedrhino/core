@@ -54,6 +54,7 @@ OssConf:
   UseSSL: false
 DevServer:
   Enabled: true
+  Port: 7061
 #Telemetry:
 #  Name: coresvr
 #  Endpoint: http://localhost:14268/api/traces
