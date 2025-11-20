@@ -263,6 +263,7 @@ func (c *connection) StartRead() {
 		return nil
 	})
 	for {
+		c.ws.SetReadDeadline(time.Now().Add(10 * time.Minute)) // 读超时30秒
 		_, message, err := c.ws.ReadMessage()
 		if err != nil {
 			logx.Errorf("%s.websocket ReadMessage message:%s userID:%v connectID:%v err:%v",
@@ -485,6 +486,7 @@ func (c *connection) sendMessage(body WsResp) {
 
 // 写消息
 func (c *connection) writeMessage(messageType int, message []byte) error {
+	c.ws.SetWriteDeadline(time.Now().Add(10 * time.Minute)) //避免泄露
 	if message == nil {
 		logx.Infof("websocket error message: is  null ")
 	}
