@@ -151,19 +151,20 @@ func newDp(s2cGzip bool) *dispatcher {
 				}
 			}()
 			func() {
-				dp.userSubscribeMutex.RLock()
-				defer dp.userSubscribeMutex.RUnlock()
+				dp.userSubscribeMutex.Lock()
+				defer dp.userSubscribeMutex.Unlock()
 				for _, sub := range d.userSubscribe {
 					subNum += len(sub)
-					for _, conn := range sub {
+					for key, conn := range sub {
 						if conn.closed {
 							closeSubConnIDSet[conn.connectID] = struct{}{}
+							delete(sub, key)
 						}
 					}
 				}
 			}()
-			logx.Infof("websocket count connNum:%v subNum:%v closeSubConnNum:%v closeSubConnIDSet:[%v]",
-				connNum, subNum, len(closeSubConnIDSet), utils.SetToSlice(closeSubConnIDSet))
+			logx.Infof("websocket count connNum:%v subNum:%v closeSubConnNum:%v",
+				connNum, subNum, len(closeSubConnIDSet))
 		}
 	})
 	return d
