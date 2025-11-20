@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/mitchellh/mapstructure"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -85,22 +86,20 @@ func unSubscribeHandle(ctx context.Context, c *connection, body WsReq) {
 	key := info.Code + ":" + md
 	c.userSubscribeMutex.Lock()
 	defer c.userSubscribeMutex.Unlock()
-	keys := c.userSubscribe[key]
-	delete(c.userSubscribe, key)
-	func() {
-		dp.userSubscribeMutex.Lock()
-		defer dp.userSubscribeMutex.Unlock()
-		if _, ok := dp.userSubscribe[key]; ok {
-			delete(dp.userSubscribe[key], c.connectID)
-		}
-		if len(keys) == 0 {
-			for k := range keys {
-				if _, ok := dp.userSubscribe[k]; ok {
-					delete(dp.userSubscribe[k], c.connectID)
-				}
+	_, ok := c.userSubscribe[key]
+	if ok {
+		delete(c.userSubscribe, key)
+		func() {
+			dp.userSubscribeMutex.Lock()
+			defer dp.userSubscribeMutex.Unlock()
+			if _, ok := dp.userSubscribe[key]; ok {
+				delete(dp.userSubscribe[key], c.connectID)
 			}
-		}
-	}()
+			if len(dp.userSubscribe[key]) == 0 {
+				delete(dp.userSubscribe, key)
+			}
+		}()
+	}
 	var resp = WsResp{WsBody: WsBody{}}
 	resp.WsBody.Type = UnSubRet
 	c.sendMessage(resp)

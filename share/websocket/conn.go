@@ -139,8 +139,9 @@ func newDp(s2cGzip bool) *dispatcher {
 		)
 		for range t.C {
 			var (
-				connNum int
-				subNum  int
+				connNum           int
+				subNum            int
+				closeSubConnIDSet = map[int64]struct{}{}
 			)
 			func() {
 				d.mu.RLock()
@@ -154,9 +155,15 @@ func newDp(s2cGzip bool) *dispatcher {
 				defer dp.userSubscribeMutex.RUnlock()
 				for _, sub := range d.userSubscribe {
 					subNum += len(sub)
+					for _, conn := range sub {
+						if conn.closed {
+							closeSubConnIDSet[conn.connectID] = struct{}{}
+						}
+					}
 				}
 			}()
-			logx.Infof("websocket count connNum:%v subNum:%v", connNum, subNum)
+			logx.Infof("websocket count connNum:%v subNum:%v closeSubConnNum:%v closeSubConnIDSet:[%v]",
+				connNum, subNum, len(closeSubConnIDSet), utils.SetToSlice(closeSubConnIDSet))
 		}
 	})
 	return d
@@ -263,7 +270,6 @@ func (c *connection) StartRead() {
 		return nil
 	})
 	for {
-		c.ws.SetReadDeadline(time.Now().Add(10 * time.Minute)) // 读超时30秒
 		_, message, err := c.ws.ReadMessage()
 		if err != nil {
 			logx.Errorf("%s.websocket ReadMessage message:%s userID:%v connectID:%v err:%v",
@@ -465,6 +471,9 @@ func (c *connection) Close(msg string) {
 					return
 				}
 				delete(sub, c.connectID)
+				if len(sub) == 0 {
+					delete(dp.userSubscribe, key)
+				}
 			}()
 		}
 		err := c.ws.Close()
@@ -486,7 +495,6 @@ func (c *connection) sendMessage(body WsResp) {
 
 // 写消息
 func (c *connection) writeMessage(messageType int, message []byte) error {
-	c.ws.SetWriteDeadline(time.Now().Add(10 * time.Minute)) //避免泄露
 	if message == nil {
 		logx.Infof("websocket error message: is  null ")
 	}
