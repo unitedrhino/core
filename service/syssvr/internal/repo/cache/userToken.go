@@ -61,7 +61,7 @@ func (u *UserToken) Login(ctx context.Context, claims users.LoginClaims, accessE
 			}
 		}
 	}
-	if len(ret) > 5 { //一个人最多只能存在5个token
+	if len(ret) > 5 { //一个app最多只能存在5个token
 		var cs []users.LoginClaims
 		for k, v := range ret {
 			var c users.LoginClaims
@@ -70,15 +70,17 @@ func (u *UserToken) Login(ctx context.Context, claims users.LoginClaims, accessE
 				caches.GetStore().Hdel(u.GenKey(claims.UserID), k)
 				continue
 			}
-			cs = append(cs, c)
+			if c.AppCode == claims.AppCode {
+				cs = append(cs, c)
+			}
 		}
-		sort.Slice(cs, func(i, j int) bool {
-			a := cs[i].ExpiresAt
-			b := cs[j].ExpiresAt
-			// 规则2：两者都有过期时间 → 比较时间大小（早的在前）
-			return a.Time.After(b.Time)
-		})
 		if len(cs) > 5 {
+			sort.Slice(cs, func(i, j int) bool {
+				a := cs[i].ExpiresAt
+				b := cs[j].ExpiresAt
+				// 规则2：两者都有过期时间 → 比较时间大小（早的在前）
+				return a.Time.After(b.Time)
+			})
 			for _, v := range cs[5:] {
 				caches.GetStore().Hdel(u.GenKey(claims.UserID), u.GenField(v.AppCode, v.ID))
 			}
