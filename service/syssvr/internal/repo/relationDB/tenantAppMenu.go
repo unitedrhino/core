@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -126,7 +127,7 @@ func (p TenantAppMenuRepo) MultiInsert(ctx context.Context, data []*SysTenantApp
 	if len(data) == 0 {
 		return nil
 	}
-	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true,
+	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true,
 		Columns: stores.SetColumnsWithPg(p.db, &SysTenantAppMenu{}, "idx_sys_tenant_app_menu_template_id")}).Model(&SysTenantAppMenu{}).Create(data).Error
 	return stores.ErrFmt(err)
 }

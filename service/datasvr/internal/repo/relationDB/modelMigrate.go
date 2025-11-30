@@ -36,7 +36,7 @@ func Migrate(c conf.Database) (err error) {
 }
 func migrateTableColumn() error {
 	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-	if err := db.CreateInBatches(&MigrateStatisticsInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateStatisticsInfo, 100); err != nil {
 		return err
 	}
 	return nil

@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+
 	projectmanagelogic "gitee.com/unitedrhino/core/service/syssvr/internal/logic/projectmanage"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/topics"
@@ -66,11 +67,23 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewUserProfileRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.UserProfileFilter{UserID: in.UserID})
+		err = relationDB.NewUserProfileRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx),
+			relationDB.UserProfileFilter{UserID: in.UserID})
 		if err != nil {
 			return err
 		}
-		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.UserRoleFilter{UserID: in.UserID})
+		err = relationDB.NewDataProjectRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx),
+			relationDB.DataProjectFilter{Target: &relationDB.Target{Type: def.TargetUser, ID: in.UserID}})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewDataAreaRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx),
+			relationDB.DataAreaFilter{TargetType: def.TargetUser, TargetID: in.UserID})
+		if err != nil {
+			return err
+		}
+		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx),
+			relationDB.UserRoleFilter{UserID: in.UserID})
 		for _, v := range pis {
 			if tc.CheckUserDelete != 1 { //如果是不检查项目下的设备,那么就直接全部删除
 				err = projectmanagelogic.ProjectDelete(ctxs.WithRoot(l.ctx), tx, int64(v.ProjectID))
@@ -83,7 +96,6 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 				}
 			}
 		}
-
 		return err
 	})
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)

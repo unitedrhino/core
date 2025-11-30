@@ -3,13 +3,14 @@ package relationDB
 import (
 	"context"
 	"fmt"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/timed/internal/domain"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/events/topics"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm/clause"
-	"sync"
 )
 
 var once sync.Once
@@ -41,10 +42,10 @@ func Migrate(c conf.Database) (err error) {
 }
 func migrateTableColumn() error {
 	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-	if err := db.CreateInBatches(&MigrateTimedTask, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateTimedTask, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateTimedTaskGroup, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateTimedTaskGroup, 100); err != nil {
 		return err
 	}
 	return nil

@@ -86,58 +86,58 @@ func Migrate(c conf.Database) error {
 
 func migrateTableColumn() error {
 	db := stores.GetCommonConn(context.TODO()).Clauses(clause.OnConflict{DoNothing: true})
-	if err := db.CreateInBatches(&MigrateUserInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateUserInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateRoleInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateRoleInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateUserRole, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateUserRole, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateTenantInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateTenantInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateProjectInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateProjectInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateTenantConfig, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateTenantConfig, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateDictDetailAdcode, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateDictDetailAdcode, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateDataProject, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateDataProject, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateDictInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateDictInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateDictDetail, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateDictDetail, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateAppInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateAppInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateModuleInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateModuleInfo, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateAppModule, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateAppModule, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateTenantApp, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateTenantApp, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateTenantAppModule, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateTenantAppModule, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateNotifyConfig, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateNotifyConfig, 100); err != nil {
 		return err
 	}
-	if err := db.CreateInBatches(&MigrateSlotInfo, 100).Error; err != nil {
+	if err := stores.CreateInBatches(db, &MigrateSlotInfo, 100); err != nil {
 		return err
 	}
-	db.CreateInBatches([]SysDeptInfo{{DeletedTime: 666}, {DeletedTime: 777}, {DeletedTime: 888}}, 100)
+	stores.CreateInBatches(db, []SysDeptInfo{{DeletedTime: 666}, {DeletedTime: 777}, {DeletedTime: 888}}, 100)
 	return nil
 }
 
