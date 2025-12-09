@@ -53,6 +53,11 @@ func (s *UserManageServer) UserLogin(ctx context.Context, in *sys.UserLoginReq) 
 	return l.UserLogin(in)
 }
 
+func (s *UserManageServer) UserLogout(ctx context.Context, in *sys.UserLogoutReq) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserLogoutLogic(ctx, s.svcCtx)
+	return l.UserLogout(in)
+}
+
 func (s *UserManageServer) UserForgetPwd(ctx context.Context, in *sys.UserForgetPwdReq) (*sys.Empty, error) {
 	l := usermanagelogic.NewUserForgetPwdLogic(ctx, s.svcCtx)
 	return l.UserForgetPwd(in)

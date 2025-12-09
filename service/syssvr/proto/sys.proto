@@ -13,6 +13,7 @@ service UserManage {
   rpc userInfoRead(UserInfoReadReq) returns(UserInfo);//获取用户信息
   rpc userInfoDelete(UserInfoDeleteReq) returns(Empty);//刪除用戶
   rpc userLogin(UserLoginReq) returns(UserLoginResp);
+  rpc userLogout(UserLogoutReq) returns(Empty);
   rpc userForgetPwd(UserForgetPwdReq)returns(Empty);
   rpc userCaptcha(UserCaptchaReq)returns(UserCaptchaResp);
   rpc userCheckToken(UserCheckTokenReq) returns(UserCheckTokenResp);
@@ -57,7 +58,6 @@ service DataManage {
   rpc userAreaApplyIndex(UserAreaApplyIndexReq)returns(UserAreaApplyIndexResp);
   rpc userAreaApplyDeal(UserAreaApplyDealReq)returns(Empty);//处理区域权限申请
 
-
   rpc dataOpenAccessIndex(OpenAccessIndexReq)returns(OpenAccessIndexResp);
   rpc dataOpenAccessRead(WithID)returns(OpenAccess);
   rpc dataOpenAccessUpdate(OpenAccess)returns(Empty);
@@ -92,9 +92,7 @@ service NotifyManage {
   //租户通知配置
   rpc notifyConfigTemplateUpdate(NotifyConfigTemplate)returns(Empty);
   rpc notifyConfigTemplateDelete(NotifyConfigTemplateDeleteReq)returns(Empty);
-
   rpc notifyConfigTemplateIndex(NotifyConfigTemplateIndexReq)returns(NotifyConfigTemplateIndexResp);
-
   rpc notifyChannelRead(WithID)returns(NotifyChannel);
   rpc notifyChannelCreate(NotifyChannel)returns(WithID);
   rpc notifyChannelUpdate(NotifyChannel)returns(Empty);
@@ -1387,6 +1385,10 @@ message UserInfo{
 
 message UserCreateResp{
   int64 userID = 1;//用户id
+}
+
+message UserLogoutReq{
+  string token = 1;
 }
 
 message UserCheckTokenReq{

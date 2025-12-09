@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.23.8
 
 require (
-	gitee.com/unitedrhino/share v1.5.45
+	gitee.com/unitedrhino/share v1.5.51
 	gitee.com/unitedrhino/squirrel v1.20.7
 	github.com/alibabacloud-go/tea v1.3.9
 	github.com/dgraph-io/ristretto v0.1.1

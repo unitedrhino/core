@@ -249,6 +249,7 @@ type (
 	UserInfoUpdateReq                     = sys.UserInfoUpdateReq
 	UserLoginReq                          = sys.UserLoginReq
 	UserLoginResp                         = sys.UserLoginResp
+	UserLogoutReq                         = sys.UserLogoutReq
 	UserMessage                           = sys.UserMessage
 	UserMessageIndexReq                   = sys.UserMessageIndexReq
 	UserMessageIndexResp                  = sys.UserMessageIndexResp

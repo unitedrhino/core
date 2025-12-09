@@ -40,7 +40,13 @@ func (u *UserToken) ParseField(field string) (appCode string, id string) {
 	appCode, id, _ = strings.Cut(field, ":")
 	return
 }
-
+func (u *UserToken) Logout(ctx context.Context, claims users.LoginClaims) error {
+	_, err := caches.GetStore().Hdel(u.GenKey(claims.UserID), u.GenField(claims.AppCode, claims.ID))
+	if err != nil {
+		return errors.System.AddDetail(err)
+	}
+	return nil
+}
 func (u *UserToken) Login(ctx context.Context, claims users.LoginClaims, accessExpire int64, isSsl bool) error {
 	ret, err := caches.GetStore().Hgetall(u.GenKey(claims.UserID))
 	if err != nil {

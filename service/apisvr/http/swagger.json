@@ -8917,6 +8917,35 @@
         ]
       }
     },
+    "/api/v1/system/user/self/logout": {
+      "post": {
+        "summary": "用户登出",
+        "operationId": "postApiV1SystemUserSelfLogout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "default": "200",
+                  "title": "返回code"
+                },
+                "msg": {
+                  "type": "string",
+                  "title": "返回的消息"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "system/user/self",
+          "systemUserSelf"
+        ]
+      }
+    },
     "/api/v1/system/user/self/menu/index": {
       "post": {
         "summary": "获取用户菜单列表",

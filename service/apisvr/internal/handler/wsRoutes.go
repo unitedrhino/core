@@ -1821,6 +1821,12 @@ func RegisterWsHandlers(server *ws.Server, serverCtx *svc.ServiceContext) {
 					Handler: systemuserself.ChangePwdHandler(serverCtx),
 				},
 				{
+					// 用户登出
+					Method:  http.MethodPost,
+					Path:    "/logout",
+					Handler: systemuserself.LogoutHandler(serverCtx),
+				},
+				{
 					// 获取用户菜单列表
 					Method:  http.MethodPost,
 					Path:    "/menu/index",

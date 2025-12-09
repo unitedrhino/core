@@ -3310,6 +3310,17 @@
         {
           "accessCode": "systemUserSelf",
           "method": "POST",
+          "route": "/api/v1/system/user/self/logout",
+          "name": "用户登出",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserSelf",
+          "method": "POST",
           "route": "/api/v1/system/user/self/menu/index",
           "name": "获取用户菜单列表",
           "isNeedAuth": 2,

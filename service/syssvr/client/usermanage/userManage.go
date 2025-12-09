@@ -249,6 +249,7 @@ type (
 	UserInfoUpdateReq                     = sys.UserInfoUpdateReq
 	UserLoginReq                          = sys.UserLoginReq
 	UserLoginResp                         = sys.UserLoginResp
+	UserLogoutReq                         = sys.UserLogoutReq
 	UserMessage                           = sys.UserMessage
 	UserMessageIndexReq                   = sys.UserMessageIndexReq
 	UserMessageIndexResp                  = sys.UserMessageIndexResp
@@ -276,6 +277,7 @@ type (
 		UserInfoRead(ctx context.Context, in *UserInfoReadReq, opts ...grpc.CallOption) (*UserInfo, error)
 		UserInfoDelete(ctx context.Context, in *UserInfoDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 		UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
+		UserLogout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*Empty, error)
 		UserForgetPwd(ctx context.Context, in *UserForgetPwdReq, opts ...grpc.CallOption) (*Empty, error)
 		UserCaptcha(ctx context.Context, in *UserCaptchaReq, opts ...grpc.CallOption) (*UserCaptchaResp, error)
 		UserCheckToken(ctx context.Context, in *UserCheckTokenReq, opts ...grpc.CallOption) (*UserCheckTokenResp, error)
@@ -375,6 +377,15 @@ func (m *defaultUserManage) UserLogin(ctx context.Context, in *UserLoginReq, opt
 
 func (d *directUserManage) UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
 	return d.svr.UserLogin(ctx, in)
+}
+
+func (m *defaultUserManage) UserLogout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserLogout(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserLogout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.UserLogout(ctx, in)
 }
 
 func (m *defaultUserManage) UserForgetPwd(ctx context.Context, in *UserForgetPwdReq, opts ...grpc.CallOption) (*Empty, error) {

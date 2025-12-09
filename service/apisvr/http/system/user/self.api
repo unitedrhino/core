@@ -17,6 +17,10 @@ info(
 	middleware:  CheckTokenWare,InitCtxsWare
 )
 service api {
+    @doc "用户登出"
+    @handler logout
+    post /logout ()
+
 	@doc "获取用户应用列表"
 	@handler appIndex
 	post /app/index () returns (AppInfoIndexResp)

@@ -25,6 +25,7 @@ const (
 	UserManage_UserInfoRead_FullMethodName           = "/sys.UserManage/userInfoRead"
 	UserManage_UserInfoDelete_FullMethodName         = "/sys.UserManage/userInfoDelete"
 	UserManage_UserLogin_FullMethodName              = "/sys.UserManage/userLogin"
+	UserManage_UserLogout_FullMethodName             = "/sys.UserManage/userLogout"
 	UserManage_UserForgetPwd_FullMethodName          = "/sys.UserManage/userForgetPwd"
 	UserManage_UserCaptcha_FullMethodName            = "/sys.UserManage/userCaptcha"
 	UserManage_UserCheckToken_FullMethodName         = "/sys.UserManage/userCheckToken"
@@ -59,6 +60,7 @@ type UserManageClient interface {
 	UserInfoRead(ctx context.Context, in *UserInfoReadReq, opts ...grpc.CallOption) (*UserInfo, error)
 	UserInfoDelete(ctx context.Context, in *UserInfoDeleteReq, opts ...grpc.CallOption) (*Empty, error)
 	UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
+	UserLogout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*Empty, error)
 	UserForgetPwd(ctx context.Context, in *UserForgetPwdReq, opts ...grpc.CallOption) (*Empty, error)
 	UserCaptcha(ctx context.Context, in *UserCaptchaReq, opts ...grpc.CallOption) (*UserCaptchaResp, error)
 	UserCheckToken(ctx context.Context, in *UserCheckTokenReq, opts ...grpc.CallOption) (*UserCheckTokenResp, error)
@@ -139,6 +141,15 @@ func (c *userManageClient) UserInfoDelete(ctx context.Context, in *UserInfoDelet
 func (c *userManageClient) UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
 	out := new(UserLoginResp)
 	err := c.cc.Invoke(ctx, UserManage_UserLogin_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManageClient) UserLogout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, UserManage_UserLogout_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -353,6 +364,7 @@ type UserManageServer interface {
 	UserInfoRead(context.Context, *UserInfoReadReq) (*UserInfo, error)
 	UserInfoDelete(context.Context, *UserInfoDeleteReq) (*Empty, error)
 	UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error)
+	UserLogout(context.Context, *UserLogoutReq) (*Empty, error)
 	UserForgetPwd(context.Context, *UserForgetPwdReq) (*Empty, error)
 	UserCaptcha(context.Context, *UserCaptchaReq) (*UserCaptchaResp, error)
 	UserCheckToken(context.Context, *UserCheckTokenReq) (*UserCheckTokenResp, error)
@@ -399,6 +411,9 @@ func (UnimplementedUserManageServer) UserInfoDelete(context.Context, *UserInfoDe
 }
 func (UnimplementedUserManageServer) UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
+}
+func (UnimplementedUserManageServer) UserLogout(context.Context, *UserLogoutReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserLogout not implemented")
 }
 func (UnimplementedUserManageServer) UserForgetPwd(context.Context, *UserForgetPwdReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserForgetPwd not implemented")
@@ -583,6 +598,24 @@ func _UserManage_UserLogin_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserManageServer).UserLogin(ctx, req.(*UserLoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManage_UserLogout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLogoutReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManageServer).UserLogout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserManage_UserLogout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManageServer).UserLogout(ctx, req.(*UserLogoutReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1013,6 +1046,10 @@ var UserManage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "userLogin",
 			Handler:    _UserManage_UserLogin_Handler,
+		},
+		{
+			MethodName: "userLogout",
+			Handler:    _UserManage_UserLogout_Handler,
 		},
 		{
 			MethodName: "userForgetPwd",
