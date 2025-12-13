@@ -2,16 +2,17 @@ package slot
 
 import (
 	"context"
+	"html/template"
+	"net/http"
+	"strings"
+	"time"
+
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/result"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/parnurzeal/gorequest"
 	"github.com/spf13/cast"
-	"html/template"
-	"net/http"
-	"strings"
-	"time"
 )
 
 const (
@@ -97,5 +98,4 @@ func (i Infos) Request(ctx context.Context, in any, retV any) error {
 		}
 	}
 	return nil
-
 }

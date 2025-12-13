@@ -2,6 +2,7 @@ package areamanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/def"
@@ -38,9 +39,9 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if err != nil {
 		return nil, err
 	}
-	if area.DeviceCount > 0 {
-		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("区域下有设备禁止删除")
-	}
+	//if area.DeviceCount > 0 {
+	//	return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("区域下有设备禁止删除")
+	//}
 	var (
 		areaPo *relationDB.SysAreaInfo
 	)
@@ -104,7 +105,6 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 		if err != nil {
 			l.Error(err)
 		}
-
 	}
 	l.svcCtx.AreaCache.SetData(l.ctx, in.AreaID, nil)
 	return &sys.Empty{}, err
