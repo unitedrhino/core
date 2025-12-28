@@ -2,21 +2,24 @@ package svc
 
 import (
 	"context"
+	"sync"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/config"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/clients/dingClient"
+	"gitee.com/unitedrhino/share/clients/huaweiCli"
 	"gitee.com/unitedrhino/share/clients/wxClient"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
 	"github.com/zeromicro/go-zero/core/syncx"
-	"sync"
 )
 
 type Clients struct {
 	WxOfficial  *wxClient.WxOfficialAccount
 	MiniProgram *wxClient.MiniProgram
 	DingMini    *dingClient.DingTalk
+	Huawei      *huaweiCli.HuaweiClient
 	Config      *relationDB.SysTenantApp
 }
 type ClientsManage struct {
@@ -94,7 +97,16 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 				return Clients{}, err
 			}
 		}
-		tc.Store(tenantCode, cli)
+		// 初始化华为客户端
+		if cfg.Android != nil {
+			// 华为客户端只需要 AppID 和 AppSecret
+			cli.Huawei = huaweiCli.NewHuaweiClient(ctx, &conf.ThirdConf{
+				AppID:     cfg.Huawei.AppID,
+				AppKey:    cfg.Huawei.AppKey,
+				AppSecret: cfg.Huawei.AppSecret,
+			})
+		}
+		tc.Store(tenantCode+appCode, cli)
 		return cli, nil
 	})
 

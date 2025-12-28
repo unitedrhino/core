@@ -7,15 +7,16 @@ type RegType = string
 // phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码
 const (
 	RegEmail      RegType = "email"      //邮箱
-	RegPhone              = "phone"      //手机号
-	RegWxOpen             = "wxOpen"     //微信开放平台登录
-	RegWxIn               = "wxIn"       //微信内登录
-	RegWxMiniP            = "wxMiniP"    //微信小程序
-	RegWxOfficial         = "wxOfficial" //微信公众号登录
-	RegDingApp            = "dingApp"    //钉钉应用(包含小程序,h5等方式)
-	RegPwd                = "pwd"        //账号密码注册
-	RegGoogle             = "google"     //google
-	RegGithub             = "github"     //github
+	RegPhone RegType = "phone"      //手机号
+	RegWxOpen RegType = "wxOpen"     //微信开放平台登录
+	RegWxIn RegType = "wxIn"       //微信内登录
+	RegWxMiniP RegType = "wxMiniP"    //微信小程序
+	RegWxOfficial RegType = "wxOfficial" //微信公众号登录
+	RegDingApp RegType = "dingApp"    //钉钉应用(包含小程序,h5等方式)
+	RegPwd RegType = "pwd"        //账号密码注册
+	RegGoogle RegType = "google"     //google
+	RegGithub RegType = "github"     //github
+	RegHuawei RegType = "huawei"     //华为
 )
 
 type UserInfoType uint8

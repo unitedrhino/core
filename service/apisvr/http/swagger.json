@@ -9851,7 +9851,7 @@
         },
         "subType": {
           "type": "string",
-          "description": "子类型  wx:微信小程序  ding:钉钉小程序"
+          "description": "子类型  wx:微信小程序  ding:钉钉小程序  huawei:华为应用"
         },
         "name": {
           "type": "string",
@@ -9878,7 +9878,12 @@
           "description": "自定义配置json"
         },
         "android": {
-          "$ref": "#/definitions/ThirdApp"
+          "$ref": "#/definitions/ThirdApp",
+          "description": "安卓应用"
+        },
+        "huawei": {
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "华为应用"
         },
         "tenant": {
           "$ref": "#/definitions/TenantCore",
@@ -14401,7 +14406,12 @@
           "$ref": "#/definitions/ThirdAppConfig"
         },
         "android": {
-          "$ref": "#/definitions/ThirdApp"
+          "$ref": "#/definitions/ThirdApp",
+          "description": "安卓应用"
+        },
+        "huawei": {
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "华为应用"
         },
         "loginTypes": {
           "type": "array",
@@ -14490,14 +14500,19 @@
           "$ref": "#/definitions/ThirdAppConfig"
         },
         "android": {
-          "$ref": "#/definitions/ThirdApp"
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "安卓应用"
+        },
+        "huawei": {
+          "$ref": "#/definitions/ThirdAppConfig",
+          "description": "华为应用"
         },
         "loginTypes": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册"
+          "description": "支持的登录类型(不填支持全部登录方式):  \t \"email\":邮箱 \"phone\":手机号  \"wxMiniP\":微信小程序  \"wxOfficial\": 微信公众号登录   \"dingApp\":钉钉应用(包含小程序,h5等方式)  \"pwd\":账号密码注册  \"huawei\":华为应用登录"
         },
         "isAutoRegister": {
           "type": "integer",
@@ -16159,9 +16174,10 @@
             "wxOpen",
             "wxIn",
             "wxMiniP",
-            "dingApp"
+            "dingApp",
+            "huawei"
           ],
-          "description": "验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序"
+          "description": "验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序 huawei 华为"
         },
         "account": {
           "type": "string",
@@ -16790,9 +16806,10 @@
             "wxMiniP",
             "dingApp",
             "pwd",
-            "email"
+            "email",
+            "huawei"
           ],
-          "description": "验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱"
+          "description": "验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱 huawei 华为"
         },
         "code": {
           "type": "string",
@@ -17076,7 +17093,8 @@
             "wxIn",
             "wxMiniP",
             "pwd",
-            "dingApp"
+            "dingApp",
+            "huawei"
           ]
         },
         "account": {

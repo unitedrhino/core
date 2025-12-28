@@ -3,6 +3,7 @@ package tenantmanagelogic
 import (
 	"context"
 	"fmt"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
@@ -52,28 +53,30 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.WxOpen != nil {
 		old.WxOpen = utils.Copy[relationDB.SysTenantThird](in.WxOpen)
 	}
-	if in.Android != nil {
-		if in.Android.IsUpdateFilePath {
-			if old.Android != nil && old.Android.FilePath != "" {
-				err := l.svcCtx.OssClient.PublicBucket().Delete(l.ctx, old.Android.FilePath, common.OptionKv{})
-				if err != nil {
-					l.Errorf("Delete file err path:%v,err:%v", old.Android.FilePath, err)
-				}
+	if in.Huawei != nil {
+		old.Huawei = utils.Copy[relationDB.SysTenantThird](in.Huawei)
+	}
+	if in.Android.IsUpdateFilePath {
+		if old.Android != nil && old.Android.FilePath != "" {
+			err := l.svcCtx.OssClient.PublicBucket().Delete(l.ctx, old.Android.FilePath, common.OptionKv{})
+			if err != nil {
+				l.Errorf("Delete file err path:%v,err:%v", old.Android.FilePath, err)
 			}
-			if in.Android.FilePath != "" {
-				nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessApp, oss.SceneFirmware, fmt.Sprintf("%s/%s", old.AppCode, oss.GetFileNameWithPath(in.Android.FilePath)))
-				path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(in.Android.FilePath, nwePath)
-				if err != nil {
-					l.Error(err)
-				} else {
-					in.Android.FilePath = path
-				}
+		}
+		if in.Android.FilePath != "" {
+			nwePath := oss.GenFilePath(l.ctx, l.svcCtx.Config.Name, oss.BusinessApp, oss.SceneFirmware, fmt.Sprintf("%s/%s", old.AppCode, oss.GetFileNameWithPath(in.Android.FilePath)))
+			path, err := l.svcCtx.OssClient.PublicBucket().CopyFromTempBucket(in.Android.FilePath, nwePath)
+			if err != nil {
+				l.Error(err)
 			} else {
-				in.Android.FilePath = ""
+				in.Android.FilePath = path
 			}
+		} else {
+			in.Android.FilePath = ""
 		}
 		old.Android = utils.Copy[relationDB.SysThirdApp](in.Android)
 	}
+
 	if in.LoginTypes != nil {
 		old.LoginTypes = in.LoginTypes
 	}

@@ -49,6 +49,7 @@ func (l *TenantAppCreateLogic) TenantAppCreate(in *sys.TenantAppInfo) (*sys.Empt
 			WxOpen:         utils.Copy[relationDB.SysTenantThird](in.WxOpen),
 			DingMini:       utils.Copy[relationDB.SysTenantThird](in.DingMini),
 			Android:        utils.Copy[relationDB.SysThirdApp](in.Android),
+			Huawei:         utils.Copy[relationDB.SysTenantThird](in.Huawei),
 			IsAutoRegister: in.IsAutoRegister,
 			Config:         in.Config,
 		})

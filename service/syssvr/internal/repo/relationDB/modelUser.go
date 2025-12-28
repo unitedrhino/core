@@ -10,7 +10,7 @@ import (
 
 // 用户登录信息表
 type SysUserInfo struct {
-	TenantCode      dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"` // 租户编码
+	TenantCode      dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_huawei_union;uniqueIndex:idx_sys_user_info_huawei_open;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"` // 租户编码
 	UserID          int64               `gorm:"column:user_id;primary_key;AUTO_INCREMENT;type:BIGINT;NOT NULL"`                                                                                                                                                                                                                // 用户id
 	UserName        sql.NullString      `gorm:"column:user_name;uniqueIndex:idx_sys_user_info_tc_un;type:VARCHAR(20)"`                                                                                                                                                                                                         // 登录用户名
 	NickName        string              `gorm:"column:nick_name;type:VARCHAR(60);NOT NULL"`                                                                                                                                                                                                                                    // 用户的昵称
@@ -21,6 +21,9 @@ type SysUserInfo struct {
 	WechatOpenID    sql.NullString      `gorm:"column:wechat_open_id;uniqueIndex:idx_sys_user_info_tc_woi;type:VARCHAR(128)"`                                                                                                                                                                                                  // 微信union id
 	DingTalkUserID  sql.NullString      `gorm:"column:ding_talk_user_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
 	DingTalkUnionID sql.NullString      `gorm:"column:ding_talk_union_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
+	HuaweiUnionID   sql.NullString      `gorm:"column:huawei_union_id;uniqueIndex:idx_sys_user_info_huawei_union;type:VARCHAR(128)"`                                                                                                                                                                                                 // 微信union id
+	HuaweiOpenID    sql.NullString      `gorm:"column:huawei_open_id;uniqueIndex:idx_sys_user_info_huawei_open;type:VARCHAR(128)"`                                                                                                                                                                                                  // 微信union id
+
 	LastIP          string              `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`                       // 最后登录ip
 	LastTokenID     string              `gorm:"column:last_token_id;type:VARCHAR(128);default:''"`               // 最后登录的token ID
 	RegIP           string              `gorm:"column:reg_ip;type:VARCHAR(128);NOT NULL"`                        // 注册ip
@@ -39,7 +42,7 @@ type SysUserInfo struct {
 	Tenant          *SysTenantInfo      `gorm:"foreignKey:Code;references:TenantCode"`
 	Status          int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_huawei_union;uniqueIndex:idx_sys_user_info_huawei_open;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
 }
 
 func (m *SysUserInfo) TableName() string {

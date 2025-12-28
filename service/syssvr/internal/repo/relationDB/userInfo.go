@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
@@ -33,6 +34,8 @@ type UserInfoFilter struct {
 	DingTalkUserID  string
 	DingTalkUserIDs []string
 	DingTalkUnionID string
+	HuaweiUnionID   string
+	HuaweiOpenID    string
 	WithRoles       bool
 	WithTenant      bool
 	RoleCode        string
@@ -128,6 +131,19 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	if isWechat {
 		db = db.Where(wechatOr)
 	}
+	huaweiOr := db
+	var isHuawei bool
+	if f.HuaweiUnionID != "" {
+		isHuawei = true
+		huaweiOr = huaweiOr.Or("huawei_union_id = ?", f.HuaweiUnionID)
+	}
+	if f.HuaweiOpenID != "" {
+		isHuawei = true
+		huaweiOr = huaweiOr.Or("huawei_open_id = ?", f.HuaweiOpenID)
+	}
+	if isHuawei {
+		db = db.Where(huaweiOr)
+	}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)
 	}
@@ -206,7 +222,7 @@ func (p UserInfoRepo) FindOne(ctx context.Context, userID int64) (*SysUserInfo, 
 func (p UserInfoRepo) FindUserCore(ctx context.Context, f UserInfoFilter) (ret []*SysUserInfo, err error) {
 	var results []*SysUserInfo
 	db := p.fmtFilter(ctx, f).Model(&SysUserInfo{})
-	err = db.Select("user_id,user_name,email,phone,wechat_union_id,wechat_open_id,ding_talk_user_id").Find(&results).Error
+	err = db.Select("user_id,user_name,email,phone,wechat_union_id,wechat_open_id,ding_talk_user_id,huawei_union_id,huawei_open_id").Find(&results).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}

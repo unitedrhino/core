@@ -52,6 +52,9 @@ func (p TenantAppRepo) fmtFilter(ctx context.Context, f TenantAppFilter) *gorm.D
 	if f.AppID != "" && f.SubType == def.AppSubTypeDing {
 		db = db.Where("mini_ding_mini_app_id=?", f.AppID)
 	}
+	if f.AppID != "" && f.SubType == def.AppSubTypeHuawei {
+		db = db.Where("huawei_app_id=?", f.AppID)
+	}
 	return db
 }
 

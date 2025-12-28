@@ -301,7 +301,43 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
 			isRegister = true
+			if err != nil {
+				return nil, err
+			}
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
+		}
+	case users.RegHuawei:
+		if cli.Huawei == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+		if err != nil {
+			return nil, errors.System.AddDetail(err)
+		}
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+			HuaweiUnionID: loginResult.UserInfo.UnionID,
+			HuaweiOpenID:  loginResult.UserInfo.OpenID,
+		})
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{
+				UserID:        userID,
+				HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID},
+				HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.UserInfo.OpenID},
+				NickName:      loginResult.UserInfo.DisplayName,
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			isRegister = true
+			if err != nil {
+				return nil, err
+			}
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+				HuaweiUnionID: loginResult.UserInfo.UnionID,
+				HuaweiOpenID:  loginResult.UserInfo.OpenID,
+			})
 		}
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)

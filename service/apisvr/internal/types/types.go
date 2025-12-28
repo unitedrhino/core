@@ -99,17 +99,18 @@ type ApiInfoIndexResp struct {
 }
 
 type AppCore struct {
-	ID             int64          `json:"id,optional"`               // 编号
-	Code           string         `json:"code"`                      // 应用编码
-	Type           string         `json:"type"`                      //应用类型 web:web页面  app:应用  mini:小程序
-	SubType        string         `json:"subType,optional"`          //子类型  wx:微信小程序  ding:钉钉小程序
-	Name           string         `json:"name,optional"`             // 应用名称
-	LoginTypes     []string       `json:"loginTypes,optional"`       //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
-	WxOpen         *ThirdMiniCore `json:"wxOpen,optional,omitempty"` //微信开放 web app有
-	IsAutoRegister int64          `json:"isAutoRegister,optional"`   //登录未注册是否自动注册
-	Config         string         `json:"config,optional"`           //自定义配置json
-	Android        *ThirdApp      `json:"android,optional,omitempty"`
-	Tenant         *TenantCore    `json:"tenant"` //租户信息
+	ID             int64           `json:"id,optional"`                // 编号
+	Code           string          `json:"code"`                       // 应用编码
+	Type           string          `json:"type"`                       //应用类型 web:web页面  app:应用  mini:小程序
+	SubType        string          `json:"subType,optional"`           //子类型  wx:微信小程序  ding:钉钉小程序  huawei:华为应用
+	Name           string          `json:"name,optional"`              // 应用名称
+	LoginTypes     []string        `json:"loginTypes,optional"`        //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	WxOpen         *ThirdMiniCore  `json:"wxOpen,optional,omitempty"`  //微信开放 web app有
+	IsAutoRegister int64           `json:"isAutoRegister,optional"`    //登录未注册是否自动注册
+	Config         string          `json:"config,optional"`            //自定义配置json
+	Android        *ThirdApp       `json:"android,optional,omitempty"` //安卓应用
+	Huawei         *ThirdAppConfig `json:"huawei,optional,omitempty"`  //华为应用
+	Tenant         *TenantCore     `json:"tenant"`                     //租户信息
 }
 
 type AppDeleteReq struct {
@@ -1237,7 +1238,8 @@ type TenantApp struct {
 	DingMini       *ThirdAppConfig `json:"dingMini,optional"` //钉钉小程序
 	WxOpen         *ThirdAppConfig `json:"wxOpen,optional"`   //微信开放 web app需要填写
 	WxMini         *ThirdAppConfig `json:"wxMini,optional"`
-	Android        *ThirdApp       `json:"android,optional"`
+	Android        *ThirdApp       `json:"android,optional"`        //安卓应用
+	Huawei         *ThirdAppConfig `json:"huawei,optional"`         //华为应用
 	LoginTypes     []string        `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
 	IsAutoRegister int64           `json:"isAutoRegister,optional"` //登录未注册是否自动注册
 	Config         string          `json:"config,optional"`         //自定义配置json
@@ -1259,8 +1261,9 @@ type TenantAppInfo struct {
 	DingMini       *ThirdAppConfig    `json:"dingMini,optional"` //钉钉小程序
 	WxOpen         *ThirdAppConfig    `json:"wxOpen,optional"`   //微信开放 web app需要填写
 	WxMini         *ThirdAppConfig    `json:"wxMini,optional"`
-	Android        *ThirdApp          `json:"android,optional"`
-	LoginTypes     []string           `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	Android        *ThirdAppConfig    `json:"android,optional"`        //安卓应用
+	Huawei         *ThirdAppConfig    `json:"huawei,optional"`         //华为应用
+	LoginTypes     []string           `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "huawei":华为应用登录
 	IsAutoRegister int64              `json:"isAutoRegister,optional"` //登录未注册是否自动注册
 	Config         string             `json:"config,optional"`         //自定义配置json
 }
@@ -1652,10 +1655,10 @@ type UserAreaApplyInfo struct {
 }
 
 type UserBindAccountReq struct {
-	Type    string `json:"type,options=phone|email|wxOpen|wxIn|wxMiniP|dingApp"` //验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序
-	Account string `json:"account,optional"`                                     //手机号注册时填写手机号 email填写邮箱
-	Code    string `json:"code,optional"`                                        //验证码    微信登录填code 账号密码登录时填写密码
-	CodeID  string `json:"codeID,optional"`                                      //验证码编号 微信登录填state
+	Type    string `json:"type,options=phone|email|wxOpen|wxIn|wxMiniP|dingApp|huawei"` //验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序 huawei 华为
+	Account string `json:"account,optional"`                                            //手机号注册时填写手机号 email填写邮箱
+	Code    string `json:"code,optional"`                                               //验证码    微信登录填code 账号密码登录时填写密码
+	CodeID  string `json:"codeID,optional"`                                             //验证码编号 微信登录填state
 }
 
 type UserCaptchaReq struct {
@@ -1803,12 +1806,12 @@ type UserInfoReadReq struct {
 }
 
 type UserLoginReq struct {
-	Account   string `json:"account,optional"`                                              //登录账号(支持用户名,手机号,邮箱) 账号密码登录时需要填写
-	PwdType   int32  `json:"pwdType,optional"`                                              //账号密码登录时需要填写.0,无密码 1，明文 2，md5加密
-	Password  string `json:"password,optional"`                                             //密码，建议md5转换 密码登录时需要填写
-	LoginType string `json:"loginType,options=phone|wxOpen|wxIn|wxMiniP|dingApp|pwd|email"` //验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱
-	Code      string `json:"code,optional"`                                                 //验证码    微信邮箱验证登录填code
-	CodeID    string `json:"codeID,optional"`                                               //验证码编号 微信邮箱验证登录填state
+	Account   string `json:"account,optional"`                                                     //登录账号(支持用户名,手机号,邮箱) 账号密码登录时需要填写
+	PwdType   int32  `json:"pwdType,optional"`                                                     //账号密码登录时需要填写.0,无密码 1，明文 2，md5加密
+	Password  string `json:"password,optional"`                                                    //密码，建议md5转换 密码登录时需要填写
+	LoginType string `json:"loginType,options=phone|wxOpen|wxIn|wxMiniP|dingApp|pwd|email|huawei"` //验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱 huawei 华为
+	Code      string `json:"code,optional"`                                                        //验证码    微信邮箱验证登录填code
+	CodeID    string `json:"codeID,optional"`                                                      //验证码编号 微信邮箱验证登录填state
 }
 
 type UserLoginResp struct {
@@ -1883,7 +1886,7 @@ type UserProfileReadResp struct {
 }
 
 type UserRegisterReq struct {
-	RegType     string            `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp"`
+	RegType     string            `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp|huawei"`
 	Account     string            `json:"account,optional"`     //手机号注册时填写手机号 账号密码注册时填写userName
 	Code        string            `json:"code"`                 //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID      string            `json:"codeID,optional"`      //验证码编号 微信登录填state

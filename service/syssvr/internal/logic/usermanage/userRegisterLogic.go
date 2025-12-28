@@ -51,6 +51,8 @@ func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserLogi
 		userID, err = l.handleWxminip(in)
 	case users.RegEmail, users.RegPhone:
 		userID, err = l.handleEmailOrPhone(in)
+	case users.RegHuawei:
+		userID, err = l.handleHuawei(in)
 	default:
 		return nil, errors.NotRealize.AddMsgf(in.RegType)
 	}
@@ -426,4 +428,45 @@ func Init() {
 			}
 		}
 	})
+}
+
+func (l *UserRegisterLogic) handleHuawei(in *sys.UserRegisterReq) (int64, error) {
+	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+	if err != nil || cli.Huawei == nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+	if err != nil {
+		l.Errorf("%v.QuickLoginByCode err:%v", err)
+		return 0, errors.System.AddDetail(err)
+	}
+
+	userID := l.svcCtx.UserID.GetSnowflakeId()
+	ui := relationDB.SysUserInfo{
+		UserID:        userID,
+		HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID},
+		HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.UserInfo.OpenID},
+		NickName:      loginResult.UserInfo.DisplayName,
+	}
+	if in.Info != nil {
+		ui.NickName = in.Info.NickName
+		if in.Info.UserName != "" {
+			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+		}
+	}
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+			HuaweiUnionID: loginResult.UserInfo.UnionID,
+			HuaweiOpenID:  loginResult.UserInfo.OpenID,
+		})
+		if err == nil { //已经注册过
+			return errors.DuplicateRegister
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return err
+		}
+		return l.FillUserInfo(&ui, tx)
+	})
+	return userID, err
 }
