@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
@@ -58,6 +59,9 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 		}
 		if ta.WxOpen != nil && ta.WxOpen.AppID != "" {
 			val.WxOpen = utils.Copy[types.ThirdAppConfig](ta.WxOpen)
+		}
+		if ta.Huawei != nil && ta.Huawei.AppID != "" {
+			val.Huawei = utils.Copy[types.ThirdAppConfig](ta.Huawei)
 		}
 		if ta.Android != nil {
 			val.Android = utils.Copy[types.ThirdApp](ta.Android)
