@@ -1,4 +1,4 @@
-[TOC]
+[toc]
 
 # 本地安装goctl【非官方，请使用联犀/go-zero】
 
@@ -17,17 +17,21 @@ $ goctl env check --install --verbose --force
 # 服务新增方案
 
 ## rpc服务
+
 ```
 goctl rpc new opssvr  --style=goZero -m
 ```
+
 ## api服务
+
 ```
 goctl api new viewsvr  --style=goZero 
 ```
 
 # 库表新增方案
 
-在每个服务的 `internal/repo/relationDB` 目录下有example.go 
+在每个服务的 `internal/repo/relationDB` 目录下有example.go
+
 1. 借助 `https://sql2gorm.mccode.info/` 生成对应的模型 放到 `internal/repo/relationDB/modle.go` 中
 2. 复制 `internal/repo/relationDB/example.go` 到对应目录下,并修改表名
 3. 将example.go中的Example替换为表名
@@ -37,7 +41,7 @@ goctl api new viewsvr  --style=goZero
 
 ```shell
 #cd apisvr && goctl api go -api http/api.api  -dir ./  --style=goZero && cd ..
-cd apisvr && goctl api go -api http/api.api  -dir ./  --style=goZero -ws  && goctl api swagger -filename swagger.json -api http/api.api -dir ./http&&  goctl api access  -api http/api.api -dir ./http   && cd ..
+cd apisvr && goctl api go -api http/api.api  -dir ./  --style=goZero   && goctl api swagger -filename swagger.json -api http/api.api -dir ./http&&  goctl api access  -api http/api.api -dir ./http   && cd ..
 cd apisvr && goctl api swagger -filename swagger.json -api http/api.api -dir ./http && cd ..
 ```
 
@@ -48,9 +52,6 @@ cd apisvr && goctl api swagger -filename swagger.json -api http/api.api -dir ./h
 ```shell
 cd syssvr && goctl rpc protoc  proto/sys.proto --go_out=./ --go-grpc_out=./ --zrpc_out=. --style=goZero -m && cd ..
 ```
-
-
-
 
 # 定时任务执行者引擎模块-timedjobsvr
 
@@ -69,11 +70,8 @@ cd timed/timedjobsvr && goctl rpc protoc  proto/timedjob.proto --go_out=./ --go-
 #protoc  proto/* --go_out=. --go-grpc_out=.
 ```
 
-
 # 数据分析模块-datasvr
-
 
 ```shell
 cd datasvr && goctl api go -api http/data.api  -dir ./  --style=goZero -ws  && goctl api swagger -filename swagger.json -api http/data.api -dir ./http  && cd ..
 ```
-

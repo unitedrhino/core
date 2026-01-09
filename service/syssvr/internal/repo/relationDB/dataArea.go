@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/core/share/domain/userDataAuth"
 	"gitee.com/unitedrhino/share/def"
@@ -37,10 +38,10 @@ type DataAreaFilter struct {
 func (p DataAreaRepo) fmtFilter(ctx context.Context, f DataAreaFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if len(f.AreaIDs) > 0 {
-		db = db.Where("area_id in ?", f.AreaIDs)
+		db = db.Where("area_id = ?", f.AreaIDs)
 	}
 	if f.TargetType != "" {
-		db = db.Where("target_type in ?", f.TargetType)
+		db = db.Where("target_type = ?", f.TargetType)
 	}
 	if len(f.Targets) != 0 {
 		scope := func(db *gorm.DB) *gorm.DB {

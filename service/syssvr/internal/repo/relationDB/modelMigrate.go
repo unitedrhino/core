@@ -137,7 +137,7 @@ func migrateTableColumn() error {
 	if err := stores.CreateInBatches(db, &MigrateSlotInfo, 100); err != nil {
 		return err
 	}
-	stores.CreateInBatches(db, []SysDeptInfo{{DeletedTime: 666}, {DeletedTime: 777}, {DeletedTime: 888}}, 100)
+	stores.CreateInBatches(db, &[]SysDeptInfo{{DeletedTime: 666}, {DeletedTime: 777}, {DeletedTime: 888}}, 100)
 	return nil
 }
 

@@ -17115,7 +17115,7 @@
         },
         "expand": {
           "type": "object",
-          "description": "拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code"
+          "description": "拓展, 微信登录方式 phoneCode:获取手机号code  手机号和邮箱注册: wxOpenCode:如果需要同时绑定微信则在这里填写开放平台的用户code huaweiCode:如果需要同时绑定华为则在这里填写用户code"
         },
         "info": {
           "$ref": "#/definitions/UserInfo",

@@ -310,35 +310,41 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if cli.Huawei == nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
-		if err != nil {
-			return nil, errors.System.AddDetail(err)
+		// cc:= huawei.NewHuaweiClient(l.ctx,&conf.ThirdConf{AppID: cli.Config.Huawei.AppID, AppSecret: cli.Config.Huawei.AppSecret})
+		// cc.GetPhoneNumberByCode(l.ctx, in.Code)
+		loginResult, er2 := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+		if er2 != nil {
+			return nil, errors.System.AddDetail(er2)
 		}
+		l.Infof("loginResult=%v,err=%v", utils.Fmt(loginResult), er2)
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
 			HuaweiUnionID: loginResult.UserInfo.UnionID,
 			HuaweiOpenID:  loginResult.UserInfo.OpenID,
 		})
-		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
-			err = nil
-			userID := l.svcCtx.UserID.GetSnowflakeId()
-			uc = &relationDB.SysUserInfo{
-				UserID:        userID,
-				HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID},
-				HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.UserInfo.OpenID},
-				NickName:      loginResult.UserInfo.DisplayName,
-			}
-			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-				return Register(l.ctx, l.svcCtx, uc, tx)
-			})
-			isRegister = true
-			if err != nil {
-				return nil, err
-			}
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
-				HuaweiUnionID: loginResult.UserInfo.UnionID,
-				HuaweiOpenID:  loginResult.UserInfo.OpenID,
-			})
-		}
+		// if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+		// 	err = nil
+		// 	if len(loginResult.PhoneNumber) == 0 {
+		// 		return nil, errors.UnBindAccount.AddDetail("华为账号未绑定手机号")
+		// 	}
+		// 	userID := l.svcCtx.UserID.GetSnowflakeId()
+		// 	uc = &relationDB.SysUserInfo{
+		// 		UserID:        userID,
+		// 		HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UnionID},
+		// 		HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.OpenID},
+		// 		Phone:         sql.NullString{Valid: true, String: loginResult.PhoneNumber},
+		// 	}
+		// 	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		// 		return Register(l.ctx, l.svcCtx, uc, tx)
+		// 	})
+		// 	isRegister = true
+		// 	if err != nil {
+		// 		return nil, err
+		// 	}
+		// 	uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+		// 		HuaweiUnionID: loginResult.UnionID,
+		// 		HuaweiOpenID:  loginResult.OpenID,
+		// 	})
+		// }
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)
 		return nil, errors.Parameter
@@ -369,7 +375,7 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 	}
 	ui, err := l.GetUserInfo(in)
 	if err == nil {
-		if ui.Status != def.True {
+		if ui != nil && ui.Status != def.True {
 			return nil, errors.AccountDisable
 		}
 		return GenLoginResp(l.ctx, l.svcCtx, in.DeviceID, ui)

@@ -107,6 +107,23 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (int64, 
 		}
 	}
 
+	huaweiCode := in.Expand["huaweiCode"]
+	if huaweiCode != "" {
+		cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+		if err != nil || cli.Huawei == nil {
+			return 0, errors.System.AddDetail(err)
+		}
+		loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx,huaweiCode)
+		if err != nil {
+			l.Errorf("%v.QuickLoginByCode err:%v",utils.FuncName(), err)
+			return 0, errors.System.AddDetail(err)
+		}
+		if loginResult.UserInfo.UnionID != "" {
+			ui.HuaweiUnionID = sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID}
+		}
+		ui.HuaweiOpenID = sql.NullString{Valid: true, String: loginResult.UserInfo.OpenID}
+	}
+
 	wxOpenCode := in.Expand["wxOpenCode"]
 	if wxOpenCode != "" {
 		at, err := GetWxLoginResAccessToken(l.ctx, wxOpenCode)
@@ -435,18 +452,30 @@ func (l *UserRegisterLogic) handleHuawei(in *sys.UserRegisterReq) (int64, error)
 	if err != nil || cli.Huawei == nil {
 		return 0, errors.System.AddDetail(err)
 	}
-	loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+
+	loginResult, err := cli.Huawei.GetQuickLoginMobileByCode(l.ctx, in.Code)
 	if err != nil {
-		l.Errorf("%v.QuickLoginByCode err:%v", err)
+		l.Errorf("%v.GetPhoneNumber err:%v", err)
 		return 0, errors.System.AddDetail(err)
+	}
+	if len(loginResult.PhoneNumber) == 0 {
+		return 0, errors.UnBindAccount.AddDetail("华为账号未绑定手机号")
+	}
+	old, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+		Phone: loginResult.PhoneNumber,
+	})
+	if err == nil { //如果已经注册
+		old.HuaweiUnionID = sql.NullString{Valid: true, String: loginResult.UnionID}
+		old.HuaweiOpenID = sql.NullString{Valid: true, String: loginResult.OpenID}
+		return old.UserID, relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, old)
 	}
 
 	userID := l.svcCtx.UserID.GetSnowflakeId()
 	ui := relationDB.SysUserInfo{
 		UserID:        userID,
-		HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID},
-		HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.UserInfo.OpenID},
-		NickName:      loginResult.UserInfo.DisplayName,
+		HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UnionID},
+		HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.OpenID},
+		Phone:         sql.NullString{Valid: true, String: loginResult.PhoneNumber},
 	}
 	if in.Info != nil {
 		ui.NickName = in.Info.NickName
@@ -457,8 +486,8 @@ func (l *UserRegisterLogic) handleHuawei(in *sys.UserRegisterReq) (int64, error)
 	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
-			HuaweiUnionID: loginResult.UserInfo.UnionID,
-			HuaweiOpenID:  loginResult.UserInfo.OpenID,
+			HuaweiUnionID: loginResult.UnionID,
+			HuaweiOpenID:  loginResult.OpenID,
 		})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister

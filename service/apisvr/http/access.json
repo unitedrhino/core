@@ -1,333 +1,393 @@
 {
   "Access": {
-    "systemAccessManageAdd": {
-      "name": "新增授权管理",
-      "code": "systemAccessManageAdd",
-      "group": "授权管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAccessManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/access/api/create",
-          "name": "添加接口",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAccessManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/access/info/create",
-          "name": "添加访问权限信息",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAccessManageDelete": {
-      "name": "删除授权管理",
-      "code": "systemAccessManageDelete",
-      "group": "授权管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAccessManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/access/api/delete",
-          "name": "删除接口",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAccessManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/access/info/delete",
-          "name": "删除访问权限信息",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAccessManageFind": {
-      "name": "查询授权管理",
-      "code": "systemAccessManageFind",
-      "group": "授权管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAccessManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/access/api/index",
-          "name": "获取接口列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAccessManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/access/info/index",
-          "name": "获取访问权限信息列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAccessManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/access/info/tree",
-          "name": "获取访问权限信息树结构",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAccessManageModify": {
-      "name": "修改授权管理",
-      "code": "systemAccessManageModify",
-      "group": "授权管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAccessManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/access/api/update",
-          "name": "更新接口",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAccessManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/access/info/update",
-          "name": "更新访问权限信息",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAccessManageOther": {
-      "name": "操作授权管理",
-      "code": "systemAccessManageOther",
-      "group": "授权管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAccessManageOther",
-          "method": "POST",
-          "route": "/api/v1/system/access/info/multi-import",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "other",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemAppManageAdd": {
-      "name": "新增应用管理",
-      "code": "systemAppManageAdd",
-      "group": "应用管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAppManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/app/info/create",
-          "name": "添加应用",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAppManageDelete": {
-      "name": "删除应用管理",
-      "code": "systemAppManageDelete",
-      "group": "应用管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAppManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/app/info/delete",
-          "name": "删除应用",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAppManageFind": {
-      "name": "查询应用模块",
-      "code": "systemAppManageFind",
-      "group": "应用管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAppManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/app/info/index",
-          "name": "获取应用列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAppManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/app/info/read",
-          "name": "获取应用详情",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAppManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/app/module/index",
-          "name": "获取APP权限列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAppManageModify": {
-      "name": "修改应用模块",
-      "code": "systemAppManageModify",
-      "group": "应用管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAppManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/app/info/update",
-          "name": "更新应用",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAppManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/app/module/multi-update",
-          "name": "更新APP权限",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemAreaManageAdd": {
-      "name": "新增区域管理",
-      "code": "systemAreaManageAdd",
-      "group": "区域管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAreaManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/area/info/create",
-          "name": "新增项目区域",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemAreaManageDelete": {
-      "name": "删除区域管理",
-      "code": "systemAreaManageDelete",
-      "group": "区域管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAreaManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/area/info/delete",
-          "name": "删除项目区域",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemAreaManageFind": {
-      "name": "查询区域管理",
-      "code": "systemAreaManageFind",
-      "group": "区域管理",
+    "systemAccessApiAdd": {
+      "name": "新增",
+      "code": "systemAccessApiAdd",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemAreaManageFind",
+          "accessCode": "systemAccessApiAdd",
+          "method": "POST",
+          "route": "/api/v1/system/access/api/create",
+          "name": "添加接口",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessApiDelete": {
+      "name": "删除",
+      "code": "systemAccessApiDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessApiDelete",
+          "method": "POST",
+          "route": "/api/v1/system/access/api/delete",
+          "name": "删除接口",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessApiFind": {
+      "name": "查询",
+      "code": "systemAccessApiFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessApiFind",
+          "method": "POST",
+          "route": "/api/v1/system/access/api/index",
+          "name": "获取接口列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessApiModify": {
+      "name": "修改",
+      "code": "systemAccessApiModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessApiModify",
+          "method": "POST",
+          "route": "/api/v1/system/access/api/update",
+          "name": "更新接口",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessInfoAdd": {
+      "name": "新增",
+      "code": "systemAccessInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/access/info/create",
+          "name": "添加访问权限信息",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessInfoDelete": {
+      "name": "删除",
+      "code": "systemAccessInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/access/info/delete",
+          "name": "删除访问权限信息",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessInfoFind": {
+      "name": "查询",
+      "code": "systemAccessInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/access/info/index",
+          "name": "获取访问权限信息列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemAccessInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/access/info/tree",
+          "name": "获取访问权限信息树结构",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessInfoModify": {
+      "name": "修改",
+      "code": "systemAccessInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/access/info/update",
+          "name": "更新访问权限信息",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAccessInfoOther": {
+      "name": "操作",
+      "code": "systemAccessInfoOther",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAccessInfoOther",
+          "method": "POST",
+          "route": "/api/v1/system/access/info/multi-import",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAppInfoAdd": {
+      "name": "新增",
+      "code": "systemAppInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAppInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/app/info/create",
+          "name": "添加应用",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAppInfoDelete": {
+      "name": "删除",
+      "code": "systemAppInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAppInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/app/info/delete",
+          "name": "删除应用",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAppInfoFind": {
+      "name": "查询",
+      "code": "systemAppInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAppInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/app/info/index",
+          "name": "获取应用列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemAppInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/app/info/read",
+          "name": "获取应用详情",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAppInfoModify": {
+      "name": "修改",
+      "code": "systemAppInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAppInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/app/info/update",
+          "name": "更新应用",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAppModuleFind": {
+      "name": "查询",
+      "code": "systemAppModuleFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAppModuleFind",
+          "method": "POST",
+          "route": "/api/v1/system/app/module/index",
+          "name": "获取APP权限列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAppModuleModify": {
+      "name": "修改",
+      "code": "systemAppModuleModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAppModuleModify",
+          "method": "POST",
+          "route": "/api/v1/system/app/module/multi-update",
+          "name": "更新APP权限",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAreaInfoAdd": {
+      "name": "新增",
+      "code": "systemAreaInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAreaInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/area/info/create",
+          "name": "新增项目区域",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAreaInfoDelete": {
+      "name": "删除",
+      "code": "systemAreaInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAreaInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/area/info/delete",
+          "name": "删除项目区域",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAreaInfoFind": {
+      "name": "查询",
+      "code": "systemAreaInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAreaInfoFind",
           "method": "POST",
           "route": "/api/v1/system/area/info/index",
           "name": "",
@@ -338,7 +398,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemAreaManageFind",
+          "accessCode": "systemAreaInfoFind",
           "method": "POST",
           "route": "/api/v1/system/area/info/read",
           "name": "",
@@ -347,9 +407,40 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAreaInfoModify": {
+      "name": "修改",
+      "code": "systemAreaInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemAreaManageFind",
+          "accessCode": "systemAreaInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/area/info/update",
+          "name": "更新项目区域",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemAreaProfileFind": {
+      "name": "查询",
+      "code": "systemAreaProfileFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemAreaProfileFind",
           "method": "POST",
           "route": "/api/v1/system/area/profile/index",
           "name": "获取区域配置列表",
@@ -360,7 +451,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemAreaManageFind",
+          "accessCode": "systemAreaProfileFind",
           "method": "POST",
           "route": "/api/v1/system/area/profile/read",
           "name": "获取区域配置详情",
@@ -373,63 +464,20 @@
       ],
       "authType": "all"
     },
-    "systemAreaManageModify": {
-      "name": "修改区域管理",
-      "code": "systemAreaManageModify",
-      "group": "区域管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemAreaManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/area/info/update",
-          "name": "更新项目区域",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemAreaManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/area/profile/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemDataManageAdd": {
-      "name": "新增项目权限",
-      "code": "systemDataManageAdd",
-      "group": "数据权限",
+    "systemAreaProfileModify": {
+      "name": "修改",
+      "code": "systemAreaProfileModify",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDataManageAdd",
+          "accessCode": "systemAreaProfileModify",
           "method": "POST",
-          "route": "/api/v1/system/data/project/create",
-          "name": "创建授权项目权限",
+          "route": "/api/v1/system/area/profile/update",
+          "name": "",
           "isNeedAuth": 2,
-          "businessType": "add",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDataManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/data/project/multi-create",
-          "name": "批量创建授权项目权限",
-          "isNeedAuth": 2,
-          "businessType": "add",
+          "businessType": "modify",
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
@@ -437,15 +485,15 @@
       ],
       "authType": "all"
     },
-    "systemDataManageDelete": {
-      "name": "删除项目权限",
-      "code": "systemDataManageDelete",
-      "group": "数据权限",
+    "systemDataAreaDelete": {
+      "name": "删除",
+      "code": "systemDataAreaDelete",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDataManageDelete",
+          "accessCode": "systemDataAreaDelete",
           "method": "POST",
           "route": "/api/v1/system/data/area/multi-delete",
           "name": "删除授权区域权限",
@@ -454,41 +502,19 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDataManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/data/project/delete",
-          "name": "删除授权项目权限",
-          "isNeedAuth": 2,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDataManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/data/project/multi-delete",
-          "name": "批量删除授权项目权限",
-          "isNeedAuth": 2,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
         }
       ],
       "authType": "all"
     },
-    "systemDataManageFind": {
-      "name": "查询项目权限",
-      "code": "systemDataManageFind",
-      "group": "数据权限",
+    "systemDataAreaFind": {
+      "name": "查询",
+      "code": "systemDataAreaFind",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDataManageFind",
+          "accessCode": "systemDataAreaFind",
           "method": "POST",
           "route": "/api/v1/system/data/area/index",
           "name": "获取区域权限列表",
@@ -497,41 +523,19 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDataManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/data/area/user/apply/index",
-          "name": "获取区域权限列表",
-          "isNeedAuth": 2,
-          "businessType": "find",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDataManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/data/project/index",
-          "name": "获取项目权限列表",
-          "isNeedAuth": 2,
-          "businessType": "find",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
         }
       ],
       "authType": "all"
     },
-    "systemDataManageModify": {
-      "name": "修改区域权限",
-      "code": "systemDataManageModify",
-      "group": "数据权限",
+    "systemDataAreaModify": {
+      "name": "修改",
+      "code": "systemDataAreaModify",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDataManageModify",
+          "accessCode": "systemDataAreaModify",
           "method": "POST",
           "route": "/api/v1/system/data/area/multi-update",
           "name": "更新授权区域权限",
@@ -544,15 +548,36 @@
       ],
       "authType": "all"
     },
-    "systemDataManageOther": {
-      "name": "操作区域授权",
-      "code": "systemDataManageOther",
-      "group": "数据权限",
+    "systemDataAreaUserApplyFind": {
+      "name": "查询",
+      "code": "systemDataAreaUserApplyFind",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDataManageOther",
+          "accessCode": "systemDataAreaUserApplyFind",
+          "method": "POST",
+          "route": "/api/v1/system/data/area/user/apply/index",
+          "name": "获取区域权限列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDataAreaUserApplyOther": {
+      "name": "操作",
+      "code": "systemDataAreaUserApplyOther",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataAreaUserApplyOther",
           "method": "POST",
           "route": "/api/v1/system/data/area/user/apply/deal",
           "name": "授权区域权限",
@@ -565,79 +590,142 @@
       ],
       "authType": "all"
     },
-    "systemDeptManageAdd": {
-      "name": "新增部门同步任务",
-      "code": "systemDeptManageAdd",
-      "group": "部门管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDeptManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/dept/info/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDeptManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/dept/sync-job/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemDeptManageDelete": {
-      "name": "删除部门同步任务",
-      "code": "systemDeptManageDelete",
-      "group": "部门管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDeptManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/dept/info/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDeptManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/dept/sync-job/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemDeptManageFind": {
-      "name": "查询部门同步任务",
-      "code": "systemDeptManageFind",
-      "group": "部门管理",
+    "systemDataProjectAdd": {
+      "name": "新增",
+      "code": "systemDataProjectAdd",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDeptManageFind",
+          "accessCode": "systemDataProjectAdd",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/create",
+          "name": "创建授权项目权限",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemDataProjectAdd",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/multi-create",
+          "name": "批量创建授权项目权限",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDataProjectDelete": {
+      "name": "删除",
+      "code": "systemDataProjectDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataProjectDelete",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/delete",
+          "name": "删除授权项目权限",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemDataProjectDelete",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/multi-delete",
+          "name": "批量删除授权项目权限",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDataProjectFind": {
+      "name": "查询",
+      "code": "systemDataProjectFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDataProjectFind",
+          "method": "POST",
+          "route": "/api/v1/system/data/project/index",
+          "name": "获取项目权限列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptInfoAdd": {
+      "name": "新增",
+      "code": "systemDeptInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptInfoDelete": {
+      "name": "删除",
+      "code": "systemDeptInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptInfoFind": {
+      "name": "查询",
+      "code": "systemDeptInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptInfoFind",
           "method": "POST",
           "route": "/api/v1/system/dept/info/index",
           "name": "获取部门列表",
@@ -648,7 +736,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemDeptManageFind",
+          "accessCode": "systemDeptInfoFind",
           "method": "POST",
           "route": "/api/v1/system/dept/info/read",
           "name": "",
@@ -657,9 +745,82 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptInfoModify": {
+      "name": "修改",
+      "code": "systemDeptInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemDeptManageFind",
+          "accessCode": "systemDeptInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/dept/info/update",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptSyncJobAdd": {
+      "name": "新增",
+      "code": "systemDeptSyncJobAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptSyncJobAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptSyncJobDelete": {
+      "name": "删除",
+      "code": "systemDeptSyncJobDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptSyncJobDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dept/sync-job/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDeptSyncJobFind": {
+      "name": "查询",
+      "code": "systemDeptSyncJobFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDeptSyncJobFind",
           "method": "POST",
           "route": "/api/v1/system/dept/sync-job/index",
           "name": "获取同步任务列表",
@@ -670,7 +831,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemDeptManageFind",
+          "accessCode": "systemDeptSyncJobFind",
           "method": "POST",
           "route": "/api/v1/system/dept/sync-job/read",
           "name": "",
@@ -683,63 +844,52 @@
       ],
       "authType": "all"
     },
-    "systemDeptManageModify": {
-      "name": "修改部门同步任务",
-      "code": "systemDeptManageModify",
-      "group": "部门管理",
-      "isNeedAuth": 1,
+    "systemDeptSyncJobModify": {
+      "name": "修改",
+      "code": "systemDeptSyncJobModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDeptManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/dept/info/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDeptManageModify",
+          "accessCode": "systemDeptSyncJobModify",
           "method": "POST",
           "route": "/api/v1/system/dept/sync-job/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemDeptManageOther": {
-      "name": "操作部门同步任务",
-      "code": "systemDeptManageOther",
-      "group": "部门管理",
-      "isNeedAuth": 1,
+    "systemDeptSyncJobOther": {
+      "name": "操作",
+      "code": "systemDeptSyncJobOther",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDeptManageOther",
+          "accessCode": "systemDeptSyncJobOther",
           "method": "POST",
           "route": "/api/v1/system/dept/sync-job/execute",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemDeptUserAdd": {
-      "name": "新增部门用户",
+      "name": "新增",
       "code": "systemDeptUserAdd",
-      "group": "部门管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -758,10 +908,10 @@
       "authType": "all"
     },
     "systemDeptUserDelete": {
-      "name": "删除部门用户",
+      "name": "删除",
       "code": "systemDeptUserDelete",
-      "group": "部门管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -769,19 +919,19 @@
           "method": "POST",
           "route": "/api/v1/system/dept/user/multi-delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemDeptUserFind": {
-      "name": "查询部门用户",
+      "name": "查询",
       "code": "systemDeptUserFind",
-      "group": "部门管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -799,79 +949,57 @@
       ],
       "authType": "all"
     },
-    "systemDictManageAdd": {
-      "name": "新增字典管理",
-      "code": "systemDictManageAdd",
-      "group": "字典管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDictManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/dict/detail/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDictManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/dict/info/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemDictManageDelete": {
-      "name": "删除字典管理",
-      "code": "systemDictManageDelete",
-      "group": "字典管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemDictManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/dict/detail/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDictManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/dict/info/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemDictManageFind": {
-      "name": "查询字典管理",
-      "code": "systemDictManageFind",
-      "group": "字典管理",
+    "systemDictDetailAdd": {
+      "name": "新增",
+      "code": "systemDictDetailAdd",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDictManageFind",
+          "accessCode": "systemDictDetailAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dict/detail/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDictDetailDelete": {
+      "name": "删除",
+      "code": "systemDictDetailDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDictDetailDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dict/detail/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDictDetailFind": {
+      "name": "查询",
+      "code": "systemDictDetailFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDictDetailFind",
           "method": "POST",
           "route": "/api/v1/system/dict/detail/index",
           "name": "获取字典详情列表",
@@ -882,7 +1010,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemDictManageFind",
+          "accessCode": "systemDictDetailFind",
           "method": "POST",
           "route": "/api/v1/system/dict/detail/read",
           "name": "",
@@ -891,9 +1019,82 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDictDetailModify": {
+      "name": "修改",
+      "code": "systemDictDetailModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemDictManageFind",
+          "accessCode": "systemDictDetailModify",
+          "method": "POST",
+          "route": "/api/v1/system/dict/detail/update",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDictInfoAdd": {
+      "name": "新增",
+      "code": "systemDictInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDictInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/dict/info/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDictInfoDelete": {
+      "name": "删除",
+      "code": "systemDictInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDictInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/dict/info/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemDictInfoFind": {
+      "name": "查询",
+      "code": "systemDictInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemDictInfoFind",
           "method": "POST",
           "route": "/api/v1/system/dict/info/index",
           "name": "获取字典信息列表",
@@ -904,7 +1105,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemDictManageFind",
+          "accessCode": "systemDictInfoFind",
           "method": "POST",
           "route": "/api/v1/system/dict/info/read",
           "name": "获取字典信息详情",
@@ -917,268 +1118,257 @@
       ],
       "authType": "all"
     },
-    "systemDictManageModify": {
-      "name": "修改字典管理",
-      "code": "systemDictManageModify",
-      "group": "字典管理",
-      "isNeedAuth": 1,
+    "systemDictInfoModify": {
+      "name": "修改",
+      "code": "systemDictInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDictManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/dict/detail/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemDictManageModify",
+          "accessCode": "systemDictInfoModify",
           "method": "POST",
           "route": "/api/v1/system/dict/info/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemDictManageOther": {
-      "name": "操作字典管理",
-      "code": "systemDictManageOther",
-      "group": "字典管理",
-      "isNeedAuth": 1,
+    "systemDictInfoOther": {
+      "name": "操作",
+      "code": "systemDictInfoOther",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemDictManageOther",
+          "accessCode": "systemDictInfoOther",
           "method": "POST",
           "route": "/api/v1/system/dict/info/multi-export",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemDictManageOther",
+          "accessCode": "systemDictInfoOther",
           "method": "POST",
           "route": "/api/v1/system/dict/info/multi-import",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemJobManageAdd": {
-      "name": "新增任务管理",
-      "code": "systemJobManageAdd",
-      "group": "任务管理",
-      "isNeedAuth": 1,
+    "systemJobTaskAdd": {
+      "name": "新增",
+      "code": "systemJobTaskAdd",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemJobManageAdd",
+          "accessCode": "systemJobTaskAdd",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/create",
           "name": "新建任务分组",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageAdd",
+          "accessCode": "systemJobTaskAdd",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/create",
           "name": "创建任务",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemJobManageDelete": {
-      "name": "删除任务管理",
-      "code": "systemJobManageDelete",
-      "group": "任务管理",
-      "isNeedAuth": 1,
+    "systemJobTaskDelete": {
+      "name": "删除",
+      "code": "systemJobTaskDelete",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemJobManageDelete",
+          "accessCode": "systemJobTaskDelete",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/delete",
           "name": "删除任务分组",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageDelete",
+          "accessCode": "systemJobTaskDelete",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/delete",
           "name": "删除任务",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemJobManageFind": {
-      "name": "查询任务管理",
-      "code": "systemJobManageFind",
-      "group": "任务管理",
-      "isNeedAuth": 1,
+    "systemJobTaskFind": {
+      "name": "查询",
+      "code": "systemJobTaskFind",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemJobManageFind",
+          "accessCode": "systemJobTaskFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/index",
           "name": "获取任务分组列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageFind",
+          "accessCode": "systemJobTaskFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/read",
           "name": "获取任务分组详情",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageFind",
+          "accessCode": "systemJobTaskFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/index",
           "name": "获取任务列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageFind",
+          "accessCode": "systemJobTaskFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/read",
           "name": "获取任务详情",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageFind",
+          "accessCode": "systemJobTaskFind",
           "method": "POST",
           "route": "/api/v1/system/job/task/log/index",
           "name": "获取任务日志",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemJobManageModify": {
-      "name": "修改任务管理",
-      "code": "systemJobManageModify",
-      "group": "任务管理",
-      "isNeedAuth": 1,
+    "systemJobTaskModify": {
+      "name": "修改",
+      "code": "systemJobTaskModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemJobManageModify",
+          "accessCode": "systemJobTaskModify",
           "method": "POST",
           "route": "/api/v1/system/job/task/group/update",
           "name": "更新任务分组",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageModify",
+          "accessCode": "systemJobTaskModify",
           "method": "POST",
           "route": "/api/v1/system/job/task/info/update",
           "name": "更新任务",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemJobManageModify",
+          "accessCode": "systemJobTaskModify",
           "method": "POST",
           "route": "/api/v1/system/job/task/send",
           "name": "发送延时请求,如果任务不存在,则会自动创建,但是自动创建的需要填写param",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemJobManageOther": {
-      "name": "操作任务管理",
-      "code": "systemJobManageOther",
-      "group": "任务管理",
-      "isNeedAuth": 1,
+    "systemJobTaskOther": {
+      "name": "操作",
+      "code": "systemJobTaskOther",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemJobManageOther",
+          "accessCode": "systemJobTaskOther",
           "method": "POST",
           "route": "/api/v1/system/job/task/cancel",
           "name": "取消执行任务",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemLogFind": {
-      "name": "查询系统日志",
+      "name": "查询",
       "code": "systemLogFind",
-      "group": "系统日志",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1186,10 +1376,10 @@
           "method": "POST",
           "route": "/api/v1/system/log/login/index",
           "name": "获取登录日志列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1197,20 +1387,20 @@
           "method": "POST",
           "route": "/api/v1/system/log/oper/index",
           "name": "获取操作日志列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemModuleInfoAdd": {
-      "name": "新增模块信息",
+      "name": "新增",
       "code": "systemModuleInfoAdd",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1218,20 +1408,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleInfoDelete": {
-      "name": "删除模块信息",
+      "name": "删除",
       "code": "systemModuleInfoDelete",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1239,20 +1429,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleInfoFind": {
-      "name": "查询模块信息",
+      "name": "查询",
       "code": "systemModuleInfoFind",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1260,7 +1450,7 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/index",
           "name": "获取模块列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
           "authType": "all",
@@ -1271,7 +1461,7 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/read",
           "name": "获取模块详情",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
           "authType": "all",
@@ -1281,10 +1471,10 @@
       "authType": "all"
     },
     "systemModuleInfoModify": {
-      "name": "修改模块信息",
+      "name": "修改",
       "code": "systemModuleInfoModify",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1292,20 +1482,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleInfoOther": {
-      "name": "操作模块信息",
+      "name": "操作",
       "code": "systemModuleInfoOther",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1313,10 +1503,10 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/multi-export",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1324,20 +1514,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/info/multi-import",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleMenuAdd": {
-      "name": "新增模块菜单",
+      "name": "新增",
       "code": "systemModuleMenuAdd",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1345,20 +1535,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/menu/create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleMenuDelete": {
-      "name": "删除模块菜单",
+      "name": "删除",
       "code": "systemModuleMenuDelete",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1366,19 +1556,19 @@
           "method": "POST",
           "route": "/api/v1/system/module/menu/delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleMenuFind": {
-      "name": "查询模块菜单",
+      "name": "查询",
       "code": "systemModuleMenuFind",
-      "group": "模块管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1397,10 +1587,10 @@
       "authType": "all"
     },
     "systemModuleMenuModify": {
-      "name": "修改模块菜单",
+      "name": "修改",
       "code": "systemModuleMenuModify",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1408,20 +1598,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/menu/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemModuleMenuOther": {
-      "name": "操作模块菜单",
+      "name": "操作",
       "code": "systemModuleMenuOther",
-      "group": "模块管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1429,10 +1619,10 @@
           "method": "POST",
           "route": "/api/v1/system/module/menu/multi-export",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1440,20 +1630,20 @@
           "method": "POST",
           "route": "/api/v1/system/module/menu/multi-import",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "other",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemNotifyChannelAdd": {
-      "name": "新增通知通道",
+      "name": "新增",
       "code": "systemNotifyChannelAdd",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1461,20 +1651,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/channel/create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyChannelDelete": {
-      "name": "删除通知通道",
+      "name": "删除",
       "code": "systemNotifyChannelDelete",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1482,20 +1672,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/channel/delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyChannelFind": {
-      "name": "查询通知通道",
+      "name": "查询",
       "code": "systemNotifyChannelFind",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1503,10 +1693,10 @@
           "method": "POST",
           "route": "/api/v1/system/notify/channel/index",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1514,20 +1704,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/channel/read",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyChannelModify": {
-      "name": "修改通知通道",
+      "name": "修改",
       "code": "systemNotifyChannelModify",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1535,20 +1725,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/channel/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyConfigAdd": {
-      "name": "新增通知配置",
+      "name": "新增",
       "code": "systemNotifyConfigAdd",
-      "group": "通知配置",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1556,20 +1746,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/config/create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemNotifyConfigDelete": {
-      "name": "删除通知配置",
+      "name": "删除",
       "code": "systemNotifyConfigDelete",
-      "group": "通知配置",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1577,20 +1767,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/config/delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
     "systemNotifyConfigFind": {
-      "name": "查询通知配置",
+      "name": "查询",
       "code": "systemNotifyConfigFind",
-      "group": "通知配置",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1598,10 +1788,10 @@
           "method": "POST",
           "route": "/api/v1/system/notify/config/index",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1609,10 +1799,10 @@
           "method": "POST",
           "route": "/api/v1/system/notify/config/read",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1620,20 +1810,20 @@
           "method": "POST",
           "route": "/api/v1/system/notify/config/tree",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyConfigModify": {
-      "name": "修改通知配置",
+      "name": "修改",
       "code": "systemNotifyConfigModify",
-      "group": "通知配置",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1641,19 +1831,82 @@
           "method": "POST",
           "route": "/api/v1/system/notify/config/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
+    },
+    "systemNotifyConfigTemplateDelete": {
+      "name": "删除",
+      "code": "systemNotifyConfigTemplateDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemNotifyConfigTemplateDelete",
+          "method": "POST",
+          "route": "/api/v1/system/notify/config/template/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemNotifyConfigTemplateFind": {
+      "name": "查询",
+      "code": "systemNotifyConfigTemplateFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemNotifyConfigTemplateFind",
+          "method": "POST",
+          "route": "/api/v1/system/notify/config/template/index",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemNotifyConfigTemplateModify": {
+      "name": "修改",
+      "code": "systemNotifyConfigTemplateModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemNotifyConfigTemplateModify",
+          "method": "POST",
+          "route": "/api/v1/system/notify/config/template/update",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
     },
     "systemNotifyMessageInfoDelete": {
-      "name": "删除通知消息",
+      "name": "删除",
       "code": "systemNotifyMessageInfoDelete",
-      "group": "消息管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1672,9 +1925,9 @@
       "authType": "all"
     },
     "systemNotifyMessageInfoFind": {
-      "name": "查询通知消息",
+      "name": "查询",
       "code": "systemNotifyMessageInfoFind",
-      "group": "消息管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1693,9 +1946,9 @@
       "authType": "all"
     },
     "systemNotifyMessageInfoModify": {
-      "name": "修改通知消息",
+      "name": "修改",
       "code": "systemNotifyMessageInfoModify",
-      "group": "消息管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1725,10 +1978,10 @@
       "authType": "all"
     },
     "systemNotifyTemplateAdd": {
-      "name": "新增通知模版",
+      "name": "新增",
       "code": "systemNotifyTemplateAdd",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -1736,74 +1989,52 @@
           "method": "POST",
           "route": "/api/v1/system/notify/template/create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyTemplateDelete": {
-      "name": "删除通知模版",
+      "name": "删除",
       "code": "systemNotifyTemplateDelete",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
-        {
-          "accessCode": "systemNotifyTemplateDelete",
-          "method": "POST",
-          "route": "/api/v1/system/notify/config/template/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
         {
           "accessCode": "systemNotifyTemplateDelete",
           "method": "POST",
           "route": "/api/v1/system/notify/template/delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyTemplateFind": {
-      "name": "查询通知模版",
+      "name": "查询",
       "code": "systemNotifyTemplateFind",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
           "accessCode": "systemNotifyTemplateFind",
           "method": "POST",
-          "route": "/api/v1/system/notify/config/template/index",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemNotifyTemplateFind",
-          "method": "POST",
           "route": "/api/v1/system/notify/template/index",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -1811,51 +2042,40 @@
           "method": "POST",
           "route": "/api/v1/system/notify/template/read",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemNotifyTemplateModify": {
-      "name": "修改通知模版",
+      "name": "修改",
       "code": "systemNotifyTemplateModify",
-      "group": "通知管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
           "accessCode": "systemNotifyTemplateModify",
           "method": "POST",
-          "route": "/api/v1/system/notify/config/template/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemNotifyTemplateModify",
-          "method": "POST",
           "route": "/api/v1/system/notify/template/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemOpenAccessAdd": {
-      "name": "新增开放认证",
+      "name": "新增",
       "code": "systemOpenAccessAdd",
-      "group": "数据权限",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1874,9 +2094,9 @@
       "authType": "all"
     },
     "systemOpenAccessDelete": {
-      "name": "删除开放认证",
+      "name": "删除",
       "code": "systemOpenAccessDelete",
-      "group": "数据权限",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1895,9 +2115,9 @@
       "authType": "all"
     },
     "systemOpenAccessFind": {
-      "name": "查询开放认证",
+      "name": "查询",
       "code": "systemOpenAccessFind",
-      "group": "数据权限",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1927,9 +2147,9 @@
       "authType": "all"
     },
     "systemOpenAccessModify": {
-      "name": "修改开放认证",
+      "name": "修改",
       "code": "systemOpenAccessModify",
-      "group": "数据权限",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1948,9 +2168,9 @@
       "authType": "all"
     },
     "systemOpsFeedbackAdd": {
-      "name": "新增帮助与反馈",
+      "name": "新增",
       "code": "systemOpsFeedbackAdd",
-      "group": "运营管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1969,9 +2189,9 @@
       "authType": "all"
     },
     "systemOpsFeedbackFind": {
-      "name": "查询帮助与反馈",
+      "name": "查询",
       "code": "systemOpsFeedbackFind",
-      "group": "运营管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -1990,9 +2210,9 @@
       "authType": "all"
     },
     "systemOpsFeedbackModify": {
-      "name": "修改帮助与反馈",
+      "name": "修改",
       "code": "systemOpsFeedbackModify",
-      "group": "运营管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -2011,9 +2231,9 @@
       "authType": "all"
     },
     "systemOpsWorkOrderAdd": {
-      "name": "新增工单管理",
+      "name": "新增",
       "code": "systemOpsWorkOrderAdd",
-      "group": "运营管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -2032,10 +2252,10 @@
       "authType": "all"
     },
     "systemOpsWorkOrderFind": {
-      "name": "查询工单管理",
+      "name": "查询",
       "code": "systemOpsWorkOrderFind",
-      "group": "运营管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2043,7 +2263,7 @@
           "method": "POST",
           "route": "/api/v1/system/ops/work-order/index",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
           "authType": "all",
@@ -2053,10 +2273,10 @@
       "authType": "all"
     },
     "systemOpsWorkOrderModify": {
-      "name": "修改工单管理",
+      "name": "修改",
       "code": "systemOpsWorkOrderModify",
-      "group": "运营管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2064,7 +2284,7 @@
           "method": "POST",
           "route": "/api/v1/system/ops/work-order/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
           "authType": "all",
@@ -2074,10 +2294,10 @@
       "authType": "all"
     },
     "systemProjectCrudAdd": {
-      "name": "新增项目下的curl业务",
+      "name": "新增",
       "code": "systemProjectCrudAdd",
-      "group": "项目管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2085,20 +2305,20 @@
           "method": "POST",
           "route": "/api/v1/system/project/crud/create",
           "name": "新增项目crud",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemProjectCrudDelete": {
-      "name": "删除项目下的curl业务",
+      "name": "删除",
       "code": "systemProjectCrudDelete",
-      "group": "项目管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2106,20 +2326,20 @@
           "method": "POST",
           "route": "/api/v1/system/project/crud/delete",
           "name": "删除项目crud",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemProjectCrudFind": {
-      "name": "查询项目下的curl业务",
+      "name": "查询",
       "code": "systemProjectCrudFind",
-      "group": "项目管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2127,10 +2347,10 @@
           "method": "POST",
           "route": "/api/v1/system/project/crud/index",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
@@ -2138,20 +2358,20 @@
           "method": "POST",
           "route": "/api/v1/system/project/crud/read",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemProjectCrudModify": {
-      "name": "修改项目下的curl业务",
+      "name": "修改",
       "code": "systemProjectCrudModify",
-      "group": "项目管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2159,66 +2379,66 @@
           "method": "POST",
           "route": "/api/v1/system/project/crud/update",
           "name": "更新项目crud",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemProjectManageAdd": {
-      "name": "新增项目管理",
-      "code": "systemProjectManageAdd",
-      "group": "项目管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemProjectManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/project/info/create",
-          "name": "新增项目",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemProjectManageDelete": {
-      "name": "删除项目管理",
-      "code": "systemProjectManageDelete",
-      "group": "项目管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemProjectManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/project/info/delete",
-          "name": "删除项目",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemProjectManageFind": {
-      "name": "查询项目配置",
-      "code": "systemProjectManageFind",
-      "group": "项目管理",
+    "systemProjectInfoAdd": {
+      "name": "新增",
+      "code": "systemProjectInfoAdd",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemProjectManageFind",
+          "accessCode": "systemProjectInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/project/info/create",
+          "name": "新增项目",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemProjectInfoDelete": {
+      "name": "删除",
+      "code": "systemProjectInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/project/info/delete",
+          "name": "删除项目",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemProjectInfoFind": {
+      "name": "查询",
+      "code": "systemProjectInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectInfoFind",
           "method": "POST",
           "route": "/api/v1/system/project/info/index",
           "name": "",
@@ -2229,7 +2449,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemProjectManageFind",
+          "accessCode": "systemProjectInfoFind",
           "method": "POST",
           "route": "/api/v1/system/project/info/read",
           "name": "",
@@ -2238,9 +2458,40 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemProjectInfoModify": {
+      "name": "修改",
+      "code": "systemProjectInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemProjectManageFind",
+          "accessCode": "systemProjectInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/project/info/update",
+          "name": "更新项目",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemProjectProfileFind": {
+      "name": "查询",
+      "code": "systemProjectProfileFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemProjectProfileFind",
           "method": "POST",
           "route": "/api/v1/system/project/profile/index",
           "name": "获取项目配置列表",
@@ -2251,7 +2502,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemProjectManageFind",
+          "accessCode": "systemProjectProfileFind",
           "method": "POST",
           "route": "/api/v1/system/project/profile/read",
           "name": "获取项目配置详情",
@@ -2264,405 +2515,474 @@
       ],
       "authType": "all"
     },
-    "systemProjectManageModify": {
-      "name": "修改项目配置",
-      "code": "systemProjectManageModify",
-      "group": "项目管理",
-      "isNeedAuth": 1,
+    "systemProjectProfileModify": {
+      "name": "修改",
+      "code": "systemProjectProfileModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemProjectManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/project/info/update",
-          "name": "更新项目",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemProjectManageModify",
+          "accessCode": "systemProjectProfileModify",
           "method": "POST",
           "route": "/api/v1/system/project/profile/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemRoleManageAdd": {
-      "name": "新增角色管理",
-      "code": "systemRoleManageAdd",
-      "group": "角色管理",
-      "isNeedAuth": 1,
+    "systemRoleAccessFind": {
+      "name": "查询",
+      "code": "systemRoleAccessFind",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemRoleManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/role/info/create",
-          "name": "添加角色",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemRoleManageDelete": {
-      "name": "删除角色管理",
-      "code": "systemRoleManageDelete",
-      "group": "角色管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemRoleManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/role/info/delete",
-          "name": "删除角色",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemRoleManageFind": {
-      "name": "查询角色模块",
-      "code": "systemRoleManageFind",
-      "group": "角色管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemRoleManageFind",
+          "accessCode": "systemRoleAccessFind",
           "method": "POST",
           "route": "/api/v1/system/role/access/index",
           "name": "获取操作权限列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemRoleManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/role/app/index",
-          "name": "获取APP权限列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemRoleManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/role/info/index",
-          "name": "获取角色列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemRoleManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/role/menu/index",
-          "name": "获取角色对应菜单列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemRoleManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/role/module/index",
-          "name": "获取角色对应模块列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemRoleManageModify": {
-      "name": "修改角色模块",
-      "code": "systemRoleManageModify",
-      "group": "角色管理",
-      "isNeedAuth": 1,
+    "systemRoleAccessModify": {
+      "name": "修改",
+      "code": "systemRoleAccessModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemRoleManageModify",
+          "accessCode": "systemRoleAccessModify",
           "method": "POST",
           "route": "/api/v1/system/role/access/multi-update",
           "name": "更新操作权限",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleAppFind": {
+      "name": "查询",
+      "code": "systemRoleAppFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemRoleManageModify",
+          "accessCode": "systemRoleAppFind",
+          "method": "POST",
+          "route": "/api/v1/system/role/app/index",
+          "name": "获取APP权限列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleAppModify": {
+      "name": "修改",
+      "code": "systemRoleAppModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemRoleAppModify",
           "method": "POST",
           "route": "/api/v1/system/role/app/multi-update",
           "name": "更新APP权限",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleInfoAdd": {
+      "name": "新增",
+      "code": "systemRoleInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemRoleManageModify",
+          "accessCode": "systemRoleInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/role/info/create",
+          "name": "添加角色",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleInfoDelete": {
+      "name": "删除",
+      "code": "systemRoleInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemRoleInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/role/info/delete",
+          "name": "删除角色",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleInfoFind": {
+      "name": "查询",
+      "code": "systemRoleInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemRoleInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/role/info/index",
+          "name": "获取角色列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleInfoModify": {
+      "name": "修改",
+      "code": "systemRoleInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemRoleInfoModify",
           "method": "POST",
           "route": "/api/v1/system/role/info/update",
           "name": "更新角色",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleMenuFind": {
+      "name": "查询",
+      "code": "systemRoleMenuFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemRoleManageModify",
+          "accessCode": "systemRoleMenuFind",
+          "method": "POST",
+          "route": "/api/v1/system/role/menu/index",
+          "name": "获取角色对应菜单列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleMenuModify": {
+      "name": "修改",
+      "code": "systemRoleMenuModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemRoleMenuModify",
           "method": "POST",
           "route": "/api/v1/system/role/menu/multi-update",
           "name": "更新角色对应菜单列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
-        },
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleModuleFind": {
+      "name": "查询",
+      "code": "systemRoleModuleFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
         {
-          "accessCode": "systemRoleManageModify",
+          "accessCode": "systemRoleModuleFind",
+          "method": "POST",
+          "route": "/api/v1/system/role/module/index",
+          "name": "获取角色对应模块列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemRoleModuleModify": {
+      "name": "修改",
+      "code": "systemRoleModuleModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemRoleModuleModify",
           "method": "POST",
           "route": "/api/v1/system/role/module/multi-update",
           "name": "更新角色对应模块列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemSlotManageAdd": {
-      "name": "新增插槽管理",
-      "code": "systemSlotManageAdd",
-      "group": "拓展管理",
-      "isNeedAuth": 1,
+    "systemSlotInfoAdd": {
+      "name": "新增",
+      "code": "systemSlotInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemSlotManageAdd",
+          "accessCode": "systemSlotInfoAdd",
           "method": "POST",
           "route": "/api/v1/system/slot/info/create",
           "name": "新增插槽",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemSlotManageDelete": {
-      "name": "删除插槽管理",
-      "code": "systemSlotManageDelete",
-      "group": "拓展管理",
-      "isNeedAuth": 1,
+    "systemSlotInfoDelete": {
+      "name": "删除",
+      "code": "systemSlotInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemSlotManageDelete",
+          "accessCode": "systemSlotInfoDelete",
           "method": "POST",
           "route": "/api/v1/system/slot/info/delete",
           "name": "删除插槽",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemSlotManageFind": {
-      "name": "查询插槽管理",
-      "code": "systemSlotManageFind",
-      "group": "拓展管理",
-      "isNeedAuth": 1,
+    "systemSlotInfoFind": {
+      "name": "查询",
+      "code": "systemSlotInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemSlotManageFind",
+          "accessCode": "systemSlotInfoFind",
           "method": "POST",
           "route": "/api/v1/system/slot/info/index",
           "name": "获取插槽列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemSlotManageFind",
+          "accessCode": "systemSlotInfoFind",
           "method": "POST",
           "route": "/api/v1/system/slot/info/read",
           "name": "获取插槽详情",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemSlotManageModify": {
-      "name": "修改插槽管理",
-      "code": "systemSlotManageModify",
-      "group": "拓展管理",
-      "isNeedAuth": 1,
+    "systemSlotInfoModify": {
+      "name": "修改",
+      "code": "systemSlotInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemSlotManageModify",
+          "accessCode": "systemSlotInfoModify",
           "method": "POST",
           "route": "/api/v1/system/slot/info/update",
           "name": "更新插槽",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "supper",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "supper"
+      "authType": "all"
     },
-    "systemTenantAccessAdd": {
-      "name": "新增租户授权",
-      "code": "systemTenantAccessAdd",
-      "group": "租户管理",
-      "isNeedAuth": 1,
+    "systemTenantAccessInfoAdd": {
+      "name": "新增",
+      "code": "systemTenantAccessInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemTenantAccessAdd",
+          "accessCode": "systemTenantAccessInfoAdd",
           "method": "POST",
           "route": "/api/v1/system/tenant/access/info/multi-create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemTenantAccessDelete": {
-      "name": "删除租户授权",
-      "code": "systemTenantAccessDelete",
-      "group": "租户管理",
-      "isNeedAuth": 1,
+    "systemTenantAccessInfoDelete": {
+      "name": "删除",
+      "code": "systemTenantAccessInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemTenantAccessDelete",
+          "accessCode": "systemTenantAccessInfoDelete",
           "method": "POST",
           "route": "/api/v1/system/tenant/access/info/multi-delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemTenantAccessFind": {
-      "name": "查询租户授权",
-      "code": "systemTenantAccessFind",
-      "group": "租户管理",
-      "isNeedAuth": 1,
+    "systemTenantAccessInfoFind": {
+      "name": "查询",
+      "code": "systemTenantAccessInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemTenantAccessFind",
+          "accessCode": "systemTenantAccessInfoFind",
           "method": "POST",
           "route": "/api/v1/system/tenant/access/info/index",
           "name": "获取租户操作权限列表",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemTenantAccessFind",
+          "accessCode": "systemTenantAccessInfoFind",
           "method": "POST",
           "route": "/api/v1/system/tenant/access/info/tree",
           "name": "获取租户操作权限树",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
-    "systemTenantAccessModify": {
-      "name": "修改租户授权",
-      "code": "systemTenantAccessModify",
-      "group": "租户管理",
-      "isNeedAuth": 1,
+    "systemTenantAccessInfoModify": {
+      "name": "修改",
+      "code": "systemTenantAccessInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemTenantAccessModify",
+          "accessCode": "systemTenantAccessInfoModify",
           "method": "POST",
           "route": "/api/v1/system/tenant/access/info/multi-update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemTenantAgreementAdd": {
-      "name": "新增租户协议",
+      "name": "新增",
       "code": "systemTenantAgreementAdd",
-      "group": "租户协议",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2670,20 +2990,20 @@
           "method": "POST",
           "route": "/api/v1/system/tenant/agreement/create",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "add",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemTenantAgreementDelete": {
-      "name": "删除租户协议",
+      "name": "删除",
       "code": "systemTenantAgreementDelete",
-      "group": "租户协议",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2691,19 +3011,19 @@
           "method": "POST",
           "route": "/api/v1/system/tenant/agreement/delete",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "delete",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemTenantAgreementFind": {
-      "name": "查询租户协议",
+      "name": "查询",
       "code": "systemTenantAgreementFind",
-      "group": "租户协议",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -2722,10 +3042,10 @@
       "authType": "all"
     },
     "systemTenantAgreementModify": {
-      "name": "修改租户协议",
+      "name": "修改",
       "code": "systemTenantAgreementModify",
-      "group": "租户协议",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2733,20 +3053,262 @@
           "method": "POST",
           "route": "/api/v1/system/tenant/agreement/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
+    },
+    "systemTenantAppAdd": {
+      "name": "新增",
+      "code": "systemTenantAppAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppAdd",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppDelete": {
+      "name": "删除",
+      "code": "systemTenantAppDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppDelete",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppFind": {
+      "name": "查询",
+      "code": "systemTenantAppFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppFind",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/index",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppMenuAdd": {
+      "name": "新增",
+      "code": "systemTenantAppMenuAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppMenuAdd",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/menu/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppMenuDelete": {
+      "name": "删除",
+      "code": "systemTenantAppMenuDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppMenuDelete",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/menu/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppMenuFind": {
+      "name": "查询",
+      "code": "systemTenantAppMenuFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppMenuFind",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/menu/index",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppMenuModify": {
+      "name": "修改",
+      "code": "systemTenantAppMenuModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppMenuModify",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/menu/update",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppModify": {
+      "name": "修改",
+      "code": "systemTenantAppModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppModify",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/update",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppModuleAdd": {
+      "name": "新增",
+      "code": "systemTenantAppModuleAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppModuleAdd",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/module/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemTenantAppModuleAdd",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/module/multi-create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppModuleDelete": {
+      "name": "删除",
+      "code": "systemTenantAppModuleDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppModuleDelete",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/module/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantAppModuleFind": {
+      "name": "查询",
+      "code": "systemTenantAppModuleFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantAppModuleFind",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/app/module/index",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
     },
     "systemTenantConfigFind": {
-      "name": "查询租户配置",
+      "name": "查询",
       "code": "systemTenantConfigFind",
-      "group": "租户管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2754,20 +3316,20 @@
           "method": "POST",
           "route": "/api/v1/system/tenant/config/read",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "find",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemTenantConfigModify": {
-      "name": "修改租户配置",
+      "name": "修改",
       "code": "systemTenantConfigModify",
-      "group": "租户管理",
-      "isNeedAuth": 1,
+      "group": "",
+      "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
@@ -2775,19 +3337,19 @@
           "method": "POST",
           "route": "/api/v1/system/tenant/config/update",
           "name": "",
-          "isNeedAuth": 1,
+          "isNeedAuth": 2,
           "businessType": "modify",
           "desc": "",
-          "authType": "admin",
+          "authType": "all",
           "recordLogMode": 0
         }
       ],
-      "authType": "admin"
+      "authType": "all"
     },
     "systemTenantCoreFind": {
-      "name": "查询租户配置",
+      "name": "查询",
       "code": "systemTenantCoreFind",
-      "group": "租户管理",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
@@ -2816,433 +3378,342 @@
       ],
       "authType": "all"
     },
-    "systemTenantManageAdd": {
-      "name": "新增租户管理",
-      "code": "systemTenantManageAdd",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/menu/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/module/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/module/multi-create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/info/create",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemTenantManageApp": {
-      "name": "租户获取应用信息",
-      "code": "systemTenantManageApp",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageApp",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/index",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageApp",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/menu/index",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageApp",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/module/index",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemTenantManageDelete": {
-      "name": "删除租户管理",
-      "code": "systemTenantManageDelete",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/menu/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/module/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/info/delete",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemTenantManageFind": {
-      "name": "查询租户管理",
-      "code": "systemTenantManageFind",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/info/index",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemTenantManageModify": {
-      "name": "修改租户管理",
-      "code": "systemTenantManageModify",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemTenantManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/app/menu/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "supper",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "supper"
-    },
-    "systemTenantManageReadOne": {
-      "name": "获取租户信息",
-      "code": "systemTenantManageReadOne",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageReadOne",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/info/read",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemTenantManageUpdateOne": {
-      "name": "更新租户信息",
-      "code": "systemTenantManageUpdateOne",
-      "group": "租户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemTenantManageUpdateOne",
-          "method": "POST",
-          "route": "/api/v1/system/tenant/info/update",
-          "name": "",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemUserManageAdd": {
-      "name": "新增用户信息",
-      "code": "systemUserManageAdd",
-      "group": "用户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemUserManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/user/dept/multi-create",
-          "name": "新增用户的部门列表",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageAdd",
-          "method": "POST",
-          "route": "/api/v1/system/user/info/create",
-          "name": "创建用户信息",
-          "isNeedAuth": 1,
-          "businessType": "add",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemUserManageDelete": {
-      "name": "删除用户信息",
-      "code": "systemUserManageDelete",
-      "group": "用户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemUserManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/user/dept/multi-delete",
-          "name": "删除用户的部门列表",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageDelete",
-          "method": "POST",
-          "route": "/api/v1/system/user/info/delete",
-          "name": "刪除用户",
-          "isNeedAuth": 1,
-          "businessType": "delete",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemUserManageFind": {
-      "name": "查询用户信息",
-      "code": "systemUserManageFind",
-      "group": "用户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemUserManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/user/data/area/index",
-          "name": "获取区域权限列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/user/data/project/index",
-          "name": "获取项目权限列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/user/info/index",
-          "name": "查询用户信息列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/user/info/read",
-          "name": "获取用户信息",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageFind",
-          "method": "POST",
-          "route": "/api/v1/system/user/role/index",
-          "name": "获取用户角色列表",
-          "isNeedAuth": 1,
-          "businessType": "find",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemUserManageModify": {
-      "name": "修改用户信息",
-      "code": "systemUserManageModify",
-      "group": "用户管理",
-      "isNeedAuth": 1,
-      "desc": "",
-      "apis": [
-        {
-          "accessCode": "systemUserManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/user/info/update",
-          "name": "更新用户基本数据",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserManageModify",
-          "method": "POST",
-          "route": "/api/v1/system/user/role/multi-update",
-          "name": "更新用户的角色列表",
-          "isNeedAuth": 1,
-          "businessType": "modify",
-          "desc": "",
-          "authType": "admin",
-          "recordLogMode": 0
-        }
-      ],
-      "authType": "admin"
-    },
-    "systemUserSelf": {
-      "name": "用户基础操作",
-      "code": "systemUserSelf",
-      "group": "用户管理",
+    "systemTenantInfoAdd": {
+      "name": "新增",
+      "code": "systemTenantInfoAdd",
+      "group": "",
       "isNeedAuth": 2,
       "desc": "",
       "apis": [
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemTenantInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/info/create",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantInfoDelete": {
+      "name": "删除",
+      "code": "systemTenantInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/info/delete",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantInfoFind": {
+      "name": "查询",
+      "code": "systemTenantInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/info/index",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemTenantInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/info/read",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemTenantInfoModify": {
+      "name": "修改",
+      "code": "systemTenantInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemTenantInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/tenant/info/update",
+          "name": "",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserDataFind": {
+      "name": "查询",
+      "code": "systemUserDataFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserDataFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/data/area/index",
+          "name": "获取区域权限列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserDataFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/data/project/index",
+          "name": "获取项目权限列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserDeptAdd": {
+      "name": "新增",
+      "code": "systemUserDeptAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserDeptAdd",
+          "method": "POST",
+          "route": "/api/v1/system/user/dept/multi-create",
+          "name": "新增用户的部门列表",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserDeptDelete": {
+      "name": "删除",
+      "code": "systemUserDeptDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserDeptDelete",
+          "method": "POST",
+          "route": "/api/v1/system/user/dept/multi-delete",
+          "name": "删除用户的部门列表",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserInfoAdd": {
+      "name": "新增",
+      "code": "systemUserInfoAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserInfoAdd",
+          "method": "POST",
+          "route": "/api/v1/system/user/info/create",
+          "name": "创建用户信息",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserInfoDelete": {
+      "name": "删除",
+      "code": "systemUserInfoDelete",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserInfoDelete",
+          "method": "POST",
+          "route": "/api/v1/system/user/info/delete",
+          "name": "刪除用户",
+          "isNeedAuth": 2,
+          "businessType": "delete",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserInfoFind": {
+      "name": "查询",
+      "code": "systemUserInfoFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/info/index",
+          "name": "查询用户信息列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserInfoFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/info/read",
+          "name": "获取用户信息",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserInfoModify": {
+      "name": "修改",
+      "code": "systemUserInfoModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserInfoModify",
+          "method": "POST",
+          "route": "/api/v1/system/user/info/update",
+          "name": "更新用户基本数据",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserRoleFind": {
+      "name": "查询",
+      "code": "systemUserRoleFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserRoleFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/role/index",
+          "name": "获取用户角色列表",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserRoleModify": {
+      "name": "修改",
+      "code": "systemUserRoleModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserRoleModify",
+          "method": "POST",
+          "route": "/api/v1/system/user/role/multi-update",
+          "name": "更新用户的角色列表",
+          "isNeedAuth": 2,
+          "businessType": "modify",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserSelfAdd": {
+      "name": "新增",
+      "code": "systemUserSelfAdd",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserSelfAdd",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/area/apply/create",
+          "name": "申请用户区域权限",
+          "isNeedAuth": 2,
+          "businessType": "add",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserSelfFind": {
+      "name": "查询",
+      "code": "systemUserSelfFind",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/access/tree",
           "name": "获取用户授权树",
@@ -3253,7 +3724,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/app/index",
           "name": "获取用户应用列表",
@@ -3264,62 +3735,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/area/apply/create",
-          "name": "申请用户区域权限",
-          "isNeedAuth": 2,
-          "businessType": "add",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/bind-account",
-          "name": "绑定账号",
-          "isNeedAuth": 2,
-          "businessType": "other",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/cancel",
-          "name": "注销用户",
-          "isNeedAuth": 2,
-          "businessType": "other",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/change-pwd",
-          "name": "更新用户密码",
-          "isNeedAuth": 2,
-          "businessType": "other",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/logout",
-          "name": "用户登出",
-          "isNeedAuth": 2,
-          "businessType": "other",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/menu/index",
           "name": "获取用户菜单列表",
@@ -3330,7 +3746,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/message/index",
           "name": "用户消息列表",
@@ -3341,7 +3757,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/message/multi-is-read",
           "name": "用户消息批量已读",
@@ -3352,18 +3768,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/message/statistics",
-          "name": "用户消息统计",
-          "isNeedAuth": 2,
-          "businessType": "other",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/module/index",
           "name": "获取用户模块列表",
@@ -3374,7 +3779,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/profile/index",
           "name": "获取用户配置列表",
@@ -3385,7 +3790,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
           "method": "POST",
           "route": "/api/v1/system/user/self/profile/read",
           "name": "获取用户配置详情",
@@ -3396,7 +3801,28 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfFind",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/read",
+          "name": "获取用户信息",
+          "isNeedAuth": 2,
+          "businessType": "find",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserSelfModify": {
+      "name": "修改",
+      "code": "systemUserSelfModify",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserSelfModify",
           "method": "POST",
           "route": "/api/v1/system/user/self/profile/update",
           "name": "更新用户配置",
@@ -3407,18 +3833,7 @@
           "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
-          "method": "POST",
-          "route": "/api/v1/system/user/self/read",
-          "name": "获取用户信息",
-          "isNeedAuth": 2,
-          "businessType": "find",
-          "desc": "",
-          "authType": "all",
-          "recordLogMode": 0
-        },
-        {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfModify",
           "method": "POST",
           "route": "/api/v1/system/user/self/update",
           "name": "更新用户基本数据",
@@ -3427,9 +3842,74 @@
           "desc": "",
           "authType": "all",
           "recordLogMode": 0
+        }
+      ],
+      "authType": "all"
+    },
+    "systemUserSelfOther": {
+      "name": "操作",
+      "code": "systemUserSelfOther",
+      "group": "",
+      "isNeedAuth": 2,
+      "desc": "",
+      "apis": [
+        {
+          "accessCode": "systemUserSelfOther",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/bind-account",
+          "name": "绑定账号",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
         },
         {
-          "accessCode": "systemUserSelf",
+          "accessCode": "systemUserSelfOther",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/cancel",
+          "name": "注销用户",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserSelfOther",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/change-pwd",
+          "name": "更新用户密码",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserSelfOther",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/logout",
+          "name": "用户登出",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserSelfOther",
+          "method": "POST",
+          "route": "/api/v1/system/user/self/message/statistics",
+          "name": "用户消息统计",
+          "isNeedAuth": 2,
+          "businessType": "other",
+          "desc": "",
+          "authType": "all",
+          "recordLogMode": 0
+        },
+        {
+          "accessCode": "systemUserSelfOther",
           "method": "POST",
           "route": "/api/v1/system/user/self/user/search",
           "name": "精准搜索用户",

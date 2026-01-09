@@ -3,6 +3,7 @@ package usermanagelogic
 import (
 	"context"
 	"database/sql"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -79,6 +80,21 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 			ui.WechatUnionID = sql.NullString{String: ret.UnionID, Valid: true}
 		}
 		ui.WechatOpenID = sql.NullString{String: ret.OpenID, Valid: true}
+	case users.RegHuawei:
+		if ui.HuaweiUnionID.Valid || ui.HuaweiOpenID.Valid {
+			return &sys.Empty{}, errors.BindAccount
+		}
+		if cli.WxOfficial == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		at, er := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		if at.UserInfo.UnionID != "" {
+			ui.HuaweiUnionID = sql.NullString{String: at.UserInfo.UnionID, Valid: true}
+		}
+		ui.HuaweiOpenID = sql.NullString{String: at.UserInfo.OpenID, Valid: true}
 	case users.RegWxOpen:
 		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
 			return &sys.Empty{}, errors.BindAccount
