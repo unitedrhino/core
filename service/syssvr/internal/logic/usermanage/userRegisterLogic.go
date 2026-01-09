@@ -448,54 +448,55 @@ func Init() {
 }
 
 func (l *UserRegisterLogic) handleHuawei(in *sys.UserRegisterReq) (int64, error) {
-	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
-	if err != nil || cli.Huawei == nil {
-		return 0, errors.System.AddDetail(err)
-	}
+	return 0, errors.NotRealize.AddMsg("华为注册功能暂未开放")
+	// cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+	// if err != nil || cli.Huawei == nil {
+	// 	return 0, errors.System.AddDetail(err)
+	// }
 
-	loginResult, err := cli.Huawei.GetQuickLoginMobileByCode(l.ctx, in.Code)
-	if err != nil {
-		l.Errorf("%v.GetPhoneNumber err:%v", err)
-		return 0, errors.System.AddDetail(err)
-	}
-	if len(loginResult.PhoneNumber) == 0 {
-		return 0, errors.UnBindAccount.AddDetail("华为账号未绑定手机号")
-	}
-	old, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
-		Phone: loginResult.PhoneNumber,
-	})
-	if err == nil { //如果已经注册
-		old.HuaweiUnionID = sql.NullString{Valid: true, String: loginResult.UnionID}
-		old.HuaweiOpenID = sql.NullString{Valid: true, String: loginResult.OpenID}
-		return old.UserID, relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, old)
-	}
+	// loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+	// if err != nil {
+	// 	l.Errorf("%v.GetPhoneNumber err:%v", err)
+	// 	return 0, errors.System.AddDetail(err)
+	// }
+	// if len(loginResult.PhoneNumber) == 0 {
+	// 	return 0, errors.UnBindAccount.AddDetail("华为账号未绑定手机号")
+	// }
+	// old, err := relationDB.NewUserInfoRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+	// 	Phone: loginResult.PhoneNumber,
+	// })
+	// if err == nil { //如果已经注册
+	// 	old.HuaweiUnionID = sql.NullString{Valid: true, String: loginResult.UnionID}
+	// 	old.HuaweiOpenID = sql.NullString{Valid: true, String: loginResult.OpenID}
+	// 	return old.UserID, relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, old)
+	// }
 
-	userID := l.svcCtx.UserID.GetSnowflakeId()
-	ui := relationDB.SysUserInfo{
-		UserID:        userID,
-		HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UnionID},
-		HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.OpenID},
-		Phone:         sql.NullString{Valid: true, String: loginResult.PhoneNumber},
-	}
-	if in.Info != nil {
-		ui.NickName = in.Info.NickName
-		if in.Info.UserName != "" {
-			ui.UserName = utils.AnyToNullString(in.Info.UserName)
-		}
-	}
-	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
-			HuaweiUnionID: loginResult.UnionID,
-			HuaweiOpenID:  loginResult.OpenID,
-		})
-		if err == nil { //已经注册过
-			return errors.DuplicateRegister
-		}
-		if !errors.Cmp(err, errors.NotFind) {
-			return err
-		}
-		return l.FillUserInfo(&ui, tx)
-	})
-	return userID, err
+	// userID := l.svcCtx.UserID.GetSnowflakeId()
+	// ui := relationDB.SysUserInfo{
+	// 	UserID:        userID,
+	// 	HuaweiUnionID: sql.NullString{Valid: true, String: loginResult.UnionID},
+	// 	HuaweiOpenID:  sql.NullString{Valid: true, String: loginResult.OpenID},
+	// 	Phone:         sql.NullString{Valid: true, String: loginResult.PhoneNumber},
+	// }
+	// if in.Info != nil {
+	// 	ui.NickName = in.Info.NickName
+	// 	if in.Info.UserName != "" {
+	// 		ui.UserName = utils.AnyToNullString(in.Info.UserName)
+	// 	}
+	// }
+	// err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+	// 	uidb := relationDB.NewUserInfoRepo(tx)
+	// 	_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+	// 		HuaweiUnionID: loginResult.UnionID,
+	// 		HuaweiOpenID:  loginResult.OpenID,
+	// 	})
+	// 	if err == nil { //已经注册过
+	// 		return errors.DuplicateRegister
+	// 	}
+	// 	if !errors.Cmp(err, errors.NotFind) {
+	// 		return err
+	// 	}
+	// 	return l.FillUserInfo(&ui, tx)
+	// })
+	// return userID, err
 }

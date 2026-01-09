@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(git stash push:*)",
+      "Bash(GIT_SEQUENCE_EDITOR=\"sed -i ''s/^pick a12d81b/edit a12d81b/''\" git rebase:*)"
+    ]
+  }
+}
