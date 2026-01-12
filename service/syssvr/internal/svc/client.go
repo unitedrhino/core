@@ -78,7 +78,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 			}
 		}
 		if cfg.WxMini != nil && cfg.WxMini.AppSecret != "" {
-			cli.MiniProgram, err = wxClient.NewWxMiniProgram(ctx, &conf.ThirdConf{
+			cli.MiniProgram, err = wxClient.NewWxMiniProgram(context.Background(), &conf.ThirdConf{
 				AppID:     cfg.WxMini.AppID,
 				AppKey:    cfg.WxMini.AppKey,
 				AppSecret: cfg.WxMini.AppSecret,
@@ -88,7 +88,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 			}
 		}
 		if cfg.WxOpen != nil && cfg.WxOpen.AppSecret != "" {
-			cli.WxOfficial, err = wxClient.NewWxOfficialAccount(ctx, &conf.ThirdConf{
+			cli.WxOfficial, err = wxClient.NewWxOfficialAccount(context.Background(), &conf.ThirdConf{
 				AppID:     cfg.WxOpen.AppID,
 				AppKey:    cfg.WxOpen.AppKey,
 				AppSecret: cfg.WxOpen.AppSecret,
@@ -100,7 +100,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		// 初始化华为客户端
 		if cfg.Android != nil {
 			// 华为客户端只需要 AppID 和 AppSecret
-			cli.Huawei = huaweiCli.NewHuaweiClient(ctx, &conf.ThirdConf{
+			cli.Huawei = huaweiCli.NewHuaweiClient(context.Background(), &conf.ThirdConf{
 				AppID:     cfg.Huawei.AppID,
 				AppKey:    cfg.Huawei.AppKey,
 				AppSecret: cfg.Huawei.AppSecret,
