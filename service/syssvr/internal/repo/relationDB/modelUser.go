@@ -6,6 +6,7 @@ import (
 
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
 
 // 用户登录信息表
@@ -34,8 +35,8 @@ type SysUserInfo struct {
 	Language        string              `gorm:"column:language;type:VARCHAR(50);NOT NULL"`                       // 用户的语言，简体中文为zh_CN
 	HeadImg         string              `gorm:"column:head_img;type:VARCHAR(256);NOT NULL"`                      // 用户头像
 	Role            int64               `gorm:"column:role;type:BIGINT;NOT NULL"`                                // 用户默认角色（默认使用该角色）
-	Tags            map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"`     // 私有标签,只有管理员可以修改
-	PubTags         map[string]string   `gorm:"column:pub_tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 公共的标签,用户自己可以修改
+	Tags            map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL"`     // 私有标签,只有管理员可以修改
+	PubTags         map[string]string   `gorm:"column:pub_tags;type:json;serializer:json;NOT NULL"` // 公共的标签,用户自己可以修改
 	IsAllData       int64               `gorm:"column:is_all_data;type:SMALLINT;default:1;NOT NULL"`             // 是否所有数据权限（1是，2否）
 	DeviceCount     int64               `gorm:"column:device_count;default:0"`                                   //用户所拥有的设备数量统计
 	Roles           []*SysUserRole      `gorm:"foreignKey:UserID;references:UserID"`
@@ -47,6 +48,15 @@ type SysUserInfo struct {
 
 func (m *SysUserInfo) TableName() string {
 	return "sys_user_info"
+}
+
+func (m *SysUserInfo) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Tags = normalizeJSONMapStringString(m.Tags)
+	m.PubTags = normalizeJSONMapStringString(m.PubTags)
+	return nil
 }
 
 // 应用菜单关联表
@@ -77,7 +87,7 @@ type SysLoginLog struct {
 	Os            string              `gorm:"column:os;type:VARCHAR(50)"`                                   // 操作系统
 	Code          int64               `gorm:"column:code;type:BIGINT;default:200;NOT NULL"`                 // 登录状态（200成功 其它失败）
 	Msg           string              `gorm:"column:msg;type:VARCHAR(255)"`                                 // 提示消息
-	CreatedTime   time.Time           `gorm:"column:created_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` // 登录时间
+	CreatedTime   time.Time           `gorm:"column:created_time;index;autoCreateTime"` // 登录时间
 }
 
 func (m *SysLoginLog) TableName() string {
@@ -100,7 +110,7 @@ type SysOperLog struct {
 	Resp         sql.NullString      `gorm:"column:resp;type:TEXT"`                                        // 返回参数
 	Code         int64               `gorm:"column:code;type:BIGINT;default:200;NOT NULL"`                 // 返回状态（200成功 其它失败）
 	Msg          string              `gorm:"column:msg;type:VARCHAR(255)"`                                 // 提示消息
-	CreatedTime  time.Time           `gorm:"column:created_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` // 操作时间
+	CreatedTime  time.Time           `gorm:"column:created_time;index;autoCreateTime"` // 操作时间
 }
 
 func (m *SysOperLog) TableName() string {

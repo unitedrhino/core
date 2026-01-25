@@ -1,11 +1,13 @@
 package relationDB
 
 import (
+	"time"
+
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
-	"time"
+	"gorm.io/gorm"
 )
 
 /*
@@ -18,11 +20,11 @@ type SysNotifyConfig struct {
 	Group        string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                                        //分组
 	Code         string            `gorm:"column:code;uniqueIndex:idx_sys_notify_config_ri_mi;type:VARCHAR(50);NOT NULL"` // 通知类型编码
 	Name         string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                                         //通知的命名
-	SupportTypes []def.NotifyType  `gorm:"column:support_types;type:json;serializer:json;NOT NULL;default:'[]'"`          //支持的通知类型
-	EnableTypes  []def.NotifyType  `gorm:"column:enable_types;type:json;serializer:json;NOT NULL;default:'[]'"`           //已选的通知类型
+	SupportTypes []def.NotifyType  `gorm:"column:support_types;type:json;serializer:json;NOT NULL"`          //支持的通知类型
+	EnableTypes  []def.NotifyType  `gorm:"column:enable_types;type:json;serializer:json;NOT NULL"`           //已选的通知类型
 	Desc         string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                                        // 项目备注
 	IsRecord     int64             `gorm:"column:is_record;type:BIGINT"`                                                  //是否记录该消息,是的情况下会将消息存一份到消息中心
-	Params       map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL;default:'{}'"`                 //变量属性 key是参数,value是描述
+	Params       map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL"`                 //变量属性 key是参数,value是描述
 	stores.NoDelTime
 	Templates   []*SysNotifyConfigTemplate `gorm:"foreignKey:NotifyCode;references:Code"`
 	DeletedTime stores.DeletedTime         `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_notify_config_ri_mi;"`
@@ -30,6 +32,20 @@ type SysNotifyConfig struct {
 
 func (m *SysNotifyConfig) TableName() string {
 	return "sys_notify_config"
+}
+
+func (m *SysNotifyConfig) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	if m.SupportTypes == nil {
+		m.SupportTypes = []def.NotifyType{}
+	}
+	if m.EnableTypes == nil {
+		m.EnableTypes = []def.NotifyType{}
+	}
+	m.Params = normalizeJSONMapStringString(m.Params)
+	return nil
 }
 
 // 通知配置
@@ -118,7 +134,7 @@ type SysMessageInfo struct {
 	Str3           string              `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);"`
 	IsGlobal       int64               `gorm:"column:is_global;index;type:bigint;default:2"`                //是否是全局消息,是的话所有用户都能看到
 	IsDirectNotify int64               `gorm:"column:is_direct_notify;index;type:bigint;default:2"`         //是否是发送通知消息创建
-	NotifyTime     time.Time           `gorm:"column:notify_time;index;default:CURRENT_TIMESTAMP;NOT NULL"` //通知时间
+	NotifyTime     time.Time           `gorm:"column:notify_time;index;autoCreateTime"` //通知时间
 	stores.NoDelTime
 	DeletedTime  stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 	NotifyConfig *SysNotifyConfig   `gorm:"foreignKey:Code;references:NotifyCode"`

@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
 
 // 示例
@@ -56,7 +57,7 @@ type DataStatisticsInfo struct {
 	IsToHump        int64                     `gorm:"column:is_to_hump;type:BIGINT;default:1;"`                      //是否转换为驼峰,入参转换为下划线
 	Sql             string                    `gorm:"column:sql;type:VARCHAR(2000);default:''"`                      //sql类型的sql内容
 	OrderBy         string                    `gorm:"column:order_by;type:VARCHAR(120);default:'created_time desc'"` //排序
-	Filter          map[string]FilterKeywords `gorm:"column:filter;type:json;serializer:json;NOT NULL;default:'{}'"`
+	Filter          map[string]FilterKeywords `gorm:"column:filter;type:json;serializer:json;NOT NULL"`
 	FilterSlotCode  string                    `gorm:"column:filter_slot_code;type:VARCHAR(120);default:''"` //第三方过滤插槽code
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_key"`
@@ -64,6 +65,21 @@ type DataStatisticsInfo struct {
 
 func (m *DataStatisticsInfo) TableName() string {
 	return "data_statistics_info"
+}
+
+func normalizeFilterMap(in map[string]FilterKeywords) map[string]FilterKeywords {
+	if in == nil {
+		return map[string]FilterKeywords{}
+	}
+	return in
+}
+
+func (m *DataStatisticsInfo) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Filter = normalizeFilterMap(m.Filter)
+	return nil
 }
 
 type FilterKeywords struct {
