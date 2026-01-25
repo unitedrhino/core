@@ -102,7 +102,7 @@ func (u *UserToken) Login(ctx context.Context, claims users.LoginClaims, accessE
 
 func (u *UserToken) CheckToken(ctx context.Context, claims users.LoginClaims, accessExpire int64) error {
 	return nil
-	_, err := u.sf.Do(fmt.Sprintf("%s:%s:%s", claims.UserID, claims.AppCode, claims.ID), func() (any, error) {
+	_, err := u.sf.Do(fmt.Sprintf("%d:%s:%s", claims.UserID, claims.AppCode, claims.ID), func() (any, error) {
 		tk, err := caches.GetStore().Hget(u.GenKey(claims.UserID), u.GenField(claims.AppCode, claims.ID))
 		if err != nil || tk == "" {
 			return nil, errors.NotLogin

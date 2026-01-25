@@ -27,7 +27,7 @@ type SysProjectInfo struct {
 	Desc              string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                      // 项目备注
 	IsSysCreated      int64             `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"`        //是否是系统创建的,系统创建的只有管理员可以删除
 	Sort              int64             `gorm:"column:sort;comment:排序标记;default:1"`                          // 排序标记
-	Tags              map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 设备标签
+	Tags              map[string]string `gorm:"column:tags;type:json;serializer:json;NOT NULL"` // 设备标签
 	Areas             []*SysAreaInfo    `gorm:"foreignKey:ProjectID;references:ProjectID"`
 	Attachments       []*Attachment     `gorm:"column:attachments;type:json;serializer:json;comment:附件"`
 
@@ -59,7 +59,7 @@ type SysProjectCrud struct {
 	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL;index:idx_sys_project_profile_tc_un;"` // 租户编码
 	ProjectID  dataType.ProjectID  `gorm:"column:project_id;index:idx_sys_project_profile_tc_un;type:bigint;NOT NULL"`        // 所属项目ID(雪花ID)
 	Purpose    string              `gorm:"column:purpose;type:VARCHAR(50);index:idx_sys_project_profile_tc_un;NOT NULL"`      //用途必填
-	Params     string              `gorm:"column:params;type:json;NOT NULL;default:'{}'"`
+	Params     string              `gorm:"column:params;type:json;NOT NULL"`
 	Sort       int64               `gorm:"column:sort;type:bigint;default:1;default:1"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;index;"`
@@ -86,7 +86,7 @@ type SysAreaInfo struct {
 	DeviceCount     int64               `gorm:"column:device_count;type:bigint;default:0;"`
 	GroupCount      int64               `gorm:"column:group_count;type:bigint;default:0;"`
 	IsLeaf          int64               `gorm:"column:is_leaf;type:bigint;default:1;NOT NULL"`               //是否是叶子节点
-	Tags            map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL;default:'{}'"` // 设备标签
+	Tags            map[string]string   `gorm:"column:tags;type:json;serializer:json;NOT NULL"` // 设备标签
 	UseBy           string              `gorm:"column:use_by;type:varchar(100);default:''"`                  //用途
 	ChildrenAreaIDs []int64             `gorm:"column:children_area_ids;type:json;serializer:json"`          //所有的子区域的id列表
 	IsSysCreated    int64               `gorm:"column:is_sys_created;type:bigint;default:2;NOT NULL"`        //是否是系统创建的,系统创建的只有管理员可以删除
