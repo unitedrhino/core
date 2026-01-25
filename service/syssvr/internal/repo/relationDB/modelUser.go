@@ -6,6 +6,7 @@ import (
 
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
 
 // 用户登录信息表
@@ -47,6 +48,15 @@ type SysUserInfo struct {
 
 func (m *SysUserInfo) TableName() string {
 	return "sys_user_info"
+}
+
+func (m *SysUserInfo) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Tags = normalizeJSONMapStringString(m.Tags)
+	m.PubTags = normalizeJSONMapStringString(m.PubTags)
+	return nil
 }
 
 // 应用菜单关联表

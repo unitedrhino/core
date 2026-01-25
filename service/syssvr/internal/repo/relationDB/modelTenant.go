@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
 
 // 租户信息表
@@ -53,6 +54,15 @@ type SysTenantOpenWebhook struct {
 
 func (m *SysTenantOpenWebhook) TableName() string {
 	return "sys_tenant_open_webhook"
+}
+
+func (m *SysTenantOpenWebhook) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Hosts = normalizeStringSlice(m.Hosts)
+	m.Handler = normalizeJSONMapStringString(m.Handler)
+	return nil
 }
 
 //// 租户自定义表

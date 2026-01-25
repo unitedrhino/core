@@ -1,10 +1,27 @@
 package relationDB
 
 import (
+	"strings"
+	"time"
+
 	"gitee.com/unitedrhino/core/service/timed/internal/domain"
 	"gitee.com/unitedrhino/share/stores"
-	"time"
+	"gorm.io/gorm"
 )
+
+func normalizeJSONString(in string) string {
+	if strings.TrimSpace(in) == "" {
+		return "{}"
+	}
+	return in
+}
+
+func normalizeMapStringString(in map[string]string) map[string]string {
+	if in == nil {
+		return map[string]string{}
+	}
+	return in
+}
 
 // 示例
 type TimedExample struct {
@@ -35,6 +52,14 @@ func (t *TimedTaskLog) TableName() string {
 	return "timed_task_log"
 }
 
+func (t *TimedTaskLog) BeforeSave(tx *gorm.DB) error {
+	if t == nil {
+		return nil
+	}
+	t.Params = normalizeJSONString(t.Params)
+	return nil
+}
+
 type TaskGroupDBConfig struct {
 	DSN    string `json:"dsn"`    //数据库连接串
 	DBType string `json:"dbType"` //数据库类型(默认mysql)
@@ -61,6 +86,15 @@ func (t *TimedTaskGroup) TableName() string {
 	return "timed_task_group"
 }
 
+func (t *TimedTaskGroup) BeforeSave(tx *gorm.DB) error {
+	if t == nil {
+		return nil
+	}
+	t.Env = normalizeMapStringString(t.Env)
+	t.Config = normalizeJSONString(t.Config)
+	return nil
+}
+
 type TimedTaskInfo struct {
 	ID        int64    `gorm:"column:id;primary_key"`                                // 任务ID
 	GroupCode string   `gorm:"column:group_code;uniqueIndex:idx_group_task"`         //组编码
@@ -79,4 +113,12 @@ type TimedTaskInfo struct {
 
 func (t *TimedTaskInfo) TableName() string {
 	return "timed_task_info"
+}
+
+func (t *TimedTaskInfo) BeforeSave(tx *gorm.DB) error {
+	if t == nil {
+		return nil
+	}
+	t.Params = normalizeJSONString(t.Params)
+	return nil
 }

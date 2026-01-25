@@ -3,6 +3,7 @@ package relationDB
 import (
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
 
 // SysProjectInfo 项目信息表,在智能家居中一个项目是一个家庭,一个区域是一个房间
@@ -39,6 +40,14 @@ func (m *SysProjectInfo) TableName() string {
 	return "sys_project_info"
 }
 
+func (m *SysProjectInfo) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Tags = normalizeJSONMapStringString(m.Tags)
+	return nil
+}
+
 // 区域配置表
 type SysProjectProfile struct {
 	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                        // 编号
@@ -67,6 +76,14 @@ type SysProjectCrud struct {
 
 func (m *SysProjectCrud) TableName() string {
 	return "sys_project_crud"
+}
+
+func (m *SysProjectCrud) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Params = normalizeJSONString(m.Params)
+	return nil
 }
 
 // 区域信息表
@@ -99,6 +116,14 @@ type SysAreaInfo struct {
 
 func (m *SysAreaInfo) TableName() string {
 	return "sys_area_info"
+}
+
+func (m *SysAreaInfo) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Tags = normalizeJSONMapStringString(m.Tags)
+	return nil
 }
 
 // 区域配置表

@@ -1,11 +1,35 @@
 package relationDB
 
 import (
+	"strings"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
+
+func normalizeJSONMapStringString(in map[string]string) map[string]string {
+	if in == nil {
+		return map[string]string{}
+	}
+	return in
+}
+
+func normalizeJSONString(in string) string {
+	if strings.TrimSpace(in) == "" {
+		return "{}"
+	}
+	return in
+}
+
+func normalizeStringSlice(in []string) []string {
+	if in == nil {
+		return []string{}
+	}
+	return in
+}
 
 // 示例
 type SysExample struct {
@@ -160,6 +184,15 @@ type SysSlotInfo struct {
 
 func (m *SysSlotInfo) TableName() string {
 	return "sys_slot_info"
+}
+
+func (m *SysSlotInfo) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Hosts = normalizeStringSlice(m.Hosts)
+	m.Handler = normalizeJSONMapStringString(m.Handler)
+	return nil
 }
 
 type SysServiceInfo struct {

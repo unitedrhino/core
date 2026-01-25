@@ -1,11 +1,13 @@
 package relationDB
 
 import (
+	"time"
+
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/stores"
-	"time"
+	"gorm.io/gorm"
 )
 
 /*
@@ -30,6 +32,20 @@ type SysNotifyConfig struct {
 
 func (m *SysNotifyConfig) TableName() string {
 	return "sys_notify_config"
+}
+
+func (m *SysNotifyConfig) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	if m.SupportTypes == nil {
+		m.SupportTypes = []def.NotifyType{}
+	}
+	if m.EnableTypes == nil {
+		m.EnableTypes = []def.NotifyType{}
+	}
+	m.Params = normalizeJSONMapStringString(m.Params)
+	return nil
 }
 
 // 通知配置
