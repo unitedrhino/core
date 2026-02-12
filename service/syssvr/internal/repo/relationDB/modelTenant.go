@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/stores"
+	"gorm.io/gorm"
 )
 
 // 租户信息表
@@ -44,15 +45,24 @@ type SysTenantOpenWebhook struct {
 	TenantCode dataType.TenantCode `gorm:"column:tenant_code;uniqueIndex:idx_sys_tenant_open_webhook_tc_ac;type:VARCHAR(50);NOT NULL"` // 租户编码
 	Code       string              `gorm:"column:code;type:VARCHAR(50);uniqueIndex:idx_sys_tenant_open_webhook_tc_ac;NOT NULL"`        //业务里定义的,推送的内容
 	Uri        string              `gorm:"column:uri;type:VARCHAR(100);NOT NULL"`                                                      // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
-	Hosts      []string            `gorm:"column:hosts;type:json;serializer:json;NOT NULL;default:'[]';NOT NULL"`                      //访问的地址 host or host:port
+	Hosts      []string            `gorm:"column:hosts;type:json;serializer:json;NOT NULL"`                      //访问的地址 host or host:port
 	Desc       string              `gorm:"column:desc;type:VARCHAR(500);"`                                                             // 备注
-	Handler    map[string]string   `gorm:"column:handler;type:json;serializer:json;NOT NULL;default:'{}';NOT NULL"`                    //http头
+	Handler    map[string]string   `gorm:"column:handler;type:json;serializer:json;NOT NULL"`                    //http头
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_tenant_open_webhook_tc_ac"`
 }
 
 func (m *SysTenantOpenWebhook) TableName() string {
 	return "sys_tenant_open_webhook"
+}
+
+func (m *SysTenantOpenWebhook) BeforeSave(tx *gorm.DB) error {
+	if m == nil {
+		return nil
+	}
+	m.Hosts = normalizeStringSlice(m.Hosts)
+	m.Handler = normalizeJSONMapStringString(m.Handler)
+	return nil
 }
 
 //// 租户自定义表
@@ -134,8 +144,8 @@ type SysTenantConfig struct {
 	WeatherKey                string                              `gorm:"column:weather_key;type:VARCHAR(50);default:'';"`                                      //参考: https://dev.qweather.com/
 	OperLogKeepDays           int64                               `gorm:"column:oper_log_keep_days;default:0;"`                                                 //操作日志保留时间,如果为0则为永久
 	LoginLogKeepDays          int64                               `gorm:"column:login_log_keep_days;default:0;"`                                                //登录日志保留时间,如果为0则为永久
-	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json;default:'[]'"`
-	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json;default:'[]'"` //产生问题反馈通知的用户ID列表
+	RegisterAutoCreateProject []*tenant.RegisterAutoCreateProject `gorm:"column:register_auto_create_project;type:json;serializer:json"`
+	FeedbackNotifyUserIDs     []int64                             `gorm:"column:feedback_notify_user_ids;type:json;serializer:json"` //产生问题反馈通知的用户ID列表
 	IsSsl                     int64                               `gorm:"column:is_ssl;default:2"`                                                //是否单会话登录 Single Session Login
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_tenant_config_ri_mi"`

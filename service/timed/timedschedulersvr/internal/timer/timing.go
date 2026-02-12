@@ -14,6 +14,7 @@ import (
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/logx"
+	"strings"
 	"sync"
 	"time"
 )
@@ -73,6 +74,12 @@ func TimingTaskCheck(svcCtx *svc.ServiceContext) {
 // 需要检查任务是否启动,如果没有启动需要启动
 func TimingTaskStatusRunCheck(ctx context.Context, svcCtx *svc.ServiceContext, wait *sync.WaitGroup, task *relationDB.TimedTaskInfo) error {
 	defer wait.Done()
+	if strings.TrimSpace(task.CronExpr) == "" {
+		logx.WithContext(ctx).Errorf("TimingTaskStatusRunCheck.emptyCron task:%+v", task)
+		jobDB := relationDB.NewTaskInfoRepo(ctx)
+		_ = jobDB.UpdateByFilter(ctx, &relationDB.TimedTaskInfo{Status: def.StatusStopped}, relationDB.TaskFilter{IDs: []int64{task.ID}})
+		return nil
+	}
 	taskCode := getTimingTaskCode(task)
 	taskInfo := domain.TaskInfo{
 		ID:     task.ID,

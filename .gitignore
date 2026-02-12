@@ -70,5 +70,6 @@ service/apisvr/.token/corp/dingjouufllg5b3uoqjj
 service/apisvr/.token/corp/dingkchfhioate9etm5a
 service/apisvr/.token/corp/dingrn9n22hwdjdebvgp
 service/apisvr/coresvr
+*.debug.yaml
 service/apisvr/__debug*
 tmpclaude*
