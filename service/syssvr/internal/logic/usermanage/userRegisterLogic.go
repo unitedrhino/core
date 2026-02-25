@@ -53,6 +53,8 @@ func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserLogi
 		userID, err = l.handleEmailOrPhone(in)
 	case users.RegHuawei:
 		userID, err = l.handleHuawei(in)
+	case users.RegJwt:
+		userID, err = l.handleJwt(in)
 	default:
 		return nil, errors.NotRealize.AddMsgf(in.RegType)
 	}
@@ -445,6 +447,47 @@ func Init() {
 			}
 		}
 	})
+}
+
+func (l *UserRegisterLogic) handleJwt(in *sys.UserRegisterReq) (int64, error) {
+	account, err := ParseThirdJwt(in.Code, l.svcCtx.Config.ThirdJwt.Secret)
+	if err != nil {
+		return 0, err
+	}
+	userID := l.svcCtx.UserID.GetSnowflakeId()
+	ui := relationDB.SysUserInfo{UserID: userID}
+	if utils.IsPhone(account) {
+		ui.Phone = sql.NullString{Valid: true, String: account}
+		ui.UserName = sql.NullString{Valid: true, String: account}
+	} else if utils.IsEmail(account) {
+		ui.Email = sql.NullString{Valid: true, String: account}
+		ui.UserName = sql.NullString{Valid: true, String: account}
+	} else {
+		ui.UserName = sql.NullString{Valid: true, String: account}
+	}
+	if in.Password != "" {
+		err = CheckPwd(l.svcCtx, in.Password)
+		if err != nil {
+			return 0, err
+		}
+		ui.Password = utils.MakePwd(in.Password, ui.UserID, false)
+	}
+	if in.Info != nil {
+		ui.NickName = in.Info.NickName
+		if in.Info.UserName != "" {
+			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+		}
+	}
+	conn := stores.GetTenantConn(l.ctx)
+	err = l.FillUserInfo(&ui, conn)
+	if err != nil {
+		return 0, err
+	}
+	e := l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserCreate, def.IDs{IDs: []int64{ui.UserID}})
+	if e != nil {
+		l.Errorf("Publish CoreUserCreate %v err:%v", ui, e)
+	}
+	return ui.UserID, nil
 }
 
 func (l *UserRegisterLogic) handleHuawei(in *sys.UserRegisterReq) (int64, error) {

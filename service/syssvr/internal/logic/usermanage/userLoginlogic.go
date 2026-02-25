@@ -345,6 +345,46 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		// 		HuaweiOpenID:  loginResult.OpenID,
 		// 	})
 		// }
+	case users.RegJwt:
+		account, er2 := ParseThirdJwt(in.Code, l.svcCtx.Config.ThirdJwt.Secret)
+		if er2 != nil {
+			return nil, er2
+		}
+		if utils.IsPhone(account) {
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{account}})
+		} else if utils.IsEmail(account) {
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{account}})
+		} else {
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{account}})
+		}
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True {
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{UserID: userID}
+			if utils.IsPhone(account) {
+				uc.Phone = sql.NullString{Valid: true, String: account}
+				uc.UserName = sql.NullString{Valid: true, String: account}
+			} else if utils.IsEmail(account) {
+				uc.Email = sql.NullString{Valid: true, String: account}
+				uc.UserName = sql.NullString{Valid: true, String: account}
+			} else {
+				uc.UserName = sql.NullString{Valid: true, String: account}
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			isRegister = true
+			if err != nil {
+				return nil, err
+			}
+			if utils.IsPhone(account) {
+				uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{account}})
+			} else if utils.IsEmail(account) {
+				uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Emails: []string{account}})
+			} else {
+				uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{account}})
+			}
+		}
 	default:
 		l.Error("%s LoginType=%s not support", utils.FuncName(), in.LoginType)
 		return nil, errors.Parameter

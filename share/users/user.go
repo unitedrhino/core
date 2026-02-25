@@ -17,6 +17,7 @@ const (
 	RegGoogle RegType = "google"     //google
 	RegGithub RegType = "github"     //github
 	RegHuawei RegType = "huawei"     //华为
+	RegJwt    RegType = "jwt"        //第三方jwt加密登录
 )
 
 type UserInfoType uint8

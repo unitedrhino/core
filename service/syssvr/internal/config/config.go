@@ -34,6 +34,9 @@ type Config struct {
 		AccessKey    string
 		AccessSecret string
 	}
+	ThirdJwt struct {
+		Secret string `json:",env=THIRD_JWT_SECRET"`
+	} `json:",optional"` //第三方jwt加密登录的密钥
 	Sms conf.Sms
 	//WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
 
