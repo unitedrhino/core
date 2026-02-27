@@ -112,7 +112,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 	if er != nil {
 		return nil, errors.System.AddDetail(err)
 	}
-	if !utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
+	if in.LoginType != users.RegJwt && !utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
 		l.Errorf("不支持的登录方式:%v", in.LoginType)
 		return nil, errors.NotSupportLogin
 	}
@@ -410,7 +410,7 @@ func (l *LoginLogic) UserLogin(in *sys.UserLoginReq) (*sys.UserLoginResp, error)
 		}
 		return nil, err
 	}
-	if len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
+	if in.LoginType != users.RegJwt && len(cfg.LoginTypes) > 0 && !utils.SliceIn(in.LoginType, cfg.LoginTypes...) {
 		return nil, errors.Parameter.WithMsgf("不支持的登录方式:%v", in.LoginType)
 	}
 	ui, err := l.GetUserInfo(in)
