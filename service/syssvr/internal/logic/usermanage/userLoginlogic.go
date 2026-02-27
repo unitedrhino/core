@@ -346,7 +346,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		// 	})
 		// }
 	case users.RegJwt:
-		account, er2 := ParseThirdJwt(in.Code, l.svcCtx.Config.ThirdJwt.Secret)
+		account, er2 := ParseThirdJwt(in.Code, l.svcCtx.Config.ThirdJwtSecret)
 		if er2 != nil {
 			return nil, er2
 		}

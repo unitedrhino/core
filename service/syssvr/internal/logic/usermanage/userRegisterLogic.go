@@ -450,7 +450,7 @@ func Init() {
 }
 
 func (l *UserRegisterLogic) handleJwt(in *sys.UserRegisterReq) (int64, error) {
-	account, err := ParseThirdJwt(in.Code, l.svcCtx.Config.ThirdJwt.Secret)
+	account, err := ParseThirdJwt(in.Code, l.svcCtx.Config.ThirdJwtSecret)
 	if err != nil {
 		return 0, err
 	}
