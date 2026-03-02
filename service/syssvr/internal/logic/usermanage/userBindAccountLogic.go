@@ -84,12 +84,21 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		if ui.HuaweiUnionID.Valid || ui.HuaweiOpenID.Valid {
 			return &sys.Empty{}, errors.BindAccount
 		}
-		if cli.WxOfficial == nil {
+		if cli.Huawei == nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		at, er := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+		// 优先从缓存读取
+		at, er := GetHuaweiLoginResult(l.ctx, in.Code)
 		if er != nil {
-			return nil, errors.System.AddDetail(er)
+			// 缓存没有，尝试从注册缓存读取
+			at, er = GetHuaweiRegisterResult(l.ctx, in.Code)
+			if er != nil {
+				// 都没有，调用华为接口
+				at, er = cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
+				if er != nil {
+					return nil, errors.System.AddDetail(er)
+				}
+			}
 		}
 		if at.UserInfo.UnionID != "" {
 			ui.HuaweiUnionID = sql.NullString{String: at.UserInfo.UnionID, Valid: true}
@@ -102,9 +111,21 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		if cli.WxOfficial == nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		at, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+		// 优先从缓存读取
+		at, er := GetWxLoginResAccessToken(l.ctx, in.Code)
 		if er != nil {
-			return nil, errors.System.AddDetail(er)
+			// 缓存没有，尝试从注册缓存读取
+			at2, er := GetWxRegisterResAccessToken(l.ctx, in.Code)
+			if er != nil {
+				// 都没有，调用微信接口
+				at3, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+				if er != nil {
+					return nil, errors.System.AddDetail(er)
+				}
+				at = &at3
+			} else {
+				at = at2
+			}
 		}
 		if at.UnionID != "" {
 			ui.WechatUnionID = sql.NullString{String: at.UnionID, Valid: true}

@@ -98,7 +98,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 			}
 		}
 		// 初始化华为客户端
-		if cfg.Android != nil {
+		if cfg.Huawei != nil {
 			// 华为客户端只需要 AppID 和 AppSecret
 			cli.Huawei = huaweiCli.NewHuaweiClient(context.Background(), &conf.ThirdConf{
 				AppID:     cfg.Huawei.AppID,

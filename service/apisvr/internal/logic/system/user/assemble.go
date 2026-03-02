@@ -43,6 +43,12 @@ func UserInfoToApi(ui *sys.UserInfo, opt UserOpt) *types.UserInfo {
 	if ret.BindThird["ding"] == "" && ui.DingTalkUnionID != "" {
 		ret.BindThird["ding"] = ui.DingTalkUnionID
 	}
+	if ui.HuaweiOpenID != "" {
+		ret.BindThird["huawei"] = ui.HuaweiOpenID
+	}
+	if ret.BindThird["huawei"] == "" && ui.HuaweiUnionID != "" {
+		ret.BindThird["huawei"] = ui.HuaweiUnionID
+	}
 	ret.Roles = role.ToRoleInfosTypes(opt.Roles)
 	ret.Tenant = system.ToTenantInfoTypes(opt.Tenant, nil, nil)
 	ret.Depts = utils.CopySlice[types.DeptInfo](opt.Depts)

@@ -14,6 +14,7 @@ import (
 	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/share/clients/huaweiCli"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
@@ -314,7 +315,14 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		// cc.GetPhoneNumberByCode(l.ctx, in.Code)
 		loginResult, er2 := cli.Huawei.QuickLoginByCode(l.ctx, in.Code)
 		if er2 != nil {
-			return nil, errors.System.AddDetail(er2)
+			// 如果调用失败，尝试从注册缓存读取
+			loginResult, er2 = GetHuaweiRegisterResult(l.ctx, in.Code)
+			if er2 != nil {
+				return nil, errors.System.AddDetail(er2)
+			}
+		} else {
+			// 调用成功，缓存结果
+			StoreHuaweiLoginResult(l.ctx, in.Code, loginResult)
 		}
 		l.Infof("loginResult=%v,err=%v", utils.Fmt(loginResult), er2)
 		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
@@ -484,4 +492,59 @@ func GetWxRegisterResAccessToken(ctx context.Context, code string) (*oauth.ResAc
 	var val oauth.ResAccessToken
 	err = json.Unmarshal([]byte(ret), &val)
 	return &val, err
+}
+
+// 华为登录缓存 key
+func genHuaweiLoginKey(code string) string {
+	return fmt.Sprintf("sys:user:huawei:login:%s", code)
+}
+
+// 存储华为登录结果到缓存
+func StoreHuaweiLoginResult(ctx context.Context, code string, result *huaweiCli.HuaweiQuickLoginResult) error {
+	return caches.GetStore().SetexCtx(ctx, genHuaweiLoginKey(code), utils.MarshalNoErr(result), 10*60)
+}
+
+// 从缓存获取华为登录结果
+func GetHuaweiLoginResult(ctx context.Context, code string) (*huaweiCli.HuaweiQuickLoginResult, error) {
+	ret, err := caches.GetStore().GetCtx(ctx, genHuaweiLoginKey(code))
+	if err != nil {
+		return nil, err
+	}
+	var val huaweiCli.HuaweiQuickLoginResult
+	err = json.Unmarshal([]byte(ret), &val)
+	return &val, err
+}
+
+// 删除华为登录缓存
+func DelHuaweiLoginResult(ctx context.Context, code string) error {
+	_, err := caches.GetStore().DelCtx(ctx, genHuaweiLoginKey(code))
+	return err
+}
+
+// 华为注册缓存 key
+func genHuaweiRegisterKey(code string) string {
+	return fmt.Sprintf("sys:user:huawei:register:%s", code)
+}
+
+// 存储华为注册结果到缓存
+func StoreHuaweiRegisterResult(ctx context.Context, code string, result *huaweiCli.HuaweiQuickLoginResult) error {
+	DelHuaweiLoginResult(ctx, code) // 删除登录缓存
+	return caches.GetStore().SetexCtx(ctx, genHuaweiRegisterKey(code), utils.MarshalNoErr(result), 10*60)
+}
+
+// 从缓存获取华为注册结果
+func GetHuaweiRegisterResult(ctx context.Context, code string) (*huaweiCli.HuaweiQuickLoginResult, error) {
+	ret, err := caches.GetStore().GetCtx(ctx, genHuaweiRegisterKey(code))
+	if err != nil {
+		return nil, err
+	}
+	var val huaweiCli.HuaweiQuickLoginResult
+	err = json.Unmarshal([]byte(ret), &val)
+	return &val, err
+}
+
+// 删除华为注册缓存
+func DelHuaweiRegisterResult(ctx context.Context, code string) error {
+	_, err := caches.GetStore().DelCtx(ctx, genHuaweiRegisterKey(code))
+	return err
 }

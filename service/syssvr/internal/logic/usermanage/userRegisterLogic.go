@@ -115,11 +115,21 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (int64, 
 		if err != nil || cli.Huawei == nil {
 			return 0, errors.System.AddDetail(err)
 		}
-		loginResult, err := cli.Huawei.QuickLoginByCode(l.ctx,huaweiCode)
+
+		// 优先从缓存读取
+		loginResult, err := GetHuaweiLoginResult(l.ctx, huaweiCode)
 		if err != nil {
-			l.Errorf("%v.QuickLoginByCode err:%v",utils.FuncName(), err)
-			return 0, errors.System.AddDetail(err)
+			// 缓存没有，调用华为接口
+			loginResult, err = cli.Huawei.QuickLoginByCode(l.ctx, huaweiCode)
+			if err != nil {
+				l.Errorf("%v.QuickLoginByCode err:%v", utils.FuncName(), err)
+				return 0, errors.System.AddDetail(err)
+			}
 		}
+
+		// 存储到注册缓存
+		StoreHuaweiRegisterResult(l.ctx, huaweiCode, loginResult)
+
 		if loginResult.UserInfo.UnionID != "" {
 			ui.HuaweiUnionID = sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID}
 		}
@@ -137,7 +147,7 @@ func (l *UserRegisterLogic) handleEmailOrPhone(in *sys.UserRegisterReq) (int64, 
 			if cli.WxOfficial == nil {
 				return 0, errors.System.AddDetail(er)
 			}
-			at2, er := cli.WxOfficial.GetOauth().GetUserAccessToken(in.Code)
+			at2, er := cli.WxOfficial.GetOauth().GetUserAccessToken(wxOpenCode)
 			if er != nil {
 				return 0, errors.System.AddDetail(er)
 			}
@@ -478,6 +488,35 @@ func (l *UserRegisterLogic) handleJwt(in *sys.UserRegisterReq) (int64, error) {
 			ui.UserName = utils.AnyToNullString(in.Info.UserName)
 		}
 	}
+
+	// 处理华为账号绑定
+	huaweiCode := in.Expand["huaweiCode"]
+	if huaweiCode != "" {
+		cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+		if err != nil || cli.Huawei == nil {
+			return 0, errors.System.AddDetail(err)
+		}
+
+		// 优先从缓存读取
+		loginResult, err := GetHuaweiLoginResult(l.ctx, huaweiCode)
+		if err != nil {
+			// 缓存没有，调用华为接口
+			loginResult, err = cli.Huawei.QuickLoginByCode(l.ctx, huaweiCode)
+			if err != nil {
+				l.Errorf("%v.QuickLoginByCode err:%v", utils.FuncName(), err)
+				return 0, errors.System.AddDetail(err)
+			}
+		}
+
+		// 存储到注册缓存
+		StoreHuaweiRegisterResult(l.ctx, huaweiCode, loginResult)
+
+		if loginResult.UserInfo.UnionID != "" {
+			ui.HuaweiUnionID = sql.NullString{Valid: true, String: loginResult.UserInfo.UnionID}
+		}
+		ui.HuaweiOpenID = sql.NullString{Valid: true, String: loginResult.UserInfo.OpenID}
+	}
+
 	conn := stores.GetTenantConn(l.ctx)
 	err = l.FillUserInfo(&ui, conn)
 	if err != nil {
