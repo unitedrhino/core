@@ -119,7 +119,7 @@ func QueueTaskStatusRunCheck(ctx context.Context, svcCtx *svc.ServiceContext, wa
 	}()
 	jobDB := relationDB.NewTaskInfoRepo(ctx)
 	task.Status = def.StatusRunning
-	err = jobDB.Update(ctx, task)
+	err = jobDB.UpdateStatus(ctx, task)
 	return err
 }
 
@@ -173,7 +173,7 @@ func QueueTaskStatusStopCheck(ctx context.Context, svcCtx *svc.ServiceContext, w
 		}
 	case def.StatusWaitStop:
 		task.Status = def.StatusStopped
-		err = jobDB.Update(ctx, task)
+		err = jobDB.UpdateStatus(ctx, task)
 	}
 	return err
 }

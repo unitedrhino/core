@@ -2,8 +2,10 @@ package timedmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/errors"
+	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
@@ -26,6 +28,7 @@ func NewTaskInfoCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ta
 }
 
 func (l *TaskInfoCreateLogic) TaskInfoCreate(in *timedjob.TaskInfo) (*timedjob.Response, error) {
+	l.Infof("TaskInfoCreate,in:%v", utils.Fmt(in))
 	po := ToTaskInfoPo(in)
 	err := relationDB.NewTaskInfoRepo(l.ctx).Insert(l.ctx, po)
 	if err != nil {

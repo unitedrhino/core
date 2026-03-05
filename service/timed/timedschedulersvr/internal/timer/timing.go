@@ -93,7 +93,7 @@ func TimingTaskStatusRunCheck(ctx context.Context, svcCtx *svc.ServiceContext, w
 	}
 	jobDB := relationDB.NewTaskInfoRepo(ctx)
 	task.Status = def.StatusRunning
-	err = jobDB.Update(ctx, task)
+	err = jobDB.UpdateStatus(ctx, task)
 	return err
 }
 
@@ -115,7 +115,7 @@ func TimingTaskStatusStopCheck(ctx context.Context, svcCtx *svc.ServiceContext, 
 		}
 	case def.StatusWaitStop:
 		task.Status = def.StatusStopped
-		err = jobDB.Update(ctx, task)
+		err = jobDB.UpdateStatus(ctx, task)
 	}
 	return err
 }

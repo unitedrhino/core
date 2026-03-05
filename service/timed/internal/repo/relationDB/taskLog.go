@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -42,6 +43,7 @@ func (p TaskLogRepo) fmtFilter(ctx context.Context, f TaskLogFilter) *gorm.DB {
 }
 
 func (p TaskLogRepo) Insert(ctx context.Context, data *TimedTaskLog) error {
+	return nil
 	result := p.db.WithContext(ctx).Create(data)
 	return stores.ErrFmt(result.Error)
 }
@@ -98,6 +100,7 @@ func (p TaskLogRepo) FindOne(ctx context.Context, id int64) (*TimedTaskLog, erro
 
 // 批量插入 LightStrategyDevice 记录
 func (p TaskLogRepo) MultiInsert(ctx context.Context, data []*TimedTaskLog) error {
+	return nil
 	err := p.db.WithContext(ctx).Clauses(clause.OnConflict{UpdateAll: true}).Model(&TimedTaskLog{}).Create(data).Error
 	return stores.ErrFmt(err)
 }
