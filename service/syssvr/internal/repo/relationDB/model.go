@@ -1,8 +1,6 @@
 package relationDB
 
 import (
-	"strings"
-
 	"gitee.com/unitedrhino/core/service/syssvr/internal/domain/dept"
 	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/share/def"
@@ -18,9 +16,9 @@ func normalizeJSONMapStringString(in map[string]string) map[string]string {
 }
 
 func normalizeJSONString(in string) string {
-	if strings.TrimSpace(in) == "" {
-		return "{}"
-	}
+	//if in == "" {
+	//	return "{}"
+	//}
 	return in
 }
 
@@ -57,13 +55,13 @@ type SysConfigSms struct {
 }
 
 type SysDictInfo struct {
-	ID         int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                    // id编号
+	ID         int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                                 // id编号
 	Name       string `gorm:"column:name;uniqueIndex:idx_sys_dict_info_name;type:VARCHAR(100);default:'';NOT NULL;comment:字典名"` // 字典名（中）
-	Code       string `gorm:"column:code;uniqueIndex:idx_sys_dict_info_code;type:VARCHAR(50);default:'';NOT NULL"` //编码
-	Group      string `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                                   //字典分组
-	Desc       string `gorm:"column:desc;comment:描述"`                                                              // 描述
-	Body       string `gorm:"column:body;type:VARCHAR(1024)"`                                                      // 自定义数据
-	StructType int64  `gorm:"column:struct_type;type:BIGINT;default:1"`                                            //结构类型(不可修改) 1:列表(默认) 2:树型
+	Code       string `gorm:"column:code;uniqueIndex:idx_sys_dict_info_code;type:VARCHAR(50);default:'';NOT NULL"`              //编码
+	Group      string `gorm:"column:group;type:VARCHAR(50);default:'';NOT NULL"`                                                //字典分组
+	Desc       string `gorm:"column:desc;comment:描述"`                                                                           // 描述
+	Body       string `gorm:"column:body;type:VARCHAR(1024)"`                                                                   // 自定义数据
+	StructType int64  `gorm:"column:struct_type;type:BIGINT;default:1"`                                                         //结构类型(不可修改) 1:列表(默认) 2:树型
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_dict_info_code;uniqueIndex:idx_sys_dict_info_name"`
 	Details     []*SysDictDetail   `gorm:"foreignKey:DictCode;references:Code"`
@@ -74,16 +72,16 @@ func (SysDictInfo) TableName() string {
 }
 
 type SysDictDetail struct {
-	ID       int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                            // id编号
-	DictCode string `gorm:"column:dict_code;uniqueIndex:idx_sys_dict_detail_value;type:VARCHAR(50);default:'';NOT NULL"` // 关联标记
-	Label    string `gorm:"column:label;type:VARCHAR(100);default:'';NOT NULL;comment:展示值"`                              // 展示值
+	ID       int64  `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                                                     // id编号
+	DictCode string `gorm:"column:dict_code;uniqueIndex:idx_sys_dict_detail_value;type:VARCHAR(50);default:'';NOT NULL"`          // 关联标记
+	Label    string `gorm:"column:label;type:VARCHAR(100);default:'';NOT NULL;comment:展示值"`                                       // 展示值
 	Value    string `gorm:"column:value;uniqueIndex:idx_sys_dict_detail_value;type:VARCHAR(100);default:'';NOT NULL;comment:字典值"` // 字典值
-	Status   int64  `gorm:"column:status;type:SMALLINT;default:1"`                                                       // 状态  1:启用,2:禁用
-	Sort     int64  `gorm:"column:sort;comment:排序标记;default:1"`                                                          // 排序标记
-	Desc     string `gorm:"column:desc;comment:描述"`                                                                      // 描述
-	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                                              // 自定义数据
-	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                                                   // 1-2-3-的格式记录顶级区域到当前id的路径
-	ParentID int64  `gorm:"column:parent_id;uniqueIndex:idx_sys_dict_detail_value;type:BIGINT"`                          // id编号
+	Status   int64  `gorm:"column:status;type:SMALLINT;default:1"`                                                                // 状态  1:启用,2:禁用
+	Sort     int64  `gorm:"column:sort;comment:排序标记;default:1"`                                                                   // 排序标记
+	Desc     string `gorm:"column:desc;comment:描述"`                                                                               // 描述
+	Body     string `gorm:"column:body;type:VARCHAR(1024)"`                                                                       // 自定义数据
+	IDPath   string `gorm:"column:id_path;type:varchar(100);NOT NULL"`                                                            // 1-2-3-的格式记录顶级区域到当前id的路径
+	ParentID int64  `gorm:"column:parent_id;uniqueIndex:idx_sys_dict_detail_value;type:BIGINT"`                                   // id编号
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_dict_detail_value"`
 	Children    []*SysDictDetail   `gorm:"foreignKey:parent_id;references:id"`
@@ -174,9 +172,9 @@ type SysSlotInfo struct {
 	SlotCode string            `gorm:"column:slot_code;uniqueIndex:idx_sys_slot_info_code_slot;type:VARCHAR(100);NOT NULL"` //slot的编码
 	Method   string            `gorm:"column:method;type:VARCHAR(50);default:'POST'"`                                       // 请求方式 GET  POST
 	Uri      string            `gorm:"column:uri;type:VARCHAR(100);NOT NULL"`                                               // 参考: /api/v1/system/user/self/captcha?fwefwf=gwgweg&wefaef=gwegwe
-	Hosts    []string          `gorm:"column:hosts;type:json;serializer:json;NOT NULL"`               //访问的地址 host or host:port
+	Hosts    []string          `gorm:"column:hosts;type:json;serializer:json;NOT NULL"`                                     //访问的地址 host or host:port
 	Body     string            `gorm:"column:body;type:VARCHAR(100);default:''"`                                            // body 参数模板
-	Handler  map[string]string `gorm:"column:handler;type:json;serializer:json;NOT NULL"`             //http头
+	Handler  map[string]string `gorm:"column:handler;type:json;serializer:json;NOT NULL"`                                   //http头
 	AuthType string            `gorm:"column:auth_type;type:VARCHAR(100);NOT NULL"`                                         //鉴权类型 core
 	Desc     string            `gorm:"column:desc;type:VARCHAR(500);"`                                                      // 备注
 	stores.SoftTime

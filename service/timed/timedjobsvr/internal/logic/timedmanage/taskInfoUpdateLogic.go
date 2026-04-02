@@ -2,7 +2,9 @@ package timedmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
+	"gitee.com/unitedrhino/share/utils"
 
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/pb/timedjob"
@@ -25,6 +27,7 @@ func NewTaskInfoUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ta
 }
 
 func (l *TaskInfoUpdateLogic) TaskInfoUpdate(in *timedjob.TaskInfo) (*timedjob.Response, error) {
+	l.Infof("TaskInfoUpdate,in:%v", utils.Fmt(in))
 	repo := relationDB.NewTaskInfoRepo(l.ctx)
 	oldPo, err := repo.FindOneByFilter(l.ctx, relationDB.TaskFilter{Codes: []string{in.Code}})
 	if err != nil {

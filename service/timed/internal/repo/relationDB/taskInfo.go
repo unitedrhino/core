@@ -2,6 +2,7 @@ package relationDB
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/share/stores"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -89,6 +90,11 @@ func (p TaskRepo) CountByFilter(ctx context.Context, f TaskFilter) (size int64, 
 
 func (p TaskRepo) Update(ctx context.Context, data *TimedTaskInfo) error {
 	err := p.db.WithContext(ctx).Where("id = ?", data.ID).Save(data).Error
+	return stores.ErrFmt(err)
+}
+
+func (p TaskRepo) UpdateStatus(ctx context.Context, data *TimedTaskInfo) error {
+	err := p.db.WithContext(ctx).Model(data).Where("id = ?", data.ID).Update("status", data.Status).Error
 	return stores.ErrFmt(err)
 }
 
