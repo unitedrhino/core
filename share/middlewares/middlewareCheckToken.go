@@ -79,7 +79,15 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		userCtx, err = Auth(r.Context(), m.UserRpc, w, r)
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.UserAuth error=%s", utils.FuncName(), err)
-			result.HttpErr(w, r, http.StatusUnauthorized, errors.Fmt(err).AddMsg("认证失败"))
+			fmtErr := errors.Fmt(err)
+			httpCode := http.StatusBadRequest
+			switch fmtErr.Code {
+			case errors.TokenExpired.Code, errors.TokenNotValidYet.Code,
+				errors.TokenMalformed.Code, errors.TokenInvalid.Code,
+				errors.NotLogin.Code:
+				httpCode = http.StatusUnauthorized
+			}
+			result.HttpErr(w, r, httpCode, fmtErr.AddMsg("认证失败"))
 			return
 		}
 		userCtx.Os = ctxs.GetHandle(r, "User-Agent")
@@ -105,8 +113,7 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 		apiRet, err = m.AuthRpc.RoleApiAuth(r.Context(), &req)
 		if err != nil {
 			logx.WithContext(r.Context()).Errorf("%s.AuthApiCheck error=%s", utils.FuncName(), err)
-			http.Error(w, "接口权限不足："+err.Error(), http.StatusUnauthorized)
-			//systems.SysNotify(fmt.Sprintf("接口权限不足userCtx:%v req:%v err:%s", utils.Fmt(userCtx), utils.Fmt(req), err))
+			result.HttpErr(w, r, http.StatusBadRequest, errors.Fmt(err))
 			return
 		}
 
