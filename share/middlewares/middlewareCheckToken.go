@@ -86,8 +86,9 @@ func (m *CheckTokenWareMiddleware) Handle(next http.HandlerFunc) http.HandlerFun
 				errors.TokenMalformed.Code, errors.TokenInvalid.Code,
 				errors.NotLogin.Code:
 				httpCode = http.StatusUnauthorized
+				fmtErr = fmtErr.AddMsg("认证失败")
 			}
-			result.HttpErr(w, r, httpCode, fmtErr.AddMsg("认证失败"))
+			result.HttpErr(w, r, httpCode, fmtErr)
 			return
 		}
 		userCtx.Os = ctxs.GetHandle(r, "User-Agent")
