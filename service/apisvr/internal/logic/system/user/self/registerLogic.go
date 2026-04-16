@@ -77,27 +77,10 @@ func (l *RegisterLogic) Register(req *types.UserRegisterReq) (resp *types.UserLo
 	if len(uResp.Info.Password) != 0 {
 		uResp.Info.Password = "xxxx"
 	}
+	infoResp := user.UserInfoToApi(uResp.Info, user.UserOpt{})
 	roles = role.ToRoleInfosTypes(info.List)
 	return &types.UserLoginResp{
-		Info: types.UserInfo{
-			UserID:      uResp.Info.UserID,
-			UserName:    uResp.Info.UserName,
-			Password:    uResp.Info.Password,
-			Email:       utils.ToNullString(uResp.Info.Email),
-			Phone:       utils.ToNullString(uResp.Info.Phone),
-			LastIP:      uResp.Info.LastIP,
-			RegIP:       uResp.Info.RegIP,
-			NickName:    uResp.Info.NickName,
-			City:        uResp.Info.City,
-			Country:     uResp.Info.Country,
-			Province:    uResp.Info.Province,
-			Language:    uResp.Info.Language,
-			HeadImg:     uResp.Info.HeadImg,
-			CreatedTime: uResp.Info.CreatedTime,
-			Role:        uResp.Info.Role,
-			Sex:         uResp.Info.Sex,
-			IsAllData:   uResp.Info.IsAllData,
-		},
+		Info:  *infoResp,
 		Roles: roles,
 		Token: utils.Copy2[types.JwtToken](uResp.Token),
 	}, nil
