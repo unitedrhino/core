@@ -1,7 +1,8 @@
-FROM docker.unitedrhino.com/unitedrhino/golang:1.23.4-alpine3.21 as go-builder
+FROM docker.unitedrhino.com/unitedrhino/golang:1.26.1-alpine3.23 as go-builder
 ARG frontFile
 WORKDIR /unitedrhino/
 COPY ./ ./
+RUN go version
 RUN echo "Front file URL: $frontFile"
 RUN mkdir -p front
 RUN cd front&&wget -O front.tgz $frontFile || true
@@ -9,6 +10,9 @@ RUN cd front&&tar -xvzf front.tgz
 RUN cd front&&ls -l
 RUN cd front&&rm -rf front.tgz
 RUN go env -w GOPROXY=https://goproxy.cn,direct
+ENV GOPRIVATE=*.gitee.com,gitee.com/*
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+RUN apk add git
 RUN go mod download
 RUN cd ./service/apisvr && go mod tidy && go build  -tags no_k8s  -o coresvr .
 
