@@ -61,7 +61,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		}
 	}
 
-	stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		err := uidb.Delete(ctxs.WithRoot(l.ctx), cast.ToInt64(in.UserID))
 		if err != nil {
@@ -84,6 +84,9 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		}
 		err = relationDB.NewUserRoleRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx),
 			relationDB.UserRoleFilter{UserID: in.UserID})
+		if err != nil {
+			return err
+		}
 		for _, v := range pis {
 			if tc.CheckUserDelete != 1 { //如果是不检查项目下的设备,那么就直接全部删除
 				err = projectmanagelogic.ProjectDelete(ctxs.WithRoot(l.ctx), tx, int64(v.ProjectID))
@@ -98,6 +101,9 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		}
 		return err
 	})
+	if err != nil {
+		return nil, err
+	}
 	l.Infof("%s.delete uid=%v", utils.FuncName(), in.UserID)
 	err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreUserDelete, def.IDs{IDs: []int64{in.UserID}})
 	if err != nil {

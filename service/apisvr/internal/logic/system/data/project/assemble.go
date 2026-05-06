@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 func ToProjectApis(ctx context.Context, svcCtx *svc.ServiceContext, in []*sys.DataProject) (ret []*types.DataProject) {
@@ -13,10 +14,11 @@ func ToProjectApis(ctx context.Context, svcCtx *svc.ServiceContext, in []*sys.Da
 		return
 	}
 	for _, v := range in {
-		ui := &types.UserCore{}
+		var ui *types.UserCore
 		if svcCtx != nil {
 			u, err := svcCtx.UserCache.GetData(ctx, v.TargetID)
 			if err != nil {
+				logx.WithContext(ctx).Errorf("ToProjectApis skip stale user targetID=%d projectID=%d err=%v", v.TargetID, v.ProjectID, err)
 				continue
 			}
 			ui = utils.Copy[types.UserCore](u)
