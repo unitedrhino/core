@@ -110,6 +110,7 @@ func (l *UserInfoDeleteLogic) UserInfoDelete(in *sys.UserInfoDeleteReq) (*sys.Em
 		l.Errorf("Publish userDelete %v err:%v", in, err)
 	}
 	l.svcCtx.UserCache.SetData(l.ctx, in.UserID, nil)
+	l.svcCtx.UsersCache.SetData(l.ctx, in.UserID, nil)
 	l.svcCtx.UserToken.KickedOut(l.ctx, in.UserID)
 
 	return &sys.Empty{}, nil

@@ -52,6 +52,7 @@ func (p UserInfoRepo) accountsFilter(db *gorm.DB, accounts []string) *gorm.DB {
 
 func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
+	db = db.Where("deleted_time = ?", 0)
 	db = f.UpdatedTime.Where(db, "updated_time")
 	if f.HasAccessAreas != nil {
 		if len(f.HasAccessAreas) == 0 {
@@ -215,7 +216,7 @@ func (p UserInfoRepo) Delete(ctx context.Context, userID int64) error {
 }
 func (p UserInfoRepo) FindOne(ctx context.Context, userID int64) (*SysUserInfo, error) {
 	var result SysUserInfo
-	err := p.db.WithContext(ctx).Where("user_id = ?", userID).First(&result).Error
+	err := p.db.WithContext(ctx).Where("user_id = ?", userID).Where("deleted_time = ?", 0).First(&result).Error
 	return &result, stores.ErrFmt(err)
 }
 

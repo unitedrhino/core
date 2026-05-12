@@ -42,6 +42,8 @@ func (l *UserLogoutLogic) UserLogout(in *sys.UserLogoutReq) (*sys.Empty, error) 
 	if err != nil {
 		return nil, err
 	}
+	l.svcCtx.UserCache.SetData(l.ctx, claim.UserID, nil)
+	l.svcCtx.UsersCache.SetData(l.ctx, claim.UserID, nil)
 
 	return &sys.Empty{}, nil
 }
