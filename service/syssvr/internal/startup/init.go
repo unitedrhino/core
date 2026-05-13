@@ -46,7 +46,6 @@ func Init(svcCtx *svc.ServiceContext) {
 	})
 	VersionUpdate(svcCtx)
 	InitCache(svcCtx)
-	TableInit(svcCtx)
 	InitEventBus(svcCtx)
 	TimerInit(svcCtx)
 	usermanagelogic.Init()
@@ -63,9 +62,10 @@ func VersionUpdate(svcCtx *svc.ServiceContext) {
 }
 
 func TableInit(svcCtx *svc.ServiceContext) {
-	if !relationDB.NeedInitColumn {
-		return
-	}
+	// 不再依赖 NeedInitColumn 判断，因为：
+	// 1. 导入逻辑本身都是幂等的（Duplicate 错误会被忽略）
+	// 2. 只判断表是否存在无法覆盖"表已创建但数据未导入完"的场景
+	// 3. 每次启动遍历文件的开销极小，收益远大于成本
 	{
 		root := "./etc/init/dict/"
 		err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {

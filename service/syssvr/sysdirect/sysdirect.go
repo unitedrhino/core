@@ -48,6 +48,7 @@ func GetSvcCtx() *svc.ServiceContext {
 		i18ns.InitWithFS("etc/i18n")
 		ctxSvc = svc.NewServiceContext(c)
 		startup.Init(ctxSvc)
+		startup.TableInit(ctxSvc)
 		logx.Infof("enabled syssvr")
 	})
 	return ctxSvc
