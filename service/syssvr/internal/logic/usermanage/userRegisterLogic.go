@@ -354,10 +354,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		if err != nil {
 			return err
 		}
-		return err
-	})
-	if err == nil && len(cfg.RegisterAutoCreateProject) > 0 {
-		ctxs.GoNewCtx(ctx, func(ctx context.Context) {
+		if len(cfg.RegisterAutoCreateProject) > 0 {
 			var pis []*relationDB.SysProjectInfo
 			var dps []*relationDB.SysDataProject
 			var ais []*relationDB.SysAreaInfo
@@ -365,12 +362,11 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 				po := relationDB.SysProjectInfo{
 					ProjectID:   dataType.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
 					ProjectName: rap.ProjectName,
-					//CompanyName: utils.ToEmptyString(in.CompanyName),
-					AdminUserID:  in.UserID,
-					AreaCount:    int64(len(rap.Areas)),
-					UserCount:    1,
+					AdminUserID: in.UserID,
+					AreaCount:   int64(len(rap.Areas)),
+					UserCount:   1,
 					IsSysCreated: rap.IsSysCreated,
-					Desc:         "自动创建",
+					Desc:        "自动创建",
 				}
 				pis = append(pis, &po)
 				dps = append(dps, &relationDB.SysDataProject{
@@ -386,8 +382,8 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 						var areaNamePath = area.AreaName + "-"
 						areaPo := relationDB.SysAreaInfo{
 							AreaID:       dataType.AreaID(areaID),
-							ParentAreaID: def.RootNode, //创建时必填
-							ProjectID:    po.ProjectID, //创建时必填
+							ParentAreaID: def.RootNode,
+							ProjectID:    po.ProjectID,
 							AreaIDPath:   areaIDPath,
 							AreaNamePath: areaNamePath,
 							AreaName:     area.AreaName,
@@ -399,40 +395,28 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 					}
 				}
 			}
-			for i := 3; i > 0; i-- { //三次重试
-				err := stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
-					if len(pis) > 0 {
-						piDb := relationDB.NewProjectInfoRepo(tx)
-						err := piDb.MultiInsert(ctx, pis)
-						if err != nil {
-							logx.WithContext(ctx).Error(err)
-							return err
-						}
-					}
-					if len(dps) > 0 {
-						err := relationDB.NewDataProjectRepo(tx).MultiInsert(ctx, dps)
-						if err != nil {
-							logx.WithContext(ctx).Error(err)
-							return err
-						}
-					}
-					if len(ais) > 0 {
-						aiRepo := relationDB.NewAreaInfoRepo(tx)
-						err := aiRepo.MultiInsert(ctx, ais)
-						if err != nil {
-							logx.WithContext(ctx).Error(err)
-							return err
-						}
-					}
-					return nil
-				})
-				if err == nil {
-					return
+			if len(pis) > 0 {
+				piDb := relationDB.NewProjectInfoRepo(tx)
+				err := piDb.MultiInsert(ctx, pis)
+				if err != nil {
+					return err
 				}
 			}
-
-		})
-	}
+			if len(dps) > 0 {
+				err := relationDB.NewDataProjectRepo(tx).MultiInsert(ctx, dps)
+				if err != nil {
+					return err
+				}
+			}
+			if len(ais) > 0 {
+				err := relationDB.NewAreaInfoRepo(tx).MultiInsert(ctx, ais)
+				if err != nil {
+					return err
+				}
+			}
+		}
+		return nil
+	})
 	return err
 }
 
