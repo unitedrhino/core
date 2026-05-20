@@ -36,6 +36,9 @@ type UserInfoFilter struct {
 	DingTalkUnionID string
 	HuaweiUnionID   string
 	HuaweiOpenID    string
+	GoogleUserID    string
+	GithubUserID    string
+	AppleUserID     string
 	WithRoles       bool
 	WithTenant      bool
 	RoleCode        string
@@ -143,6 +146,23 @@ func (p UserInfoRepo) fmtFilter(ctx context.Context, f UserInfoFilter) *gorm.DB 
 	}
 	if isHuawei {
 		db = db.Where(huaweiOr)
+	}
+	thirdOr := db
+	var isThird bool
+	if f.GoogleUserID != "" {
+		isThird = true
+		thirdOr = thirdOr.Or("google_user_id = ?", f.GoogleUserID)
+	}
+	if f.GithubUserID != "" {
+		isThird = true
+		thirdOr = thirdOr.Or("github_user_id = ?", f.GithubUserID)
+	}
+	if f.AppleUserID != "" {
+		isThird = true
+		thirdOr = thirdOr.Or("apple_user_id = ?", f.AppleUserID)
+	}
+	if isThird {
+		db = db.Where(thirdOr)
 	}
 	if f.TenantCode != "" {
 		db = db.Where("tenant_code =?", f.TenantCode)

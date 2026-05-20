@@ -16,6 +16,7 @@ const (
 	RegPwd RegType = "pwd"        //账号密码注册
 	RegGoogle RegType = "google"     //google
 	RegGithub RegType = "github"     //github
+	RegApple  RegType = "apple"      //苹果
 	RegHuawei RegType = "huawei"     //华为
 	RegJwt    RegType = "jwt"        //第三方jwt加密登录
 )

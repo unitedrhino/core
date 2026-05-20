@@ -14,6 +14,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 
+	"github.com/spf13/cast"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -144,6 +145,50 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 			return nil, errors.Parameter.AddMsgf(ret.Msg)
 		}
 		ui.DingTalkUserID = sql.NullString{String: ret.UserInfo.UserId, Valid: true}
+	case users.RegGoogle:
+		if ui.GoogleUserID.Valid {
+			return &sys.Empty{}, errors.BindAccount
+		}
+		if cli.Google == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		token, er := cli.Google.ExchangeCode(l.ctx, in.Code, "")
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		gUser, er := cli.Google.GetUserInfo(l.ctx, token)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		ui.GoogleUserID = sql.NullString{String: gUser.ID, Valid: true}
+	case users.RegGithub:
+		if ui.GithubUserID.Valid {
+			return &sys.Empty{}, errors.BindAccount
+		}
+		if cli.Github == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		token, er := cli.Github.ExchangeCode(l.ctx, in.Code, "")
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		ghUser, er := cli.Github.GetUserInfo(l.ctx, token)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		ui.GithubUserID = sql.NullString{String: cast.ToString(ghUser.ID), Valid: true}
+	case users.RegApple:
+		if ui.AppleUserID.Valid {
+			return &sys.Empty{}, errors.BindAccount
+		}
+		if cli.Apple == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		aUser, _, er := cli.Apple.ExchangeCode(l.ctx, in.Code)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		ui.AppleUserID = sql.NullString{String: aUser.Sub, Valid: true}
 	}
 	err = relationDB.NewUserInfoRepo(l.ctx).Update(l.ctx, ui)
 	return &sys.Empty{}, err

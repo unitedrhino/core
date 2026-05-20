@@ -80,7 +80,10 @@ type SysTenantApp struct {
 	WxMini         *SysTenantThird     `gorm:"embedded;embeddedPrefix:wx_mini_"`                                                  //微信小程序接入
 	WxOpen         *SysTenantThird     `gorm:"embedded;embeddedPrefix:wx_open_"`                                                  //微信公众号接入
 	Huawei         *SysTenantThird     `gorm:"embedded;embeddedPrefix:huawei_"`                                                   //华为应用
-	LoginTypes     []users.RegType     `gorm:"column:login_types;type:json;serializer:json"`                                      //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	Google         *SysTenantThird     `gorm:"embedded;embeddedPrefix:google_"`                                                   //Google登录配置
+	Github         *SysTenantThird     `gorm:"embedded;embeddedPrefix:github_"`                                                   //GitHub登录配置
+	Apple          *SysTenantAppleConfig `gorm:"embedded;embeddedPrefix:apple_"`                                                  //Apple登录配置
+	LoginTypes     []users.RegType     `gorm:"column:login_types;type:json;serializer:json"`                                      //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "google":Google  "github":GitHub  "apple":Apple
 	IsAutoRegister int64               `gorm:"column:is_auto_register;type:BIGINT;default:1"`                                     //登录未注册是否自动注册
 	Config         string              `gorm:"column:config;type:VARCHAR(1024)"`                                                  // 菜单自定义数据
 	stores.NoDelTime
@@ -175,6 +178,15 @@ type SysTenantThird struct {
 	//MiniAppID string `gorm:"column:mini_app_id;type:VARCHAR(50);default:'';"`
 	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
 	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
+}
+
+// Apple登录专用配置（需要额外字段）
+type SysTenantAppleConfig struct {
+	AppID      string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`       // Bundle ID / Services ID
+	TeamID     string `gorm:"column:team_id;type:VARCHAR(50);default:'';"`       // Apple Team ID
+	KeyID      string `gorm:"column:key_id;type:VARCHAR(50);default:'';"`        // Apple Key ID
+	PrivateKey string `gorm:"column:private_key;type:VARCHAR(500);default:'';"` // Apple 私钥（PEM格式）
+	RedirectURI string `gorm:"column:redirect_uri;type:VARCHAR(256);default:'';"` // 回调地址
 }
 
 // 第三方app配置

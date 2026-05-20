@@ -53,6 +53,12 @@ func (l *UserRegisterLogic) UserRegister(in *sys.UserRegisterReq) (*sys.UserLogi
 		userID, err = l.handleEmailOrPhone(in)
 	case users.RegHuawei:
 		userID, err = l.handleHuawei(in)
+	case users.RegGoogle:
+		userID, err = l.handleGoogle(in)
+	case users.RegGithub:
+		userID, err = l.handleGithub(in)
+	case users.RegApple:
+		userID, err = l.handleApple(in)
 	case users.RegJwt:
 		userID, err = l.handleJwt(in)
 	default:
@@ -565,4 +571,127 @@ func (l *UserRegisterLogic) handleHuawei(in *sys.UserRegisterReq) (int64, error)
 	// 	return l.FillUserInfo(&ui, tx)
 	// })
 	// return userID, err
+}
+
+func (l *UserRegisterLogic) handleGoogle(in *sys.UserRegisterReq) (int64, error) {
+	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+	if err != nil || cli.Google == nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	token, err := cli.Google.ExchangeCode(l.ctx, in.Code, "")
+	if err != nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	gUser, err := cli.Google.GetUserInfo(l.ctx, token)
+	if err != nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	userID := l.svcCtx.UserID.GetSnowflakeId()
+	ui := relationDB.SysUserInfo{
+		UserID:       userID,
+		GoogleUserID: sql.NullString{Valid: true, String: gUser.ID},
+		NickName:     gUser.Name,
+		Email:        sql.NullString{Valid: true, String: gUser.Email},
+		HeadImg:      gUser.Picture,
+	}
+	if in.Info != nil {
+		if in.Info.NickName != "" {
+			ui.NickName = in.Info.NickName
+		}
+		if in.Info.UserName != "" {
+			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+		}
+	}
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})
+		if err == nil { //已经注册过
+			return errors.DuplicateRegister
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return err
+		}
+		return l.FillUserInfo(&ui, tx)
+	})
+	return userID, err
+}
+
+func (l *UserRegisterLogic) handleGithub(in *sys.UserRegisterReq) (int64, error) {
+	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+	if err != nil || cli.Github == nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	token, err := cli.Github.ExchangeCode(l.ctx, in.Code, "")
+	if err != nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	ghUser, err := cli.Github.GetUserInfo(l.ctx, token)
+	if err != nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	userID := l.svcCtx.UserID.GetSnowflakeId()
+	ui := relationDB.SysUserInfo{
+		UserID:       userID,
+		GithubUserID: sql.NullString{Valid: true, String: cast.ToString(ghUser.ID)},
+		NickName:     ghUser.Name,
+		Email:        sql.NullString{Valid: true, String: ghUser.Email},
+		HeadImg:      ghUser.AvatarURL,
+	}
+	if in.Info != nil {
+		if in.Info.NickName != "" {
+			ui.NickName = in.Info.NickName
+		}
+		if in.Info.UserName != "" {
+			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+		}
+	}
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GithubUserID: cast.ToString(ghUser.ID)})
+		if err == nil { //已经注册过
+			return errors.DuplicateRegister
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return err
+		}
+		return l.FillUserInfo(&ui, tx)
+	})
+	return userID, err
+}
+
+func (l *UserRegisterLogic) handleApple(in *sys.UserRegisterReq) (int64, error) {
+	cli, err := l.svcCtx.Cm.GetClients(l.ctx, "")
+	if err != nil || cli.Apple == nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	aUser, _, err := cli.Apple.ExchangeCode(l.ctx, in.Code)
+	if err != nil {
+		return 0, errors.System.AddDetail(err)
+	}
+	userID := l.svcCtx.UserID.GetSnowflakeId()
+	ui := relationDB.SysUserInfo{
+		UserID:      userID,
+		AppleUserID: sql.NullString{Valid: true, String: aUser.Sub},
+		Email:       sql.NullString{Valid: true, String: aUser.Email},
+	}
+	if in.Info != nil {
+		if in.Info.NickName != "" {
+			ui.NickName = in.Info.NickName
+		}
+		if in.Info.UserName != "" {
+			ui.UserName = utils.AnyToNullString(in.Info.UserName)
+		}
+	}
+	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+		uidb := relationDB.NewUserInfoRepo(tx)
+		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{AppleUserID: aUser.Sub})
+		if err == nil { //已经注册过
+			return errors.DuplicateRegister
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return err
+		}
+		return l.FillUserInfo(&ui, tx)
+	})
+	return userID, err
 }

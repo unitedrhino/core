@@ -307,6 +307,96 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 			}
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Phones: []string{in.Account}})
 		}
+	case users.RegGoogle:
+		if cli.Google == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		token, er := cli.Google.ExchangeCode(l.ctx, in.Code, "")
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		gUser, er := cli.Google.GetUserInfo(l.ctx, token)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{
+				UserID:       userID,
+				GoogleUserID: sql.NullString{Valid: true, String: gUser.ID},
+				NickName:     gUser.Name,
+				Email:        sql.NullString{Valid: true, String: gUser.Email},
+				HeadImg:      gUser.Picture,
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			isRegister = true
+			if err != nil {
+				return nil, err
+			}
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})
+		}
+	case users.RegGithub:
+		if cli.Github == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		token, er := cli.Github.ExchangeCode(l.ctx, in.Code, "")
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		ghUser, er := cli.Github.GetUserInfo(l.ctx, token)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GithubUserID: cast.ToString(ghUser.ID)})
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{
+				UserID:       userID,
+				GithubUserID: sql.NullString{Valid: true, String: cast.ToString(ghUser.ID)},
+				NickName:     ghUser.Name,
+				Email:        sql.NullString{Valid: true, String: ghUser.Email},
+				HeadImg:      ghUser.AvatarURL,
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			isRegister = true
+			if err != nil {
+				return nil, err
+			}
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GithubUserID: cast.ToString(ghUser.ID)})
+		}
+	case users.RegApple:
+		if cli.Apple == nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		aUser, _, er := cli.Apple.ExchangeCode(l.ctx, in.Code)
+		if er != nil {
+			return nil, errors.System.AddDetail(er)
+		}
+		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{AppleUserID: aUser.Sub})
+		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
+			err = nil
+			userID := l.svcCtx.UserID.GetSnowflakeId()
+			uc = &relationDB.SysUserInfo{
+				UserID:      userID,
+				AppleUserID: sql.NullString{Valid: true, String: aUser.Sub},
+				Email:       sql.NullString{Valid: true, String: aUser.Email},
+			}
+			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+				return Register(l.ctx, l.svcCtx, uc, tx)
+			})
+			isRegister = true
+			if err != nil {
+				return nil, err
+			}
+			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{AppleUserID: aUser.Sub})
+		}
 	case users.RegHuawei:
 		if cli.Huawei == nil {
 			return nil, errors.System.AddDetail(er)

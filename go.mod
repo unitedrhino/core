@@ -25,6 +25,7 @@ require (
 	github.com/zeromicro/go-zero v1.8.4
 	github.com/zhaoyunxing92/dingtalk/v2 v2.1.1
 	go.opentelemetry.io/otel/trace v1.35.0
+	golang.org/x/oauth2 v0.28.0
 	golang.org/x/sync v0.15.0
 	golang.org/x/time v0.12.0
 	google.golang.org/grpc v1.73.0
@@ -33,6 +34,7 @@ require (
 )
 
 require (
+	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	gitee.com/unitedrhino/driver-go/v3 v3.30.2 // indirect
 	github.com/BurntSushi/toml v1.4.0 // indirect
@@ -194,7 +196,6 @@ require (
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6 // indirect
 	golang.org/x/image v0.24.0 // indirect
 	golang.org/x/net v0.40.0 // indirect
-	golang.org/x/oauth2 v0.28.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/term v0.32.0 // indirect
 	golang.org/x/text v0.26.0 // indirect

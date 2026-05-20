@@ -22,8 +22,11 @@ type SysUserInfo struct {
 	WechatOpenID    sql.NullString      `gorm:"column:wechat_open_id;uniqueIndex:idx_sys_user_info_tc_woi;type:VARCHAR(128)"`                                                                                                                                                                                                  // 微信union id
 	DingTalkUserID  sql.NullString      `gorm:"column:ding_talk_user_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
 	DingTalkUnionID sql.NullString      `gorm:"column:ding_talk_union_id;uniqueIndex:idx_sys_user_info_tc_doi;type:VARCHAR(128)"`
-	HuaweiUnionID   sql.NullString      `gorm:"column:huawei_union_id;uniqueIndex:idx_sys_user_info_huawei_union;type:VARCHAR(128)"`                                                                                                                                                                                                 // 微信union id
-	HuaweiOpenID    sql.NullString      `gorm:"column:huawei_open_id;uniqueIndex:idx_sys_user_info_huawei_open;type:VARCHAR(128)"`                                                                                                                                                                                                  // 微信union id
+	HuaweiUnionID   sql.NullString      `gorm:"column:huawei_union_id;uniqueIndex:idx_sys_user_info_huawei_union;type:VARCHAR(128)"`                                                                                                                                                                                                 // 华为union id
+	HuaweiOpenID    sql.NullString      `gorm:"column:huawei_open_id;uniqueIndex:idx_sys_user_info_huawei_open;type:VARCHAR(128)"`                                                                                                                                                                                                  // 华为open id
+	GoogleUserID    sql.NullString      `gorm:"column:google_user_id;uniqueIndex:idx_sys_user_info_google;type:VARCHAR(128)"`                                                                                                                                                                                                     // Google用户ID
+	GithubUserID    sql.NullString      `gorm:"column:github_user_id;uniqueIndex:idx_sys_user_info_github;type:VARCHAR(128)"`                                                                                                                                                                                                     // GitHub用户ID
+	AppleUserID     sql.NullString      `gorm:"column:apple_user_id;uniqueIndex:idx_sys_user_info_apple;type:VARCHAR(128)"`                                                                                                                                                                                                      // Apple用户ID
 
 	LastIP          string              `gorm:"column:last_ip;type:VARCHAR(128);NOT NULL"`                       // 最后登录ip
 	LastTokenID     string              `gorm:"column:last_token_id;type:VARCHAR(128);default:''"`               // 最后登录的token ID
@@ -43,7 +46,7 @@ type SysUserInfo struct {
 	Tenant          *SysTenantInfo      `gorm:"foreignKey:Code;references:TenantCode"`
 	Status          int64               `gorm:"column:status;type:BIGINT;NOT NULL;default:1"` //租戶状态: 1启用 2禁用
 	stores.NoDelTime
-	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_huawei_union;uniqueIndex:idx_sys_user_info_huawei_open;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
+	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_user_info_tc_un;uniqueIndex:idx_sys_user_info_huawei_union;uniqueIndex:idx_sys_user_info_huawei_open;uniqueIndex:idx_sys_user_info_google;uniqueIndex:idx_sys_user_info_github;uniqueIndex:idx_sys_user_info_apple;uniqueIndex:idx_sys_user_info_tc_doi;uniqueIndex:idx_sys_user_info_tc_email;uniqueIndex:idx_sys_user_info_tc_phone;uniqueIndex:idx_sys_user_info_tc_wui;uniqueIndex:idx_sys_user_info_tc_woi"`
 }
 
 func (m *SysUserInfo) TableName() string {
