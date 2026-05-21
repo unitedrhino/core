@@ -174,19 +174,19 @@ type SysTenantEmail struct {
 
 // 第三方app配置
 type SysTenantThird struct {
-	AppID string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`
-	//MiniAppID string `gorm:"column:mini_app_id;type:VARCHAR(50);default:'';"`
-	AppKey    string `gorm:"column:app_key;type:VARCHAR(50);default:'';"`
-	AppSecret string `gorm:"column:app_secret;type:VARCHAR(200);default:'';"`
+	AppID string `gorm:"column:app_id;type:VARCHAR(128);default:'';"` // Google Client ID 等可超过 50 字符
+	//MiniAppID string `gorm:"column:mini_app_id;type:VARCHAR(128);default:'';"`
+	AppKey    string `gorm:"column:app_key;type:VARCHAR(128);default:'';"`
+	AppSecret string `gorm:"column:app_secret;type:VARCHAR(512);default:'';"`
 }
 
 // Apple登录专用配置（需要额外字段）
 type SysTenantAppleConfig struct {
-	AppID      string `gorm:"column:app_id;type:VARCHAR(50);default:'';"`       // Bundle ID / Services ID
-	TeamID     string `gorm:"column:team_id;type:VARCHAR(50);default:'';"`       // Apple Team ID
-	KeyID      string `gorm:"column:key_id;type:VARCHAR(50);default:'';"`        // Apple Key ID
-	PrivateKey string `gorm:"column:private_key;type:VARCHAR(500);default:'';"` // Apple 私钥（PEM格式）
-	RedirectURI string `gorm:"column:redirect_uri;type:VARCHAR(256);default:'';"` // 回调地址
+	AppID       string `gorm:"column:app_id;type:VARCHAR(128);default:'';"`        // Bundle ID / Services ID
+	TeamID      string `gorm:"column:team_id;type:VARCHAR(50);default:'';"`         // Apple Team ID
+	KeyID       string `gorm:"column:key_id;type:VARCHAR(50);default:'';"`          // Apple Key ID
+	PrivateKey  string `gorm:"column:private_key;type:TEXT;"`                        // Apple 私钥（PEM格式）
+	RedirectURI string `gorm:"column:redirect_uri;type:VARCHAR(512);default:'';"`   // 回调地址
 }
 
 // 第三方app配置

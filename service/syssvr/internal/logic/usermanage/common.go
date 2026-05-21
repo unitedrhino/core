@@ -35,6 +35,16 @@ func CheckUserName(userName string) error {
 	return nil
 }
 
+// applyOAuthLoginAccount 为 OAuth 自动注册用户填充 user_name，便于后续用邮箱/用户名做密码登录
+func applyOAuthLoginAccount(ui *relationDB.SysUserInfo) {
+	if ui.UserName.Valid && ui.UserName.String != "" {
+		return
+	}
+	if ui.Email.Valid && ui.Email.String != "" {
+		ui.UserName = ui.Email
+	}
+}
+
 // 第三方jwt加密登录的claims
 type ThirdJwtClaims struct {
 	Account string `json:"account"`

@@ -2,9 +2,8 @@ package app
 
 import (
 	"context"
-	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
-	"gitee.com/unitedrhino/share/utils"
 
+	tenantoauth "gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/tenant"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 
@@ -26,6 +25,6 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(req *types.TenantAppInfo) error {
-	_, err := l.svcCtx.TenantRpc.TenantAppUpdate(l.ctx, utils.Copy[sys.TenantAppInfo](req))
+	_, err := l.svcCtx.TenantRpc.TenantAppUpdate(l.ctx, tenantoauth.ToSysTenantAppInfo(req))
 	return err
 }

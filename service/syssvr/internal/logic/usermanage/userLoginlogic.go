@@ -44,11 +44,26 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLo
 	}
 }
 
+// syncUserEmailFromGoogle 登录成功后将 Google 返回的邮箱同步到用户表，便于 info.email 回显
+func (l *LoginLogic) syncUserEmailFromGoogle(uc *relationDB.SysUserInfo, email string) {
+	if uc == nil || email == "" {
+		return
+	}
+	if uc.Email.Valid && uc.Email.String == email {
+		return
+	}
+	oldEmail := uc.Email
+	uc.Email = sql.NullString{Valid: true, String: email}
+	if err := l.UiDB.Update(l.ctx, uc); err != nil {
+		uc.Email = oldEmail
+		l.Errorf("%s sync email userID=%d email=%s err=%v", utils.FuncName(), uc.UserID, email, err)
+	}
+}
+
 func (l *LoginLogic) getPwd(in *sys.UserLoginReq, uc *relationDB.SysUserInfo) error {
 	//根据密码类型不同做不同处理
 	if in.PwdType == 0 {
-		//空密码情况暂不考虑
-		return errors.UnRegister
+		return errors.Parameter.WithMsg("账号密码登录需指定 pwdType：1 明文密码，2 MD5 密码")
 	} else if in.PwdType == 1 {
 		//明文密码，则对密码做MD5加密后再与数据库密码比对
 		//uid_temp := l.svcCtx.UserID.GetSnowflakeId()
@@ -111,7 +126,7 @@ func GenLoginResp(ctx context.Context, svcCtx *svc.ServiceContext, deviceID stri
 func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserInfo, err error) {
 	cli, er := l.svcCtx.Cm.GetClients(l.ctx, "")
 	if er != nil {
-		return nil, errors.System.AddDetail(err)
+		return nil, errors.System.AddDetail(er)
 	}
 	if in.LoginType != users.RegJwt && !utils.SliceIn(in.LoginType, cli.Config.LoginTypes...) {
 		l.Errorf("不支持的登录方式:%v", in.LoginType)
@@ -330,6 +345,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				Email:        sql.NullString{Valid: true, String: gUser.Email},
 				HeadImg:      gUser.Picture,
 			}
+			applyOAuthLoginAccount(uc)
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})
@@ -338,6 +354,9 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				return nil, err
 			}
 			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})
+		}
+		if err == nil {
+			l.syncUserEmailFromGoogle(uc, gUser.Email)
 		}
 	case users.RegGithub:
 		if cli.Github == nil {
@@ -373,7 +392,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		}
 	case users.RegApple:
 		if cli.Apple == nil {
-			return nil, errors.System.AddDetail(er)
+			return nil, errors.System.AddMsg("Apple登录未配置或私钥无效，请检查租户应用 Apple 配置")
 		}
 		aUser, _, er := cli.Apple.ExchangeCode(l.ctx, in.Code)
 		if er != nil {
@@ -388,6 +407,7 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 				AppleUserID: sql.NullString{Valid: true, String: aUser.Sub},
 				Email:       sql.NullString{Valid: true, String: aUser.Email},
 			}
+			applyOAuthLoginAccount(uc)
 			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 				return Register(l.ctx, l.svcCtx, uc, tx)
 			})

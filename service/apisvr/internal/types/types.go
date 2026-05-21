@@ -1240,7 +1240,13 @@ type TenantApp struct {
 	WxMini         *ThirdAppConfig `json:"wxMini,optional"`
 	Android        *ThirdApp       `json:"android,optional"`        //安卓应用
 	Huawei         *ThirdAppConfig `json:"huawei,optional"`         //华为应用
-	LoginTypes     []string        `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册
+	Google         *ThirdAppConfig `json:"google,optional"`         //Google登录
+	GoogleConfig   *ThirdAppConfig `json:"googleConfig,optional"`   //Google登录（前端字段名）
+	Github         *ThirdAppConfig `json:"github,optional"`         //GitHub登录
+	GithubConfig   *ThirdAppConfig `json:"githubConfig,optional"`   //GitHub登录（前端字段名）
+	Apple          *AppleAppConfig `json:"apple,optional"`          //Apple登录
+	AppleConfig    *AppleAppConfig `json:"appleConfig,optional"`    //Apple登录（前端字段名）
+	LoginTypes     []string        `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "google":Google  "github":GitHub  "apple":Apple
 	IsAutoRegister int64           `json:"isAutoRegister,optional"` //登录未注册是否自动注册
 	Config         string          `json:"config,optional"`         //自定义配置json
 }
@@ -1263,7 +1269,13 @@ type TenantAppInfo struct {
 	WxMini         *ThirdAppConfig    `json:"wxMini,optional"`
 	Android        *ThirdAppConfig    `json:"android,optional"`        //安卓应用
 	Huawei         *ThirdAppConfig    `json:"huawei,optional"`         //华为应用
-	LoginTypes     []string           `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "huawei":华为应用登录
+	Google         *ThirdAppConfig    `json:"google,optional"`         //Google登录
+	GoogleConfig   *ThirdAppConfig    `json:"googleConfig,optional"`   //Google登录（前端字段名）
+	Github         *ThirdAppConfig    `json:"github,optional"`         //GitHub登录
+	GithubConfig   *ThirdAppConfig    `json:"githubConfig,optional"`   //GitHub登录（前端字段名）
+	Apple          *AppleAppConfig    `json:"apple,optional"`          //Apple登录
+	AppleConfig    *AppleAppConfig    `json:"appleConfig,optional"`    //Apple登录（前端字段名）
+	LoginTypes     []string           `json:"loginTypes,optional"`     //支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOfficial": 微信公众号登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "huawei":华为应用登录  "google":Google  "github":GitHub  "apple":Apple
 	IsAutoRegister int64              `json:"isAutoRegister,optional"` //登录未注册是否自动注册
 	Config         string             `json:"config,optional"`         //自定义配置json
 }
@@ -1305,6 +1317,16 @@ type TenantAppWithIDOrCode struct {
 	AppCode string `json:"appCode,optional"` // 应用编号
 }
 
+// AppleAppConfig Apple 登录配置
+type AppleAppConfig struct {
+	AppID       string `json:"appID,optional"`       // Bundle ID / Services ID
+	BundleID    string `json:"bundleID,optional"`    // 前端别名，写入时同步到 appID
+	TeamID      string `json:"teamID,optional"`      // Apple Team ID
+	KeyID       string `json:"keyID,optional"`       // Apple Key ID
+	PrivateKey  string `json:"privateKey,optional"`  // Apple 私钥（PEM格式）
+	RedirectURI string `json:"redirectURI,optional"` // 回调地址
+}
+
 type TenantConfig struct {
 	TenantCode                string                                   `json:"tenantCode,optional"`                // 租户编码
 	RegisterRoleID            int64                                    `json:"registerRoleID,optional"`            //注册分配的角色id
@@ -1316,6 +1338,19 @@ type TenantConfig struct {
 	DeviceLimit               *int64                                   `json:"deviceLimit,optional"`               //租户下的设备数量限制,0为不限制
 	FeedbackNotifyUserIDs     []string                                 `json:"feedbackNotifyUserIDs,optional"`     //产生问题反馈通知的用户ID列表
 	RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"` //注册自动创建项目和区域
+	AppCode                   string                                   `json:"appCode,optional"`                   // 应用编码（登录配置归属的应用）
+	DingMini                  *ThirdAppConfig                          `json:"dingMini,optional"`                  //钉钉小程序
+	WxOpen                    *ThirdAppConfig                          `json:"wxOpen,optional"`                    //微信开放平台
+	WxMini                    *ThirdAppConfig                          `json:"wxMini,optional"`                    //微信小程序
+	Huawei                    *ThirdAppConfig                          `json:"huawei,optional"`                    //华为应用
+	Google                    *ThirdAppConfig                          `json:"google,optional"`                    //Google登录
+	GoogleConfig              *ThirdAppConfig                          `json:"googleConfig,optional"`              //Google登录（前端字段名）
+	Github                    *ThirdAppConfig                          `json:"github,optional"`                    //GitHub登录
+	GithubConfig              *ThirdAppConfig                          `json:"githubConfig,optional"`              //GitHub登录（前端字段名）
+	Apple                     *AppleAppConfig                          `json:"apple,optional"`                     //Apple登录
+	AppleConfig               *AppleAppConfig                          `json:"appleConfig,optional"`               //Apple登录（前端字段名）
+	LoginTypes                []string                                 `json:"loginTypes,optional"`                //支持的登录类型
+	IsAutoRegister            int64                                    `json:"isAutoRegister,optional"`            //登录未注册是否自动注册
 }
 
 type TenantConfigRegisterAutoCreateArea struct {

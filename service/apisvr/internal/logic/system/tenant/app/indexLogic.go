@@ -6,6 +6,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/utils"
 
+	tenantoauth "gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/tenant"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 
@@ -63,12 +64,22 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 		if ta.Huawei != nil && ta.Huawei.AppID != "" {
 			val.Huawei = utils.Copy[types.ThirdAppConfig](ta.Huawei)
 		}
+		if ta.Google != nil && (ta.Google.AppID != "" || ta.Google.AppSecret != "") {
+			val.Google = utils.Copy[types.ThirdAppConfig](ta.Google)
+		}
+		if ta.Github != nil && (ta.Github.AppID != "" || ta.Github.AppSecret != "") {
+			val.Github = utils.Copy[types.ThirdAppConfig](ta.Github)
+		}
+		if ta.Apple != nil && (ta.Apple.AppID != "" || ta.Apple.PrivateKey != "") {
+			val.Apple = utils.Copy[types.AppleAppConfig](ta.Apple)
+		}
 		if ta.Android != nil {
 			val.Android = utils.Copy[types.ThirdApp](ta.Android)
 		}
 		val.LoginTypes = ta.LoginTypes
 		val.IsAutoRegister = ta.IsAutoRegister
 		val.Config = ta.Config
+		tenantoauth.FillTenantAppOut(val)
 		retList = append(retList, val)
 	}
 	return &types.TenantAppIndexResp{

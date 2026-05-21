@@ -261,6 +261,16 @@ type (
         DeviceLimit *int64 `json:"deviceLimit,optional"`   //租户下的设备数量限制,0为不限制
         FeedbackNotifyUserIDs []string  `json:"feedbackNotifyUserIDs,optional"`//产生问题反馈通知的用户ID列表
         RegisterAutoCreateProject []*TenantConfigRegisterAutoCreateProject `json:"registerAutoCreateProject,optional"` //注册自动创建项目和区域
+        AppCode string `json:"appCode,optional"` // 应用编码（登录配置归属的应用，不填则取当前登录应用）
+        DingMini *ThirdAppConfig `json:"dingMini,optional"`//钉钉小程序
+        WxOpen *ThirdAppConfig `json:"wxOpen,optional"`//微信开放平台
+        WxMini *ThirdAppConfig `json:"wxMini,optional"`//微信小程序
+        Huawei *ThirdAppConfig `json:"huawei,optional"`//华为应用
+        Google *ThirdAppConfig `json:"google,optional"`//Google登录
+        Github *ThirdAppConfig `json:"github,optional"`//GitHub登录
+        Apple *AppleAppConfig `json:"apple,optional"`//Apple登录
+        LoginTypes []string `json:"loginTypes,optional"`//支持的登录类型
+        IsAutoRegister int64 `json:"isAutoRegister,optional"` //登录未注册是否自动注册
     }
     TenantConfigRegisterAutoCreateProject  {
         ID int64 `json:"id,optional"`

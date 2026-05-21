@@ -71,6 +71,12 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 	if info.NickName != "" {
 		ui.NickName = info.NickName
 	}
+	// 用户可自行设置登录用户名，供密码登录 account 使用
+	if info.UserName != "" {
+		if err := l.updateLoginUserName(ui, info.UserName); err != nil {
+			return nil, err
+		}
+	}
 
 	//性別有效才賦值，否則使用旧值
 	if ui.Sex == def.Unknown {
@@ -129,4 +135,24 @@ func (l *UserInfoUpdateLogic) UserInfoUpdate(in *sys.UserInfoUpdateReq) (*sys.Em
 		l.Errorf("Publish CoreUserUpdate %v err:%v", ui, err)
 	}
 	return &sys.Empty{}, nil
+}
+
+// updateLoginUserName 更新可用于密码登录的 user_name，并校验格式与唯一性
+func (l *UserInfoUpdateLogic) updateLoginUserName(ui *relationDB.SysUserInfo, userName string) error {
+	if ui.UserName.Valid && ui.UserName.String == userName {
+		return nil
+	}
+	if err := CheckUserName(userName); err != nil &&
+		!utils.SliceIn(userName, ui.Email.String, ui.Phone.String) {
+		return err
+	}
+	other, err := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{Accounts: []string{userName}})
+	if err == nil && other.UserID != ui.UserID {
+		return errors.DuplicateUsername.AddDetail(userName)
+	}
+	if err != nil && !errors.Cmp(err, errors.NotFind) {
+		return err
+	}
+	ui.UserName = sql.NullString{String: userName, Valid: true}
+	return nil
 }

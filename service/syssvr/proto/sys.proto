@@ -369,6 +369,14 @@ message ThirdApp {
   bool isUpdateFilePath=4;// 文件路径,拿来下载文件
 }
 
+// Apple登录配置
+message AppleAppConfig {
+  string appID = 1;       // Bundle ID / Services ID
+  string teamID = 2;      // Apple Team ID
+  string keyID = 3;       // Apple Key ID
+  string privateKey = 4;  // Apple 私钥（PEM格式）
+  string redirectURI = 5; // 回调地址
+}
 
 message IDList{
   repeated int64 ids=1;
@@ -785,7 +793,10 @@ message TenantAppInfo{
   ThirdAppConfig wxOpen =7;//微信开放 web app需要填写
   ThirdApp android =10; //安卓应用
   ThirdAppConfig huawei =12; //华为应用
-  repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "huawei":华为应用登录
+  ThirdAppConfig google =13; //Google登录配置
+  ThirdAppConfig github =14; //GitHub登录配置
+  AppleAppConfig apple =15;  //Apple登录配置
+  repeated string LoginTypes =8;//支持的登录类型(不填支持全部登录方式):  	 "email":邮箱 "phone":手机号  "wxMiniP":微信小程序  "wxOpen": 微信开放平台登录   "dingApp":钉钉应用(包含小程序,h5等方式)  "pwd":账号密码注册  "huawei":华为应用登录  "google":Google  "github":GitHub  "apple":Apple
   int64 isAutoRegister =9;//登录未注册是否自动注册
   string config =11;//自定义配置json
 }

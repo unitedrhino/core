@@ -602,6 +602,7 @@ func (l *UserRegisterLogic) handleGoogle(in *sys.UserRegisterReq) (int64, error)
 			ui.UserName = utils.AnyToNullString(in.Info.UserName)
 		}
 	}
+	applyOAuthLoginAccount(&ui)
 	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
 		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})

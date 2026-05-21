@@ -56,7 +56,16 @@ func (l *TenantAppUpdateLogic) TenantAppUpdate(in *sys.TenantAppInfo) (*sys.Empt
 	if in.Huawei != nil {
 		old.Huawei = utils.Copy[relationDB.SysTenantThird](in.Huawei)
 	}
-	if in.Android.IsUpdateFilePath {
+	if in.Google != nil {
+		old.Google = utils.Copy[relationDB.SysTenantThird](in.Google)
+	}
+	if in.Github != nil {
+		old.Github = utils.Copy[relationDB.SysTenantThird](in.Github)
+	}
+	if in.Apple != nil {
+		old.Apple = utils.Copy[relationDB.SysTenantAppleConfig](in.Apple)
+	}
+	if in.Android != nil && in.Android.IsUpdateFilePath {
 		if old.Android != nil && old.Android.FilePath != "" {
 			err := l.svcCtx.OssClient.PublicBucket().Delete(l.ctx, old.Android.FilePath, common.OptionKv{})
 			if err != nil {

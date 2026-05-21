@@ -2,10 +2,12 @@ package tenantmanagelogic
 
 import (
 	"context"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,14 +27,22 @@ func NewTenantConfigReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *TenantConfigReadLogic) TenantConfigRead(in *sys.WithCode) (*sys.TenantConfig, error) {
-	if err := ctxs.IsRoot(l.ctx); err != nil {
-		return nil, err
+	uc := ctxs.GetUserCtxNoNil(l.ctx)
+	tenantCode := in.Code
+	if tenantCode == "" {
+		tenantCode = uc.TenantCode
 	}
-	ctxs.GetUserCtx(l.ctx).AllTenant = true
-	defer func() {
-		ctxs.GetUserCtx(l.ctx).AllTenant = false
-	}()
-	po, err := relationDB.NewTenantConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: in.Code})
+	if err := ctxs.IsRoot(l.ctx); err != nil {
+		if uc.TenantCode != tenantCode {
+			return nil, errors.Permissions
+		}
+	} else {
+		uc.AllTenant = true
+		defer func() {
+			uc.AllTenant = false
+		}()
+	}
+	po, err := relationDB.NewTenantConfigRepo(l.ctx).FindOneByFilter(l.ctx, relationDB.TenantConfigFilter{TenantCode: tenantCode})
 	if err != nil {
 		return nil, err
 	}

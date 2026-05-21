@@ -13,6 +13,7 @@ import (
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/errors"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/syncx"
 )
 
@@ -121,7 +122,9 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		// 初始化 Apple 客户端
 		if cfg.Apple != nil && cfg.Apple.PrivateKey != "" {
 			appleCli, err := oauth2.NewAppleClient(cfg.Apple.AppID, cfg.Apple.TeamID, cfg.Apple.KeyID, cfg.Apple.PrivateKey, cfg.Apple.RedirectURI)
-			if err == nil {
+			if err != nil {
+				logx.WithContext(ctx).Errorf("NewAppleClient failed tenant=%s app=%s: %v", tenantCode, appCode, err)
+			} else {
 				cli.Apple = appleCli
 			}
 		}

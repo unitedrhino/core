@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -33,9 +34,34 @@ type AppleClient struct {
 	redirectURI string
 }
 
+// normalizeApplePrivateKeyPEM 将裸 Base64 或完整 PEM/.p8 内容规范为 PEM 格式
+func normalizeApplePrivateKeyPEM(raw string) string {
+	raw = strings.TrimSpace(raw)
+	if raw == "" || strings.Contains(raw, "BEGIN") {
+		return raw
+	}
+	var b64 strings.Builder
+	for _, r := range raw {
+		if r != '\n' && r != '\r' && r != ' ' {
+			b64.WriteRune(r)
+		}
+	}
+	s := b64.String()
+	var lines []string
+	for i := 0; i < len(s); i += 64 {
+		end := i + 64
+		if end > len(s) {
+			end = len(s)
+		}
+		lines = append(lines, s[i:end])
+	}
+	return "-----BEGIN PRIVATE KEY-----\n" + strings.Join(lines, "\n") + "\n-----END PRIVATE KEY-----\n"
+}
+
 // NewAppleClient 创建 Apple OAuth2 客户端
-// privateKeyPEM 为 Apple 提供的 .p8 文件内容（PEM 格式）
+// privateKeyPEM 为 Apple 提供的 .p8 文件内容（PEM 格式，也支持仅粘贴 Base64 主体）
 func NewAppleClient(clientID, teamID, keyID, privateKeyPEM, redirectURI string) (*AppleClient, error) {
+	privateKeyPEM = normalizeApplePrivateKeyPEM(privateKeyPEM)
 	block, _ := pem.Decode([]byte(privateKeyPEM))
 	if block == nil {
 		return nil, fmt.Errorf("apple private key pem decode failed")
@@ -69,31 +95,34 @@ func (c *AppleClient) GetAuthCodeURL(state string) string {
 	return "https://appleid.apple.com/auth/authorize?" + v.Encode()
 }
 
-// ExchangeCode 用授权码换取 Token，返回 ID Token 和用户信息
-func (c *AppleClient) ExchangeCode(ctx context.Context, code string) (*AppleUser, string, error) {
-	clientSecret, err := c.buildClientSecret()
-	if err != nil {
-		return nil, "", err
-	}
+// exchangeCodePost 向 Apple 换取 token；includeRedirect 为 false 时不传 redirect_uri（原生 App 场景）
+func (c *AppleClient) exchangeCodePost(ctx context.Context, code, clientSecret string, includeRedirect bool) (*AppleUser, string, error) {
 	data := url.Values{}
 	data.Set("client_id", c.clientID)
 	data.Set("client_secret", clientSecret)
 	data.Set("code", code)
 	data.Set("grant_type", "authorization_code")
-	data.Set("redirect_uri", c.redirectURI)
-
-	resp, err := http.PostForm("https://appleid.apple.com/auth/token", data)
+	if includeRedirect && c.redirectURI != "" {
+		data.Set("redirect_uri", c.redirectURI)
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://appleid.apple.com/auth/token", strings.NewReader(data.Encode()))
+	if err != nil {
+		return nil, "", err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, "", err
 	}
 	defer resp.Body.Close()
+	body, _ := io.ReadAll(resp.Body)
 	if resp.StatusCode != http.StatusOK {
-		return nil, "", fmt.Errorf("apple token status: %d", resp.StatusCode)
+		return nil, "", fmt.Errorf("apple token status: %d body: %s", resp.StatusCode, string(body))
 	}
 	var result struct {
 		IDToken string `json:"id_token"`
 	}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, "", err
 	}
 	user, err := c.parseIDToken(result.IDToken)
@@ -101,6 +130,26 @@ func (c *AppleClient) ExchangeCode(ctx context.Context, code string) (*AppleUser
 		return nil, "", err
 	}
 	return user, result.IDToken, nil
+}
+
+// ExchangeCode 用授权码换取 Token，返回 ID Token 和用户信息
+func (c *AppleClient) ExchangeCode(ctx context.Context, code string) (*AppleUser, string, error) {
+	clientSecret, err := c.buildClientSecret()
+	if err != nil {
+		return nil, "", err
+	}
+	// 先按 Web 配置（含 redirect_uri）请求；400 时再尝试不传 redirect_uri（iOS/Android 原生）
+	user, idToken, err := c.exchangeCodePost(ctx, code, clientSecret, true)
+	if err == nil {
+		return user, idToken, nil
+	}
+	if c.redirectURI != "" {
+		user2, idToken2, err2 := c.exchangeCodePost(ctx, code, clientSecret, false)
+		if err2 == nil {
+			return user2, idToken2, nil
+		}
+	}
+	return nil, "", err
 }
 
 // buildClientSecret 生成 Apple Client Secret（ES256 JWT，有效期 5 分钟）

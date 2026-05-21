@@ -1,0 +1,19 @@
+# 从 Apple 下载的 AuthKey_7765MA52B7.p8 原文（勿手打，直接整文件复制到后台）
+# 下列内容与首次提供的密钥一致，截图中若出现 TI0、PsGI 等则为抄写错误
+
+-----BEGIN PRIVATE KEY-----
+MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgsLJbHxc7gP+zluQoig
++rlx9rx06f/zU8MUhCf2VxFlugCgYIKoZIzj0DAQehRANCAARuyPS5gF+g9Tl0ox
+5hX7Vk+nYylkXFDSEGmqLsPvRIF6Yot8h5Z4JpG7ux+U8JojTM0vhd9LQkLPdDE9
+SjPsGl
+-----END PRIVATE KEY-----
+
+# 注意：Tl0 是字母 l+数字 0，不是 TI0；末尾是 SjPsGl 不是 SjPsGI
+# Web 控制台（tenant 配置 / 控制台应用）：
+#   ClientID = Services ID，如 vip.ykhl.web
+#   RedirectURI = https://new.ykhl.vip/app/console/?provider=apple
+#
+# iOS/Android 原生 App（client-app-ios / client-app-android 租户应用）：
+#   ClientID = uni-app / Xcode 里的 Bundle ID（不是 vip.ykhl.web）
+#   RedirectURI = 留空
+#   若 ClientID 填成 Services ID，Apple 会返回 token status: 400
