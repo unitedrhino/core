@@ -11,6 +11,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
+	"gitee.com/unitedrhino/core/share/localdev"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/clients/dingClient"
 	"gitee.com/unitedrhino/share/clients/smsClient"
@@ -74,12 +75,16 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		timedJob timedmanage.TimedManage
 	)
 	stores.InitConn(c.Database)
-	err := relationDB.Migrate(c.Database)
-	if err != nil {
-		logx.Errorf("syssvr 数据库初始化失败 cfg:%v  err:%v", utils.Fmt(c.Database), err)
-		os.Exit(-1)
+	if localdev.SkipAutoMigrate() {
+		logx.Infof("本地开发模式: 跳过 syssvr 数据库自动迁移")
+	} else {
+		// 自动迁移数据库
+		err := relationDB.Migrate(c.Database)
+		if err != nil {
+			logx.Errorf("syssvr 数据库初始化失败 cfg:%v  err:%v", utils.Fmt(c.Database), err)
+			os.Exit(-1)
+		}
 	}
-	// 自动迁移数据库
 	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
 	ProjectID := utils.NewSnowFlake(nodeID)
 	AreaID := utils.NewSnowFlake(nodeID)

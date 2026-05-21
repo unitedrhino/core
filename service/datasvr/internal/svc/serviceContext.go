@@ -10,6 +10,7 @@ import (
 	user "gitee.com/unitedrhino/core/service/syssvr/client/usermanage"
 	"gitee.com/unitedrhino/core/service/syssvr/sysExport"
 	"gitee.com/unitedrhino/core/service/syssvr/sysdirect"
+	"gitee.com/unitedrhino/core/share/localdev"
 	"gitee.com/unitedrhino/core/share/middlewares"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/stores"
@@ -27,7 +28,11 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	stores.InitConn(c.Database)
-	logx.Must(relationDB.Migrate(c.Database))
+	if localdev.SkipAutoMigrate() {
+		logx.Infof("本地开发模式: 跳过 datasvr 数据库自动迁移")
+	} else {
+		logx.Must(relationDB.Migrate(c.Database))
+	}
 	var (
 		TenantRpc tenant.TenantManage
 		LogRpc    log.Log

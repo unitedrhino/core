@@ -4,6 +4,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/internal/repo/event/publish/pubJob"
 	"gitee.com/unitedrhino/core/service/timed/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/internal/config"
+	"gitee.com/unitedrhino/core/share/localdev"
 	"gitee.com/unitedrhino/share/clients"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/stores"
@@ -33,10 +34,14 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		os.Exit(-1)
 	}
 	stores.InitConn(c.Database)
-	err = relationDB.Migrate(c.Database)
-	if err != nil {
-		logx.Error("timedjobsvr 数据库初始化失败 err", err)
-		os.Exit(-1)
+	if localdev.SkipAutoMigrate() {
+		logx.Infof("本地开发模式: 跳过 timedjobsvr 数据库自动迁移")
+	} else {
+		err = relationDB.Migrate(c.Database)
+		if err != nil {
+			logx.Error("timedjobsvr 数据库初始化失败 err", err)
+			os.Exit(-1)
+		}
 	}
 	nodeID := utils.GetNodeID(c.CacheRedis, c.Name)
 	serverMsg, err := eventBus.NewFastEvent(c.Event, c.Name, nodeID)

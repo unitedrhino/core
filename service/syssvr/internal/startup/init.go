@@ -23,6 +23,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	coreCache "gitee.com/unitedrhino/core/share/caches"
 	"gitee.com/unitedrhino/core/share/domain/tenant"
+	"gitee.com/unitedrhino/core/share/localdev"
 	"gitee.com/unitedrhino/core/share/topics"
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
@@ -44,12 +45,16 @@ func Init(svcCtx *svc.ServiceContext) {
 		err = coreCache.InitTenant(ctx, logic.ToTenantInfoCaches(list)...)
 		logx.Must(err)
 	})
-	VersionUpdate(svcCtx)
+	if localdev.SkipStartupSideEffects() {
+		logx.Infof("本地开发模式: 跳过 syssvr VersionUpdate、TimerInit 和 InitSync")
+	} else {
+		VersionUpdate(svcCtx)
+		TimerInit(svcCtx)
+		InitSync(svcCtx)
+	}
 	InitCache(svcCtx)
 	InitEventBus(svcCtx)
-	TimerInit(svcCtx)
 	usermanagelogic.Init()
-	InitSync(svcCtx)
 }
 
 func VersionUpdate(svcCtx *svc.ServiceContext) {

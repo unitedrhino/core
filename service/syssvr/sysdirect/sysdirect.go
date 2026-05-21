@@ -24,6 +24,7 @@ import (
 	"gitee.com/unitedrhino/core/service/syssvr/internal/startup"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/core/share/localdev"
 	"gitee.com/unitedrhino/share/i18ns"
 	"gitee.com/unitedrhino/share/interceptors"
 	"gitee.com/unitedrhino/share/services"
@@ -48,7 +49,11 @@ func GetSvcCtx() *svc.ServiceContext {
 		i18ns.InitWithFS("etc/i18n")
 		ctxSvc = svc.NewServiceContext(c)
 		startup.Init(ctxSvc)
-		startup.TableInit(ctxSvc)
+		if !localdev.SkipStartupSideEffects() {
+			startup.TableInit(ctxSvc)
+		} else {
+			logx.Infof("本地开发模式: 跳过 syssvr 启动表数据导入")
+		}
 		logx.Infof("enabled syssvr")
 	})
 	return ctxSvc

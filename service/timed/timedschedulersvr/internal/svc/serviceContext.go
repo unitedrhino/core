@@ -5,6 +5,7 @@ import (
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/client/timedmanage"
 	"gitee.com/unitedrhino/core/service/timed/timedjobsvr/timedjobdirect"
 	"gitee.com/unitedrhino/core/service/timed/timedschedulersvr/internal/config"
+	"gitee.com/unitedrhino/core/share/localdev"
 	"gitee.com/unitedrhino/share/clients"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/stores"
@@ -31,10 +32,14 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	)
 
 	stores.InitConn(c.Database)
-	err := relationDB.Migrate(c.Database)
-	if err != nil {
-		logx.Error("初始化数据库错误 err", err)
-		os.Exit(-1)
+	if localdev.SkipAutoMigrate() {
+		logx.Infof("本地开发模式: 跳过 timedschedulersvr 数据库自动迁移")
+	} else {
+		err := relationDB.Migrate(c.Database)
+		if err != nil {
+			logx.Error("初始化数据库错误 err", err)
+			os.Exit(-1)
+		}
 	}
 	Scheduler := clients.NewTimedScheduler(c.CacheRedis)
 	if c.TimedJobRpc.Enable {

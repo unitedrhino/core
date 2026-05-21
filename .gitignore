@@ -37,6 +37,10 @@ build/
 
 ##
 /cmd/*
+cmd/run/
+cmd/logs/
+cmd/.local/
+*.local.env
 service/apisvr/apisvr*
 service/dcsvr/dcsvr*
 service/ddsvr/ddsvr*
