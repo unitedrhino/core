@@ -1655,7 +1655,7 @@ type UserAreaApplyInfo struct {
 }
 
 type UserBindAccountReq struct {
-	Type    string `json:"type,options=phone|email|wxOpen|wxIn|wxMiniP|dingApp|huawei"` //验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序 huawei 华为
+	Type    string `json:"type,options=phone|email|wxOpen|wxIn|wxMiniP|dingApp|huawei|google|apple|github"` //验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序 huawei 华为 google Google apple Apple github GitHub
 	Account string `json:"account,optional"`                                            //手机号注册时填写手机号 email填写邮箱
 	Code    string `json:"code,optional"`                                               //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID  string `json:"codeID,optional"`                                             //验证码编号 微信登录填state
@@ -1809,7 +1809,7 @@ type UserLoginReq struct {
 	Account   string `json:"account,optional"`                                                         //登录账号(支持用户名,手机号,邮箱) 账号密码登录时需要填写
 	PwdType   int32  `json:"pwdType,optional"`                                                         //账号密码登录时需要填写.0,无密码 1，明文 2，md5加密
 	Password  string `json:"password,optional"`                                                        //密码，建议md5转换 密码登录时需要填写
-	LoginType string `json:"loginType,options=phone|wxOpen|wxIn|wxMiniP|dingApp|pwd|email|huawei|jwt"` //验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱 huawei 华为 jwt 第三方jwt加密登录
+	LoginType string `json:"loginType,options=phone|wxOpen|wxIn|wxMiniP|dingApp|pwd|email|huawei|jwt|google|apple|github"` //验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱 huawei 华为 jwt 第三方jwt google Google apple Apple github GitHub
 	Code      string `json:"code,optional"`                                                            //验证码    微信邮箱验证登录填code
 	CodeID    string `json:"codeID,optional"`                                                          //验证码编号 微信邮箱验证登录填state
 }
@@ -1886,7 +1886,7 @@ type UserProfileReadResp struct {
 }
 
 type UserRegisterReq struct {
-	RegType     string            `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp|huawei|jwt"`
+	RegType     string            `json:"regType,options=phone|email|wxOpen|wxIn|wxMiniP|pwd|dingApp|huawei|jwt|google|apple|github"`
 	Account     string            `json:"account,optional"`     //手机号注册时填写手机号 账号密码注册时填写userName
 	Code        string            `json:"code"`                 //验证码    微信登录填code 账号密码登录时填写密码
 	CodeID      string            `json:"codeID,optional"`      //验证码编号 微信登录填state

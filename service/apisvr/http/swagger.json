@@ -6701,7 +6701,7 @@
             "type": "string"
           },
           "type": {
-            "description": "验证方式:phone手机号注册 wxOpen 微信开放平台登录 wxIn 微信内 wxMiniP 微信小程序 huawei 华为",
+            "description": "验证方式:phone手机号 email邮箱 wxOpen微信开放平台 wxIn微信内 wxMiniP微信小程序 dingApp钉钉 huawei华为 google apple github",
             "enum": [
               "phone",
               "email",
@@ -6709,7 +6709,10 @@
               "wxIn",
               "wxMiniP",
               "dingApp",
-              "huawei"
+              "huawei",
+              "google",
+              "apple",
+              "github"
             ],
             "type": "string"
           }
@@ -7331,7 +7334,7 @@
             "type": "string"
           },
           "loginType": {
-            "description": "验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱 huawei 华为 jwt 第三方jwt加密登录",
+            "description": "验证类型 phone 手机号 wxOpen 微信开放平台 wxIn 微信内 wxMiniP 微信小程序 pwd 账号密码 email 邮箱 huawei 华为 jwt 第三方jwt google Apple github",
             "enum": [
               "phone",
               "wxOpen",
@@ -7341,7 +7344,10 @@
               "pwd",
               "email",
               "huawei",
-              "jwt"
+              "jwt",
+              "google",
+              "apple",
+              "github"
             ],
             "type": "string"
           },
@@ -7658,7 +7664,10 @@
               "pwd",
               "dingApp",
               "huawei",
-              "jwt"
+              "jwt",
+              "google",
+              "apple",
+              "github"
             ],
             "type": "string"
           }
