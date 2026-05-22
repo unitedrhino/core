@@ -35,13 +35,19 @@ func CheckUserName(userName string) error {
 	return nil
 }
 
-// applyOAuthLoginAccount 为 OAuth 自动注册用户填充 user_name，便于后续用邮箱/用户名做密码登录
+// applyOAuthLoginAccount 为 OAuth 自动注册用户填充账号和展示名，避免 Apple 等平台不返回昵称时用户资料为空
 func applyOAuthLoginAccount(ui *relationDB.SysUserInfo) {
-	if ui.UserName.Valid && ui.UserName.String != "" {
+	if ui == nil {
 		return
 	}
-	if ui.Email.Valid && ui.Email.String != "" {
+	if !ui.Email.Valid || ui.Email.String == "" {
+		return
+	}
+	if !ui.UserName.Valid || ui.UserName.String == "" {
 		ui.UserName = ui.Email
+	}
+	if ui.NickName == "" {
+		ui.NickName = ui.Email.String
 	}
 }
 
