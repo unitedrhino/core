@@ -1963,14 +1963,16 @@ type UserSearchResp struct {
 }
 
 type UserSelfAppReadReq struct {
-	AppID   string `json:"appID"`   //
-	Type    string `json:"type"`    //  app:应用  mini:小程序
-	SubType string `json:"subType"` //wx:微信小程序  dingTalk:钉钉小程序
+	Code    string `json:"code,optional"`    // 应用编号
+	AppID   string `json:"appID,optional"`   // 第三方应用ID
+	Type    string `json:"type,optional"`    //  app:应用  mini:小程序
+	SubType string `json:"subType,optional"` //wx:微信小程序  dingTalk:钉钉小程序
 }
 
 type UserSelfAppReadResp struct {
 	Code        string   `json:"code"`                 // 应用编号
 	Name        string   `json:"name,optional"`        // 名称
+	Config      string   `json:"config,optional"`      // 自定义配置json
 	TenantCodes []string `json:"tenantCodes,optional"` //拥有这个app的租户列表
 }
 

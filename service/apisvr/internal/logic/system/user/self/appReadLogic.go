@@ -26,6 +26,9 @@ func NewAppReadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AppReadLo
 }
 
 func (l *AppReadLogic) AppRead(req *types.UserSelfAppReadReq) (resp *types.UserSelfAppReadResp, err error) {
+	if req.Code != "" {
+		return l.appReadByCode(req.Code)
+	}
 	ret, err := l.svcCtx.TenantRpc.TenantAppIndex(ctxs.WithRoot(l.ctx), &sys.TenantAppIndexReq{
 		Type:    req.Type,
 		SubType: req.SubType,
@@ -41,9 +44,27 @@ func (l *AppReadLogic) AppRead(req *types.UserSelfAppReadReq) (resp *types.UserS
 	if err != nil {
 		return nil, err
 	}
-	resp = &types.UserSelfAppReadResp{Code: appInfo.Code, Name: appInfo.Name}
+	resp = &types.UserSelfAppReadResp{Code: appInfo.Code, Name: appInfo.Name, Config: ret.List[0].Config}
 	for _, v := range ret.List {
 		resp.TenantCodes = append(resp.TenantCodes, v.Code)
 	}
 	return
+}
+
+// appReadByCode 兼容客户端使用应用编号读取应用配置的旧调用方式。
+func (l *AppReadLogic) appReadByCode(code string) (resp *types.UserSelfAppReadResp, err error) {
+	tenantApp, err := l.svcCtx.TenantRpc.TenantAppRead(ctxs.WithRoot(l.ctx), &sys.TenantAppWithIDOrCode{AppCode: code})
+	if err != nil {
+		return nil, err
+	}
+	appInfo, err := l.svcCtx.AppRpc.AppInfoRead(l.ctx, &sys.WithIDCode{Code: tenantApp.AppCode})
+	if err != nil {
+		return nil, err
+	}
+	return &types.UserSelfAppReadResp{
+		Code:        appInfo.Code,
+		Name:        appInfo.Name,
+		Config:      tenantApp.Config,
+		TenantCodes: []string{tenantApp.Code},
+	}, nil
 }
