@@ -29,6 +29,10 @@ ThirdJwtSecret: Xk9mQ2vR7pLw4nBz8jYf
 Map:
   Mode: baidu
   AccessKey: UGmGEIzlEQWtRjC1uGb6f0oypHPQC3Bs
+GoogleJWKS:
+  URL:
+  HeaderName: X-YKHL-JWKS-TOKEN
+  AccessToken:
 TimedJobRpc:
   Enable: true
   Mode: direct

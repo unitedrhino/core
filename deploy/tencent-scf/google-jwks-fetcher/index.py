@@ -5,8 +5,10 @@
 """
 
 import datetime
+import hmac
 import hashlib
 import json
+import os
 import time
 import urllib.error
 import urllib.request
@@ -14,6 +16,8 @@ import urllib.request
 
 GOOGLE_JWKS_URL = "https://www.googleapis.com/oauth2/v3/certs"
 DEFAULT_MAX_AGE_SECONDS = 21600
+ACCESS_TOKEN_ENV = "YKHL_JWKS_ACCESS_TOKEN"
+ACCESS_TOKEN_HEADER = "x-ykhl-jwks-token"
 
 _cached_body = ""
 _cached_headers = {}
@@ -88,11 +92,46 @@ def _get_jwks_body(force_refresh=False):
     return body, headers
 
 
+def _event_headers(event):
+    """从函数 URL 事件中读取请求头。"""
+    if not isinstance(event, dict):
+        return {}
+    headers = event.get("headers") or event.get("Headers") or event.get("headerParameters") or {}
+    if not isinstance(headers, dict):
+        return {}
+    return {str(k).lower(): str(v) for k, v in headers.items()}
+
+
+def _is_http_event(event):
+    """判断是否为函数 URL / HTTP 触发事件。"""
+    if not isinstance(event, dict):
+        return False
+    return bool(event.get("headers") or event.get("Headers") or event.get("httpMethod") or event.get("requestContext"))
+
+
+def _authorized(event):
+    """校验生产后端请求函数 URL 时携带的共享密钥。"""
+    if not _is_http_event(event):
+        return True
+    expected = os.environ.get(ACCESS_TOKEN_ENV, "")
+    if expected == "":
+        return False
+    provided = _event_headers(event).get(ACCESS_TOKEN_HEADER, "")
+    return hmac.compare_digest(provided, expected)
+
+
 def main_handler(event, context):
     """main_handler 处理函数 URL、定时触发和手动 Invoke。"""
     force_refresh = False
     if isinstance(event, dict):
         force_refresh = event.get("type") == "timer" or event.get("forceRefresh") is True
+    if not _authorized(event):
+        return {
+            "isBase64Encoded": False,
+            "statusCode": 403,
+            "headers": {"Content-Type": "application/json; charset=utf-8"},
+            "body": json.dumps({"error": "forbidden"}, ensure_ascii=False),
+        }
     try:
         body, headers = _get_jwks_body(force_refresh)
         return {

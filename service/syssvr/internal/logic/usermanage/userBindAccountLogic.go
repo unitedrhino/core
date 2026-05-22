@@ -152,11 +152,7 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		if cli.Google == nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		token, er := cli.Google.ExchangeCode(l.ctx, in.Code, "")
-		if er != nil {
-			return nil, errors.System.AddDetail(er)
-		}
-		gUser, er := cli.Google.GetUserInfo(l.ctx, token)
+		gUser, er := cli.Google.ResolveUser(l.ctx, in.Code)
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}

@@ -114,6 +114,7 @@ func (c *ClientsManage) GetClients(ctx context.Context, appCode string) (Clients
 		// 初始化 Google 客户端
 		if cfg.Google != nil && cfg.Google.AppSecret != "" {
 			cli.Google = oauth2.NewGoogleClient(cfg.Google.AppID, cfg.Google.AppSecret, cfg.Google.AppKey)
+			cli.Google.SetJWKSFetchConfig(c.Config.GoogleJWKS.URL, c.Config.GoogleJWKS.HeaderName, c.Config.GoogleJWKS.AccessToken)
 		}
 		// 初始化 GitHub 客户端
 		if cfg.Github != nil && cfg.Github.AppSecret != "" {

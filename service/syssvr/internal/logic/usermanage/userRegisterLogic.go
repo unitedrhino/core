@@ -578,11 +578,7 @@ func (l *UserRegisterLogic) handleGoogle(in *sys.UserRegisterReq) (int64, error)
 	if err != nil || cli.Google == nil {
 		return 0, errors.System.AddDetail(err)
 	}
-	token, err := cli.Google.ExchangeCode(l.ctx, in.Code, "")
-	if err != nil {
-		return 0, errors.System.AddDetail(err)
-	}
-	gUser, err := cli.Google.GetUserInfo(l.ctx, token)
+	gUser, err := cli.Google.ResolveUser(l.ctx, in.Code)
 	if err != nil {
 		return 0, errors.System.AddDetail(err)
 	}

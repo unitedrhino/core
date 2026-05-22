@@ -34,8 +34,13 @@ type Config struct {
 		AccessKey    string
 		AccessSecret string
 	}
+	GoogleJWKS struct {
+		URL         string `json:",optional,env=GOOGLE_JWKS_URL"`                          //Google ID Token 验签用 JWKS 地址
+		HeaderName  string `json:",default=X-YKHL-JWKS-TOKEN,env=GOOGLE_JWKS_HEADER_NAME"` //请求 JWKS 地址时携带的密钥请求头
+		AccessToken string `json:",optional,env=GOOGLE_JWKS_ACCESS_TOKEN"`                 //请求 JWKS 地址时携带的共享密钥
+	} `json:",optional"`
 	ThirdJwtSecret string `json:",default=Xk9mQ2vR7pLw4nBz8jYf,env=THIRD_JWT_SECRET"` //第三方jwt加密登录的密钥
-	Sms conf.Sms
+	Sms            conf.Sms
 	//WrongPasswordCounter conf.WrongPasswordCounter `json:",optional"`
 
 	CaptchaPhoneIpLimit      []conf.Limit `json:",optional"`
