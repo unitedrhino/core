@@ -6,7 +6,14 @@ import (
 	"database/sql"
 	"testing"
 
+	"gitee.com/unitedrhino/core/share/clients/oauth2"
+	"gitee.com/unitedrhino/core/share/dataType"
+	"gitee.com/unitedrhino/share/def"
+	"gitee.com/unitedrhino/share/errors"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
+	"github.com/glebarez/sqlite"
+	"gorm.io/gorm"
 )
 
 // TestApplyOAuthLoginAccountFillsAccountAndNicknameFromEmail 验证 Apple OAuth 仅返回邮箱时能补齐账号和昵称
@@ -79,5 +86,124 @@ func TestLocalizedRegisterProjectName(t *testing.T) {
 					tt.projectName, tt.acceptLanguage, got, tt.want)
 			}
 		})
+	}
+}
+
+func newAppleBindTestRepo(t *testing.T) *relationDB.UserInfoRepo {
+	t.Helper()
+	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
+	if err != nil {
+		t.Fatalf("open sqlite: %v", err)
+	}
+	if err := db.AutoMigrate(&relationDB.SysUserInfo{}); err != nil {
+		t.Fatalf("migrate sys_user_info: %v", err)
+	}
+	return relationDB.NewUserInfoRepo(db)
+}
+
+func insertAppleBindTestUser(t *testing.T, repo *relationDB.UserInfoRepo, ui *relationDB.SysUserInfo) {
+	t.Helper()
+	if ui.TenantCode == "" {
+		ui.TenantCode = dataType.TenantCode(def.TenantCodeDefault)
+	}
+	if err := repo.Insert(context.Background(), ui); err != nil {
+		t.Fatalf("insert user: %v", err)
+	}
+}
+
+// TestFindOrBindAppleUserReturnsExistingAppleID 验证已有 Apple 用户 ID 时直接返回原用户
+func TestFindOrBindAppleUserReturnsExistingAppleID(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID:      1000,
+		AppleUserID: sql.NullString{Valid: true, String: "apple-sub"},
+		Email:       sql.NullString{Valid: true, String: "old@example.com"},
+	})
+
+	got, err := findOrBindAppleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.AppleUser{
+		Sub:           "apple-sub",
+		Email:         "new@example.com",
+		EmailVerified: "true",
+	})
+	if err != nil {
+		t.Fatalf("findOrBindAppleUser error: %v", err)
+	}
+	if got.UserID != 1000 {
+		t.Fatalf("UserID = %d, want existing apple user", got.UserID)
+	}
+}
+
+// TestFindOrBindAppleUserBindsVerifiedEmail 验证已验证 Apple 邮箱会绑定到同邮箱老用户
+func TestFindOrBindAppleUserBindsVerifiedEmail(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID: 1001,
+		Email:  sql.NullString{Valid: true, String: "821465404@qq.com"},
+	})
+
+	got, err := findOrBindAppleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.AppleUser{
+		Sub:           "000507.84556ee0529148f6ba9ae8ddd3678e69.0724",
+		Email:         "821465404@qq.com",
+		EmailVerified: "true",
+	})
+	if err != nil {
+		t.Fatalf("findOrBindAppleUser error: %v", err)
+	}
+	if got.UserID != 1001 {
+		t.Fatalf("UserID = %d, want existing user", got.UserID)
+	}
+	if !got.AppleUserID.Valid || got.AppleUserID.String != "000507.84556ee0529148f6ba9ae8ddd3678e69.0724" {
+		t.Fatalf("AppleUserID = %#v, want bound apple sub", got.AppleUserID)
+	}
+}
+
+// TestFindOrBindAppleUserSkipsUnverifiedEmail 验证未验证邮箱不会自动绑定旧账号
+func TestFindOrBindAppleUserSkipsUnverifiedEmail(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID: 1002,
+		Email:  sql.NullString{Valid: true, String: "user@example.com"},
+	})
+
+	_, err := findOrBindAppleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.AppleUser{
+		Sub:           "apple-sub",
+		Email:         "user@example.com",
+		EmailVerified: "false",
+	})
+	if !errors.Cmp(err, errors.NotFind) {
+		t.Fatalf("err = %v, want NotFind", err)
+	}
+}
+
+// TestFindOrBindAppleUserReturnsNotFoundForNewEmail 验证邮箱不存在时交给上层自动注册
+func TestFindOrBindAppleUserReturnsNotFoundForNewEmail(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+
+	_, err := findOrBindAppleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.AppleUser{
+		Sub:           "new-apple-sub",
+		Email:         "new@example.com",
+		EmailVerified: "true",
+	})
+	if !errors.Cmp(err, errors.NotFind) {
+		t.Fatalf("err = %v, want NotFind", err)
+	}
+}
+
+// TestFindOrBindAppleUserRejectsDifferentBoundApple 验证同邮箱账号已绑定其他 Apple 账号时不会覆盖
+func TestFindOrBindAppleUserRejectsDifferentBoundApple(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID:      1003,
+		Email:       sql.NullString{Valid: true, String: "user@example.com"},
+		AppleUserID: sql.NullString{Valid: true, String: "other-apple-sub"},
+	})
+
+	_, err := findOrBindAppleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.AppleUser{
+		Sub:           "new-apple-sub",
+		Email:         "user@example.com",
+		EmailVerified: "true",
+	})
+	if !errors.Cmp(err, errors.BindAccount) {
+		t.Fatalf("err = %v, want BindAccount", err)
 	}
 }

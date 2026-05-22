@@ -700,16 +700,41 @@ func (l *UserRegisterLogic) handleApple(in *sys.UserRegisterReq) (int64, error) 
 		}
 	}
 	applyOAuthLoginAccount(&ui)
+	tenantCode := ctxs.GetUserCtxNoNil(l.ctx).TenantCode
 	err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		uidb := relationDB.NewUserInfoRepo(tx)
-		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{AppleUserID: aUser.Sub})
+		_, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+			TenantCode:  tenantCode,
+			AppleUserID: aUser.Sub,
+		})
 		if err == nil { //已经注册过
 			return errors.DuplicateRegister
 		}
 		if !errors.Cmp(err, errors.NotFind) {
 			return err
 		}
-		return l.FillUserInfo(&ui, tx)
+		boundUser, err := findOrBindAppleUser(l.ctx, uidb, tenantCode, aUser)
+		if err == nil {
+			userID = boundUser.UserID
+			return nil
+		}
+		if !errors.Cmp(err, errors.NotFind) {
+			return err
+		}
+		if err = l.FillUserInfo(&ui, tx); err != nil {
+			if errors.Cmp(err, errors.Duplicate) {
+				uc, findErr := uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+					TenantCode:  tenantCode,
+					AppleUserID: aUser.Sub,
+				})
+				if findErr == nil {
+					userID = uc.UserID
+					return nil
+				}
+			}
+			return err
+		}
+		return nil
 	})
 	return userID, err
 }

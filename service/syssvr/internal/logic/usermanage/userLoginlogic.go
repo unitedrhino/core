@@ -394,24 +394,59 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{AppleUserID: aUser.Sub})
-		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
-			err = nil
+		tenantCode := ctxs.GetUserCtxNoNil(l.ctx).TenantCode
+		var isAppleAutoRegister bool
+		err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+			uidb := relationDB.NewUserInfoRepo(tx)
+			uc, err = findOrBindAppleUser(l.ctx, uidb, tenantCode, aUser)
+			if err == nil {
+				return nil
+			}
+			if !errors.Cmp(err, errors.NotFind) {
+				return err
+			}
+			if cli.Config.IsAutoRegister != def.True {
+				return err
+			}
 			userID := l.svcCtx.UserID.GetSnowflakeId()
-			uc = &relationDB.SysUserInfo{
+			appleUser := &relationDB.SysUserInfo{
 				UserID:      userID,
 				AppleUserID: sql.NullString{Valid: true, String: aUser.Sub},
 				Email:       sql.NullString{Valid: true, String: aUser.Email},
 			}
+			uc = appleUser
 			applyOAuthLoginAccount(uc)
-			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-				return Register(l.ctx, l.svcCtx, uc, tx)
-			})
-			isRegister = true
-			if err != nil {
-				return nil, err
+			if err = Register(l.ctx, l.svcCtx, uc, tx); err != nil {
+				if errors.Cmp(err, errors.Duplicate) {
+					duplicateErr := err
+					uc, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+						TenantCode:  tenantCode,
+						AppleUserID: aUser.Sub,
+					})
+					if err == nil {
+						return nil
+					}
+					return duplicateErr
+				}
+				return err
 			}
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{AppleUserID: aUser.Sub})
+			isAppleAutoRegister = true
+			return nil
+		})
+		isRegister = isAppleAutoRegister
+		if err != nil {
+			return nil, err
+		}
+		if uc != nil {
+			freshAppleUser, findErr := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+				TenantCode:  tenantCode,
+				AppleUserID: aUser.Sub,
+			})
+			if findErr != nil {
+				return nil, findErr
+			} else {
+				uc = freshAppleUser
+			}
 		}
 	case users.RegHuawei:
 		if cli.Huawei == nil {
