@@ -39,9 +39,9 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	if err != nil {
 		return nil, err
 	}
-	//if area.DeviceCount > 0 {
-	//	return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("区域下有设备禁止删除")
-	//}
+	if area.DeviceCount > 0 {
+		return nil, errors.Parameter.AddDetail(in.AreaID).WithMsg("请先移除该区域下的所有设备")
+	}
 	var (
 		areaPo *relationDB.SysAreaInfo
 	)
@@ -101,7 +101,16 @@ func (l *AreaInfoDeleteLogic) AreaInfoDelete(in *sys.AreaWithID) (*sys.Empty, er
 	})
 	if err == nil {
 		FillProjectAreaCount(l.ctx, l.svcCtx, int64(areaPo.ProjectID))
-		err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreAreaInfoDelete, def.IDs{IDs: areaIDs})
+		// 发布区域删除事件，携带父区域和项目ID供 things/dmsvr 触发设备数重算
+		err = l.svcCtx.FastEvent.Publish(l.ctx, topics.CoreAreaInfoDelete, &struct {
+			AreaIDs      []int64 `json:"areaIDs,string"`
+			ParentAreaID int64   `json:"parentAreaID,string"`
+			ProjectID    int64   `json:"projectID,string"`
+		}{
+			AreaIDs:      areaIDs,
+			ParentAreaID: int64(areaPo.ParentAreaID),
+			ProjectID:    int64(areaPo.ProjectID),
+		})
 		if err != nil {
 			l.Error(err)
 		}
