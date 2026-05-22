@@ -1,8 +1,10 @@
+// 用户注册逻辑。
 package usermanagelogic
 
 import (
 	"context"
 	"database/sql"
+	"strings"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
@@ -23,6 +25,12 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
+)
+
+// 默认注册项目名常量。
+const (
+	defaultRegisterProjectNameZH = "我的物联"
+	defaultRegisterProjectNameEN = "My Home"
 )
 
 type UserRegisterLogic struct {
@@ -367,7 +375,7 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 			for _, rap := range cfg.RegisterAutoCreateProject {
 				po := relationDB.SysProjectInfo{
 					ProjectID:   dataType.ProjectID(svcCtx.ProjectID.GetSnowflakeId()),
-					ProjectName: rap.ProjectName,
+					ProjectName: localizedRegisterProjectName(rap.ProjectName, uc.AcceptLanguage),
 					AdminUserID: in.UserID,
 					AreaCount:   int64(len(rap.Areas)),
 					UserCount:   1,
@@ -424,6 +432,18 @@ func Register(ctx context.Context, svcCtx *svc.ServiceContext, in *relationDB.Sy
 		return nil
 	})
 	return err
+}
+
+// localizedRegisterProjectName 按请求语言转换注册自动创建项目的默认名称。
+func localizedRegisterProjectName(projectName, acceptLanguage string) string {
+	if projectName != defaultRegisterProjectNameZH {
+		return projectName
+	}
+	lang := strings.TrimSpace(strings.ToLower(acceptLanguage))
+	if lang == "" || strings.HasPrefix(lang, "zh") {
+		return defaultRegisterProjectNameZH
+	}
+	return defaultRegisterProjectNameEN
 }
 
 func Init() {
