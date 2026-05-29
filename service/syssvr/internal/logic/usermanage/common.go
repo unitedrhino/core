@@ -104,11 +104,72 @@ func findOrBindAppleUser(ctx context.Context, repo *relationDB.UserInfoRepo, ten
 	return uc, nil
 }
 
+// findOrBindGoogleUser 按 Google 用户 ID 查找用户；未找到时用已验证邮箱绑定同租户老用户。
+func findOrBindGoogleUser(ctx context.Context, repo *relationDB.UserInfoRepo, tenantCode string, gUser *oauth2.GoogleUser) (*relationDB.SysUserInfo, error) {
+	if gUser == nil || strings.TrimSpace(gUser.ID) == "" {
+		return nil, errors.Parameter.AddMsg("Google用户标识为空")
+	}
+	googleUserID := strings.TrimSpace(gUser.ID)
+	uc, err := repo.FindOneByFilter(ctx, relationDB.UserInfoFilter{
+		TenantCode:   tenantCode,
+		GoogleUserID: googleUserID,
+	})
+	if err == nil {
+		return uc, nil
+	}
+	if !errors.Cmp(err, errors.NotFind) {
+		return nil, err
+	}
+	email := strings.TrimSpace(gUser.Email)
+	if email == "" || !gUser.VerifiedEmail {
+		return nil, errors.NotFind
+	}
+	uc, err = repo.FindOneByFilter(ctx, relationDB.UserInfoFilter{
+		TenantCode: tenantCode,
+		Emails:     []string{email},
+	})
+	if err != nil {
+		return nil, err
+	}
+	if uc.GoogleUserID.Valid && strings.TrimSpace(uc.GoogleUserID.String) != "" {
+		if uc.GoogleUserID.String == googleUserID {
+			return uc, nil
+		}
+		return nil, errors.BindAccount
+	}
+	err = repo.UpdateWithField(ctx, relationDB.UserInfoFilter{
+		TenantCode: tenantCode,
+		UserIDs:    []int64{uc.UserID},
+	}, map[string]any{
+		"google_user_id": sql.NullString{Valid: true, String: googleUserID},
+	})
+	if err != nil {
+		if errors.Cmp(err, errors.Duplicate) {
+			return findGoogleUserAfterDuplicate(ctx, repo, tenantCode, googleUserID, err)
+		}
+		return nil, err
+	}
+	uc.GoogleUserID = sql.NullString{Valid: true, String: googleUserID}
+	return uc, nil
+}
+
 // findAppleUserAfterDuplicate 在并发绑定撞唯一索引时重新读取已绑定的 Apple 用户。
 func findAppleUserAfterDuplicate(ctx context.Context, repo *relationDB.UserInfoRepo, tenantCode string, appleUserID string, duplicateErr error) (*relationDB.SysUserInfo, error) {
 	uc, err := repo.FindOneByFilter(ctx, relationDB.UserInfoFilter{
 		TenantCode:  tenantCode,
 		AppleUserID: appleUserID,
+	})
+	if err == nil {
+		return uc, nil
+	}
+	return nil, duplicateErr
+}
+
+// findGoogleUserAfterDuplicate 在并发绑定撞唯一索引时重新读取已绑定的 Google 用户。
+func findGoogleUserAfterDuplicate(ctx context.Context, repo *relationDB.UserInfoRepo, tenantCode string, googleUserID string, duplicateErr error) (*relationDB.SysUserInfo, error) {
+	uc, err := repo.FindOneByFilter(ctx, relationDB.UserInfoFilter{
+		TenantCode:   tenantCode,
+		GoogleUserID: googleUserID,
 	})
 	if err == nil {
 		return uc, nil

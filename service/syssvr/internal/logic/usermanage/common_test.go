@@ -207,3 +207,100 @@ func TestFindOrBindAppleUserRejectsDifferentBoundApple(t *testing.T) {
 		t.Fatalf("err = %v, want BindAccount", err)
 	}
 }
+
+// TestFindOrBindGoogleUserReturnsExistingGoogleID 验证已有 Google 用户 ID 时直接返回原用户
+func TestFindOrBindGoogleUserReturnsExistingGoogleID(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID:       2000,
+		GoogleUserID: sql.NullString{Valid: true, String: "google-sub"},
+		Email:        sql.NullString{Valid: true, String: "old@example.com"},
+	})
+
+	got, err := findOrBindGoogleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.GoogleUser{
+		ID:            "google-sub",
+		Email:         "new@example.com",
+		VerifiedEmail: true,
+	})
+	if err != nil {
+		t.Fatalf("findOrBindGoogleUser error: %v", err)
+	}
+	if got.UserID != 2000 {
+		t.Fatalf("UserID = %d, want existing google user", got.UserID)
+	}
+}
+
+// TestFindOrBindGoogleUserBindsVerifiedEmail 验证已验证 Google 邮箱会绑定到同邮箱老用户
+func TestFindOrBindGoogleUserBindsVerifiedEmail(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID: 2001,
+		Email:  sql.NullString{Valid: true, String: "821465404@qq.com"},
+	})
+
+	got, err := findOrBindGoogleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.GoogleUser{
+		ID:            "google-sub-821465404",
+		Email:         "821465404@qq.com",
+		VerifiedEmail: true,
+	})
+	if err != nil {
+		t.Fatalf("findOrBindGoogleUser error: %v", err)
+	}
+	if got.UserID != 2001 {
+		t.Fatalf("UserID = %d, want existing user", got.UserID)
+	}
+	if !got.GoogleUserID.Valid || got.GoogleUserID.String != "google-sub-821465404" {
+		t.Fatalf("GoogleUserID = %#v, want bound google sub", got.GoogleUserID)
+	}
+}
+
+// TestFindOrBindGoogleUserSkipsUnverifiedEmail 验证未验证邮箱不会自动绑定旧账号
+func TestFindOrBindGoogleUserSkipsUnverifiedEmail(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID: 2002,
+		Email:  sql.NullString{Valid: true, String: "user@example.com"},
+	})
+
+	_, err := findOrBindGoogleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.GoogleUser{
+		ID:            "google-sub",
+		Email:         "user@example.com",
+		VerifiedEmail: false,
+	})
+	if !errors.Cmp(err, errors.NotFind) {
+		t.Fatalf("err = %v, want NotFind", err)
+	}
+}
+
+// TestFindOrBindGoogleUserReturnsNotFoundForNewEmail 验证邮箱不存在时交给上层自动注册
+func TestFindOrBindGoogleUserReturnsNotFoundForNewEmail(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+
+	_, err := findOrBindGoogleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.GoogleUser{
+		ID:            "new-google-sub",
+		Email:         "new@example.com",
+		VerifiedEmail: true,
+	})
+	if !errors.Cmp(err, errors.NotFind) {
+		t.Fatalf("err = %v, want NotFind", err)
+	}
+}
+
+// TestFindOrBindGoogleUserRejectsDifferentBoundGoogle 验证同邮箱账号已绑定其他 Google 账号时不会覆盖
+func TestFindOrBindGoogleUserRejectsDifferentBoundGoogle(t *testing.T) {
+	repo := newAppleBindTestRepo(t)
+	insertAppleBindTestUser(t, repo, &relationDB.SysUserInfo{
+		UserID:       2003,
+		Email:        sql.NullString{Valid: true, String: "user@example.com"},
+		GoogleUserID: sql.NullString{Valid: true, String: "other-google-sub"},
+	})
+
+	_, err := findOrBindGoogleUser(context.Background(), repo, def.TenantCodeDefault, &oauth2.GoogleUser{
+		ID:            "new-google-sub",
+		Email:         "user@example.com",
+		VerifiedEmail: true,
+	})
+	if !errors.Cmp(err, errors.BindAccount) {
+		t.Fatalf("err = %v, want BindAccount", err)
+	}
+}

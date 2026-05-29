@@ -330,26 +330,61 @@ func (l *LoginLogic) GetUserInfo(in *sys.UserLoginReq) (uc *relationDB.SysUserIn
 		if er != nil {
 			return nil, errors.System.AddDetail(er)
 		}
-		uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})
-		if errors.Cmp(err, errors.NotFind) && cli.Config.IsAutoRegister == def.True { //未注册,自动注册
-			err = nil
+		tenantCode := ctxs.GetUserCtxNoNil(l.ctx).TenantCode
+		var isGoogleAutoRegister bool
+		err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
+			uidb := relationDB.NewUserInfoRepo(tx)
+			uc, err = findOrBindGoogleUser(l.ctx, uidb, tenantCode, gUser)
+			if err == nil {
+				return nil
+			}
+			if !errors.Cmp(err, errors.NotFind) {
+				return err
+			}
+			if cli.Config.IsAutoRegister != def.True {
+				return err
+			}
 			userID := l.svcCtx.UserID.GetSnowflakeId()
-			uc = &relationDB.SysUserInfo{
+			googleUser := &relationDB.SysUserInfo{
 				UserID:       userID,
 				GoogleUserID: sql.NullString{Valid: true, String: gUser.ID},
 				NickName:     gUser.Name,
 				Email:        sql.NullString{Valid: true, String: gUser.Email},
 				HeadImg:      gUser.Picture,
 			}
+			uc = googleUser
 			applyOAuthLoginAccount(uc)
-			err = stores.GetTenantConn(l.ctx).Transaction(func(tx *gorm.DB) error {
-				return Register(l.ctx, l.svcCtx, uc, tx)
-			})
-			isRegister = true
-			if err != nil {
-				return nil, err
+			if err = Register(l.ctx, l.svcCtx, uc, tx); err != nil {
+				if errors.Cmp(err, errors.Duplicate) {
+					duplicateErr := err
+					uc, err = uidb.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+						TenantCode:   tenantCode,
+						GoogleUserID: gUser.ID,
+					})
+					if err == nil {
+						return nil
+					}
+					return duplicateErr
+				}
+				return err
 			}
-			uc, err = l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{GoogleUserID: gUser.ID})
+			isGoogleAutoRegister = true
+			return nil
+		})
+		isRegister = isGoogleAutoRegister
+		if err != nil {
+			return nil, err
+		}
+		if uc != nil {
+			freshGoogleUser, findErr := l.UiDB.FindOneByFilter(l.ctx, relationDB.UserInfoFilter{
+				TenantCode:   tenantCode,
+				GoogleUserID: gUser.ID,
+			})
+			if findErr != nil {
+				return nil, findErr
+			} else {
+				uc = freshGoogleUser
+			}
 		}
 		if err == nil {
 			l.syncUserEmailFromGoogle(uc, gUser.Email)
