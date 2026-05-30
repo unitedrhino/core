@@ -440,6 +440,7 @@ message NotifyChannel{
   ThirdEmail email =6;//邮箱配置
   ThirdAppConfig app =7;//第三方应用配置
   ThirdSms sms =8;//短信配置
+  string appCode =9;//微信小程序推送关联的组织应用编码
 }
 
 message NotifyChannelIndexReq{

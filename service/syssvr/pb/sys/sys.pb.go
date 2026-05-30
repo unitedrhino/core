@@ -809,6 +809,7 @@ type NotifyChannel struct {
 	Email   *ThirdEmail     `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`     //邮箱配置
 	App     *ThirdAppConfig `protobuf:"bytes,7,opt,name=app,proto3" json:"app,omitempty"`         //第三方应用配置
 	Sms     *ThirdSms       `protobuf:"bytes,8,opt,name=sms,proto3" json:"sms,omitempty"`         //短信配置
+	AppCode string          `protobuf:"bytes,9,opt,name=appCode,proto3" json:"appCode,omitempty"` //微信小程序推送关联的组织应用编码
 }
 
 func (x *NotifyChannel) Reset() {
@@ -897,6 +898,13 @@ func (x *NotifyChannel) GetSms() *ThirdSms {
 		return x.Sms
 	}
 	return nil
+}
+
+func (x *NotifyChannel) GetAppCode() string {
+	if x != nil {
+		return x.AppCode
+	}
+	return ""
 }
 
 type NotifyChannelIndexReq struct {

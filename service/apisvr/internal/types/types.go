@@ -745,6 +745,7 @@ type NotifyChannel struct {
 	Email   *ThirdEmailConfig `json:"email,optional"`   //邮箱
 	App     *ThirdAppConfig   `json:"app,optional"`     //第三方应用配置
 	Sms     *ThirdSms         `json:"sms,optional"`     //短信配置
+	AppCode string            `json:"appCode,optional"` //微信小程序推送关联的组织应用编码
 }
 
 type NotifyChannelIndexReq struct {

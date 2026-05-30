@@ -3,6 +3,9 @@ package notifymanagelogic
 import (
 	"bytes"
 	"context"
+	"strings"
+	"text/template"
+
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/share/clients/dingClient"
@@ -18,18 +21,16 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zhaoyunxing92/dingtalk/v2/request"
 	"gorm.io/gorm"
-	"strings"
-	"text/template"
 )
 
 type SendMsgConfig struct {
-	UserIDs       []int64 //只有填写了这项才会记录
+	UserIDs       []int64 // 只有填写了这项才会记录
 	Accounts      []string
 	AccountType   string
-	NotifyCode    string         //通知的code
-	BakNotifyCode string         //备用通知code
-	TemplateID    int64          //指定模板
-	Type          def.NotifyType //通知类型
+	NotifyCode    string         // 通知的code
+	BakNotifyCode string         // 备用通知code
+	TemplateID    int64          // 指定模板
+	Type          def.NotifyType // 通知类型
 	Params        map[string]any
 	Str1          string
 	Str2          string
@@ -57,14 +58,22 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		channel = t.Channel
 		config = t.Config
 	} else {
-		c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+		// c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+		// 	NotifyCode: cfg.NotifyCode,
+		// 	Type:       cfg.Type,
+		// })
+		c, err := relationDB.NewNotifyTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyTemplateFilter{
 			NotifyCode: cfg.NotifyCode,
 			Type:       cfg.Type,
 		})
 		if err != nil {
 			if errors.Cmp(err, errors.NotFind) {
 				if len(cfg.BakNotifyCode) > 0 {
-					c, err = relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+					// c, err = relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+					// 	NotifyCode: cfg.NotifyCode,
+					// 	Type:       cfg.Type,
+					// })
+					c, err = relationDB.NewNotifyTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyTemplateFilter{
 						NotifyCode: cfg.NotifyCode,
 						Type:       cfg.Type,
 					})
@@ -77,9 +86,23 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			}
 			return err
 		}
-		temp = c.Template
-		channel = c.Template.Channel
+		temp = c
+		// temp = c.Template
+		channel = c.Channel
 		config = c.Config
+	}
+
+	// 模板 Preload Config 关联偶发为空，按 notifyCode 兜底加载，避免 config 空指针。
+	if config == nil && temp != nil && temp.NotifyCode != "" {
+		config, err = relationDB.NewNotifyConfigRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigFilter{
+			Code: temp.NotifyCode,
+		})
+		if err != nil {
+			return err
+		}
+	}
+	if config == nil {
+		return errors.NotEnable.AddMsg("通知配置不存在")
 	}
 
 	if temp != nil {
@@ -116,7 +139,7 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		}
 	}
 	var users []*relationDB.SysUserInfo
-	if config.IsRecord == def.True && !cfg.NoRecord { //需要记录到消息中心中
+	if config.IsRecord == def.True && !cfg.NoRecord { // 需要记录到消息中心中
 		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs, Accounts: cfg.Accounts})
 		if err != nil {
 			return err
@@ -228,11 +251,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			}
 		}
 		if len(userIDs) > 0 {
+			wxData := buildWxMiniSubscribeData(cfg.Params, body)
 			for _, user := range userIDs {
 				err = cli.MiniProgram.GetSubscribe().Send(&subscribe.Message{
 					ToUser:     user,
 					TemplateID: templateCode,
-					Data:       map[string]*subscribe.DataItem{},
+					Data:       wxData,
 				})
 				if err != nil {
 					return err
