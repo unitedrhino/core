@@ -45,6 +45,9 @@ func (l *NotifyChannelUpdateLogic) NotifyChannelUpdate(in *sys.NotifyChannel) (*
 	if in.Sms != nil {
 		old.Sms = utils.Copy[relationDB.SysSms](in.Sms)
 	}
+	if in.AppCode != "" {
+		old.AppCode = in.AppCode
+	}
 	old.Desc = in.Desc
 	err = relationDB.NewNotifyChannelRepo(l.ctx).Update(l.ctx, old)
 	return &sys.Empty{}, err

@@ -939,6 +939,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/update",
 					Handler: systemnotifyconfig.UpdateHandler(serverCtx),
 				},
+				{
+					// 测试下发通知
+					Method:  http.MethodPost,
+					Path:    "/test/send",
+					Handler: systemnotifyconfig.TestSendHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/notify/config"),

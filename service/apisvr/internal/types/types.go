@@ -672,15 +672,17 @@ type MessageInfoIndexResp struct {
 }
 
 type MessageInfoSendReq struct {
-	UserIDs    []int64 `json:"userIDs,string,optional"` //指定用户ID
-	IsGlobal   int64   `json:"isGlobal"`                //全局消息
-	NotifyCode string  `json:"notifyCode"`              //通知的code
-	Subject    string  `json:"subject"`                 //通知主题
-	Body       string  `json:"body"`
-	NotifyTime int64   `json:"notifyTime,optional"` //通知时间,不填立刻发送
-	Str1       string  `json:"str1,optional"`
-	Str2       string  `json:"str2,optional"`
-	Str3       string  `json:"str3,optional"`
+	UserIDs    []int64           `json:"userIDs,string,optional"` //指定用户ID
+	IsGlobal   int64             `json:"isGlobal"`                //全局消息
+	NotifyCode string            `json:"notifyCode"`              //通知的code
+	Subject    string            `json:"subject"`                 //通知主题
+	Body       string            `json:"body"`
+	NotifyTime int64             `json:"notifyTime,optional"` //通知时间,不填立刻发送
+	Str1       string            `json:"str1,optional"`
+	Str2       string            `json:"str2,optional"`
+	Str3       string            `json:"str3,optional"`
+	WithTypes  []string          `json:"withTypes,optional"` // 同时推送指定渠道
+	Params     map[string]string `json:"params,optional"`    // 模板变量
 }
 
 type ModuleInfo struct {
@@ -769,6 +771,15 @@ type NotifyConfig struct {
 	Desc         string            `json:"desc,optional"`         // 备注
 	IsRecord     int64             `json:"isRecord,optional"`     //是否记录该消息,是的情况下会将消息存一份到消息中心
 	Params       map[string]string `json:"params,optional"`       //变量属性 key是变量参数,value是变量描述
+}
+
+type NotifyConfigTestSendReq struct {
+	NotifyCode string            `json:"notifyCode"`            // 通知配置 code
+	Type       string            `json:"type"`                  // 通道类型
+	UserIDs    []int64           `json:"userIDs,string,optional"`
+	Accounts   []string          `json:"accounts,optional"`
+	Params     map[string]string `json:"params,optional"`
+	TemplateID int64             `json:"templateID,optional"`
 }
 
 type NotifyConfigIndexReq struct {
@@ -1971,8 +1982,8 @@ type UserSelfAppReadReq struct {
 }
 
 type UserSelfAppReadResp struct {
-	Code        string   `json:"code"`                 // 应用编号
-	Name        string   `json:"name,optional"`        // 名称
+	Code                   string   `json:"code"`                             // 应用编号
+	Name                   string   `json:"name,optional"`                    // 名称
 	Config      string   `json:"config,optional"`      // 自定义配置json
 	TenantCodes []string `json:"tenantCodes,optional"` //拥有这个app的租户列表
 }

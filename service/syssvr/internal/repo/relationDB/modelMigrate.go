@@ -205,9 +205,9 @@ var (
 		{Group: "验证码", Code: "sysUserRegisterCaptcha", Name: "用户注册验证码", SupportTypes: []def.NotifyType{"sms", "email"}, IsRecord: def.False, Params: map[string]string{"code": "验证码", "expr": "过期时间(单位秒,显示分钟)"}},
 		{Group: "验证码", Code: "sysUserLoginCaptcha", Name: "用户登录验证码", SupportTypes: []def.NotifyType{"sms", "email"}, IsRecord: def.False, Params: map[string]string{"code": "验证码", "expr": "过期时间(单位秒,显示分钟)"}},
 		{Group: "验证码", Code: "sysUserChangePwdCaptcha", Name: "用户修改密码", SupportTypes: []def.NotifyType{"sms", "email"}, IsRecord: def.False, Params: map[string]string{"code": "验证码", "expr": "过期时间(单位秒,显示分钟)"}},
-		{Group: "场景联动通知", Code: "ruleScene", Name: "场景联动通知", SupportTypes: []def.NotifyType{"message", "sms", "email", "phoneCall", "dingWebhook", "wxEWebHook", "wxMini", "dingTalk", "dingMini"}, EnableTypes: []def.NotifyType{"message"}, IsRecord: def.True, Params: map[string]string{"body": "内容", "title": "标题"}},
-		{Group: "设备", Code: "ruleDeviceAlarm", Name: "设备告警通知", SupportTypes: []def.NotifyType{"sms", "email", "dingWebhook"}, IsRecord: def.True, Params: map[string]string{"productID": "产品ID(若为设备触发)", "deviceName": "触发设备ID(若为设备触发)", "deviceAlias": "设备名称(若为设备触发)", "sceneName": "触发场景名称"}},
-		{Group: "系统公告", Code: "sysAnnouncement", Name: "系统公告", SupportTypes: []def.NotifyType{"sms", "email", "wxMini"}, IsRecord: def.True, Params: map[string]string{"body": "内容", "title": "标题"}},
+		{Group: "场景联动通知", Code: "ruleScene", Name: "场景联动通知", SupportTypes: []def.NotifyType{"message", "sms", "email", "phoneCall", "dingWebhook", "wxEWebHook", "dingTalk", "dingMini"}, EnableTypes: []def.NotifyType{"message"}, IsRecord: def.True, Params: map[string]string{"body": "内容", "title": "标题"}},
+		{Group: "设备", Code: "ruleDeviceAlarm", Name: "设备告警通知", SupportTypes: []def.NotifyType{"sms", "email", "dingWebhook", "wxEWebHook", "message", "phoneCall", "dingTalk"}, IsRecord: def.True, Params: map[string]string{"productID": "产品ID(若为设备触发)", "deviceName": "触发设备ID(若为设备触发)", "deviceAlias": "设备名称(若为设备触发)", "sceneName": "触发场景名称"}},
+		{Group: "系统公告", Code: "sysAnnouncement", Name: "系统公告", SupportTypes: []def.NotifyType{"sms", "email"}, IsRecord: def.True, Params: map[string]string{"body": "内容", "title": "标题"}},
 	}
 	// 场景联动站内信默认模板（notifyCode=ruleScene, type=message）
 	MigrateNotifyTemplate = []SysNotifyTemplate{
