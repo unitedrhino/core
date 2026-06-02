@@ -50,7 +50,7 @@ func (p NotifyTemplateRepo) Insert(ctx context.Context, data *SysNotifyTemplate)
 func (p NotifyTemplateRepo) FindOneByFilter(ctx context.Context, f NotifyTemplateFilter) (*SysNotifyTemplate, error) {
 	var result SysNotifyTemplate
 	db := p.fmtFilter(ctx, f)
-	err := db.First(&result).Error
+	err := db.Preload("Channel").Preload("Config").First(&result).Error
 	if err != nil {
 		return nil, stores.ErrFmt(err)
 	}
