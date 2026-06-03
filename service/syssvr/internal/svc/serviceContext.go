@@ -100,7 +100,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		logx.Errorf("NewFastEvent err cfg:%v err:%v", utils.Fmt(c.Event), err)
 		os.Exit(-1)
 	}
-	sms, err := smsClient.NewSms(c.Sms)
+	sms, err := smsClient.NewSmsFromConf(c.Sms)
 	logx.Must(err)
 
 	cl := CaptchaLimit{
