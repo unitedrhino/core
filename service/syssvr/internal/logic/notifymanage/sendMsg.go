@@ -6,6 +6,7 @@ import (
 	"strings"
 	"text/template"
 
+	"gitee.com/unitedrhino/core/service/syssvr/internal/defext"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/svc"
 	"gitee.com/unitedrhino/share/clients/dingClient"
@@ -103,6 +104,11 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 	if config == nil {
 		return errors.NotEnable.AddMsg("通知配置不存在")
 	}
+	if len(config.EnableTypes) > 0 && !utils.SliceIn(cfg.Type, config.EnableTypes...) {
+		return errors.NotEnable.AddMsg("通知类型未启用:" + string(cfg.Type))
+	}
+
+	triggerUser := enrichTriggerUserParams(ctx, cfg.Params)
 
 	if temp != nil {
 		subject = temp.Subject
@@ -137,25 +143,43 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			subject = config.Name
 		}
 	}
+	if triggerUser.Type != "" && cfg.NotifyCode == "ruleScene" {
+		if triggerUser.Type == triggerTypeDeviceButton && cfg.Type == defext.NotifyTypeSystemNotice {
+			// 系统推送：仅一行「触发了{动作}」，避免「手机号+的账号」与正文重复多行
+			body = FormatRuleSceneNotifyLine(triggerUser, body)
+		} else {
+			body = PrependRuleSceneTriggerLine(body, triggerUser)
+		}
+	}
 	var users []*relationDB.SysUserInfo
-	if config.IsRecord == def.True && !cfg.NoRecord { // 需要记录到消息中心中
+	var messageID int64
+	needRecord := config.IsRecord == def.True && !cfg.NoRecord
+	needUsers := needRecord || shouldSendAppPush(cfg, string(cfg.NotifyCode), svcCtx)
+	if needUsers && (len(cfg.UserIDs) != 0 || len(cfg.Accounts) != 0) {
 		users, err = relationDB.NewUserInfoRepo(ctx).FindUserCore(ctx, relationDB.UserInfoFilter{UserIDs: cfg.UserIDs, Accounts: cfg.Accounts})
 		if err != nil {
 			return err
 		}
+	}
+	if needRecord { // 需要记录到消息中心中
 		if len(users) != 0 {
+			miPo := relationDB.SysMessageInfo{
+				Group:              config.Group,
+				NotifyCode:         cfg.NotifyCode,
+				NotifyType:         string(cfg.Type),
+				Subject:            subject,
+				Body:               body,
+				Str1:               cfg.Str1,
+				Str2:               cfg.Str2,
+				Str3:               cfg.Str3,
+				TriggerUserID:      triggerUser.UserID,
+				TriggerUserNick:    triggerUser.Nick,
+				TriggerUserAccount: triggerUser.Account,
+				TriggerType:        triggerUser.Type,
+				IsDirectNotify:     def.True,
+			}
 			err = stores.GetTenantConn(ctx).Transaction(func(tx *gorm.DB) error {
 				mi := relationDB.NewMessageInfoRepo(tx)
-				miPo := relationDB.SysMessageInfo{
-					Group:          config.Group,
-					NotifyCode:     cfg.NotifyCode,
-					Subject:        subject,
-					Body:           body,
-					Str1:           cfg.Str1,
-					Str2:           cfg.Str2,
-					Str3:           cfg.Str3,
-					IsDirectNotify: def.True,
-				}
 				err := mi.Insert(ctx, &miPo)
 				if err != nil {
 					return err
@@ -174,6 +198,34 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			if err != nil {
 				return err
 			}
+			messageID = miPo.ID
+		}
+	}
+	if shouldSendAppPush(cfg, string(cfg.NotifyCode), svcCtx) {
+		// 合并 UserIDs 与 Accounts 解析出的用户（场景自动触发时常见：UserIDs=设备主人 + Accounts=创建者手机号）
+		pushUserIDs := make([]int64, 0, len(cfg.UserIDs)+len(users))
+		seenPushUID := map[int64]struct{}{}
+		addPushUID := func(uid int64) {
+			if uid <= 0 {
+				return
+			}
+			if _, ok := seenPushUID[uid]; ok {
+				return
+			}
+			seenPushUID[uid] = struct{}{}
+			pushUserIDs = append(pushUserIDs, uid)
+		}
+		for _, uid := range cfg.UserIDs {
+			addPushUID(uid)
+		}
+		for _, u := range users {
+			addPushUID(u.UserID)
+		}
+		if len(pushUserIDs) > 0 {
+			pushAppNotifyAsync(ctx, svcCtx, pushUserIDs, subject, body, string(cfg.NotifyCode), string(cfg.Type), messageID, cfg.Params)
+		} else if len(cfg.Accounts) > 0 || len(cfg.UserIDs) > 0 {
+			logx.WithContext(ctx).Slowf("unipush skip: no push target user resolved notifyCode=%s accounts=%v userIDs=%v",
+				cfg.NotifyCode, cfg.Accounts, cfg.UserIDs)
 		}
 	}
 	switch cfg.Type {
@@ -263,6 +315,9 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			logx.WithContext(ctx).Error(err)
 		}
 		return err
+	case defext.NotifyTypeSystemNotice:
+		// 系统推送：模板渲染完成后由 uni-push 旁路发送（可选 IsRecord 写消息中心）
+		return nil
 	}
 	return nil
 }

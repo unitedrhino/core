@@ -256,6 +256,7 @@ type (
 	UserMessageStatistics                 = sys.UserMessageStatistics
 	UserMessageStatisticsResp             = sys.UserMessageStatisticsResp
 	UserProfile                           = sys.UserProfile
+	UserPushClientReportReq               = sys.UserPushClientReportReq
 	UserProfileIndexReq                   = sys.UserProfileIndexReq
 	UserProfileIndexResp                  = sys.UserProfileIndexResp
 	UserRegisterReq                       = sys.UserRegisterReq
@@ -295,6 +296,7 @@ type (
 		UserMessageMultiIsRead(ctx context.Context, in *IDList, opts ...grpc.CallOption) (*Empty, error)
 		UserMessageIndex(ctx context.Context, in *UserMessageIndexReq, opts ...grpc.CallOption) (*UserMessageIndexResp, error)
 		UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error)
+		UserPushClientReport(ctx context.Context, in *UserPushClientReportReq, opts ...grpc.CallOption) (*Empty, error)
 		UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error)
 		UserProfileUpdate(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*Empty, error)
 		UserProfileIndex(ctx context.Context, in *UserProfileIndexReq, opts ...grpc.CallOption) (*UserProfileIndexResp, error)
@@ -539,6 +541,15 @@ func (m *defaultUserManage) UserMessageStatistics(ctx context.Context, in *Empty
 
 func (d *directUserManage) UserMessageStatistics(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserMessageStatisticsResp, error) {
 	return d.svr.UserMessageStatistics(ctx, in)
+}
+
+func (m *defaultUserManage) UserPushClientReport(ctx context.Context, in *UserPushClientReportReq, opts ...grpc.CallOption) (*Empty, error) {
+	client := sys.NewUserManageClient(m.cli.Conn())
+	return client.UserPushClientReport(ctx, in, opts...)
+}
+
+func (d *directUserManage) UserPushClientReport(ctx context.Context, in *UserPushClientReportReq, opts ...grpc.CallOption) (*Empty, error) {
+	return d.svr.UserPushClientReport(ctx, in)
 }
 
 func (m *defaultUserManage) UserProfileRead(ctx context.Context, in *WithCode, opts ...grpc.CallOption) (*UserProfile, error) {

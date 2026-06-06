@@ -61,6 +61,10 @@ service api {
 	@doc "用户消息统计"
 	@handler messageStatistics
 	post /message/statistics () returns (UserMessageStatisticsResp)
+
+	@doc "上报 uni-push 客户端 ID（platform=unbind 为解绑当前用户与本机 cid）"
+	@handler pushClientReport
+	post /push-client/report (UserPushClientReportReq) returns ()
 	@doc "用户消息列表"
 	@handler messageIndex
 	post /message/index (UserMessageIndexReq) returns (UserMessageIndexResp)
@@ -221,10 +225,20 @@ type (
 
 
 type (
+	UserPushClientReportReq {
+		PushClientId string `json:"pushClientId"`
+		Platform     string `json:"platform,options=android|ios|harmony|harmonyos|unbind"`
+		AppId        string `json:"appId,optional"`
+		AppVersion   string `json:"appVersion,optional"`
+	}
+)
+
+type (
 	UserMessageIndexReq {
 		Page *PageInfo `json:"page,optional"`
 		Group string `json:"group,optional"`
 		NotifyCode string `json:"notifyCode,optional"`
+		NotifyType string `json:"notifyType,optional"`
 		IsRead int64 `json:"isRead,optional"`
 		Str1 string `json:"str1,optional"`
 		Str2 string `json:"str2,optional"`
