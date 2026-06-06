@@ -127,11 +127,16 @@ type SysMessageInfo struct {
 	TenantCode     dataType.TenantCode `gorm:"column:tenant_code;index:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
 	Group          string              `gorm:"column:group;type:VARCHAR(50);"`                           //消息分类
 	NotifyCode     string              `gorm:"column:notify_code;type:VARCHAR(50);"`                     //对应的配置Code
+	NotifyType     string              `gorm:"column:notify_type;type:VARCHAR(50);default:''"`           //通知渠道 message/systemNotice 等
 	Subject        string              `gorm:"column:subject;type:VARCHAR(256);"`                        //消息主题
 	Body           string              `gorm:"column:body;type:text;"`                                   //消息内容
 	Str1           string              `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如产品id
 	Str2           string              `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如设备id
 	Str3           string              `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);"`
+	TriggerUserID      int64  `gorm:"column:trigger_user_id;type:BIGINT;default:0"`           // 场景等：手动触发用户 ID
+	TriggerUserNick    string `gorm:"column:trigger_user_nick;type:VARCHAR(60);default:''"` // 触发用户昵称
+	TriggerUserAccount string `gorm:"column:trigger_user_account;type:VARCHAR(255);default:''"`
+	TriggerType        string `gorm:"column:trigger_type;type:VARCHAR(20);default:''"` // manual | auto
 	IsGlobal       int64               `gorm:"column:is_global;index;type:bigint;default:2"`                //是否是全局消息,是的话所有用户都能看到
 	IsDirectNotify int64               `gorm:"column:is_direct_notify;index;type:bigint;default:2"`         //是否是发送通知消息创建
 	NotifyTime     time.Time           `gorm:"column:notify_time;index;autoCreateTime"` //通知时间

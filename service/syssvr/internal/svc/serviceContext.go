@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"gitee.com/unitedrhino/core/service/syssvr/internal/config"
+	"gitee.com/unitedrhino/core/service/syssvr/internal/pkg/unipush"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/cache"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -68,6 +69,7 @@ type ServiceContext struct {
 	DingStreamMapMutex sync.RWMutex
 	TimedM             timedmanage.TimedManage
 	NodeID             int64
+	UniPush            *unipush.Client
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -141,5 +143,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		NodeID:        nodeID,
 		TimedM:        timedJob,
 		DingStreamMap: make(map[string]*dingClient.StreamClient),
+		UniPush:       unipush.NewClient(c.UniPush),
 	}
 }

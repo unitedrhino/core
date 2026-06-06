@@ -2,6 +2,7 @@ package usermanagelogic
 
 import (
 	"context"
+	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/logic"
 	"gitee.com/unitedrhino/core/service/syssvr/internal/repo/relationDB"
 	"gitee.com/unitedrhino/share/caches"
@@ -34,7 +35,7 @@ func NewUserMessageIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*sys.UserMessageIndexResp, error) {
 	db := relationDB.NewUserMessageRepo(l.ctx)
-	err := UpdateMsg(l.ctx, in.NotifyCode, in.Group)
+	err := UpdateMsg(l.ctx, in.NotifyCode, in.Group, in.NotifyType)
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +43,7 @@ func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*
 		WithMessage: true,
 		Group:       in.Group,
 		NotifyCode:  in.NotifyCode,
+		NotifyType:  in.NotifyType,
 		CreatedTime: utils.Copy[def.TimeRange](in.CreatedTime),
 		IsRead:      in.IsRead,
 		Str1:        in.Str1,
@@ -59,7 +61,7 @@ func (l *UserMessageIndexLogic) UserMessageIndex(in *sys.UserMessageIndexReq) (*
 		Field: "createdTime",
 		Sort:  stores.OrderDesc,
 	}))
-	return &sys.UserMessageIndexResp{Total: total, List: utils.CopySlice[sys.UserMessage](pos)}, nil
+	return &sys.UserMessageIndexResp{Total: total, List: userMessagesToProto(pos)}, nil
 }
 func getUserLastReadGlobal(ctx context.Context) (time.Time, error) {
 	uc := ctxs.GetUserCtx(ctx)
@@ -74,7 +76,7 @@ func setUserLastReadGlobal(ctx context.Context, t time.Time) error {
 	return caches.GetStore().Hset("cache:sys:userLastReadGlobal", cast.ToString(uc.UserID), t.Format(time.RFC3339))
 }
 
-func UpdateMsg(ctx context.Context, NotifyCode string, Group string) error {
+func UpdateMsg(ctx context.Context, NotifyCode string, Group string, NotifyType string) error {
 	ll, err := getUserLastReadGlobal(ctx)
 	if err != nil {
 		ll = time.Time{}
@@ -82,6 +84,7 @@ func UpdateMsg(ctx context.Context, NotifyCode string, Group string) error {
 	mis, err := relationDB.NewMessageInfoRepo(ctx).FindByFilter(ctx, relationDB.MessageInfoFilter{
 		Group:      Group,
 		NotifyCode: NotifyCode,
+		NotifyType: NotifyType,
 		IsGlobal:   def.True,
 		NotifyTime: stores.CmpGte(ll),
 	}, nil)
@@ -89,13 +92,15 @@ func UpdateMsg(ctx context.Context, NotifyCode string, Group string) error {
 		return err
 	}
 	if len(mis) != 0 {
+		uc := ctxs.GetUserCtxNoNil(ctx)
 		var users []*relationDB.SysUserMessage
 		for _, v := range mis {
 			users = append(users, &relationDB.SysUserMessage{
-				UserID:    ctxs.GetUserCtx(ctx).UserID,
-				Group:     v.Group,
-				MessageID: v.ID,
-				IsRead:    def.False,
+				TenantCode: dataType.TenantCode(uc.TenantCode),
+				UserID:     uc.UserID,
+				Group:      v.Group,
+				MessageID:  v.ID,
+				IsRead:     def.False,
 			})
 		}
 		err = relationDB.NewUserMessageRepo(ctx).MultiInsert(ctx, users)

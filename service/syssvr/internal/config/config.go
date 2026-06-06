@@ -55,6 +55,20 @@ type Config struct {
 	LoginPwdAccountLimit []conf.Limit `json:",optional"` //密码错误限制
 	LoginPwdCaptchaLimit []conf.Limit `json:",optional"` //密码输入几次就要求输入验证码
 
+	UniPush UniPushConf `json:",optional"`
+}
+
+// UniPushConf uni-push 2.0（方案 A：HTTP 调 uniCloud yk-push-send）
+// 配置方式同 ThirdJwtSecret：优先 sys.yaml 的 Secret，可选 env=YK_PUSH_HTTP_SECRET 覆盖。
+type UniPushConf struct {
+	Enabled           bool     `json:",default=false,env=UNIPUSH_ENABLED"`
+	AppId             string   `json:",default=__UNI__F82AD01"`
+	HttpUrl           string   `json:",optional"`
+	Secret            string   `json:",optional,env=YK_PUSH_HTTP_SECRET"`
+	TimeoutMs         int      `json:",default=5000"`
+	ForceNotification bool     `json:",default=true"`
+	NotifyCodes       []string `json:",optional"`     // 白名单 notifyCode，空则用 ruleDeviceAlarm、ruleScene
+	PushOnMessage     bool     `json:",default=true"` // 兼容：type=message 时是否旁路 uni-push（新配置请用 systemNotice）
 }
 
 type Weather struct {

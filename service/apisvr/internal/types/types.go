@@ -644,10 +644,18 @@ type MenuMultiImportResp struct {
 	SuccCount   int64 `json:"succCount"`   //成功数
 }
 
+type MessageTriggerUser struct {
+	UserId      int64  `json:"userId,string,optional"`
+	NickName    string `json:"nickName,optional"`
+	Account     string `json:"account,optional"`
+	TriggerType string `json:"triggerType,optional"` // manual | auto
+}
+
 type MessageInfo struct {
 	ID          int64  `json:"id"`
 	Group       string `json:"group"` //分组
 	NotifyCode  string `json:"notifyCode"`
+	NotifyType  string `json:"notifyType,optional"`
 	NotifyName  string `json:"notifyName,optional"` //通知的名称,只读
 	Subject     string `json:"subject"`             //主题
 	Body        string `json:"body"`                //内容
@@ -657,6 +665,7 @@ type MessageInfo struct {
 	IsGlobal    int64  `json:"isGlobal"`
 	NotifyTime  int64  `json:"notifyTime"` //通知时间
 	CreatedTime int64  `json:"createdTime"`
+	TriggerUser *MessageTriggerUser `json:"triggerUser,optional"`
 }
 
 type MessageInfoIndexReq struct {
@@ -1884,6 +1893,7 @@ type UserMessageIndexReq struct {
 	Page        *PageInfo  `json:"page,optional"`
 	Group       string     `json:"group,optional"`
 	NotifyCode  string     `json:"notifyCode,optional"`
+	NotifyType  string     `json:"notifyType,optional"`
 	IsRead      int64      `json:"isRead,optional"`
 	Str1        string     `json:"str1,optional"`
 	Str2        string     `json:"str2,optional"`
@@ -1907,6 +1917,13 @@ type UserMessageStatisticsResp struct {
 
 type UserModuleIndexReq struct {
 	WithMenus bool `json:"withMenus,optional"` //同时返回模块下的菜单列表
+}
+
+type UserPushClientReportReq struct {
+	PushClientId string `json:"pushClientId"`
+	Platform     string `json:"platform,options=android|ios|harmony|harmonyos|unbind"`
+	AppId        string `json:"appId,optional"`
+	AppVersion   string `json:"appVersion,optional"`
 }
 
 type UserProfile struct {

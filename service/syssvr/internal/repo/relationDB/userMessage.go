@@ -31,6 +31,7 @@ type UserMessageFilter struct {
 	WithMessage bool
 	Group       string
 	NotifyCode  string
+	NotifyType  string
 	CreatedTime *def.TimeRange
 	IsRead      int64
 	Str1        string
@@ -38,10 +39,14 @@ type UserMessageFilter struct {
 	Str3        string
 }
 
+func userMessageNeedsMessageInfoFilter(f UserMessageFilter) bool {
+	return f.NotifyCode != "" || f.NotifyType != "" || f.Str1 != "" || f.Str2 != "" || f.Str3 != ""
+}
+
 func (p UserMessageRepo) fmtFilter(ctx context.Context, f UserMessageFilter) *gorm.DB {
 	db := p.db.WithContext(ctx)
 	if f.MessageID != 0 {
-		db = db.Where("message_id=?", f.MessageID)
+		db = db.Where("message_id = ?", f.MessageID)
 	}
 	if f.CreatedTime != nil {
 		if f.CreatedTime.Start != 0 {
@@ -54,27 +59,40 @@ func (p UserMessageRepo) fmtFilter(ctx context.Context, f UserMessageFilter) *go
 	if f.Group != "" {
 		db = db.Where(fmt.Sprintf("%s = ?", stores.Col("group")), f.Group)
 	}
-	db = db.Where("user_id=?", ctxs.GetUserCtxNoNil(ctx).UserID)
-	if f.NotifyCode != "" {
-		db = db.Where("notify_code = ?", f.NotifyCode)
+	db = db.Where("user_id = ?", ctxs.GetUserCtxNoNil(ctx).UserID)
+	if userMessageNeedsMessageInfoFilter(f) {
+		db = db.Where("message_id IN (?)", p.messageInfoIDSubquery(ctx, f))
 	}
 	if f.IsRead != 0 {
 		db = db.Where("is_read = ?", f.IsRead)
-	}
-	if f.Str1 != "" {
-		db = db.Where("str1 = ?", f.Str1)
-	}
-	if f.Str2 != "" {
-		db = db.Where("str2 = ?", f.Str2)
-	}
-	if f.Str3 != "" {
-		db = db.Where("str3 = ?", f.Str3)
 	}
 
 	if f.WithMessage {
 		db = db.Preload("Message")
 	}
 	return db
+}
+
+// messageInfoIDSubquery 按消息体字段筛选，避免 JOIN 导致 COUNT/ORDER 列歧义。
+func (p UserMessageRepo) messageInfoIDSubquery(ctx context.Context, f UserMessageFilter) *gorm.DB {
+	mi := (&SysMessageInfo{}).TableName()
+	sq := p.db.WithContext(ctx).Table(mi).Select("id").Where(mi + ".deleted_time = 0")
+	if f.NotifyCode != "" {
+		sq = sq.Where(mi+".notify_code = ?", f.NotifyCode)
+	}
+	if f.NotifyType != "" {
+		sq = applyMessageInfoNotifyTypeWhere(sq, f.NotifyType, mi+".notify_type")
+	}
+	if f.Str1 != "" {
+		sq = sq.Where(mi+".str1 = ?", f.Str1)
+	}
+	if f.Str2 != "" {
+		sq = sq.Where(mi+".str2 = ?", f.Str2)
+	}
+	if f.Str3 != "" {
+		sq = sq.Where(mi+".str3 = ?", f.Str3)
+	}
+	return sq
 }
 
 func (p UserMessageRepo) Insert(ctx context.Context, data *SysUserMessage) error {
