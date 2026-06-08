@@ -38,7 +38,7 @@ type SysApiInfo struct {
 	//AuthType     int64  `gorm:"column:is_auth_tenant;type:BIGINT;default:1;NOT NULL"`      // 1(all) 全部人可以操作 2(admin) 默认授予租户管理员权限 3(superAdmin,supper) default租户才可以操作(超管是跨租户的)
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_api_info_route"`
-	Access      *SysAccessInfo     `gorm:"foreignKey:Code;references:AccessCode"`
+	Access      *SysAccessInfo     `gorm:"foreignKey:AccessCode;references:Code"`
 }
 
 func (m *SysApiInfo) TableName() string {
