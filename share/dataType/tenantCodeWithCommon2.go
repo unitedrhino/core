@@ -116,7 +116,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 				if string(vv) == uc.TenantCode {
 					continue
 				}
-				if vv == def.TenantCodeCommon {
+				if vv == def.TenantCodeDefault {
 					if uc.IsRoot() {
 						continue
 					}
@@ -137,7 +137,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 		if string(vv) == uc.TenantCode {
 			return
 		}
-		if vv == def.TenantCodeCommon {
+		if vv == def.TenantCodeDefault {
 			if uc.IsRoot() {
 				return
 			}
@@ -163,7 +163,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 			}
 			values := []any{uc.TenantCode}
 			if uc.IsRoot() {
-				values = append(values, def.TenantCodeCommon)
+				values = append(values, def.TenantCodeDefault)
 			}
 			stmt.AddClause(clause.Where{Exprs: []clause.Expression{
 				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},
@@ -189,7 +189,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 			}
 			values := []any{uc.TenantCode}
 			if uc.IsRoot() {
-				values = append(values, def.TenantCodeCommon)
+				values = append(values, def.TenantCodeDefault)
 			}
 			stmt.AddClause(clause.Where{Exprs: []clause.Expression{
 				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},
