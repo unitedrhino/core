@@ -58,7 +58,7 @@ type SysNotifyTemplate struct {
 	TemplateCode string              `gorm:"column:code;type:VARCHAR(50);NOT NULL"`                // 短信通知模版编码
 	SignName     string              `gorm:"column:sign_name;type:VARCHAR(50);default:''"`         //签名(短信)
 	Subject      string              `gorm:"column:subject;type:VARCHAR(256);NOT NULL"`            //默认消息主题
-	Body         string              `gorm:"column:body;type:VARCHAR(512);default:''"`             //默认模版内容
+	Body         string              `gorm:"column:body;type:VARCHAR(2048);default:''"`            //默认模版内容
 	Desc         string              `gorm:"column:desc;type:varchar(100)"`                        // 备注
 	ChannelID    int64               `gorm:"column:channel_id;type:BIGINT;"`
 	Channel      *SysNotifyChannel   `gorm:"foreignKey:ID;references:ChannelID"`

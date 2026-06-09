@@ -11,6 +11,8 @@ RUN cd front&&ls -l
 RUN cd front&&rm -rf front.tgz
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 ENV GOPRIVATE=*.gitee.com,gitee.com/*
+ENV GONOSUMCHECK=*
+ENV GONOSUMDB=*
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 RUN apk add git
 RUN go mod download
