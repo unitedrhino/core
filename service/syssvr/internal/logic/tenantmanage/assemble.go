@@ -11,6 +11,9 @@ import (
 )
 
 func ToTenantConfigPb(ctx context.Context, svcCtx *svc.ServiceContext, po *relationDB.SysTenantConfig) *sys.TenantConfig {
+	if po == nil {
+		return nil
+	}
 	for _, p := range po.RegisterAutoCreateProject {
 		for _, a := range p.Areas {
 			if a.AreaImg != "" {
