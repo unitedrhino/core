@@ -41,6 +41,12 @@ cmd/run/
 cmd/logs/
 cmd/.local/
 *.local.env
+service/apisvr/etc/sys.unipush.local.yaml
+service/apisvr/etc/sys.unipush.local.yml
+service/syssvr/etc/sys.unipush.local.yaml
+service/syssvr/etc/sys.unipush.local.yml
+cmd/etc/sys.unipush.local.yaml
+cmd/etc/sys.unipush.local.yml
 service/apisvr/apisvr*
 service/dcsvr/dcsvr*
 service/ddsvr/ddsvr*
@@ -77,3 +83,22 @@ service/apisvr/coresvr
 *.debug.yaml
 service/apisvr/__debug*
 tmpclaude*
+
+### Node (scripts 本地依赖，如 ssh2) ###
+node_modules/
+package-lock.json
+
+### 打包产物 ###
+*.tar.gz
+*-dist.tar.gz
+
+### 本地/一次性诊断脚本（勿提交） ###
+scripts/_diag-*.mjs
+scripts/diag-push-phone-*.mjs
+
+### IDE / AI 本地配置 ###
+.claude/
+
+### protoc 误生成到 pb 根目录（正本在 service/syssvr/pb/sys/） ###
+service/syssvr/pb/sys.pb.go
+service/syssvr/pb/sys_grpc.pb.go

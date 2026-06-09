@@ -43,6 +43,8 @@ type (
       Str1 string `json:"str1,optional"`
       Str2 string `json:"str2,optional"`
       Str3 string `json:"str3,optional"`
+      WithTypes []string `json:"withTypes,optional"` // 同时推送指定渠道 wxMini/message 等
+      Params map[string]string `json:"params,optional"` // 模板变量
     }
 
     MessageInfoIndexReq  {

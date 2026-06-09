@@ -25,6 +25,7 @@ func NewMessageInfoRepo(in any) *MessageInfoRepo {
 
 type MessageInfoFilter struct {
 	NotifyCode       string
+	NotifyType       string
 	Group            string
 	IsGlobal         int64
 	IsDirectNotify   int64 //是否是发送通知消息创建
@@ -43,6 +44,9 @@ func (p MessageInfoRepo) fmtFilter(ctx context.Context, f MessageInfoFilter) *go
 	}
 	if f.NotifyCode != "" {
 		db = db.Where("notify_code=?", f.NotifyCode)
+	}
+	if f.NotifyType != "" {
+		db = applyMessageInfoNotifyTypeWhere(db, f.NotifyType)
 	}
 	if f.IsGlobal != 0 {
 		db = db.Where("is_global=?", f.IsGlobal)

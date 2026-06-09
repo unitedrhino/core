@@ -939,6 +939,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/update",
 					Handler: systemnotifyconfig.UpdateHandler(serverCtx),
 				},
+				{
+					// 测试下发通知
+					Method:  http.MethodPost,
+					Path:    "/test/send",
+					Handler: systemnotifyconfig.TestSendHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api/v1/system/notify/config"),
@@ -1850,6 +1856,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/message/statistics",
 					Handler: systemuserself.MessageStatisticsHandler(serverCtx),
+				},
+				{
+					// 上报 uni-push 客户端 ID
+					Method:  http.MethodPost,
+					Path:    "/push-client/report",
+					Handler: systemuserself.PushClientReportHandler(serverCtx),
 				},
 				{
 					// 获取用户模块列表

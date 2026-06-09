@@ -63,9 +63,6 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		}
 		ui.Phone = utils.AnyToNullString(in.Account)
 	case users.RegWxMiniP:
-		if ui.WechatUnionID.Valid || ui.WechatOpenID.Valid {
-			return &sys.Empty{}, errors.BindAccount
-		}
 		if cli.MiniProgram == nil {
 			return nil, errors.System.AddDetail(er)
 		}
@@ -77,6 +74,7 @@ func (l *UserBindAccountLogic) UserBindAccount(in *sys.UserBindAccountReq) (*sys
 		if ret.ErrCode != 0 {
 			return nil, errors.Parameter.AddMsgf(ret.ErrMsg)
 		}
+		// 始终写入小程序 openid（覆盖 APP wxOpen 等残留）
 		if ret.UnionID != "" {
 			ui.WechatUnionID = sql.NullString{String: ret.UnionID, Valid: true}
 		}

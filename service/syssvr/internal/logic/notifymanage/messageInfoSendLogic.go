@@ -41,6 +41,7 @@ func (l *MessageInfoSendLogic) MessageInfoSend(in *sys.MessageInfoSendReq) (*sys
 	po := relationDB.SysMessageInfo{
 		Group:      ni.Group,
 		NotifyCode: ni.Code,
+		NotifyType: string(def.NotifyTypeMessage),
 		Subject:    in.Subject,
 		Body:       in.Body,
 		Str1:       in.Str1,

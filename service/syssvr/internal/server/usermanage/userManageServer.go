@@ -143,6 +143,11 @@ func (s *UserManageServer) UserMessageStatistics(ctx context.Context, in *sys.Em
 	return l.UserMessageStatistics(in)
 }
 
+func (s *UserManageServer) UserPushClientReport(ctx context.Context, in *sys.UserPushClientReportReq) (*sys.Empty, error) {
+	l := usermanagelogic.NewUserPushClientReportLogic(ctx, s.svcCtx)
+	return l.UserPushClientReport(in)
+}
+
 func (s *UserManageServer) UserProfileRead(ctx context.Context, in *sys.WithCode) (*sys.UserProfile, error) {
 	l := usermanagelogic.NewUserProfileReadLogic(ctx, s.svcCtx)
 	return l.UserProfileRead(in)

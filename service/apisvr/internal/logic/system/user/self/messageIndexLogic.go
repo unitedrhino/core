@@ -35,6 +35,9 @@ func (l *MessageIndexLogic) MessageIndex(req *types.UserMessageIndexReq) (resp *
 	for _, v := range ret.List {
 		val := utils.Copy[types.UserMessage](v)
 		val.MessageInfo = utils.Copy[types.MessageInfo](v.Message)
+		if v.Message != nil && v.Message.TriggerUser != nil {
+			val.MessageInfo.TriggerUser = utils.Copy[types.MessageTriggerUser](v.Message.TriggerUser)
+		}
 		list = append(list, val)
 	}
 	return &types.UserMessageIndexResp{

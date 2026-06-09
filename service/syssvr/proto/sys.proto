@@ -35,6 +35,7 @@ service UserManage {
   rpc userMessageMultiIsRead(IDList)returns(Empty);//用户消息批量已读
   rpc userMessageIndex(UserMessageIndexReq)returns(UserMessageIndexResp);//获取用户消息
   rpc userMessageStatistics(Empty)returns(UserMessageStatisticsResp);
+  rpc userPushClientReport(UserPushClientReportReq)returns(Empty);
   rpc userProfileRead(WithCode)returns(UserProfile);
   rpc userProfileUpdate(UserProfile)returns(Empty);
   rpc userProfileIndex(UserProfileIndexReq)returns(UserProfileIndexResp);
@@ -510,10 +511,18 @@ message MessageInfoSendReq{
   int64 NotifyTime = 11;//通知时间,不传为立刻通知
 }
 
+message MessageTriggerUser {
+  int64 userId = 1;
+  string nickName = 2;
+  string account = 3;
+  string triggerType = 4; // manual | auto
+}
+
 message MessageInfo {
   int64 id=10;
   string group =1;
   string notifyCode =2;
+  string notifyType =14; // 通知渠道：message / systemNotice 等
   string notifyName =12;
   string subject=3;
   string body=4;
@@ -523,6 +532,7 @@ message MessageInfo {
   int64 isGlobal =8;
   int64 createdTime=9;
   int64 notifyTime = 11;//通知时间,不传为立刻通知
+  MessageTriggerUser triggerUser = 13;
 }
 
 
@@ -638,6 +648,13 @@ message UserDataAreaIndexResp {
 
 
 
+message UserPushClientReportReq{
+  string pushClientId = 1;
+  string platform = 2;
+  string appId = 3;
+  string appVersion = 4;
+}
+
 message UserProfile{
   string code =1;
   string params =2;
@@ -676,6 +693,7 @@ message UserMessageIndexReq{
   string str2        =6;
   string str3        =7;
   TimeRange createdTime = 8;//
+  string notifyType =9; // 按通知渠道筛选 message / systemNotice
 }
 
 

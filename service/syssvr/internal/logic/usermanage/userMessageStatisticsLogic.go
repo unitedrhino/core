@@ -26,7 +26,7 @@ func NewUserMessageStatisticsLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *UserMessageStatisticsLogic) UserMessageStatistics(in *sys.Empty) (*sys.UserMessageStatisticsResp, error) {
-	err := UpdateMsg(l.ctx, "", "")
+	err := UpdateMsg(l.ctx, "", "", "")
 	if err != nil {
 		return nil, err
 	}

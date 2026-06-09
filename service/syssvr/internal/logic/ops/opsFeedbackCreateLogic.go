@@ -65,7 +65,6 @@ func (l *OpsFeedbackCreateLogic) OpsFeedbackCreate(in *sys.OpsFeedback) (*sys.Wi
 					def.NotifyTypeEmail,
 					def.NotifyTypeDingTalk,
 					def.NotifyTypeDingWebhook,
-					def.NotifyTypeWxMini,
 					def.NotifyTypeWxEWebhook,
 					def.NotifyTypeWxApp,
 				},

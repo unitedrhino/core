@@ -35,15 +35,8 @@ Write-Host ">> 上传到 ${DeployHost}:${DeployPath} ..."
 & scp -r ./cmd/etc "${DeployHost}:${DeployPath}/"
 
 Write-Host ">> 重启 apisvr ..."
-& ssh $DeployHost @"
-cd $DeployPath
-chmod +x coresvr
-pkill -f './coresvr' 2>/dev/null || pkill -f 'apisvr' 2>/dev/null || true
-sleep 1
-setsid ./coresvr > /tmp/coresvr.log 2>&1 &
-sleep 2
-pgrep -af coresvr || pgrep -af apisvr
-"@
+$remoteCmd = "cd $DeployPath && chmod +x coresvr && pkill -f './coresvr' 2>/dev/null || pkill -f 'apisvr' 2>/dev/null || true && sleep 1 && setsid ./coresvr > /tmp/coresvr.log 2>&1 & sleep 2 && pgrep -af coresvr || pgrep -af apisvr"
+& ssh $DeployHost $remoteCmd
 
 Write-Host ">> 完成。验证 Apple 登录枚举:"
 Write-Host 'Invoke-RestMethod -Uri "https://new.ykhl.vip/api/v1/system/user/self/login" -Method Post -ContentType "application/json" -Body ''{"loginType":"apple","code":"test"}'''
