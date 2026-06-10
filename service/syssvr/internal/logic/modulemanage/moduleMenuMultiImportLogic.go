@@ -129,10 +129,11 @@ func (l *ModuleMenuMultiImportLogic) menuImport(ModuleCode string, Mode int64, d
 			if err != nil {
 				return err
 			}
-			err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppMenuFilter{ModuleCode: ModuleCode})
-			if err != nil {
-				return err
-			}
+			// 不再删除租户菜单，避免其他租户的菜单数据丢失
+			// err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppMenuFilter{ModuleCode: ModuleCode})
+			// if err != nil {
+			// 	return err
+			// }
 		}
 		err := l.Handle(tx, ModuleCode, Mode, def.RootNode, dos)
 		if err != nil {
