@@ -116,7 +116,7 @@ func (sd TenantCodeWitCommonClause) ModifyStatement(stmt *gorm.Statement) { //æŸ
 				if string(vv) == uc.TenantCode {
 					continue
 				}
-				if vv == def.TenantCodeDefault || vv == def.TenantCodeCommon {
+				if vv == def.TenantCodeDefault {
 					if uc.IsRoot() {
 						continue
 					}
@@ -137,7 +137,7 @@ func (sd TenantCodeWitCommonClause) ModifyStatement(stmt *gorm.Statement) { //æŸ
 		if string(vv) == uc.TenantCode {
 			return
 		}
-		if vv == def.TenantCodeDefault || vv == def.TenantCodeCommon {
+		if vv == def.TenantCodeDefault {
 			if uc.IsRoot() {
 				return
 			}
