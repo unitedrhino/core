@@ -110,7 +110,15 @@ func GenLoginResp(ctx context.Context, svcCtx *svc.ServiceContext, deviceID stri
 			RefreshAfter: now.Unix() + accessExpire/2,
 		},
 	}
-	tc, err := svcCtx.TenantConfigCache.GetData(ctx, string(ui.TenantCode))
+	// 登录前 ctx 可能为 platform 等租户，与 ui.TenantCode 不一致会导致租户配置查询 tenant_code 条件冲突
+	tenantCode := string(ui.TenantCode)
+	if tenantCode == def.TenantCodePlateform {
+		tenantCode = def.TenantCodeDefault
+	}
+	origTenantCode := uc.TenantCode
+	uc.TenantCode = tenantCode
+	defer func() { uc.TenantCode = origTenantCode }()
+	tc, err := svcCtx.TenantConfigCache.GetData(ctx, tenantCode)
 	if err != nil {
 		logx.WithContext(ctx).Errorf("%s  err=%s", utils.FuncName(), err.Error())
 		return nil, err

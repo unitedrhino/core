@@ -239,6 +239,8 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			}
 		}
 		if len(accounts) == 0 {
+			logx.WithContext(ctx).Slowf("sms skip: no phone accounts notifyCode=%s userIDs=%v accounts=%v",
+				cfg.NotifyCode, cfg.UserIDs, cfg.Accounts)
 			return nil
 		}
 		err = svcCtx.Sms.SendSms(ctx, smsClient.SendSmsParam{

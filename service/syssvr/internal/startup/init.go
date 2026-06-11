@@ -212,10 +212,25 @@ func InitCache(svcCtx *svc.ServiceContext) {
 				if key == "" {
 					key = ctxs.GetUserCtxNoNil(ctx).TenantCode
 				}
-				pi, err := db.FindOneByFilter(ctx, relationDB.TenantInfoFilter{
-					Codes: []string{key}})
-				pb := logic.ToTenantInfoCache(pi)
-				return pb, err
+				rootCtx := ctxs.WithRoot(ctx)
+				uc := ctxs.GetUserCtxNoNil(rootCtx)
+				uc.IsSuperAdmin = true
+				if key == "" {
+					key = uc.TenantCode
+				}
+				origTenantCode := uc.TenantCode
+				uc.TenantCode = key
+				defer func() { uc.TenantCode = origTenantCode }()
+				lookupKey := key
+				if lookupKey == def.TenantCodePlateform {
+					lookupKey = def.TenantCodeDefault
+				}
+				pi, err := db.FindOneByFilter(rootCtx, relationDB.TenantInfoFilter{
+					Codes: []string{lookupKey}})
+				if err != nil {
+					return nil, err
+				}
+				return logic.ToTenantInfoCache(pi), nil
 			},
 			ExpireTime: 20 * time.Minute,
 		})
@@ -231,10 +246,22 @@ func InitCache(svcCtx *svc.ServiceContext) {
 				if key == "" {
 					key = ctxs.GetUserCtxNoNil(ctx).TenantCode
 				}
-				pi, err := db.FindOneByFilter(ctx, relationDB.TenantConfigFilter{
-					TenantCode: key})
-				pb := tenantmanagelogic.ToTenantConfigPb(ctx, svcCtx, pi)
-				return pb, err
+				rootCtx := ctxs.WithRoot(ctx)
+				uc := ctxs.GetUserCtxNoNil(rootCtx)
+				uc.IsSuperAdmin = true
+				lookupKey := key
+				if lookupKey == def.TenantCodePlateform {
+					lookupKey = def.TenantCodeDefault
+				}
+				origTenantCode := uc.TenantCode
+				uc.TenantCode = lookupKey
+				defer func() { uc.TenantCode = origTenantCode }()
+				pi, err := db.FindOneByFilter(rootCtx, relationDB.TenantConfigFilter{
+					TenantCode: lookupKey})
+				if err != nil {
+					return nil, err
+				}
+				return tenantmanagelogic.ToTenantConfigPb(ctx, svcCtx, pi), nil
 			},
 			ExpireTime: 20 * time.Minute,
 		})
@@ -246,13 +273,21 @@ func InitCache(svcCtx *svc.ServiceContext) {
 			KeyType:   topics.ServerCacheKeySysUserInfo,
 			FastEvent: svcCtx.FastEvent,
 			GetData: func(ctx context.Context, key int64) (*sys.UserInfo, error) {
-				db := relationDB.NewUserInfoRepo(ctx)
+				rootCtx := ctxs.WithRoot(ctx)
+				ctxs.GetUserCtxNoNil(rootCtx).IsSuperAdmin = true
+				db := relationDB.NewUserInfoRepo(rootCtx)
 				if key == 0 {
 					key = ctxs.GetUserCtxNoNil(ctx).UserID
 				}
-				pi, err := db.FindOne(ctx, key)
-				pb := usermanagelogic.UserInfoToPb(ctx, pi, svcCtx)
-				return pb, err
+				pi, err := db.FindOne(rootCtx, key)
+				if err != nil {
+					return nil, err
+				}
+				pb := usermanagelogic.UserInfoToPb(rootCtx, pi, svcCtx)
+				if pb.TenantCode == "" {
+					pb.TenantCode = string(pi.TenantCode)
+				}
+				return pb, nil
 			},
 			ExpireTime: 20 * time.Minute,
 		})
