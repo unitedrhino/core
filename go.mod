@@ -3,7 +3,7 @@ module gitee.com/unitedrhino/core
 go 1.25.4
 
 require (
-	gitee.com/unitedrhino/share v1.5.76
+	gitee.com/unitedrhino/share v1.5.83
 	gitee.com/unitedrhino/squirrel v1.20.7
 	github.com/alibabacloud-go/tea v1.3.14
 	github.com/dgraph-io/ristretto v0.1.1
@@ -12,6 +12,7 @@ require (
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/golang/protobuf v1.5.4
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/hibiken/asynq v0.25.1
 	github.com/maypok86/otter v1.2.4
@@ -110,7 +111,6 @@ require (
 	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20250403155104-27863c87afa6 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/grafana/pyroscope-go v1.2.7 // indirect
 	github.com/grafana/pyroscope-go/godeltaprof v0.1.9 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2 // indirect

@@ -91,6 +91,12 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		channel = c.Channel
 		config = c.Config
 	}
+	if channel == nil && temp != nil && temp.ChannelID != 0 {
+		channel, err = relationDB.NewNotifyChannelRepo(ctx).FindOne(ctx, temp.ChannelID)
+		if err != nil {
+			return err
+		}
+	}
 
 	// 模板 Preload Config 关联偶发为空，按 notifyCode 兜底加载，避免 config 空指针。
 	if config == nil && temp != nil && temp.NotifyCode != "" {
@@ -304,14 +310,11 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if len(accounts) == 0 {
 			return nil
 		}
-		err = utils.SendEmail(conf.Email{
-			From:     temp.Channel.Email.From,
-			Host:     temp.Channel.Email.Host,
-			Secret:   temp.Channel.Email.Secret,
-			Nickname: temp.Channel.Email.Nickname,
-			Port:     temp.Channel.Email.Port,
-			IsSSL:    temp.Channel.Email.IsSSL == def.True,
-		}, accounts, subject,
+		emailConf, err := emailConfigFromChannel(channel)
+		if err != nil {
+			return err
+		}
+		err = utils.SendEmail(emailConf, accounts, subject,
 			body)
 		if err != nil {
 			logx.WithContext(ctx).Error(err)
@@ -322,4 +325,18 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		return nil
 	}
 	return nil
+}
+
+func emailConfigFromChannel(channel *relationDB.SysNotifyChannel) (conf.Email, error) {
+	if channel == nil || channel.Email == nil {
+		return conf.Email{}, errors.NotEnable.AddMsg("通道没有配置")
+	}
+	return conf.Email{
+		From:     channel.Email.From,
+		Host:     channel.Email.Host,
+		Secret:   channel.Email.Secret,
+		Nickname: channel.Email.Nickname,
+		Port:     channel.Email.Port,
+		IsSSL:    channel.Email.IsSSL == def.True,
+	}, nil
 }

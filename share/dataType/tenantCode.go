@@ -150,7 +150,7 @@ func (sd TenantCodeClause) ModifyStatement(stmt *gorm.Statement) { //查询的�
 			}
 			values := []any{tenantCode}
 			if sd.Opt == stores.Select && uc.WithCommonTenant { //all租户可以让所有人查
-				values = []any{tenantCode, def.TenantCodeCommon}
+				values = []any{tenantCode, def.TenantCodeDefault}
 			}
 			stmt.AddClause(clause.Where{Exprs: []clause.Expression{
 				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},

@@ -20,11 +20,11 @@ type SysNotifyConfig struct {
 	Group        string            `gorm:"column:group;type:VARCHAR(50);NOT NULL"`                                        //分组
 	Code         string            `gorm:"column:code;uniqueIndex:idx_sys_notify_config_ri_mi;type:VARCHAR(50);NOT NULL"` // 通知类型编码
 	Name         string            `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                                         //通知的命名
-	SupportTypes []def.NotifyType  `gorm:"column:support_types;type:json;serializer:json;NOT NULL"`          //支持的通知类型
-	EnableTypes  []def.NotifyType  `gorm:"column:enable_types;type:json;serializer:json;NOT NULL"`           //已选的通知类型
+	SupportTypes []def.NotifyType  `gorm:"column:support_types;type:json;serializer:json;NOT NULL"`                       //支持的通知类型
+	EnableTypes  []def.NotifyType  `gorm:"column:enable_types;type:json;serializer:json;NOT NULL"`                        //已选的通知类型
 	Desc         string            `gorm:"column:desc;type:varchar(100);NOT NULL"`                                        // 项目备注
 	IsRecord     int64             `gorm:"column:is_record;type:BIGINT"`                                                  //是否记录该消息,是的情况下会将消息存一份到消息中心
-	Params       map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL"`                 //变量属性 key是参数,value是描述
+	Params       map[string]string `gorm:"column:params;type:json;serializer:json;NOT NULL"`                              //变量属性 key是参数,value是描述
 	stores.NoDelTime
 	Templates   []*SysNotifyConfigTemplate `gorm:"foreignKey:NotifyCode;references:Code"`
 	DeletedTime stores.DeletedTime         `gorm:"column:deleted_time;default:0;uniqueIndex:idx_sys_notify_config_ri_mi;"`
@@ -61,8 +61,8 @@ type SysNotifyTemplate struct {
 	Body         string              `gorm:"column:body;type:VARCHAR(2048);default:''"`            //默认模版内容
 	Desc         string              `gorm:"column:desc;type:varchar(100)"`                        // 备注
 	ChannelID    int64               `gorm:"column:channel_id;type:BIGINT;"`
-	Channel      *SysNotifyChannel   `gorm:"foreignKey:ID;references:ChannelID"`
-	Config       *SysNotifyConfig    `gorm:"foreignKey:Code;references:NotifyCode"`
+	Channel      *SysNotifyChannel   `gorm:"foreignKey:ChannelID;references:ID"`
+	Config       *SysNotifyConfig    `gorm:"foreignKey:NotifyCode;references:Code"`
 	stores.NoDelTime
 	DeletedTime stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 }
@@ -123,23 +123,23 @@ func (m *SysNotifyChannel) TableName() string {
 }
 
 type SysMessageInfo struct {
-	ID             int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`         // id编号
-	TenantCode     dataType.TenantCode `gorm:"column:tenant_code;index:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
-	Group          string              `gorm:"column:group;type:VARCHAR(50);"`                           //消息分类
-	NotifyCode     string              `gorm:"column:notify_code;type:VARCHAR(50);"`                     //对应的配置Code
-	NotifyType     string              `gorm:"column:notify_type;type:VARCHAR(50);default:''"`           //通知渠道 message/systemNotice 等
-	Subject        string              `gorm:"column:subject;type:VARCHAR(256);"`                        //消息主题
-	Body           string              `gorm:"column:body;type:text;"`                                   //消息内容
-	Str1           string              `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如产品id
-	Str2           string              `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如设备id
-	Str3           string              `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);"`
-	TriggerUserID      int64  `gorm:"column:trigger_user_id;type:BIGINT;default:0"`           // 场景等：手动触发用户 ID
-	TriggerUserNick    string `gorm:"column:trigger_user_nick;type:VARCHAR(60);default:''"` // 触发用户昵称
-	TriggerUserAccount string `gorm:"column:trigger_user_account;type:VARCHAR(255);default:''"`
-	TriggerType        string `gorm:"column:trigger_type;type:VARCHAR(20);default:''"` // manual | auto
-	IsGlobal       int64               `gorm:"column:is_global;index;type:bigint;default:2"`                //是否是全局消息,是的话所有用户都能看到
-	IsDirectNotify int64               `gorm:"column:is_direct_notify;index;type:bigint;default:2"`         //是否是发送通知消息创建
-	NotifyTime     time.Time           `gorm:"column:notify_time;index;autoCreateTime"` //通知时间
+	ID                 int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`         // id编号
+	TenantCode         dataType.TenantCode `gorm:"column:tenant_code;index:ri_mi;type:VARCHAR(50);NOT NULL"` // 租户编码
+	Group              string              `gorm:"column:group;type:VARCHAR(50);"`                           //消息分类
+	NotifyCode         string              `gorm:"column:notify_code;type:VARCHAR(50);"`                     //对应的配置Code
+	NotifyType         string              `gorm:"column:notify_type;type:VARCHAR(50);default:''"`           //通知渠道 message/systemNotice 等
+	Subject            string              `gorm:"column:subject;type:VARCHAR(256);"`                        //消息主题
+	Body               string              `gorm:"column:body;type:text;"`                                   //消息内容
+	Str1               string              `gorm:"column:str1;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如产品id
+	Str2               string              `gorm:"column:str2;index:ri_mi;type:VARCHAR(50);"`                //自定义字段(用来添加搜索索引),如设备id
+	Str3               string              `gorm:"column:str3;index:ri_mi;type:VARCHAR(50);"`
+	TriggerUserID      int64               `gorm:"column:trigger_user_id;type:BIGINT;default:0"`         // 场景等：手动触发用户 ID
+	TriggerUserNick    string              `gorm:"column:trigger_user_nick;type:VARCHAR(60);default:''"` // 触发用户昵称
+	TriggerUserAccount string              `gorm:"column:trigger_user_account;type:VARCHAR(255);default:''"`
+	TriggerType        string              `gorm:"column:trigger_type;type:VARCHAR(20);default:''"`     // manual | auto
+	IsGlobal           int64               `gorm:"column:is_global;index;type:bigint;default:2"`        //是否是全局消息,是的话所有用户都能看到
+	IsDirectNotify     int64               `gorm:"column:is_direct_notify;index;type:bigint;default:2"` //是否是发送通知消息创建
+	NotifyTime         time.Time           `gorm:"column:notify_time;index;autoCreateTime"`             //通知时间
 	stores.NoDelTime
 	DeletedTime  stores.DeletedTime `gorm:"column:deleted_time;default:0;"`
 	NotifyConfig *SysNotifyConfig   `gorm:"foreignKey:Code;references:NotifyCode"`
