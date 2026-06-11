@@ -51,7 +51,7 @@ func (m *SysNotifyConfig) BeforeSave(tx *gorm.DB) error {
 // 通知配置
 type SysNotifyTemplate struct {
 	ID           int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`     // id编号
-	TenantCode   dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"` //限定租户,不填是通用的
+	TenantCode   dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'default'"` // 限定租户，空则使用 default
 	Name         string              `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                //通知的命名
 	NotifyCode   string              `gorm:"column:notify_code;type:VARCHAR(50);NOT NULL"`         //对应的配置Code
 	Type         def.NotifyType      `gorm:"column:type;type:VARCHAR(50);NOT NULL"`                //对应的配置类型 sms email
@@ -91,7 +91,7 @@ func (m *SysNotifyConfigTemplate) TableName() string {
 // 租户下的通道配置
 type SysNotifyChannel struct {
 	ID         int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`                               // id编号
-	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"`                                   // 租户编码,为common是公共的
+	TenantCode dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);NOT NULL"` // 租户编码
 	Type       def.NotifyType      `gorm:"column:type;uniqueIndex:idx_sys_notify_channel_ri_mi;type:VARCHAR(50);NOT NULL"` //对应的配置类型 sms email
 	Email      *SysTenantEmail     `gorm:"embedded;embeddedPrefix:email_"`                                                 //邮箱配置
 	AppCode    string              `gorm:"column:app_code;type:VARCHAR(50);"`                                              //微信小程序推送

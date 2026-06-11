@@ -16,9 +16,10 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-type TenantCodeWithCommonN string //非root不可看不可写
+// TenantCodeWithDefaultR 租户编码：非 root 可读，查询时包含当前租户与 default 租户数据。
+type TenantCodeWithDefaultR string
 
-func (t TenantCodeWithCommonN) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) { //更新的时候会调用此接口
+func (t TenantCodeWithDefaultR) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) { //更新的时候会调用此接口
 	stmt := db.Statement
 	uc := ctxs.GetUserCtx(ctx)
 	if uc == nil { //系统初始化的时候会掉用这里
@@ -40,35 +41,35 @@ func (t TenantCodeWithCommonN) GormValue(ctx context.Context, db *gorm.DB) (expr
 	expr = clause.Expr{SQL: "?", Vars: []interface{}{uc.TenantCode}}
 	return
 }
-func (t *TenantCodeWithCommonN) Scan(value interface{}) error {
+func (t *TenantCodeWithDefaultR) Scan(value interface{}) error {
 	ret := cast.ToString(value)
-	p := TenantCodeWithCommonN(ret)
+	p := TenantCodeWithDefaultR(ret)
 	*t = p
 	return nil
 }
 
 // Value implements the driver Valuer interface.
-func (t TenantCodeWithCommonN) Value() (driver.Value, error) {
+func (t TenantCodeWithDefaultR) Value() (driver.Value, error) {
 	return string(t), nil
 }
 
-func (t TenantCodeWithCommonN) QueryClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Select}}
+func (t TenantCodeWithDefaultR) QueryClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefaultClause{Field: f, T: t, Opt: stores.Select}}
 }
 
-func (t TenantCodeWithCommonN) UpdateClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Update}}
+func (t TenantCodeWithDefaultR) UpdateClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefaultClause{Field: f, T: t, Opt: stores.Update}}
 }
 
-func (t TenantCodeWithCommonN) CreateClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Create}}
+func (t TenantCodeWithDefaultR) CreateClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefaultClause{Field: f, T: t, Opt: stores.Create}}
 }
 
-func (t TenantCodeWithCommonN) DeleteClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Delete}}
+func (t TenantCodeWithDefaultR) DeleteClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefaultClause{Field: f, T: t, Opt: stores.Delete}}
 }
 
-func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
+func (t TenantCodeWithDefaultR) GetAuthIDs(f *schema.Field) stores.GetValues {
 	return func(stmt *gorm.Statement) (authIDs []any, isRoot bool, allData bool, err error) {
 		uc := ctxs.GetUserCtx(stmt.Context)
 		if uc == nil {
@@ -77,22 +78,22 @@ func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
 		if uc.TenantCode == def.TenantCodeDefault { //只有core租户的可以修改其他租户的租户号
 			isRoot = true
 		}
-		return []any{TenantCodeWithCommonN(uc.TenantCode)}, isRoot, uc.AllTenant, nil
+		return []any{TenantCodeWithDefaultR(uc.TenantCode)}, isRoot, uc.AllTenant, nil
 	}
 }
 
-type TenantCodeWithCommon2Clause struct {
+type TenantCodeWithDefaultClause struct {
 	stores.ClauseInterface
 	Field *schema.Field
-	T     TenantCodeWithCommonN
+	T     TenantCodeWithDefaultR
 	Opt   stores.Opt
 }
 
-func (sd TenantCodeWithCommon2Clause) GenAuthKey() string { //查询的时候会调用此接口
+func (sd TenantCodeWithDefaultClause) GenAuthKey() string { //查询的时候会调用此接口
 	return fmt.Sprintf(stores.AuthModify, "tenantCode")
 }
 
-func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //查询的时候会调用此接口
+func (sd TenantCodeWithDefaultClause) ModifyStatement(stmt *gorm.Statement) { //查询的时候会调用此接口
 
 	uc := ctxs.GetUserCtxNoNil(stmt.Context)
 
@@ -107,12 +108,12 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 				}
 				field := dest.FieldByName(sd.Field.Name)
 				if field.IsZero() {
-					var v TenantCodeWithCommonN
-					v = TenantCodeWithCommonN(uc.TenantCode)
+					var v TenantCodeWithDefaultR
+					v = TenantCodeWithDefaultR(uc.TenantCode)
 					field.Set(reflect.ValueOf(v))
 					continue
 				}
-				vv := field.Interface().(TenantCodeWithCommonN)
+				vv := field.Interface().(TenantCodeWithDefaultR)
 				if string(vv) == uc.TenantCode {
 					continue
 				}
@@ -128,12 +129,12 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 		}
 		field := destV.Elem().FieldByName(sd.Field.Name)
 		if field.IsZero() {
-			var v TenantCodeWithCommonN
-			v = TenantCodeWithCommonN(uc.TenantCode)
+			var v TenantCodeWithDefaultR
+			v = TenantCodeWithDefaultR(uc.TenantCode)
 			field.Set(reflect.ValueOf(v))
 			return
 		}
-		vv := field.Interface().(TenantCodeWithCommonN)
+		vv := field.Interface().(TenantCodeWithDefaultR)
 		if string(vv) == uc.TenantCode {
 			return
 		}
@@ -161,10 +162,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 					}
 				}
 			}
-			values := []any{uc.TenantCode}
-			if uc.IsRoot() {
-				values = append(values, def.TenantCodeDefault)
-			}
+			values := []any{uc.TenantCode, def.TenantCodeDefault}
 			stmt.AddClause(clause.Where{Exprs: []clause.Expression{
 				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},
 			}})

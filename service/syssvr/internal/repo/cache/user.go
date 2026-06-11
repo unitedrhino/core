@@ -24,7 +24,7 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 		KeyType:   eventBus.ServerCacheKeySysUserTokenInfo,
 		FastEvent: FastEvent,
 		GetData: func(ctx context.Context, key int64) (*users.UserInfo, error) {
-			// Token 校验等场景 ctx 可能为 platform/common，需超管权限跳过租户行级过滤
+			// Token 校验需超管权限跳过租户行级过滤
 			rootCtx := ctxs.WithRoot(ctx)
 			ctxs.GetUserCtxNoNil(rootCtx).IsSuperAdmin = true
 			ui, err := userCache.GetData(rootCtx, key)
@@ -38,9 +38,6 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 					return nil, e
 				}
 				tenantCode = string(po.TenantCode)
-			}
-			if tenantCode == def.TenantCodePlateform {
-				tenantCode = def.TenantCodeDefault
 			}
 			roles, err := relationDB.NewUserRoleRepo(rootCtx).FindByFilter(rootCtx, relationDB.UserRoleFilter{UserID: key, WithRole: true}, nil)
 			if err != nil {

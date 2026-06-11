@@ -221,12 +221,8 @@ func InitCache(svcCtx *svc.ServiceContext) {
 				origTenantCode := uc.TenantCode
 				uc.TenantCode = key
 				defer func() { uc.TenantCode = origTenantCode }()
-				lookupKey := key
-				if lookupKey == def.TenantCodePlateform {
-					lookupKey = def.TenantCodeDefault
-				}
 				pi, err := db.FindOneByFilter(rootCtx, relationDB.TenantInfoFilter{
-					Codes: []string{lookupKey}})
+					Codes: []string{key}})
 				if err != nil {
 					return nil, err
 				}
@@ -249,15 +245,11 @@ func InitCache(svcCtx *svc.ServiceContext) {
 				rootCtx := ctxs.WithRoot(ctx)
 				uc := ctxs.GetUserCtxNoNil(rootCtx)
 				uc.IsSuperAdmin = true
-				lookupKey := key
-				if lookupKey == def.TenantCodePlateform {
-					lookupKey = def.TenantCodeDefault
-				}
 				origTenantCode := uc.TenantCode
-				uc.TenantCode = lookupKey
+				uc.TenantCode = key
 				defer func() { uc.TenantCode = origTenantCode }()
 				pi, err := db.FindOneByFilter(rootCtx, relationDB.TenantConfigFilter{
-					TenantCode: lookupKey})
+					TenantCode: key})
 				if err != nil {
 					return nil, err
 				}
