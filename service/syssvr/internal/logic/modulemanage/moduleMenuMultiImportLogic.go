@@ -1,3 +1,4 @@
+// 模块菜单批量导入逻辑：支持按 path 增量/全量同步，并在全量导入后清理孤儿租户菜单，避免侧栏重复。
 package modulemanagelogic
 
 import (
@@ -22,7 +23,8 @@ type ModuleMenuMultiImportLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
-	resp sys.MenuMultiImportResp
+	resp              sys.MenuMultiImportResp
+	keptModuleMenuIDs map[int64]struct{} // 本次导入保留的模块菜单 ID（全量导入后用于删除多余节点）
 }
 
 func NewModuleMenuMultiImportLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ModuleMenuMultiImportLogic {
@@ -76,6 +78,7 @@ func (l *ModuleMenuMultiImportLogic) Handle(tx *gorm.DB, ModuleCode string, Mode
 			if err != nil {
 				return err
 			}
+			l.markKeptModuleMenu(id)
 			if len(menu.Children) > 0 {
 				err = l.Handle(tx, ModuleCode, Mode, id, menu.Children)
 				if err != nil {
@@ -84,6 +87,7 @@ func (l *ModuleMenuMultiImportLogic) Handle(tx *gorm.DB, ModuleCode string, Mode
 			}
 			continue
 		}
+		l.markKeptModuleMenu(old.ID)
 		if Mode != module.MenuImportModeAdd { //如果只新增则不用处理这条
 			err = updateMenu(l.ctx, tx, menu, old)
 			if err != nil {
@@ -124,22 +128,144 @@ func (l *ModuleMenuMultiImportLogic) menuImport(ModuleCode string, Mode int64, d
 
 	err = stores.GetCommonConn(l.ctx).Transaction(func(tx *gorm.DB) error {
 		if Mode == module.MenuImportModeAll {
-			db := relationDB.NewMenuInfoRepo(tx)
-			err = db.DeleteByFilter(l.ctx, relationDB.MenuInfoFilter{ModuleCode: ModuleCode})
-			if err != nil {
+			l.keptModuleMenuIDs = make(map[int64]struct{})
+			// 先清理历史孤儿租户菜单，避免 template_id 失效导致的侧栏重复
+			if err := cleanupOrphanTenantMenus(l.ctx, tx, ModuleCode); err != nil {
 				return err
 			}
-			// 不再删除租户菜单，避免其他租户的菜单数据丢失
-			// err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctxs.WithRoot(l.ctx), relationDB.TenantAppMenuFilter{ModuleCode: ModuleCode})
-			// if err != nil {
-			// 	return err
-			// }
 		}
 		err := l.Handle(tx, ModuleCode, Mode, def.RootNode, dos)
 		if err != nil {
 			return err
 		}
+		if Mode == module.MenuImportModeAll {
+			if err := l.deleteModuleMenusExcept(l.ctx, tx, ModuleCode); err != nil {
+				return err
+			}
+			if err := cleanupOrphanTenantMenus(l.ctx, tx, ModuleCode); err != nil {
+				return err
+			}
+		}
 		return nil
+	})
+	return err
+}
+
+// markKeptModuleMenu 记录本次导入应保留的模块菜单 ID。
+func (l *ModuleMenuMultiImportLogic) markKeptModuleMenu(id int64) {
+	if l.keptModuleMenuIDs == nil {
+		return
+	}
+	l.keptModuleMenuIDs[id] = struct{}{}
+}
+
+// deleteModuleMenusExcept 删除本次导入未覆盖的模块菜单及其租户副本。
+func (l *ModuleMenuMultiImportLogic) deleteModuleMenusExcept(ctx context.Context, tx *gorm.DB, moduleCode string) error {
+	menus, err := relationDB.NewMenuInfoRepo(tx).FindByFilter(ctx, relationDB.MenuInfoFilter{ModuleCode: moduleCode}, nil)
+	if err != nil {
+		return err
+	}
+	for _, m := range menus {
+		if _, ok := l.keptModuleMenuIDs[m.ID]; ok {
+			continue
+		}
+		if err := deleteMenu(ctx, tx, []int64{m.ID}); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// withAllTenant 在跨租户清理数据时临时放开租户隔离。
+func withAllTenant(ctx context.Context) context.Context {
+	uc := ctxs.GetUserCtx(ctx)
+	if uc != nil {
+		uc.AllTenant = true
+	}
+	return ctx
+}
+
+// cleanupOrphanTenantMenus 清理模块下 template_id 已失效或同 path 重复的租户菜单。
+func cleanupOrphanTenantMenus(ctx context.Context, tx *gorm.DB, moduleCode string) error {
+	ctx = withAllTenant(ctx)
+
+	moduleMenus, err := relationDB.NewMenuInfoRepo(tx).FindByFilter(ctx, relationDB.MenuInfoFilter{ModuleCode: moduleCode}, nil)
+	if err != nil {
+		return err
+	}
+	validTemplateIDs := make(map[int64]struct{}, len(moduleMenus))
+	for _, m := range moduleMenus {
+		validTemplateIDs[m.ID] = struct{}{}
+	}
+
+	tenantMenus, err := relationDB.NewTenantAppMenuRepo(tx).FindByFilter(ctx, relationDB.TenantAppMenuFilter{ModuleCode: moduleCode}, nil)
+	if err != nil {
+		return err
+	}
+
+	type menuKey struct {
+		tenantCode string
+		appCode    string
+		parentID   int64
+		path       string
+	}
+	grouped := make(map[menuKey][]*relationDB.SysTenantAppMenu)
+	var orphanIDs []int64
+
+	for _, tm := range tenantMenus {
+		if _, ok := validTemplateIDs[tm.TempLateID]; !ok {
+			orphanIDs = append(orphanIDs, tm.ID)
+			continue
+		}
+		k := menuKey{
+			tenantCode: string(tm.TenantCode),
+			appCode:    tm.AppCode,
+			parentID:   tm.ParentID,
+			path:       tm.Path,
+		}
+		grouped[k] = append(grouped[k], tm)
+	}
+
+	for _, list := range grouped {
+		if len(list) <= 1 {
+			continue
+		}
+		keepID := list[0].ID
+		keepTemplateID := list[0].TempLateID
+		for _, tm := range list[1:] {
+			if tm.TempLateID > keepTemplateID {
+				orphanIDs = append(orphanIDs, keepID)
+				keepID = tm.ID
+				keepTemplateID = tm.TempLateID
+				continue
+			}
+			orphanIDs = append(orphanIDs, tm.ID)
+		}
+	}
+
+	if len(orphanIDs) == 0 {
+		return nil
+	}
+	if err := deleteTenantMenusAndRoleRefs(ctx, tx, moduleCode, orphanIDs); err != nil {
+		return err
+	}
+	return nil
+}
+
+// deleteTenantMenusAndRoleRefs 删除租户菜单并清理角色菜单引用。
+func deleteTenantMenusAndRoleRefs(ctx context.Context, tx *gorm.DB, moduleCode string, menuIDs []int64) error {
+	if len(menuIDs) == 0 {
+		return nil
+	}
+	err := tx.WithContext(ctx).
+		Where("module_code = ? AND menu_id IN ?", moduleCode, menuIDs).
+		Delete(&relationDB.SysRoleMenu{}).Error
+	if err != nil {
+		return stores.ErrFmt(err)
+	}
+	err = relationDB.NewTenantAppMenuRepo(tx).DeleteByFilter(ctx, relationDB.TenantAppMenuFilter{
+		ModuleCode: moduleCode,
+		MenuIDs:    menuIDs,
 	})
 	return err
 }

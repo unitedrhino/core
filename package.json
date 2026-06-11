@@ -1,0 +1,29 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "description": "[![Go](https://github.com/zeromicro/go-zero/workflows/Go/badge.svg?branch=master)](https://github.com/unitedrhino/core/actions)\r [![Go Report Card](https://goreportcard.com/badge/github.com/unitedrhino/core)](https://goreportcard.com/report/github.com/unitedrhino/core)\r [![Go Reference](https://pkg.go.dev/badge/github.com/unitedrhino/core.svg)](https://pkg.go.dev/github.com/unitedrhino/core)\r ![GitHub Repo stars](https://img.shields.io/github/stars/unitedrhino/core)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "asn1": "^0.2.6",
+    "bcrypt-pbkdf": "^1.0.2",
+    "nan": "^2.27.0",
+    "safer-buffer": "^2.1.2",
+    "ssh2": "^1.17.0",
+    "tweetnacl": "^0.14.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://codeup.aliyun.com/642f7dca8b47795dae985084/ee/core.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
