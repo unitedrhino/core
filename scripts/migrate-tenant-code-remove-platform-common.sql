@@ -15,4 +15,5 @@ UPDATE sys_login_log SET tenant_code = 'default' WHERE tenant_code IN ('platform
 UPDATE dm_protocol_script SET tenant_code = 'default' WHERE tenant_code IN ('platform', 'common', '__common __');
 UPDATE dm_protocol_script_device SET tenant_code = 'default' WHERE tenant_code IN ('platform', 'common');
 UPDATE dm_ota_firmware_info SET tenant_code = 'default' WHERE tenant_code IN ('platform', 'common');
+UPDATE dm_ota_firmware_device SET tenant_code = 'default' WHERE tenant_code IN ('platform', 'common');
 UPDATE dm_ota_firmware_job SET tenant_code = 'default' WHERE tenant_code IN ('platform', 'common');
