@@ -29438,7 +29438,7 @@
                     },
                     "tenantCode": {
                         "type": "string",
-                        "description": " 跟着应用走, common的是通用应用,非common的是租户应用"
+                        "description": " 跟着应用走, default的是通用应用,非default的是租户应用"
                     },
                     "idPath": {
                         "type": "string",
@@ -29605,7 +29605,7 @@
                     },
                     "tenantCode": {
                         "type": "string",
-                        "description": " 租户编码,common的是通用应用,非common的是租户应用"
+                        "description": " 租户编码,default的是通用应用,非default的是租户应用"
                     },
                     "name": {
                         "type": "string",
@@ -29762,7 +29762,7 @@
                 "properties": {
                     "tenantCode": {
                         "type": "string",
-                        "description": "指定租户,租户下只能过滤 common或他自己的  common的是通用应用,非common的是租户应用"
+                        "description": "指定租户,租户下只能过滤 default或他自己的  default的是通用应用,非default的是租户应用"
                     },
                     "page": {
                         "$ref": "#/components/schemas/PageInfo"
