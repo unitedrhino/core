@@ -7,6 +7,7 @@ import (
 	"gitee.com/unitedrhino/core/share/domain/tenant"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/caches"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/eventBus"
 	"gitee.com/unitedrhino/share/utils"
@@ -23,11 +24,22 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 		KeyType:   eventBus.ServerCacheKeySysUserTokenInfo,
 		FastEvent: FastEvent,
 		GetData: func(ctx context.Context, key int64) (*users.UserInfo, error) {
-			ui, err := userCache.GetData(ctx, key)
+			// Token 校验需超管权限跳过租户行级过滤
+			rootCtx := ctxs.WithRoot(ctx)
+			ctxs.GetUserCtxNoNil(rootCtx).IsSuperAdmin = true
+			ui, err := userCache.GetData(rootCtx, key)
 			if err != nil {
 				return nil, err
 			}
-			roles, err := relationDB.NewUserRoleRepo(ctx).FindByFilter(ctx, relationDB.UserRoleFilter{UserID: key, WithRole: true}, nil)
+			tenantCode := ui.TenantCode
+			if tenantCode == "" {
+				po, e := relationDB.NewUserInfoRepo(rootCtx).FindOne(rootCtx, key)
+				if e != nil {
+					return nil, e
+				}
+				tenantCode = string(po.TenantCode)
+			}
+			roles, err := relationDB.NewUserRoleRepo(rootCtx).FindByFilter(rootCtx, relationDB.UserRoleFilter{UserID: key, WithRole: true}, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -40,7 +52,7 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 					roleCodes = append(roleCodes, v.Role.Code)
 				}
 			}
-			Tenant, err := tenantCache.GetData(ctx, ui.TenantCode)
+			Tenant, err := tenantCache.GetData(rootCtx, tenantCode)
 			if err != nil {
 				return nil, err
 			}
@@ -63,7 +75,7 @@ func NewUserCache(FastEvent *eventBus.FastEvent, tenantCache *caches.Cache[tenan
 				Account:     account,
 				RoleIDs:     rolses,
 				RoleCodes:   roleCodes,
-				TenantCode:  string(ui.TenantCode),
+				TenantCode:  tenantCode,
 				IsAdmin:     isAdmin,
 				IsAllData:   ui.IsAllData,
 			}

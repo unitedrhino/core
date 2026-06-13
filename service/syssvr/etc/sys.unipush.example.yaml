@@ -1,0 +1,14 @@
+# 生产 UniPush（与 ThirdJwtSecret 相同：直接写在 sys.yaml）
+UniPush:
+  Enabled: true
+  AppId: __UNI__F82AD01
+  HttpUrl: https://env-00jxufuad0x3.dev-hz.cloudbasefunction.cn/yk-push-send
+  Secret: "与 uniCloud yk-push-send 的 YK_PUSH_HTTP_SECRET 相同"
+  TimeoutMs: 5000
+  ForceNotification: true
+  NotifyCodes:
+    - ruleDeviceAlarm
+    - ruleScene
+  PushOnMessage: true
+
+# 可选：环境变量 YK_PUSH_HTTP_SECRET 可覆盖 yaml 中的 Secret（同 THIRD_JWT_SECRET）

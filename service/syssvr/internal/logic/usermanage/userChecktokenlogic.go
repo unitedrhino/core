@@ -166,7 +166,7 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	if claim.DeviceID != "" && claim.DeviceID != in.DeviceID {
 		return nil, errors.TokenInvalid.AddMsg("token不可以跨设备使用")
 	}
-	ui, err := l.svcCtx.UsersCache.GetData(l.ctx, claim.UserID)
+	ui, err := l.svcCtx.UsersCache.GetData(ctxs.WithRoot(l.ctx), claim.UserID)
 	if err != nil {
 		l.Errorf("%s UsersCache.GetData fail err=%s", utils.FuncName(), err.Error())
 		return nil, err
@@ -175,7 +175,7 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 	if err != nil {
 		return nil, err
 	}
-	ti, err := l.svcCtx.TenantCache.GetData(l.ctx, ui.TenantCode)
+	ti, err := l.svcCtx.TenantCache.GetData(ctxs.WithRoot(l.ctx), ui.TenantCode)
 	if err != nil {
 		l.Errorf("%s  err=%s", utils.FuncName(), err.Error())
 		return nil, err

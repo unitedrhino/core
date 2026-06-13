@@ -58,43 +58,27 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		channel = t.Channel
 		config = t.Config
 	} else {
-		// c, err := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
-		// 	NotifyCode: cfg.NotifyCode,
-		// 	Type:       cfg.Type,
-		// })
-		c, err := relationDB.NewNotifyTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyTemplateFilter{
-			NotifyCode: cfg.NotifyCode,
-			Type:       cfg.Type,
-		})
+		temp, channel, config, err = loadNotifyTemplateByCode(ctx, cfg.NotifyCode, string(cfg.Type))
+		if err != nil && errors.Cmp(err, errors.NotFind) && len(cfg.BakNotifyCode) > 0 {
+			temp, channel, config, err = loadNotifyTemplateByCode(ctx, cfg.BakNotifyCode, string(cfg.Type))
+		}
 		if err != nil {
 			if errors.Cmp(err, errors.NotFind) {
-				if len(cfg.BakNotifyCode) > 0 {
-					// c, err = relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
-					// 	NotifyCode: cfg.NotifyCode,
-					// 	Type:       cfg.Type,
-					// })
-					c, err = relationDB.NewNotifyTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyTemplateFilter{
-						NotifyCode: cfg.NotifyCode,
-						Type:       cfg.Type,
-					})
-					if errors.Cmp(err, errors.NotFind) {
-						return errors.NotEnable
-					}
-					return err
-				}
 				return errors.NotEnable
 			}
 			return err
 		}
-		temp = c
-		// temp = c.Template
-		channel = c.Channel
-		config = c.Config
 	}
 	if channel == nil && temp != nil && temp.ChannelID != 0 {
 		channel, err = relationDB.NewNotifyChannelRepo(ctx).FindOne(ctx, temp.ChannelID)
 		if err != nil {
-			return err
+			// 短信走 sys.yaml 全局 Ali/腾讯配置，不依赖 sys_notify_channel；通道缺失时不应阻断发码。
+			if cfg.Type == def.NotifyTypeSms {
+				channel = nil
+				err = nil
+			} else {
+				return err
+			}
 		}
 	}
 
@@ -153,7 +137,8 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		if triggerUser.Type == triggerTypeDeviceButton && cfg.Type == defext.NotifyTypeSystemNotice {
 			// 系统推送：仅一行「触发了{动作}」，避免「手机号+的账号」与正文重复多行
 			body = FormatRuleSceneNotifyLine(triggerUser, body)
-		} else {
+		} else if triggerUser.Type != triggerTypeManual {
+			// manual 手动执行不再拼「由 xxx 手动触发」前缀行（2026-06-11 按需求移除），正文保持场景配置原文
 			body = PrependRuleSceneTriggerLine(body, triggerUser)
 		}
 	}
@@ -245,6 +230,8 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 			}
 		}
 		if len(accounts) == 0 {
+			logx.WithContext(ctx).Slowf("sms skip: no phone accounts notifyCode=%s userIDs=%v accounts=%v",
+				cfg.NotifyCode, cfg.UserIDs, cfg.Accounts)
 			return nil
 		}
 		err = svcCtx.Sms.SendSms(ctx, smsClient.SendSmsParam{
@@ -323,6 +310,41 @@ func SendNotifyMsg(ctx context.Context, svcCtx *svc.ServiceContext, cfg SendMsgC
 		return nil
 	}
 	return nil
+}
+
+// loadNotifyTemplateByCode 优先读取当前租户绑定的通知模板，未绑定时回退全局模板表。
+func loadNotifyTemplateByCode(ctx context.Context, notifyCode, notifyType string) (
+	temp *relationDB.SysNotifyTemplate, channel *relationDB.SysNotifyChannel, config *relationDB.SysNotifyConfig, err error,
+) {
+	ct, ctErr := relationDB.NewNotifyConfigTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyConfigTemplateFilter{
+		NotifyCode: notifyCode,
+		Type:       notifyType,
+	})
+	if ctErr == nil {
+		if ct.Template != nil {
+			temp = ct.Template
+		} else if ct.TemplateID != 0 {
+			temp, err = relationDB.NewNotifyTemplateRepo(ctx).FindOne(ctx, ct.TemplateID)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+		}
+		config = ct.Config
+		if temp != nil {
+			channel = temp.Channel
+		}
+		if temp != nil || config != nil {
+			return temp, channel, config, nil
+		}
+	}
+	c, err := relationDB.NewNotifyTemplateRepo(ctx).FindOneByFilter(ctx, relationDB.NotifyTemplateFilter{
+		NotifyCode: notifyCode,
+		Type:       notifyType,
+	})
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	return c, c.Channel, c.Config, nil
 }
 
 func emailConfigFromChannel(channel *relationDB.SysNotifyChannel) (conf.Email, error) {

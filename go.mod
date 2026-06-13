@@ -9,7 +9,6 @@ require (
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/dop251/goja v0.0.0-20251201205617-2bb4c724c0f9
 	github.com/glebarez/sqlite v1.11.0
-	github.com/go-sql-driver/mysql v1.9.2
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
@@ -103,6 +102,7 @@ require (
 	github.com/go-playground/validator/v10 v10.29.0 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
+	github.com/go-sql-driver/mysql v1.9.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
