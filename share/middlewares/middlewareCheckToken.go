@@ -185,7 +185,7 @@ func Auth(ctx context.Context, UserRpc user.UserManage, w http.ResponseWriter, r
 	}
 	logx.WithContext(ctx).Debugf("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
 		utils.FuncName(), strIP, token, utils.Fmt(resp))
-	return &ctxs.UserCtx{
+	userCtx := &ctxs.UserCtx{
 		IsOpen:       authType == "open",
 		TenantCode:   resp.TenantCode,
 		AppCode:      resp.AppCode,
@@ -198,7 +198,14 @@ func Auth(ctx context.Context, UserRpc user.UserManage, w http.ResponseWriter, r
 		Account:      resp.Account,
 		Token:        token,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
-	}, nil
+	}
+	// default 租户的 admin 视为 root，赋予跨租户、跨项目、跨区域权限
+	if resp.TenantCode == def.TenantCodeDefault && (resp.IsAdmin || resp.IsSuperAdmin) {
+		userCtx.AllTenant = true
+		userCtx.AllProject = true
+		userCtx.AllArea = true
+	}
+	return userCtx, nil
 }
 
 func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Request) (*ctxs.UserCtx, error) {
@@ -227,7 +234,7 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 	}
 	logx.WithContext(r.Context()).Debugf("%s.CheckTokenWare ip:%v in.token=%s  checkResp:%v",
 		utils.FuncName(), strIP, strToken, utils.Fmt(resp))
-	return &ctxs.UserCtx{
+	userCtx := &ctxs.UserCtx{
 		IsOpen:       false,
 		TenantCode:   resp.TenantCode,
 		AppCode:      resp.AppCode,
@@ -239,7 +246,14 @@ func (m *CheckTokenWareMiddleware) UserAuth(w http.ResponseWriter, r *http.Reque
 		IsAllData:    resp.IsAllData == def.True,
 		Account:      resp.Account,
 		ProjectAuth:  utils.CopyMap[ctxs.ProjectAuth](resp.ProjectAuth),
-	}, nil
+	}
+	// default 租户的 admin 视为 root，赋予跨租户、跨项目、跨区域权限
+	if resp.TenantCode == def.TenantCodeDefault && (resp.IsAdmin || resp.IsSuperAdmin) {
+		userCtx.AllTenant = true
+		userCtx.AllProject = true
+		userCtx.AllArea = true
+	}
+	return userCtx, nil
 }
 
 // 接口操作日志记录

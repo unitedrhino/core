@@ -144,7 +144,8 @@ func (l *CheckTokenLogic) openCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		account = cast.ToString(ui.UserID)
 	}
 	ret := sys.UserCheckTokenResp{UserID: claim.UserID, IsAllData: ui.IsAllData, RoleIDs: rolses, RoleCodes: roleCodes,
-		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, roleCodes...) || (isAdmin == def.True),
+		// default 租户的 admin 也视为 root（超级管理员）
+		IsSuperAdmin: utils.SliceIn(def.RoleCodeSupper, roleCodes...) || (isAdmin == def.True) || (claim.TenantCode == def.TenantCodeDefault && isAdmin == def.True),
 		Account:      account, TenantCode: claim.TenantCode}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, roleCodes...) || ret.IsSuperAdmin
 	projectAuth, err := cache.GetProjectAuth(l.ctx, ret.UserID, ret.RoleIDs)
@@ -181,13 +182,14 @@ func (l *CheckTokenLogic) userCheckToken(in *sys.UserCheckTokenReq) (*sys.UserCh
 		return nil, err
 	}
 	ret := sys.UserCheckTokenResp{
-		AppCode:      claim.AppCode,
-		UserID:       claim.UserID,
-		RoleIDs:      ui.RoleIDs,
-		RoleCodes:    ui.RoleCodes,
-		IsAllData:    ui.IsAllData,
-		TenantCode:   ui.TenantCode,
-		IsSuperAdmin: ti.AdminUserID == ui.UserID || utils.SliceIn(ti.AdminRoleID, ui.RoleIDs...),
+		AppCode:    claim.AppCode,
+		UserID:     claim.UserID,
+		RoleIDs:    ui.RoleIDs,
+		RoleCodes:  ui.RoleCodes,
+		IsAllData:  ui.IsAllData,
+		TenantCode: ui.TenantCode,
+		// default 租户的 admin 也视为 root（超级管理员）
+		IsSuperAdmin: ti.AdminUserID == ui.UserID || utils.SliceIn(ti.AdminRoleID, ui.RoleIDs...) || (ui.TenantCode == def.TenantCodeDefault && utils.SliceIn(def.RoleCodeAdmin, ui.RoleCodes...)),
 		Account:      ui.Account,
 	}
 	ret.IsAdmin = utils.SliceIn(def.RoleCodeAdmin, ui.RoleCodes...) || ret.IsSuperAdmin
