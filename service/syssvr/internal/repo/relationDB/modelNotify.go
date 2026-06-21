@@ -51,7 +51,7 @@ func (m *SysNotifyConfig) BeforeSave(tx *gorm.DB) error {
 // 通知配置
 type SysNotifyTemplate struct {
 	ID           int64               `gorm:"column:id;type:BIGINT;primary_key;AUTO_INCREMENT"`     // id编号
-	TenantCode   dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'common'"` //限定租户,不填是通用的
+	TenantCode   dataType.TenantCode `gorm:"column:tenant_code;type:VARCHAR(50);default:'default'"` //限定租户,不填是通用的
 	Name         string              `gorm:"column:name;type:VARCHAR(50);NOT NULL"`                //通知的命名
 	NotifyCode   string              `gorm:"column:notify_code;type:VARCHAR(50);NOT NULL"`         //对应的配置Code
 	Type         def.NotifyType      `gorm:"column:type;type:VARCHAR(50);NOT NULL"`                //对应的配置类型 sms email
