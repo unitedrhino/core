@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 
-	"gitee.com/unitedrhino/core/share/dataType"
 	"gitee.com/unitedrhino/core/share/users"
 	"gitee.com/unitedrhino/share/conf"
 	"gitee.com/unitedrhino/share/def"
@@ -212,8 +211,8 @@ var (
 	}
 	// 场景联动站内信默认模板（notifyCode=ruleScene, type=message）
 	MigrateNotifyTemplate = []SysNotifyTemplate{
-		{ID: 1, TenantCode: dataType.TenantCode("common"), Name: "场景联动站内信", NotifyCode: "ruleScene", Type: "message", TemplateCode: "ruleScene_message", Subject: "{{.title}}", Body: "{{.body}}", Desc: "场景联动站内信默认模板"},
-		{ID: 2, TenantCode: dataType.TenantCode("common"), Name: "场景联动系统推送", NotifyCode: "ruleScene", Type: "systemNotice", TemplateCode: "ruleScene_systemNotice", Subject: "{{.title}}", Body: "{{.body}}", Desc: "场景联动 App 系统推送默认模板"},
+		{ID: 1, TenantCode: def.TenantCodeDefault, Name: "场景联动站内信", NotifyCode: "ruleScene", Type: "message", TemplateCode: "ruleScene_message", Subject: "{{.title}}", Body: "{{.body}}", Desc: "场景联动站内信默认模板"},
+		{ID: 2, TenantCode: def.TenantCodeDefault, Name: "场景联动系统推送", NotifyCode: "ruleScene", Type: "systemNotice", TemplateCode: "ruleScene_systemNotice", Subject: "{{.title}}", Body: "{{.body}}", Desc: "场景联动 App 系统推送默认模板"},
 	}
 	// 默认平台绑定 ruleScene 站内信 / 系统推送模板
 	MigrateNotifyConfigTemplate = []SysNotifyConfigTemplate{
