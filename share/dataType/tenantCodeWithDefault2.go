@@ -16,9 +16,10 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-type TenantCodeWithCommonN string //非root不可看不可写
+// TenantCodeWithDefaultN 租户编码：非 root 仅可读当前租户与 default 租户数据。
+type TenantCodeWithDefaultN string
 
-func (t TenantCodeWithCommonN) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) { //更新的时候会调用此接口
+func (t TenantCodeWithDefaultN) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) { //更新的时候会调用此接口
 	stmt := db.Statement
 	uc := ctxs.GetUserCtx(ctx)
 	if uc == nil { //系统初始化的时候会掉用这里
@@ -40,35 +41,35 @@ func (t TenantCodeWithCommonN) GormValue(ctx context.Context, db *gorm.DB) (expr
 	expr = clause.Expr{SQL: "?", Vars: []interface{}{uc.TenantCode}}
 	return
 }
-func (t *TenantCodeWithCommonN) Scan(value interface{}) error {
+func (t *TenantCodeWithDefaultN) Scan(value interface{}) error {
 	ret := cast.ToString(value)
-	p := TenantCodeWithCommonN(ret)
+	p := TenantCodeWithDefaultN(ret)
 	*t = p
 	return nil
 }
 
 // Value implements the driver Valuer interface.
-func (t TenantCodeWithCommonN) Value() (driver.Value, error) {
+func (t TenantCodeWithDefaultN) Value() (driver.Value, error) {
 	return string(t), nil
 }
 
-func (t TenantCodeWithCommonN) QueryClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Select}}
+func (t TenantCodeWithDefaultN) QueryClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefault2Clause{Field: f, T: t, Opt: stores.Select}}
 }
 
-func (t TenantCodeWithCommonN) UpdateClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Update}}
+func (t TenantCodeWithDefaultN) UpdateClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefault2Clause{Field: f, T: t, Opt: stores.Update}}
 }
 
-func (t TenantCodeWithCommonN) CreateClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Create}}
+func (t TenantCodeWithDefaultN) CreateClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefault2Clause{Field: f, T: t, Opt: stores.Create}}
 }
 
-func (t TenantCodeWithCommonN) DeleteClauses(f *schema.Field) []clause.Interface {
-	return []clause.Interface{TenantCodeWithCommon2Clause{Field: f, T: t, Opt: stores.Delete}}
+func (t TenantCodeWithDefaultN) DeleteClauses(f *schema.Field) []clause.Interface {
+	return []clause.Interface{TenantCodeWithDefault2Clause{Field: f, T: t, Opt: stores.Delete}}
 }
 
-func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
+func (t TenantCodeWithDefaultN) GetAuthIDs(f *schema.Field) stores.GetValues {
 	return func(stmt *gorm.Statement) (authIDs []any, isRoot bool, allData bool, err error) {
 		uc := ctxs.GetUserCtx(stmt.Context)
 		if uc == nil {
@@ -77,22 +78,22 @@ func (t TenantCodeWithCommonN) GetAuthIDs(f *schema.Field) stores.GetValues {
 		if uc.TenantCode == def.TenantCodeDefault { //只有core租户的可以修改其他租户的租户号
 			isRoot = true
 		}
-		return []any{TenantCodeWithCommonN(uc.TenantCode)}, isRoot, uc.AllTenant, nil
+		return []any{TenantCodeWithDefaultN(uc.TenantCode)}, isRoot, uc.AllTenant, nil
 	}
 }
 
-type TenantCodeWithCommon2Clause struct {
+type TenantCodeWithDefault2Clause struct {
 	stores.ClauseInterface
 	Field *schema.Field
-	T     TenantCodeWithCommonN
+	T     TenantCodeWithDefaultN
 	Opt   stores.Opt
 }
 
-func (sd TenantCodeWithCommon2Clause) GenAuthKey() string { //查询的时候会调用此接口
+func (sd TenantCodeWithDefault2Clause) GenAuthKey() string { //查询的时候会调用此接口
 	return fmt.Sprintf(stores.AuthModify, "tenantCode")
 }
 
-func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //查询的时候会调用此接口
+func (sd TenantCodeWithDefault2Clause) ModifyStatement(stmt *gorm.Statement) { //查询的时候会调用此接口
 
 	uc := ctxs.GetUserCtxNoNil(stmt.Context)
 
@@ -107,16 +108,16 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 				}
 				field := dest.FieldByName(sd.Field.Name)
 				if field.IsZero() {
-					var v TenantCodeWithCommonN
-					v = TenantCodeWithCommonN(uc.TenantCode)
+					var v TenantCodeWithDefaultN
+					v = TenantCodeWithDefaultN(uc.TenantCode)
 					field.Set(reflect.ValueOf(v))
 					continue
 				}
-				vv := field.Interface().(TenantCodeWithCommonN)
+				vv := field.Interface().(TenantCodeWithDefaultN)
 				if string(vv) == uc.TenantCode {
 					continue
 				}
-				if vv == def.TenantCodeCommon {
+				if vv == def.TenantCodeDefault {
 					if uc.IsRoot() {
 						continue
 					}
@@ -128,16 +129,16 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 		}
 		field := destV.Elem().FieldByName(sd.Field.Name)
 		if field.IsZero() {
-			var v TenantCodeWithCommonN
-			v = TenantCodeWithCommonN(uc.TenantCode)
+			var v TenantCodeWithDefaultN
+			v = TenantCodeWithDefaultN(uc.TenantCode)
 			field.Set(reflect.ValueOf(v))
 			return
 		}
-		vv := field.Interface().(TenantCodeWithCommonN)
+		vv := field.Interface().(TenantCodeWithDefaultN)
 		if string(vv) == uc.TenantCode {
 			return
 		}
-		if vv == def.TenantCodeCommon {
+		if vv == def.TenantCodeDefault {
 			if uc.IsRoot() {
 				return
 			}
@@ -163,7 +164,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 			}
 			values := []any{uc.TenantCode}
 			if uc.IsRoot() {
-				values = append(values, def.TenantCodeCommon)
+				values = append(values, def.TenantCodeDefault)
 			}
 			stmt.AddClause(clause.Where{Exprs: []clause.Expression{
 				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},
@@ -189,7 +190,7 @@ func (sd TenantCodeWithCommon2Clause) ModifyStatement(stmt *gorm.Statement) { //
 			}
 			values := []any{uc.TenantCode}
 			if uc.IsRoot() {
-				values = append(values, def.TenantCodeCommon)
+				values = append(values, def.TenantCodeDefault)
 			}
 			stmt.AddClause(clause.Where{Exprs: []clause.Expression{
 				clause.IN{Column: clause.Column{Table: clause.CurrentTable, Name: sd.Field.DBName}, Values: values},
