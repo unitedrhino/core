@@ -2,6 +2,8 @@
 package config
 
 import (
+	"context"
+
 	tenantoauth "gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/tenant"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
@@ -9,7 +11,7 @@ import (
 )
 
 // mergeAppLoginIntoConfig 将租户应用登录配置合并到租户配置响应
-func mergeAppLoginIntoConfig(dst *types.TenantConfig, app *sys.TenantAppInfo) {
+func mergeAppLoginIntoConfig(ctx context.Context, dst *types.TenantConfig, app *sys.TenantAppInfo) {
 	if dst == nil || app == nil {
 		return
 	}
@@ -37,7 +39,7 @@ func mergeAppLoginIntoConfig(dst *types.TenantConfig, app *sys.TenantAppInfo) {
 	}
 	dst.LoginTypes = app.LoginTypes
 	dst.IsAutoRegister = app.IsAutoRegister
-	tenantoauth.FillTenantConfigOut(dst)
+	tenantoauth.FillTenantConfigOut(ctx, dst)
 }
 
 // hasAppLoginPayload 判断是否携带应用登录配置字段

@@ -2,8 +2,11 @@
 package tenant
 
 import (
+	"context"
+
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 	"gitee.com/unitedrhino/core/service/syssvr/pb/sys"
+	"gitee.com/unitedrhino/share/ctxs"
 	"gitee.com/unitedrhino/share/utils"
 )
 
@@ -42,33 +45,43 @@ func NormalizeTenantConfigIn(req *types.TenantConfig) {
 }
 
 // FillTenantAppInfoOut 响应时同步前端使用的别名字段（读出后）
-func FillTenantAppInfoOut(req *types.TenantAppInfo) {
+func FillTenantAppInfoOut(ctx context.Context, req *types.TenantAppInfo) {
 	if req == nil {
 		return
 	}
 	req.GoogleConfig = req.Google
 	req.GithubConfig = req.Github
 	req.AppleConfig = fillAppleOut(req.Apple)
+	hideHuaweiForNonAdmin(ctx, &req.Huawei)
 }
 
 // FillTenantAppOut 列表项响应别名
-func FillTenantAppOut(req *types.TenantApp) {
+func FillTenantAppOut(ctx context.Context, req *types.TenantApp) {
 	if req == nil {
 		return
 	}
 	req.GoogleConfig = req.Google
 	req.GithubConfig = req.Github
 	req.AppleConfig = fillAppleOut(req.Apple)
+	hideHuaweiForNonAdmin(ctx, &req.Huawei)
 }
 
 // FillTenantConfigOut 租户配置读响应别名
-func FillTenantConfigOut(req *types.TenantConfig) {
+func FillTenantConfigOut(ctx context.Context, req *types.TenantConfig) {
 	if req == nil {
 		return
 	}
 	req.GoogleConfig = req.Google
 	req.GithubConfig = req.Github
 	req.AppleConfig = fillAppleOut(req.Apple)
+	hideHuaweiForNonAdmin(ctx, &req.Huawei)
+}
+
+// hideHuaweiForNonAdmin 非管理员时隐藏华为应用配置
+func hideHuaweiForNonAdmin(ctx context.Context, huawei **types.ThirdAppConfig) {
+	if ctxs.IsAdmin(ctx) != nil { // 非管理员
+		*huawei = nil
+	}
 }
 
 // normalizeAppleIn bundleID 兼容写入 appID

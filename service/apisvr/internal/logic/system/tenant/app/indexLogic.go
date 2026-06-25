@@ -79,7 +79,7 @@ func (l *IndexLogic) Index(req *types.TenantAppIndexReq) (resp *types.TenantAppI
 		val.LoginTypes = ta.LoginTypes
 		val.IsAutoRegister = ta.IsAutoRegister
 		val.Config = ta.Config
-		tenantoauth.FillTenantAppOut(val)
+		tenantoauth.FillTenantAppOut(l.ctx, val)
 		retList = append(retList, val)
 	}
 	return &types.TenantAppIndexResp{

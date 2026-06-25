@@ -8,7 +8,6 @@ import (
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 
-	tenantoauth "gitee.com/unitedrhino/core/service/apisvr/internal/logic/system/tenant"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/svc"
 	"gitee.com/unitedrhino/core/service/apisvr/internal/types"
 
@@ -47,8 +46,7 @@ func (l *ReadLogic) Read(req *types.WithCode) (resp *types.TenantConfig, err err
 		}
 		return nil, err
 	}
-	mergeAppLoginIntoConfig(resp, app)
-	tenantoauth.FillTenantConfigOut(resp)
+	mergeAppLoginIntoConfig(l.ctx, resp, app)
 	return resp, nil
 }
 
