@@ -35,6 +35,7 @@ func (l *ReadLogic) Read(req *types.WithCode) (resp *types.AppCore, err error) {
 		return nil, err
 	}
 	r := utils.Copy[types.AppCore](ret)
+	r.Huawei = nil // 在 apisvr 层隐藏华为应用配置
 	r.Tenant = utils.Copy[types.TenantCore](ret2)
 	return r, nil
 }
