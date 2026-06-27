@@ -8,6 +8,7 @@ import (
 
 	"gitee.com/unitedrhino/share/caches"
 	"gitee.com/unitedrhino/share/ctxs"
+	"gitee.com/unitedrhino/share/def"
 	"gitee.com/unitedrhino/share/errors"
 	"gitee.com/unitedrhino/share/utils"
 	"github.com/parnurzeal/gorequest"
@@ -45,6 +46,12 @@ type respType[t any] struct {
 	Now  t      `json:"now"`
 }
 
+const (
+	weatherGeoCacheTTL       = 30 * 24 * 60 * 60
+	weatherDataCacheTTL      = 8 * 60 * 60
+	weatherGeoCachePrecision = 1
+)
+
 // geoResp 和风 GeoAPI 城市搜索返回结构
 type geoResp struct {
 	Code     string `json:"code"`
@@ -54,9 +61,69 @@ type geoResp struct {
 	} `json:"location"`
 }
 
+func weatherGeoCacheKeyAndLookup(lon, lat float64) (string, string) {
+	lonText := fmt.Sprintf("%.*f", weatherGeoCachePrecision, lon)
+	latText := fmt.Sprintf("%.*f", weatherGeoCachePrecision, lat)
+	return fmt.Sprintf("sys:common:geo:%s:%s", latText, lonText), fmt.Sprintf("%s,%s", lonText, latText)
+}
+
+func isWeatherPointValid(p *sys.Point) bool {
+	if p == nil {
+		return false
+	}
+	lon, lat := p.GetLongitude(), p.GetLatitude()
+	if lon < -180 || lon > 180 || lat < -90 || lat > 90 {
+		return false
+	}
+	return lon != 0 || lat != 0
+}
+
+func cloneWeatherPoint(p *sys.Point) *sys.Point {
+	if p == nil {
+		return nil
+	}
+	return &sys.Point{
+		Longitude: p.GetLongitude(),
+		Latitude:  p.GetLatitude(),
+	}
+}
+
+func weatherProjectID(requestProjectID, userProjectID int64) (int64, bool) {
+	if requestProjectID > def.NotClassified {
+		return requestProjectID, true
+	}
+	if userProjectID > def.NotClassified {
+		return userProjectID, false
+	}
+	return 0, false
+}
+
+func selectWeatherPosition(requestPosition *sys.Point, requestProjectID, userProjectID int64,
+	project *sys.ProjectInfo, projectErr error) (*sys.Point, int64, error) {
+	projectID, explicitProject := weatherProjectID(requestProjectID, userProjectID)
+	if projectID != 0 {
+		if projectErr == nil && project != nil && isWeatherPointValid(project.GetPosition()) {
+			return cloneWeatherPoint(project.GetPosition()), projectID, nil
+		}
+		if explicitProject && projectErr != nil {
+			return nil, projectID, projectErr
+		}
+		if isWeatherPointValid(requestPosition) {
+			return cloneWeatherPoint(requestPosition), 0, nil
+		}
+		if projectErr != nil {
+			return nil, projectID, projectErr
+		}
+	}
+	if isWeatherPointValid(requestPosition) {
+		return cloneWeatherPoint(requestPosition), 0, nil
+	}
+	return nil, 0, errors.Parameter.AddMsg("无法获取位置信息")
+}
+
 // resolveLocationID 经纬度 → 和风 LocationID（城市级），带 Redis 缓存（30 天）
 func (l *WeatherReadLogic) resolveLocationID(lon, lat float64) (string, error) {
-	geoKey := fmt.Sprintf("sys:common:geo:%.2f:%.2f", lat, lon)
+	geoKey, lookupLocation := weatherGeoCacheKeyAndLookup(lon, lat)
 	cached, _ := caches.GetStore().GetCtx(l.ctx, geoKey)
 	if cached != "" {
 		return cached, nil
@@ -64,8 +131,8 @@ func (l *WeatherReadLogic) resolveLocationID(lon, lat float64) (string, error) {
 	// 调和风 GeoAPI: /geo/v2/city/lookup
 	var geo geoResp
 	greq := gorequest.New().Retry(2, time.Second)
-	resp, body, errs := greq.Get(fmt.Sprintf("https://%s/geo/v2/city/lookup?location=%.2f,%.2f&key=%s&number=1",
-		l.svcCtx.Config.Weather.ApiHost, lon, lat, l.svcCtx.Config.Weather.ApiKey)).EndStruct(&geo)
+	resp, body, errs := greq.Get(fmt.Sprintf("https://%s/geo/v2/city/lookup?location=%s&key=%s&number=1",
+		l.svcCtx.Config.Weather.ApiHost, lookupLocation, l.svcCtx.Config.Weather.ApiKey)).EndStruct(&geo)
 	if errs != nil {
 		return "", errors.System.AddDetail(string(body), resp, errs)
 	}
@@ -74,7 +141,7 @@ func (l *WeatherReadLogic) resolveLocationID(lon, lat float64) (string, error) {
 	}
 	locationID := geo.Location[0].ID
 	// 城市映射极稳定，缓存 30 天
-	caches.GetStore().SetexCtx(l.ctx, geoKey, locationID, 30*24*60*60)
+	caches.GetStore().SetexCtx(l.ctx, geoKey, locationID, weatherGeoCacheTTL)
 	return locationID, nil
 }
 
@@ -105,7 +172,7 @@ func (l *WeatherReadLogic) fetchWeatherData(locationID string) (*sys.WeatherRead
 	}
 	// 以 LocationID 为 key 缓存 8 小时
 	cacheKey := fmt.Sprintf("sys:common:weather:%s", locationID)
-	caches.GetStore().SetexCtx(l.ctx, cacheKey, utils.MarshalNoErr(weather.Now), 8*60*60)
+	caches.GetStore().SetexCtx(l.ctx, cacheKey, utils.MarshalNoErr(weather.Now), weatherDataCacheTTL)
 	return &weather.Now, nil
 }
 
@@ -114,22 +181,28 @@ func (l *WeatherReadLogic) WeatherRead(in *sys.WeatherReadReq) (*sys.WeatherRead
 		return &sys.WeatherReadResp{}, errors.Parameter.AddMsg("请联系管理员配置天气秘钥")
 	}
 	uc := ctxs.GetUserCtx(l.ctx)
-	if in.Position == nil && in.ProjectID == 0 {
-		in.ProjectID = uc.ProjectID
+	var userProjectID int64
+	if uc != nil {
+		userProjectID = uc.ProjectID
 	}
-	if in.ProjectID != 0 {
-		pi, err := l.svcCtx.ProjectCache.GetData(l.ctx, in.ProjectID)
-		if err != nil {
-			return nil, err
-		}
-		in.Position = &sys.Point{
-			Longitude: pi.Position.GetLongitude(),
-			Latitude:  pi.Position.GetLatitude(),
-		}
+	requestProjectID := in.ProjectID
+	projectID, _ := weatherProjectID(requestProjectID, userProjectID)
+	var (
+		project    *sys.ProjectInfo
+		projectErr error
+	)
+	if projectID != 0 {
+		project, projectErr = l.svcCtx.ProjectCache.GetData(l.ctx, projectID)
 	}
-	if in.Position == nil {
-		return &sys.WeatherReadResp{}, errors.Parameter.AddMsg("无法获取位置信息")
+	position, selectedProjectID, err := selectWeatherPosition(in.Position, requestProjectID, userProjectID, project, projectErr)
+	if err != nil {
+		return nil, err
 	}
+	if projectErr != nil && requestProjectID == 0 && in.Position != nil {
+		logx.Errorf("天气项目定位读取失败，回退请求定位: projectID=%d, err=%v", projectID, projectErr)
+	}
+	in.ProjectID = selectedProjectID
+	in.Position = position
 
 	// 第一层缓存：经纬度 → 城市 LocationID（30 天）
 	locationID, err := l.resolveLocationID(in.Position.Longitude, in.Position.Latitude)
