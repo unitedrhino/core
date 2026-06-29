@@ -16,9 +16,9 @@ func normalizeJSONMapStringString(in map[string]string) map[string]string {
 }
 
 func normalizeJSONString(in string) string {
-	//if in == "" {
-	//	return "{}"
-	//}
+	if in == "" {
+		return "{}"
+	}
 	return in
 }
 

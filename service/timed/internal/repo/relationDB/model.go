@@ -9,9 +9,9 @@ import (
 )
 
 func normalizeJSONString(in string) string {
-	//if in == "" {
-	//	return "{}"
-	//}
+	if in == "" {
+		return "{}"
+	}
 	return in
 }
 
@@ -115,9 +115,9 @@ func (t *TimedTaskInfo) TableName() string {
 }
 
 func (t *TimedTaskInfo) BeforeSave(tx *gorm.DB) error {
-	//if t == nil {
-	//	return nil
-	//}
-	//t.Params = normalizeJSONString(t.Params)
+	if t == nil {
+		return nil
+	}
+	t.Params = normalizeJSONString(t.Params)
 	return nil
 }
